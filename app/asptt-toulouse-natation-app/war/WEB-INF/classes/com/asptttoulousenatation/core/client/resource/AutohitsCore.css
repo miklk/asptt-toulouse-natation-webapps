@@ -1,0 +1,117 @@
+@CHARSET "UTF-8";
+
+body {
+	font-family: Verdana;
+}
+.autohits-disclosureLayoutPanel {
+	border: 5px solid #00FF00;
+	margin: 1%;
+}
+
+.autohits-disclosureLayoutPanel-header {
+	border: 1px solid #0000FF;
+}
+
+.autohits-disclosureLayoutPanel-content {
+	border: 1px solid #FF0000;
+}
+
+.autohits-banner {
+	margin-top: 1%;
+	margin-left: 30%;
+}
+
+.autohits-description {
+	border: solid 1px #000000;
+}
+
+.autohits-home-button {
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	width: 150px;
+	height: 75px;
+	color: #FFFFFF;
+	font-size: 1.5em;
+	cursor: pointer;
+  	cursor: hand;
+}
+
+.autohits-home-button-subscription {
+	border: outset 1px #084473;
+	background-color: #1977C0;
+	margin-right: 10%;
+}
+
+.autohits-home-button-subscription:hover {
+	background-color: #64A5D7;
+}
+
+.autohits-home-button-subscription:active {
+	border: inset 1px #084473;
+}
+
+.autohits-home-button-connexion {
+	border: outset 1px #B55A06;
+	background-color: #EE7E16;
+	margin-right: 10%;
+}
+
+.autohits-home-button-connexion:hover {
+	background-color: #F59B47;
+}
+
+.autohits-home-button-connexion:active {
+	border: inset 1px #B55A06;
+}
+
+.autohits-PopupLayout {
+}
+
+.autohits-PopupLayout .header {
+	border: 1px solid #000000;
+	background-color: #59A3D6;
+	padding: 3px;
+}
+
+.autohits-PopupLayout .header .text {
+	padding: 5px;
+	text-align: center;
+}
+
+.autohits-PopupLayout .header .close {
+	cursor: pointer;
+}
+
+
+.autohits-PopupLayout .content {
+	padding: 10px 1px 1px 5px;
+	background-color: #FFFFFF;
+	border-top: none;
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+	border-bottom: 1px solid #000000;
+	
+}
+
+.autohits-home-button-subscription-validate {
+	border: outset 1px #077F0D;
+	background-color: #0CAC14;
+	margin: 1% 10% 0% 40%;
+	width: 20%;
+	height: 20%;
+	font-size: 1.1em;
+	color: #FFFFFF;
+}
+
+.autohits-home-button-subscription-validate:hover {
+	background-color: #91D094;
+}
+
+.autohits-home-button-subscription-validate:active {
+	border: inset 1px #077F0D;
+}
+
+.user-email:after {
+	cursor: pointer;
+	content: url("images/edit.png");	
+}

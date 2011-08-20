@@ -1,0 +1,4 @@
+#!/bin/sh
+APPDIR=`dirname $0`;
+java -cp "$APPDIR/src:$APPDIR/bin:/Users/mikl/Developpement/Librairies/gwt-2.2.0/gwt-user.jar:/Users/mikl/Developpement/Librairies/gwt-2.2.0/gwt-dev.jar" com.google.gwt.resources.css.InterfaceGenerator -standalone -typeName fr.asptttoulousenatation.client.resources.ASPTT_ProtoCss -css $APPDIR/src/fr/asptttoulousenatation/client/resources/ASPTT_Proto.css  ;
+

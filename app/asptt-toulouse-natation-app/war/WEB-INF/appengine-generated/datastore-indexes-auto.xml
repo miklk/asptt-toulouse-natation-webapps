@@ -1,0 +1,11 @@
+<!-- Indices written at Fri, 19 Aug 2011 09:36:53 UTC -->
+
+<datastore-indexes>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="AreaEntity" ancestor="false" source="auto">
+        <property name="profile" direction="asc"/>
+        <property name="order" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>

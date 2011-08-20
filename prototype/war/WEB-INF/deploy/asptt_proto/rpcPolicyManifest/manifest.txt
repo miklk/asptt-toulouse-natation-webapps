@@ -1,0 +1,2 @@
+# Module asptt_proto
+# RPC service class, partial path of RPC policy file
