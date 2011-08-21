@@ -164,14 +164,19 @@ LOG.info("retrieving actu #" + lAreaEntities.size());
 		AreaEntity lAreaGroupes = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.VIDE.toString(), "Ecole de natation", lAreaGroupes.getId(),
 				"contenu de Ecole de natation", "contenu de Ecole de natation", false, true, 1);
-		createMenu(MenuItems.VIDE.toString(), "Loisirs", lAreaGroupes.getId(), "contenu de Loisirs",
+		createMenu(MenuItems.VIDE.toString(), "Loisirs adultes", lAreaGroupes.getId(), "contenu de Loisirs",
 				"contenu de Loisirs", false, true, 2);
-		createMenu(MenuItems.VIDE.toString(), "Compétitions", lAreaGroupes.getId(),
-				"contenu de Compétitions", "contenu de Compétitions", false, true, 3);
-		createMenu(MenuItems.VIDE.toString(), "Eau libre", lAreaGroupes.getId(), "contenu de Eau libre",
-				"contenu de Eau libre", false, true, 4);
 		createMenu(MenuItems.VIDE.toString(), "Aquagym", lAreaGroupes.getId(), "contenu de Aquagym",
-				"contenu de Aquagym", false, true, 5);
+				"contenu de Aquagym", false, true, 3);
+		createMenu(MenuItems.VIDE.toString(), "Perfectionnement", lAreaGroupes.getId(),
+				"contenu de Perfectionnement", "contenu de perfrectionnement", false, true, 4);
+		createMenu(MenuItems.VIDE.toString(), "Compétitions", lAreaGroupes.getId(),
+				"contenu de Compétitions", "contenu de Compétitions", false, true, 5);
+		createMenu(MenuItems.VIDE.toString(), "Masters", lAreaGroupes.getId(), "contenu de Masters",
+				"contenu de Masters", false, true, 6);
+		createMenu(MenuItems.VIDE.toString(), "Eau libre", lAreaGroupes.getId(), "contenu de Eau libre",
+				"contenu de Eau libre", false, true, 7);
+		
 		createMenu(MenuItems.VIDE.toString(), "Centre de formation", lAreaGroupes.getId(),
 				"contenu de Centre de formation",
 				"contenu de Centre de formation", false, true, 6);
