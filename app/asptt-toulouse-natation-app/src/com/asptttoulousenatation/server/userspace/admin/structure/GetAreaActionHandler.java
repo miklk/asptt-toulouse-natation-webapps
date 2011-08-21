@@ -9,6 +9,7 @@ import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
 
+import com.asptttoulousenatation.core.server.dao.entity.field.AreaEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.ContentEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.MenuEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.structure.AreaEntity;
@@ -16,10 +17,12 @@ import com.asptttoulousenatation.core.server.dao.entity.structure.ContentEntity;
 import com.asptttoulousenatation.core.server.dao.entity.structure.MenuEntity;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
+import com.asptttoulousenatation.core.server.dao.search.OrderDao;
 import com.asptttoulousenatation.core.server.dao.structure.AreaDao;
 import com.asptttoulousenatation.core.server.dao.structure.ContentDao;
 import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
+import com.asptttoulousenatation.core.shared.user.ProfileEnum;
 import com.asptttoulousenatation.server.userspace.admin.entity.AreaTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.ContentTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.MenuTransformer;
@@ -40,13 +43,22 @@ public class GetAreaActionHandler implements
 	
 	public GetAreaResult execute(GetAreaAction pAction, ExecutionContext pContext)
 			throws DispatchException {
-		List<AreaEntity> lAreaEntities = areaDao.getAll();
+//		List<AreaEntity> lAreaEntities = areaDao.getAll();
+		List<CriterionDao<? extends Object>> lAreaSelectionCriteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		CriterionDao<String> lAreaSelectionCriterion = new CriterionDao<String>(AreaEntityFields.PROFILE, ProfileEnum.PUBLIC.toString(), Operator.EQUAL);
+		lAreaSelectionCriteria.add(lAreaSelectionCriterion);
+		//Order
+		OrderDao lOrderDao = new OrderDao(AreaEntityFields.ORDER, OrderDao.OrderOperator.ASC);
+		List<AreaEntity> lAreaEntities = areaDao.find(lAreaSelectionCriteria, lOrderDao);
 		ArrayList<AreaUi> lAreaUis = new ArrayList<AreaUi>(lAreaEntities.size());
 		List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		CriterionDao<Long> lAreaCriterion = new CriterionDao<Long>();
 		lAreaCriterion.setEntityField(MenuEntityFields.AREA);
 		lAreaCriterion.setOperator(Operator.EQUAL);
+		CriterionDao<Boolean> lMenuDisplayCriterion = new CriterionDao<Boolean>(MenuEntityFields.DISPLAY, Boolean.TRUE, Operator.EQUAL);
+		lCriteria.add(lMenuDisplayCriterion);
 		lCriteria.add(lAreaCriterion);
 		
 		List<CriterionDao<? extends Object>> lMenuCriteria = new ArrayList<CriterionDao<? extends Object>>(

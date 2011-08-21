@@ -129,8 +129,8 @@ public abstract class DaoBase<E extends Entity> {
 	}
 
 	public List<E> find(List<CriterionDao<? extends Object>> pCriteria,
-			Operator pOperator) {
-		return find(getEntityClass(), pCriteria, pOperator, null);
+			Operator pOperator, OrderDao pOrder) {
+		return find(getEntityClass(), pCriteria, pOperator, pOrder);
 	}
 
 	public List<E> find(List<CriterionDao<? extends Object>> pCriteria) {

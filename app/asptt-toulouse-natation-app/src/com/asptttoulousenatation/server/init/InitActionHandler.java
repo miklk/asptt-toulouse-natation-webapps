@@ -68,7 +68,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 	public InitResult execute(InitAction pArg0, ExecutionContext pArg1)
 			throws DispatchException {
 		LOG.info("Init action");
-		createData();
+//		createData();
 		InitResult lInitResult = new InitResult();
 
 		// Structure
@@ -200,18 +200,18 @@ LOG.info("retrieving actu #" + lAreaEntities.size());
 		
 		
 		//Admin
-		lAreaEntity = new AreaEntity(null, "Actualités", ProfileEnum.ADMIN, true, 5);
+		lAreaEntity = new AreaEntity(null, "Actualités", ProfileEnum.ADMIN, true, 1);
 		AreaEntity lAreaAdmActu = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.NEWS_PUBLICATION.toString(), "Publier", lAreaAdmActu.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true, 1);
 		createMenu(MenuItems.NEWS_EDITION.toString(), "Editer", lAreaAdmActu.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true, 2);
 		
-		lAreaEntity = new AreaEntity(null, "Utilisateur", ProfileEnum.ADMIN, true, 4);
+		lAreaEntity = new AreaEntity(null, "Utilisateur", ProfileEnum.ADMIN, true, 5);
 		AreaEntity lAreaAdmUser = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.USER_CREATION.toString(), "Création", lAreaAdmUser.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true, 1);
 		createMenu(MenuItems.USER_EDITION.toString(), "Edition", lAreaAdmUser.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true, 2);
 		
 		//Organisation du club
-		lAreaEntity = new AreaEntity(null, "Organisation du club", ProfileEnum.ADMIN, false, 2);
+		lAreaEntity = new AreaEntity(null, "Organisation du club", ProfileEnum.ADMIN, false, 3);
 		AreaEntity lAreaClub = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.CLUB_GROUP_EDITION.toString(), "Groupes", lAreaClub.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, false, 1);
 		createMenu(MenuItems.CLUB_SLOT_EDITION.toString(), "Créneaux", lAreaClub.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, false, 2);
@@ -223,13 +223,13 @@ LOG.info("retrieving actu #" + lAreaEntities.size());
 		createMenu(MenuItems.OFFICIEL_SUBSCRIBE.toString(), "S'inscrire", lAreaOfficier.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true, 2);
 		
 		//Compétition
-		lAreaEntity = new AreaEntity(null, "Compétitions saison", ProfileEnum.ADMIN, true, 3);
+		lAreaEntity = new AreaEntity(null, "Compétitions saison", ProfileEnum.ADMIN, true, 4);
 		AreaEntity lAreaCompetitionSaison = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.COMPETITION_EDITION.toString(), "Edition", lAreaCompetitionSaison.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true, 1);
 		
 		
 		
-		lAreaEntity = new AreaEntity(null, "Structure du site", ProfileEnum.ADMIN, 1);
+		lAreaEntity = new AreaEntity(null, "Structure du site", ProfileEnum.ADMIN, 2);
 		lAreaDao.save(lAreaEntity);
 		
 		createUserAdmin();

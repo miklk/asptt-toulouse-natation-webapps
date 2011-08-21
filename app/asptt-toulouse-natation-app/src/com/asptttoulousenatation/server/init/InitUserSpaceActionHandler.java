@@ -19,6 +19,7 @@ import com.asptttoulousenatation.core.server.dao.entity.structure.ContentEntity;
 import com.asptttoulousenatation.core.server.dao.entity.structure.MenuEntity;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
+import com.asptttoulousenatation.core.server.dao.search.OrderDao;
 import com.asptttoulousenatation.core.server.dao.structure.AreaDao;
 import com.asptttoulousenatation.core.server.dao.structure.ContentDao;
 import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
@@ -61,8 +62,9 @@ public class InitUserSpaceActionHandler implements
 					Operator.EQUAL);
 			lAreaSelectionCriteria.add(lAreaSelectionCriterion);
 		}
+		OrderDao lAreaOrder = new OrderDao(AreaEntityFields.ORDER, OrderDao.OrderOperator.ASC);
 		List<AreaEntity> lAreaEntities = areaDao.find(lAreaSelectionCriteria,
-				Operator.OR);
+				Operator.OR, lAreaOrder);
 		Map<String, AreaUi> lAreaUis = new LinkedHashMap<String, AreaUi>(
 				lAreaEntities.size());
 		List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(
@@ -82,14 +84,14 @@ public class InitUserSpaceActionHandler implements
 		for (AreaEntity lAreaEntity : lAreaEntities) {
 			// Get menu
 			lAreaCriterion.setValue(lAreaEntity.getId());
-			List<MenuEntity> lMenuEntities = menuDao.find(lCriteria, Operator.AND);
+			List<MenuEntity> lMenuEntities = menuDao.find(lCriteria);
 			Map<String, MenuUi> lMenuUis = new LinkedHashMap<String, MenuUi>(
 					lMenuEntities.size());
 			for (MenuEntity lMenuEntity : lMenuEntities) {
 				// Get content
 				lContentCriterion.setValue(lMenuEntity.getId().getId());
 				List<ContentEntity> lContentEntities = contentDao
-						.find(lMenuCriteria, Operator.AND);
+						.find(lMenuCriteria);
 				MenuUi lMenu = menuTransformer.toUi(lMenuEntity);
 				lMenu.setContentSet(contentTransformer.toUi(lContentEntities));
 				lMenuUis.put(lMenu.getTitle(), lMenu);

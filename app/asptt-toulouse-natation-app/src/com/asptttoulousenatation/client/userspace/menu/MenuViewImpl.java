@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ButtonBase;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.ResizeComposite;
@@ -24,7 +25,7 @@ public class MenuViewImpl extends ResizeComposite implements MenuView {
 	private Map<String, ButtonBase> menus;
 	private StackLayoutPanel panel;
 	private SimpleLayoutPanel areaContent;
-	private Button areaLoadButton;
+	private Label areaLoadButton;
 	
 	private InitUserSpaceResult initUserSpaceResult;
 	
@@ -35,11 +36,11 @@ public class MenuViewImpl extends ResizeComposite implements MenuView {
 		
 		menus = new HashMap<String, ButtonBase>();
 		for(AreaUi lArea: initUserSpaceResult.getArea().values()) {
-			if("Structure".equals(lArea.getTitle())) {
+			if("Structure du site".equals(lArea.getTitle())) {
 				panel.add(buildAreaContent(), buildAreaHeader(), 5);
 			}
 			else {
-				panel.add(build(lArea), lArea.getTitle(), 5);
+				panel.add(build(lArea), new Label(lArea.getTitle()), 5);
 			}
 		}
 	}
@@ -60,7 +61,7 @@ public class MenuViewImpl extends ResizeComposite implements MenuView {
 	}
 	
 	public IsWidget buildAreaHeader() {
-		areaLoadButton = new Button("Structure");
+		areaLoadButton = new Label("Structure du site");
 		return areaLoadButton;
 	}
 	
