@@ -70,7 +70,10 @@ public class UserActivity extends MyAbstractActivity<UserPlace> {
 																	.getValue(),
 															lUserEditionView
 																	.getPhoneNumber()
-																	.getValue()),
+																	.getValue(),
+																	lUserEditionView.getAddressRoad().getValue(),
+																	lUserEditionView.getAddressCode().getValue(),
+																	lUserEditionView.getAddressCity().getValue()),
 													new AsyncCallback<UpdateUserResult>() {
 														public void onFailure(
 																Throwable pCaught) {
@@ -126,7 +129,10 @@ public class UserActivity extends MyAbstractActivity<UserPlace> {
 																			.getValue(),
 																	lCreationView
 																			.getPhonenumber()
-																			.getValue()),
+																			.getValue(),
+																			lCreationView.getAddressRoad().getValue(),
+																			lCreationView.getAddressCode().getValue(),
+																			lCreationView.getAddressCity().getValue()),
 															new AsyncCallback<CreateUserResult>() {
 																public void onFailure(
 																		Throwable pCaught) {

@@ -16,6 +16,9 @@ public class UpdateUserAction implements Action<UpdateUserResult> {
 	private String firstName;
 	private Date birthday;
 	private String phonenumber;
+	private String addressRoad;
+	private String addressCode;
+	private String addressCity;
 	
 	public UpdateUserAction() {
 		
@@ -23,7 +26,8 @@ public class UpdateUserAction implements Action<UpdateUserResult> {
 
 	public UpdateUserAction(Long pId, String pEmailAddress, boolean pValidated,
 			Set<String> pProfiles, Set<Long> pSlots, String pLastName,
-			String pFirstName, Date pBirthday, String pPhonenumber) {
+			String pFirstName, Date pBirthday, String pPhonenumber,
+			String pAddressRoad, String pAddressCode, String pAddressCity) {
 		super();
 		id = pId;
 		emailAddress = pEmailAddress;
@@ -34,7 +38,12 @@ public class UpdateUserAction implements Action<UpdateUserResult> {
 		firstName = pFirstName;
 		birthday = pBirthday;
 		phonenumber = pPhonenumber;
+		addressRoad = pAddressRoad;
+		addressCode = pAddressCode;
+		addressCity = pAddressCity;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -106,5 +115,29 @@ public class UpdateUserAction implements Action<UpdateUserResult> {
 
 	public void setPhonenumber(String pPhonenumber) {
 		phonenumber = pPhonenumber;
+	}
+
+	public String getAddressRoad() {
+		return addressRoad;
+	}
+
+	public void setAddressRoad(String pAddressRoad) {
+		addressRoad = pAddressRoad;
+	}
+
+	public String getAddressCode() {
+		return addressCode;
+	}
+
+	public void setAddressCode(String pAddressCode) {
+		addressCode = pAddressCode;
+	}
+
+	public String getAddressCity() {
+		return addressCity;
+	}
+
+	public void setAddressCity(String pAddressCity) {
+		addressCity = pAddressCity;
 	}
 }

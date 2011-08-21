@@ -91,6 +91,9 @@ public class UpdateUserActionHandler implements
 		lUserData.setFirstName(pAction.getFirstName());
 		lUserData.setBirthday(pAction.getBirthday());
 		lUserData.setPhonenumber(pAction.getPhonenumber());
+		lUserData.setAddressRoad(pAction.getAddressRoad());
+		lUserData.setAddressCode(pAction.getAddressCode());
+		lUserData.setAddressCity(pAction.getAddressCity());
 		userDataDao.save(lUserData);
 		return new UpdateUserResult();
 	}

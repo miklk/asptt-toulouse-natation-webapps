@@ -15,6 +15,10 @@ public interface UserCreationView extends IsWidget {
 	public HasValue<String> getFirstName();
 	public HasValue<Date> getBirthday();
 	public HasValue<String> getPhonenumber();
+	public HasValue<String> getAddressRoad();
+	public HasValue<String> getAddressCode();
+	public HasValue<String> getAddressCity();
+	
 	public Set<Long> getSlots();
 	
 	public HasClickHandlers getCreateButton();

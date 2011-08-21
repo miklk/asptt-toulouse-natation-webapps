@@ -37,6 +37,9 @@ public class UserCreationViewImpl extends ResizeComposite implements
 	private TextBox firstName;
 	private DateBox birthday;
 	private TextBox phonenumber;
+	private TextBox addressRoad;
+	private TextBox addressCode;
+	private TextBox addressCity;
 
 	private List<SlotUi> slotData;
 	private CellList<SlotUi> slotCellList;
@@ -50,73 +53,112 @@ public class UserCreationViewImpl extends ResizeComposite implements
 		FlexTable lPanel = new FlexTable();
 		lPanel.setCellSpacing(6);
 
+		int index = 0;
 		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
-		lPanel.setHTML(0, 0, "Information du compte internet");
-		lCellFormatter.setColSpan(0, 0, 2);
-		lCellFormatter.setHorizontalAlignment(0, 0,
+		lPanel.setHTML(index, 0, "Information du compte internet");
+		lCellFormatter.setColSpan(index, 0, 2);
+		lCellFormatter.setHorizontalAlignment(index, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
 
+		index++;
 		// Input
 		// Email address
 		emailAddress = new TextBox();
 		lPanel.setHTML(1, 0, "E-mail");
 		lPanel.setWidget(1, 1, emailAddress);
-
+		index++;
+		
 		// Validated
 		validated = new CheckBox();
-		lPanel.setHTML(2, 0, "Compte validé ?");
-		lPanel.setWidget(2, 1, validated);
+		lPanel.setHTML(index, 0, "Compte validé ?");
+		lPanel.setWidget(index, 1, validated);
+		index++;
 
 		// Profiles
 		profiles = new ListBox(true);
 		for (ProfileEnum lProfile : ProfileEnum.values()) {
 			profiles.addItem(lProfile.toString());
 		}
-		lPanel.setHTML(3, 0, "Profiles");
-		lPanel.setWidget(3, 1, profiles);
+		lPanel.setHTML(index, 0, "Profiles");
+		lPanel.setWidget(index, 1, profiles);
+		index++;
 
-		lPanel.setHTML(4, 0, "Information licencié");
-		lCellFormatter.setColSpan(4, 0, 2);
-		lCellFormatter.setHorizontalAlignment(4, 0,
+		lPanel.setHTML(index, 0, "Information licencié");
+		lCellFormatter.setColSpan(index, 0, 2);
+		lCellFormatter.setHorizontalAlignment(index, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
+		index++;
+		
 		// Last Name
 		lastName = new TextBox();
-		lPanel.setHTML(5, 0, "Nom");
-		lPanel.setWidget(5, 1, lastName);
+		lPanel.setHTML(index, 0, "Nom");
+		lPanel.setWidget(index, 1, lastName);
+		index++;
 
 		// First Name
 		firstName = new TextBox();
-		lPanel.setHTML(6, 0, "Prénom");
-		lPanel.setWidget(6, 1, firstName);
+		lPanel.setHTML(index, 0, "Prénom");
+		lPanel.setWidget(index, 1, firstName);
+		index++;
 
 		// Birthday
 		birthday = new DateBox();
-		lPanel.setHTML(7, 0, "Date de naissance");
-		lPanel.setWidget(7, 1, birthday);
+		lPanel.setHTML(index, 0, "Date de naissance");
+		lPanel.setWidget(index, 1, birthday);
+		index++;
 
 		// Phone number
 		phonenumber = new TextBox();
-		lPanel.setHTML(8, 0, "Téléphone");
-		lPanel.setWidget(8, 1, phonenumber);
+		lPanel.setHTML(index, 0, "Téléphone");
+		lPanel.setWidget(index, 1, phonenumber);
+		index++;
+		
+		//Address
+		lPanel.setHTML(index, 0, "Adresse");
+		lCellFormatter.setColSpan(index, 0, 2);
+		lCellFormatter.setHorizontalAlignment(index, 0,
+				HasHorizontalAlignment.ALIGN_CENTER);
+		index++;
+		
+		//Address road
+		addressRoad = new TextBox();
+		lPanel.setHTML(index, 0, "Rue");
+		lPanel.setWidget(index, 1, addressRoad);
+		index++;
+		
+		//Address code postale
+		addressCode = new TextBox();
+		lPanel.setHTML(index, 0, "Code postale");
+		lPanel.setWidget(index, 1, addressCode);
+		index++;
+		
+		//Address city
+		addressCity = new TextBox();
+		lPanel.setHTML(index, 0, "Ville");
+		lPanel.setWidget(index, 1, addressCity);
+		index++;
 
 		// Slots
-		lPanel.setHTML(9, 0, "Créneaux d'entrainement");
-		lCellFormatter.setColSpan(9, 0, 2);
-		lCellFormatter.setHorizontalAlignment(9, 0,
+		lPanel.setHTML(index, 0, "Créneaux d'entrainement");
+		lCellFormatter.setColSpan(index, 0, 2);
+		lCellFormatter.setHorizontalAlignment(index, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
+		index++;
 
 		slotCellList = new CellList<SlotUi>(new SlotCell());
 		slotCellList.setRowData(slotData);
 		slotSelectionModel = new MultiSelectionModel<SlotUi>();
 		slotCellList.setSelectionModel(slotSelectionModel);
-		lPanel.setWidget(10, 1, slotCellList);
+		lPanel.setWidget(index, 1, slotCellList);
+		index++;
 
 		creationButton = new Button("Créer");
 		creationButton.setWidth("50%");
-		lPanel.setWidget(11, 0, creationButton);
-		lCellFormatter.setColSpan(11, 0, 2);
-		lCellFormatter.setHorizontalAlignment(11, 0,
+		lPanel.setWidget(index, 0, creationButton);
+		lCellFormatter.setColSpan(index, 0, 2);
+		lCellFormatter.setHorizontalAlignment(index, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
+		index++;
 
 		panel.add(lPanel);
 	}
@@ -158,6 +200,18 @@ public class UserCreationViewImpl extends ResizeComposite implements
 
 	public HasValue<String> getPhonenumber() {
 		return phonenumber;
+	}
+	
+	public HasValue<String> getAddressRoad() {
+		return addressRoad;
+	}
+
+	public HasValue<String> getAddressCode() {
+		return addressCode;
+	}
+
+	public HasValue<String> getAddressCity() {
+		return addressCity;
 	}
 
 	public Set<Long> getSlots() {

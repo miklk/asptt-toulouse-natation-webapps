@@ -11,7 +11,8 @@ public class UserDataTransformer extends
 	public UserDataUi toUi(UserDataEntity pEntity) {
 		UserDataUi lUi = new UserDataUi(pEntity.getFirstName(),
 				pEntity.getLastName(), pEntity.getBirthday(),
-				pEntity.getPhonenumber());
+				pEntity.getPhonenumber(), pEntity.getAddressRoad(),
+				pEntity.getAddressCode(), pEntity.getAddressCity());
 		return lUi;
 	}
 

@@ -33,6 +33,15 @@ public class UserDataEntity implements Entity {
 	
 	@Persistent
 	private String phonenumber;
+	
+	@Persistent
+	private String addressRoad;
+	
+	@Persistent
+	private String addressCode;
+	
+	@Persistent
+	private String addressCity;
 
 	public UserDataEntity() {
 		
@@ -76,5 +85,29 @@ public class UserDataEntity implements Entity {
 
 	public void setPhonenumber(String pPhonenumber) {
 		phonenumber = pPhonenumber;
+	}
+
+	public String getAddressRoad() {
+		return addressRoad;
+	}
+
+	public void setAddressRoad(String pAddressRoad) {
+		addressRoad = pAddressRoad;
+	}
+
+	public String getAddressCode() {
+		return addressCode;
+	}
+
+	public void setAddressCode(String pAddressCode) {
+		addressCode = pAddressCode;
+	}
+
+	public String getAddressCity() {
+		return addressCity;
+	}
+
+	public void setAddressCity(String pAddressCity) {
+		addressCity = pAddressCity;
 	}
 }

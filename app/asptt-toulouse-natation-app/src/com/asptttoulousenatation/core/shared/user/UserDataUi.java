@@ -10,18 +10,25 @@ public class UserDataUi implements IsSerializable {
 	private String lastName;
 	private Date birthday;
 	private String phonenumber;
+	private String addressRoad;
+	private String addressCode;
+	private String addressCity;
 	
 	public UserDataUi() {
 		
 	}
 
 	public UserDataUi(String pFirstName, String pLastName, Date pBirthday,
-			String pPhonenumber) {
+			String pPhonenumber, String pAddressRoad, String pAddressCode,
+			String pAddressCity) {
 		super();
 		firstName = pFirstName;
 		lastName = pLastName;
 		birthday = pBirthday;
 		phonenumber = pPhonenumber;
+		addressRoad = pAddressRoad;
+		addressCode = pAddressCode;
+		addressCity = pAddressCity;
 	}
 
 	public String getFirstName() {
@@ -54,5 +61,29 @@ public class UserDataUi implements IsSerializable {
 
 	public void setPhonenumber(String pPhonenumber) {
 		phonenumber = pPhonenumber;
+	}
+
+	public String getAddressRoad() {
+		return addressRoad;
+	}
+
+	public void setAddressRoad(String pAddressRoad) {
+		addressRoad = pAddressRoad;
+	}
+
+	public String getAddressCode() {
+		return addressCode;
+	}
+
+	public void setAddressCode(String pAddressCode) {
+		addressCode = pAddressCode;
+	}
+
+	public String getAddressCity() {
+		return addressCity;
+	}
+
+	public void setAddressCity(String pAddressCity) {
+		addressCity = pAddressCity;
 	}
 }

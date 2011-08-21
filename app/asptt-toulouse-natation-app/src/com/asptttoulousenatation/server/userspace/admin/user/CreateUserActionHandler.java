@@ -40,6 +40,9 @@ public class CreateUserActionHandler implements
 		lUserData.setFirstName(pAction.getFirstName());
 		lUserData.setBirthday(pAction.getBirthday());
 		lUserData.setPhonenumber(pAction.getPhonenumber());
+		lUserData.setAddressRoad(pAction.getAddressRoad());
+		lUserData.setAddressCode(pAction.getAddressCode());
+		lUserData.setAddressCity(pAction.getAddressCity());
 		UserDataEntity lUserDataCreated = userDataDao.save(lUserData);
 		
 		UserEntity lUser = new UserEntity();

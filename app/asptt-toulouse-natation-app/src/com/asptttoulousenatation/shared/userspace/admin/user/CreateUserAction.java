@@ -15,6 +15,9 @@ public class CreateUserAction implements Action<CreateUserResult> {
 	private String firstName;
 	private Date birthday;
 	private String phonenumber;
+	private String addressRoad;
+	private String addressCode;
+	private String addressCity;
 	
 	public CreateUserAction() {
 		
@@ -22,7 +25,8 @@ public class CreateUserAction implements Action<CreateUserResult> {
 
 	public CreateUserAction(String pEmailAddress, boolean pValidated,
 			Set<String> pProfiles, Set<Long> pSlots, String pLastName,
-			String pFirstName, Date pBirthday, String pPhonenumber) {
+			String pFirstName, Date pBirthday, String pPhonenumber,
+			String pAddressRoad, String pAddressCode, String pAddressCity) {
 		super();
 		emailAddress = pEmailAddress;
 		validated = pValidated;
@@ -32,6 +36,9 @@ public class CreateUserAction implements Action<CreateUserResult> {
 		firstName = pFirstName;
 		birthday = pBirthday;
 		phonenumber = pPhonenumber;
+		addressRoad = pAddressRoad;
+		addressCode = pAddressCode;
+		addressCity = pAddressCity;
 	}
 
 
@@ -97,5 +104,29 @@ public class CreateUserAction implements Action<CreateUserResult> {
 
 	public void setPhonenumber(String pPhonenumber) {
 		phonenumber = pPhonenumber;
+	}
+
+	public String getAddressRoad() {
+		return addressRoad;
+	}
+
+	public void setAddressRoad(String pAddressRoad) {
+		addressRoad = pAddressRoad;
+	}
+
+	public String getAddressCode() {
+		return addressCode;
+	}
+
+	public void setAddressCode(String pAddressCode) {
+		addressCode = pAddressCode;
+	}
+
+	public String getAddressCity() {
+		return addressCity;
+	}
+
+	public void setAddressCity(String pAddressCity) {
+		addressCity = pAddressCity;
 	}
 }
