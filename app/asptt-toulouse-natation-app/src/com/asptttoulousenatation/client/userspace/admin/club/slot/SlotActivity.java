@@ -24,49 +24,82 @@ public class SlotActivity extends MyAbstractActivity<SlotPlace> {
 
 	public void start(AcceptsOneWidget pPanel, EventBus pEventBus) {
 		final SimpleLayoutPanel lPanel = new SimpleLayoutPanel();
-		dispatchAsync.execute(new GetAllSlotAction(), new AsyncCallback<GetAllSlotResult>() {
+		dispatchAsync.execute(new GetAllSlotAction(),
+				new AsyncCallback<GetAllSlotResult>() {
 
-			public void onFailure(Throwable pCaught) {
-				Window.alert("Erreur: " + pCaught.getMessage());
-			}
+					public void onFailure(Throwable pCaught) {
+						Window.alert("Erreur: " + pCaught.getMessage());
+					}
 
-			public void onSuccess(GetAllSlotResult pResult) {
-				final SlotView lView = clientFactory.getSlotView(pResult.getSlots(), pResult.getGroups());
-				lView.getCreateButton().addClickHandler(new ClickHandler() {
-					public void onClick(ClickEvent event) {
-						CreateSlotAction lAction = new CreateSlotAction(lView.getDayOfWeek(), lView.getHourBegin(), lView.getHourEnd(), lView.getGroup(), lView.getSwimmingPool().getValue());
-						dispatchAsync.execute(lAction, new AsyncCallback<CreateSlotResult>() {
+					public void onSuccess(GetAllSlotResult pResult) {
+						final SlotView lView = clientFactory.getSlotView(
+								pResult.getSlots(), pResult.getGroups());
+						lView.getCreateButton().addClickHandler(
+								new ClickHandler() {
+									public void onClick(ClickEvent event) {
+										CreateSlotAction lAction = new CreateSlotAction(
+												lView.getDayOfWeek(), lView
+														.getHourBegin(), lView
+														.getHourEnd(), lView
+														.getGroup(), lView
+														.getSwimmingPool()
+														.getValue(),
+														lView.getEducateur().getValue());
+										dispatchAsync
+												.execute(
+														lAction,
+														new AsyncCallback<CreateSlotResult>() {
 
-							public void onFailure(Throwable pCaught) {
-								Window.alert("Erreur " + pCaught.getMessage());
-							}
+															public void onFailure(
+																	Throwable pCaught) {
+																Window.alert("Erreur "
+																		+ pCaught
+																				.getMessage());
+															}
 
-							public void onSuccess(CreateSlotResult pResult) {
-								Window.alert("Créé");
-							}
-						});
+															public void onSuccess(
+																	CreateSlotResult pResult) {
+																Window.alert("Créé");
+															}
+														});
+									}
+								});
+						lView.getUpdateButton().addClickHandler(
+								new ClickHandler() {
+									public void onClick(ClickEvent event) {
+										UpdateSlotAction lAction = new UpdateSlotAction(
+												lView.getSlot(), lView
+														.getDayOfWeek(), lView
+														.getHourBegin(), lView
+														.getHourEnd(), lView
+														.getGroup(), lView
+														.getSwimmingPool()
+														.getValue(),
+														lView.getEducateur().getValue());
+										dispatchAsync
+												.execute(
+														lAction,
+														new AsyncCallback<UpdateSlotResult>() {
+
+															public void onFailure(
+																	Throwable pCaught) {
+																Window.alert("Erreur "
+																		+ pCaught
+																				.getMessage());
+															}
+
+															public void onSuccess(
+																	UpdateSlotResult pResult) {
+																Window.alert("Mis à jour !");
+															}
+														});
+									}
+								});
+						lPanel.setWidget(lView);
 					}
 				});
-				lView.getUpdateButton().addClickHandler(new ClickHandler() {
-					public void onClick(ClickEvent event) {
-						UpdateSlotAction lAction = new UpdateSlotAction(lView.getSlot(), lView.getDayOfWeek(), lView.getHourBegin(), lView.getHourEnd(), lView.getGroup(), lView.getSwimmingPool().getValue());
-						dispatchAsync.execute(lAction, new AsyncCallback<UpdateSlotResult>() {
-
-							public void onFailure(Throwable pCaught) {
-								Window.alert("Erreur " + pCaught.getMessage());
-							}
-
-							public void onSuccess(UpdateSlotResult pResult) {
-								Window.alert("Mis à jour !");
-							}
-						});
-					}
-				});
-				lPanel.setWidget(lView);
-			}
-		});
 		pPanel.setWidget(lPanel);
-		
+
 	}
 
 }

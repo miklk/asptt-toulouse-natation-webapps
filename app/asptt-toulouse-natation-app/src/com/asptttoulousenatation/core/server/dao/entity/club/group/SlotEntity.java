@@ -35,12 +35,15 @@ public class SlotEntity implements Entity {
 	@Persistent
 	private String swimmingPool;
 	
+	@Persistent
+	private String educateur;
+	
 	public SlotEntity() {
 		
 	}
 
 	public SlotEntity(Long pId, String pDayOfWeek, int pBegin, int pEnd,
-			Long pGroup, String pSwimmingPool) {
+			Long pGroup, String pSwimmingPool, String pEducateur) {
 		super();
 		id = pId;
 		dayOfWeek = pDayOfWeek;
@@ -48,6 +51,7 @@ public class SlotEntity implements Entity {
 		end = pEnd;
 		group = pGroup;
 		swimmingPool = pSwimmingPool;
+		educateur = pEducateur;
 	}
 
 	public Long getId() {
@@ -96,5 +100,13 @@ public class SlotEntity implements Entity {
 
 	public void setSwimmingPool(String pSwimmingPool) {
 		swimmingPool = pSwimmingPool;
+	}
+
+	public String getEducateur() {
+		return educateur;
+	}
+
+	public void setEducateur(String pEducateur) {
+		educateur = pEducateur;
 	}
 }

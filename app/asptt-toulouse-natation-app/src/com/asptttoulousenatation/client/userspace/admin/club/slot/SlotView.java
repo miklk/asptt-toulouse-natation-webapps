@@ -10,6 +10,7 @@ public interface SlotView extends IsWidget {
 	public int getHourEnd();
 	public Long getGroup();
 	public HasValue<String> getSwimmingPool();
+	public HasValue<String> getEducateur();
 	public Long getSlot();
 	
 	public HasClickHandlers getCreateButton();

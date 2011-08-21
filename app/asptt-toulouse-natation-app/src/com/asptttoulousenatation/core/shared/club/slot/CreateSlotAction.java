@@ -9,18 +9,20 @@ public class CreateSlotAction implements Action<CreateSlotResult> {
 	private int end;
 	private Long group;
 	private String swimmingPool;
+	private String educateur;
 	
 	public CreateSlotAction() {
 	}
 
 	public CreateSlotAction(String pDayOfWeek, int pBegin, int pEnd,
-			Long pGroup, String pSwimmingPool) {
+			Long pGroup, String pSwimmingPool, String pEducateur) {
 		super();
 		dayOfWeek = pDayOfWeek;
 		begin = pBegin;
 		end = pEnd;
 		group = pGroup;
 		swimmingPool = pSwimmingPool;
+		educateur = pEducateur;
 	}
 
 	public String getDayOfWeek() {
@@ -62,4 +64,13 @@ public class CreateSlotAction implements Action<CreateSlotResult> {
 	public void setSwimmingPool(String swimmingPool) {
 		this.swimmingPool = swimmingPool;
 	}
+
+	public String getEducateur() {
+		return educateur;
+	}
+
+	public void setEducateur(String pEducateur) {
+		educateur = pEducateur;
+	}
+	
 }

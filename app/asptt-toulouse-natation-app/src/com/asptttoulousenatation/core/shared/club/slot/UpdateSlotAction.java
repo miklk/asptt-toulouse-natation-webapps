@@ -10,12 +10,13 @@ public class UpdateSlotAction implements Action<UpdateSlotResult> {
 	private int end;
 	private Long group;
 	private String swimmingPool;
+	private String educateur;
 	
 	public UpdateSlotAction() {
 	}
 
 	public UpdateSlotAction(Long pId, String pDayOfWeek, int pBegin, int pEnd,
-			Long pGroup, String pSwimmingPool) {
+			Long pGroup, String pSwimmingPool, String pEducateur) {
 		super();
 		id = pId;
 		dayOfWeek = pDayOfWeek;
@@ -23,6 +24,7 @@ public class UpdateSlotAction implements Action<UpdateSlotResult> {
 		end = pEnd;
 		group = pGroup;
 		swimmingPool = pSwimmingPool;
+		educateur = pEducateur;
 	}
 
 	public Long getId() {
@@ -71,5 +73,13 @@ public class UpdateSlotAction implements Action<UpdateSlotResult> {
 
 	public void setSwimmingPool(String swimmingPool) {
 		this.swimmingPool = swimmingPool;
+	}
+
+	public String getEducateur() {
+		return educateur;
+	}
+
+	public void setEducateur(String pEducateur) {
+		educateur = pEducateur;
 	}
 }

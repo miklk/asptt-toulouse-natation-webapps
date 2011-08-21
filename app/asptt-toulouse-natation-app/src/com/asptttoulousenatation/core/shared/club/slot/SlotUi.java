@@ -11,13 +11,14 @@ private Long id;
 	private int end;
 	private GroupUi group;
 	private String swimmingPool;
+	private String educateur;
 	
 	public SlotUi() {
 		
 	}
 	
 	public SlotUi(Long pId, String pDayOfWeek, int pBegin, int pEnd,
-			GroupUi pGroup, String pSwimmingPool) {
+			GroupUi pGroup, String pSwimmingPool, String pEducateur) {
 		super();
 		id = pId;
 		dayOfWeek = pDayOfWeek;
@@ -25,6 +26,7 @@ private Long id;
 		end = pEnd;
 		group = pGroup;
 		swimmingPool = pSwimmingPool;
+		educateur = pEducateur;
 	}
 
 
@@ -71,5 +73,12 @@ private Long id;
 	public void setSwimmingPool(String swimmingPool) {
 		this.swimmingPool = swimmingPool;
 	}
-	
+
+	public String getEducateur() {
+		return educateur;
+	}
+
+	public void setEducateur(String pEducateur) {
+		educateur = pEducateur;
+	}
 }

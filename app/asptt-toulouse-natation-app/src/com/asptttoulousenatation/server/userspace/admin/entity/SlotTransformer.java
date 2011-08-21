@@ -18,6 +18,7 @@ public class SlotTransformer extends
 		lUi.setBegin(pEntity.getBegin());
 		lUi.setEnd(pEntity.getEnd());
 		lUi.setSwimmingPool(pEntity.getSwimmingPool());
+		lUi.setEducateur(pEntity.getEducateur());
 		return lUi;
 	}
 	

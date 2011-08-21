@@ -22,6 +22,7 @@ public class CreateSlotActionHandler implements
 		lEntity.setBegin(pAction.getBegin());
 		lEntity.setEnd(pAction.getEnd());
 		lEntity.setSwimmingPool(pAction.getSwimmingPool());
+		lEntity.setEducateur(pAction.getEducateur());
 		lEntity.setGroup(pAction.getGroup());
 		dao.save(lEntity);
 		return new CreateSlotResult();

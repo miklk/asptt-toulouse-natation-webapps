@@ -47,6 +47,7 @@ public class SlotViewImpl extends ResizeComposite implements SlotView {
 	private HourMinutePicker hourEnd;
 	private ListBox group;
 	private TextBox swimmingPool;
+	private TextBox educateur;
 	
 	static {
 		dayOfWeekMap = new HashMap<String, Integer>(7);
@@ -112,6 +113,7 @@ public class SlotViewImpl extends ResizeComposite implements SlotView {
 			index++;
 		}
 		swimmingPool.setValue(pUi.getSwimmingPool());
+		educateur.setValue(pUi.getEducateur());
 		updateButton.setEnabled(true);
 	}
 	
@@ -154,6 +156,11 @@ public class SlotViewImpl extends ResizeComposite implements SlotView {
 		lPanel.setHTML(4, 0, "Piscine");
 		lPanel.setWidget(4, 1, swimmingPool);
 		
+		//Educateur
+		educateur = new TextBox();
+		lPanel.setHTML(5, 0, "Educateur");
+		lPanel.setWidget(5, 1, educateur);
+		
 		lPanel.setWidget(11, 0, updateButton);
 		lPanel.setWidget(11, 2, createButton);
 		editionPanel.clear();
@@ -190,5 +197,9 @@ public class SlotViewImpl extends ResizeComposite implements SlotView {
 
 	public int getHourEnd() {
 		return hourEnd.getMinutes();
+	}
+
+	public HasValue<String> getEducateur() {
+		return educateur;
 	}
 }
