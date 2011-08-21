@@ -88,6 +88,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		CriterionDao<Boolean> lMenuCriterion = new CriterionDao<Boolean>(MenuEntityFields.DISPLAY, Boolean.TRUE, Operator.EQUAL);
 		lCriteria.add(lAreaCriterion);
 		lCriteria.add(lMenuCriterion);
+		OrderDao lMenuOrder = new OrderDao(MenuEntityFields.ORDER, OrderDao.OrderOperator.ASC);
 
 		List<CriterionDao<? extends Object>> lMenuCriteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
@@ -99,7 +100,7 @@ LOG.info("retrieving actu #" + lAreaEntities.size());
 		for (AreaEntity lAreaEntity : lAreaEntities) {
 			// Get menu
 			lAreaCriterion.setValue(lAreaEntity.getId());
-			List<MenuEntity> lMenuEntities = menuDao.find(lCriteria);
+			List<MenuEntity> lMenuEntities = menuDao.find(lCriteria, lMenuOrder);
 			LOG.info("retrieving menu #" + lMenuEntities.size());
 			Map<String, MenuUi> lMenuUis = new LinkedHashMap<String, MenuUi>(lMenuEntities.size());
 			for (MenuEntity lMenuEntity : lMenuEntities) {
@@ -147,84 +148,84 @@ LOG.info("retrieving actu #" + lAreaEntities.size());
 
 		// Historique
 		createMenu(MenuItems.VIDE.toString(), "Historique du club", lAreaEntity2.getId(),
-				"contenu de l'historique du club", "contenu de l'historique", false, true);
+				"contenu de l'historique du club", "contenu de l'historique", false, true, 1);
 		createMenu(MenuItems.VIDE.toString(), "Organisation du club", lAreaEntity2.getId(),
 				"contenu de l'organisation du club",
-				"contenu de l'organisation du club", false, true);
+				"contenu de l'organisation du club", false, true, 2);
 		createMenu(MenuItems.VIDE.toString(), "Lieux d'entrainements", lAreaEntity2.getId(),
 				"contenu de Lieux d'entrainements",
-				"contenu de Lieux d'entrainements", false, true);
+				"contenu de Lieux d'entrainements", false, true, 3);
 		createMenu(MenuItems.VIDE.toString(), "Officiels", lAreaEntity2.getId(), "contenu de officiels",
-				"contenu de officiels", false, true);
+				"contenu de officiels", false, true, 4);
 		createMenu(MenuItems.VIDE.toString(), "Vie du club", lAreaEntity2.getId(),
-				"contenu de vie du club", "contenu de la vie du club", false, true);
+				"contenu de vie du club", "contenu de la vie du club", false, true, 5);
 
 		lAreaEntity = new AreaEntity(null, "Groupes", ProfileEnum.PUBLIC, 2);
 		AreaEntity lAreaGroupes = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.VIDE.toString(), "Ecole de natation", lAreaGroupes.getId(),
-				"contenu de Ecole de natation", "contenu de Ecole de natation", false, true);
+				"contenu de Ecole de natation", "contenu de Ecole de natation", false, true, 1);
 		createMenu(MenuItems.VIDE.toString(), "Loisirs", lAreaGroupes.getId(), "contenu de Loisirs",
-				"contenu de Loisirs", false, true);
+				"contenu de Loisirs", false, true, 2);
 		createMenu(MenuItems.VIDE.toString(), "Compétitions", lAreaGroupes.getId(),
-				"contenu de Compétitions", "contenu de Compétitions", false, true);
+				"contenu de Compétitions", "contenu de Compétitions", false, true, 3);
 		createMenu(MenuItems.VIDE.toString(), "Eau libre", lAreaGroupes.getId(), "contenu de Eau libre",
-				"contenu de Eau libre", false, true);
+				"contenu de Eau libre", false, true, 4);
 		createMenu(MenuItems.VIDE.toString(), "Aquagym", lAreaGroupes.getId(), "contenu de Aquagym",
-				"contenu de Aquagym", false, true);
+				"contenu de Aquagym", false, true, 5);
 		createMenu(MenuItems.VIDE.toString(), "Centre de formation", lAreaGroupes.getId(),
 				"contenu de Centre de formation",
-				"contenu de Centre de formation", false, true);
+				"contenu de Centre de formation", false, true, 6);
 
 		lAreaEntity = new AreaEntity(null, "Compétitions", ProfileEnum.PUBLIC, 3);
 		AreaEntity lAreaCompetition = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.VIDE.toString(), "Calendrier", lAreaCompetition.getId(),
-				"contenu de Calendrier", "contenu de Calendrier", false, true);
+				"contenu de Calendrier", "contenu de Calendrier", false, true, 1);
 		createMenu(MenuItems.VIDE.toString(), "Résultats", lAreaCompetition.getId(),
-				"contenu de Résultats", "contenu de Résultats", false, true);
+				"contenu de Résultats", "contenu de Résultats", false, true, 2);
 		createMenu(MenuItems.VIDE.toString(), "Records du club", lAreaCompetition.getId(),
-				"contenu de Records du club", "contenu de Records du club", false, true);
+				"contenu de Records du club", "contenu de Records du club", false, true, 3);
 		createMenu(MenuItems.VIDE.toString(), "Ranking", lAreaCompetition.getId(), "contenu de Ranking",
-				"contenu de Ranking", false, true);
+				"contenu de Ranking", false, true, 4);
 
 		lAreaEntity = new AreaEntity(null, "Boutique", ProfileEnum.PUBLIC, 4);
 		AreaEntity lAreaBoutique = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.VIDE.toString(), "Informations", lAreaBoutique.getId(),
 				"contenu de Informations sur la boutique",
-				"Partenariat avec la boutique arena de blagnac 10% de remise en caisse sur tout le magasin<br />et sur présentation d’un justificatif d’appartenance à l’ASPTT toulouse.", false, true);
+				"Partenariat avec la boutique arena de blagnac 10% de remise en caisse sur tout le magasin<br />et sur présentation d’un justificatif d’appartenance à l’ASPTT toulouse.", false, true, 1);
 		
 		lAreaEntity = new AreaEntity(null, "Inscription", ProfileEnum.PUBLIC, 5);
 		AreaEntity lAreaInscription = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.VIDE.toString(), "Informations", lAreaInscription.getId(), "contenu de Informations sur l'inscription", "Pour vous inscrire, veuillez télécharger le dossier ci-joint. Ce dossier doit être complété et renvoyé à l'association.", false, true);
-		createMenu(MenuItems.VIDE.toString(), "MotDePasse", lAreaInscription.getId(), "contenu de MotDePasse sur l'inscription", "L'espace privé n'est accessible qu'aux licenciés du club. Vous recevez votre mot de passe par e-mail une fois que votre inscription est validé par nos soins.<br />Si toute fois, vous avez oublié votre mot de passe, nous vous invitons à entrer votre adresse e-mail dans le champ suivant afin d'en recevoir un nouveau.", false, false);
+		createMenu(MenuItems.VIDE.toString(), "Informations", lAreaInscription.getId(), "contenu de Informations sur l'inscription", "Pour vous inscrire, veuillez télécharger le dossier ci-joint. Ce dossier doit être complété et renvoyé à l'association.", false, true, 1);
+		createMenu(MenuItems.VIDE.toString(), "MotDePasse", lAreaInscription.getId(), "contenu de MotDePasse sur l'inscription", "L'espace privé n'est accessible qu'aux licenciés du club. Vous recevez votre mot de passe par e-mail une fois que votre inscription est validé par nos soins.<br />Si toute fois, vous avez oublié votre mot de passe, nous vous invitons à entrer votre adresse e-mail dans le champ suivant afin d'en recevoir un nouveau.", false, false, 2);
 		
 		
 		//Admin
 		lAreaEntity = new AreaEntity(null, "Actualités", ProfileEnum.ADMIN, true, 0);
 		AreaEntity lAreaAdmActu = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.NEWS_PUBLICATION.toString(), "Publier", lAreaAdmActu.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true);
-		createMenu(MenuItems.NEWS_EDITION.toString(), "Editer", lAreaAdmActu.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true);
+		createMenu(MenuItems.NEWS_PUBLICATION.toString(), "Publier", lAreaAdmActu.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true, 1);
+		createMenu(MenuItems.NEWS_EDITION.toString(), "Editer", lAreaAdmActu.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true, 2);
 		
 		lAreaEntity = new AreaEntity(null, "Utilisateur", ProfileEnum.ADMIN, true, 0);
 		AreaEntity lAreaAdmUser = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.USER_CREATION.toString(), "Création", lAreaAdmUser.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true);
-		createMenu(MenuItems.USER_EDITION.toString(), "Edition", lAreaAdmUser.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true);
+		createMenu(MenuItems.USER_CREATION.toString(), "Création", lAreaAdmUser.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true, 1);
+		createMenu(MenuItems.USER_EDITION.toString(), "Edition", lAreaAdmUser.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true, 2);
 		
 		//Organisation du club
 		lAreaEntity = new AreaEntity(null, "Organisation du club", ProfileEnum.ADMIN, false, 0);
 		AreaEntity lAreaClub = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.CLUB_GROUP_EDITION.toString(), "Groupes", lAreaClub.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, false);
-		createMenu(MenuItems.CLUB_SLOT_EDITION.toString(), "Créneaux", lAreaClub.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, false);
+		createMenu(MenuItems.CLUB_GROUP_EDITION.toString(), "Groupes", lAreaClub.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, false, 1);
+		createMenu(MenuItems.CLUB_SLOT_EDITION.toString(), "Créneaux", lAreaClub.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, false, 2);
 		
 		//Officiels
 		lAreaEntity = new AreaEntity(null, "Officier", ProfileEnum.OFFICIEL, true, 0);
 		AreaEntity lAreaOfficier = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.OFFICIEL_VIEW.toString(), "Consulter le calendier", lAreaOfficier.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true);
-		createMenu(MenuItems.OFFICIEL_SUBSCRIBE.toString(), "S'inscrire", lAreaOfficier.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true);
+		createMenu(MenuItems.OFFICIEL_VIEW.toString(), "Consulter le calendier", lAreaOfficier.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true, 1);
+		createMenu(MenuItems.OFFICIEL_SUBSCRIBE.toString(), "S'inscrire", lAreaOfficier.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true, 2);
 		
 		//Compétition
 		lAreaEntity = new AreaEntity(null, "Compétitions saison", ProfileEnum.ADMIN, true, 0);
 		AreaEntity lAreaCompetitionSaison = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.COMPETITION_EDITION.toString(), "Edition", lAreaCompetitionSaison.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true);
+		createMenu(MenuItems.COMPETITION_EDITION.toString(), "Edition", lAreaCompetitionSaison.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true, 1);
 		
 		
 		
@@ -237,8 +238,8 @@ LOG.info("retrieving actu #" + lAreaEntities.size());
 	}
 
 	private void createMenu(String pMenuKey, String pTitle, Long pArea, String pSummary,
-			String pContent, boolean pShortcut, boolean pDisplay) {
-		MenuEntity lMenuHisto = new MenuEntity(pMenuKey, pTitle, pArea, pShortcut, pDisplay);
+			String pContent, boolean pShortcut, boolean pDisplay, int pOrder) {
+		MenuEntity lMenuHisto = new MenuEntity(pMenuKey, pTitle, pArea, pShortcut, pDisplay, pOrder);
 		MenuEntity lMenuHisto2 = menuDao.save(lMenuHisto);
 		ContentEntity lHistoContentEntity = new ContentEntity(pSummary,
 				new Blob((HTMLUtils.escapeHTML(pContent)).getBytes()),

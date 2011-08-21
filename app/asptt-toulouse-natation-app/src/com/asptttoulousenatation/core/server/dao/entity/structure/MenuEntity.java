@@ -36,22 +36,22 @@ public class MenuEntity implements Entity {
 	@Persistent
 	private boolean display;
 	
+	@Persistent
+	private int order;
+	
 	public MenuEntity() {
 	}
 	
 	
-	public MenuEntity(String pMenuKey, String pTitle, Long pArea, boolean pShortcut, boolean pDisplay) {
+	public MenuEntity(String pMenuKey, String pTitle, Long pArea, boolean pShortcut, boolean pDisplay, int pOrder) {
 		menuKey = pMenuKey;
 		title = pTitle;
 		area = pArea;
 		shortcut = pShortcut;
 		display = pDisplay;
+		order = pOrder;
 	}
 	
-	public MenuEntity(String pMenuKey, String pTitle, Long pArea) {
-		this(pMenuKey, pTitle, pArea, false, true);
-	}
-
 	public Key getId() {
 		return id;
 	}
@@ -103,4 +103,15 @@ public class MenuEntity implements Entity {
 	public void setDisplay(boolean pDisplay) {
 		display = pDisplay;
 	}
+
+
+	public int getOrder() {
+		return order;
+	}
+
+
+	public void setOrder(int pOrder) {
+		order = pOrder;
+	}
+	
 }
