@@ -20,6 +20,7 @@ body {
 	-moz-border-radius: 20px;
 	border-radius: 20px;
 	width: 100%;
+	border: 5px solid #000000;
 }
 .root {
 	background-color: #EBF1F5;

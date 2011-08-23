@@ -5,21 +5,18 @@ import java.util.List;
 import com.asptttoulousenatation.client.userspace.admin.structure.menu.ui.MenuCell;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentUI;
-import com.google.gwt.dom.client.Style.BorderStyle;
+import com.axeiya.gwtckeditor.client.CKConfig;
+import com.axeiya.gwtckeditor.client.CKEditor;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.LayoutPanel;
 import com.google.gwt.user.client.ui.ResizeComposite;
-import com.google.gwt.user.client.ui.RichTextArea;
-import com.google.gwt.user.client.ui.RichTextToolbar;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -36,7 +33,7 @@ public class AreaViewImpl extends ResizeComposite implements AreaView {
 
 	private TextBox menuTitleInput;
 	private TextBox summaryInput;
-	private RichTextArea contentInput;
+	private CKEditor contentInput;
 	private Button updateButton;
 
 	public AreaViewImpl(List<MenuUi> pData) {
@@ -88,20 +85,21 @@ public class AreaViewImpl extends ResizeComposite implements AreaView {
 		lPanel.setWidget(1, 1, summaryInput);
 
 		// Content
-		contentInput = new RichTextArea();
-		contentInput.setSize("100%", "14em");
-		RichTextToolbar lRichTextToolbar = new RichTextToolbar(contentInput);
-	    lRichTextToolbar.setWidth("100%");
-		Grid lRichText = new Grid(2, 1);
-		lRichText.getElement().getStyle().setBorderStyle(BorderStyle.SOLID);
-		lRichText.getElement().getStyle().setBorderColor("#CCCCCC");
-		lRichText.getElement().getStyle().setBorderWidth(1, Unit.PX);
-		lRichText.setWidget(0, 0, lRichTextToolbar);
-		lRichText.setWidget(1, 0, contentInput);
+		contentInput = new CKEditor(CKConfig.full);
+		contentInput.setHTML(new String(lContentUI.getData()));
+		contentInput.setSize("100%", "20em");
+//		RichTextToolbar lRichTextToolbar = new RichTextToolbar(contentInput);
+//	    lRichTextToolbar.setWidth("100%");
+//		Grid lRichText = new Grid(2, 1);
+//		lRichText.getElement().getStyle().setBorderStyle(BorderStyle.SOLID);
+//		lRichText.getElement().getStyle().setBorderColor("#CCCCCC");
+//		lRichText.getElement().getStyle().setBorderWidth(1, Unit.PX);
+//		lRichText.setWidget(0, 0, lRichTextToolbar);
+//		lRichText.setWidget(1, 0, contentInput);
 		lPanel.setHTML(2, 0, "Contenu");
-		lPanel.setWidget(2, 1, lRichText);
+		lPanel.setWidget(2, 1, contentInput);
 
-		contentInput.setHTML(SafeHtmlUtils.fromString(new String(lContentUI.getData())));
+		contentInput.setHTML(new String(lContentUI.getData()));
 		
 		lPanel.setWidget(3, 0, updateButton);
 		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();

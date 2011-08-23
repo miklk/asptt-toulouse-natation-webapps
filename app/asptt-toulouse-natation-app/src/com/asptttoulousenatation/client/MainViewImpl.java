@@ -26,6 +26,7 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ButtonBase;
@@ -620,7 +621,8 @@ public class MainViewImpl extends ResizeComposite implements MainView {
 	}
 	public void loadContent(final byte[] pData) {
 		if(pData != null) {
-				contentPanel.setWidget(new HTML(new String(pData)));
+				String lData = new String(pData);
+				contentPanel.setWidget(new HTML(lData));
 				popupManager.hide();
 		}
 	}

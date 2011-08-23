@@ -1,0 +1,8 @@
+.DS_Store
+app/asptt-toulouse-natation-app/test-classes
+app/asptt-toulouse-natation-app/war/asptttoulousenatationcore
+app/asptt-toulouse-natation-app/war/asptt_toulouse_natation_app
+app/asptt-toulouse-natation-app/war/ckeditor
+app/asptt-toulouse-natation-app/war/WEB-INF/classes
+app/asptt-toulouse-natation-app/war/WEB-INF/appengine-generated
+app/asptt-toulouse-natation-app/war/WEB-INF/deploy

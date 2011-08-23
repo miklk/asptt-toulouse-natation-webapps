@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="lib/gin-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/gwt-incubator-timepicker-1.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/gwt-timepicker-0.2.jar"/>
+	<classpathentry kind="lib" path="lib/gwt-ckeditor-0.5.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
