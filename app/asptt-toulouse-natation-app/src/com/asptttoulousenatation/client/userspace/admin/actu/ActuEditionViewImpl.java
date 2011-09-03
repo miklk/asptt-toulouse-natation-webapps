@@ -10,24 +10,24 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.ResizeComposite;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RichTextArea;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-public class ActuEditionViewImpl extends ResizeComposite implements ActuEditionView {
+public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 
-	private LayoutPanel panel;
+	private HorizontalPanel panel;
 	private List<ActuUi> data;
 	private CellList<ActuUi> cellList;
 	private SingleSelectionModel<ActuUi> selectionModel;
-	private SimpleLayoutPanel actuEditionPanel;
+	private SimplePanel actuEditionPanel;
 	
 	private TextBox title;
 	private TextBox summary;
@@ -37,7 +37,7 @@ public class ActuEditionViewImpl extends ResizeComposite implements ActuEditionV
 	
 	public ActuEditionViewImpl(List<ActuUi> pData) {
 		data = pData;
-		panel = new LayoutPanel();
+		panel = new HorizontalPanel();
 		initWidget(panel);
 		cellList = new CellList<ActuUi>(new ActuCell());
 		cellList.setRowData(data);
@@ -52,14 +52,14 @@ public class ActuEditionViewImpl extends ResizeComposite implements ActuEditionV
 			}
 		});
 		
-		actuEditionPanel = new SimpleLayoutPanel();
+		actuEditionPanel = new SimplePanel();
 		panel.add(actuEditionPanel);
 		
 		updateButton = new Button("Modifier");
 		
 		//Layout
-		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 30, Unit.PCT);
-		panel.setWidgetLeftWidth(actuEditionPanel, 32, Unit.PCT, 100, Unit.PCT);
+//		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 30, Unit.PCT);
+//		panel.setWidgetLeftWidth(actuEditionPanel, 32, Unit.PCT, 100, Unit.PCT);
 	}
 	
 	public Widget asWidget() {
@@ -71,7 +71,7 @@ public class ActuEditionViewImpl extends ResizeComposite implements ActuEditionV
 	}
 	
 	private void buildActuEditionPanel(ActuUi pActuUi) {
-		LayoutPanel lPanel = new LayoutPanel();
+		HorizontalPanel lPanel = new HorizontalPanel();
 		
 		//Input
 		//Title
@@ -99,12 +99,12 @@ public class ActuEditionViewImpl extends ResizeComposite implements ActuEditionV
 		lPanel.add(lDateInputPanel);
 		lPanel.add(lContentInputPanel);
 		lPanel.add(updateButton);
-		lPanel.setWidgetTopHeight(lTitleInputPanel, 1, Unit.PCT, 10, Unit.PCT);
-		lPanel.setWidgetTopHeight(lSummaryInputPanel, 12, Unit.PCT, 10, Unit.PCT);
-		lPanel.setWidgetTopHeight(lDateInputPanel, 32, Unit.PCT, 10, Unit.PCT);
-		lPanel.setWidgetTopHeight(lContentInputPanel, 52, Unit.PCT, 10, Unit.PCT);
-		lPanel.setWidgetLeftWidth(updateButton, 30, Unit.PCT, 20, Unit.PCT);
-		lPanel.setWidgetTopHeight(updateButton, 74, Unit.PCT, 10, Unit.PCT);
+//		lPanel.setWidgetTopHeight(lTitleInputPanel, 1, Unit.PCT, 10, Unit.PCT);
+//		lPanel.setWidgetTopHeight(lSummaryInputPanel, 12, Unit.PCT, 10, Unit.PCT);
+//		lPanel.setWidgetTopHeight(lDateInputPanel, 32, Unit.PCT, 10, Unit.PCT);
+//		lPanel.setWidgetTopHeight(lContentInputPanel, 52, Unit.PCT, 10, Unit.PCT);
+//		lPanel.setWidgetLeftWidth(updateButton, 30, Unit.PCT, 20, Unit.PCT);
+//		lPanel.setWidgetTopHeight(updateButton, 74, Unit.PCT, 10, Unit.PCT);
 		actuEditionPanel.setWidget(lPanel);
 	}
 

@@ -1,5 +1,7 @@
 package com.asptttoulousenatation.client.userspace.admin.club.group;
 
+import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
+
 import java.util.List;
 
 import com.asptttoulousenatation.core.client.ui.InputPanel;
@@ -8,23 +10,23 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.ResizeComposite;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
-import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 
-public class GroupViewImpl extends ResizeComposite implements GroupView {
+public class GroupViewImpl extends Composite implements GroupView {
 
 	private List<GroupUi> data;
-	private LayoutPanel panel;
+	private HorizontalPanel panel;
 	
 	private CellList<GroupUi> cellList;
 	private SingleSelectionModel<GroupUi> selectionModel;
-	private SimpleLayoutPanel editionPanel;
+	private SimplePanel editionPanel;
 	
 	private Button createButton;
 	private Button updateButton;
@@ -33,7 +35,7 @@ public class GroupViewImpl extends ResizeComposite implements GroupView {
 	
 	public GroupViewImpl(List<GroupUi> pGroups) {
 		data = pGroups;
-		panel = new LayoutPanel();
+		panel = new HorizontalPanel();
 		initWidget(panel);
 		
 		cellList = new CellList<GroupUi>(new GroupCell());
@@ -48,7 +50,7 @@ public class GroupViewImpl extends ResizeComposite implements GroupView {
 				
 			}
 		});
-		editionPanel = new SimpleLayoutPanel();
+		editionPanel = new SimplePanel();
 		panel.add(editionPanel);
 		
 		createButton = new Button("Créer");
@@ -61,8 +63,8 @@ public class GroupViewImpl extends ResizeComposite implements GroupView {
 		editionPanel.setStyleName(CSS.groupEdition());
 		
 		//Layout
-		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 30, Unit.PCT);
-		panel.setWidgetLeftWidth(editionPanel, 32, Unit.PCT, 100, Unit.PCT);
+//		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 30, Unit.PCT);
+//		panel.setWidgetLeftWidth(editionPanel, 32, Unit.PCT, 100, Unit.PCT);
 	}
 	
 	private void buildEditionPanel(GroupUi pGroupUi) {
@@ -71,7 +73,7 @@ public class GroupViewImpl extends ResizeComposite implements GroupView {
 	}
 	
 	private void buildCreationPanel() {
-		LayoutPanel lPanel = new LayoutPanel();
+		HorizontalPanel lPanel = new HorizontalPanel();
 		
 		//Input
 		//Title
@@ -81,11 +83,11 @@ public class GroupViewImpl extends ResizeComposite implements GroupView {
 		lPanel.add(lGroupTitleInputPanel);
 		lPanel.add(updateButton);
 		lPanel.add(createButton);
-		lPanel.setWidgetTopHeight(lGroupTitleInputPanel, 1, Unit.PCT, 10, Unit.PCT);
-		lPanel.setWidgetLeftWidth(updateButton, 30, Unit.PCT, 20, Unit.PCT);
-		lPanel.setWidgetTopHeight(updateButton, 84, Unit.PCT, 10, Unit.PCT);
-		lPanel.setWidgetLeftWidth(createButton, 50, Unit.PCT, 20, Unit.PCT);
-		lPanel.setWidgetTopHeight(createButton, 84, Unit.PCT, 10, Unit.PCT);
+//		lPanel.setWidgetTopHeight(lGroupTitleInputPanel, 1, Unit.PCT, 10, Unit.PCT);
+//		lPanel.setWidgetLeftWidth(updateButton, 30, Unit.PCT, 20, Unit.PCT);
+//		lPanel.setWidgetTopHeight(updateButton, 84, Unit.PCT, 10, Unit.PCT);
+//		lPanel.setWidgetLeftWidth(createButton, 50, Unit.PCT, 20, Unit.PCT);
+//		lPanel.setWidgetTopHeight(createButton, 84, Unit.PCT, 10, Unit.PCT);
 		editionPanel.clear();
 		editionPanel.setWidget(lPanel);
 	}

@@ -145,4 +145,10 @@ public interface ASPTT_ProtoCss extends CssResource {
   
   @ClassName("group-edition")
   String groupEdition();
+  
+  @ClassName("main-content")
+  String mainContent();
+  
+  @ClassName("header-logo")
+  String headerLogo();
 }

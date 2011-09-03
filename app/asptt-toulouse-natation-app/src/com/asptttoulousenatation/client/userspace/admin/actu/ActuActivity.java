@@ -14,7 +14,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 public class ActuActivity extends MyAbstractActivity<ActuPlace> {
 
@@ -28,7 +28,7 @@ public class ActuActivity extends MyAbstractActivity<ActuPlace> {
 
 	public void start(AcceptsOneWidget pPanel, EventBus pEventBus) {
 		if (editionMode) {
-			final SimpleLayoutPanel lPanel = new SimpleLayoutPanel();
+			final SimplePanel lPanel = new SimplePanel();
 			dispatchAsync.execute(new GetAllActuAction(),
 					new AsyncCallback<GetAllActuResult>() {
 

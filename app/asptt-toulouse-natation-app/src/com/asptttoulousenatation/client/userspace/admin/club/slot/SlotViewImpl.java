@@ -9,35 +9,34 @@ import java.util.Map;
 import com.asptttoulousenatation.client.util.Utils;
 import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.ResizeComposite;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.summatech.gwt.client.HourMinutePicker;
 import com.summatech.gwt.client.HourMinutePicker.PickerFormat;
 
-public class SlotViewImpl extends ResizeComposite implements SlotView {
+public class SlotViewImpl extends Composite implements SlotView {
 
 	private static Map<String, Integer> dayOfWeekMap;
 	
 	private List<SlotUi> data;
 	private List<GroupUi> groupData;
-	private LayoutPanel panel;
+	private HorizontalPanel panel;
 	
 	private CellList<SlotUi> cellList;
 	private SingleSelectionModel<SlotUi> selectionModel;
-	private SimpleLayoutPanel editionPanel;
+	private SimplePanel editionPanel;
 	
 	private Button createButton;
 	private Button updateButton;
@@ -63,7 +62,7 @@ public class SlotViewImpl extends ResizeComposite implements SlotView {
 	public SlotViewImpl(List<SlotUi> pSlots, List<GroupUi> pGroups) {
 		data = pSlots;
 		groupData = pGroups;
-		panel = new LayoutPanel();
+		panel = new HorizontalPanel();
 		initWidget(panel);
 		
 		cellList = new CellList<SlotUi>(new SlotCell());
@@ -78,7 +77,7 @@ public class SlotViewImpl extends ResizeComposite implements SlotView {
 				
 			}
 		});
-		editionPanel = new SimpleLayoutPanel();
+		editionPanel = new SimplePanel();
 		panel.add(editionPanel);
 		
 		createButton = new Button("Créer");
@@ -91,8 +90,8 @@ public class SlotViewImpl extends ResizeComposite implements SlotView {
 		editionPanel.setStyleName(CSS.groupEdition());
 		
 		//Layout
-		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 30, Unit.PCT);
-		panel.setWidgetLeftWidth(editionPanel, 32, Unit.PCT, 100, Unit.PCT);
+//		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 30, Unit.PCT);
+//		panel.setWidgetLeftWidth(editionPanel, 32, Unit.PCT, 100, Unit.PCT);
 	}
 	
 	private void buildEditionPanel(SlotUi pUi) {

@@ -1,18 +1,18 @@
 package com.asptttoulousenatation.client;
 
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.ResizeComposite;
+import com.google.gwt.user.client.ui.SimplePanel;
 
-public class AlternateBanner extends ResizeComposite {
+public class AlternateBanner extends Composite {
 
-	private LayoutPanel panel;
+	private SimplePanel panel;
 	private int index;
 	private static final String[] IMAGES_URL = {"images/img01.jpg", "images/img02.jpg", "images/img03.jpeg"};
 	
 	public AlternateBanner() {
-		panel = new LayoutPanel();
+		panel = new SimplePanel();
 		initWidget(panel);
 		index = 0;
 		Timer timer = new Timer() {

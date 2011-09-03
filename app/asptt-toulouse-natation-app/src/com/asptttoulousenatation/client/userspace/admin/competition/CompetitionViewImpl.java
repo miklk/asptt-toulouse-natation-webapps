@@ -18,29 +18,29 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.ResizeComposite;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-public class CompetitionViewImpl extends ResizeComposite implements
+public class CompetitionViewImpl extends Composite implements
 		CompetitionView {
 
 	private List<CompetitionUi> data;
 	private List<CompetitionDayUi> dayData;
 
-	private LayoutPanel panel;
+	private HorizontalPanel panel;
 
 	private CellList<CompetitionUi> cellList;
 	private SingleSelectionModel<CompetitionUi> selectionModel;
-	private SimpleLayoutPanel editionPanel;
+	private SimplePanel editionPanel;
 
 	private Button createButton;
 	private Button updateButton;
@@ -54,7 +54,7 @@ public class CompetitionViewImpl extends ResizeComposite implements
 	//Days
 	private CellList<CompetitionDayUi> dayCellList;
 	private SingleSelectionModel<CompetitionDayUi> daySelectionModel;
-	private SimpleLayoutPanel dayEditionPanel;
+	private SimplePanel dayEditionPanel;
 
 	private Button dayCreateButton;
 	private Button dayUpdateButton;
@@ -70,7 +70,7 @@ public class CompetitionViewImpl extends ResizeComposite implements
 	public CompetitionViewImpl(List<CompetitionUi> pData) {
 		data = pData;
 		dayData = new ArrayList<CompetitionDayUi>(0);
-		panel = new LayoutPanel();
+		panel = new HorizontalPanel();
 		initWidget(panel);
 		
 		cellList = new CellList<CompetitionUi>(new CompetitionCell());
@@ -85,7 +85,7 @@ public class CompetitionViewImpl extends ResizeComposite implements
 				
 			}
 		});
-		editionPanel = new SimpleLayoutPanel();
+		editionPanel = new SimplePanel();
 		panel.add(editionPanel);
 		
 		createButton = new Button("Créer");
@@ -98,9 +98,9 @@ public class CompetitionViewImpl extends ResizeComposite implements
 		editionPanel.setStyleName(CSS.groupEdition());
 		
 		//Layout
-		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 30, Unit.PCT);
-		panel.setWidgetLeftWidth(editionPanel, 32, Unit.PCT, 100, Unit.PCT);
-		panel.setWidgetTopHeight(editionPanel, 0, Unit.PCT, 40, Unit.PCT);
+//		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 30, Unit.PCT);
+//		panel.setWidgetLeftWidth(editionPanel, 32, Unit.PCT, 100, Unit.PCT);
+//		panel.setWidgetTopHeight(editionPanel, 0, Unit.PCT, 40, Unit.PCT);
 		
 		createDays = new HashMap<Long, CompetitionDayUi>();
 		updateDays = new HashMap<Long, CompetitionDayUi>();
@@ -163,7 +163,7 @@ public class CompetitionViewImpl extends ResizeComposite implements
 	}
 	
 	private void createDayPanel() {
-		LayoutPanel lPanel = new LayoutPanel();
+		HorizontalPanel lPanel = new HorizontalPanel();
 		
 		dayCellList = new CellList<CompetitionDayUi>(new CompetitionDayCell());
 		dayCellList.setRowData(dayData);
@@ -177,7 +177,7 @@ public class CompetitionViewImpl extends ResizeComposite implements
 				
 			}
 		});
-		dayEditionPanel = new SimpleLayoutPanel();
+		dayEditionPanel = new SimplePanel();
 		lPanel.add(dayEditionPanel);
 		
 		dayCreateButton = new Button("Créer");
@@ -210,11 +210,11 @@ public class CompetitionViewImpl extends ResizeComposite implements
 		dayEditionPanel.setStyleName(CSS.groupEdition());
 		
 		//Layout
-		lPanel.setWidgetLeftWidth(dayCellList, 0, Unit.PCT, 30, Unit.PCT);
-		lPanel.setWidgetLeftWidth(dayEditionPanel, 32, Unit.PCT, 100, Unit.PCT);
+//		lPanel.setWidgetLeftWidth(dayCellList, 0, Unit.PCT, 30, Unit.PCT);
+//		lPanel.setWidgetLeftWidth(dayEditionPanel, 32, Unit.PCT, 100, Unit.PCT);
 		panel.add(lPanel);
-		panel.setWidgetLeftWidth(lPanel, 32, Unit.PCT, 100, Unit.PCT);
-		panel.setWidgetTopHeight(lPanel, 40, Unit.PCT, 100, Unit.PCT);
+//		panel.setWidgetLeftWidth(lPanel, 32, Unit.PCT, 100, Unit.PCT);
+//		panel.setWidgetTopHeight(lPanel, 40, Unit.PCT, 100, Unit.PCT);
 	}
 	
 	private void buildDayEditionPanel(CompetitionDayUi pUi) {

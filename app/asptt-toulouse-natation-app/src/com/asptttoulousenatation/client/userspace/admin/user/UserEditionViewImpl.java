@@ -18,29 +18,29 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.ResizeComposite;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-public class UserEditionViewImpl extends ResizeComposite implements
+public class UserEditionViewImpl extends Composite implements
 		UserEditionView {
 
 	private List<UserUi> data;
-	private LayoutPanel panel;
+	private HorizontalPanel panel;
 	
 	private CellList<UserUi> cellList;
 	private SingleSelectionModel<UserUi> selectionModel;
-	private SimpleLayoutPanel editionPanel;
+	private SimplePanel editionPanel;
 	
 	private Button updateButton;
 	
@@ -66,7 +66,7 @@ public class UserEditionViewImpl extends ResizeComposite implements
 		for(SlotUi lSlot: pSlotData) {
 			slotData.put(lSlot.getId(), lSlot);
 		}
-		panel = new LayoutPanel();
+		panel = new HorizontalPanel();
 		initWidget(panel);
 		
 		cellList = new CellList<UserUi>(new UserCell());
@@ -82,14 +82,14 @@ public class UserEditionViewImpl extends ResizeComposite implements
 			}
 		});
 		
-		editionPanel = new SimpleLayoutPanel();
+		editionPanel = new SimplePanel();
 		panel.add(editionPanel);
 
 		buildPanel();
 		
 		//Layout
-		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 30, Unit.PCT);
-		panel.setWidgetLeftWidth(editionPanel, 32, Unit.PCT, 100, Unit.PCT);
+//		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 30, Unit.PCT);
+//		panel.setWidgetLeftWidth(editionPanel, 32, Unit.PCT, 100, Unit.PCT);
 	}
 	
 	private void buildPanel() {

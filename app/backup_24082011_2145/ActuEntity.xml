@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities expected="0">
+<entity kind="ActuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpBY3R1RW50aXR5GLvDAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="content" value="&lt;span class=&quot;Apple-style-span&quot; style=&quot;font-family: Tahoma, Arial; font-size: 12px; background-color: rgb(255, 255, 255); &quot;&gt;&lt;span class=&quot;news_text&quot;&gt;&lt;div&gt;Ouvertes cliquez ici&lt;/div&gt;&lt;/span&gt;&lt;/span&gt;" type="java.lang.String"></property>
+<property name="summary" value="Nouvelles inscriptions 2011-2012 " type="java.lang.String"></property>
+<property name="creationDate" value="Wednesday, August 24, 2011 5:16:58 PM CEST" type="java.util.Date"></property>
+<property name="title" value="Nouvelles inscriptions 2011-2012 " type="java.lang.String"></property>
+</entity>
+</entities>

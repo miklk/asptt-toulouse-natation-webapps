@@ -26,9 +26,8 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class Asptt_toulouse_natation_app implements EntryPoint {
@@ -36,11 +35,12 @@ public class Asptt_toulouse_natation_app implements EntryPoint {
 	public static ASPTT_ProtoCss CSS = ASPTT_ProtoResources.RESOURCE.css();
 	
 	protected DispatchAsync dispatchAsync = new StandardDispatchAsync(new DefaultExceptionHandler());
+	public static  PopupManager popupManager = new PopupManager();
 
 	public void onModuleLoad() {
 		CSS.ensureInjected();
 		AutohitsCoreResource.RESOURCE.css().ensureInjected();
-		final AcceptsOneWidget lPanel = new SimpleLayoutPanel();
+		final SimplePanel lPanel = new SimplePanel();
 
 		final ClientFactory lClientFactory = new ClientFactoryImpl();
 		final EventBus lEventBus = lClientFactory.getEventBus();
@@ -72,7 +72,7 @@ public class Asptt_toulouse_natation_app implements EntryPoint {
 					lPlaceHistoryHandler.register(lPlaceController, lEventBus,
 							new MainPlace(pResult.getUser()));
 				}
-				RootLayoutPanel.get().add((Widget) lPanel);
+				RootPanel.get().add((Widget) lPanel);
 				lPlaceHistoryHandler.handleCurrentHistory();
 			}
 		});

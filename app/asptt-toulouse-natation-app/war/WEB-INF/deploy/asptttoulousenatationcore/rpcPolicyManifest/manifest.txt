@@ -1,2 +1,3 @@
 # Module asptttoulousenatationcore
 # RPC service class, partial path of RPC policy file
+net.customware.gwt.dispatch.client.standard.StandardDispatchService, 8E67B95F60E043580DDCD2FAC9100EC7.gwt.rpc

@@ -7,18 +7,19 @@ import java.util.Map;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.ResizeComposite;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.SimplePanel;
 
-public class HomeViewImpl extends ResizeComposite implements HomeView {
+public class HomeViewImpl extends Composite implements HomeView {
 
-	private LayoutPanel panel;
+	private SimplePanel panel;
 	
 	private Map<String, HasClickHandlers> shortcuts;
 	
 	public HomeViewImpl(List<MenuUi> pMenuList) {
-		panel = new LayoutPanel();
+		panel = new SimplePanel();
 		initWidget(panel);
 		
 		buildShortcut(pMenuList);
@@ -35,7 +36,7 @@ public class HomeViewImpl extends ResizeComposite implements HomeView {
 			lShortcutPanel.setWidget(lRowIndex, (i%lMaxColumns), lShortcut);
 			shortcuts.put(lMenu.getMenuKey(), lShortcut);
 		}
-		panel.add(lShortcutPanel);
+		panel.setWidget(lShortcutPanel);
 	}
 	
 	

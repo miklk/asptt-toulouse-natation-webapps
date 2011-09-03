@@ -24,7 +24,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class MainActivity extends MyAbstractActivity<MainPlace> {
 
@@ -42,7 +42,7 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 
 	public void start(AcceptsOneWidget pPanel, EventBus pEventBus) {
 		final EventBus lEventBus = pEventBus;
-		final SimpleLayoutPanel lPanel = new SimpleLayoutPanel();
+		final VerticalPanel lPanel = new VerticalPanel();
 		dispatchAsync.execute(new InitAction(),
 				new AsyncCallback<InitResult>() {
 
@@ -100,19 +100,27 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 						});
 						lEventBus.addHandler(LoadContentEvent.TYPE, new LoadContentEventHandler() {
 							
-							public void loadContent(LoadContentEvent pEvent) {
+							public void loadContent(final LoadContentEvent pEvent) {
 								dispatchAsync.execute(new LoadContentAction(pEvent.getMenuId()), new AsyncCallback<LoadContentResult>() {
 									public void onFailure(Throwable pCaught) {
 										Window.alert("Erreur " + pCaught.getMessage());
 									}
 
 									public void onSuccess(LoadContentResult pResult) {
-										lMainView.loadContent(pResult.getData());
+										switch(pEvent.getArea()) {
+										case TOOL:
+											lMainView.loadToolContent(pResult.getData());
+											break;
+										case INSCRIPTION:
+											lMainView.loadInscriptionContent(pResult.getData());
+											break;
+											default: lMainView.loadContent(pResult.getData());
+										}
 									}
 								});
 							}
 						});
-						lPanel.setWidget(lMainView);
+						lPanel.add(lMainView);
 					}
 				});
 		

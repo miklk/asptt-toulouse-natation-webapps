@@ -7,29 +7,28 @@ import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentUI;
 import com.axeiya.gwtckeditor.client.CKConfig;
 import com.axeiya.gwtckeditor.client.CKEditor;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.ResizeComposite;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-public class AreaViewImpl extends ResizeComposite implements AreaView {
+public class AreaViewImpl extends Composite implements AreaView {
 
 	private List<MenuUi> data;
-	private LayoutPanel panel;
+	private HorizontalPanel panel;
 
 	private CellList<MenuUi> cellList;
 	private SingleSelectionModel<MenuUi> selectionModel;
-	private SimpleLayoutPanel editionPanel;
+	private SimplePanel editionPanel;
 
 	private TextBox menuTitleInput;
 	private TextBox summaryInput;
@@ -38,7 +37,7 @@ public class AreaViewImpl extends ResizeComposite implements AreaView {
 
 	public AreaViewImpl(List<MenuUi> pData) {
 		data = pData;
-		panel = new LayoutPanel();
+		panel = new HorizontalPanel();
 		initWidget(panel);
 
 		cellList = new CellList<MenuUi>(new MenuCell());
@@ -55,14 +54,14 @@ public class AreaViewImpl extends ResizeComposite implements AreaView {
 					}
 				});
 
-		editionPanel = new SimpleLayoutPanel();
+		editionPanel = new SimplePanel();
 		panel.add(editionPanel);
 
 		updateButton = new Button("Modifier");
 
 		// Layout
-		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 20, Unit.PCT);
-		panel.setWidgetLeftWidth(editionPanel, 22, Unit.PCT, 100, Unit.PCT);
+//		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 20, Unit.PCT);
+//		panel.setWidgetLeftWidth(editionPanel, 22, Unit.PCT, 100, Unit.PCT);
 	}
 
 	private void buildEditionPanel(MenuUi pMenuUi) {

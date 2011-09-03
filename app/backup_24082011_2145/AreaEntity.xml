@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities expected="11">
+<entity kind="AreaEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpBcmVhRW50aXR5GOuMAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="title" value="Club" type="java.lang.String"></property>
+<property name="order" value="1" type="java.lang.Long"></property>
+<property name="profile" value="PUBLIC" type="java.lang.String"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+</entity>
+<entity kind="AreaEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpBcmVhRW50aXR5GOGUAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="title" value="Structure du site" type="java.lang.String"></property>
+<property name="order" value="2" type="java.lang.Long"></property>
+<property name="profile" value="ADMIN" type="java.lang.String"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+</entity>
+<entity kind="AreaEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpBcmVhRW50aXR5GKekAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="title" value="Officier" type="java.lang.String"></property>
+<property name="order" value="6" type="java.lang.Long"></property>
+<property name="profile" value="OFFICIEL" type="java.lang.String"></property>
+<property name="shortcut" value="true" type="java.lang.Boolean"></property>
+</entity>
+<entity kind="AreaEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpBcmVhRW50aXR5GNy7AQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="title" value="Groupes" type="java.lang.String"></property>
+<property name="order" value="2" type="java.lang.Long"></property>
+<property name="profile" value="PUBLIC" type="java.lang.String"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+</entity>
+<entity kind="AreaEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpBcmVhRW50aXR5GOK7AQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="title" value="Utilisateur" type="java.lang.String"></property>
+<property name="order" value="5" type="java.lang.Long"></property>
+<property name="profile" value="ADMIN" type="java.lang.String"></property>
+<property name="shortcut" value="true" type="java.lang.Boolean"></property>
+</entity>
+<entity kind="AreaEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpBcmVhRW50aXR5GLfDAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="title" value="Inscription" type="java.lang.String"></property>
+<property name="order" value="5" type="java.lang.Long"></property>
+<property name="profile" value="PUBLIC" type="java.lang.String"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+</entity>
+<entity kind="AreaEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpBcmVhRW50aXR5GPDaAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="title" value="Organisation du club" type="java.lang.String"></property>
+<property name="order" value="3" type="java.lang.Long"></property>
+<property name="profile" value="ADMIN" type="java.lang.String"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+</entity>
+<entity kind="AreaEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpBcmVhRW50aXR5GMviAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="title" value="Compétitions" type="java.lang.String"></property>
+<property name="order" value="3" type="java.lang.Long"></property>
+<property name="profile" value="PUBLIC" type="java.lang.String"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+</entity>
+<entity kind="AreaEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpBcmVhRW50aXR5GM3iAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="title" value="Boutique" type="java.lang.String"></property>
+<property name="order" value="4" type="java.lang.Long"></property>
+<property name="profile" value="PUBLIC" type="java.lang.String"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+</entity>
+<entity kind="AreaEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpBcmVhRW50aXR5GM7iAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="title" value="Actualités" type="java.lang.String"></property>
+<property name="order" value="1" type="java.lang.Long"></property>
+<property name="profile" value="ADMIN" type="java.lang.String"></property>
+<property name="shortcut" value="true" type="java.lang.Boolean"></property>
+</entity>
+<entity kind="AreaEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpBcmVhRW50aXR5GNDiAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="title" value="Compétitions saison" type="java.lang.String"></property>
+<property name="order" value="4" type="java.lang.Long"></property>
+<property name="profile" value="ADMIN" type="java.lang.String"></property>
+<property name="shortcut" value="true" type="java.lang.Boolean"></property>
+</entity>
+</entities>

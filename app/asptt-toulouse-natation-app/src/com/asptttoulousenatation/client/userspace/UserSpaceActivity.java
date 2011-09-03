@@ -32,7 +32,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 
@@ -52,7 +52,7 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 	public void start(AcceptsOneWidget pPanel, EventBus pEventBus) {
 		// TODO get user init user space
 		final EventBus lEventBus = pEventBus;
-		final SimpleLayoutPanel lPanel = new SimpleLayoutPanel();
+		final SimplePanel lPanel = new SimplePanel();
 		dispatchAsync.execute(
 				new InitUserSpaceAction(ProfileEnum.getProfiles(user
 						.getProfiles())),

@@ -12,5 +12,10 @@
 	<classpathentry kind="lib" path="lib/gwt-incubator-timepicker-1.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/gwt-timepicker-0.2.jar"/>
 	<classpathentry kind="lib" path="lib/gwt-ckeditor-0.5.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/auth.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-fileupload-1.2.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/baseViewerImpl.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/consoleImpl.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

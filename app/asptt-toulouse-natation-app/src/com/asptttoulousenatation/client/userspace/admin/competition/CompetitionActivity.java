@@ -14,7 +14,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 public class CompetitionActivity extends MyAbstractActivity<CompetitionPlace> {
 
@@ -24,7 +24,7 @@ public class CompetitionActivity extends MyAbstractActivity<CompetitionPlace> {
 	}
 
 	public void start(AcceptsOneWidget pPanel, EventBus pEventBus) {
-		final SimpleLayoutPanel lPanel = new SimpleLayoutPanel();
+		final SimplePanel lPanel = new SimplePanel();
 		dispatchAsync.execute(new GetAllCompetitionAction(), new AsyncCallback<GetAllCompetitionResult>() {
 
 			public void onFailure(Throwable pCaught) {

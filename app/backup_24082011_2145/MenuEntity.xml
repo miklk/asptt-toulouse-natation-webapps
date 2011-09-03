@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities expected="29">
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GOyMAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Lieux d&apos;entrainements" type="java.lang.String"></property>
+<property name="area" value="18027" type="java.lang.Long"></property>
+<property name="order" value="3" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GO2MAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Ecole de natation" type="java.lang.String"></property>
+<property name="area" value="24028" type="java.lang.Long"></property>
+<property name="order" value="1" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GO6MAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Compétitions" type="java.lang.String"></property>
+<property name="area" value="24028" type="java.lang.Long"></property>
+<property name="order" value="5" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GO-MAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Résultats" type="java.lang.String"></property>
+<property name="area" value="29003" type="java.lang.Long"></property>
+<property name="order" value="2" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GPCMAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Ranking" type="java.lang.String"></property>
+<property name="area" value="29003" type="java.lang.Long"></property>
+<property name="order" value="4" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GPGMAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="false" type="java.lang.Boolean"></property>
+<property name="title" value="MotDePasse" type="java.lang.String"></property>
+<property name="area" value="25015" type="java.lang.Long"></property>
+<property name="order" value="2" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GPKMAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Création" type="java.lang.String"></property>
+<property name="area" value="24034" type="java.lang.Long"></property>
+<property name="order" value="1" type="java.lang.Long"></property>
+<property name="shortcut" value="true" type="java.lang.Boolean"></property>
+<property name="menuKey" value="USER_CREATION" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GPOMAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="S&apos;inscrire" type="java.lang.String"></property>
+<property name="area" value="21031" type="java.lang.Long"></property>
+<property name="order" value="2" type="java.lang.Long"></property>
+<property name="shortcut" value="true" type="java.lang.Boolean"></property>
+<property name="menuKey" value="OFFICIEL_SUBSCRIBE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GKGkAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Officiels" type="java.lang.String"></property>
+<property name="area" value="18027" type="java.lang.Long"></property>
+<property name="order" value="4" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GKSkAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Informations" type="java.lang.String"></property>
+<property name="area" value="29005" type="java.lang.Long"></property>
+<property name="order" value="1" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GKWkAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Publier" type="java.lang.String"></property>
+<property name="area" value="29006" type="java.lang.Long"></property>
+<property name="order" value="1" type="java.lang.Long"></property>
+<property name="shortcut" value="true" type="java.lang.Boolean"></property>
+<property name="menuKey" value="NEWS_PUBLICATION" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GKikAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Edition" type="java.lang.String"></property>
+<property name="area" value="29008" type="java.lang.Long"></property>
+<property name="order" value="1" type="java.lang.Long"></property>
+<property name="shortcut" value="true" type="java.lang.Boolean"></property>
+<property name="menuKey" value="COMPETITION_EDITION" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GOO7AQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="false" type="java.lang.Boolean"></property>
+<property name="title" value="Créneaux" type="java.lang.String"></property>
+<property name="area" value="28016" type="java.lang.Long"></property>
+<property name="order" value="2" type="java.lang.Long"></property>
+<property name="shortcut" value="true" type="java.lang.Boolean"></property>
+<property name="menuKey" value="CLUB_SLOT_EDITION" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GLTDAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Vie du club" type="java.lang.String"></property>
+<property name="area" value="18027" type="java.lang.Long"></property>
+<property name="order" value="5" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GLjDAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Editer" type="java.lang.String"></property>
+<property name="area" value="29006" type="java.lang.Long"></property>
+<property name="order" value="2" type="java.lang.Long"></property>
+<property name="shortcut" value="true" type="java.lang.Boolean"></property>
+<property name="menuKey" value="NEWS_EDITION" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GLnDAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="false" type="java.lang.Boolean"></property>
+<property name="title" value="Groupes" type="java.lang.String"></property>
+<property name="area" value="28016" type="java.lang.Long"></property>
+<property name="order" value="1" type="java.lang.Long"></property>
+<property name="shortcut" value="true" type="java.lang.Boolean"></property>
+<property name="menuKey" value="CLUB_GROUP_EDITION" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GJrLAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Organisation du club" type="java.lang.String"></property>
+<property name="area" value="18027" type="java.lang.Long"></property>
+<property name="order" value="2" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GJzLAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Perfectionnement" type="java.lang.String"></property>
+<property name="area" value="24028" type="java.lang.Long"></property>
+<property name="order" value="4" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GJ3LAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Centre de formation" type="java.lang.String"></property>
+<property name="area" value="24028" type="java.lang.Long"></property>
+<property name="order" value="6" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GJ7LAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Calendrier" type="java.lang.String"></property>
+<property name="area" value="29003" type="java.lang.Long"></property>
+<property name="order" value="1" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GJ_LAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Informations" type="java.lang.String"></property>
+<property name="area" value="25015" type="java.lang.Long"></property>
+<property name="order" value="1" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GKLLAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Consulter le calendier" type="java.lang.String"></property>
+<property name="area" value="21031" type="java.lang.Long"></property>
+<property name="order" value="1" type="java.lang.Long"></property>
+<property name="shortcut" value="true" type="java.lang.Boolean"></property>
+<property name="menuKey" value="OFFICIEL_VIEW" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GOraAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Historique du club" type="java.lang.String"></property>
+<property name="area" value="18027" type="java.lang.Long"></property>
+<property name="order" value="1" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GOzaAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Aquagym" type="java.lang.String"></property>
+<property name="area" value="24028" type="java.lang.Long"></property>
+<property name="order" value="3" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GO3aAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Eau libre" type="java.lang.String"></property>
+<property name="area" value="24028" type="java.lang.Long"></property>
+<property name="order" value="7" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GMniAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Loisirs adultes" type="java.lang.String"></property>
+<property name="area" value="24028" type="java.lang.Long"></property>
+<property name="order" value="2" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GMriAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Masters" type="java.lang.String"></property>
+<property name="area" value="24028" type="java.lang.Long"></property>
+<property name="order" value="6" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GMziAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Records du club" type="java.lang.String"></property>
+<property name="area" value="29003" type="java.lang.Long"></property>
+<property name="order" value="3" type="java.lang.Long"></property>
+<property name="shortcut" value="false" type="java.lang.Boolean"></property>
+<property name="menuKey" value="VIDE" type="java.lang.String"></property>
+</entity>
+<entity kind="MenuEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpNZW51RW50aXR5GM_iAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="display" value="true" type="java.lang.Boolean"></property>
+<property name="title" value="Edition" type="java.lang.String"></property>
+<property name="area" value="24034" type="java.lang.Long"></property>
+<property name="order" value="2" type="java.lang.Long"></property>
+<property name="shortcut" value="true" type="java.lang.Boolean"></property>
+<property name="menuKey" value="USER_EDITION" type="java.lang.String"></property>
+</entity>
+</entities>

@@ -2,18 +2,19 @@ package com.asptttoulousenatation.client;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.ResizeComposite;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.SimplePanel;
 
-public class AlternateBanner_Part extends ResizeComposite {
+public class AlternateBanner_Part extends Composite {
 
-	private LayoutPanel panel;
+	private Panel panel;
 	private int index;
 	private static final String[] IMAGES_URL = {"images/logo_omnisport.jpg", "images/logoarena.gif"};
 	
 	public AlternateBanner_Part() {
-		panel = new LayoutPanel();
+		panel = new SimplePanel();
 		initWidget(panel);
 		panel.getElement().getStyle().setMarginTop(10, Unit.PX);
 		index = 0;
@@ -32,7 +33,7 @@ public class AlternateBanner_Part extends ResizeComposite {
 //				image.setWidth("200px");
 //				image.setHeight(image.getWidth() * ratio + "px");
 				panel.clear();
-				panel.add(image);
+				panel.add	(image);
 				index = (index + 1) % IMAGES_URL.length;
 				
 			}

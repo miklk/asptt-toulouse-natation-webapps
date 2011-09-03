@@ -22,4 +22,6 @@ public interface MainView extends IsWidget {
 	public void passwordNotSended();
 	public HasValue<String> getEmailAddressForget();
 	public void loadContent(final byte[] pData);
+	public void loadToolContent(final byte[] pData);
+	public void loadInscriptionContent(final byte[] pData);
 }

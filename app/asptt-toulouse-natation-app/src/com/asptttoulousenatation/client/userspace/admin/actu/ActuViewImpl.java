@@ -2,28 +2,26 @@ package com.asptttoulousenatation.client.userspace.admin.actu;
 
 import java.util.Date;
 
-import com.asptttoulousenatation.core.client.ui.InputPanel;
 import com.google.gwt.dom.client.Style.BorderStyle;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.layout.client.Layout.Alignment;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.RichTextToolbar;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-public class ActuViewImpl extends ResizeComposite implements ActuView {
+public class ActuViewImpl extends Composite implements ActuView {
 
-	private LayoutPanel panel;
+	private HorizontalPanel panel;
 	private TextBox title;
 	private TextBox summary;
 	private DateBox date;
@@ -32,7 +30,7 @@ public class ActuViewImpl extends ResizeComposite implements ActuView {
 	private Label errorMessage;
 	
 	public ActuViewImpl() {
-		panel = new LayoutPanel();
+		panel = new HorizontalPanel();
 		initWidget(panel);
 		
 		//Input
@@ -84,7 +82,7 @@ public class ActuViewImpl extends ResizeComposite implements ActuView {
 		errorMessage = new Label();
 		panel.add(errorMessage);
 		panel.add(lPanel);
-		panel.setWidgetTopHeight(lPanel, 1, Unit.PCT, 100, Unit.PCT);
+//		panel.setWidgetTopHeight(lPanel, 1, Unit.PCT, 100, Unit.PCT);
 //		panel.add(lTitleInputPanel);
 //		panel.add(lSummaryInputPanel);
 //		panel.add(lDateInputPanel);
@@ -96,7 +94,7 @@ public class ActuViewImpl extends ResizeComposite implements ActuView {
 //		panel.setWidgetTopHeight(lContentInputPanel, 52, Unit.PCT, 10, Unit.PCT);
 //		panel.setWidgetLeftWidth(publishButton, 30, Unit.PCT, 20, Unit.PCT);
 //		panel.setWidgetTopHeight(publishButton, 74, Unit.PCT, 10, Unit.PCT);
-		panel.setWidgetVerticalPosition(errorMessage, Alignment.END);
+//		panel.setWidgetVerticalPosition(errorMessage, Alignment.END);
 	}
 	
 	public HasClickHandlers getCloseButton() {

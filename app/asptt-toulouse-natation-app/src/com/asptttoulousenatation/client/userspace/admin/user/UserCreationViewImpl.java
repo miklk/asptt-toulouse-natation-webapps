@@ -12,21 +12,21 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
-import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.ResizeComposite;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.view.client.MultiSelectionModel;
 
-public class UserCreationViewImpl extends ResizeComposite implements
+public class UserCreationViewImpl extends Composite implements
 		UserCreationView {
 
-	private LayoutPanel panel;
+	private HorizontalPanel panel;
 
 	private Button creationButton;
 
@@ -47,7 +47,7 @@ public class UserCreationViewImpl extends ResizeComposite implements
 
 	public UserCreationViewImpl(List<SlotUi> pSlotData) {
 		slotData = pSlotData;
-		panel = new LayoutPanel();
+		panel = new HorizontalPanel();
 		initWidget(panel);
 
 		FlexTable lPanel = new FlexTable();

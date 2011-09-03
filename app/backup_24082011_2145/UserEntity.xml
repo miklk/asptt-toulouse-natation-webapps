@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities expected="3">
+<entity kind="UserEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpVc2VyRW50aXR5GKmkAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="profiles" type="java.util.ArrayList">
+<listElement value="ADMIN" type="java.lang.String"></listElement>
+</property>
+<property name="validated" value="true" type="java.lang.Boolean"></property>
+<property name="userData" value="29009" type="java.lang.Long"></property>
+<property name="emailaddress" value="admin@admin.com" type="java.lang.String"></property>
+<property name="password" value="�b��0m�u����&apos;�&apos;�" type="java.lang.String"></property>
+<property name="slots" value="null" type="null"></property>
+</entity>
+<entity kind="UserEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpVc2VyRW50aXR5GOW7AQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="profiles" type="java.util.ArrayList">
+<listElement value="OFFICIEL" type="java.lang.String"></listElement>
+</property>
+<property name="validated" value="true" type="java.lang.Boolean"></property>
+<property name="userData" value="26019" type="java.lang.Long"></property>
+<property name="emailaddress" value="officiel@officiel.com" type="java.lang.String"></property>
+<property name="password" value="�b��0m�u����&apos;�&apos;�" type="java.lang.String"></property>
+<property name="slots" value="null" type="null"></property>
+</entity>
+<entity kind="UserEntity">
+<property name="__key__" value="ahlzfmFzcHR0LXRvdWxvdXNlLW5hdGF0aW9uchILEgpVc2VyRW50aXR5GLrDAQw" type="com.google.appengine.api.datastore.Key"></property>
+<property name="profiles" type="java.util.ArrayList">
+<listElement value="ADMIN" type="java.lang.String"></listElement>
+<listElement value="NAGEUR" type="java.lang.String"></listElement>
+<listElement value="OFFICIEL" type="java.lang.String"></listElement>
+</property>
+<property name="validated" value="true" type="java.lang.Boolean"></property>
+<property name="userData" value="28018" type="java.lang.Long"></property>
+<property name="emailaddress" value="root@root.com" type="java.lang.String"></property>
+<property name="password" value="�b��0m�u����&apos;�&apos;�" type="java.lang.String"></property>
+<property name="slots" value="null" type="null"></property>
+</entity>
+</entities>
