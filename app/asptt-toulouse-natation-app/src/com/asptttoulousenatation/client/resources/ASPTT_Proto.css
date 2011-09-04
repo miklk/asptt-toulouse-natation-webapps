@@ -250,11 +250,12 @@ color: #FFFFFF;
 }
 
 .header-panel-header {
-	font-weight: bold;	
+	font-weight: bold;
 }
 
 .header-panel-content {
 	margin-left: 3%;
+	margin-top: 5px;
 }
 
 .user-header-goBackPublic-button {

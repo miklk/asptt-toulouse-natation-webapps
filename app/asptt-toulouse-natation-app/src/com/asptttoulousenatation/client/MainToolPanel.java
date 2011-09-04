@@ -67,31 +67,18 @@ public class MainToolPanel extends Composite {
 		});
 		SimplePanel lImagePanel = new SimplePanel();
 		lImagePanel.setWidget(lLogoArena);
-		panel.add(new HeaderPanel("Boutique", lLogoArena));
+		HeaderPanel lBoutiquePanel = new HeaderPanel("Boutique", lLogoArena);
+		lBoutiquePanel.addStyleName(CSS.bloc());
+		lBoutiquePanel.setHeaderStyle(CSS.blocTitle());
+		panel.add(lBoutiquePanel);
 
 		// Meteo
-		// DockLayoutPanel dockLayoutPanel_Meteo = new DockLayoutPanel(Unit.EM);
-		// lMeteoPanel.setStyleName(CSS.bloc());
-
 		HTML lMeteo = new HTML(
 				"<div id=\"cont_7b8dcd7d9f2587bff3518640f95fd205\"><h2 id=\"h_7b8dcd7d9f2587bff3518640f95fd205\"><a href=\"http://www.tameteo.com/\" title=\"M&eacute;t&eacute;o\">M&eacute;t&eacute;o</a></h2><a id=\"a_7b8dcd7d9f2587bff3518640f95fd205\" href=\"http://www.tameteo.com/meteo_Toulouse-Europe-France-Haute+Garonne-LFBO-1-26128.html\" target=\"_blank\" title=\"M&eacute;t&eacute;o Toulouse\" style=\"color:#656565;font-family:7;font-size:14px;\">M&eacute;t&eacute;o Toulouse</a><script type=\"text/javascript\" src=\"http://www.tameteo.com/wid_loader/7b8dcd7d9f2587bff3518640f95fd205\"></script></div>");
-		panel.add(new HeaderPanel("Météo", lMeteo));
-		// layoutPanel_1
-		// .setWidgetLeftWidth(lMeteo, 82.0, Unit.PCT, 180.0, Unit.PX);
-		// layoutPanel_1
-		// .setWidgetTopHeight(lMeteo, 19.0, Unit.PCT, 110.0, Unit.PX);
-		//
-		// DockLayoutPanel dockLayoutPanel_2 = new DockLayoutPanel(Unit.EM);
-		// dockLayoutPanel_2.setStyleName(CSS.bloc());
-		// layoutPanel_1.add(dockLayoutPanel_2);
-		// layoutPanel_1.setWidgetLeftWidth(dockLayoutPanel_2, 82.0, Unit.PCT,
-		// 17.0, Unit.PCT);
-		// layoutPanel_1.setWidgetTopHeight(dockLayoutPanel_2, 36.0, Unit.PCT,
-		// 30.0, Unit.PCT);
-
-		Label lblEvnements = new Label("Evènements");
-		// lblEvnements.setStyleName(CSS.blocTitle());
-		// dockLayoutPanel_2.addNorth(lblEvnements, 1.8);
+		HeaderPanel lMeteoPanel = new HeaderPanel("Météo", lMeteo);
+		lMeteoPanel.addStyleName(CSS.bloc());
+		lMeteoPanel.setHeaderStyle(CSS.blocTitle());
+		panel.add(lMeteoPanel);
 
 		DatePicker lDatePicker = new DatePicker();
 		DateTimeFormat lFormat = DateTimeFormat.getFormat("dd/MM/yyyy");
@@ -110,22 +97,16 @@ public class MainToolPanel extends Composite {
 		// }
 		// });
 		lDatePicker.setSize("100%", "100%");
-		panel.add(new HeaderPanel("Evènement", lDatePicker));
-		// dockLayoutPanel_2.add(lDatePicker);
+		HeaderPanel lEventPanel = new HeaderPanel("Evènement", lDatePicker);
+		lEventPanel.setHeaderStyle(CSS.blocTitle());
+		lEventPanel.addStyleName(CSS.bloc());
+		panel.add(lEventPanel);
 
-		// Partenaires:
-		// dockLayoutPanel_part.setStyleName(CSS.bloc());
-		// layoutPanel_1.add(dockLayoutPanel_part);
-		// layoutPanel_1.setWidgetLeftWidth(dockLayoutPanel_part, 82.0,
-		// Unit.PCT,
-		// 17.0, Unit.PCT);
-		// layoutPanel_1.setWidgetTopHeight(dockLayoutPanel_part, 68.0,
-		// Unit.PCT,
-		// 30.0, Unit.PCT);
-
-		// lTitlePart.setStyleName(CSS.blocTitle());
 		AlternateBanner_Part lAlternateBanner_Part = new AlternateBanner_Part();
-		panel.add(new HeaderPanel("Partenaires", lAlternateBanner_Part));
+		HeaderPanel lPartnerPanel = new HeaderPanel("Partenaires", lAlternateBanner_Part);
+		lPartnerPanel.setHeaderStyle(CSS.blocTitle());
+		lPartnerPanel.addStyleName(CSS.bloc());
+		panel.add(lPartnerPanel);
 	}
 
 	public void setPopupManager(PopupManager pPopupManager) {

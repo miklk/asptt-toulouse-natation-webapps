@@ -54,4 +54,11 @@ public class HeaderPanel extends Composite {
 		addStyleName(RESOURCE.css().even());
 	}
 	
+	public void setHeaderStyle(String pStyle) {
+		header.addStyleName(pStyle);
+	}
+	
+	public void setContentStyle(String pStyle) {
+		content.addStyleName(pStyle);
+	}
 }

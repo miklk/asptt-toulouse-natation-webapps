@@ -9,6 +9,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.TimeZone;
+import com.google.gwt.i18n.client.TimeZoneInfo;
+import com.google.gwt.i18n.client.constants.TimeZoneConstants;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -74,7 +77,7 @@ private UserUi user;
 		Label lblALaUne = new Label("A la une");
 		lblALaUne.setStyleName(CSS.blocTitle());
 		actuPanel.add(lblALaUne);
-		DateTimeFormat lDateTimeFormat = DateTimeFormat.getFullDateFormat();
+		DateTimeFormat lDateTimeFormat = DateTimeFormat.getFormat("dd MMMM yyyy - HH:mm:ss");
 		for (ActuUi lActuUi : initResult.getActu()) {
 			HeaderPanel lHeaderPanel = new HeaderPanel(
 					lDateTimeFormat.format(lActuUi.getCreationDate()) + " - "
