@@ -38,24 +38,25 @@ public class MainHeaderPanel extends Composite {
 	private HorizontalPanel panel;
 	private InitResult initResult;
 	private PopupManager popupManager;
-private UserUi user;
-	
+	private UserUi user;
+
 	private EventBus eventBus;
-	
+
 	private ButtonBase authenticationButton;
 	private Label disconnectButton;
 	private Label privateSpaceButton;
 	private Button passwordForgetButton;
-	
+
 	private TextBox emailAddressInput;
 	private PasswordTextBox passwordInput;
 	private TextBox emailAddressForgetInput;
-	
+
 	private PopupValidateAction popupAction;
-	
+
 	private HTML inscriptionData;
-	
-	public MainHeaderPanel(InitResult pInitResult, UserUi pUser, EventBus pEventBus, PopupManager pPopupManager) {
+
+	public MainHeaderPanel(InitResult pInitResult, UserUi pUser,
+			EventBus pEventBus, PopupManager pPopupManager) {
 		initResult = pInitResult;
 		popupManager = pPopupManager;
 		user = pUser;
@@ -63,23 +64,18 @@ private UserUi user;
 		panel = new HorizontalPanel();
 		initWidget(panel);
 		panel.setStyleName(CSS.header());
-		
+
 		Image image = new Image(IMAGES.logo());
 		image.setStyleName(CSS.headerLogo());
 		panel.add(image);
-		
+
 		AlternateBanner alternateBanner = new AlternateBanner();
 		panel.add(alternateBanner);
-//		headerPanel.setCellHeight(alternateBanner, "200px");
 		panel.setCellWidth(alternateBanner, "500px");
 		HorizontalPanel layoutPanel_2 = new HorizontalPanel();
 		layoutPanel_2.addStyleName(CSS.headerLogin());
 		panel.add(layoutPanel_2);
-//		headerPanel.setWidgetLeftWidth(layoutPanel_2, 70.0, Unit.PCT, 30.0,
-//				Unit.PCT);
-//		headerPanel.setWidgetTopHeight(layoutPanel_2, 10, Unit.PCT, 60.0,
-//				Unit.PCT);
-		
+
 		authenticationButton = new PushButton("Se connecter");
 		disconnectButton = new Label("Me déconnecter");
 		privateSpaceButton = new Label("Mon espace");
@@ -94,10 +90,6 @@ private UserUi user;
 		lInscriptionSub.addStyleName(CSS.headerLoginSubLine());
 		lInscriptionLabels.add(lInscriptionSub);
 		layoutPanel_2.add(lInscriptionLabels);
-//		layoutPanel_2.setWidgetLeftWidth(lInscriptionLabels, 5.0, Unit.PCT,
-//				50.0, Unit.PCT);
-//		layoutPanel_2.setWidgetTopHeight(lInscriptionLabels, 30.0, Unit.PCT,
-//				100.0, Unit.PCT);
 
 		nlnlblInscription.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
@@ -123,21 +115,21 @@ private UserUi user;
 			buildConnexionPanel(lConnexionLabels);
 		}
 		layoutPanel_2.add(lConnexionLabels);
-//		layoutPanel_2.setWidgetLeftWidth(lConnexionLabels, 60.0, Unit.PCT,
-//				50.0, Unit.PCT);
-//		layoutPanel_2.setWidgetTopHeight(lConnexionLabels, 30.0, Unit.PCT,
-//				100.0, Unit.PCT);
+		// layoutPanel_2.setWidgetLeftWidth(lConnexionLabels, 60.0, Unit.PCT,
+		// 50.0, Unit.PCT);
+		// layoutPanel_2.setWidgetTopHeight(lConnexionLabels, 30.0, Unit.PCT,
+		// 100.0, Unit.PCT);
 	}
-	
+
 	private void loadContent(final String pAreaTitle, final String pMenuTitle) {
 		AreaUi lAreaUi = initResult.getArea(pAreaTitle);
 		if (lAreaUi != null) {
 			MenuUi lMenu = lAreaUi.getMenu(pMenuTitle);
 			eventBus.fireEvent(new LoadContentEvent(lMenu.getId()));
 		}
-		
+
 	}
-	
+
 	private void buildConnexionPanel(FlowPanel pConnexionLabels) {
 		Label nlnlblConnexion = new Label("Connexion");
 		nlnlblConnexion.addStyleName(CSS.headerLoginConnexion());
@@ -234,7 +226,7 @@ private UserUi user;
 			}
 		});
 	}
-	
+
 	private void buildDisconnexionPanel(FlowPanel pConnexionLabels) {
 		privateSpaceButton.addStyleName(CSS.logoutLabelPanel());
 		disconnectButton.addStyleName(CSS.logoutLabelPanel());
@@ -242,7 +234,7 @@ private UserUi user;
 		pConnexionLabels.add(disconnectButton);
 		pConnexionLabels.addStyleName(CSS.logoutPanel());
 	}
-	
+
 	public HasClickHandlers getAuthenticationButton() {
 		return authenticationButton;
 	}
@@ -254,9 +246,11 @@ private UserUi user;
 	public HasValue<String> getPassword() {
 		return passwordInput;
 	}
+
 	public HasKeyPressHandlers getAuthenticationButton2() {
 		return authenticationButton;
 	}
+
 	public void setConnexionAction(PopupValidateAction pAction) {
 		popupAction = pAction;
 	}
@@ -272,17 +266,20 @@ private UserUi user;
 	public HasClickHandlers getPasswordForgetButton() {
 		return passwordForgetButton;
 	}
+
 	public HasValue<String> getEmailAddressForget() {
 		return emailAddressForgetInput;
 	}
+
 	public void setPopupManager(PopupManager pPopupManager) {
 		popupManager = pPopupManager;
 	}
-	
+
 	public void loadInscriptionContent(final byte[] pData) {
 		inscriptionData = new HTML(new String(pData));
+		buildInscriptionPopup();
 	}
-	
+
 	private void buildInscriptionPopup() {
 		FlowPanel lFlowPanel = new FlowPanel();
 		HorizontalPanel lHeader = new HorizontalPanel();
@@ -294,7 +291,7 @@ private UserUi user;
 		lClose.addStyleName(CSS.loginClose());
 		lClose.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
-				Asptt_toulouse_natation_app.popupManager.hide();
+				popupManager.hide();
 			}
 		});
 		lHeader.add(lClose);
@@ -308,26 +305,40 @@ private UserUi user;
 		lIdPanel.addStyleName(CSS.loginContent());
 		lIdPanel.add(inscriptionData);
 		VerticalPanel lVerticalPanel = new VerticalPanel();
-		lVerticalPanel.getElement().getStyle()
-				.setMarginTop(10, Unit.PX);
+		lVerticalPanel.getElement().getStyle().setMarginTop(10, Unit.PX);
 		lIdPanel.add(lVerticalPanel);
 		lVerticalPanel.add(new Label("Informations utiles:"));
 		HorizontalPanel lHorizontalPanel = new HorizontalPanel();
-		lHorizontalPanel.getElement().getStyle()
-				.setMarginLeft(30, Unit.PX);
+		lHorizontalPanel.getElement().getStyle().setMarginLeft(30, Unit.PX);
 		lHorizontalPanel.setSpacing(10);
 		lVerticalPanel.add(lHorizontalPanel);
 		Anchor lEcole = new Anchor("Ecole de natation");
 		lEcole.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
-				loadContent("Groupe", "Ecole de natation");
+				loadContent("Groupes", "Ecole de natation");
 			}
 		});
 		lHorizontalPanel.add(lEcole);
-		lEcole = new Anchor("Loisirs");
+		lEcole = new Anchor("Loisirs adultes");
 		lEcole.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
-				loadContent("Groupes", "Loisirs");
+				loadContent("Groupes", "Loisirs adultes");
+			}
+		});
+		lHorizontalPanel.add(lEcole);
+		
+		lEcole = new Anchor("Aquagym");
+		lEcole.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				loadContent("Groupes", "Aquagym");
+			}
+		});
+		lHorizontalPanel.add(lEcole);
+		
+		lEcole = new Anchor("Perfectionnement");
+		lEcole.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				loadContent("Groupes", "Perfectionnement");
 			}
 		});
 		lHorizontalPanel.add(lEcole);
@@ -339,19 +350,19 @@ private UserUi user;
 			}
 		});
 		lHorizontalPanel.add(lEcole);
+		
+		lEcole = new Anchor("Masters");
+		lEcole.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				loadContent("Groupes", "Masters");
+			}
+		});
+		lHorizontalPanel.add(lEcole);
 
 		lEcole = new Anchor("Eau libre");
 		lEcole.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
 				loadContent("Groupes", "Eau libre");
-			}
-		});
-		lHorizontalPanel.add(lEcole);
-
-		lEcole = new Anchor("Aquagym");
-		lEcole.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent pEvent) {
-				loadContent("Groupes", "Aquagym");
 			}
 		});
 		lHorizontalPanel.add(lEcole);
@@ -375,8 +386,7 @@ private UserUi user;
 		lIdPanel.add(lHorizontalPanel);
 		lFlowPanel.add(lIdPanel);
 
-		ButtonBase lValidButton = new PushButton(
-				"Dossier d'inscription");
+		ButtonBase lValidButton = new PushButton("Dossier d'inscription");
 		lValidButton.addStyleName(CSS.loginButton());
 		lFlowPanel.add(lValidButton);
 		popupManager.createPopup(true, true, lFlowPanel);

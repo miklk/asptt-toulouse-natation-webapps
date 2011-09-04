@@ -103,7 +103,8 @@ public class MainToolPanel extends Composite {
 		panel.add(lEventPanel);
 
 		AlternateBanner_Part lAlternateBanner_Part = new AlternateBanner_Part();
-		HeaderPanel lPartnerPanel = new HeaderPanel("Partenaires", lAlternateBanner_Part);
+		HeaderPanel lPartnerPanel = new HeaderPanel("Partenaires",
+				lAlternateBanner_Part);
 		lPartnerPanel.setHeaderStyle(CSS.blocTitle());
 		lPartnerPanel.addStyleName(CSS.bloc());
 		panel.add(lPartnerPanel);
@@ -114,8 +115,8 @@ public class MainToolPanel extends Composite {
 	}
 
 	public void loadToolContent(final byte[] pData) {
-	boutiqueData = new HTML(new String(pData));
-	buildBoutiquePopup();
+		boutiqueData = new HTML(new String(pData));
+		buildBoutiquePopup();
 	}
 
 	private void buildBoutiquePopup() {
