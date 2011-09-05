@@ -151,4 +151,19 @@ public interface ASPTT_ProtoCss extends CssResource {
   
   @ClassName("header-logo")
   String headerLogo();
+  
+  @ClassName("userspace-header")
+  String userSpaceHeader();
+  
+  @ClassName("userspace-menu")
+  String userSpaceMenu();
+  
+  @ClassName("userspace-content")
+  String userSpaceContent();
+  
+  @ClassName("userspace-page")
+  String userSpacePage();
+  
+  @ClassName("userspace-menu-button")
+  String userSpaceMenuButton();
 }

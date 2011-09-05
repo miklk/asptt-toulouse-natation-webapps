@@ -97,3 +97,10 @@ h1 {
   border: 1px solid #BBBBBB;
   border-spacing: 0px;
 }
+
+#loading {
+	display: block;
+	position: absolute;
+	text-align: center;
+	margin-left: 100px;
+}

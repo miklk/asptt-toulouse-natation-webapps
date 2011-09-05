@@ -9,10 +9,8 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.TimeZone;
-import com.google.gwt.i18n.client.TimeZoneInfo;
-import com.google.gwt.i18n.client.constants.TimeZoneConstants;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
@@ -79,9 +77,12 @@ private UserUi user;
 		actuPanel.add(lblALaUne);
 		DateTimeFormat lDateTimeFormat = DateTimeFormat.getFormat("dd MMMM yyyy - HH:mm:ss");
 		for (ActuUi lActuUi : initResult.getActu()) {
+			DisclosurePanel lActuDetail = new DisclosurePanel(lActuUi.getSummary());
+			lActuDetail.add(new HTML(lActuUi.getContent()));
+			lActuDetail.getContent().getElement().getStyle().clearBackgroundColor();
 			HeaderPanel lHeaderPanel = new HeaderPanel(
 					lDateTimeFormat.format(lActuUi.getCreationDate()) + " - "
-							+ lActuUi.getTitle(), lActuUi.getSummary(), true);
+							+ lActuUi.getTitle(), lActuDetail);
 			lHeaderPanel.isOdd();
 			actuPanel.add(lHeaderPanel);
 		}

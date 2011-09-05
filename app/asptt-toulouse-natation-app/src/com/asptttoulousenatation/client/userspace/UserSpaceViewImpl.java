@@ -28,12 +28,17 @@ public class UserSpaceViewImpl extends Composite implements UserSpaceView {
 		initUserSpaceResult = pInitUserSpaceResult;
 		panel = new DockPanel();
 		initWidget(panel);
+		panel.setStyleName(CSS.userSpacePage());
 		buildHeader();
 		panel.add(headerPanel, DockPanel.NORTH);
 		menuPanel = new SimplePanel();
 		panel.add(menuPanel, DockPanel.WEST);
 		contentPanel = new SimplePanel();
 		panel.add(contentPanel, DockPanel.CENTER);
+		
+		headerPanel.setStyleName(CSS.userSpaceHeader());
+		menuPanel.setStyleName(CSS.userSpaceMenu());
+		contentPanel.setStyleName(CSS.userSpaceContent());
 	}
 	
 	private void buildHeader() {

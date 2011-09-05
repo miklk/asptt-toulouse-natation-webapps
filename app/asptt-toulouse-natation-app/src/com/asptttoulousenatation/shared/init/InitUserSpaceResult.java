@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
+import com.asptttoulousenatation.shared.userspace.admin.structure.area.GetAreaResult;
 
 import net.customware.gwt.dispatch.shared.Result;
 
@@ -12,6 +13,7 @@ public class InitUserSpaceResult implements Result {
 
 	private List<ActuUi> actu;
 	private Map<String, AreaUi> area;
+	private GetAreaResult areaResult;
 	
 	public InitUserSpaceResult() {
 		
@@ -32,4 +34,13 @@ public class InitUserSpaceResult implements Result {
 	public void setArea(Map<String, AreaUi> pArea) {
 		area = pArea;
 	}
+
+	public GetAreaResult getAreaResult() {
+		return areaResult;
+	}
+
+	public void setAreaResult(GetAreaResult pAreaResult) {
+		areaResult = pAreaResult;
+	}
+	
 }

@@ -24,6 +24,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -38,6 +39,7 @@ public class Asptt_toulouse_natation_app implements EntryPoint {
 	public static  PopupManager popupManager = new PopupManager();
 
 	public void onModuleLoad() {
+		DOM.setStyleAttribute(RootPanel.get("gwt-container").getElement(), "display", "none");
 		CSS.ensureInjected();
 		AutohitsCoreResource.RESOURCE.css().ensureInjected();
 		final SimplePanel lPanel = new SimplePanel();
@@ -72,8 +74,10 @@ public class Asptt_toulouse_natation_app implements EntryPoint {
 					lPlaceHistoryHandler.register(lPlaceController, lEventBus,
 							new MainPlace(pResult.getUser()));
 				}
-				RootPanel.get().add((Widget) lPanel);
+				RootPanel.get("gwt-container").add((Widget) lPanel);
 				lPlaceHistoryHandler.handleCurrentHistory();
+				DOM.removeChild(RootPanel.getBodyElement(), DOM.getElementById("loading"));
+				DOM.setStyleAttribute(RootPanel.get("gwt-container").getElement(), "display", "block");
 			}
 		});
 		

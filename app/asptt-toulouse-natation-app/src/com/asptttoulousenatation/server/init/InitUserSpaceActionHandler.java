@@ -33,6 +33,7 @@ import com.asptttoulousenatation.server.userspace.admin.entity.MenuTransformer;
 import com.asptttoulousenatation.shared.init.InitUserSpaceAction;
 import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
+import com.asptttoulousenatation.shared.userspace.admin.structure.area.GetAreaAction;
 
 public class InitUserSpaceActionHandler implements
 		ActionHandler<InitUserSpaceAction, InitUserSpaceResult> {
@@ -99,6 +100,9 @@ public class InitUserSpaceActionHandler implements
 			AreaUi lArea = areaTransformer.toUi(lAreaEntity);
 			lArea.setMenuSet(lMenuUis);
 			lAreaUis.put(lArea.getTitle(), lArea);
+			if("Structure du site".equals(lAreaEntity.getTitle())) {
+				lInitResult.setAreaResult(pContext.execute(new GetAreaAction()));
+			}
 		}
 		lInitResult.setArea(lAreaUis);
 
