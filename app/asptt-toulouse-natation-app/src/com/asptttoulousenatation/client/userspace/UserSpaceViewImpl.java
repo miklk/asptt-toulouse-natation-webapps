@@ -48,7 +48,7 @@ public class UserSpaceViewImpl extends Composite implements UserSpaceView {
 		headerPanel.add(titleLabel);
 		
 		goBackPublic = new Button("Retourner à l'espace public");
-		goBackPublic.addStyleName(CSS.goBackPublicButton());
+		goBackPublic.setStyleName(CSS.goBackPublicButton());
 		headerPanel.add(goBackPublic);
 		
 //		headerPanel.setWidgetLeftWidth(titleLabel, 0, Unit.PCT, 80, Unit.PCT);

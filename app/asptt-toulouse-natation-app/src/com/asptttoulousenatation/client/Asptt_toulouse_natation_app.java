@@ -39,7 +39,7 @@ public class Asptt_toulouse_natation_app implements EntryPoint {
 	public static  PopupManager popupManager = new PopupManager();
 
 	public void onModuleLoad() {
-		DOM.setStyleAttribute(RootPanel.get("gwt-container").getElement(), "display", "none");
+		DOM.setStyleAttribute(RootPanel.get("gwt-container").getElement(), "visibility", "hidden");
 		CSS.ensureInjected();
 		AutohitsCoreResource.RESOURCE.css().ensureInjected();
 		final SimplePanel lPanel = new SimplePanel();
@@ -77,7 +77,7 @@ public class Asptt_toulouse_natation_app implements EntryPoint {
 				RootPanel.get("gwt-container").add((Widget) lPanel);
 				lPlaceHistoryHandler.handleCurrentHistory();
 				DOM.removeChild(RootPanel.getBodyElement(), DOM.getElementById("loading"));
-				DOM.setStyleAttribute(RootPanel.get("gwt-container").getElement(), "display", "block");
+				DOM.setStyleAttribute(RootPanel.get("gwt-container").getElement(), "visibility", "visible");
 			}
 		});
 		
