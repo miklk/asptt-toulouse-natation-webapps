@@ -9,6 +9,7 @@ import java.util.Map;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ButtonBase;

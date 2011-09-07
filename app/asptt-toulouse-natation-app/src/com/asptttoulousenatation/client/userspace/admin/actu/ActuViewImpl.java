@@ -55,7 +55,7 @@ public class ActuViewImpl extends Composite implements ActuView {
 	    // Add the components to a panel
 		// Content
 		contentInput = new CKEditor(CKConfig.full);
-		contentInput.setSize("100%", "20em");
+		contentInput.setSize("95%", "400px");
 		lPanel.setWidget(3, 0, new Label("Actualité"));
 		lPanel.setWidget(3, 1, contentInput);
 
