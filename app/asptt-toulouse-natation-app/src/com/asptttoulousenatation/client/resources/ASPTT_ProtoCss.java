@@ -166,4 +166,22 @@ public interface ASPTT_ProtoCss extends CssResource {
   
   @ClassName("userspace-menu-button")
   String userSpaceMenuButton();
+  
+  @ClassName("userspace-content-label")
+  String userSpaceContentLabel();
+  
+  @ClassName("userspace-content-list")
+  String userSpaceContentList();
+  
+  @ClassName("userspace-content-list-selected")
+  String userSpaceContentListSelected();
+  
+  @ClassName("userspace-content-list-odd")
+  String userSpaceContentListOdd();
+  
+  @ClassName("userspace-area-edition")
+  String userSpaceAreaEdition();
+  
+  @ClassName("userspace-content-label-2")
+  String userSpaceContentLabel2();
 }

@@ -1,10 +1,11 @@
 package com.asptttoulousenatation.client.userspace.admin.actu;
 
+import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
+
 import java.util.Date;
 
 import com.axeiya.gwtckeditor.client.CKConfig;
 import com.axeiya.gwtckeditor.client.CKEditor;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -32,38 +33,38 @@ public class ActuViewImpl extends Composite implements ActuView {
 		initWidget(panel);
 		//Input
 		FlexTable lPanel = new FlexTable();
+		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
 		//Title
 		title = new TextBox();
 		title.setWidth("300px");
-		lPanel.setWidget(0, 0, new Label("Titre"));
+		lPanel.setWidget(0, 0, createLabel("Titre"));
 		lPanel.setWidget(0, 1, title);
 		
 		//Summary
 		summary = new TextBox();
 		summary.setWidth("300px");
-		lPanel.setWidget(1, 0, new Label("Description courte"));
+		lPanel.setWidget(1, 0, createLabel("Description courte"));
+		lCellFormatter.setWidth(1, 0, "400px");
 		lPanel.setWidget(1, 1, summary);
 		
 		//Date
 		date = new DateBox();
 		date.setValue(new Date());
 		date.setWidth("200px");
-		lPanel.setWidget(2, 0, new Label("Date"));
+		lPanel.setWidget(2, 0, createLabel("Date"));
 		lPanel.setWidget(2, 1, date);
 		
 		//Contenu
 	    // Add the components to a panel
 		// Content
 		contentInput = new CKEditor(CKConfig.full);
-		contentInput.setSize("95%", "400px");
-		lPanel.setWidget(3, 0, new Label("Actualité"));
+		lPanel.setWidget(3, 0, createLabel("Actualité"));
 		lPanel.setWidget(3, 1, contentInput);
 
 		publishButton = new Button("Publier");
 		publishButton.setWidth("300px");
 		publishButton.setHeight("50px");
 		lPanel.setWidget(4, 0, publishButton);
-		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
 		lCellFormatter.setColSpan(4, 0, 2);
 		lCellFormatter.setHorizontalAlignment(4, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
@@ -102,5 +103,11 @@ public class ActuViewImpl extends Composite implements ActuView {
 
 	public HasValue<Date> getCreationDate() {
 		return date;
+	}
+	
+	private Label createLabel(String pLabel) {
+		Label lLabel = new Label(pLabel);
+		lLabel.setStyleName(CSS.userSpaceContentLabel());
+		return lLabel;
 	}
 }
