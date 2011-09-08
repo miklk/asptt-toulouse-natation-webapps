@@ -1,5 +1,7 @@
 package com.asptttoulousenatation.client.userspace.admin.user;
 
+import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,10 +12,10 @@ import java.util.Map;
 import java.util.Set;
 
 import com.asptttoulousenatation.client.userspace.admin.club.slot.SlotCell;
+import com.asptttoulousenatation.client.userspace.admin.util.CellListStyle;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
 import com.asptttoulousenatation.core.shared.user.UserUi;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
@@ -27,6 +29,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -69,7 +72,7 @@ public class UserEditionViewImpl extends Composite implements
 		panel = new HorizontalPanel();
 		initWidget(panel);
 		
-		cellList = new CellList<UserUi>(new UserCell());
+		cellList = new CellList<UserUi>(new UserCell(), new CellListStyle());
 		cellList.setRowData(data);
 		panel.add(cellList);
 		selectionModel = new SingleSelectionModel<UserUi>();
@@ -83,22 +86,24 @@ public class UserEditionViewImpl extends Composite implements
 		});
 		
 		editionPanel = new SimplePanel();
+		editionPanel.setStyleName(CSS.userSpaceContentEdition());
 		panel.add(editionPanel);
 
 		buildPanel();
 		
-		//Layout
-//		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 30, Unit.PCT);
-//		panel.setWidgetLeftWidth(editionPanel, 32, Unit.PCT, 100, Unit.PCT);
 	}
 	
 	private void buildPanel() {
-		FlexTable lPanel = new FlexTable();
-		lPanel.setCellSpacing(6);
+		VerticalPanel lPanel = new VerticalPanel();
+		HorizontalPanel lUserPanel = new HorizontalPanel();
+		lPanel.add(lUserPanel);
+		
+		FlexTable lUserInternetPanel = new FlexTable();
+		lUserInternetPanel.setCellSpacing(6);
 		int index = 0;
 
-		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
-		lPanel.setHTML(index, 0, "Information du compte internet");
+		FlexCellFormatter lCellFormatter = lUserInternetPanel.getFlexCellFormatter();
+		lUserInternetPanel.setHTML(index, 0, "Information du compte internet");
 		lCellFormatter.setColSpan(index, 0, 2);
 		lCellFormatter.setHorizontalAlignment(index, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
@@ -107,14 +112,14 @@ public class UserEditionViewImpl extends Composite implements
 		// Input
 		// Email address
 		emailAddress = new TextBox();
-		lPanel.setHTML(index, 0, "E-mail");
-		lPanel.setWidget(index, 1, emailAddress);
+		lUserInternetPanel.setHTML(index, 0, "E-mail");
+		lUserInternetPanel.setWidget(index, 1, emailAddress);
 		index++;
 
 		// Validated
 		validated = new CheckBox();
-		lPanel.setHTML(index, 0, "Compte validé ?");
-		lPanel.setWidget(index, 1, validated);
+		lUserInternetPanel.setHTML(index, 0, "Compte validé ?");
+		lUserInternetPanel.setWidget(index, 1, validated);
 		index++;
 
 		// Profiles
@@ -126,41 +131,50 @@ public class UserEditionViewImpl extends Composite implements
 			profileMap.put(lProfile.toString(), lProfileIndex);
 			index++;
 		}
-		lPanel.setHTML(index, 0, "Profiles");
-		lPanel.setWidget(index, 1, profiles);
+		lUserInternetPanel.setHTML(index, 0, "Profiles");
+		lUserInternetPanel.setWidget(index, 1, profiles);
 		index++;
 
-		lPanel.setHTML(index, 0, "Information licencié");
+		lUserPanel.add(lUserInternetPanel);
+		
+		//User info
+		FlexTable lUserInfoPanel = new FlexTable();
+		lUserInfoPanel.setCellSpacing(6);
+		index = 0;
+
+		lCellFormatter = lUserInfoPanel.getFlexCellFormatter();
+		
+		lUserInfoPanel.setHTML(index, 0, "Information licencié");
 		lCellFormatter.setColSpan(index, 0, 2);
 		lCellFormatter.setHorizontalAlignment(index, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
 		index++;
 		// Last Name
 		lastName = new TextBox();
-		lPanel.setHTML(index, 0, "Nom");
-		lPanel.setWidget(index, 1, lastName);
+		lUserInfoPanel.setHTML(index, 0, "Nom");
+		lUserInfoPanel.setWidget(index, 1, lastName);
 		index++;
 
 		// First Name
 		firstName = new TextBox();
-		lPanel.setHTML(index, 0, "Prénom");
-		lPanel.setWidget(index, 1, firstName);
+		lUserInfoPanel.setHTML(index, 0, "Prénom");
+		lUserInfoPanel.setWidget(index, 1, firstName);
 		index++;
 
 		// Birthday
 		birthday = new DateBox();
-		lPanel.setHTML(index, 0, "Date de naissance");
-		lPanel.setWidget(index, 1, birthday);
+		lUserInfoPanel.setHTML(index, 0, "Date de naissance");
+		lUserInfoPanel.setWidget(index, 1, birthday);
 		index++;
 
 		// Phone number
 		phonenumber = new TextBox();
-		lPanel.setHTML(index, 0, "Téléphone");
-		lPanel.setWidget(index, 1, phonenumber);
+		lUserInfoPanel.setHTML(index, 0, "Téléphone");
+		lUserInfoPanel.setWidget(index, 1, phonenumber);
 		index++;
 		
 		//Address
-		lPanel.setHTML(index, 0, "Adresse");
+		lUserInfoPanel.setHTML(index, 0, "Adresse");
 		lCellFormatter.setColSpan(index, 0, 2);
 		lCellFormatter.setHorizontalAlignment(index, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
@@ -168,24 +182,33 @@ public class UserEditionViewImpl extends Composite implements
 		
 		//Address road
 		addressRoad = new TextBox();
-		lPanel.setHTML(index, 0, "Rue");
-		lPanel.setWidget(index, 1, addressRoad);
+		lUserInfoPanel.setHTML(index, 0, "Rue");
+		lUserInfoPanel.setWidget(index, 1, addressRoad);
 		index++;
 		
 		//Address code postale
 		addressCode = new TextBox();
-		lPanel.setHTML(index, 0, "Code postale");
-		lPanel.setWidget(index, 1, addressCode);
+		lUserInfoPanel.setHTML(index, 0, "Code postale");
+		lUserInfoPanel.setWidget(index, 1, addressCode);
 		index++;
 		
 		//Address city
 		addressCity = new TextBox();
-		lPanel.setHTML(index, 0, "Ville");
-		lPanel.setWidget(index, 1, addressCity);
+		lUserInfoPanel.setHTML(index, 0, "Ville");
+		lUserInfoPanel.setWidget(index, 1, addressCity);
 		index++;
+		lUserPanel.add(lUserInfoPanel);
 
+		//User slots
+		//User info
+		FlexTable lUserSlotPanel = new FlexTable();
+		lUserPanel.add(lUserSlotPanel);
+		lUserSlotPanel.setCellSpacing(6);
+		index = 0;
+
+		lCellFormatter = lUserSlotPanel.getFlexCellFormatter();
 		// Slots
-		lPanel.setHTML(index, 0, "Créneaux d'entrainement");
+		lUserSlotPanel.setHTML(index, 0, "Créneaux d'entrainement");
 		lCellFormatter.setColSpan(index, 0, 2);
 		lCellFormatter.setHorizontalAlignment(index, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
@@ -195,15 +218,11 @@ public class UserEditionViewImpl extends Composite implements
 		slotCellList.setRowData(new ArrayList<SlotUi>(slotData.values()));
 		slotSelectionModel = new MultiSelectionModel<SlotUi>();
 		slotCellList.setSelectionModel(slotSelectionModel);
-		lPanel.setWidget(index, 1, slotCellList);
+		lUserSlotPanel.setWidget(index, 1, slotCellList);
 		index++;
 
 		updateButton = new Button("Modifier");
-		lPanel.setWidget(index, 0, updateButton);
-		lCellFormatter.setColSpan(index, 0, 2);
-		lCellFormatter.setHorizontalAlignment(index, 0,
-				HasHorizontalAlignment.ALIGN_CENTER);
-		index++;
+		lPanel.add(updateButton);
 
 		editionPanel.clear();
 		editionPanel.setWidget(lPanel);

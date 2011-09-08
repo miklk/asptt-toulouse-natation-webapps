@@ -140,12 +140,6 @@ public interface ASPTT_ProtoCss extends CssResource {
   @ClassName("login-forget-label")
   String loginForgetLabel();
   
-  @ClassName("group-list")
-  String groupList();
-  
-  @ClassName("group-edition")
-  String groupEdition();
-  
   @ClassName("main-content")
   String mainContent();
   

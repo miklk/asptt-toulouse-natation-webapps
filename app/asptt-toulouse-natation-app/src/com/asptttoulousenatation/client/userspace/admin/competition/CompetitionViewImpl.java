@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.asptttoulousenatation.client.userspace.admin.util.CellListStyle;
 import com.asptttoulousenatation.core.shared.competition.CompetitionDayUi;
 import com.asptttoulousenatation.core.shared.competition.CompetitionUi;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -73,7 +73,7 @@ public class CompetitionViewImpl extends Composite implements
 		panel = new HorizontalPanel();
 		initWidget(panel);
 		
-		cellList = new CellList<CompetitionUi>(new CompetitionCell());
+		cellList = new CellList<CompetitionUi>(new CompetitionCell(), new CellListStyle());
 		cellList.setRowData(data);
 		panel.add(cellList);
 		selectionModel = new SingleSelectionModel<CompetitionUi>();
@@ -86,6 +86,7 @@ public class CompetitionViewImpl extends Composite implements
 			}
 		});
 		editionPanel = new SimplePanel();
+		editionPanel.setStyleName(CSS.userSpaceContentEdition());
 		panel.add(editionPanel);
 		
 		createButton = new Button("Créer");
@@ -93,14 +94,6 @@ public class CompetitionViewImpl extends Composite implements
 		updateButton.setEnabled(false);
 		
 		buildCreationPanel();
-		
-		cellList.setStyleName(CSS.groupList());
-		editionPanel.setStyleName(CSS.groupEdition());
-		
-		//Layout
-//		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 30, Unit.PCT);
-//		panel.setWidgetLeftWidth(editionPanel, 32, Unit.PCT, 100, Unit.PCT);
-//		panel.setWidgetTopHeight(editionPanel, 0, Unit.PCT, 40, Unit.PCT);
 		
 		createDays = new HashMap<Long, CompetitionDayUi>();
 		updateDays = new HashMap<Long, CompetitionDayUi>();
@@ -206,15 +199,7 @@ public class CompetitionViewImpl extends Composite implements
 		
 		buildDayCreationPanel();
 		
-		dayCellList.setStyleName(CSS.groupList());
-		dayEditionPanel.setStyleName(CSS.groupEdition());
-		
-		//Layout
-//		lPanel.setWidgetLeftWidth(dayCellList, 0, Unit.PCT, 30, Unit.PCT);
-//		lPanel.setWidgetLeftWidth(dayEditionPanel, 32, Unit.PCT, 100, Unit.PCT);
 		panel.add(lPanel);
-//		panel.setWidgetLeftWidth(lPanel, 32, Unit.PCT, 100, Unit.PCT);
-//		panel.setWidgetTopHeight(lPanel, 40, Unit.PCT, 100, Unit.PCT);
 	}
 	
 	private void buildDayEditionPanel(CompetitionDayUi pUi) {

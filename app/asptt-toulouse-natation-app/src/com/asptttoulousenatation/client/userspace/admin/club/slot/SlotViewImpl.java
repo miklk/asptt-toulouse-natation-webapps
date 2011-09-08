@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.asptttoulousenatation.client.userspace.admin.util.CellListStyle;
 import com.asptttoulousenatation.client.util.Utils;
 import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
@@ -65,7 +66,7 @@ public class SlotViewImpl extends Composite implements SlotView {
 		panel = new HorizontalPanel();
 		initWidget(panel);
 		
-		cellList = new CellList<SlotUi>(new SlotCell());
+		cellList = new CellList<SlotUi>(new SlotCell(), new CellListStyle());
 		cellList.setRowData(data);
 		panel.add(cellList);
 		selectionModel = new SingleSelectionModel<SlotUi>();
@@ -78,6 +79,7 @@ public class SlotViewImpl extends Composite implements SlotView {
 			}
 		});
 		editionPanel = new SimplePanel();
+		editionPanel.setStyleName(CSS.userSpaceContentEdition());
 		panel.add(editionPanel);
 		
 		createButton = new Button("Créer");
@@ -85,13 +87,6 @@ public class SlotViewImpl extends Composite implements SlotView {
 		updateButton.setEnabled(false);
 		
 		buildCreationPanel();
-		
-		cellList.setStyleName(CSS.groupList());
-		editionPanel.setStyleName(CSS.groupEdition());
-		
-		//Layout
-//		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 30, Unit.PCT);
-//		panel.setWidgetLeftWidth(editionPanel, 32, Unit.PCT, 100, Unit.PCT);
 	}
 	
 	private void buildEditionPanel(SlotUi pUi) {

@@ -4,16 +4,18 @@ import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 
 import java.util.List;
 
-import com.asptttoulousenatation.core.client.ui.InputPanel;
+import com.asptttoulousenatation.client.userspace.admin.util.CellListStyle;
 import com.asptttoulousenatation.core.shared.club.group.GroupUi;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.LayoutPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -38,7 +40,7 @@ public class GroupViewImpl extends Composite implements GroupView {
 		panel = new HorizontalPanel();
 		initWidget(panel);
 		
-		cellList = new CellList<GroupUi>(new GroupCell());
+		cellList = new CellList<GroupUi>(new GroupCell(), new CellListStyle());
 		cellList.setRowData(data);
 		panel.add(cellList);
 		selectionModel = new SingleSelectionModel<GroupUi>();
@@ -51,6 +53,7 @@ public class GroupViewImpl extends Composite implements GroupView {
 			}
 		});
 		editionPanel = new SimplePanel();
+		editionPanel.setStyleName(CSS.userSpaceContentEdition());
 		panel.add(editionPanel);
 		
 		createButton = new Button("Créer");
@@ -58,13 +61,6 @@ public class GroupViewImpl extends Composite implements GroupView {
 		updateButton.setEnabled(false);
 		
 		buildCreationPanel();
-		
-		cellList.setStyleName(CSS.groupList());
-		editionPanel.setStyleName(CSS.groupEdition());
-		
-		//Layout
-//		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 30, Unit.PCT);
-//		panel.setWidgetLeftWidth(editionPanel, 32, Unit.PCT, 100, Unit.PCT);
 	}
 	
 	private void buildEditionPanel(GroupUi pGroupUi) {
@@ -73,21 +69,22 @@ public class GroupViewImpl extends Composite implements GroupView {
 	}
 	
 	private void buildCreationPanel() {
-		HorizontalPanel lPanel = new HorizontalPanel();
+		FlexTable lPanel = new FlexTable();
 		
 		//Input
+		int lRowIndex = 0;
 		//Title
 		groupTitle = new TextBox();
-		InputPanel lGroupTitleInputPanel = new InputPanel("Nom", groupTitle);
+		groupTitle.setWidth("200px");
+		lPanel.setWidget(lRowIndex, 0, createLabel("Nom"));
+		lPanel.setWidget(lRowIndex, 1, groupTitle);
+		lRowIndex++;
 		
-		lPanel.add(lGroupTitleInputPanel);
-		lPanel.add(updateButton);
-		lPanel.add(createButton);
-//		lPanel.setWidgetTopHeight(lGroupTitleInputPanel, 1, Unit.PCT, 10, Unit.PCT);
-//		lPanel.setWidgetLeftWidth(updateButton, 30, Unit.PCT, 20, Unit.PCT);
-//		lPanel.setWidgetTopHeight(updateButton, 84, Unit.PCT, 10, Unit.PCT);
-//		lPanel.setWidgetLeftWidth(createButton, 50, Unit.PCT, 20, Unit.PCT);
-//		lPanel.setWidgetTopHeight(createButton, 84, Unit.PCT, 10, Unit.PCT);
+		lPanel.setWidget(5, 0, updateButton);
+		lPanel.setWidget(5, 1, createButton);
+		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
+		lCellFormatter.setHorizontalAlignment(3, 0,
+				HasHorizontalAlignment.ALIGN_CENTER);
 		editionPanel.clear();
 		editionPanel.setWidget(lPanel);
 	}
@@ -106,5 +103,11 @@ public class GroupViewImpl extends Composite implements GroupView {
 
 	public Long getGroupId() {
 		return selectionModel.getSelectedObject().getId();
+	}
+	
+	private Label createLabel(String pLabel) {
+		Label lLabel = new Label(pLabel);
+		lLabel.setStyleName(CSS.userSpaceContentLabel());
+		return lLabel;
 	}
 }
