@@ -1,8 +1,10 @@
 package com.asptttoulousenatation.client.userspace.admin.structure.area;
 
+import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 import java.util.List;
 
 import com.asptttoulousenatation.client.userspace.admin.structure.menu.ui.MenuCell;
+import com.asptttoulousenatation.client.userspace.admin.util.CellListStyle;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentUI;
 import com.axeiya.gwtckeditor.client.CKConfig;
@@ -16,6 +18,7 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -40,7 +43,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 		panel = new HorizontalPanel();
 		initWidget(panel);
 
-		cellList = new CellList<MenuUi>(new MenuCell());
+		cellList = new CellList<MenuUi>(new MenuCell(), new CellListStyle());
 		cellList.setRowData(data);
 		panel.add(cellList);
 		selectionModel = new SingleSelectionModel<MenuUi>();
@@ -55,13 +58,10 @@ public class AreaViewImpl extends Composite implements AreaView {
 				});
 
 		editionPanel = new SimplePanel();
+		editionPanel.setStyleName(CSS.userSpaceContentEdition());
 		panel.add(editionPanel);
 
 		updateButton = new Button("Modifier");
-
-		// Layout
-//		panel.setWidgetLeftWidth(cellList, 0, Unit.PCT, 20, Unit.PCT);
-//		panel.setWidgetLeftWidth(editionPanel, 22, Unit.PCT, 100, Unit.PCT);
 	}
 
 	private void buildEditionPanel(MenuUi pMenuUi) {
@@ -71,7 +71,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 		menuTitleInput = new TextBox();
 		menuTitleInput.setWidth("300px");
 		menuTitleInput.setValue(pMenuUi.getTitle());
-		lPanel.setHTML(0, 0, "Intitulé du menu");
+		lPanel.setWidget(0, 0, createLabel("Intitulé du menu"));
 		lPanel.setWidget(0, 1, menuTitleInput);
 		
 		//Content edition
@@ -80,22 +80,13 @@ public class AreaViewImpl extends Composite implements AreaView {
 		summaryInput = new TextBox();
 		summaryInput.setWidth("300px");
 		summaryInput.setValue(lContentUI.getSummary());
-		lPanel.setHTML(1, 0, "Résumé");
+		lPanel.setWidget(1, 0, createLabel("Résumé"));
 		lPanel.setWidget(1, 1, summaryInput);
 
 		// Content
-		contentInput = new CKEditor(CKConfig.full);
+		contentInput = new CKEditor(CKConfig.basic);
 		contentInput.setHTML(new String(lContentUI.getData()));
-		contentInput.setSize("100%", "20em");
-//		RichTextToolbar lRichTextToolbar = new RichTextToolbar(contentInput);
-//	    lRichTextToolbar.setWidth("100%");
-//		Grid lRichText = new Grid(2, 1);
-//		lRichText.getElement().getStyle().setBorderStyle(BorderStyle.SOLID);
-//		lRichText.getElement().getStyle().setBorderColor("#CCCCCC");
-//		lRichText.getElement().getStyle().setBorderWidth(1, Unit.PX);
-//		lRichText.setWidget(0, 0, lRichTextToolbar);
-//		lRichText.setWidget(1, 0, contentInput);
-		lPanel.setHTML(2, 0, "Contenu");
+		lPanel.setWidget(2, 0, createLabel("Contenu"));
 		lPanel.setWidget(2, 1, contentInput);
 
 		contentInput.setHTML(new String(lContentUI.getData()));
@@ -128,5 +119,11 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 	public HasValue<String> getMenuTitle() {
 		return menuTitleInput;
+	}
+	
+	private Label createLabel(String pLabel) {
+		Label lLabel = new Label(pLabel);
+		lLabel.setStyleName(CSS.userSpaceContentLabel());
+		return lLabel;
 	}
 }

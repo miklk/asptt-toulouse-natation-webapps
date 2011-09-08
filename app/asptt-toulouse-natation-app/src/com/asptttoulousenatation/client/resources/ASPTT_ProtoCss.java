@@ -184,4 +184,7 @@ public interface ASPTT_ProtoCss extends CssResource {
   
   @ClassName("userspace-content-label-2")
   String userSpaceContentLabel2();
+  
+  @ClassName("userspace-edition")
+  String userSpaceContentEdition();
 }

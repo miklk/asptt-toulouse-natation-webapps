@@ -150,11 +150,11 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 				}
 
 				public String getText() {
-					return "tata";
+					return "";
 				}
 
 				public String getName() {
-					return "toto";
+					return "";
 				}
 
 				public String cellListEvenItem() {

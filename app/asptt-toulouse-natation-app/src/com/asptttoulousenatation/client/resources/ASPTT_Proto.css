@@ -349,10 +349,10 @@ border: 3px solid #000000;
 }
 
 .userspace-content-list {
-	width: 300px;
+	width: 200px;
 	height: 500px;
 	border: 1px #13AFC8 dotted;
-	background-color: #EBF1F7;
+	background-color: #CEE3F7;
 }
 
 .userspace-content-list-selected {
@@ -374,4 +374,9 @@ border: 3px solid #000000;
 .userspace-content-label-2 {
 	width: 50px;	
 	border:1px solid #000000;
+}
+
+.userspace-edition {
+	border: solid 1px #6C9BC9;
+	height: 500px;
 }
