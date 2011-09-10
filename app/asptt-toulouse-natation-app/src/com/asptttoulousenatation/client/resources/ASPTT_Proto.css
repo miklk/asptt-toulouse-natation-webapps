@@ -372,3 +372,10 @@ border: 3px solid #000000;
 	border: solid 1px #6C9BC9;
 	height: 500px;
 }
+
+.userspace-content-competition-day-list {
+	width: 100px;
+	height: 500px;
+	border: 1px #13AFC8 dotted;
+	background-color: #CEE3F7;
+}

@@ -181,4 +181,7 @@ public interface ASPTT_ProtoCss extends CssResource {
   
   @ClassName("userspace-edition")
   String userSpaceContentEdition();
+
+  @ClassName("userspace-content-competition-day-list")
+  String userSpaceContentCompetitionDayList();
 }

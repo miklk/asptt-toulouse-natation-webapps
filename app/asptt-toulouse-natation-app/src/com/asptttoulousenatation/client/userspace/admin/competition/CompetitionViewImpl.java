@@ -16,7 +16,10 @@ import com.asptttoulousenatation.core.shared.competition.CompetitionUi;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.cellview.client.CellList.Style;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -158,7 +161,7 @@ public class CompetitionViewImpl extends Composite implements
 	private void createDayPanel() {
 		HorizontalPanel lPanel = new HorizontalPanel();
 		
-		dayCellList = new CellList<CompetitionDayUi>(new CompetitionDayCell());
+		dayCellList = new CellList<CompetitionDayUi>(new CompetitionDayCell(), new CellDayStyle());
 		dayCellList.setRowData(dayData);
 		lPanel.add(dayCellList);
 		daySelectionModel = new SingleSelectionModel<CompetitionDayUi>();
@@ -171,9 +174,10 @@ public class CompetitionViewImpl extends Composite implements
 			}
 		});
 		dayEditionPanel = new SimplePanel();
+		dayEditionPanel.setStyleName(CSS.userSpaceContentEdition());
 		lPanel.add(dayEditionPanel);
 		
-		dayCreateButton = new Button("Créer");
+		dayCreateButton = new Button("Ajouter");
 		dayCreateButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
 				CompetitionDayUi lDayUi = new CompetitionDayUi();
@@ -182,6 +186,7 @@ public class CompetitionViewImpl extends Composite implements
 				lDayUi.setEnd(dayEnd.getValue());
 				lDayUi.setNeeded(Integer.valueOf(needed.getValue()));
 				createDays.put(lDayUi.getId(), lDayUi);
+				Window.alert("La journée a été ajouter à la compétition, vous devez créer ou mettre à jour la compétition pour sauvegarder vos changements.");
 			}
 		});
 		dayUpdateButton = new Button("Mettre à jour");
@@ -214,33 +219,40 @@ public class CompetitionViewImpl extends Composite implements
 	private void buildDayCreationPanel() {
 		FlexTable lPanel = new FlexTable();
 		lPanel.setCellSpacing(6);
-
+		int index = 0;
 		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
-		lPanel.setHTML(0, 0, "Information sur la journée");
-		lCellFormatter.setColSpan(0, 0, 2);
-		lCellFormatter.setHorizontalAlignment(0, 0,
+		lPanel.setHTML(index, 0, "Information sur la journée");
+		lCellFormatter.setColSpan(index, 0, 2);
+		lCellFormatter.setHorizontalAlignment(index, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
 		
+		index++;
 		//Input
 		//Day #
 		day = new TextBox();
-		lPanel.setHTML(1, 0, "#");
-		lPanel.setWidget(1, 1, day);
+		lPanel.setHTML(index, 0, "#");
+		lPanel.setWidget(index, 1, day);
+		index++;
 		
 		//Date Begin / End
 		dayBegin = new DateBox();
-		lPanel.setHTML(2, 0, "Date");
-		lPanel.setWidget(2, 1, dayBegin);
+		lPanel.setHTML(index, 0, "Date début");
+		lPanel.setWidget(index, 1, dayBegin);
+		index++;
 		dayEnd = new DateBox();
-		lPanel.setWidget(2, 2, dayEnd);
+		lPanel.setHTML(index, 0, "Date fin");
+		lPanel.setWidget(index, 1, dayEnd);
+		index++;
 		
 		//Needed
 		needed = new TextBox();
-		lPanel.setHTML(3, 0, "# officiels nécessaires");
-		lPanel.setWidget(3, 1, needed);
+		lPanel.setHTML(index, 0, "# officiels nécessaires");
+		lPanel.setWidget(index, 1, needed);
+		index++;
 		
-		lPanel.setWidget(4, 0, dayUpdateButton);
-		lPanel.setWidget(4, 2, dayCreateButton);
+		lPanel.setWidget(index, 0, dayUpdateButton);
+		lPanel.setWidget(index, 1, dayCreateButton);
+		
 		dayEditionPanel.clear();
 		dayEditionPanel.setWidget(lPanel);
 	}
@@ -292,5 +304,50 @@ public class CompetitionViewImpl extends Composite implements
 
 	public HasValue<String> getCompetitionSaison() {
 		return competitionSaison;
+	}
+	
+	public class CellDayStyle implements CellList.Resources {
+
+		public ImageResource cellListSelectedBackground() {
+			return null;
+		}
+
+		public Style cellListStyle() {
+			return new Style() {
+
+				public boolean ensureInjected() {
+					return false;
+				}
+
+				public String getText() {
+					return "";
+				}
+
+				public String getName() {
+					return "";
+				}
+
+				public String cellListKeyboardSelectedItem() {
+					return CSS.userSpaceContentListSelected();
+				}
+
+				public String cellListOddItem() {
+					return CSS.userSpaceContentListOdd();
+				}
+
+				public String cellListSelectedItem() {
+					return CSS.userSpaceContentListSelected();
+				}
+
+				public String cellListWidget() {
+					return CSS.userSpaceContentCompetitionDayList();
+				}
+
+				public String cellListEvenItem() {
+					return "";
+				}
+			};
+		}
+		
 	}
 }
