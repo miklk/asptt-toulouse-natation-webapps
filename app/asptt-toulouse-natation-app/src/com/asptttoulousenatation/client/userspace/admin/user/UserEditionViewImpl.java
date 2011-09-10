@@ -223,6 +223,7 @@ public class UserEditionViewImpl extends Composite implements
 
 		updateButton = new Button("Modifier");
 		lPanel.add(updateButton);
+		lPanel.setCellHorizontalAlignment(updateButton, HasHorizontalAlignment.ALIGN_CENTER);
 
 		editionPanel.clear();
 		editionPanel.setWidget(lPanel);
