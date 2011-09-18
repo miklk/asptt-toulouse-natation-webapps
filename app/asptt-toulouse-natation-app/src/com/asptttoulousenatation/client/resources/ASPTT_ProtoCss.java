@@ -184,4 +184,22 @@ public interface ASPTT_ProtoCss extends CssResource {
 
   @ClassName("userspace-content-competition-day-list")
   String userSpaceContentCompetitionDayList();
+  
+  @ClassName("userspace-calendar")
+  String userSpaceCalendar();
+  
+  @ClassName("userspace-calendar-day")
+  String userSpaceCalendarDay();
+  
+  @ClassName("userspace-calendar-day-label")
+  String userSpaceCalendarDayLabel();
+  
+  @ClassName("userspace-calendar-competition-label")
+  String userSpaceCalendarCompetitionLabel();
+  
+  @ClassName("userspace-calendar-nav")
+  String userSpaceCalendarNav();
+  
+  @ClassName("userspace-calendar-title")
+  String userSpaceCalendarTitle();
 }

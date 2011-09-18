@@ -86,4 +86,20 @@ public class CompetitionUi implements IsSerializable {
 	public void setDays(Set<CompetitionDayUi> pDays) {
 		days = pDays;
 	}
+
+	public Set<Date> getCalendarEntries() {
+		Set<Date> lEntries = new HashSet<Date>();
+		//Interval
+		int lInterval = getEnd().getDate() - getBegin().getDate();
+		Date lDate = (Date) getBegin().clone();
+		for(int i = 0; i <= lInterval; i++) {
+			Date lCurrentDate = (Date) lDate.clone();
+			lCurrentDate.setDate(lDate.getDate() + i);
+			lCurrentDate.setHours(0);
+			lCurrentDate.setMinutes(0);
+			lCurrentDate.setSeconds(0);
+			lEntries.add(lCurrentDate);
+		}
+		return lEntries;
+	}
 }

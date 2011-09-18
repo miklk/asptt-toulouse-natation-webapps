@@ -22,6 +22,8 @@ import com.asptttoulousenatation.client.userspace.admin.user.UserCreationView;
 import com.asptttoulousenatation.client.userspace.admin.user.UserCreationViewImpl;
 import com.asptttoulousenatation.client.userspace.admin.user.UserEditionView;
 import com.asptttoulousenatation.client.userspace.admin.user.UserEditionViewImpl;
+import com.asptttoulousenatation.client.userspace.calendar.CompetitionCalendarView;
+import com.asptttoulousenatation.client.userspace.calendar.CompetitionCalendarViewImpl;
 import com.asptttoulousenatation.client.userspace.home.HomeView;
 import com.asptttoulousenatation.client.userspace.home.HomeViewImpl;
 import com.asptttoulousenatation.client.userspace.menu.MenuView;
@@ -111,5 +113,9 @@ public class ClientFactoryImpl implements ClientFactory {
 	public CompetitionView getCompetitionView(
 			List<CompetitionUi> pCompetitionUis) {
 		return new CompetitionViewImpl(pCompetitionUis);
+	}
+
+	public CompetitionCalendarView getCompetitionCalendarView(List<CompetitionUi> pCompetition) {
+		return new CompetitionCalendarViewImpl(pCompetition);
 	}
 }

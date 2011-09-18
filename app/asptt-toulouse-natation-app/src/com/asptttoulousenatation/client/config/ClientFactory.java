@@ -12,6 +12,7 @@ import com.asptttoulousenatation.client.userspace.admin.competition.CompetitionV
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaView;
 import com.asptttoulousenatation.client.userspace.admin.user.UserCreationView;
 import com.asptttoulousenatation.client.userspace.admin.user.UserEditionView;
+import com.asptttoulousenatation.client.userspace.calendar.CompetitionCalendarView;
 import com.asptttoulousenatation.client.userspace.home.HomeView;
 import com.asptttoulousenatation.client.userspace.menu.MenuView;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
@@ -43,4 +44,6 @@ public interface ClientFactory {
 	public GroupView getGroupView(List<GroupUi> pGroups);
 	public SlotView getSlotView(List<SlotUi> pSlots, List<GroupUi> pGroups);
 	public CompetitionView getCompetitionView(List<CompetitionUi> pCompetitionUis);
+	
+	public CompetitionCalendarView getCompetitionCalendarView(List<CompetitionUi> pCompetition);
 }

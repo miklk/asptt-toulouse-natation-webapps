@@ -15,6 +15,8 @@ import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaActiv
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaPlace;
 import com.asptttoulousenatation.client.userspace.admin.user.UserActivity;
 import com.asptttoulousenatation.client.userspace.admin.user.UserPlace;
+import com.asptttoulousenatation.client.userspace.calendar.CompetitionCalendarActivity;
+import com.asptttoulousenatation.client.userspace.calendar.CompetitionCalendarPlace;
 import com.asptttoulousenatation.client.userspace.home.HomeActivity;
 import com.asptttoulousenatation.client.userspace.home.HomePlace;
 import com.asptttoulousenatation.client.userspace.menu.MenuActivity;
@@ -148,6 +150,10 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 										case COMPETITION_EDITION:
 											CompetitionActivity lCompetitionActivity = new CompetitionActivity(new CompetitionPlace(), clientFactory);
 											lCompetitionActivity.start(lAdminView.getContentPanel(), lEventBus);
+											break;
+										case OFFICIEL_VIEW:
+											CompetitionCalendarActivity lCompetitionCalendarActivity = new CompetitionCalendarActivity(new CompetitionCalendarPlace(), clientFactory);
+											lCompetitionCalendarActivity.start(lAdminView.getContentPanel(), lEventBus);
 											break;
 										default:
 											HomeActivity lHomeActivity = new HomeActivity(
