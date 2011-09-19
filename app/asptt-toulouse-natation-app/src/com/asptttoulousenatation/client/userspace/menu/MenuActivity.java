@@ -51,7 +51,6 @@ public class MenuActivity extends MyAbstractActivity<MenuPlace> {
 		addAction(lEventBus, lMenuView, MenuItems.CLUB_SLOT_EDITION);
 		addAction(lEventBus, lMenuView, MenuItems.COMPETITION_EDITION);
 		addAction(lEventBus, lMenuView, MenuItems.OFFICIEL_VIEW);
-		addAction(lEventBus, lMenuView, MenuItems.OFFICIEL_SUBSCRIBE);
 		pPanel.setWidget(lMenuView);
 	}
 

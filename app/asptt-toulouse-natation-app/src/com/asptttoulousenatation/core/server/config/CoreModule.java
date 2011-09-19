@@ -10,6 +10,7 @@ import com.asptttoulousenatation.core.server.club.slot.GetAllSlotActionHandler;
 import com.asptttoulousenatation.core.server.club.slot.UpdateSlotActionHandler;
 import com.asptttoulousenatation.core.server.competition.CreateCompetitionActionHandler;
 import com.asptttoulousenatation.core.server.competition.GetAllCompetitionActionHandler;
+import com.asptttoulousenatation.core.server.competition.OfficielDayActionHandler;
 import com.asptttoulousenatation.core.server.competition.UpdateCompetitionActionHandler;
 import com.asptttoulousenatation.core.server.user.AuthenticationActionHandler;
 import com.asptttoulousenatation.core.server.user.IsAuthenticatedActionHandler;
@@ -24,6 +25,7 @@ import com.asptttoulousenatation.core.shared.club.slot.GetAllSlotAction;
 import com.asptttoulousenatation.core.shared.club.slot.UpdateSlotAction;
 import com.asptttoulousenatation.core.shared.competition.CreateCompetitionAction;
 import com.asptttoulousenatation.core.shared.competition.GetAllCompetitionAction;
+import com.asptttoulousenatation.core.shared.competition.OfficielDayAction;
 import com.asptttoulousenatation.core.shared.competition.UpdateCompetitionAction;
 import com.asptttoulousenatation.core.shared.structure.LoadContentAction;
 import com.asptttoulousenatation.core.shared.user.AuthenticationAction;
@@ -94,6 +96,7 @@ public class CoreModule extends ActionHandlerModule {
 		bindHandler(CreateCompetitionAction.class, CreateCompetitionActionHandler.class);
 		bindHandler(UpdateCompetitionAction.class, UpdateCompetitionActionHandler.class);
 		bindHandler(GetAllCompetitionAction.class, GetAllCompetitionActionHandler.class);
+		bindHandler(OfficielDayAction.class, OfficielDayActionHandler.class);
 		
 		bindHandler(LoadContentAction.class, LoadContentActionHandler.class);
 	}

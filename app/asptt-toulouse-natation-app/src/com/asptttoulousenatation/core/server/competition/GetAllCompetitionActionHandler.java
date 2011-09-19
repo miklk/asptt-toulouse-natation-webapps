@@ -45,6 +45,7 @@ public class GetAllCompetitionActionHandler implements
 		List<CompetitionUi> lUis = new ArrayList<CompetitionUi>(
 				lEntities.size());
 		for (CompetitionEntity lEntity : lEntities) {
+			CompetitionUi lUi = transformer.toUi(lEntity);
 			Set<CompetitionDayUi> lCompetitionDayUis = new HashSet<CompetitionDayUi>(
 					lEntity.getDays().size());
 			for (Long lDay : lEntity.getDays()) {
@@ -63,9 +64,9 @@ public class GetAllCompetitionActionHandler implements
 				CompetitionDayUi lDayUi = competitionDayTransformer
 						.toUi(lDayEntity);
 				lDayUi.setOfficiels(lOfficielEntities);
+				lDayUi.setCompetitionUi(lUi);
 				lCompetitionDayUis.add(lDayUi);
 			}
-			CompetitionUi lUi = transformer.toUi(lEntity);
 			lUi.setDays(lCompetitionDayUis);
 			lUis.add(lUi);
 		}

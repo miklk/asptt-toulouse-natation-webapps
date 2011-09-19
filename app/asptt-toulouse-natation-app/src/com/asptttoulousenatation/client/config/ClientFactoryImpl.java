@@ -115,7 +115,7 @@ public class ClientFactoryImpl implements ClientFactory {
 		return new CompetitionViewImpl(pCompetitionUis);
 	}
 
-	public CompetitionCalendarView getCompetitionCalendarView(List<CompetitionUi> pCompetition) {
-		return new CompetitionCalendarViewImpl(pCompetition);
+	public CompetitionCalendarView getCompetitionCalendarView(UserUi pUser, List<CompetitionUi> pCompetition) {
+		return new CompetitionCalendarViewImpl(pUser, pCompetition);
 	}
 }

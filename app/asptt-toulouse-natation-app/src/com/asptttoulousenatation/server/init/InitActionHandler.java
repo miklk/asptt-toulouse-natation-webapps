@@ -225,7 +225,6 @@ LOG.info("retrieving actu #" + lAreaEntities.size());
 		lAreaEntity = new AreaEntity(null, "Officier", ProfileEnum.OFFICIEL, true, 6);
 		AreaEntity lAreaOfficier = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.OFFICIEL_VIEW.toString(), "Consulter le calendier", lAreaOfficier.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true, 1);
-		createMenu(MenuItems.OFFICIEL_SUBSCRIBE.toString(), "S'inscrire", lAreaOfficier.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true, true, 2);
 		
 		//Compétition
 		lAreaEntity = new AreaEntity(null, "Compétitions saison", ProfileEnum.ADMIN, true, 4);

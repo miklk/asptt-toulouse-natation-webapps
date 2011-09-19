@@ -262,7 +262,8 @@ color: #FFFFFF;
 .user-header-goBackPublic-button {
 	height: 30%;
 	margin-right: 10%;
-	border: 1px solid #000000;	
+	border: 1px solid #CDD8DE;
+	background-color: #F4F5F6;
 	width: 290px;
 	font-size: 1em;
 	margin-top: 10px;
@@ -331,7 +332,8 @@ border: 3px solid #000000;
 }
 
 .userspace-menu-button {
-	border: 1px solid #000000;	
+	border: 1px solid #CDD8DE;
+	background-color: #F4F5F6;	
 	width: 190px;
 	font-size: 1em;
 }
@@ -342,7 +344,7 @@ border: 3px solid #000000;
 
 .userspace-content-list {
 	width: 200px;
-	height: 700px;
+	height: 100%;
 	border: 1px #13AFC8 dotted;
 	background-color: #CEE3F7;
 }
@@ -360,7 +362,7 @@ border: 3px solid #000000;
 
 .userspace-area-edition {
 	border: solid 1px #6C9BC9;
-	height: 500px;
+	height: 100%;
 }
 
 .userspace-content-label-2 {
@@ -370,19 +372,19 @@ border: 3px solid #000000;
 
 .userspace-edition {
 	border: solid 1px #6C9BC9;
-	height: 500px;
+	height: 100%;
 }
 
 .userspace-content-competition-day-list {
 	width: 100px;
-	height: 500px;
+	height: 100%;
 	border: 1px #13AFC8 dotted;
 	background-color: #CEE3F7;
 }
 
 .userspace-calendar {
-	border: 1px solid #000000;	
 }
+
 .userspace-calendar-day {
 	border: 1px solid #000000;
 	width: 150px;
@@ -393,13 +395,35 @@ border: 3px solid #000000;
 }
 .userspace-calendar-competition-label {
 	font-size: 0.8em;
+	cursor: pointer;
+}
+
+.userspace-calendar-header {
+	margin: 10px 10px 10px 20px;
 }
 
 .userspace-calendar-nav {
 	font-size: 0.7em;
+	width: 26px;
+	height: 26px;
+	border: 1px solid #CDD8DE;
+	background-color: #F4F5F6;
+	font-weight: bold;
+	padding: 2px;
 }
 
 .userspace-calendar-title {
 	font-size: 1.0em;
 	margin-left: 10px;
+}
+
+.userspace-calendar-competition-day-value {
+	font-weight: bold;	
+}
+
+.userspace-calendar-competition-day-button {
+	border: 1px solid #CDD8DE;
+	background-color: #F4F5F6;
+	width: 100px;
+	height: 40px;
 }

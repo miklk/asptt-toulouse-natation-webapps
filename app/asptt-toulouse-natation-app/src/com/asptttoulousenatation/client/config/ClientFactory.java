@@ -45,5 +45,5 @@ public interface ClientFactory {
 	public SlotView getSlotView(List<SlotUi> pSlots, List<GroupUi> pGroups);
 	public CompetitionView getCompetitionView(List<CompetitionUi> pCompetitionUis);
 	
-	public CompetitionCalendarView getCompetitionCalendarView(List<CompetitionUi> pCompetition);
+	public CompetitionCalendarView getCompetitionCalendarView(UserUi pUser, List<CompetitionUi> pCompetition);
 }

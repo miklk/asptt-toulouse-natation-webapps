@@ -153,6 +153,7 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 											break;
 										case OFFICIEL_VIEW:
 											CompetitionCalendarActivity lCompetitionCalendarActivity = new CompetitionCalendarActivity(new CompetitionCalendarPlace(), clientFactory);
+											lCompetitionCalendarActivity.setUser(user);
 											lCompetitionCalendarActivity.start(lAdminView.getContentPanel(), lEventBus);
 											break;
 										default:

@@ -86,7 +86,7 @@ public class CompetitionUi implements IsSerializable {
 	public void setDays(Set<CompetitionDayUi> pDays) {
 		days = pDays;
 	}
-
+	
 	public Set<Date> getCalendarEntries() {
 		Set<Date> lEntries = new HashSet<Date>();
 		//Interval
