@@ -12,6 +12,9 @@ import com.asptttoulousenatation.core.server.competition.CreateCompetitionAction
 import com.asptttoulousenatation.core.server.competition.GetAllCompetitionActionHandler;
 import com.asptttoulousenatation.core.server.competition.OfficielDayActionHandler;
 import com.asptttoulousenatation.core.server.competition.UpdateCompetitionActionHandler;
+import com.asptttoulousenatation.core.server.document.DeleteDocumentActionHandler;
+import com.asptttoulousenatation.core.server.document.GetDocumentActionHandler;
+import com.asptttoulousenatation.core.server.document.UpdateDocumentActionHandler;
 import com.asptttoulousenatation.core.server.user.AuthenticationActionHandler;
 import com.asptttoulousenatation.core.server.user.IsAuthenticatedActionHandler;
 import com.asptttoulousenatation.core.server.user.LogoutActionHandler;
@@ -27,6 +30,9 @@ import com.asptttoulousenatation.core.shared.competition.CreateCompetitionAction
 import com.asptttoulousenatation.core.shared.competition.GetAllCompetitionAction;
 import com.asptttoulousenatation.core.shared.competition.OfficielDayAction;
 import com.asptttoulousenatation.core.shared.competition.UpdateCompetitionAction;
+import com.asptttoulousenatation.core.shared.document.DeleteDocumentAction;
+import com.asptttoulousenatation.core.shared.document.GetDocumentAction;
+import com.asptttoulousenatation.core.shared.document.UpdateDocumentAction;
 import com.asptttoulousenatation.core.shared.structure.LoadContentAction;
 import com.asptttoulousenatation.core.shared.user.AuthenticationAction;
 import com.asptttoulousenatation.core.shared.user.IsAuthenticatedAction;
@@ -99,5 +105,10 @@ public class CoreModule extends ActionHandlerModule {
 		bindHandler(OfficielDayAction.class, OfficielDayActionHandler.class);
 		
 		bindHandler(LoadContentAction.class, LoadContentActionHandler.class);
+		
+		//Document
+		bindHandler(GetDocumentAction. class, GetDocumentActionHandler.class);
+		bindHandler(UpdateDocumentAction. class, UpdateDocumentActionHandler.class);
+		bindHandler(DeleteDocumentAction. class, DeleteDocumentActionHandler.class);
 	}
 }

@@ -4,5 +4,6 @@ public enum ContentDataKindEnum {
 
 	TEXT,
 	IMAGE,
-	VIDEO;
+	VIDEO,
+	DOCUMENT;
 }

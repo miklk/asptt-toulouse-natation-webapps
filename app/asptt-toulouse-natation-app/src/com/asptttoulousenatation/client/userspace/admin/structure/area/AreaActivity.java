@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import com.asptttoulousenatation.client.config.ClientFactory;
 import com.asptttoulousenatation.core.client.MyAbstractActivity;
+import com.asptttoulousenatation.core.shared.document.DeleteDocumentAction;
+import com.asptttoulousenatation.core.shared.document.DeleteDocumentResult;
+import com.asptttoulousenatation.core.shared.document.UpdateDocumentAction;
+import com.asptttoulousenatation.core.shared.document.UpdateDocumentResult;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.UpdateContentAction;
@@ -37,6 +41,37 @@ public class AreaActivity extends MyAbstractActivity<AreaPlace> {
 						Window.alert("Mis à jour !");
 					}
 				});
+			}
+		});
+		lAreaView.getDocumentUpdateButton().addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent pEvent) {
+				dispatchAsync.execute(new UpdateDocumentAction(lAreaView.getDocumentId(), lAreaView.getDocumentTitle().getValue(), lAreaView.getDocumentSummary().getValue()), new AsyncCallback<UpdateDocumentResult>() {
+
+					public void onFailure(Throwable pCaught) {
+						Window.alert("Erreur: " + pCaught.getMessage());
+					}
+
+					public void onSuccess(UpdateDocumentResult pResult) {
+						Window.alert("Document mis à jour !");
+					}
+				});
+			}
+		});
+		lAreaView.getDocumentDeleteButton().addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent pEvent) {
+				dispatchAsync.execute(new DeleteDocumentAction(lAreaView.getDocumentId()), new AsyncCallback<DeleteDocumentResult>() {
+
+					public void onFailure(Throwable pCaught) {
+						Window.alert("Erreur: " + pCaught.getMessage());
+					}
+
+					public void onSuccess(DeleteDocumentResult pResult) {
+						Window.alert("Document supprimé !");
+					}
+				});
+				
 			}
 		});
 		pPanel.setWidget(lAreaView);

@@ -2,6 +2,7 @@ package com.asptttoulousenatation.core.shared.structure;
 
 import java.util.List;
 
+import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.MenuEditionUI;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentUI;
 import com.google.gwt.user.client.rpc.IsSerializable;
@@ -23,6 +24,8 @@ public class MenuUi implements IsSerializable {
 	private List<ContentUI> contentSet;
 	
 	private boolean shortcut;
+	
+	private List<DocumentUi> documentSet;
 	
 	public MenuUi() {
 		id = 0l;
@@ -103,4 +106,13 @@ public class MenuUi implements IsSerializable {
 	public void setShortcut(boolean pShortcut) {
 		shortcut = pShortcut;
 	}
+
+	public List<DocumentUi> getDocumentSet() {
+		return documentSet;
+	}
+
+	public void setDocumentSet(List<DocumentUi> pDocumentSet) {
+		documentSet = pDocumentSet;
+	}
+	
 }

@@ -4,13 +4,28 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 
 public interface ASPTT_ProtoImages extends ClientBundle {
+	
+	@Source("images/headerBackground.png")
+	public ImageResource headerBackground();
 
 	@Source("images/logo.png")
 	public ImageResource logo();
 	
-	@Source("images/logoarena.gif")
+	@Source("images/logoarena_part.png")
 	public ImageResource logoArena();
 	
 	@Source("images/logoarena_part.png")
 	public ImageResource logoArenaPart();
+	
+	@Source("images/logo_omnisport.jpg")
+	public ImageResource logoOmnisport();
+	
+	@Source("images/img01.jpg")
+	public ImageResource img01();
+	
+	@Source("images/img02.jpg")
+	public ImageResource img02();
+	
+	@Source("images/img03.jpeg")
+	public ImageResource img03();
 }

@@ -1,6 +1,9 @@
 package com.asptttoulousenatation.client;
 
-import com.google.gwt.dom.client.Style.Unit;
+import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
+import static com.asptttoulousenatation.client.resources.ASPTT_ProtoResources.IMAGES;
+
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
@@ -11,27 +14,18 @@ public class AlternateBanner_Part extends Composite {
 
 	private Panel panel;
 	private int index;
-	private static final String[] IMAGES_URL = {"images/logo_omnisport.jpg", "images/logoarena.gif"};
+	private static final ImageResource [] IMAGES_URL = {IMAGES.logoArena(), IMAGES.logoOmnisport()};
 	
 	public AlternateBanner_Part() {
 		panel = new SimplePanel();
 		initWidget(panel);
-		panel.getElement().getStyle().setMarginTop(10, Unit.PX);
+		panel.setStyleName(CSS.partnerPanel());
 		index = 0;
 		Timer timer = new Timer() {
 			
 			@Override
 			public void run() {
-				Image image = new Image("http://prototype.asptt-toulouse-natation.com/" + IMAGES_URL[index]);
-				int ratio;
-				if(image.getHeight() == 0 || image.getWidth() == 0) {
-					ratio = 1;
-				}
-				else {
-					ratio = image.getWidth() / image.getHeight();
-				}
-//				image.setWidth("200px");
-//				image.setHeight(image.getWidth() * ratio + "px");
+				Image image = new Image(IMAGES_URL[index]);
 				panel.clear();
 				panel.add	(image);
 				index = (index + 1) % IMAGES_URL.length;

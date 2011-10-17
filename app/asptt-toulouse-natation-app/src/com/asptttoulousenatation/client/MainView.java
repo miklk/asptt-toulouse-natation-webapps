@@ -1,6 +1,9 @@
 package com.asptttoulousenatation.client;
 
+import java.util.List;
+
 import com.asptttoulousenatation.core.client.ui.PopupValidateAction;
+import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyPressHandlers;
 import com.google.gwt.user.client.ui.HasValue;
@@ -21,7 +24,7 @@ public interface MainView extends IsWidget {
 	public void passwordSended();
 	public void passwordNotSended();
 	public HasValue<String> getEmailAddressForget();
-	public void loadContent(final byte[] pData);
+	public void loadContent(final byte[] pData, List<DocumentUi> pDocuments);
 	public void loadToolContent(final byte[] pData);
-	public void loadInscriptionContent(final byte[] pData);
+	public void loadInscriptionContent(final byte[] pData, List<DocumentUi> pDocuments);
 }

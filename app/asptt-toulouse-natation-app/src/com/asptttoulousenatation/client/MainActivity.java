@@ -29,13 +29,14 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class MainActivity extends MyAbstractActivity<MainPlace> {
 
 	private UserUi user;
-	
+
 	public MainActivity(MainPlace pPlace, ClientFactory pClientFactory) {
 		super(pPlace, pClientFactory);
 		user = pPlace.getObject();
 	}
-	
-	public MainActivity(MainPlace pPlace, ClientFactory pClientFactory, UserUi pUser) {
+
+	public MainActivity(MainPlace pPlace, ClientFactory pClientFactory,
+			UserUi pUser) {
 		this(pPlace, pClientFactory);
 		user = pUser;
 	}
@@ -52,78 +53,122 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 
 					public void onSuccess(InitResult pResult) {
 						final PopupManager lPopupManager = new PopupManager();
-						final MainView lMainView = clientFactory
-								.getMainView(pResult, user, lEventBus);
+						final MainView lMainView = clientFactory.getMainView(
+								pResult, user, lEventBus);
 						lMainView.setPopupManager(lPopupManager);
 						lMainView.setConnexionAction(new PopupValidateAction() {
 							public void execute() {
 								fireAuthentication(lEventBus, lMainView);
 							}
 						});
-						lMainView.getDisconnectButton().addClickHandler(new ClickHandler() {
-							public void onClick(ClickEvent pEvent) {
-								dispatchAsync.execute(new LogoutAction(), new AsyncCallback<LogoutResult>() {
-									public void onFailure(Throwable pCaught) {
-										Window.alert("Erreur " + pCaught.getMessage());
-									}
+						lMainView.getDisconnectButton().addClickHandler(
+								new ClickHandler() {
+									public void onClick(ClickEvent pEvent) {
+										dispatchAsync
+												.execute(
+														new LogoutAction(),
+														new AsyncCallback<LogoutResult>() {
+															public void onFailure(
+																	Throwable pCaught) {
+																Window.alert("Erreur "
+																		+ pCaught
+																				.getMessage());
+															}
 
-									public void onSuccess(LogoutResult pResult) {
-										lEventBus.fireEvent(new UpdateContentEvent<Object>(MenuItems.PUBLIC));
+															public void onSuccess(
+																	LogoutResult pResult) {
+																lEventBus
+																		.fireEvent(new UpdateContentEvent<Object>(
+																				MenuItems.PUBLIC));
+															}
+														});
+
 									}
 								});
-								
-							}
-						});
-						lMainView.getPriveSpaceButton().addClickHandler(new ClickHandler() {
-							public void onClick(ClickEvent pEvent) {
-								lEventBus.fireEvent(new UpdateContentEvent<UserUi>(MenuItems.ADMIN, user));
-							}
-						});
-						lMainView.getPasswordForgetButton().addClickHandler(new ClickHandler() {
-							public void onClick(ClickEvent pEvent) {
-								dispatchAsync.execute(new PasswordForgetAction(lMainView.getEmailAddress().getValue()), new AsyncCallback<PasswordForgetResult>() {
-									public void onFailure(Throwable pCaught) {
-										Window.alert("Erreur " + pCaught.getMessage());
-									}
-
-									public void onSuccess(
-											PasswordForgetResult pResult) {
-										if(pResult.isSended()) {
-											lMainView.passwordSended();
-										}
-										else {
-											lMainView.passwordNotSended();
-										}
+						lMainView.getPriveSpaceButton().addClickHandler(
+								new ClickHandler() {
+									public void onClick(ClickEvent pEvent) {
+										lEventBus
+												.fireEvent(new UpdateContentEvent<UserUi>(
+														MenuItems.ADMIN, user));
 									}
 								});
-							}
-						});
-						lEventBus.addHandler(LoadContentEvent.TYPE, new LoadContentEventHandler() {
-							
-							public void loadContent(final LoadContentEvent pEvent) {
-								dispatchAsync.execute(new LoadContentAction(pEvent.getMenuId()), new AsyncCallback<LoadContentResult>() {
-									public void onFailure(Throwable pCaught) {
-										Window.alert("Erreur " + pCaught.getMessage());
-									}
+						lMainView.getPasswordForgetButton().addClickHandler(
+								new ClickHandler() {
+									public void onClick(ClickEvent pEvent) {
+										dispatchAsync
+												.execute(
+														new PasswordForgetAction(
+																lMainView
+																		.getEmailAddress()
+																		.getValue()),
+														new AsyncCallback<PasswordForgetResult>() {
+															public void onFailure(
+																	Throwable pCaught) {
+																Window.alert("Erreur "
+																		+ pCaught
+																				.getMessage());
+															}
 
-									public void onSuccess(LoadContentResult pResult) {
-										switch(pEvent.getArea()) {
-										case TOOL:
-											lMainView.loadToolContent(pResult.getData());
-											break;
-										case INSCRIPTION:
-											lMainView.loadInscriptionContent(pResult.getData());
-											break;
-											default: lMainView.loadContent(pResult.getData());
-										}
+															public void onSuccess(
+																	PasswordForgetResult pResult) {
+																if (pResult
+																		.isSended()) {
+																	lMainView
+																			.passwordSended();
+																} else {
+																	lMainView
+																			.passwordNotSended();
+																}
+															}
+														});
 									}
 								});
-							}
-						});
+						lEventBus.addHandler(LoadContentEvent.TYPE,
+								new LoadContentEventHandler() {
+
+									public void loadContent(
+											final LoadContentEvent pEvent) {
+										dispatchAsync.execute(
+												new LoadContentAction(pEvent
+														.getMenuId()),
+												new AsyncCallback<LoadContentResult>() {
+													public void onFailure(
+															Throwable pCaught) {
+														Window.alert("Erreur "
+																+ pCaught
+																		.getMessage());
+													}
+
+													public void onSuccess(
+															LoadContentResult pResult) {
+														switch (pEvent
+																.getArea()) {
+														case TOOL:
+															lMainView
+																	.loadToolContent(pResult
+																			.getData());
+															break;
+														case INSCRIPTION:
+															lMainView
+																	.loadInscriptionContent(
+																			pResult.getData(),
+																			pResult.getDocuments());
+															break;
+														default:
+															lMainView
+																	.loadContent(
+																			pResult.getData(),
+																			pResult.getDocuments());
+														}
+													}
+												});
+									}
+								});
 						lPanel.add(lMainView);
 					}
 				});
-		
+
 		pPanel.setWidget(lPanel);
 	}
 
@@ -143,8 +188,8 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 					pMainView.connexionPopupHide();
 					// if(pResult.getUser().getProfiles().contains(ProfileEnum.ADMIN.name()))
 					// {
-					pEventBus
-							.fireEvent(new UpdateContentEvent<UserUi>(MenuItems.ADMIN, pResult.getUser()));
+					pEventBus.fireEvent(new UpdateContentEvent<UserUi>(
+							MenuItems.ADMIN, pResult.getUser()));
 					// }
 				} else {
 					Window.alert("Vous n'êtes pas enregistré.");

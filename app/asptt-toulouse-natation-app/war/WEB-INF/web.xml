@@ -16,7 +16,50 @@
   <welcome-file-list>
     <welcome-file>Asptt_toulouse_natation_app.html</welcome-file>
   </welcome-file-list>
+  
+  <servlet>
+    <display-name>Remote API Servlet</display-name>
+    <servlet-name>RemoteApiServlet</servlet-name>
+    <servlet-class>com.google.apphosting.utils.remoteapi.RemoteApiServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+</servlet>
+<servlet-mapping>
+    <servlet-name>RemoteApiServlet</servlet-name>
+    <url-pattern>/remote_api</url-pattern>
+</servlet-mapping>
 
+<context-param>
+    <!-- max size of the upload request -->
+    <param-name>maxSize</param-name>
+    <param-value>3145728</param-value>
+  </context-param>
+  <context-param>
+    <!-- Useful in development mode to slow down the uploads in fast networks.
+         Put the number of milliseconds to sleep in each block received in the server.
+         false or 0, means don't use slow uploads  -->
+    <param-name>slowUploads</param-name>
+    <param-value>0</param-value>
+  </context-param>
+
+  <servlet>
+    <servlet-name>uploadServlet</servlet-name>
+    <!-- This is the default servlet, it puts files in session -->
+    <servlet-class>com.asptttoulousenatation.core.server.UploadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>uploadServlet</servlet-name>
+    <url-pattern>*.gupld</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>downloadServlet</servlet-name>
+    <!-- This is the default servlet, it puts files in session -->
+    <servlet-class>com.asptttoulousenatation.core.server.DownloadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>downloadServlet</servlet-name>
+    <url-pattern>/downloadDocument</url-pattern>
+  </servlet-mapping>
 <!--OnPositive Tools-->
 <servlet>
 		<servlet-name>baseViewerServlet</servlet-name>
@@ -52,21 +95,4 @@
 			<role-name>admin</role-name>
 		</auth-constraint>
 	</security-constraint>
-<servlet>
-		<servlet-name>profilerConsoleServlet</servlet-name>
-		<servlet-class>com.onpositive.gae.tools.servlets.ConsoleServlet
-		</servlet-class>
-	</servlet>
-<servlet-mapping>
-		<servlet-name>profilerConsoleServlet</servlet-name>
-		<url-pattern>/appwrench/console</url-pattern>
-	</servlet-mapping>
-<servlet>
-<servlet-name>SessionAuth</servlet-name>
-<servlet-class>com.onpositive.auth.AuthServlet</servlet-class>
-</servlet>
-<servlet-mapping>
-<servlet-name>SessionAuth</servlet-name>
-<url-pattern>/appwrench/auth</url-pattern>
-</servlet-mapping>
 </web-app>

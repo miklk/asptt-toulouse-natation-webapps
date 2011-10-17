@@ -5,7 +5,11 @@
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/gwt-dispatch-1.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/gwt-dispatch-1.2.0.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/asptt-toulouse-natation-app/lib/gwt-dispatch-1.2.0-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/guice-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/guice-servlet-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/gin-1.0.jar"/>
@@ -19,5 +23,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/consoleImpl.jar"/>
 	<classpathentry kind="lib" path="lib/gwt-dnd-3.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/gwt-cal-0.9.1.jar"/>
+	<classpathentry kind="lib" path="lib/gwtupload-0.6.4-20110712.073705-11.jar"/>
+	<classpathentry kind="lib" path="lib/gwtupload-gae-0.6.4-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

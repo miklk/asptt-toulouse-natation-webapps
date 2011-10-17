@@ -9,8 +9,11 @@ import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
 
+import com.asptttoulousenatation.core.server.dao.document.DocumentDao;
+import com.asptttoulousenatation.core.server.dao.entity.document.DocumentEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.AreaEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.ContentEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.field.DocumentEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.MenuEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.structure.AreaEntity;
 import com.asptttoulousenatation.core.server.dao.entity.structure.ContentEntity;
@@ -21,10 +24,12 @@ import com.asptttoulousenatation.core.server.dao.search.OrderDao;
 import com.asptttoulousenatation.core.server.dao.structure.AreaDao;
 import com.asptttoulousenatation.core.server.dao.structure.ContentDao;
 import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
+import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
 import com.asptttoulousenatation.server.userspace.admin.entity.AreaTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.ContentTransformer;
+import com.asptttoulousenatation.server.userspace.admin.entity.DocumentTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.MenuTransformer;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.GetAreaAction;
@@ -36,10 +41,12 @@ public class GetAreaActionHandler implements
 	private AreaDao areaDao = new AreaDao();
 	private MenuDao menuDao = new MenuDao();
 	private ContentDao contentDao = new ContentDao();
+	private DocumentDao documentDao = new DocumentDao();
 	
 	private AreaTransformer areaTransformer = new AreaTransformer();
 	private MenuTransformer menuTransformer = new MenuTransformer();
 	private ContentTransformer contentTransformer = new ContentTransformer();
+	private DocumentTransformer documentTransformer = new DocumentTransformer();
 	
 	public GetAreaResult execute(GetAreaAction pAction, ExecutionContext pContext)
 			throws DispatchException {
@@ -68,6 +75,14 @@ public class GetAreaActionHandler implements
 		lContentCriterion.setOperator(Operator.EQUAL);
 		lMenuCriteria.add(lContentCriterion);
 		
+		//Get documents
+		List<CriterionDao<? extends Object>> lDocumentCriteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		CriterionDao<Long> lDocumentCriterion = new CriterionDao<Long>();
+		lDocumentCriterion.setEntityField(DocumentEntityFields.MENU);
+		lDocumentCriterion.setOperator(Operator.EQUAL);
+		lDocumentCriteria.add(lDocumentCriterion);
+		
 		for(AreaEntity lAreaEntity: lAreaEntities) {
 			//Get menu
 			lAreaCriterion.setValue(lAreaEntity.getId());
@@ -78,7 +93,11 @@ public class GetAreaActionHandler implements
 				lContentCriterion.setValue(lMenuEntity.getId().getId());
 				List<ContentEntity> lContentEntities = contentDao.find(lMenuCriteria);
 				MenuUi lMenu = menuTransformer.toUi(lMenuEntity);
+				lDocumentCriterion.setValue(lMenuEntity.getId().getId());
+				List<DocumentEntity> lDocumentEntities = documentDao.find(lDocumentCriteria);
+				List<DocumentUi> lDocumentUis = documentTransformer.toUi(lDocumentEntities);
 				lMenu.setContentSet(contentTransformer.toUi(lContentEntities));
+				lMenu.setDocumentSet(lDocumentUis);
 				lMenuUis.put(lMenu.getTitle(), lMenu);
 			}
 			AreaUi lArea = areaTransformer.toUi(lAreaEntity);

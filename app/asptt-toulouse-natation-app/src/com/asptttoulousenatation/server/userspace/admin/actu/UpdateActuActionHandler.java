@@ -8,6 +8,7 @@ import com.asptttoulousenatation.core.server.dao.ActuDao;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
 import com.asptttoulousenatation.shared.userspace.admin.actu.UpdateActuAction;
 import com.asptttoulousenatation.shared.userspace.admin.actu.UpdateActuResult;
+import com.google.appengine.api.datastore.Text;
 
 public class UpdateActuActionHandler implements
 		ActionHandler<UpdateActuAction, UpdateActuResult> {
@@ -22,7 +23,7 @@ public class UpdateActuActionHandler implements
 		lActu.setTitle(pAction.getTitle());
 		lActu.setSummary(pAction.getSummary());
 		lActu.setCreationDate(pAction.getCreationDate());
-		lActu.setContent(pAction.getContent());
+		lActu.setContent(new Text(pAction.getContent()));
 		lActuDao.save(lActu);
 		return new UpdateActuResult();
 	}

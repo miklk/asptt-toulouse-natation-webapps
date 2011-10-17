@@ -1,15 +1,17 @@
 package com.asptttoulousenatation.client;
 
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
+import static com.asptttoulousenatation.client.resources.ASPTT_ProtoResources.IMAGES;
 
 public class AlternateBanner extends Composite {
 
 	private SimplePanel panel;
 	private int index;
-	private static final String[] IMAGES_URL = {"images/img01.jpg", "images/img02.jpg", "images/img03.jpeg"};
+	private static final ImageResource[] IMAGES_URL = {IMAGES.img01(), IMAGES.img02(), IMAGES.img03()};
 	
 	public AlternateBanner() {
 		panel = new SimplePanel();
@@ -19,16 +21,8 @@ public class AlternateBanner extends Composite {
 			
 			@Override
 			public void run() {
-				Image image = new Image("http://prototype.asptt-toulouse-natation.com/" + IMAGES_URL[index]);
-				int ratio;
-				if(image.getHeight() == 0 || image.getWidth() == 0) {
-					ratio = 1;
-				}
-				else {
-					ratio = image.getWidth() / image.getHeight();
-				}
-				image.setHeight("200px");
-				image.setWidth(image.getHeight() * ratio + "px");
+				Image image = new Image(IMAGES_URL[index]);
+				
 				panel.clear();
 				panel.add(image);
 				index = (index + 1) % IMAGES_URL.length;

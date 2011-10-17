@@ -2,7 +2,10 @@ package com.asptttoulousenatation.client;
 
 import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 
+import java.util.List;
+
 import com.asptttoulousenatation.core.client.ui.PopupValidateAction;
+import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitResult;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -41,37 +44,25 @@ public class MainViewImpl extends Composite implements MainView {
 		user = pUser;
 		panel = new DockPanel();
 		initWidget(panel);
-//		DockLayoutPanel dockLayoutPanel = new DockLayoutPanel(Unit.PCT);
 		panel.setStyleName(CSS.page());
-//		panel.add(dockLayoutPanel);
-//		panel.setWidgetTopHeight(dockLayoutPanel, 0.0, Unit.PX, 100, Unit.PCT);
-//		panel.setWidgetLeftWidth(dockLayoutPanel, 0.0, Unit.PCT, 100, Unit.PCT);
 
 		headerPanel = new MainHeaderPanel(initResult, user, eventBus, popupManager);
 		panel.add(headerPanel, DockPanel.NORTH);
-//		dockLayoutPanel.addNorth(headerPanel, 20);
 
 		bottomPanel = new MainBottomPanel();
 		panel.add(bottomPanel, DockPanel.SOUTH);
-//		dockLayoutPanel.addSouth(bottomPanel, 3);
 
 		menuPanel = new MainMenuPanel(initResult, user, eventBus);
 		panel.add(menuPanel, DockPanel.WEST);
-//		dockLayoutPanel.addWest(menuPanel, 25.0);
 
 		// TODO center
 		HorizontalPanel layoutPanel_1 = new HorizontalPanel();
 		panel.add(layoutPanel_1, DockPanel.CENTER);
-		contentPanel = new MainContentPanel(initResult, user, eventBus);
+		contentPanel = new MainContentPanel(initResult);
 		
 		layoutPanel_1.add(contentPanel);
 		toolPanel = new MainToolPanel(initResult, user, eventBus);
 		layoutPanel_1.add(toolPanel);
-//		layoutPanel_1.setWidgetLeftWidth(contentPanel, 1.0, Unit.PCT, 80.0,
-//				Unit.PCT);
-//		layoutPanel_1.setWidgetTopHeight(contentPanel, 10.0, Unit.PCT, 90.0,
-//				Unit.PCT);
-
 		// TODO content
 		
 	}
@@ -160,15 +151,15 @@ public class MainViewImpl extends Composite implements MainView {
 		return headerPanel.getEmailAddressForget();
 	}
 
-	public void loadContent(byte[] pData) {
-		contentPanel.loadContent(pData);
+	public void loadContent(byte[] pData, List<DocumentUi> pDocuments) {
+		contentPanel.loadContent(pData, pDocuments);
 	}
 
 	public void loadToolContent(byte[] pData) {
 		toolPanel.loadToolContent(pData);
 	}
 
-	public void loadInscriptionContent(byte[] pData) {
-		headerPanel.loadInscriptionContent(pData);
+	public void loadInscriptionContent(byte[] pData, List<DocumentUi> pDocuments) {
+		headerPanel.loadInscriptionContent(pData, pDocuments);
 	}
 }

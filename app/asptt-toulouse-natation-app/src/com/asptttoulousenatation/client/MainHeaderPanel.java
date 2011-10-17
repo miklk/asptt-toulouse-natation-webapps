@@ -3,14 +3,18 @@ package com.asptttoulousenatation.client;
 import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 import static com.asptttoulousenatation.client.resources.ASPTT_ProtoResources.IMAGES;
 
+import java.util.List;
+
 import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent;
 import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent.LoadContentAreaEnum;
 import com.asptttoulousenatation.core.client.ui.InputPanel;
 import com.asptttoulousenatation.core.client.ui.PopupValidateAction;
+import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -22,12 +26,14 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ButtonBase;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
@@ -54,6 +60,7 @@ public class MainHeaderPanel extends Composite {
 	private PopupValidateAction popupAction;
 
 	private HTML inscriptionData;
+	private List<DocumentUi> inscriptionDocuments;
 
 	public MainHeaderPanel(InitResult pInitResult, UserUi pUser,
 			EventBus pEventBus, PopupManager pPopupManager) {
@@ -275,8 +282,9 @@ public class MainHeaderPanel extends Composite {
 		popupManager = pPopupManager;
 	}
 
-	public void loadInscriptionContent(final byte[] pData) {
+	public void loadInscriptionContent(final byte[] pData, List<DocumentUi> pDocuments) {
 		inscriptionData = new HTML(new String(pData));
+		inscriptionDocuments = pDocuments;
 		buildInscriptionPopup();
 	}
 
@@ -386,10 +394,31 @@ public class MainHeaderPanel extends Composite {
 		lIdPanel.add(lHorizontalPanel);
 		lFlowPanel.add(lIdPanel);
 
-		ButtonBase lValidButton = new PushButton("Dossier d'inscription");
-		lValidButton.addStyleName(CSS.loginButton());
-		lFlowPanel.add(lValidButton);
+		lFlowPanel.add(getDocumentPanel(inscriptionDocuments));
 		popupManager.createPopup(true, true, lFlowPanel);
 		popupManager.center();
+	}
+	
+	private Panel getDocumentPanel(List<DocumentUi> pDocuments) {
+		Grid lPanel = new Grid(2, 1);
+		lPanel.setStyleName(CSS.areaDocumentList());
+		// Header
+		Label lTitle = new Label("Documents à télécharger");
+		lTitle.setStyleName(CSS.areaDocumentListTitle());
+		lPanel.setWidget(0, 0, lTitle);
+
+		// Documents
+		FlowPanel lDocumentPanel = new FlowPanel();
+		for (DocumentUi lDocument : pDocuments) {
+			Anchor lAnchor = new Anchor(lDocument.getTitle());
+			lAnchor.setTitle(lDocument.getSummary());
+			lAnchor.setHref(GWT.getHostPageBaseURL()
+					+ "downloadDocument?documentId=" + lDocument.getId()
+					+ "&fileId=" + lDocument.getData());
+			lAnchor.addStyleName(CSS.areaDocumentItem());
+			lDocumentPanel.add(lAnchor);
+		}
+		lPanel.setWidget(1, 0, lDocumentPanel);
+		return lPanel;
 	}
 }

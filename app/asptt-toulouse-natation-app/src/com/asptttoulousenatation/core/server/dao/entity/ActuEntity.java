@@ -8,6 +8,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.datastore.Text;
+
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
 public class ActuEntity implements Entity {
@@ -28,13 +30,13 @@ public class ActuEntity implements Entity {
 	private String summary;
 	
 	@Persistent
-	private String content;
+	private Text content;
 	
 	@Persistent
 	private Date creationDate;
 
 	public ActuEntity(Long pId, String pTitle, String pSummary,
-			String pContent, Date pCreationDate) {
+			Text pContent, Date pCreationDate) {
 		id = pId;
 		title = pTitle;
 		summary = pSummary;
@@ -66,11 +68,11 @@ public class ActuEntity implements Entity {
 		summary = pSummary;
 	}
 
-	public String getContent() {
+	public Text getContent() {
 		return content;
 	}
 
-	public void setContent(String pContent) {
+	public void setContent(Text pContent) {
 		content = pContent;
 	}
 

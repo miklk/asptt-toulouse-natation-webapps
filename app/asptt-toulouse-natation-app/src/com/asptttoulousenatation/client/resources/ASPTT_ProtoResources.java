@@ -2,6 +2,7 @@ package com.asptttoulousenatation.client.resources;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.ImageResource;
 
 public interface ASPTT_ProtoResources extends ClientBundle {
 
@@ -11,4 +12,10 @@ public interface ASPTT_ProtoResources extends ClientBundle {
 	
 	@Source("ASPTT_Proto.css")
 	public ASPTT_ProtoCss css();	
+	
+	@Source("images/headerBackground.png")
+	public ImageResource headerBackground();
+	
+	@Source("images/degrade_3.png")
+	public ImageResource degrade3();
 }

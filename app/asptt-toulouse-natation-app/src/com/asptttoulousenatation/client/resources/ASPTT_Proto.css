@@ -21,16 +21,18 @@ body {
 	-moz-border-radius: 20px;
 	border-radius: 20px;
 	width: 100%;
-	margin: 0px;
+	margin: 15px 0 0 15px;
 }
 .root {
 	background-color: #EBF1F5;
 }
-.header {
+
+@sprite .header {
 	background-color: #83C6F2;
-	background-image: url(http://prototype.asptt-toulouse-natation.com/images/water.jpg);
+	gwt-image: 'headerBackground';
 	width: 1200px;
 	height: 200px;
+	margin-bottom: 5px;
 }
 
 .header-logo {
@@ -300,6 +302,9 @@ color: #FFFFFF;
 	font-size:0.9em;	
 }
 
+.main-body {
+	padding-left: 15px;	
+}
 .main-content {
 	width: 800px;
 	height: 600px;
@@ -426,4 +431,34 @@ border: 3px solid #000000;
 	background-color: #F4F5F6;
 	width: 100px;
 	height: 40px;
+}
+
+.document-widget {
+	border: 1px solid #CDD8DE;
+}
+
+.area-document-list {
+	border: 1px solid #CDD8DE;
+	width: 100%;
+	margin-top: 5%;
+}
+
+@sprite .area-document-list-title {
+	font-weight: bold;
+	font-style: italic;	
+	color: #FFFFFF;
+	gwt-image: 'degrade3';
+	background-position: top left;
+	background-repeat: repeat-x;
+	width: 100%;
+}
+
+.area-document-item {
+	padding: 2px;	
+}
+
+.partner-panel {
+	height: 80px;
+	width: 100px;
+	text-align: center;	
 }

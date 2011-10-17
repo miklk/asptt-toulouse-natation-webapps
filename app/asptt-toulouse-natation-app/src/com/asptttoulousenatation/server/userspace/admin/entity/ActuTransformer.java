@@ -10,7 +10,7 @@ public class ActuTransformer extends
 	public ActuUi toUi(ActuEntity pEntity) {
 		ActuUi lUi = new ActuUi(pEntity.getId(), pEntity.getTitle(),
 				pEntity.getSummary(), pEntity.getCreationDate(),
-				pEntity.getContent());
+				pEntity.getContent().getValue());
 		return lUi;
 	}
 }

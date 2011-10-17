@@ -10,4 +10,10 @@ public interface AreaView extends IsWidget {
 	public String getContent();
 	public HasClickHandlers getUpdateButton();
 	public Long getContentId();
+	
+	public HasClickHandlers getDocumentUpdateButton();
+	public HasClickHandlers getDocumentDeleteButton();
+	public Long getDocumentId();
+	public HasValue<String> getDocumentTitle();
+	public HasValue<String> getDocumentSummary();
 }
