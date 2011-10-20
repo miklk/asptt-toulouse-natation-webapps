@@ -156,6 +156,7 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 																			pResult.getDocuments());
 															break;
 														default:
+															lMainView.updateBreadcrumb(pEvent.getAreaTitle(), pEvent.getMenuTitle());
 															lMainView
 																	.loadContent(
 																			pResult.getData(),

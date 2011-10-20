@@ -4,6 +4,7 @@ import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 
 import java.util.List;
 
+import com.asptttoulousenatation.client.util.Breadcrumb;
 import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
@@ -29,6 +30,7 @@ public class MainContentPanel extends Composite {
 	private VerticalPanel panel;
 	private SimplePanel content;
 	private FlowPanel actuPanel;
+	private Breadcrumb breadcrumb;
 
 	private InitResult initResult;
 	private PopupManager popupManager;
@@ -48,15 +50,17 @@ public class MainContentPanel extends Composite {
 		panel.add(lblAspttGrandToulouse);
 		panel.setCellHeight(lblAspttGrandToulouse, "20px");
 
-		Label lblAccueil = new Label("ASPTT Grand Toulouse Natation -> Accueil");
-		lblAccueil.setStyleName(CSS.tetiere());
-		lblAccueil.addClickHandler(new ClickHandler() {
+		breadcrumb = new Breadcrumb();
+		breadcrumb.update("Accueil", "");
+		breadcrumb.setStyleName(CSS.tetiere());
+		breadcrumb.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
 				content.setWidget(actuPanel);
+				breadcrumb.update("Accueil", "");
 			}
 		});
-		panel.add(lblAccueil);
-		panel.setCellHeight(lblAccueil, "10px");
+		panel.add(breadcrumb);
+		panel.setCellHeight(breadcrumb, "10px");
 
 		// TODO Actu
 		panel.add(content);
@@ -84,6 +88,10 @@ public class MainContentPanel extends Composite {
 			lHeaderPanel.isOdd();
 			actuPanel.add(lHeaderPanel);
 		}
+	}
+	
+	public void updateBreadcrumb(final String pAreaName, final String pMenuName) {
+		breadcrumb.update(pAreaName, pMenuName);
 	}
 
 	public void loadContent(final byte[] pData, List<DocumentUi> pDocuments) {

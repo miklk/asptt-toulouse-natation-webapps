@@ -9,19 +9,24 @@ public class LoadContentEvent extends GwtEvent<LoadContentEventHandler> {
 	private Long menuId;
 	private LoadContentAreaEnum area;
 	
+	private String areaTitle;
+	private String menuTitle;
+	
 	public LoadContentEvent() {
 		super();
 		area = LoadContentAreaEnum.CONTENT;
 	}
 	
-	public LoadContentEvent(Long pMenuId) {
+	public LoadContentEvent(Long pMenuId, String pAreaTitle, String pMenuTitle) {
 		this();
 		menuId = pMenuId;
+		areaTitle = pAreaTitle;
+		menuTitle = pMenuTitle;
 	}
 
-	public LoadContentEvent(Long pMenuId, LoadContentAreaEnum pArea) {
-		super();
-		menuId = pMenuId;
+	public LoadContentEvent(Long pMenuId, LoadContentAreaEnum pArea,
+			String pAreaTitle, String pMenuTitle) {
+		this(pMenuId, pAreaTitle, pMenuTitle);
 		area = pArea;
 	}
 
@@ -50,6 +55,23 @@ public class LoadContentEvent extends GwtEvent<LoadContentEventHandler> {
 	public void setArea(LoadContentAreaEnum pArea) {
 		area = pArea;
 	}
+
+	public String getAreaTitle() {
+		return areaTitle;
+	}
+
+	public void setAreaTitle(String pAreaTitle) {
+		areaTitle = pAreaTitle;
+	}
+
+	public String getMenuTitle() {
+		return menuTitle;
+	}
+
+	public void setMenuTitle(String pMenuTitle) {
+		menuTitle = pMenuTitle;
+	}
+
 
 	public enum LoadContentAreaEnum {
 		CONTENT,

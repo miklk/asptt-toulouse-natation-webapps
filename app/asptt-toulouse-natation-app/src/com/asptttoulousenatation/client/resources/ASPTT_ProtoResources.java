@@ -13,9 +13,12 @@ public interface ASPTT_ProtoResources extends ClientBundle {
 	@Source("ASPTT_Proto.css")
 	public ASPTT_ProtoCss css();	
 	
-	@Source("images/headerBackground.png")
+	@Source("images/headerBackgroundArrondi.png")
 	public ImageResource headerBackground();
 	
 	@Source("images/degrade_3.png")
 	public ImageResource degrade3();
+	
+	@Source("images/lignes_grand.jpg")
+	public ImageResource ligneGrande();
 }

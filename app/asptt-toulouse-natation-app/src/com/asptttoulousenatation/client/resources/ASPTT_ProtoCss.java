@@ -35,10 +35,16 @@ public interface ASPTT_ProtoCss extends CssResource {
 
 	@ClassName("header-login")
 	String headerLogin();
+	
+	@ClassName("header-photo")
+	String headerPhoto();
 
 	@ClassName("header-login-connexion")
 	String headerLoginConnexion();
 
+	@ClassName("header-login-inscription-panel")
+	String headerLoginInscriptionPanel();
+	
 	@ClassName("header-login-inscription")
 	String headerLoginInscription();
 

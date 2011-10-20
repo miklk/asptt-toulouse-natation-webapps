@@ -58,7 +58,7 @@ public class MainToolPanel extends Composite {
 					if (lAreaUi != null) {
 						MenuUi lMenu = lAreaUi.getMenu("Informations");
 						eventBus.fireEvent(new LoadContentEvent(lMenu.getId(),
-								LoadContentAreaEnum.TOOL));
+								LoadContentAreaEnum.TOOL, lAreaUi.getTitle(), lMenu.getTitle()));
 					}
 				} else {
 					buildBoutiquePopup();

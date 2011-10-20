@@ -151,6 +151,10 @@ public class MainViewImpl extends Composite implements MainView {
 		return headerPanel.getEmailAddressForget();
 	}
 
+	public void updateBreadcrumb(final String pAreaName, final String pMenuName) {
+		contentPanel.updateBreadcrumb(pAreaName, pMenuName);
+	}
+	
 	public void loadContent(byte[] pData, List<DocumentUi> pDocuments) {
 		contentPanel.loadContent(pData, pDocuments);
 	}

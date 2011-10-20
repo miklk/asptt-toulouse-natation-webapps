@@ -75,13 +75,16 @@ public class MainHeaderPanel extends Composite {
 		Image image = new Image(IMAGES.logo());
 		image.setStyleName(CSS.headerLogo());
 		panel.add(image);
+		panel.setCellWidth(image, "320px");
 
 		AlternateBanner alternateBanner = new AlternateBanner();
+		alternateBanner.setStyleName(CSS.headerPhoto());
 		panel.add(alternateBanner);
-		panel.setCellWidth(alternateBanner, "500px");
+		panel.setCellWidth(alternateBanner, "610px");
 		HorizontalPanel layoutPanel_2 = new HorizontalPanel();
 		layoutPanel_2.addStyleName(CSS.headerLogin());
 		panel.add(layoutPanel_2);
+		panel.setCellWidth(layoutPanel_2, "250px");
 
 		authenticationButton = new PushButton("Se connecter");
 		disconnectButton = new Label("Me déconnecter");
@@ -89,7 +92,7 @@ public class MainHeaderPanel extends Composite {
 		passwordForgetButton = new Button("Envoyer");
 
 		FlowPanel lInscriptionLabels = new FlowPanel();
-		lInscriptionLabels.getElement().getStyle().setMarginLeft(10, Unit.PX);
+		lInscriptionLabels.setStyleName(CSS.headerLoginInscriptionPanel());
 		Label nlnlblInscription = new Label("Inscription");
 		nlnlblInscription.addStyleName(CSS.headerLoginInscription());
 		lInscriptionLabels.add(nlnlblInscription);
@@ -105,7 +108,7 @@ public class MainHeaderPanel extends Composite {
 					if (lAreaUi != null) {
 						MenuUi lMenu = lAreaUi.getMenu("Informations");
 						eventBus.fireEvent(new LoadContentEvent(lMenu.getId(),
-								LoadContentAreaEnum.INSCRIPTION));
+								LoadContentAreaEnum.INSCRIPTION, lAreaUi.getTitle(), lMenu.getTitle()));
 					}
 				} else {
 					buildInscriptionPopup();
@@ -114,6 +117,7 @@ public class MainHeaderPanel extends Composite {
 		});
 
 		FlowPanel lConnexionLabels = new FlowPanel();
+		lConnexionLabels.setStyleName(CSS.headerLoginInscriptionPanel());
 		// TODO Disconnect
 		if (user != null) {
 			buildDisconnexionPanel(lConnexionLabels);
@@ -122,17 +126,13 @@ public class MainHeaderPanel extends Composite {
 			buildConnexionPanel(lConnexionLabels);
 		}
 		layoutPanel_2.add(lConnexionLabels);
-		// layoutPanel_2.setWidgetLeftWidth(lConnexionLabels, 60.0, Unit.PCT,
-		// 50.0, Unit.PCT);
-		// layoutPanel_2.setWidgetTopHeight(lConnexionLabels, 30.0, Unit.PCT,
-		// 100.0, Unit.PCT);
 	}
 
 	private void loadContent(final String pAreaTitle, final String pMenuTitle) {
 		AreaUi lAreaUi = initResult.getArea(pAreaTitle);
 		if (lAreaUi != null) {
 			MenuUi lMenu = lAreaUi.getMenu(pMenuTitle);
-			eventBus.fireEvent(new LoadContentEvent(lMenu.getId()));
+			eventBus.fireEvent(new LoadContentEvent(lMenu.getId(), pAreaTitle, pMenuTitle));
 		}
 
 	}
@@ -216,19 +216,11 @@ public class MainHeaderPanel extends Composite {
 				lPasswordForget.addStyleName(CSS.loginForgetLabel());
 				lPanel.add(lPasswordForget);
 
-				// lPanel.setWidgetTopHeight(lEmailAddressInput, 0, Unit.PCT,
-				// 35, Unit.PCT);
-				// lPanel.setWidgetTopHeight(lPasswordInput, 35, Unit.PCT, 35,
-				// Unit.PCT);
-				// lPanel.setWidgetBottomHeight(authenticationButton, 3,
-				// Unit.PCT, 20, Unit.PCT);
 				popupManager.createValidatePopup(true, true, lPanel);
 				popupManager.getPopupValidate().setValidateButton(
 						authenticationButton);
 				popupManager.getPopupValidate().setAction(popupAction);
 				popupManager.setSize("300px", "100px");
-				// PopupLayout lPopupLayout = new PopupLayout(true, "Connexion",
-				// lPanel);
 				popupManager.center();
 			}
 		});

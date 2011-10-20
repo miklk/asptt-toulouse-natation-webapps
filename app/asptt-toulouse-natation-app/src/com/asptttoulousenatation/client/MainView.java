@@ -24,6 +24,7 @@ public interface MainView extends IsWidget {
 	public void passwordSended();
 	public void passwordNotSended();
 	public HasValue<String> getEmailAddressForget();
+	public void updateBreadcrumb(final String pAreaName, final String pMenuName);
 	public void loadContent(final byte[] pData, List<DocumentUi> pDocuments);
 	public void loadToolContent(final byte[] pData);
 	public void loadInscriptionContent(final byte[] pData, List<DocumentUi> pDocuments);

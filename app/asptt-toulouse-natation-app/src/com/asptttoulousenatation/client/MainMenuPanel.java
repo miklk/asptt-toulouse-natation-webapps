@@ -25,13 +25,14 @@ public class MainMenuPanel extends Composite {
 
 	private InitResult initResult;
 	private PopupManager popupManager;
-private UserUi user;
-	
+	private UserUi user;
+
 	private EventBus eventBus;
-	
+
 	private FlowPanel panel;
-	
-	public MainMenuPanel(InitResult pInitResult, UserUi pUser, EventBus pEventBus) {
+
+	public MainMenuPanel(InitResult pInitResult, UserUi pUser,
+			EventBus pEventBus) {
 		initResult = pInitResult;
 		eventBus = pEventBus;
 		user = pUser;
@@ -47,7 +48,6 @@ private UserUi user;
 		Label lFirstAreaTitle = new Label(lFirstArea.getTitle());
 		lFirstAreaTitle.setStyleName(CSS.menuGTitleFirst());
 		panel.add(lFirstAreaTitle);
-//		menuPanel.setWidgetTopHeight(lFirstAreaTitle, 0, Unit.PCT, 30, Unit.PX);
 		// Build menu
 		for (final MenuUi lMenu : lFirstArea.getMenuSet().values()) {
 			Label lMenuLabel = new Label(lMenu.getTitle());
@@ -59,16 +59,12 @@ private UserUi user;
 			lMenuLabel.setStyleName(CSS.menuGSub());
 			addMenuGSubStyle(lMenuLabel);
 			panel.add(lMenuLabel);
-//			menuPanel.setWidgetTopHeight(lMenuLabel, space, Unit.PCT, 25,
-//					Unit.PX);
 			space += 5;
 		}
 		for (final AreaUi lArea : lAreaUis) {
 			Label lAreaTitle = new Label(lArea.getTitle());
 			lAreaTitle.setStyleName(CSS.menuGTitle());
 			panel.add(lAreaTitle);
-//			menuPanel.setWidgetTopHeight(lAreaTitle, space, Unit.PCT, 30,
-//					Unit.PX);
 			space += 6;
 			// Build menu
 			for (final MenuUi lMenu : lArea.getMenuSet().values()) {
@@ -81,22 +77,20 @@ private UserUi user;
 				lMenuLabel.setStyleName(CSS.menuGSub());
 				addMenuGSubStyle(lMenuLabel);
 				panel.add(lMenuLabel);
-//				menuPanel.setWidgetTopHeight(lMenuLabel, space, Unit.PCT, 25,
-//						Unit.PX);
 				space += 5;
 			}
 		}
 	}
-	
+
 	private void loadContent(final String pAreaTitle, final String pMenuTitle) {
 		AreaUi lAreaUi = initResult.getArea(pAreaTitle);
 		if (lAreaUi != null) {
 			MenuUi lMenu = lAreaUi.getMenu(pMenuTitle);
-			eventBus.fireEvent(new LoadContentEvent(lMenu.getId()));
+			eventBus.fireEvent(new LoadContentEvent(lMenu.getId(), pAreaTitle, pMenuTitle));
 		}
-		
+
 	}
-	
+
 	private void addMenuGSubStyle(final Label pLabel) {
 		pLabel.addMouseOverHandler(new MouseOverHandler() {
 
@@ -111,7 +105,7 @@ private UserUi user;
 			}
 		});
 	}
-	
+
 	public void setPopupManager(PopupManager pPopupManager) {
 		popupManager = pPopupManager;
 	}
