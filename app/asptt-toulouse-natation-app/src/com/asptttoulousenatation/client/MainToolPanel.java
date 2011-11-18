@@ -3,18 +3,23 @@ package com.asptttoulousenatation.client;
 import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 import static com.asptttoulousenatation.client.resources.ASPTT_ProtoResources.IMAGES;
 
+import java.util.Date;
+import java.util.List;
+
 import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent;
 import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent.LoadContentAreaEnum;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.user.UserUi;
+import com.asptttoulousenatation.shared.event.UiEvent;
 import com.asptttoulousenatation.shared.init.InitResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -80,22 +85,26 @@ public class MainToolPanel extends Composite {
 		lMeteoPanel.setHeaderStyle(CSS.blocTitle());
 		panel.add(lMeteoPanel);
 
-		DatePicker lDatePicker = new DatePicker();
-		DateTimeFormat lFormat = DateTimeFormat.getFormat("dd/MM/yyyy");
-		// Date[] lDates = new Date[] {lFormat.parse("10/03/2011"),
-		// lFormat.parse("11/03/2011"), lFormat.parse("12/03/2011"),
-		// lFormat.parse("13/03/2011"), lFormat.parse("18/03/2011"),
-		// lFormat.parse("19/03/2011"), lFormat.parse("20/03/2011"),
-		// lFormat.parse("15/04/2011"), lFormat.parse("16/04/2011"),
-		// lFormat.parse("17/04/2011")};
-		// lDatePicker.addStyleToDates(CSS.calendarEvt(),
-		// Arrays.asList(lDates));
-		// lDatePicker.addValueChangeHandler(new ValueChangeHandler<Date>() {
-		//
-		// public void onValueChange(ValueChangeEvent<Date> pEvent) {
-		// Window.alert("Il y a un évènement ce jour là.");
-		// }
-		// });
+		final DatePicker lDatePicker = new DatePicker();
+		// Get event dates
+		lDatePicker.addStyleToDates(CSS.calendarEvt(), initResult.getEvents()
+				.keySet());
+
+		lDatePicker.addValueChangeHandler(new ValueChangeHandler<Date>() {
+			public void onValueChange(ValueChangeEvent<Date> pEvent) {
+				Date lSearchDate = new Date(Date.UTC(pEvent.getValue().getYear(), pEvent.getValue().getMonth(), pEvent.getValue().getDate(), 0, 0, 0));
+				List<UiEvent> lUiEvents = initResult.getEvents()
+						.get(lSearchDate);
+				if (lUiEvents != null && !lUiEvents.isEmpty()) {
+					StringBuilder lMsg = new StringBuilder();
+					for(UiEvent lUiEvent: lUiEvents) {
+						lMsg.append(lUiEvent.getEventTitle()).append("<br />");
+					}
+					popupManager.createPopup(true, true, new HTML(lMsg.toString()));
+					popupManager.showRelativeTo(lDatePicker);
+				}
+			}
+		});
 		lDatePicker.setSize("100%", "100%");
 		HeaderPanel lEventPanel = new HeaderPanel("Evènement", lDatePicker);
 		lEventPanel.setHeaderStyle(CSS.blocTitle());

@@ -5,6 +5,7 @@ import java.util.Stack;
 import com.asptttoulousenatation.core.client.ui.PopupOkPanel;
 import com.google.gwt.user.client.ui.DecoratedPopupPanel;
 import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class PopupManager {
@@ -34,6 +35,10 @@ public class PopupManager {
 
 	public void show() {
 		popups.peek().show();
+	}
+	
+	public void showRelativeTo(UIObject pTarget) {
+		popups.peek().showRelativeTo(pTarget);
 	}
 
 	public void center() {
