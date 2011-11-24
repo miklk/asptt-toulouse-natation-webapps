@@ -76,6 +76,8 @@ public class LoadContentEvent extends GwtEvent<LoadContentEventHandler> {
 	public enum LoadContentAreaEnum {
 		CONTENT,
 		TOOL,
-		INSCRIPTION;
+		INSCRIPTION,
+		FORGET_PASSWORD,
+		BOTTOM;
 	}
 }

@@ -50,28 +50,11 @@ public class MainMenuPanel extends Composite {
 		panel.add(lFirstAreaTitle);
 		// Build menu
 		for (final MenuUi lMenu : lFirstArea.getMenuSet().values()) {
-			Label lMenuLabel = new Label(lMenu.getTitle());
-			lMenuLabel.addClickHandler(new ClickHandler() {
-				public void onClick(ClickEvent pEvent) {
-					loadContent(lFirstArea.getTitle(), lMenu.getTitle());
-				}
-			});
-			lMenuLabel.setStyleName(CSS.menuGSub());
-			addMenuGSubStyle(lMenuLabel);
-			panel.add(lMenuLabel);
-			space += 5;
-		}
-		for (final AreaUi lArea : lAreaUis) {
-			Label lAreaTitle = new Label(lArea.getTitle());
-			lAreaTitle.setStyleName(CSS.menuGTitle());
-			panel.add(lAreaTitle);
-			space += 6;
-			// Build menu
-			for (final MenuUi lMenu : lArea.getMenuSet().values()) {
+			if (lMenu.isDisplay()) {
 				Label lMenuLabel = new Label(lMenu.getTitle());
 				lMenuLabel.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent pEvent) {
-						loadContent(lArea.getTitle(), lMenu.getTitle());
+						loadContent(lFirstArea.getTitle(), lMenu.getTitle());
 					}
 				});
 				lMenuLabel.setStyleName(CSS.menuGSub());
@@ -80,13 +63,37 @@ public class MainMenuPanel extends Composite {
 				space += 5;
 			}
 		}
+		for (final AreaUi lArea : lAreaUis) {
+			if (lArea.canDisplay()) {
+				Label lAreaTitle = new Label(lArea.getTitle());
+				lAreaTitle.setStyleName(CSS.menuGTitle());
+				panel.add(lAreaTitle);
+				space += 6;
+				// Build menu
+				for (final MenuUi lMenu : lArea.getMenuSet().values()) {
+					if (lMenu.isDisplay()) {
+						Label lMenuLabel = new Label(lMenu.getTitle());
+						lMenuLabel.addClickHandler(new ClickHandler() {
+							public void onClick(ClickEvent pEvent) {
+								loadContent(lArea.getTitle(), lMenu.getTitle());
+							}
+						});
+						lMenuLabel.setStyleName(CSS.menuGSub());
+						addMenuGSubStyle(lMenuLabel);
+						panel.add(lMenuLabel);
+						space += 5;
+					}
+				}
+			}
+		}
 	}
 
 	private void loadContent(final String pAreaTitle, final String pMenuTitle) {
 		AreaUi lAreaUi = initResult.getArea(pAreaTitle);
 		if (lAreaUi != null) {
 			MenuUi lMenu = lAreaUi.getMenu(pMenuTitle);
-			eventBus.fireEvent(new LoadContentEvent(lMenu.getId(), pAreaTitle, pMenuTitle));
+			eventBus.fireEvent(new LoadContentEvent(lMenu.getId(), pAreaTitle,
+					pMenuTitle));
 		}
 
 	}

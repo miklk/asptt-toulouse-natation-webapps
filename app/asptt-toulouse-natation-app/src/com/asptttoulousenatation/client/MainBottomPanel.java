@@ -2,37 +2,100 @@ package com.asptttoulousenatation.client;
 
 import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 
+import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent;
+import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent.LoadContentAreaEnum;
+import com.asptttoulousenatation.core.shared.structure.MenuUi;
+import com.asptttoulousenatation.shared.init.InitResult;
+import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
+import com.google.gwt.dom.client.Style.Cursor;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.Label;
 
 public class MainBottomPanel extends Composite {
 
 	private HorizontalPanel panel;
 	
-	public MainBottomPanel() {
+	private InitResult initResult;
+	private PopupManager popupManager;
+	private EventBus eventBus;
+	
+	private HTML contactData;
+	
+	public MainBottomPanel(InitResult pInitResult,
+			EventBus pEventBus) {
+		initResult = pInitResult;
+		eventBus = pEventBus;
 		panel = new HorizontalPanel();
 		panel.setStyleName(CSS.menuB());
 		initWidget(panel);
 		InlineLabel nlnlblContacts = new InlineLabel("Contacts");
+		nlnlblContacts.getElement().getStyle().setCursor(Cursor.POINTER);
+		nlnlblContacts.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent pEvent) {
+				if (contactData == null) {
+					AreaUi lAreaUi = initResult.getArea("Contact");
+					if (lAreaUi != null) {
+						MenuUi lMenu = lAreaUi.getMenu("Contact");
+						eventBus.fireEvent(new LoadContentEvent(lMenu.getId(),
+								LoadContentAreaEnum.BOTTOM, lAreaUi.getTitle(), lMenu.getTitle()));
+					}
+				} else {
+					buildContactPopup();
+				}
+				
+			}
+		});
 		nlnlblContacts.setStyleName(CSS.menuBTitle());
 		panel.add(nlnlblContacts);
-//		bottomPanel.setWidgetLeftWidth(nlnlblContacts, 40.0, Unit.PCT, 20,
-//				Unit.PCT);
+	}
+	
+	public void setPopupManager(PopupManager pPopupManager) {
+		popupManager = pPopupManager;
+	}
 
-		InlineLabel nlnlblSuiveznousrss = new InlineLabel("Suivez-nous (RSS)");
-		nlnlblSuiveznousrss.setStyleName(CSS.menuBTitle());
-		panel.add(nlnlblSuiveznousrss);
-//		bottomPanel.setWidgetLeftWidth(nlnlblSuiveznousrss, 60, Unit.PCT, 20.0,
-//				Unit.PCT);
+	public void loadBottomContent(final byte[] pData) {
+		contactData = new HTML(new String(pData));
+		buildContactPopup();
+	}
+	
+	private void buildContactPopup() {
+		FlowPanel lFlowPanel = new FlowPanel();
+		HorizontalPanel lHeader = new HorizontalPanel();
+		lHeader.addStyleName(CSS.loginHeader());
+		Label lTitle = new Label("Contact");
+		lTitle.addStyleName(CSS.loginTitle());
+		lHeader.add(lTitle);
+		Label lClose = new Label("X");
+		lClose.addStyleName(CSS.loginClose());
+		lClose.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				popupManager.hide();
+			}
+		});
+		lHeader.add(lClose);
+		lHeader.setCellHorizontalAlignment(lTitle,
+				HasHorizontalAlignment.ALIGN_LEFT);
+		lHeader.setCellHorizontalAlignment(lClose,
+				HasHorizontalAlignment.ALIGN_RIGHT);
+		lClose.getElement().getStyle().setMarginLeft(50, Unit.PX);
+		lFlowPanel.add(lHeader);
+		FlowPanel lIdPanel = new FlowPanel();
+		lIdPanel.addStyleName(CSS.loginContent());
 
-		// InlineLabel nlnlblVisiteursDepuis = new
-		// InlineLabel("150 visiteurs depuis mars 2010");
-		// nlnlblVisiteursDepuis.setStyleName(CSS.menuBTitle());
-		// bottomPanel.add(nlnlblVisiteursDepuis);
-		// bottomPanel.setWidgetLeftWidth(nlnlblVisiteursDepuis, 80.0, Unit.PCT,
-		// 1024.0, Unit.PX);
-		// bottomPanel.setWidgetTopHeight(nlnlblVisiteursDepuis, 0.0, Unit.PX,
-		// 28.0, Unit.PX);
+		lIdPanel.add(contactData);
+		lFlowPanel.add(lIdPanel);
+		popupManager.createPopup(true, true, lFlowPanel);
+		popupManager.center();
+
 	}
 }

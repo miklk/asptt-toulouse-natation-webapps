@@ -80,7 +80,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 	public InitResult execute(InitAction pArg0, ExecutionContext pArg1)
 			throws DispatchException {
 		LOG.info("Init action");
-		// createData();
+//		 createData();
 		InitResult lInitResult = new InitResult();
 
 		// Structure
@@ -102,10 +102,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		CriterionDao<Long> lAreaCriterion = new CriterionDao<Long>();
 		lAreaCriterion.setEntityField(MenuEntityFields.AREA);
 		lAreaCriterion.setOperator(Operator.EQUAL);
-		CriterionDao<Boolean> lMenuCriterion = new CriterionDao<Boolean>(
-				MenuEntityFields.DISPLAY, Boolean.TRUE, Operator.EQUAL);
 		lCriteria.add(lAreaCriterion);
-		lCriteria.add(lMenuCriterion);
 		OrderDao lMenuOrder = new OrderDao(MenuEntityFields.ORDER,
 				OrderDao.OrderOperator.ASC);
 
@@ -275,6 +272,16 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				"contenu de MotDePasse sur l'inscription",
 				"L'espace privé n'est accessible qu'aux licenciés du club. Vous recevez votre mot de passe par e-mail une fois que votre inscription est validé par nos soins.<br />Si toute fois, vous avez oublié votre mot de passe, nous vous invitons à entrer votre adresse e-mail dans le champ suivant afin d'en recevoir un nouveau.",
 				false, false, 2);
+		
+		lAreaEntity = new AreaEntity(null, "Contact", ProfileEnum.PUBLIC, 6);
+		AreaEntity lAreaContact = lAreaDao.save(lAreaEntity);
+		createMenu(
+				MenuItems.VIDE.toString(),
+				"Contact",
+				lAreaContact.getId(),
+				"Contacter le secrétariat",
+				"ASPTT Toulouse Natation 4 rue des Sept Troubadours 2ème étage - Bureau 215  31000 Toulouse Tel : 05.61.62.68.45 Fax : 05.61.14.86.09",
+				false, false, 1);
 
 		// Admin
 		lAreaEntity = new AreaEntity(null, "Actualités", ProfileEnum.ADMIN,

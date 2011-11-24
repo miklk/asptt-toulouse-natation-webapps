@@ -61,6 +61,8 @@ public class MainHeaderPanel extends Composite {
 
 	private HTML inscriptionData;
 	private List<DocumentUi> inscriptionDocuments;
+	
+	private HTML forgetPasswordData;
 
 	public MainHeaderPanel(InitResult pInitResult, UserUi pUser,
 			EventBus pEventBus, PopupManager pPopupManager) {
@@ -174,43 +176,16 @@ public class MainHeaderPanel extends Composite {
 						"J'ai oublié mon mot de passe");
 				lPasswordForget.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent pEvent) {
-						HTML lText = new HTML(new String(initResult
-								.getArea("Inscription").getMenu("MotDePasse")
-								.getContentSet().get(0).getData()));
-						lText.addStyleName(CSS.loginContent());
-						FlowPanel lPanel = new FlowPanel();
-						VerticalPanel lInnerPanel = new VerticalPanel();
-						lInnerPanel.add(lText);
-
-						emailAddressForgetInput = new TextBox();
-						InputPanel lEmailAddressInput = new InputPanel(
-								"Adresse e-mail", emailAddressForgetInput,
-								"50%", "50%");
-						lEmailAddressInput.addStyleName(CSS.loginContent());
-						lInnerPanel.add(lEmailAddressInput);
-
-						HorizontalPanel lButtonPanel = new HorizontalPanel();
-						lButtonPanel.getElement().getStyle()
-								.setMarginLeft(40, Unit.PCT);
-						passwordForgetButton.addStyleName(CSS
-								.loginForgetButton());
-						passwordForgetButton.getElement().getStyle()
-								.setMarginLeft(50, Unit.PX);
-						lButtonPanel.add(passwordForgetButton);
-						Button lCloseButton = new Button("Fermer");
-						lCloseButton.addStyleName(CSS.loginForgetButton());
-						lCloseButton.addClickHandler(new ClickHandler() {
-							public void onClick(ClickEvent pEvent) {
-								popupManager.hide();
+						if (forgetPasswordData == null) {
+							AreaUi lAreaUi = initResult.getArea("Inscription");
+							if (lAreaUi != null) {
+								MenuUi lMenu = lAreaUi.getMenu("MotDePasse");
+								eventBus.fireEvent(new LoadContentEvent(lMenu.getId(),
+										LoadContentAreaEnum.FORGET_PASSWORD, lAreaUi.getTitle(), lMenu.getTitle()));
 							}
-						});
-						lButtonPanel.add(lCloseButton);
-						lInnerPanel.add(lButtonPanel);
-						lPanel.add(lInnerPanel);
-						popupManager.createValidatePopup(true, true, lPanel);
-						popupManager.setSize("600px", "100px");
-						popupManager.center();
-
+						} else {
+							buildForgetPasswordPopup();
+						}
 					}
 				});
 				lPasswordForget.addStyleName(CSS.loginForgetLabel());
@@ -412,5 +387,46 @@ public class MainHeaderPanel extends Composite {
 		}
 		lPanel.setWidget(1, 0, lDocumentPanel);
 		return lPanel;
+	}
+	
+	public void loadForgetPasswordContent(final byte[] pData) {
+		forgetPasswordData = new HTML(new String(pData));
+		buildForgetPasswordPopup();
+	}
+	
+	private void buildForgetPasswordPopup() {
+		forgetPasswordData.addStyleName(CSS.loginContent());
+		FlowPanel lPanel = new FlowPanel();
+		VerticalPanel lInnerPanel = new VerticalPanel();
+		lInnerPanel.add(forgetPasswordData);
+
+		emailAddressForgetInput = new TextBox();
+		InputPanel lEmailAddressInput = new InputPanel(
+				"Adresse e-mail", emailAddressForgetInput,
+				"50%", "50%");
+		lEmailAddressInput.addStyleName(CSS.loginContent());
+		lInnerPanel.add(lEmailAddressInput);
+
+		HorizontalPanel lButtonPanel = new HorizontalPanel();
+		lButtonPanel.getElement().getStyle()
+				.setMarginLeft(40, Unit.PCT);
+		passwordForgetButton.addStyleName(CSS
+				.loginForgetButton());
+		passwordForgetButton.getElement().getStyle()
+				.setMarginLeft(50, Unit.PX);
+		lButtonPanel.add(passwordForgetButton);
+		Button lCloseButton = new Button("Fermer");
+		lCloseButton.addStyleName(CSS.loginForgetButton());
+		lCloseButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				popupManager.hide();
+			}
+		});
+		lButtonPanel.add(lCloseButton);
+		lInnerPanel.add(lButtonPanel);
+		lPanel.add(lInnerPanel);
+		popupManager.createValidatePopup(true, true, lPanel);
+		popupManager.setSize("600px", "100px");
+		popupManager.center();
 	}
 }

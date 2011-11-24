@@ -13,8 +13,6 @@
 	<classpathentry kind="lib" path="lib/guice-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/guice-servlet-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/gin-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/gwt-incubator-timepicker-1.0.1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/gwt-timepicker-0.2.jar"/>
 	<classpathentry kind="lib" path="lib/gwt-ckeditor-0.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/auth.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-fileupload-1.2.1.jar"/>
@@ -22,8 +20,8 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/baseViewerImpl.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/consoleImpl.jar"/>
 	<classpathentry kind="lib" path="lib/gwt-dnd-3.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/gwt-cal-0.9.1.jar"/>
 	<classpathentry kind="lib" path="lib/gwtupload-0.6.4-20110712.073705-11.jar"/>
 	<classpathentry kind="lib" path="lib/gwtupload-gae-0.6.4-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/gwt-timepicker-0.2.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

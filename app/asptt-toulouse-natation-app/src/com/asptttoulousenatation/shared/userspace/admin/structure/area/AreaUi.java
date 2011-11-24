@@ -1,5 +1,6 @@
 package com.asptttoulousenatation.shared.userspace.admin.structure.area;
 
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -61,5 +62,14 @@ public class AreaUi implements IsSerializable {
 
 	public void setShortcut(boolean pShortcut) {
 		shortcut = pShortcut;
+	}
+	
+	public boolean canDisplay() {
+		boolean lCanDisplay = false;
+		Iterator<MenuUi> lIterator = menuSet.values().iterator();
+		while(!lCanDisplay && lIterator.hasNext()) {
+			lCanDisplay = lIterator.next().isDisplay();
+		}
+		return lCanDisplay;
 	}
 }

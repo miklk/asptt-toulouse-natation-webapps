@@ -155,6 +155,13 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 																			pResult.getData(),
 																			pResult.getDocuments());
 															break;
+														case FORGET_PASSWORD:
+															lMainView
+															.loadForgetPasswordContent(pResult.getData());
+													break;
+														case BOTTOM:
+															lMainView.loadBottomContent(pResult.getData());
+															break;
 														default:
 															lMainView.updateBreadcrumb(pEvent.getAreaTitle(), pEvent.getMenuTitle());
 															lMainView
