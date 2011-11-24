@@ -64,8 +64,11 @@ public class GetAreaActionHandler implements
 		CriterionDao<Long> lAreaCriterion = new CriterionDao<Long>();
 		lAreaCriterion.setEntityField(MenuEntityFields.AREA);
 		lAreaCriterion.setOperator(Operator.EQUAL);
-		CriterionDao<Boolean> lMenuDisplayCriterion = new CriterionDao<Boolean>(MenuEntityFields.DISPLAY, Boolean.TRUE, Operator.EQUAL);
-		lCriteria.add(lMenuDisplayCriterion);
+		
+		if(pAction.isOnlyDisplay()) {
+			CriterionDao<Boolean> lMenuDisplayCriterion = new CriterionDao<Boolean>(MenuEntityFields.DISPLAY, Boolean.TRUE, Operator.EQUAL);
+			lCriteria.add(lMenuDisplayCriterion);
+		}
 		lCriteria.add(lAreaCriterion);
 		
 		List<CriterionDao<? extends Object>> lMenuCriteria = new ArrayList<CriterionDao<? extends Object>>(

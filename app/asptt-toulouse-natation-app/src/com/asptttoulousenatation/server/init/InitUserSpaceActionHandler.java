@@ -101,7 +101,7 @@ public class InitUserSpaceActionHandler implements
 			lArea.setMenuSet(lMenuUis);
 			lAreaUis.put(lArea.getTitle(), lArea);
 			if("Structure du site".equals(lAreaEntity.getTitle())) {
-				lInitResult.setAreaResult(pContext.execute(new GetAreaAction()));
+				lInitResult.setAreaResult(pContext.execute(new GetAreaAction(false)));
 			}
 		}
 		lInitResult.setArea(lAreaUis);
