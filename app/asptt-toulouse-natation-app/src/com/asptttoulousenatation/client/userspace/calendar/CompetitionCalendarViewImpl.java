@@ -153,12 +153,12 @@ public class CompetitionCalendarViewImpl extends Composite implements
 		}
 		// Build next date
 		int lRowIndex = 1;
-		for (int i = 0; i < (((ROW - 1) * COLUMN) - (lFirstDay.getDay() - 1)); i++) {
+		for (int i = (lFirstDayIndex + 1); i < (((ROW - 1) * COLUMN) - (lFirstDay.getDay() - 1)); i++) {
 			int lNextDayIndex = lFirstDay.getDay() + i;
 			Date lNextDay = (Date) lFirstDay.clone();
 			lNextDay.setDate(lFirstDay.getDate() + i);
 			VerticalPanel lVerticalPanel = (VerticalPanel) calendarPanel
-					.getWidget(lRowIndex, (lNextDayIndex - 1) % 7);
+					.getWidget(lRowIndex, getColumn(lNextDayIndex));
 			lVerticalPanel.clear();
 			FlowPanel lPanel = new FlowPanel();
 			lPanel.add(buildDay(lNextDay));
@@ -248,7 +248,7 @@ public class CompetitionCalendarViewImpl extends Composite implements
 		lInfo.setWidget(1, 1, lLieuLabelValue);
 
 		// Officiels
-		Label lOfficielsLabel = new Label("Officiels");
+		Label lOfficielsLabel = new Label("Officiels inscrits (besoin de " + pCompetitionDayUi.getNeeded() + ")");
 		Label lOfficielsLabelValue = new Label();
 		lOfficielsLabelValue.setStyleName(CSS
 				.userSpaceCalendarCompetitionDayValue());
@@ -300,5 +300,15 @@ public class CompetitionCalendarViewImpl extends Composite implements
 
 	public Long getCompetitionDayId() {
 		return currentDay;
+	}
+	
+	private int getColumn(int dayIndex) {
+		final int result;
+		switch(dayIndex) {
+		case 0: result = dayIndex;
+		break;
+		default: result = (dayIndex - 1) % 7;
+		}
+		return result;
 	}
 }
