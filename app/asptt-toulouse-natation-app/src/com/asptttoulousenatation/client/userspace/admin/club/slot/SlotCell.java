@@ -18,7 +18,9 @@ public class SlotCell extends AbstractCell<SlotUi> {
 		pSb.appendEscaped(pValue.getDayOfWeek() + " - ");
 		pSb.appendEscaped(Utils.getTimeAsString(pValue.getBegin()) + " - "
 				+ Utils.getTimeAsString(pValue.getEnd()) + " - ");
-		pSb.appendEscaped(pValue.getGroup().getTitle() + " - ");
+		if (pValue.getGroup() != null) {
+			pSb.appendEscaped(pValue.getGroup().getTitle() + " - ");
+		}
 		pSb.appendEscaped(pValue.getSwimmingPool());
 		pSb.appendHtmlConstant("</div>");
 	}

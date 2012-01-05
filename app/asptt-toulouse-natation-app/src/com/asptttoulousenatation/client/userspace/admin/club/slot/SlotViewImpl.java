@@ -98,10 +98,11 @@ public class SlotViewImpl extends Composite implements SlotView {
 		hourEnd.setTime(null, lTime[0], lTime[1]);
 		
 		group = new ListBox();
-		int index = 0;
+		group.insertItem("Pas de groupe", "-1", 0);
+		int index = 1;
 		for(GroupUi lGroupUi: groupData) {
 			group.insertItem(lGroupUi.getTitle(), Long.toString(lGroupUi.getId()), index);
-			if(lGroupUi.getId() == pUi.getGroup().getId()) {
+			if(pUi.getGroup() != null && (lGroupUi.getId() == pUi.getGroup().getId())) {
 				group.setSelectedIndex(index);
 			}
 			index++;
@@ -139,6 +140,7 @@ public class SlotViewImpl extends Composite implements SlotView {
 		
 		//Group
 		group = new ListBox();
+		group.insertItem("Pas de groupe", "-1", 0);
 		for(GroupUi lGroupUi: groupData) {
 			group.addItem(lGroupUi.getTitle(), Long.toString(lGroupUi.getId()));
 		}
@@ -170,7 +172,13 @@ public class SlotViewImpl extends Composite implements SlotView {
 	}
 
 	public Long getGroup() {
-		return Long.valueOf(group.getValue(group.getSelectedIndex()));
+		final Long result;
+		if (group.getSelectedIndex() != -1) {
+			result = Long.valueOf(group.getValue(group.getSelectedIndex()));
+		} else {
+			result = -1l;
+		}
+		return result;
 	}
 
 	public HasClickHandlers getCreateButton() {
