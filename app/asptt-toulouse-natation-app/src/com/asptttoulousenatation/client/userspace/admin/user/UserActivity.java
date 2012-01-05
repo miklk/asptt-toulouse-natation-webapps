@@ -71,9 +71,29 @@ public class UserActivity extends MyAbstractActivity<UserPlace> {
 															lUserEditionView
 																	.getPhoneNumber()
 																	.getValue(),
-																	lUserEditionView.getAddressRoad().getValue(),
-																	lUserEditionView.getAddressCode().getValue(),
-																	lUserEditionView.getAddressCity().getValue()),
+															lUserEditionView
+																	.getAddressRoad()
+																	.getValue(),
+															lUserEditionView
+																	.getAddressAdditional()
+																	.getValue(),
+															lUserEditionView
+																	.getAddressCode()
+																	.getValue(),
+															lUserEditionView
+																	.getAddressCity()
+																	.getValue(),
+															lUserEditionView
+																	.getGender(),
+															lUserEditionView
+																	.getMeasurementSwimsuit()
+																	.getValue(),
+															lUserEditionView
+																	.getMeasurementTshirt()
+																	.getValue(),
+															lUserEditionView
+																	.getMeasurementShort()
+																	.getValue()),
 													new AsyncCallback<UpdateUserResult>() {
 														public void onFailure(
 																Throwable pCaught) {
@@ -130,9 +150,29 @@ public class UserActivity extends MyAbstractActivity<UserPlace> {
 																	lCreationView
 																			.getPhonenumber()
 																			.getValue(),
-																			lCreationView.getAddressRoad().getValue(),
-																			lCreationView.getAddressCode().getValue(),
-																			lCreationView.getAddressCity().getValue()),
+																	lCreationView
+																			.getAddressRoad()
+																			.getValue(),
+																	lCreationView
+																			.getAddressAdditional()
+																			.getValue(),
+																	lCreationView
+																			.getAddressCode()
+																			.getValue(),
+																	lCreationView
+																			.getAddressCity()
+																			.getValue(),
+																	lCreationView
+																			.getGender(),
+																	lCreationView
+																			.getMeasurementSwimsuit()
+																			.getValue(),
+																	lCreationView
+																			.getMeasurementTshirt()
+																			.getValue(),
+																	lCreationView
+																			.getMeasurementShort()
+																			.getValue()),
 															new AsyncCallback<CreateUserResult>() {
 																public void onFailure(
 																		Throwable pCaught) {

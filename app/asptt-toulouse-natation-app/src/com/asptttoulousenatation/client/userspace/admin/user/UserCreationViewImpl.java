@@ -9,6 +9,8 @@ import com.asptttoulousenatation.client.userspace.admin.club.slot.SlotCell;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -16,10 +18,11 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -40,8 +43,16 @@ public class UserCreationViewImpl extends Composite implements
 	private DateBox birthday;
 	private TextBox phonenumber;
 	private TextBox addressRoad;
+	private TextBox addressAdditional;
 	private TextBox addressCode;
 	private TextBox addressCity;
+	
+	private RadioButton genderFemale;
+	private RadioButton genderMale;
+	private TextBox measurementSwimsuit;
+	private TextBox measurementTshirt;
+	private TextBox measurementShort;
+	
 
 	private List<SlotUi> slotData;
 	private CellList<SlotUi> slotCellList;
@@ -116,6 +127,7 @@ public class UserCreationViewImpl extends Composite implements
 
 		// Birthday
 		birthday = new DateBox();
+		birthday.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT)));
 		lUserInfoPanel.setHTML(index, 0, "Date de naissance");
 		lUserInfoPanel.setWidget(index, 1, birthday);
 		index++;
@@ -139,6 +151,12 @@ public class UserCreationViewImpl extends Composite implements
 		lUserInfoPanel.setWidget(index, 1, addressRoad);
 		index++;
 		
+		//Address additional
+		addressAdditional = new TextBox();
+		lUserInfoPanel.setHTML(index, 0, "Complément");
+		lUserInfoPanel.setWidget(index, 1, addressAdditional);
+		index++;
+		
 		//Address code postale
 		addressCode = new TextBox();
 		lUserInfoPanel.setHTML(index, 0, "Code postale");
@@ -151,6 +169,59 @@ public class UserCreationViewImpl extends Composite implements
 		lUserInfoPanel.setWidget(index, 1, addressCity);
 		index++;
 		lUserPanel.add(lUserInfoPanel);
+		
+		// Other
+		FlexTable lUserOtherPanel = new FlexTable();
+		lUserOtherPanel.setCellSpacing(6);
+
+		index = 0;
+		lCellFormatter = lUserOtherPanel.getFlexCellFormatter();
+		lUserOtherPanel.setHTML(index, 0, "Autres informations");
+		lCellFormatter.setColSpan(index, 0, 2);
+		lCellFormatter.setHorizontalAlignment(index, 0,
+				HasHorizontalAlignment.ALIGN_CENTER);
+		index++;
+		
+		//Gender
+		lUserOtherPanel.setHTML(index, 0, "Sexe");
+		lCellFormatter.setColSpan(index, 0, 2);
+		lCellFormatter.setHorizontalAlignment(index, 0,
+				HasHorizontalAlignment.ALIGN_CENTER);
+		index++;
+		genderFemale = new RadioButton("gender");
+		genderMale = new RadioButton("gender");
+		Panel lGender = new HorizontalPanel();
+		lGender.add(genderFemale);
+		lGender.add(genderMale);
+		lUserOtherPanel.setHTML(index, 0, "Féminin/Masculin");
+		lUserOtherPanel.setWidget(index, 1, lGender);
+		index++;
+		
+		//Measurement
+		lUserOtherPanel.setHTML(index, 0, "Mensurations");
+		lCellFormatter.setColSpan(index, 0, 2);
+		lCellFormatter.setHorizontalAlignment(index, 0,
+				HasHorizontalAlignment.ALIGN_CENTER);
+		index++;
+		//Maillot de bain
+		measurementSwimsuit = new TextBox();
+		lUserOtherPanel.setHTML(index, 0, "Maillot de bain");
+		lUserOtherPanel.setWidget(index, 1, measurementSwimsuit);
+		index++;
+		
+		//T-shirt
+		measurementTshirt = new TextBox();
+		lUserOtherPanel.setHTML(index, 0, "T-shirt");
+		lUserOtherPanel.setWidget(index, 1, measurementTshirt);
+		index++;
+		
+		//Short
+		measurementShort = new TextBox();
+		lUserOtherPanel.setHTML(index, 0, "Short");
+		lUserOtherPanel.setWidget(index, 1, measurementShort);
+		index++;
+		
+		lUserPanel.add(lUserOtherPanel);
 
 		// Slots
 		FlexTable lUserSlotPanel = new FlexTable();
@@ -234,6 +305,7 @@ public class UserCreationViewImpl extends Composite implements
 	public HasValue<String> getAddressCity() {
 		return addressCity;
 	}
+	
 
 	public Set<Long> getSlots() {
 		final Set<Long> lSlots = new HashSet<Long>(slotSelectionModel.getSelectedSet().size());
@@ -241,5 +313,32 @@ public class UserCreationViewImpl extends Composite implements
 			lSlots.add(lSlot.getId());
 		}
 		return lSlots;
+	}
+
+	public HasValue<String> getAddressAdditional() {
+		return addressAdditional;
+	}
+
+	public String getGender() {
+		String gender = "";
+		if(genderFemale.getValue()) {
+			gender = "FEMALE";
+		}
+		if(genderMale.getValue()) {
+			gender = "MALE";
+		}
+		return gender;
+	}
+
+	public HasValue<String> getMeasurementSwimsuit() {
+		return measurementSwimsuit;
+	}
+
+	public HasValue<String> getMeasurementTshirt() {
+		return measurementTshirt;
+	}
+
+	public HasValue<String> getMeasurementShort() {
+		return measurementShort;
 	}
 }

@@ -19,7 +19,7 @@ import com.asptttoulousenatation.core.server.dao.user.UserDao;
 import com.asptttoulousenatation.core.server.entity.UserTransformer;
 import com.asptttoulousenatation.core.shared.user.AuthenticationAction;
 import com.asptttoulousenatation.core.shared.user.AuthenticationResult;
-import com.google.appengine.repackaged.com.google.common.io.MessageDigestAlgorithm;
+import com.asptttoulousenatation.server.util.Utils;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -37,7 +37,7 @@ public class AuthenticationActionHandler implements
 		//Encrypt password
 		String lEncryptedPassword = null;
 		try {
-			MessageDigest lMessageDigest = MessageDigest.getInstance(MessageDigestAlgorithm.MD5.name());
+			MessageDigest lMessageDigest = Utils.getMD5();
 			lEncryptedPassword = new String(lMessageDigest.digest(pAction.getPassword().getBytes()));
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block

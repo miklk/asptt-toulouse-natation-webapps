@@ -16,8 +16,13 @@ public class CreateUserAction implements Action<CreateUserResult> {
 	private Date birthday;
 	private String phonenumber;
 	private String addressRoad;
+	private String addressAdditional;
 	private String addressCode;
 	private String addressCity;
+	private String gender;
+	private String measurementSwimsuit;
+	private String measurementTshirt;
+	private String measurementShort;
 	
 	public CreateUserAction() {
 		
@@ -26,7 +31,10 @@ public class CreateUserAction implements Action<CreateUserResult> {
 	public CreateUserAction(String pEmailAddress, boolean pValidated,
 			Set<String> pProfiles, Set<Long> pSlots, String pLastName,
 			String pFirstName, Date pBirthday, String pPhonenumber,
-			String pAddressRoad, String pAddressCode, String pAddressCity) {
+			String pAddressRoad, String pAddressAdditional,
+			String pAddressCode, String pAddressCity, String pGender,
+			String pMeasurementSwimsuit, String pMeasurementTshirt,
+			String pMeasurementShort) {
 		super();
 		emailAddress = pEmailAddress;
 		validated = pValidated;
@@ -37,10 +45,14 @@ public class CreateUserAction implements Action<CreateUserResult> {
 		birthday = pBirthday;
 		phonenumber = pPhonenumber;
 		addressRoad = pAddressRoad;
+		addressAdditional = pAddressAdditional;
 		addressCode = pAddressCode;
 		addressCity = pAddressCity;
+		gender = pGender;
+		measurementSwimsuit = pMeasurementSwimsuit;
+		measurementTshirt = pMeasurementTshirt;
+		measurementShort = pMeasurementShort;
 	}
-
 
 	public String getEmailAddress() {
 		return emailAddress;
@@ -128,5 +140,45 @@ public class CreateUserAction implements Action<CreateUserResult> {
 
 	public void setAddressCity(String pAddressCity) {
 		addressCity = pAddressCity;
+	}
+
+	public String getAddressAdditional() {
+		return addressAdditional;
+	}
+
+	public void setAddressAdditional(String pAddressAdditional) {
+		addressAdditional = pAddressAdditional;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String pGender) {
+		gender = pGender;
+	}
+
+	public String getMeasurementSwimsuit() {
+		return measurementSwimsuit;
+	}
+
+	public void setMeasurementSwimsuit(String pMeasurementSwimsuit) {
+		measurementSwimsuit = pMeasurementSwimsuit;
+	}
+
+	public String getMeasurementTshirt() {
+		return measurementTshirt;
+	}
+
+	public void setMeasurementTshirt(String pMeasurementTshirt) {
+		measurementTshirt = pMeasurementTshirt;
+	}
+
+	public String getMeasurementShort() {
+		return measurementShort;
+	}
+
+	public void setMeasurementShort(String pMeasurementShort) {
+		measurementShort = pMeasurementShort;
 	}
 }

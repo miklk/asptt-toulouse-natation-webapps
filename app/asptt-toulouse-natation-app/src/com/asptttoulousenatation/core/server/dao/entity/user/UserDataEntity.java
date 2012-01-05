@@ -38,10 +38,25 @@ public class UserDataEntity implements Entity {
 	private String addressRoad;
 	
 	@Persistent
+	private String addressAdditional;
+	
+	@Persistent
 	private String addressCode;
 	
 	@Persistent
 	private String addressCity;
+	
+	@Persistent
+	private String gender;
+	
+	@Persistent
+	private String measurementSwimsuit;
+	
+	@Persistent
+	private String measurementTshirt;
+	
+	@Persistent
+	private String measurementShort;
 
 	public UserDataEntity() {
 		
@@ -109,5 +124,45 @@ public class UserDataEntity implements Entity {
 
 	public void setAddressCity(String pAddressCity) {
 		addressCity = pAddressCity;
+	}
+
+	public String getAddressAdditional() {
+		return addressAdditional;
+	}
+
+	public void setAddressAdditional(String pAddressAdditional) {
+		addressAdditional = pAddressAdditional;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String pGender) {
+		gender = pGender;
+	}
+
+	public String getMeasurementSwimsuit() {
+		return measurementSwimsuit;
+	}
+
+	public void setMeasurementSwimsuit(String pMeasurementSwimsuit) {
+		measurementSwimsuit = pMeasurementSwimsuit;
+	}
+
+	public String getMeasurementTshirt() {
+		return measurementTshirt;
+	}
+
+	public void setMeasurementTshirt(String pMeasurementTshirt) {
+		measurementTshirt = pMeasurementTshirt;
+	}
+
+	public String getMeasurementShort() {
+		return measurementShort;
+	}
+
+	public void setMeasurementShort(String pMeasurementShort) {
+		measurementShort = pMeasurementShort;
 	}
 }

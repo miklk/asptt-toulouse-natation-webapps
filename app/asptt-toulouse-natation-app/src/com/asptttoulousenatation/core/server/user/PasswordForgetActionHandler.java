@@ -27,7 +27,7 @@ import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.user.UserDao;
 import com.asptttoulousenatation.core.shared.user.PasswordForgetAction;
 import com.asptttoulousenatation.core.shared.user.PasswordForgetResult;
-import com.google.appengine.repackaged.com.google.common.io.MessageDigestAlgorithm;
+import com.asptttoulousenatation.server.util.Utils;
 
 public class PasswordForgetActionHandler implements
 		ActionHandler<PasswordForgetAction, PasswordForgetResult> {
@@ -49,8 +49,7 @@ public class PasswordForgetActionHandler implements
 
 			try {
 				Random lRandom = new Random(42788);
-				MessageDigest lMessageDigest = MessageDigest
-						.getInstance(MessageDigestAlgorithm.MD5.name());
+				MessageDigest lMessageDigest = Utils.getMD5();
 				String lCode = Integer.toString(lRandom.nextInt(1000));
 				System.out.println(lCode);
 				String lEncryptedPassword = new String(

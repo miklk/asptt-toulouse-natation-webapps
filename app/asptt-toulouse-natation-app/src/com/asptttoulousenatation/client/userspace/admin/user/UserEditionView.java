@@ -19,8 +19,14 @@ public interface UserEditionView extends IsWidget {
 	public HasValue<Date> getBirthday();
 	public HasValue<String> getPhoneNumber();
 	public HasValue<String> getAddressRoad();
+	public HasValue<String> getAddressAdditional();
 	public HasValue<String> getAddressCode();
 	public HasValue<String> getAddressCity();
+	
+	public String getGender();
+	public HasValue<String> getMeasurementSwimsuit();
+	public HasValue<String> getMeasurementTshirt();
+	public HasValue<String> getMeasurementShort();
 	
 	public HasClickHandlers getUpdateButton();
 }

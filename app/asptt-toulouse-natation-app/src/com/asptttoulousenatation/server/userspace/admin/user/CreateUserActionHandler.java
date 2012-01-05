@@ -23,9 +23,9 @@ import com.asptttoulousenatation.core.server.dao.entity.user.UserDataEntity;
 import com.asptttoulousenatation.core.server.dao.entity.user.UserEntity;
 import com.asptttoulousenatation.core.server.dao.user.UserDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
+import com.asptttoulousenatation.server.util.Utils;
 import com.asptttoulousenatation.shared.userspace.admin.user.CreateUserAction;
 import com.asptttoulousenatation.shared.userspace.admin.user.CreateUserResult;
-import com.google.appengine.repackaged.com.google.common.io.MessageDigestAlgorithm;
 
 public class CreateUserActionHandler implements
 		ActionHandler<CreateUserAction, CreateUserResult> {
@@ -41,6 +41,7 @@ public class CreateUserActionHandler implements
 		lUserData.setBirthday(pAction.getBirthday());
 		lUserData.setPhonenumber(pAction.getPhonenumber());
 		lUserData.setAddressRoad(pAction.getAddressRoad());
+		lUserData.setAddressAdditional(pAction.getAddressAdditional());
 		lUserData.setAddressCode(pAction.getAddressCode());
 		lUserData.setAddressCity(pAction.getAddressCity());
 		UserDataEntity lUserDataCreated = userDataDao.save(lUserData);
@@ -56,20 +57,16 @@ public class CreateUserActionHandler implements
 			
 			try {
 				Random lRandom = new Random(42788);
-				MessageDigest lMessageDigest = MessageDigest.getInstance(MessageDigestAlgorithm.MD5.name());
+				MessageDigest lMessageDigest = Utils.getMD5();
 				String lCode = Integer.toString(lRandom.nextInt(1000));
 				System.out.println(lCode);
-				String lEncryptedPassword = new String(lMessageDigest.digest(lCode.getBytes("UTF-8")));
+				String lEncryptedPassword = new String(lMessageDigest.digest());
 				lUser.setPassword(lEncryptedPassword);
 				System.out.println(lUser.getPassword());
 			} catch (NoSuchAlgorithmException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			}			
 			Properties props = new Properties();
 	        Session session = Session.getDefaultInstance(props, null);
 

@@ -23,9 +23,9 @@ import com.asptttoulousenatation.core.server.dao.entity.user.UserDataEntity;
 import com.asptttoulousenatation.core.server.dao.entity.user.UserEntity;
 import com.asptttoulousenatation.core.server.dao.user.UserDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
+import com.asptttoulousenatation.server.util.Utils;
 import com.asptttoulousenatation.shared.userspace.admin.user.UpdateUserAction;
 import com.asptttoulousenatation.shared.userspace.admin.user.UpdateUserResult;
-import com.google.appengine.repackaged.com.google.common.io.MessageDigestAlgorithm;
 
 public class UpdateUserActionHandler implements
 		ActionHandler<UpdateUserAction, UpdateUserResult> {
@@ -47,7 +47,7 @@ public class UpdateUserActionHandler implements
 			
 			try {
 				Random lRandom = new Random(42788);
-				MessageDigest lMessageDigest = MessageDigest.getInstance(MessageDigestAlgorithm.MD5.name());
+				MessageDigest lMessageDigest = Utils.getMD5();
 				String lCode = Integer.toString(lRandom.nextInt(1000));
 				System.out.println(lCode);
 				String lEncryptedPassword = new String(lMessageDigest.digest(lCode.getBytes("UTF-8")));
@@ -92,6 +92,7 @@ public class UpdateUserActionHandler implements
 		lUserData.setBirthday(pAction.getBirthday());
 		lUserData.setPhonenumber(pAction.getPhonenumber());
 		lUserData.setAddressRoad(pAction.getAddressRoad());
+		lUserData.setAddressAdditional(pAction.getAddressAdditional());
 		lUserData.setAddressCode(pAction.getAddressCode());
 		lUserData.setAddressCity(pAction.getAddressCity());
 		userDataDao.save(lUserData);

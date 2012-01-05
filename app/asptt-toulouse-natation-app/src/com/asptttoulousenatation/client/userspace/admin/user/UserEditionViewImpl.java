@@ -17,6 +17,8 @@ import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -27,6 +29,8 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.RadioButton;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -56,8 +60,15 @@ public class UserEditionViewImpl extends Composite implements
 	private DateBox birthday;
 	private TextBox phonenumber;
 	private TextBox addressRoad;
+	private TextBox addressAdditional;
 	private TextBox addressCode;
 	private TextBox addressCity;
+	
+	private RadioButton genderFemale;
+	private RadioButton genderMale;
+	private TextBox measurementSwimsuit;
+	private TextBox measurementTshirt;
+	private TextBox measurementShort;
 
 	private Map<Long, SlotUi> slotData;
 	private CellList<SlotUi> slotCellList;
@@ -129,7 +140,7 @@ public class UserEditionViewImpl extends Composite implements
 		for (ProfileEnum lProfile : ProfileEnum.values()) {
 			profiles.insertItem(lProfile.toString(), lProfile.toString(), lProfileIndex);
 			profileMap.put(lProfile.toString(), lProfileIndex);
-			index++;
+			lProfileIndex++;
 		}
 		lUserInternetPanel.setHTML(index, 0, "Profiles");
 		lUserInternetPanel.setWidget(index, 1, profiles);
@@ -163,6 +174,7 @@ public class UserEditionViewImpl extends Composite implements
 
 		// Birthday
 		birthday = new DateBox();
+		birthday.setFormat(new DateBox.DefaultFormat(DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT)));
 		lUserInfoPanel.setHTML(index, 0, "Date de naissance");
 		lUserInfoPanel.setWidget(index, 1, birthday);
 		index++;
@@ -186,6 +198,12 @@ public class UserEditionViewImpl extends Composite implements
 		lUserInfoPanel.setWidget(index, 1, addressRoad);
 		index++;
 		
+		//Address additional
+		addressAdditional = new TextBox();
+		lUserInfoPanel.setHTML(index, 0, "Complément");
+		lUserInfoPanel.setWidget(index, 1, addressAdditional);
+		index++;
+		
 		//Address code postale
 		addressCode = new TextBox();
 		lUserInfoPanel.setHTML(index, 0, "Code postale");
@@ -198,6 +216,59 @@ public class UserEditionViewImpl extends Composite implements
 		lUserInfoPanel.setWidget(index, 1, addressCity);
 		index++;
 		lUserPanel.add(lUserInfoPanel);
+		
+		// Other
+		FlexTable lUserOtherPanel = new FlexTable();
+		lUserOtherPanel.setCellSpacing(6);
+
+		index = 0;
+		lCellFormatter = lUserOtherPanel.getFlexCellFormatter();
+		lUserOtherPanel.setHTML(index, 0, "Autres informations");
+		lCellFormatter.setColSpan(index, 0, 2);
+		lCellFormatter.setHorizontalAlignment(index, 0,
+				HasHorizontalAlignment.ALIGN_CENTER);
+		index++;
+		
+		//Gender
+		lUserOtherPanel.setHTML(index, 0, "Sexe");
+		lCellFormatter.setColSpan(index, 0, 2);
+		lCellFormatter.setHorizontalAlignment(index, 0,
+				HasHorizontalAlignment.ALIGN_CENTER);
+		index++;
+		genderFemale = new RadioButton("gender");
+		genderMale = new RadioButton("gender");
+		Panel lGender = new HorizontalPanel();
+		lGender.add(genderFemale);
+		lGender.add(genderMale);
+		lUserOtherPanel.setHTML(index, 0, "Féminin/Masculin");
+		lUserOtherPanel.setWidget(index, 1, lGender);
+		index++;
+		
+		//Measurement
+		lUserOtherPanel.setHTML(index, 0, "Mensurations");
+		lCellFormatter.setColSpan(index, 0, 2);
+		lCellFormatter.setHorizontalAlignment(index, 0,
+				HasHorizontalAlignment.ALIGN_CENTER);
+		index++;
+		//Maillot de bain
+		measurementSwimsuit = new TextBox();
+		lUserOtherPanel.setHTML(index, 0, "Maillot de bain");
+		lUserOtherPanel.setWidget(index, 1, measurementSwimsuit);
+		index++;
+		
+		//T-shirt
+		measurementTshirt = new TextBox();
+		lUserOtherPanel.setHTML(index, 0, "T-shirt");
+		lUserOtherPanel.setWidget(index, 1, measurementTshirt);
+		index++;
+		
+		//Short
+		measurementShort = new TextBox();
+		lUserOtherPanel.setHTML(index, 0, "Short");
+		lUserOtherPanel.setWidget(index, 1, measurementShort);
+		index++;
+		
+		lUserPanel.add(lUserOtherPanel);
 
 		//User slots
 		//User info
@@ -233,15 +304,25 @@ public class UserEditionViewImpl extends Composite implements
 		emailAddress.setValue(pUi.getEmailAddress());
 		validated.setValue(pUi.isValidated());
 		for(String lProfile: pUi.getProfiles()) {
-			profiles.setSelectedIndex(profileMap.get(lProfile));
+			profiles.setItemSelected(profileMap.get(lProfile), true);
 		}
 		lastName.setValue(pUi.getUserData().getLastName());
 		firstName.setValue(pUi.getUserData().getFirstName());
 		birthday.setValue(pUi.getUserData().getBirthday());
 		phonenumber.setValue(pUi.getUserData().getPhonenumber());
 		addressRoad.setValue(pUi.getUserData().getAddressRoad());
+		addressAdditional.setValue(pUi.getUserData().getAddressAdditional());
 		addressCode.setValue(pUi.getUserData().getAddressCode());
 		addressCity.setValue(pUi.getUserData().getAddressCity());
+		if(pUi.getUserData().getGender() == "FEMALE") {
+			genderFemale.setValue(true);
+		}
+		if(pUi.getUserData().getGender() == "MALE") {
+			genderMale.setValue(true);
+		}
+		measurementSwimsuit.setValue(pUi.getUserData().getMeasurementSwimsuit());
+		measurementTshirt.setValue(pUi.getUserData().getMeasurementTshirt());
+		measurementShort.setValue(pUi.getUserData().getMeasurementShort());
 		for(SlotUi lSlot: slotData.values()) {
 			boolean lSelected = pUi.getSlots().contains(lSlot.getId());
 			slotSelectionModel.setSelected(lSlot, lSelected);
@@ -308,5 +389,32 @@ public class UserEditionViewImpl extends Composite implements
 
 	public HasValue<String> getAddressCity() {
 		return addressCity;
+	}
+
+	public HasValue<String> getAddressAdditional() {
+		return addressAdditional;
+	}
+	
+	public String getGender() {
+		String gender = "";
+		if(genderFemale.getValue()) {
+			gender = "FEMALE";
+		}
+		if(genderMale.getValue()) {
+			gender = "MALE";
+		}
+		return gender;
+	}
+
+	public HasValue<String> getMeasurementSwimsuit() {
+		return measurementSwimsuit;
+	}
+
+	public HasValue<String> getMeasurementTshirt() {
+		return measurementTshirt;
+	}
+
+	public HasValue<String> getMeasurementShort() {
+		return measurementShort;
 	}
 }

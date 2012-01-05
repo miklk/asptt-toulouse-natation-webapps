@@ -12,7 +12,10 @@ public class UserDataTransformer extends
 		UserDataUi lUi = new UserDataUi(pEntity.getFirstName(),
 				pEntity.getLastName(), pEntity.getBirthday(),
 				pEntity.getPhonenumber(), pEntity.getAddressRoad(),
-				pEntity.getAddressCode(), pEntity.getAddressCity());
+				pEntity.getAddressAdditional(), pEntity.getAddressCode(),
+				pEntity.getAddressCity(), pEntity.getGender(),
+				pEntity.getMeasurementSwimsuit(),
+				pEntity.getMeasurementTshirt(), pEntity.getMeasurementShort());
 		return lUi;
 	}
 

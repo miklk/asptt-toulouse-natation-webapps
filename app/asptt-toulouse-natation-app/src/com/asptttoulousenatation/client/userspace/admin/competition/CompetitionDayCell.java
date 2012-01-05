@@ -13,6 +13,6 @@ public class CompetitionDayCell extends AbstractCell<CompetitionDayUi> {
 			return;
 		}
 
-		pSb.appendEscaped("Journée #" + pValue.getDay());
+		pSb.appendEscaped("Réunion #" + pValue.getDay());
 	}
 }

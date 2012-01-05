@@ -27,8 +27,10 @@ import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -39,7 +41,8 @@ public class CompetitionViewImpl extends Composite implements
 	private List<CompetitionUi> data;
 	private List<CompetitionDayUi> dayData;
 
-	private HorizontalPanel panel;
+	private Panel panel;
+	private Panel competitionPanel;
 
 	private CellList<CompetitionUi> cellList;
 	private SingleSelectionModel<CompetitionUi> selectionModel;
@@ -90,7 +93,10 @@ public class CompetitionViewImpl extends Composite implements
 		});
 		editionPanel = new SimplePanel();
 		editionPanel.setStyleName(CSS.userSpaceContentEdition());
-		panel.add(editionPanel);
+		
+		competitionPanel = new VerticalPanel();
+		panel.add(competitionPanel);
+		competitionPanel.add(editionPanel);
 		
 		createButton = new Button("Créer");
 		updateButton = new Button("Mettre à jour");
@@ -186,7 +192,7 @@ public class CompetitionViewImpl extends Composite implements
 				lDayUi.setEnd(dayEnd.getValue());
 				lDayUi.setNeeded(Integer.valueOf(needed.getValue()));
 				createDays.put(lDayUi.getId(), lDayUi);
-				Window.alert("La journée a été ajouter à la compétition, vous devez créer ou mettre à jour la compétition pour sauvegarder vos changements.");
+				Window.alert("La réunion a été ajouté à la compétition, vous devez créer ou mettre à jour la compétition pour sauvegarder vos changements.");
 			}
 		});
 		dayUpdateButton = new Button("Mettre à jour");
@@ -204,7 +210,7 @@ public class CompetitionViewImpl extends Composite implements
 		
 		buildDayCreationPanel();
 		
-		panel.add(lPanel);
+		competitionPanel.add(lPanel);
 	}
 	
 	private void buildDayEditionPanel(CompetitionDayUi pUi) {
@@ -221,7 +227,7 @@ public class CompetitionViewImpl extends Composite implements
 		lPanel.setCellSpacing(6);
 		int index = 0;
 		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
-		lPanel.setHTML(index, 0, "Information sur la journée");
+		lPanel.setHTML(index, 0, "Information sur la réunion");
 		lCellFormatter.setColSpan(index, 0, 2);
 		lCellFormatter.setHorizontalAlignment(index, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
@@ -230,7 +236,7 @@ public class CompetitionViewImpl extends Composite implements
 		//Input
 		//Day #
 		day = new TextBox();
-		lPanel.setHTML(index, 0, "#");
+		lPanel.setHTML(index, 0, "Numéro de la réunion");
 		lPanel.setWidget(index, 1, day);
 		index++;
 		

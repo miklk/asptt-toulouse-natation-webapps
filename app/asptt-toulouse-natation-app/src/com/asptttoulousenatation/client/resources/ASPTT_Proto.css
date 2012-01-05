@@ -2,6 +2,7 @@
 
 body {
 	font-family: Helvetica, Verdana, sans;
+	background-color: #81C7E3;
 }
 
 .fonce {
@@ -55,7 +56,7 @@ body {
 }
 
 .header-login-inscription-panel {
-	width: 120px;
+	width: 130px;
 }
 .header-login-inscription {
 	color: #DBEEFF /*136095*/;

@@ -49,6 +49,7 @@ import com.asptttoulousenatation.server.userspace.admin.entity.ActuTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.AreaTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.CompetitionDayTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.MenuTransformer;
+import com.asptttoulousenatation.server.util.Utils;
 import com.asptttoulousenatation.shared.event.UiEvent;
 import com.asptttoulousenatation.shared.init.InitAction;
 import com.asptttoulousenatation.shared.init.InitResult;
@@ -56,7 +57,6 @@ import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentDataKindEnum;
 import com.asptttoulousenatation.shared.util.HTMLUtils;
 import com.google.appengine.api.datastore.Blob;
-import com.google.appengine.repackaged.com.google.common.io.MessageDigestAlgorithm;
 
 public class InitActionHandler implements ActionHandler<InitAction, InitResult> {
 
@@ -364,8 +364,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 			UserDataDao lUserDataDao = new UserDataDao();
 			lUserEntity.setUserData(lUserDataDao.save(lUserDataEntity).getId());
 
-			MessageDigest lMessageDigest = MessageDigest
-					.getInstance(MessageDigestAlgorithm.MD5.name());
+			MessageDigest lMessageDigest = Utils.getMD5();
 
 			String lCode = "0123";
 			System.out.println(lCode);
@@ -396,8 +395,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 			UserDataDao lUserDataDao = new UserDataDao();
 			lUserEntity.setUserData(lUserDataDao.save(lUserDataEntity).getId());
 
-			MessageDigest lMessageDigest = MessageDigest
-					.getInstance(MessageDigestAlgorithm.MD5.name());
+			MessageDigest lMessageDigest = Utils.getMD5();
 
 			String lCode = "0123";
 			System.out.println(lCode);
@@ -426,8 +424,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 			UserDataDao lUserDataDao = new UserDataDao();
 			lUserEntity.setUserData(lUserDataDao.save(lUserDataEntity).getId());
 
-			MessageDigest lMessageDigest = MessageDigest
-					.getInstance(MessageDigestAlgorithm.MD5.name());
+			MessageDigest lMessageDigest = Utils.getMD5();
 
 			String lCode = "0123";
 			System.out.println(lCode);
