@@ -17,15 +17,18 @@ public class AreaUi implements IsSerializable {
 	
 	private boolean shortcut;
 	
+	private short order;
+	
 	public AreaUi() {
 		
 	}
 
-	public AreaUi(long pId, String pTitle, boolean pShortcut) {
+	public AreaUi(long pId, String pTitle, boolean pShortcut, short pOrder) {
 		id = pId;
 		title = pTitle;
 		menuSet = new LinkedHashMap<String, MenuUi>();
 		shortcut = pShortcut;
+		order = pOrder;
 	}
 
 	public long getId() {
@@ -64,6 +67,14 @@ public class AreaUi implements IsSerializable {
 		shortcut = pShortcut;
 	}
 	
+	public short getOrder() {
+		return order;
+	}
+
+	public void setOrder(short pOrder) {
+		order = pOrder;
+	}
+
 	public boolean canDisplay() {
 		boolean lCanDisplay = false;
 		Iterator<MenuUi> lIterator = menuSet.values().iterator();

@@ -184,7 +184,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		AreaDao lAreaDao = new AreaDao();
 
 		AreaEntity lAreaEntity = new AreaEntity(null, "Club",
-				ProfileEnum.PUBLIC, 1);
+				ProfileEnum.PUBLIC, (short) 1);
 		AreaEntity lAreaEntity2 = lAreaDao.save(lAreaEntity);
 
 		// Historique
@@ -204,7 +204,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				lAreaEntity2.getId(), "contenu de vie du club",
 				"contenu de la vie du club", false, true, 5);
 
-		lAreaEntity = new AreaEntity(null, "Groupes", ProfileEnum.PUBLIC, 2);
+		lAreaEntity = new AreaEntity(null, "Groupes", ProfileEnum.PUBLIC, (short) 2);
 		AreaEntity lAreaGroupes = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.VIDE.toString(), "Ecole de natation",
 				lAreaGroupes.getId(), "contenu de Ecole de natation",
@@ -231,7 +231,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				"contenu de Centre de formation", false, true, 6);
 
 		lAreaEntity = new AreaEntity(null, "Compétitions", ProfileEnum.PUBLIC,
-				3);
+				(short) 3);
 		AreaEntity lAreaCompetition = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.VIDE.toString(), "Calendrier",
 				lAreaCompetition.getId(), "contenu de Calendrier",
@@ -246,7 +246,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				lAreaCompetition.getId(), "contenu de Ranking",
 				"contenu de Ranking", false, true, 4);
 
-		lAreaEntity = new AreaEntity(null, "Boutique", ProfileEnum.PUBLIC, 4);
+		lAreaEntity = new AreaEntity(null, "Boutique", ProfileEnum.PUBLIC, (short) 4);
 		AreaEntity lAreaBoutique = lAreaDao.save(lAreaEntity);
 		createMenu(
 				MenuItems.VIDE.toString(),
@@ -256,7 +256,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				"Partenariat avec la boutique arena de blagnac 10% de remise en caisse sur tout le magasin<br />et sur présentation d’un justificatif d’appartenance à l’ASPTT toulouse.",
 				false, true, 1);
 
-		lAreaEntity = new AreaEntity(null, "Inscription", ProfileEnum.PUBLIC, 5);
+		lAreaEntity = new AreaEntity(null, "Inscription", ProfileEnum.PUBLIC, (short) 5);
 		AreaEntity lAreaInscription = lAreaDao.save(lAreaEntity);
 		createMenu(
 				MenuItems.VIDE.toString(),
@@ -273,7 +273,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				"L'espace privé n'est accessible qu'aux licenciés du club. Vous recevez votre mot de passe par e-mail une fois que votre inscription est validé par nos soins.<br />Si toute fois, vous avez oublié votre mot de passe, nous vous invitons à entrer votre adresse e-mail dans le champ suivant afin d'en recevoir un nouveau.",
 				false, false, 2);
 		
-		lAreaEntity = new AreaEntity(null, "Contact", ProfileEnum.PUBLIC, 6);
+		lAreaEntity = new AreaEntity(null, "Contact", ProfileEnum.PUBLIC, (short) 6);
 		AreaEntity lAreaContact = lAreaDao.save(lAreaEntity);
 		createMenu(
 				MenuItems.VIDE.toString(),
@@ -285,7 +285,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 
 		// Admin
 		lAreaEntity = new AreaEntity(null, "Actualités", ProfileEnum.ADMIN,
-				true, 1);
+				true, (short) 1);
 		AreaEntity lAreaAdmActu = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.NEWS_PUBLICATION.toString(), "Publier",
 				lAreaAdmActu.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
@@ -295,7 +295,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				true, true, 2);
 
 		lAreaEntity = new AreaEntity(null, "Utilisateur", ProfileEnum.ADMIN,
-				true, 5);
+				true, (short) 5);
 		AreaEntity lAreaAdmUser = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.USER_CREATION.toString(), "Création",
 				lAreaAdmUser.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
@@ -306,7 +306,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 
 		// Organisation du club
 		lAreaEntity = new AreaEntity(null, "Organisation du club",
-				ProfileEnum.ADMIN, false, 3);
+				ProfileEnum.ADMIN, false, (short) 3);
 		AreaEntity lAreaClub = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.CLUB_GROUP_EDITION.toString(), "Groupes",
 				lAreaClub.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
@@ -317,7 +317,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 
 		// Officiels
 		lAreaEntity = new AreaEntity(null, "Officier", ProfileEnum.OFFICIEL,
-				true, 6);
+				true, (short) 6);
 		AreaEntity lAreaOfficier = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.OFFICIEL_VIEW.toString(),
 				"Consulter le calendier", lAreaOfficier.getId(),
@@ -325,14 +325,14 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 
 		// Compétition
 		lAreaEntity = new AreaEntity(null, "Compétitions saison",
-				ProfileEnum.ADMIN, true, 4);
+				ProfileEnum.ADMIN, true, (short) 4);
 		AreaEntity lAreaCompetitionSaison = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.COMPETITION_EDITION.toString(), "Edition",
 				lAreaCompetitionSaison.getId(), StringUtils.EMPTY,
 				StringUtils.EMPTY, true, true, 1);
 
 		lAreaEntity = new AreaEntity(null, "Structure du site",
-				ProfileEnum.ADMIN, 2);
+				ProfileEnum.ADMIN, (short) 2);
 		lAreaDao.save(lAreaEntity);
 
 		createUserAdmin();

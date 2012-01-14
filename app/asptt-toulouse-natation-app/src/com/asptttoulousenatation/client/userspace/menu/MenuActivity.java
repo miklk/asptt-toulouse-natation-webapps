@@ -3,12 +3,16 @@ package com.asptttoulousenatation.client.userspace.menu;
 import com.asptttoulousenatation.client.config.ClientFactory;
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent;
 import com.asptttoulousenatation.core.client.MyAbstractActivity;
+import com.asptttoulousenatation.core.shared.structure.area.CreateAreaAction;
+import com.asptttoulousenatation.core.shared.structure.area.CreateAreaResult;
 import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 public class MenuActivity extends MyAbstractActivity<MenuPlace> {
@@ -51,6 +55,21 @@ public class MenuActivity extends MyAbstractActivity<MenuPlace> {
 		addAction(lEventBus, lMenuView, MenuItems.CLUB_SLOT_EDITION);
 		addAction(lEventBus, lMenuView, MenuItems.COMPETITION_EDITION);
 		addAction(lEventBus, lMenuView, MenuItems.OFFICIEL_VIEW);
+		
+		lMenuView.getCreateAreaButton().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				dispatchAsync.execute(new CreateAreaAction(lMenuView.getAreaTitle().getValue(), lMenuView.getAreaOrder()), new AsyncCallback<CreateAreaResult>() {
+
+					public void onFailure(Throwable pCaught) {
+						Window.alert("Erreur " + pCaught.getMessage());
+					}
+
+					public void onSuccess(CreateAreaResult pResult) {
+						Window.alert("La zone a été créée.");
+					}
+				});
+			}
+		});
 		pPanel.setWidget(lMenuView);
 	}
 

@@ -8,7 +8,7 @@ public class AreaTransformer extends
 
 	@Override
 	public AreaUi toUi(AreaEntity pEntity) {
-		AreaUi lUi = new AreaUi(pEntity.getId(), pEntity.getTitle(), pEntity.isShortcut());
+		AreaUi lUi = new AreaUi(pEntity.getId(), pEntity.getTitle(), pEntity.isShortcut(), pEntity.getOrder());
 		return lUi;
 	}
 

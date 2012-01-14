@@ -16,4 +16,16 @@ public interface AreaView extends IsWidget {
 	public Long getDocumentId();
 	public HasValue<String> getDocumentTitle();
 	public HasValue<String> getDocumentSummary();
+	
+	//Area edition
+	public HasClickHandlers getAreaUpdateButton();
+	public HasValue<String> getAreaTitle();
+	public Short getAreaOrder();
+	
+	//Menu creation
+	public HasClickHandlers getMenuCreationButton();
+	public HasValue<String> getMenuCreationTitle();
+	public HasValue<String> getMenuCreationSummary();
+	public String getMenuCreationContent();
+	
 }

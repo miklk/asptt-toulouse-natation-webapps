@@ -9,14 +9,22 @@ import java.util.Map;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
-import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ButtonBase;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.StackPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -25,6 +33,12 @@ public class MenuViewImpl extends Composite implements MenuView {
 	private Map<String, ButtonBase> menus;
 	private StackPanel panel;
 	private SimplePanel areaContent;
+	private Button createAreaButton;
+	
+	
+	private TextBox areaTitle;
+	private TextBox areaOrder;
+	private Button createArea;
 	
 	private InitUserSpaceResult initUserSpaceResult;
 	
@@ -42,6 +56,7 @@ public class MenuViewImpl extends Composite implements MenuView {
 				panel.add(build(lArea), lArea.getTitle());
 			}
 		}
+		createArea = new Button("Créer la zone");
 	}
 	
 	private Widget build(AreaUi pArea) {
@@ -83,6 +98,62 @@ public class MenuViewImpl extends Composite implements MenuView {
 //			lPanel.setWidgetTopHeight(lAreaButton, lPct, Unit.PCT, 7, Unit.PCT);
 			lPct+= 7;
 		}
+		createAreaButton = new Button("Créer une zone");
+		createAreaButton.setStyleName(CSS.userSpaceMenuButton());
+		createAreaButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				createAreaCreationPanel();
+			}
+		});
+		lPanel.add(createAreaButton);
+		
 		areaContent.add(lPanel);
+	}
+	
+	private void createAreaCreationPanel() {
+		FlexTable lPanel = new FlexTable();
+		int lRowIndex = 0;
+		
+		//Area title
+		areaTitle = new TextBox();
+		areaTitle.setWidth("300px");
+		lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé de la zone"));
+		lPanel.setWidget(lRowIndex, 1, areaTitle);
+		lRowIndex++;
+		
+		//Area order
+		areaOrder = new TextBox();
+		areaOrder.setWidth("30px");
+		lPanel.setWidget(lRowIndex, 0, createLabel("Ordre d'affichage"));
+		lPanel.setWidget(lRowIndex, 1, areaOrder);
+		lRowIndex++;
+		
+		lPanel.setWidget(lRowIndex, 0, createArea);
+		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
+		lCellFormatter.setColSpan(lRowIndex, 0, 2);
+		lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
+				HasHorizontalAlignment.ALIGN_CENTER);
+		
+		PopupPanel lPopup = new PopupPanel(true, true);
+		lPopup.setWidget(lPanel);
+		lPopup.center();
+	}
+	
+	private Label createLabel(String pLabel) {
+		Label lLabel = new Label(pLabel);
+		lLabel.setStyleName(CSS.userSpaceContentLabel());
+		return lLabel;
+	}
+
+	public HasValue<String> getAreaTitle() {
+		return areaTitle;
+	}
+
+	public Short getAreaOrder() {
+		return Short.valueOf(areaOrder.getValue());
+	}
+
+	public HasClickHandlers getCreateAreaButton() {
+		return createArea;
 	}
 }

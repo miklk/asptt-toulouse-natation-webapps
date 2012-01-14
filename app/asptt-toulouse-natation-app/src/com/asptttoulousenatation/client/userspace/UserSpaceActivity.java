@@ -110,17 +110,13 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 										case STRUCTURE:
 											AreaUi lArea = (AreaUi) pEvent
 													.getObject();
-											if (!lArea.getMenuSet().isEmpty()) {
-												AreaActivity lAreaActivity = new AreaActivity(
-														new AreaPlace(),
-														clientFactory);
-												lAreaActivity.setArea(lArea);
-												lAreaActivity.start(lAdminView
-														.getContentPanel(),
-														lEventBus);
-											} else {
-												Window.alert("Cette zone n'a pas de menu.");
-											}
+											AreaActivity lAreaActivity = new AreaActivity(
+													new AreaPlace(),
+													clientFactory);
+											lAreaActivity.setArea(lArea);
+											lAreaActivity.start(lAdminView
+													.getContentPanel(),
+													lEventBus);
 											break;
 										case USER_CREATION:
 											UserActivity lUserActivity = new UserActivity(
@@ -140,27 +136,47 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 													lEventBus);
 											break;
 										case CLUB_GROUP_EDITION:
-											GroupActivity lGroupActivity = new GroupActivity(new GroupPlace(), clientFactory);
-											lGroupActivity.start(lAdminView.getContentPanel(), lEventBus);
+											GroupActivity lGroupActivity = new GroupActivity(
+													new GroupPlace(),
+													clientFactory);
+											lGroupActivity.start(lAdminView
+													.getContentPanel(),
+													lEventBus);
 											break;
 										case CLUB_SLOT_EDITION:
-											SlotActivity lSlotActivity = new SlotActivity(new SlotPlace(), clientFactory);
-											lSlotActivity.start(lAdminView.getContentPanel(), lEventBus);
+											SlotActivity lSlotActivity = new SlotActivity(
+													new SlotPlace(),
+													clientFactory);
+											lSlotActivity.start(lAdminView
+													.getContentPanel(),
+													lEventBus);
 											break;
 										case COMPETITION_EDITION:
-											CompetitionActivity lCompetitionActivity = new CompetitionActivity(new CompetitionPlace(), clientFactory);
-											lCompetitionActivity.start(lAdminView.getContentPanel(), lEventBus);
+											CompetitionActivity lCompetitionActivity = new CompetitionActivity(
+													new CompetitionPlace(),
+													clientFactory);
+											lCompetitionActivity.start(
+													lAdminView
+															.getContentPanel(),
+													lEventBus);
 											break;
 										case OFFICIEL_VIEW:
-											CompetitionCalendarActivity lCompetitionCalendarActivity = new CompetitionCalendarActivity(new CompetitionCalendarPlace(), clientFactory);
-											lCompetitionCalendarActivity.setUser(user);
-											lCompetitionCalendarActivity.start(lAdminView.getContentPanel(), lEventBus);
+											CompetitionCalendarActivity lCompetitionCalendarActivity = new CompetitionCalendarActivity(
+													new CompetitionCalendarPlace(),
+													clientFactory);
+											lCompetitionCalendarActivity
+													.setUser(user);
+											lCompetitionCalendarActivity.start(
+													lAdminView
+															.getContentPanel(),
+													lEventBus);
 											break;
 										default:
 											HomeActivity lHomeActivity = new HomeActivity(
 													new HomePlace(),
 													clientFactory);
-											lHomeActivity.setUserSpaceResult(pResult);
+											lHomeActivity
+													.setUserSpaceResult(pResult);
 											lHomeActivity.start(lAdminView
 													.getContentPanel(),
 													lEventBus);

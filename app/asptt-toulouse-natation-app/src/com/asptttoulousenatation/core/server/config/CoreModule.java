@@ -15,6 +15,10 @@ import com.asptttoulousenatation.core.server.competition.UpdateCompetitionAction
 import com.asptttoulousenatation.core.server.document.DeleteDocumentActionHandler;
 import com.asptttoulousenatation.core.server.document.GetDocumentActionHandler;
 import com.asptttoulousenatation.core.server.document.UpdateDocumentActionHandler;
+import com.asptttoulousenatation.core.server.structure.area.CreateAreaActionHandler;
+import com.asptttoulousenatation.core.server.structure.area.UpdateAreaActionHandler;
+import com.asptttoulousenatation.core.server.structure.menu.CreateMenuActionHandler;
+import com.asptttoulousenatation.core.server.structure.menu.UpdateMenuActionHandler;
 import com.asptttoulousenatation.core.server.user.AuthenticationActionHandler;
 import com.asptttoulousenatation.core.server.user.IsAuthenticatedActionHandler;
 import com.asptttoulousenatation.core.server.user.LogoutActionHandler;
@@ -34,6 +38,10 @@ import com.asptttoulousenatation.core.shared.document.DeleteDocumentAction;
 import com.asptttoulousenatation.core.shared.document.GetDocumentAction;
 import com.asptttoulousenatation.core.shared.document.UpdateDocumentAction;
 import com.asptttoulousenatation.core.shared.structure.LoadContentAction;
+import com.asptttoulousenatation.core.shared.structure.area.CreateAreaAction;
+import com.asptttoulousenatation.core.shared.structure.area.UpdateAreaAction;
+import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuAction;
+import com.asptttoulousenatation.core.shared.structure.menu.UpdateMenuAction;
 import com.asptttoulousenatation.core.shared.user.AuthenticationAction;
 import com.asptttoulousenatation.core.shared.user.IsAuthenticatedAction;
 import com.asptttoulousenatation.core.shared.user.LogoutAction;
@@ -110,5 +118,12 @@ public class CoreModule extends ActionHandlerModule {
 		bindHandler(GetDocumentAction. class, GetDocumentActionHandler.class);
 		bindHandler(UpdateDocumentAction. class, UpdateDocumentActionHandler.class);
 		bindHandler(DeleteDocumentAction. class, DeleteDocumentActionHandler.class);
+		
+		//Area
+		bindHandler(CreateAreaAction.class, CreateAreaActionHandler.class);
+		bindHandler(UpdateAreaAction.class, UpdateAreaActionHandler.class);
+		//Menu
+		bindHandler(CreateMenuAction.class, CreateMenuActionHandler.class);
+		bindHandler(UpdateMenuAction.class, UpdateMenuActionHandler.class);
 	}
 }

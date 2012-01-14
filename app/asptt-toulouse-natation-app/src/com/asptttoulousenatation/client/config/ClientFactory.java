@@ -23,6 +23,7 @@ import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitResult;
 import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
+import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
 
@@ -37,7 +38,7 @@ public interface ClientFactory {
 	public HomeView getHomeView(List<MenuUi> pMenuList);
 	public MenuView getMenuView(InitUserSpaceResult pInitUserSpaceResult);
 	public ActuView getActuView();
-	public AreaView getAreaView(List<MenuUi> pData);
+	public AreaView getAreaView(AreaUi pArea);
 	public ActuEditionView getActuEditionView(List<ActuUi> pData);
 	public UserEditionView getUserEditionView(List<UserUi> pData, List<SlotUi> pSlotData);
 	public UserCreationView getUserCreationView(List<SlotUi> pSlotData);

@@ -36,6 +36,7 @@ import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitResult;
 import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
+import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
@@ -82,8 +83,8 @@ public class ClientFactoryImpl implements ClientFactory {
 		return actuView;
 	}
 
-	public AreaView getAreaView(List<MenuUi> pData) {
-		areaView = new AreaViewImpl(pData);
+	public AreaView getAreaView(AreaUi pArea) {
+		areaView = new AreaViewImpl(pArea);
 		return areaView;
 	}
 

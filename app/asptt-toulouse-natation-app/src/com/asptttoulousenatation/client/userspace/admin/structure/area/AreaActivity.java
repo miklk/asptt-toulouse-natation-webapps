@@ -1,14 +1,15 @@
 package com.asptttoulousenatation.client.userspace.admin.structure.area;
 
-import java.util.ArrayList;
-
 import com.asptttoulousenatation.client.config.ClientFactory;
 import com.asptttoulousenatation.core.client.MyAbstractActivity;
 import com.asptttoulousenatation.core.shared.document.DeleteDocumentAction;
 import com.asptttoulousenatation.core.shared.document.DeleteDocumentResult;
 import com.asptttoulousenatation.core.shared.document.UpdateDocumentAction;
 import com.asptttoulousenatation.core.shared.document.UpdateDocumentResult;
-import com.asptttoulousenatation.core.shared.structure.MenuUi;
+import com.asptttoulousenatation.core.shared.structure.area.UpdateAreaAction;
+import com.asptttoulousenatation.core.shared.structure.area.UpdateAreaResult;
+import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuAction;
+import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.UpdateContentAction;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.UpdateContentResult;
@@ -28,7 +29,7 @@ public class AreaActivity extends MyAbstractActivity<AreaPlace> {
 	}
 
 	public void start(AcceptsOneWidget pPanel, EventBus pEventBus) {
-		final AreaView lAreaView = clientFactory.getAreaView(new ArrayList<MenuUi>(area.getMenuSet().values()));
+		final AreaView lAreaView = clientFactory.getAreaView(area);
 		lAreaView.getUpdateButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
 				dispatchAsync.execute(new UpdateContentAction(lAreaView.getContentId(), lAreaView.getSummary().getValue(), lAreaView.getContent().getBytes()), new AsyncCallback<UpdateContentResult>() {
@@ -72,6 +73,31 @@ public class AreaActivity extends MyAbstractActivity<AreaPlace> {
 					}
 				});
 				
+			}
+		});
+		
+		lAreaView.getAreaUpdateButton().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				dispatchAsync.execute(new UpdateAreaAction(area.getId(), lAreaView.getAreaTitle().getValue(), lAreaView.getAreaOrder()), new AsyncCallback<UpdateAreaResult>() {
+					public void onFailure(Throwable pCaught) {
+						Window.alert("Erreur: " + pCaught.getMessage());
+					}
+					public void onSuccess(UpdateAreaResult pResult) {
+						Window.alert("Zone mise à jour !");
+					}
+				});
+			}
+		});
+		lAreaView.getMenuCreationButton().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				dispatchAsync.execute(new CreateMenuAction(lAreaView.getMenuCreationTitle().getValue(), lAreaView.getMenuCreationSummary().getValue(), lAreaView.getMenuCreationContent(), (short)0, area.getId()), new AsyncCallback<CreateMenuResult>() {
+					public void onFailure(Throwable pCaught) {
+						Window.alert("Erreur: " + pCaught.getMessage());
+					}
+					public void onSuccess(CreateMenuResult pResult) {
+						Window.alert("Menu créé !");
+					}
+				});
 			}
 		});
 		pPanel.setWidget(lAreaView);

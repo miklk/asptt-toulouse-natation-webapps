@@ -2,7 +2,7 @@ package com.asptttoulousenatation.client.userspace.admin.structure.area;
 
 import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.asptttoulousenatation.client.userspace.admin.structure.menu.ui.MenuCell;
 import com.asptttoulousenatation.client.userspace.admin.ui.DocumentCell;
@@ -10,11 +10,14 @@ import com.asptttoulousenatation.client.userspace.admin.util.CellListStyle;
 import com.asptttoulousenatation.client.userspace.document.DocumentWidget;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
+import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentUI;
 import com.axeiya.gwtckeditor.client.CKConfig;
 import com.axeiya.gwtckeditor.client.CKEditor;
 import com.axeiya.gwtckeditor.client.Toolbar;
 import com.axeiya.gwtckeditor.client.ToolbarLine;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
@@ -28,13 +31,15 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 public class AreaViewImpl extends Composite implements AreaView {
 
-	private List<MenuUi> data;
-	private HorizontalPanel panel;
+	private AreaUi area;
+	private VerticalPanel panel;
+	private HorizontalPanel menuPanel;
 
 	private CellList<MenuUi> cellList;
 	private SingleSelectionModel<MenuUi> selectionModel;
@@ -44,8 +49,8 @@ public class AreaViewImpl extends Composite implements AreaView {
 	private TextBox summaryInput;
 	private CKEditor contentInput;
 	private Button updateButton;
-	
-	//Document edition
+
+	// Document edition
 	private HorizontalPanel documentPanel;
 	private CellList<DocumentUi> documentCellList;
 	private SingleSelectionModel<DocumentUi> documentSelectionModel;
@@ -55,14 +60,32 @@ public class AreaViewImpl extends Composite implements AreaView {
 	private Button documentUpdateButton;
 	private Button documentDeleteButton;
 
-	public AreaViewImpl(List<MenuUi> pData) {
-		data = pData;
-		panel = new HorizontalPanel();
+	// Area creation
+	private Button updateAreaButton;
+	private TextBox areaTitle;
+	private TextBox areaOrder;
+	
+	//Menu creation
+	private SimplePanel menuCreationPanel;
+
+	private TextBox menuCreationTitleInput;
+	private TextBox menuCreationSummaryInput;
+	private CKEditor menuCreationContentInput;
+	private Button menuCreationButton;
+
+	public AreaViewImpl(AreaUi pArea) {
+		area = pArea;
+		panel = new VerticalPanel();
 		initWidget(panel);
 
+		createAreaEdition();
+
+		menuPanel = new HorizontalPanel();
+		panel.add(menuPanel);
+
 		cellList = new CellList<MenuUi>(new MenuCell(), new CellListStyle());
-		cellList.setRowData(data);
-		panel.add(cellList);
+		cellList.setRowData(new ArrayList<MenuUi>(area.getMenuSet().values()));
+		menuPanel.add(cellList);
 		selectionModel = new SingleSelectionModel<MenuUi>();
 		cellList.setSelectionModel(selectionModel);
 		selectionModel
@@ -76,27 +99,28 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 		editionPanel = new SimplePanel();
 		editionPanel.setStyleName(CSS.userSpaceContentEdition());
-		panel.add(editionPanel);
+		menuPanel.add(editionPanel);
 
 		updateButton = new Button("Modifier");
 		documentUpdateButton = new Button("Mettre à jour le document");
 		documentDeleteButton = new Button("Supprimer le document");
+		menuCreationButton = new Button("Créer le menu");
 	}
 
 	private void buildEditionPanel(MenuUi pMenuUi) {
 		FlexTable lPanel = new FlexTable();
-		
+
 		int lRowIndex = 0;
-		
-		//Menu title
+
+		// Menu title
 		menuTitleInput = new TextBox();
 		menuTitleInput.setWidth("300px");
 		menuTitleInput.setValue(pMenuUi.getTitle());
 		lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé du menu"));
 		lPanel.setWidget(lRowIndex, 1, menuTitleInput);
 		lRowIndex++;
-		
-		//Content edition
+
+		// Content edition
 		ContentUI lContentUI = pMenuUi.getContentSet().get(0);
 		// Summary
 		summaryInput = new TextBox();
@@ -121,24 +145,25 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 		contentInput.setHTML(new String(lContentUI.getData()));
 		lRowIndex++;
-		
+
 		buildDocumentPanel(pMenuUi);
 		lPanel.setWidget(lRowIndex, 0, createLabel("Documents attachés"));
 		lPanel.setWidget(lRowIndex, 1, documentPanel);
 		lRowIndex++;
-		
+
 		lPanel.setWidget(lRowIndex, 0, updateButton);
 		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
 		lCellFormatter.setColSpan(lRowIndex, 0, 2);
 		lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
-		
+
 		editionPanel.setWidget(lPanel);
 	}
-	
+
 	private void buildDocumentPanel(final MenuUi pMenuUi) {
 		documentPanel = new HorizontalPanel();
-		documentCellList = new CellList<DocumentUi>(new DocumentCell(), new CellListStyle());
+		documentCellList = new CellList<DocumentUi>(new DocumentCell(),
+				new CellListStyle());
 		documentCellList.setRowData(pMenuUi.getDocumentSet());
 		documentPanel.add(documentCellList);
 		documentSelectionModel = new SingleSelectionModel<DocumentUi>();
@@ -147,7 +172,9 @@ public class AreaViewImpl extends Composite implements AreaView {
 				.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
 					public void onSelectionChange(SelectionChangeEvent pEvent) {
-						buildDocumentEditionPanel(documentSelectionModel.getSelectedObject(), pMenuUi.getId());
+						buildDocumentEditionPanel(
+								documentSelectionModel.getSelectedObject(),
+								pMenuUi.getId());
 
 					}
 				});
@@ -155,38 +182,130 @@ public class AreaViewImpl extends Composite implements AreaView {
 		documentEditionPanel.setStyleName(CSS.userSpaceContentEdition());
 		documentEditionPanel.setWidget(new DocumentWidget(pMenuUi.getId()));
 		documentPanel.add(documentEditionPanel);
-		
+
 	}
-	
-	private void buildDocumentEditionPanel(final DocumentUi pDocument, final Long pMenu) {
+
+	private void buildDocumentEditionPanel(final DocumentUi pDocument,
+			final Long pMenu) {
 		FlexTable lPanel = new FlexTable();
 		int lRowIndex = 0;
-		
-		//Title
+
+		// Title
 		documentTitleInput = new TextBox();
 		documentTitleInput.setValue(pDocument.getTitle());
 		lPanel.setWidget(lRowIndex, 0, createLabel("Titre"));
 		lPanel.setWidget(lRowIndex, 1, documentTitleInput);
 		lRowIndex++;
-		
-		//Summary
+
+		// Summary
 		documentSummaryInput = new TextBox();
 		documentSummaryInput.setValue(pDocument.getSummary());
 		lPanel.setWidget(lRowIndex, 0, createLabel("Résumé"));
 		lPanel.setWidget(lRowIndex, 1, documentSummaryInput);
 		lRowIndex++;
-		
+
 		lPanel.setWidget(lRowIndex, 0, documentUpdateButton);
 		lPanel.setWidget(lRowIndex, 1, documentDeleteButton);
-		
+
 		PopupPanel lPopup = new PopupPanel(true, true);
 		lPopup.setWidget(lPanel);
 		lPopup.center();
 	}
 
+	private void createAreaEdition() {
+		FlexTable lPanel = new FlexTable();
+		int lRowIndex = 0;
+
+		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
+		lPanel.setHTML(lRowIndex, 0, "Editer la zone");
+		lCellFormatter.setColSpan(lRowIndex, 0, 5);
+		lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
+				HasHorizontalAlignment.ALIGN_CENTER);
+		lRowIndex++;
+
+		// Area title
+		areaTitle = new TextBox();
+		areaTitle.setWidth("200px");
+		areaTitle.setValue(area.getTitle());
+		lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé de la zone"));
+		lPanel.setWidget(lRowIndex, 1, areaTitle);
+
+		// Area order
+		areaOrder = new TextBox();
+		areaOrder.setWidth("30px");
+		areaOrder.setValue(Short.toString(area.getOrder()));
+		lPanel.setWidget(lRowIndex, 2, createLabel("Ordre d'affichage"));
+		lPanel.setWidget(lRowIndex, 3, areaOrder);
+
+		updateAreaButton = new Button("Mettre à jour à la zone");
+		lPanel.setWidget(lRowIndex, 4, updateAreaButton);
+		
+		lRowIndex++;
+		//Menu button
+		Button lAddMenuButton = new Button("Ajouter un menu");
+		lAddMenuButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				createMenuCreationPanel();
+			}
+		});
+		lPanel.setWidget(lRowIndex, 0, lAddMenuButton);
+		panel.add(lPanel);
+	}
 	
+	private void createMenuCreationPanel() {
+			FlexTable lPanel = new FlexTable();
+			int lRowIndex = 0;
+			
+			FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
+			lPanel.setHTML(lRowIndex, 0, "Ajouter un menu");
+			lCellFormatter.setColSpan(lRowIndex, 0, 5);
+			lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
+					HasHorizontalAlignment.ALIGN_CENTER);
+			lRowIndex++;
+
+			// Menu title
+			menuCreationTitleInput = new TextBox();
+			menuCreationTitleInput.setWidth("300px");
+			lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé du menu"));
+			lPanel.setWidget(lRowIndex, 1, menuCreationTitleInput);
+			lRowIndex++;
+
+			// Summary
+			menuCreationSummaryInput = new TextBox();
+			menuCreationSummaryInput.setWidth("300px");
+			lPanel.setWidget(lRowIndex, 0, createLabel("Résumé"));
+			lPanel.setWidget(lRowIndex, 1, menuCreationSummaryInput);
+			lRowIndex++;
+
+			// Content
+			CKConfig lConfig = new CKConfig();
+			Toolbar lToolbar = new Toolbar();
+			ToolbarLine lToolbarLine = new ToolbarLine();
+			lToolbarLine.add(CKConfig.TOOLBAR_OPTIONS.Bold);
+			lToolbarLine.add(CKConfig.TOOLBAR_OPTIONS.Blockquote);
+			lToolbar.add(lToolbarLine);
+			lConfig.setToolbar(lToolbar);
+			menuCreationContentInput = new CKEditor(lConfig);
+			lPanel.setWidget(lRowIndex, 0, createLabel("Contenu"));
+			lPanel.setWidget(lRowIndex, 1, menuCreationContentInput);
+
+			lRowIndex++;
+
+			lPanel.setWidget(lRowIndex, 0, menuCreationButton);
+			lCellFormatter.setColSpan(lRowIndex, 0, 2);
+			lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
+					HasHorizontalAlignment.ALIGN_CENTER);
+
+			menuCreationPanel = new SimplePanel();
+			menuCreationPanel.setWidget(lPanel);
+			PopupPanel lPopup = new PopupPanel(true, true);
+			lPopup.setWidget(lPanel);
+			lPopup.center();
+	}
+
 	public Long getContentId() {
-		return selectionModel.getSelectedObject().getContentSet().get(0).getId();
+		return selectionModel.getSelectedObject().getContentSet().get(0)
+				.getId();
 	}
 
 	public HasValue<String> getSummary() {
@@ -204,7 +323,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 	public HasValue<String> getMenuTitle() {
 		return menuTitleInput;
 	}
-	
+
 	private Label createLabel(String pLabel) {
 		Label lLabel = new Label(pLabel);
 		lLabel.setStyleName(CSS.userSpaceContentLabel());
@@ -229,5 +348,33 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 	public HasValue<String> getDocumentSummary() {
 		return documentSummaryInput;
+	}
+
+	public HasClickHandlers getAreaUpdateButton() {
+		return updateAreaButton;
+	}
+
+	public HasValue<String> getAreaTitle() {
+		return areaTitle;
+	}
+
+	public Short getAreaOrder() {
+		return Short.valueOf(areaOrder.getValue());
+	}
+
+	public HasClickHandlers getMenuCreationButton() {
+		return menuCreationButton;
+	}
+
+	public HasValue<String> getMenuCreationTitle() {
+		return menuCreationTitleInput;
+	}
+
+	public HasValue<String> getMenuCreationSummary() {
+		return menuCreationSummaryInput;
+	}
+
+	public String getMenuCreationContent() {
+		return menuCreationContentInput.getHTML();
 	}
 }

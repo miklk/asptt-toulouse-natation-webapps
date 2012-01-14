@@ -33,7 +33,7 @@ public class AreaEntity implements Entity {
 	private boolean shortcut;
 	
 	@Persistent
-	private int order;
+	private short order;
 	
 	public AreaEntity() {
 		id = 0l;
@@ -43,7 +43,7 @@ public class AreaEntity implements Entity {
 		order = 0;
 	}
 
-	public AreaEntity(Long pId, String pTitle, ProfileEnum pProfile, boolean pShortcut, int pOrder) {
+	public AreaEntity(Long pId, String pTitle, ProfileEnum pProfile, boolean pShortcut, short pOrder) {
 		this();
 		id = pId;
 		title = pTitle;
@@ -51,7 +51,7 @@ public class AreaEntity implements Entity {
 		shortcut = pShortcut;
 		order = pOrder;
 	}
-	public AreaEntity(Long pId, String pTitle, ProfileEnum pProfile, int pOrder) {
+	public AreaEntity(Long pId, String pTitle, ProfileEnum pProfile, short pOrder) {
 		this(pId, pTitle, pProfile, false, pOrder);
 	}
 	
@@ -91,11 +91,11 @@ public class AreaEntity implements Entity {
 		shortcut = pShortcut;
 	}
 
-	public int getOrder() {
+	public short getOrder() {
 		return order;
 	}
 
-	public void setOrder(int pOrder) {
+	public void setOrder(short pOrder) {
 		order = pOrder;
 	}
 }
