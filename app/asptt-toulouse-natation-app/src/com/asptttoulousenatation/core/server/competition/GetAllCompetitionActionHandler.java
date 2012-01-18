@@ -50,22 +50,24 @@ public class GetAllCompetitionActionHandler implements
 					lEntity.getDays().size());
 			for (Long lDay : lEntity.getDays()) {
 				CompetitionDayEntity lDayEntity = competitionDayDao.get(lDay);
-				Set<UserUi> lOfficielEntities = new HashSet<UserUi>(lDayEntity
-						.getOfficiels().size());
-				for (Long lOfficielId : lDayEntity.getOfficiels()) {
-					UserEntity lOfficielEntity = userDao.get(lOfficielId);
-					UserUi lUserUi = userTransformer.toUi(lOfficielEntity);
-					UserDataEntity lUserDataEntity = userDataDao
-							.get(lOfficielEntity.getUserData());
-					lUserUi.setUserData(userDataTransformer
-							.toUi(lUserDataEntity));
-					lOfficielEntities.add(lUserUi);
+				if (lDayEntity != null) {
+					Set<UserUi> lOfficielEntities = new HashSet<UserUi>(
+							lDayEntity.getOfficiels().size());
+					for (Long lOfficielId : lDayEntity.getOfficiels()) {
+						UserEntity lOfficielEntity = userDao.get(lOfficielId);
+						UserUi lUserUi = userTransformer.toUi(lOfficielEntity);
+						UserDataEntity lUserDataEntity = userDataDao
+								.get(lOfficielEntity.getUserData());
+						lUserUi.setUserData(userDataTransformer
+								.toUi(lUserDataEntity));
+						lOfficielEntities.add(lUserUi);
+					}
+					CompetitionDayUi lDayUi = competitionDayTransformer
+							.toUi(lDayEntity);
+					lDayUi.setOfficiels(lOfficielEntities);
+					lDayUi.setCompetitionUi(lUi);
+					lCompetitionDayUis.add(lDayUi);
 				}
-				CompetitionDayUi lDayUi = competitionDayTransformer
-						.toUi(lDayEntity);
-				lDayUi.setOfficiels(lOfficielEntities);
-				lDayUi.setCompetitionUi(lUi);
-				lCompetitionDayUis.add(lDayUi);
 			}
 			lUi.setDays(lCompetitionDayUis);
 			lUis.add(lUi);
