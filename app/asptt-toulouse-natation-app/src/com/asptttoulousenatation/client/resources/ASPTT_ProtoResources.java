@@ -21,4 +21,13 @@ public interface ASPTT_ProtoResources extends ClientBundle {
 	
 	@Source("images/lignes_grand.jpg")
 	public ImageResource ligneGrande();
+	
+	@Source("images/delete.png")
+	public ImageResource delete();
+	
+	@Source("images/edit.png")
+	public ImageResource edit();
+	
+	@Source("images/add.png")
+	public ImageResource add();
 }

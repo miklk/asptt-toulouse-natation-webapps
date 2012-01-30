@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -49,6 +50,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 	private TextBox summaryInput;
 	private CKEditor contentInput;
 	private Button updateButton;
+	private Button deleteButton;
 
 	// Document edition
 	private HorizontalPanel documentPanel;
@@ -62,6 +64,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 	// Area creation
 	private Button updateAreaButton;
+	private Button deleteAreaButton;
 	private TextBox areaTitle;
 	private TextBox areaOrder;
 	
@@ -101,10 +104,13 @@ public class AreaViewImpl extends Composite implements AreaView {
 		editionPanel.setStyleName(CSS.userSpaceContentEdition());
 		menuPanel.add(editionPanel);
 
-		updateButton = new Button("Modifier");
+		updateButton = new Button("");
+		updateButton.setTitle("Modifier le menu");
+		deleteButton = new Button("");
+		deleteButton.setTitle("Supprimer le menu");
 		documentUpdateButton = new Button("Mettre à jour le document");
 		documentDeleteButton = new Button("Supprimer le document");
-		menuCreationButton = new Button("Créer le menu");
+		menuCreationButton = new Button("Ajouter une page");
 	}
 
 	private void buildEditionPanel(MenuUi pMenuUi) {
@@ -116,7 +122,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 		menuTitleInput = new TextBox();
 		menuTitleInput.setWidth("300px");
 		menuTitleInput.setValue(pMenuUi.getTitle());
-		lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé du menu"));
+		lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé de la page"));
 		lPanel.setWidget(lRowIndex, 1, menuTitleInput);
 		lRowIndex++;
 
@@ -151,7 +157,13 @@ public class AreaViewImpl extends Composite implements AreaView {
 		lPanel.setWidget(lRowIndex, 1, documentPanel);
 		lRowIndex++;
 
-		lPanel.setWidget(lRowIndex, 0, updateButton);
+		HorizontalPanel lButtonBar = new HorizontalPanel();
+		lButtonBar.setStyleName(CSS.buttonBar());
+		lButtonBar.add(updateButton);
+		lButtonBar.add(deleteButton);
+		updateButton.setStyleName(CSS.editButton());
+		deleteButton.setStyleName(CSS.deleteButton());
+		lPanel.setWidget(lRowIndex, 0, lButtonBar);
 		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
 		lCellFormatter.setColSpan(lRowIndex, 0, 2);
 		lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
@@ -217,7 +229,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 		int lRowIndex = 0;
 
 		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
-		lPanel.setHTML(lRowIndex, 0, "Editer la zone");
+		lPanel.setHTML(lRowIndex, 0, "Editer le menu");
 		lCellFormatter.setColSpan(lRowIndex, 0, 5);
 		lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
@@ -227,7 +239,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 		areaTitle = new TextBox();
 		areaTitle.setWidth("200px");
 		areaTitle.setValue(area.getTitle());
-		lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé de la zone"));
+		lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé du menu"));
 		lPanel.setWidget(lRowIndex, 1, areaTitle);
 
 		// Area order
@@ -237,12 +249,25 @@ public class AreaViewImpl extends Composite implements AreaView {
 		lPanel.setWidget(lRowIndex, 2, createLabel("Ordre d'affichage"));
 		lPanel.setWidget(lRowIndex, 3, areaOrder);
 
-		updateAreaButton = new Button("Mettre à jour à la zone");
-		lPanel.setWidget(lRowIndex, 4, updateAreaButton);
+		
+		
+		HorizontalPanel lButtonBar = new HorizontalPanel();
+		lButtonBar.setStyleName(CSS.buttonBar());
+		updateAreaButton = new Button("");
+		updateAreaButton.setTitle("Mettre à jour le menu");
+		deleteAreaButton = new Button("");
+		deleteAreaButton.setTitle("Supprimer le menu");
+		lButtonBar.add(updateAreaButton);
+		lButtonBar.add(deleteAreaButton);
+		lButtonBar.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+		lButtonBar.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+		updateAreaButton.setStyleName(CSS.editButton());
+		deleteAreaButton.setStyleName(CSS.deleteButton());
+		lPanel.setWidget(lRowIndex, 4, lButtonBar);
 		
 		lRowIndex++;
 		//Menu button
-		Button lAddMenuButton = new Button("Ajouter un menu");
+		Button lAddMenuButton = new Button("Ajouter une page");
 		lAddMenuButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
 				createMenuCreationPanel();
@@ -257,7 +282,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 			int lRowIndex = 0;
 			
 			FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
-			lPanel.setHTML(lRowIndex, 0, "Ajouter un menu");
+			lPanel.setHTML(lRowIndex, 0, "Ajouter une page");
 			lCellFormatter.setColSpan(lRowIndex, 0, 5);
 			lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
 					HasHorizontalAlignment.ALIGN_CENTER);
@@ -266,7 +291,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 			// Menu title
 			menuCreationTitleInput = new TextBox();
 			menuCreationTitleInput.setWidth("300px");
-			lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé du menu"));
+			lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé de la page (et du sous-menu)"));
 			lPanel.setWidget(lRowIndex, 1, menuCreationTitleInput);
 			lRowIndex++;
 
@@ -376,5 +401,17 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 	public String getMenuCreationContent() {
 		return menuCreationContentInput.getHTML();
+	}
+
+	public HasClickHandlers getDeleteButton() {
+		return deleteButton;
+	}
+
+	public HasClickHandlers getAreaDeleteButton() {
+		return deleteAreaButton;
+	}
+
+	public Long getMenuId() {
+		return selectionModel.getSelectedObject().getId();
 	}
 }

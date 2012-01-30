@@ -39,6 +39,7 @@ public class MenuViewImpl extends Composite implements MenuView {
 	private TextBox areaTitle;
 	private TextBox areaOrder;
 	private Button createArea;
+	private PopupPanel popup;
 	
 	private InitUserSpaceResult initUserSpaceResult;
 	
@@ -56,7 +57,7 @@ public class MenuViewImpl extends Composite implements MenuView {
 				panel.add(build(lArea), lArea.getTitle());
 			}
 		}
-		createArea = new Button("Créer la zone");
+		createArea = new Button("Créer un menu");
 	}
 	
 	private Widget build(AreaUi pArea) {
@@ -98,7 +99,7 @@ public class MenuViewImpl extends Composite implements MenuView {
 //			lPanel.setWidgetTopHeight(lAreaButton, lPct, Unit.PCT, 7, Unit.PCT);
 			lPct+= 7;
 		}
-		createAreaButton = new Button("Créer une zone");
+		createAreaButton = new Button("Créer un menu");
 		createAreaButton.setStyleName(CSS.userSpaceMenuButton());
 		createAreaButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
@@ -117,7 +118,7 @@ public class MenuViewImpl extends Composite implements MenuView {
 		//Area title
 		areaTitle = new TextBox();
 		areaTitle.setWidth("300px");
-		lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé de la zone"));
+		lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé du menu"));
 		lPanel.setWidget(lRowIndex, 1, areaTitle);
 		lRowIndex++;
 		
@@ -134,9 +135,9 @@ public class MenuViewImpl extends Composite implements MenuView {
 		lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
 		
-		PopupPanel lPopup = new PopupPanel(true, true);
-		lPopup.setWidget(lPanel);
-		lPopup.center();
+		popup = new PopupPanel(true, true);
+		popup.setWidget(lPanel);
+		popup.center();
 	}
 	
 	private Label createLabel(String pLabel) {
@@ -155,5 +156,9 @@ public class MenuViewImpl extends Composite implements MenuView {
 
 	public HasClickHandlers getCreateAreaButton() {
 		return createArea;
+	}
+
+	public void hidePopup() {
+		popup.hide();
 	}
 }

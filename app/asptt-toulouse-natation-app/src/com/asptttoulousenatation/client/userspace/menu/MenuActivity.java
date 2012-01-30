@@ -5,6 +5,7 @@ import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent
 import com.asptttoulousenatation.core.client.MyAbstractActivity;
 import com.asptttoulousenatation.core.shared.structure.area.CreateAreaAction;
 import com.asptttoulousenatation.core.shared.structure.area.CreateAreaResult;
+import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -18,12 +19,13 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 public class MenuActivity extends MyAbstractActivity<MenuPlace> {
 
 	private InitUserSpaceResult initUserSpaceResult;
+	private UserUi user;
 
 	public MenuActivity(MenuPlace pPlace, ClientFactory pClientFactory) {
 		super(pPlace, pClientFactory);
 	}
 
-	public void start(AcceptsOneWidget pPanel, EventBus pEventBus) {
+	public void start(AcceptsOneWidget pPanel, final EventBus pEventBus) {
 		final EventBus lEventBus = pEventBus;
 		final MenuView lMenuView = clientFactory
 				.getMenuView(initUserSpaceResult);
@@ -66,6 +68,9 @@ public class MenuActivity extends MyAbstractActivity<MenuPlace> {
 
 					public void onSuccess(CreateAreaResult pResult) {
 						Window.alert("La zone a été créée.");
+						lMenuView.hidePopup();
+						pEventBus.fireEvent(new UpdateContentEvent<UserUi>(
+								MenuItems.ADMIN, user));
 					}
 				});
 			}
@@ -87,5 +92,9 @@ public class MenuActivity extends MyAbstractActivity<MenuPlace> {
 
 	public void setInitUserSpaceResult(InitUserSpaceResult pInitUserSpaceResult) {
 		initUserSpaceResult = pInitUserSpaceResult;
+	}
+
+	public void setUser(UserUi pUser) {
+		user = pUser;
 	}
 }

@@ -1,6 +1,7 @@
 package com.asptttoulousenatation.server.userspace.admin.user;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
@@ -60,7 +61,8 @@ public class CreateUserActionHandler implements
 				MessageDigest lMessageDigest = Utils.getMD5();
 				String lCode = Integer.toString(lRandom.nextInt(1000));
 				System.out.println(lCode);
-				String lEncryptedPassword = new String(lMessageDigest.digest());
+				lMessageDigest.update(lCode.getBytes());
+				String lEncryptedPassword = new String(lMessageDigest.digest(), Charset.forName("ISO-8859-1"));
 				lUser.setPassword(lEncryptedPassword);
 				System.out.println(lUser.getPassword());
 			} catch (NoSuchAlgorithmException e1) {

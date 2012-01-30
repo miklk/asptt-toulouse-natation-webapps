@@ -12,6 +12,7 @@ public interface CompetitionView extends IsWidget {
 
 	public HasClickHandlers getUpdateButton();
 	public HasClickHandlers getCreateButton();
+	public HasClickHandlers getDeleteButton();
 	
 	public Long getCompetition();
 	public HasValue<String> getCompetitionSaison();
@@ -21,4 +22,5 @@ public interface CompetitionView extends IsWidget {
 	public HasValue<Date> getCompetitionEnd();
 	public Set<CompetitionDayUi> getCreateDays();
 	public Set<CompetitionDayUi> getUpdateDays();
+	public Set<Long> getDeleteDays();
 }

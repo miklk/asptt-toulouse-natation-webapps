@@ -32,6 +32,7 @@ public class GroupViewImpl extends Composite implements GroupView {
 	
 	private Button createButton;
 	private Button updateButton;
+	private Button deleteButton;
 	
 	private TextBox groupTitle;
 	
@@ -56,16 +57,22 @@ public class GroupViewImpl extends Composite implements GroupView {
 		editionPanel.setStyleName(CSS.userSpaceContentEdition());
 		panel.add(editionPanel);
 		
-		createButton = new Button("Créer");
-		updateButton = new Button("Mettre à jour");
-		updateButton.setEnabled(false);
+		createButton = new Button("");
+		createButton.setStyleName(CSS.addButton());
+		updateButton = new Button("");
+		updateButton.setStyleName(CSS.editButton());
+		deleteButton = new Button("");
+		deleteButton.setStyleName(CSS.deleteButton());
+		updateButton.setVisible(false);
+		deleteButton.setVisible(false);
 		
 		buildCreationPanel();
 	}
 	
 	private void buildEditionPanel(GroupUi pGroupUi) {
 		groupTitle.setValue(pGroupUi.getTitle());
-		updateButton.setEnabled(true);
+		updateButton.setVisible(true);
+		deleteButton.setVisible(true);
 	}
 	
 	private void buildCreationPanel() {
@@ -80,10 +87,15 @@ public class GroupViewImpl extends Composite implements GroupView {
 		lPanel.setWidget(lRowIndex, 1, groupTitle);
 		lRowIndex++;
 		
-		lPanel.setWidget(5, 0, updateButton);
-		lPanel.setWidget(5, 1, createButton);
+		HorizontalPanel lButtonBar = new HorizontalPanel();
+		lButtonBar.setStyleName(CSS.buttonBar());
+		lButtonBar.add(updateButton);
+		lButtonBar.add(deleteButton);
+		lButtonBar.add(createButton);
+		lPanel.setWidget(lRowIndex, 0, lButtonBar);
 		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
-		lCellFormatter.setHorizontalAlignment(3, 0,
+		lCellFormatter.setColSpan(lRowIndex, 0, 2);
+		lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
 		editionPanel.clear();
 		editionPanel.setWidget(lPanel);
@@ -109,5 +121,9 @@ public class GroupViewImpl extends Composite implements GroupView {
 		Label lLabel = new Label(pLabel);
 		lLabel.setStyleName(CSS.userSpaceContentLabel());
 		return lLabel;
+	}
+
+	public HasClickHandlers getDeleteButton() {
+		return deleteButton;
 	}
 }

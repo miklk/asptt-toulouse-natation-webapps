@@ -11,4 +11,5 @@ public interface MenuView extends IsWidget {
 	public HasClickHandlers getCreateAreaButton();
 	public HasValue<String> getAreaTitle();
 	public Short getAreaOrder();
+	public void hidePopup();
 }

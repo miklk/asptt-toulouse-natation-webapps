@@ -50,6 +50,7 @@ public class UserEditionViewImpl extends Composite implements
 	private SimplePanel editionPanel;
 	
 	private Button updateButton;
+	private Button deleteButton;
 	
 	private TextBox emailAddress;
 	private CheckBox validated;
@@ -292,9 +293,16 @@ public class UserEditionViewImpl extends Composite implements
 		lUserSlotPanel.setWidget(index, 1, slotCellList);
 		index++;
 
-		updateButton = new Button("Modifier");
-		lPanel.add(updateButton);
-		lPanel.setCellHorizontalAlignment(updateButton, HasHorizontalAlignment.ALIGN_CENTER);
+		updateButton = new Button("");
+		updateButton.setStyleName(CSS.editButton());
+		deleteButton = new Button("");
+		deleteButton.setStyleName(CSS.deleteButton());
+		HorizontalPanel lButtonBar = new HorizontalPanel();
+		lButtonBar.setStyleName(CSS.buttonBar());
+		lButtonBar.add(updateButton);
+		lButtonBar.add(deleteButton);
+		lPanel.add(lButtonBar);
+		lPanel.setCellHorizontalAlignment(lButtonBar, HasHorizontalAlignment.ALIGN_CENTER);
 
 		editionPanel.clear();
 		editionPanel.setWidget(lPanel);
@@ -416,5 +424,9 @@ public class UserEditionViewImpl extends Composite implements
 
 	public HasValue<String> getMeasurementShort() {
 		return measurementShort;
+	}
+
+	public HasClickHandlers getDeleteButton() {
+		return deleteButton;
 	}
 }

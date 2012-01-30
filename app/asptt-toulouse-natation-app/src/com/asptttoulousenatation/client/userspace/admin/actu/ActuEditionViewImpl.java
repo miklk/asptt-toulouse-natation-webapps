@@ -40,6 +40,7 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 	private DateBox date;
 	private CKEditor contentInput;
 	private Button updateButton;
+	private Button deleteButton;
 	
 	public ActuEditionViewImpl(List<ActuUi> pData) {
 		data = pData;
@@ -63,6 +64,7 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 		panel.add(actuEditionPanel);
 		
 		updateButton = new Button("Modifier");
+		deleteButton = new Button("");
 	}
 	
 	public Widget asWidget() {
@@ -106,12 +108,17 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 		lPanel.setWidget(3, 0, createLabel("Actualité"));
 		lPanel.setWidget(3, 1, contentInput);
 
+		HorizontalPanel lButtonBar = new HorizontalPanel();
+		lButtonBar.add(updateButton);
+		lButtonBar.add(deleteButton);
 		updateButton.setWidth("300px");
 		updateButton.setHeight("50px");
-		lPanel.setWidget(4, 0, updateButton);
+		deleteButton.setStyleName(CSS.deleteButton());
+		lPanel.setWidget(4, 0, lButtonBar);
 		lCellFormatter.setColSpan(4, 0, 2);
 		lCellFormatter.setHorizontalAlignment(4, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
+		
 		actuEditionPanel.setWidget(lPanel);
 	}
 
@@ -185,5 +192,9 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 		Label lLabel = new Label(pLabel);
 		lLabel.setStyleName(CSS.userSpaceContentLabel());
 		return lLabel;
+	}
+
+	public HasClickHandlers getDeleteButton() {
+		return deleteButton;
 	}
 }

@@ -49,6 +49,8 @@ public class MainMenuPanel extends Composite {
 		lFirstAreaTitle.setStyleName(CSS.menuGTitleFirst());
 		panel.add(lFirstAreaTitle);
 		// Build menu
+		FlowPanel lSubMenu = new FlowPanel();
+		lSubMenu.getElement().getStyle().setBackgroundColor("#FFFFFF");
 		for (final MenuUi lMenu : lFirstArea.getMenuSet().values()) {
 			if (lMenu.isDisplay()) {
 				Label lMenuLabel = new Label(lMenu.getTitle());
@@ -59,10 +61,11 @@ public class MainMenuPanel extends Composite {
 				});
 				lMenuLabel.setStyleName(CSS.menuGSub());
 				addMenuGSubStyle(lMenuLabel);
-				panel.add(lMenuLabel);
+				lSubMenu.add(lMenuLabel);
 				space += 5;
 			}
 		}
+		panel.add(lSubMenu);
 		for (final AreaUi lArea : lAreaUis) {
 			if (lArea.canDisplay()) {
 				Label lAreaTitle = new Label(lArea.getTitle());
@@ -70,6 +73,8 @@ public class MainMenuPanel extends Composite {
 				panel.add(lAreaTitle);
 				space += 6;
 				// Build menu
+				lSubMenu = new FlowPanel();
+				lSubMenu.getElement().getStyle().setBackgroundColor("#FFFFFF");
 				for (final MenuUi lMenu : lArea.getMenuSet().values()) {
 					if (lMenu.isDisplay()) {
 						Label lMenuLabel = new Label(lMenu.getTitle());
@@ -80,10 +85,11 @@ public class MainMenuPanel extends Composite {
 						});
 						lMenuLabel.setStyleName(CSS.menuGSub());
 						addMenuGSubStyle(lMenuLabel);
-						panel.add(lMenuLabel);
+						lSubMenu.add(lMenuLabel);
 						space += 5;
 					}
 				}
+				panel.add(lSubMenu);
 			}
 		}
 	}

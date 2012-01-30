@@ -29,4 +29,5 @@ public interface UserEditionView extends IsWidget {
 	public HasValue<String> getMeasurementShort();
 	
 	public HasClickHandlers getUpdateButton();
+	public HasClickHandlers getDeleteButton();
 }

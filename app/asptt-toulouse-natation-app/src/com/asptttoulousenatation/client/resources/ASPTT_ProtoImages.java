@@ -11,10 +11,10 @@ public interface ASPTT_ProtoImages extends ClientBundle {
 	@Source("images/logo.png")
 	public ImageResource logo();
 	
-	@Source("images/logoarena_part.png")
+	@Source("images/logoarena.jpg")
 	public ImageResource logoArena();
 	
-	@Source("images/logoarena_part.png")
+	@Source("images/logoarena.jpg")
 	public ImageResource logoArenaPart();
 	
 	@Source("images/logo_omnisport.jpg")

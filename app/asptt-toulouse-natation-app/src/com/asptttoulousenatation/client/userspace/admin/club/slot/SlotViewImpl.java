@@ -41,6 +41,7 @@ public class SlotViewImpl extends Composite implements SlotView {
 	
 	private Button createButton;
 	private Button updateButton;
+	private Button deleteButton;
 	
 	private ListBox dayOfWeek;
 	private HourMinutePicker hourBegin;
@@ -82,9 +83,14 @@ public class SlotViewImpl extends Composite implements SlotView {
 		editionPanel.setStyleName(CSS.userSpaceContentEdition());
 		panel.add(editionPanel);
 		
-		createButton = new Button("Créer");
-		updateButton = new Button("Mettre à jour");
-		updateButton.setEnabled(false);
+		createButton = new Button("");
+		createButton.setStyleName(CSS.addButton());
+		updateButton = new Button("");
+		updateButton.setStyleName(CSS.editButton());
+		deleteButton = new Button("");
+		deleteButton.setStyleName(CSS.deleteButton());
+		updateButton.setVisible(false);
+		deleteButton.setVisible(false);
 		
 		buildCreationPanel();
 	}
@@ -109,7 +115,8 @@ public class SlotViewImpl extends Composite implements SlotView {
 		}
 		swimmingPool.setValue(pUi.getSwimmingPool());
 		educateur.setValue(pUi.getEducateur());
-		updateButton.setEnabled(true);
+		updateButton.setVisible(true);
+		deleteButton.setVisible(true);
 	}
 	
 	private void buildCreationPanel() {
@@ -157,8 +164,15 @@ public class SlotViewImpl extends Composite implements SlotView {
 		lPanel.setHTML(5, 0, "Educateur");
 		lPanel.setWidget(5, 1, educateur);
 		
-		lPanel.setWidget(11, 0, updateButton);
-		lPanel.setWidget(11, 2, createButton);
+		HorizontalPanel lButtonBar = new HorizontalPanel();
+		lButtonBar.setStyleName(CSS.buttonBar());
+		lButtonBar.add(updateButton);
+		lButtonBar.add(deleteButton);
+		lButtonBar.add(createButton);
+		lPanel.setWidget(6, 0, lButtonBar);
+		lCellFormatter.setColSpan(6, 0, 3);
+		lCellFormatter.setHorizontalAlignment(6, 0,
+				HasHorizontalAlignment.ALIGN_CENTER);
 		editionPanel.clear();
 		editionPanel.setWidget(lPanel);
 	}
@@ -203,5 +217,9 @@ public class SlotViewImpl extends Composite implements SlotView {
 
 	public HasValue<String> getEducateur() {
 		return educateur;
+	}
+
+	public HasClickHandlers getDeleteButton() {
+		return deleteButton;
 	}
 }

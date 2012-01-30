@@ -1,7 +1,11 @@
 package com.asptttoulousenatation.client.userspace.admin.actu;
 
 import com.asptttoulousenatation.client.config.ClientFactory;
+import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent;
+import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.core.client.MyAbstractActivity;
+import com.asptttoulousenatation.core.shared.actu.DeleteActuAction;
+import com.asptttoulousenatation.core.shared.actu.DeleteActuResult;
 import com.asptttoulousenatation.core.shared.actu.GetAllActuAction;
 import com.asptttoulousenatation.core.shared.actu.GetAllActuResult;
 import com.asptttoulousenatation.shared.userspace.admin.actu.PublishActionResult;
@@ -26,7 +30,7 @@ public class ActuActivity extends MyAbstractActivity<ActuPlace> {
 		editionMode = pEditionMode;
 	}
 
-	public void start(AcceptsOneWidget pPanel, EventBus pEventBus) {
+	public void start(AcceptsOneWidget pPanel, final EventBus pEventBus) {
 		if (editionMode) {
 			final SimplePanel lPanel = new SimplePanel();
 			dispatchAsync.execute(new GetAllActuAction(),
@@ -73,6 +77,23 @@ public class ActuActivity extends MyAbstractActivity<ActuPlace> {
 													});
 										}
 									});
+							lActuEditionView.getDeleteButton().addClickHandler(new ClickHandler() {
+								public void onClick(ClickEvent pEvent) {
+									dispatchAsync.execute(new DeleteActuAction(lActuEditionView.getActu()), new AsyncCallback<DeleteActuResult>() {
+										public void onFailure(Throwable pCaught) {
+											Window.alert("Erreur "
+													+ pCaught
+															.getMessage());
+										}
+
+										public void onSuccess(
+												DeleteActuResult pResult) {
+											Window.alert("Supprimé avec succès.");
+											pEventBus.fireEvent(new UpdateContentEvent(MenuItems.NEWS_EDITION));
+										}
+									});
+								}
+							});
 							lPanel.setWidget(lActuEditionView);
 						}
 					});

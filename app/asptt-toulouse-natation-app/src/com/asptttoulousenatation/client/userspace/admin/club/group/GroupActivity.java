@@ -1,9 +1,13 @@
 package com.asptttoulousenatation.client.userspace.admin.club.group;
 
 import com.asptttoulousenatation.client.config.ClientFactory;
+import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent;
+import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.core.client.MyAbstractActivity;
 import com.asptttoulousenatation.core.shared.club.group.CreateGroupAction;
 import com.asptttoulousenatation.core.shared.club.group.CreateGroupResult;
+import com.asptttoulousenatation.core.shared.club.group.DeleteGroupAction;
+import com.asptttoulousenatation.core.shared.club.group.DeleteGroupResult;
 import com.asptttoulousenatation.core.shared.club.group.GetAllGroupAction;
 import com.asptttoulousenatation.core.shared.club.group.GetAllGroupResult;
 import com.asptttoulousenatation.core.shared.club.group.UpdateGroupAction;
@@ -22,7 +26,7 @@ public class GroupActivity extends MyAbstractActivity<GroupPlace> {
 		super(pPlace, pClientFactory);
 	}
 
-	public void start(AcceptsOneWidget pPanel, EventBus pEventBus) {
+	public void start(AcceptsOneWidget pPanel, final EventBus pEventBus) {
 		final SimplePanel lPanel = new SimplePanel();
 		dispatchAsync.execute(new GetAllGroupAction(), new AsyncCallback<GetAllGroupResult>() {
 
@@ -42,6 +46,7 @@ public class GroupActivity extends MyAbstractActivity<GroupPlace> {
 
 							public void onSuccess(CreateGroupResult pResult) {
 								Window.alert("Créé");
+								pEventBus.fireEvent(new UpdateContentEvent(MenuItems.CLUB_GROUP_EDITION));
 							}
 						});
 					}
@@ -57,6 +62,21 @@ public class GroupActivity extends MyAbstractActivity<GroupPlace> {
 
 							public void onSuccess(UpdateGroupResult pResult) {
 								Window.alert("Mis à jour");
+							}
+						});
+					}
+				});
+				lGroupView.getDeleteButton().addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent pEvent) {
+						dispatchAsync.execute(new DeleteGroupAction(lGroupView.getGroupId()), new AsyncCallback<DeleteGroupResult>() {
+
+							public void onFailure(Throwable pCaught) {
+								Window.alert("Erreur " + pCaught.getMessage());
+							}
+
+							public void onSuccess(DeleteGroupResult pResult) {
+								Window.alert("Supprimé avec succès.");
+								pEventBus.fireEvent(new UpdateContentEvent(MenuItems.CLUB_GROUP_EDITION));
 							}
 						});
 					}

@@ -237,4 +237,16 @@ public interface ASPTT_ProtoCss extends CssResource {
 	
 	@ClassName("partner-panel")
 	String partnerPanel();
+	
+	@ClassName("delete-button")
+	String deleteButton();
+	
+	@ClassName("edit-button")
+	String editButton();
+	
+	@ClassName("add-button")
+	String addButton();
+	
+	@ClassName("button-bar")
+	String buttonBar();
 }

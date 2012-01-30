@@ -14,4 +14,5 @@ public interface ActuEditionView extends IsWidget {
 	public String getContent();
 	public HasValue<Date> getCreationDate();
 	public HasClickHandlers getUpdateButton();
+	public HasClickHandlers getDeleteButton();
 }

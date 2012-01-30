@@ -12,6 +12,7 @@ import com.asptttoulousenatation.core.server.dao.competition.CompetitionDayDao;
 import com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionDayEntity;
 import com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionEntity;
 import com.asptttoulousenatation.core.shared.competition.CompetitionDayUi;
+import com.asptttoulousenatation.core.shared.competition.DeleteCompetitionDayAction;
 import com.asptttoulousenatation.core.shared.competition.UpdateCompetitionAction;
 import com.asptttoulousenatation.core.shared.competition.UpdateCompetitionResult;
 import com.asptttoulousenatation.core.shared.user.UserUi;
@@ -49,6 +50,10 @@ public class UpdateCompetitionActionHandler implements
 			CompetitionDayEntity lCompetitionDaySaved = competitionDayDao
 					.save(lCompetitionDayEntity);
 			lCompetitionDay.add(lCompetitionDaySaved.getId());
+		}
+		//Delete day
+		for(Long lDayId: pAction.getDayToDelete()) {
+			pContext.execute(new DeleteCompetitionDayAction(lDayId));
 		}
 		// Entity
 		CompetitionEntity lCompetitionEntity = dao.get(pAction.getId());

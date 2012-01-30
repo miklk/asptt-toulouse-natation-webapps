@@ -9,7 +9,9 @@ public interface AreaView extends IsWidget {
 	public HasValue<String> getSummary();
 	public String getContent();
 	public HasClickHandlers getUpdateButton();
+	public HasClickHandlers getDeleteButton();
 	public Long getContentId();
+	public Long getMenuId();
 	
 	public HasClickHandlers getDocumentUpdateButton();
 	public HasClickHandlers getDocumentDeleteButton();
@@ -19,6 +21,7 @@ public interface AreaView extends IsWidget {
 	
 	//Area edition
 	public HasClickHandlers getAreaUpdateButton();
+	public HasClickHandlers getAreaDeleteButton();
 	public HasValue<String> getAreaTitle();
 	public Short getAreaOrder();
 	

@@ -50,6 +50,7 @@ public class CompetitionViewImpl extends Composite implements
 
 	private Button createButton;
 	private Button updateButton;
+	private Button deleteButton;
 	
 	private TextBox competitionSaison;
 	private TextBox competitionTitle;
@@ -64,6 +65,7 @@ public class CompetitionViewImpl extends Composite implements
 
 	private Button dayCreateButton;
 	private Button dayUpdateButton;
+	private Button dayDeleteButton;
 	
 	private TextBox day;
 	private DateBox dayBegin;
@@ -72,6 +74,7 @@ public class CompetitionViewImpl extends Composite implements
 	
 	private Map<Long, CompetitionDayUi> createDays;
 	private Map<Long, CompetitionDayUi> updateDays;
+	private Set<Long> deleteDays;
 
 	public CompetitionViewImpl(List<CompetitionUi> pData) {
 		data = pData;
@@ -98,14 +101,20 @@ public class CompetitionViewImpl extends Composite implements
 		panel.add(competitionPanel);
 		competitionPanel.add(editionPanel);
 		
-		createButton = new Button("Créer");
-		updateButton = new Button("Mettre à jour");
-		updateButton.setEnabled(false);
+		createButton = new Button("");
+		createButton.setStyleName(CSS.addButton());
+		updateButton = new Button("");
+		updateButton.setStyleName(CSS.editButton());
+		deleteButton = new Button("");
+		deleteButton.setStyleName(CSS.deleteButton());
+		updateButton.setVisible(false);
+		deleteButton.setVisible(false);
 		
 		buildCreationPanel();
 		
 		createDays = new HashMap<Long, CompetitionDayUi>();
 		updateDays = new HashMap<Long, CompetitionDayUi>();
+		deleteDays = new HashSet<Long>();
 	}
 	
 	private void buildEditionPanel(CompetitionUi pUi) {
@@ -118,7 +127,8 @@ public class CompetitionViewImpl extends Composite implements
 		dayData = new ArrayList<CompetitionDayUi>(pUi.getDays());
 		//Days
 		dayCellList.setRowData(dayData);
-		updateButton.setEnabled(true);
+		updateButton.setVisible(true);
+		deleteButton.setVisible(true);
 		
 		
 	}
@@ -158,8 +168,15 @@ public class CompetitionViewImpl extends Composite implements
 		
 		createDayPanel();
 		
-		lPanel.setWidget(5, 0, updateButton);
-		lPanel.setWidget(5, 2, createButton);
+		HorizontalPanel lButtonBar = new HorizontalPanel();
+		lButtonBar.setStyleName(CSS.buttonBar());
+		lButtonBar.add(updateButton);
+		lButtonBar.add(deleteButton);
+		lButtonBar.add(createButton);
+		lPanel.setWidget(5, 0, lButtonBar);
+		lCellFormatter.setColSpan(5, 0, 3);
+		lCellFormatter.setHorizontalAlignment(5, 0,
+				HasHorizontalAlignment.ALIGN_CENTER);
 		editionPanel.clear();
 		editionPanel.setWidget(lPanel);
 	}
@@ -183,7 +200,8 @@ public class CompetitionViewImpl extends Composite implements
 		dayEditionPanel.setStyleName(CSS.userSpaceContentEdition());
 		lPanel.add(dayEditionPanel);
 		
-		dayCreateButton = new Button("Ajouter");
+		dayCreateButton = new Button("");
+		dayCreateButton.setStyleName(CSS.addButton());
 		dayCreateButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
 				CompetitionDayUi lDayUi = new CompetitionDayUi();
@@ -195,7 +213,8 @@ public class CompetitionViewImpl extends Composite implements
 				Window.alert("La réunion a été ajouté à la compétition, vous devez créer ou mettre à jour la compétition pour sauvegarder vos changements.");
 			}
 		});
-		dayUpdateButton = new Button("Mettre à jour");
+		dayUpdateButton = new Button("");
+		dayUpdateButton.setStyleName(CSS.editButton());
 		dayUpdateButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
 				CompetitionDayUi lCurrentDay = daySelectionModel.getSelectedObject();
@@ -206,7 +225,16 @@ public class CompetitionViewImpl extends Composite implements
 				updateDays.put(lCurrentDay.getId(), lCurrentDay);
 			}
 		});
-		dayUpdateButton.setEnabled(false);
+		dayDeleteButton = new Button("");
+		dayDeleteButton.setStyleName(CSS.deleteButton());
+		dayDeleteButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				CompetitionDayUi lCurrentDay = daySelectionModel.getSelectedObject();
+				deleteDays.add(lCurrentDay.getId());
+			}
+		});
+		dayUpdateButton.setVisible(false);
+		dayDeleteButton.setVisible(false);
 		
 		buildDayCreationPanel();
 		
@@ -219,7 +247,8 @@ public class CompetitionViewImpl extends Composite implements
 		dayEnd.setValue(pUi.getEnd());
 		needed.setValue(Integer.toString(pUi.getNeeded()));
 		
-		dayUpdateButton.setEnabled(true);
+		dayUpdateButton.setVisible(true);
+		dayDeleteButton.setVisible(true);
 	}
 	
 	private void buildDayCreationPanel() {
@@ -256,8 +285,15 @@ public class CompetitionViewImpl extends Composite implements
 		lPanel.setWidget(index, 1, needed);
 		index++;
 		
-		lPanel.setWidget(index, 0, dayUpdateButton);
-		lPanel.setWidget(index, 1, dayCreateButton);
+		HorizontalPanel lButtonBar = new HorizontalPanel();
+		lButtonBar.setStyleName(CSS.buttonBar());
+		lButtonBar.add(dayUpdateButton);
+		lButtonBar.add(dayDeleteButton);
+		lButtonBar.add(dayCreateButton);
+		lPanel.setWidget(index, 0, lButtonBar);
+		lCellFormatter.setColSpan(index, 0, 2);
+		lCellFormatter.setHorizontalAlignment(index, 0,
+				HasHorizontalAlignment.ALIGN_CENTER);
 		
 		dayEditionPanel.clear();
 		dayEditionPanel.setWidget(lPanel);
@@ -355,5 +391,13 @@ public class CompetitionViewImpl extends Composite implements
 			};
 		}
 		
+	}
+
+	public HasClickHandlers getDeleteButton() {
+		return deleteButton;
+	}
+
+	public Set<Long> getDeleteDays() {
+		return deleteDays;
 	}
 }

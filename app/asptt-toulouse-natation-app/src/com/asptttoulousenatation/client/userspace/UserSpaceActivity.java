@@ -74,6 +74,7 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 						MenuActivity lMenuActivity = new MenuActivity(
 								new MenuPlace(), clientFactory);
 						lMenuActivity.setInitUserSpaceResult(pResult);
+						lMenuActivity.setUser(user);
 						lMenuActivity.start(lAdminView.getMenuPanel(),
 								lEventBus);
 

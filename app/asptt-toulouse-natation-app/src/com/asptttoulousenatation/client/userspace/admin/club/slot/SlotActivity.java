@@ -2,8 +2,12 @@ package com.asptttoulousenatation.client.userspace.admin.club.slot;
 
 import com.asptttoulousenatation.client.config.ClientFactory;
 import com.asptttoulousenatation.client.config.MyAbstractActivity;
+import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent;
+import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.core.shared.club.slot.CreateSlotAction;
 import com.asptttoulousenatation.core.shared.club.slot.CreateSlotResult;
+import com.asptttoulousenatation.core.shared.club.slot.DeleteSlotAction;
+import com.asptttoulousenatation.core.shared.club.slot.DeleteSlotResult;
 import com.asptttoulousenatation.core.shared.club.slot.GetAllSlotAction;
 import com.asptttoulousenatation.core.shared.club.slot.GetAllSlotResult;
 import com.asptttoulousenatation.core.shared.club.slot.UpdateSlotAction;
@@ -22,7 +26,7 @@ public class SlotActivity extends MyAbstractActivity<SlotPlace> {
 		super(pPlace, pClientFactory);
 	}
 
-	public void start(AcceptsOneWidget pPanel, EventBus pEventBus) {
+	public void start(AcceptsOneWidget pPanel, final EventBus pEventBus) {
 		final SimplePanel lPanel = new SimplePanel();
 		dispatchAsync.execute(new GetAllSlotAction(),
 				new AsyncCallback<GetAllSlotResult>() {
@@ -43,8 +47,9 @@ public class SlotActivity extends MyAbstractActivity<SlotPlace> {
 														.getHourEnd(), lView
 														.getGroup(), lView
 														.getSwimmingPool()
-														.getValue(),
-														lView.getEducateur().getValue());
+														.getValue(), lView
+														.getEducateur()
+														.getValue());
 										dispatchAsync
 												.execute(
 														lAction,
@@ -60,6 +65,7 @@ public class SlotActivity extends MyAbstractActivity<SlotPlace> {
 															public void onSuccess(
 																	CreateSlotResult pResult) {
 																Window.alert("Créé");
+																pEventBus.fireEvent(new UpdateContentEvent(MenuItems.CLUB_SLOT_EDITION));
 															}
 														});
 									}
@@ -74,8 +80,9 @@ public class SlotActivity extends MyAbstractActivity<SlotPlace> {
 														.getHourEnd(), lView
 														.getGroup(), lView
 														.getSwimmingPool()
-														.getValue(),
-														lView.getEducateur().getValue());
+														.getValue(), lView
+														.getEducateur()
+														.getValue());
 										dispatchAsync
 												.execute(
 														lAction,
@@ -93,6 +100,29 @@ public class SlotActivity extends MyAbstractActivity<SlotPlace> {
 																Window.alert("Mis à jour !");
 															}
 														});
+									}
+								});
+						lView.getDeleteButton().addClickHandler(
+								new ClickHandler() {
+									public void onClick(ClickEvent pEvent) {
+										dispatchAsync.execute(
+												new DeleteSlotAction(lView
+														.getSlot()),
+												new AsyncCallback<DeleteSlotResult>() {
+													public void onFailure(
+															Throwable pCaught) {
+														Window.alert("Erreur "
+																+ pCaught
+																		.getMessage());
+													}
+
+													public void onSuccess(
+															DeleteSlotResult pResult) {
+														Window.alert("Supprimé avec succès.");
+														pEventBus.fireEvent(new UpdateContentEvent(MenuItems.CLUB_SLOT_EDITION));
+													}
+												});
+
 									}
 								});
 						lPanel.setWidget(lView);

@@ -1,15 +1,21 @@
 package com.asptttoulousenatation.client.userspace.admin.structure.area;
 
 import com.asptttoulousenatation.client.config.ClientFactory;
+import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent;
+import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.core.client.MyAbstractActivity;
 import com.asptttoulousenatation.core.shared.document.DeleteDocumentAction;
 import com.asptttoulousenatation.core.shared.document.DeleteDocumentResult;
 import com.asptttoulousenatation.core.shared.document.UpdateDocumentAction;
 import com.asptttoulousenatation.core.shared.document.UpdateDocumentResult;
+import com.asptttoulousenatation.core.shared.structure.area.DeleteAreaAction;
+import com.asptttoulousenatation.core.shared.structure.area.DeleteAreaResult;
 import com.asptttoulousenatation.core.shared.structure.area.UpdateAreaAction;
 import com.asptttoulousenatation.core.shared.structure.area.UpdateAreaResult;
 import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuResult;
+import com.asptttoulousenatation.core.shared.structure.menu.DeleteMenuAction;
+import com.asptttoulousenatation.core.shared.structure.menu.DeleteMenuResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.UpdateContentAction;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.UpdateContentResult;
@@ -28,7 +34,7 @@ public class AreaActivity extends MyAbstractActivity<AreaPlace> {
 		super(pPlace, pClientFactory);
 	}
 
-	public void start(AcceptsOneWidget pPanel, EventBus pEventBus) {
+	public void start(AcceptsOneWidget pPanel, final EventBus pEventBus) {
 		final AreaView lAreaView = clientFactory.getAreaView(area);
 		lAreaView.getUpdateButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
@@ -96,6 +102,37 @@ public class AreaActivity extends MyAbstractActivity<AreaPlace> {
 					}
 					public void onSuccess(CreateMenuResult pResult) {
 						Window.alert("Menu créé !");
+						pEventBus.fireEvent(new UpdateContentEvent(MenuItems.STRUCTURE));
+					}
+				});
+			}
+		});
+		lAreaView.getAreaDeleteButton().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				dispatchAsync.execute(new DeleteAreaAction(area.getId()), new AsyncCallback<DeleteAreaResult>() {
+
+					public void onFailure(Throwable pCaught) {
+						Window.alert("Erreur: " + pCaught.getMessage());
+					}
+
+					public void onSuccess(DeleteAreaResult pResult) {
+						Window.alert("Supprimé avec succès.");
+						pEventBus.fireEvent(new UpdateContentEvent(MenuItems.STRUCTURE));
+					}
+				});
+			}
+		});
+		lAreaView.getDeleteButton().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				dispatchAsync.execute(new DeleteMenuAction(lAreaView.getMenuId()), new AsyncCallback<DeleteMenuResult>() {
+
+					public void onFailure(Throwable pCaught) {
+						Window.alert("Erreur: " + pCaught.getMessage());
+					}
+
+					public void onSuccess(DeleteMenuResult pResult) {
+						Window.alert("Supprimé avec succès.");
+						pEventBus.fireEvent(new UpdateContentEvent(MenuItems.STRUCTURE));
 					}
 				});
 			}

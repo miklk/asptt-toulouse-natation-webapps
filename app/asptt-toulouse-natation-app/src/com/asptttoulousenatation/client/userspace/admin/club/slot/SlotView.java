@@ -15,4 +15,5 @@ public interface SlotView extends IsWidget {
 	
 	public HasClickHandlers getCreateButton();
 	public HasClickHandlers getUpdateButton();
+	public HasClickHandlers getDeleteButton();
 } 

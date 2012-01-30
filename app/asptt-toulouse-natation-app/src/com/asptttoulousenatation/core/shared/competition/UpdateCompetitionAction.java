@@ -14,13 +14,14 @@ public class UpdateCompetitionAction implements Action<UpdateCompetitionResult> 
 	private Date begin;
 	private Date end;
 	private Set<CompetitionDayUi> days;
+	private Set<Long> dayToDelete;
 	
 	public UpdateCompetitionAction() {
 		
 	}
 
 	public UpdateCompetitionAction(Long pId, String pSaison, String pTitle,
-			String pPlace, Date pBegin, Date pEnd, Set<CompetitionDayUi> pDays) {
+			String pPlace, Date pBegin, Date pEnd, Set<CompetitionDayUi> pDays, Set<Long> pDayToDelete) {
 		super();
 		id = pId;
 		saison = pSaison;
@@ -29,6 +30,7 @@ public class UpdateCompetitionAction implements Action<UpdateCompetitionResult> 
 		begin = pBegin;
 		end = pEnd;
 		days = pDays;
+		dayToDelete = pDayToDelete;
 	}
 
 	public Long getId() {
@@ -87,4 +89,11 @@ public class UpdateCompetitionAction implements Action<UpdateCompetitionResult> 
 		days = pDays;
 	}
 
+	public Set<Long> getDayToDelete() {
+		return dayToDelete;
+	}
+
+	public void setDayToDelete(Set<Long> pDayToDelete) {
+		dayToDelete = pDayToDelete;
+	}
 }
