@@ -1,5 +1,8 @@
 package com.asptttoulousenatation.server.init;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -57,6 +60,12 @@ import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentDataKindEnum;
 import com.asptttoulousenatation.shared.util.HTMLUtils;
 import com.google.appengine.api.datastore.Blob;
+import com.google.gdata.client.Query;
+import com.google.gdata.client.photos.PicasawebService;
+import com.google.gdata.data.photos.AlbumFeed;
+import com.google.gdata.data.photos.PhotoEntry;
+import com.google.gdata.util.AuthenticationException;
+import com.google.gdata.util.ServiceException;
 
 public class InitActionHandler implements ActionHandler<InitAction, InitResult> {
 
@@ -80,8 +89,10 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 	public InitResult execute(InitAction pArg0, ExecutionContext pArg1)
 			throws DispatchException {
 		LOG.info("Init action");
+		
 //		 createData();
 		InitResult lInitResult = new InitResult();
+		lInitResult.setPhoto(getPicture());
 
 		// Structure
 		List<CriterionDao<? extends Object>> lAreaSelectionCriteria = new ArrayList<CriterionDao<? extends Object>>(
@@ -473,5 +484,39 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		for (UserEntity lUserEntity : lUser) {
 			lUserDao.delete(lUserEntity);
 		}
+	}
+	
+	private String[] getPicture() {
+		String[] result = new String[3];
+		PicasawebService myService = new PicasawebService("asptt_test");
+		try {
+		myService.setUserCredentials("webmaster@asptt-toulouse-natation.com", "31000_asptt");
+		URL feedUrl = new URL("https://picasaweb.google.com/data/feed/api/user/webmaster@asptt-toulouse-natation.com");
+		
+		Query myQuery = new Query(feedUrl);
+		myQuery.setStringCustomParameter("kind", "photo");
+		myQuery.setStringCustomParameter("tag", "banniere");
+
+		AlbumFeed searchResultsFeed = myService.query(myQuery, AlbumFeed.class);
+
+			result = new String[searchResultsFeed.getPhotoEntries().size()];
+			int i = 0;
+			for(PhotoEntry photo : searchResultsFeed.getPhotoEntries()) {
+			    result[i] = photo.getMediaThumbnails().get(0).getUrl();
+			    i++;
+			}
+		}catch(AuthenticationException e) {
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

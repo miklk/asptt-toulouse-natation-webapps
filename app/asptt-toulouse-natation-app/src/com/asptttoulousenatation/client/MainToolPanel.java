@@ -51,7 +51,7 @@ public class MainToolPanel extends Composite {
 		initWidget(panel);
 
 		// Arena
-		Image lLogoArena = new Image(IMAGES.logoArenaPart());
+		Image lLogoArena = new Image(IMAGES.logoArenaBoutique());
 		lLogoArena.setAltText("Boutique");
 		lLogoArena.setTitle("Boutique");
 		lLogoArena.getElement().getStyle().setCursor(Cursor.POINTER);
@@ -136,7 +136,7 @@ public class MainToolPanel extends Composite {
 		Label lTitle = new Label("Boutique");
 		lTitle.addStyleName(CSS.loginTitle());
 		lHeader.add(lTitle);
-		Label lClose = new Label("X");
+		Image lClose = new Image(IMAGES.close());
 		lClose.addStyleName(CSS.loginClose());
 		lClose.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {

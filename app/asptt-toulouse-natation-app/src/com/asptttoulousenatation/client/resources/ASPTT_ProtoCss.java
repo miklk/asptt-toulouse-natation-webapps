@@ -36,6 +36,9 @@ public interface ASPTT_ProtoCss extends CssResource {
 	@ClassName("header-login")
 	String headerLogin();
 	
+	@ClassName("header-login-omnisport")
+	String headerLoginOmnisport();
+	
 	@ClassName("header-photo")
 	String headerPhoto();
 

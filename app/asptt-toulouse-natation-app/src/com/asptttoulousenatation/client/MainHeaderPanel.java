@@ -79,14 +79,16 @@ public class MainHeaderPanel extends Composite {
 		panel.add(image);
 		panel.setCellWidth(image, "320px");
 
-		AlternateBanner alternateBanner = new AlternateBanner();
+		AlternateBanner alternateBanner = new AlternateBanner(initResult.getPhoto());
 		alternateBanner.setStyleName(CSS.headerPhoto());
 		panel.add(alternateBanner);
 		panel.setCellWidth(alternateBanner, "610px");
+		VerticalPanel lRightPanel = new VerticalPanel();
 		HorizontalPanel layoutPanel_2 = new HorizontalPanel();
+		lRightPanel.add(layoutPanel_2);
 		layoutPanel_2.addStyleName(CSS.headerLogin());
-		panel.add(layoutPanel_2);
-		panel.setCellWidth(layoutPanel_2, "250px");
+		panel.add(lRightPanel);
+		panel.setCellWidth(lRightPanel, "250px");
 
 		authenticationButton = new PushButton("Se connecter");
 		disconnectButton = new Label("Me déconnecter");
@@ -128,6 +130,10 @@ public class MainHeaderPanel extends Composite {
 			buildConnexionPanel(lConnexionLabels);
 		}
 		layoutPanel_2.add(lConnexionLabels);
+		
+		Image lLogoOmnisport = new Image(IMAGES.logoOmnisportHaut());
+		lLogoOmnisport.setStyleName(CSS.headerLoginOmnisport());
+		lRightPanel.add(lLogoOmnisport);
 	}
 
 	private void loadContent(final String pAreaTitle, final String pMenuTitle) {
@@ -262,7 +268,7 @@ public class MainHeaderPanel extends Composite {
 		Label lTitle = new Label("Inscription");
 		lTitle.addStyleName(CSS.loginTitle());
 		lHeader.add(lTitle);
-		Label lClose = new Label("X");
+		Image lClose = new Image(IMAGES.close());
 		lClose.addStyleName(CSS.loginClose());
 		lClose.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {

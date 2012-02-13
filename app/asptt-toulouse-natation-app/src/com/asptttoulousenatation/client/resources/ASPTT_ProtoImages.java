@@ -14,11 +14,17 @@ public interface ASPTT_ProtoImages extends ClientBundle {
 	@Source("images/logoarena.jpg")
 	public ImageResource logoArena();
 	
+	@Source("images/arena_boutique.png")
+	public ImageResource logoArenaBoutique();
+	
 	@Source("images/logoarena.jpg")
 	public ImageResource logoArenaPart();
 	
 	@Source("images/logo_omnisport.jpg")
 	public ImageResource logoOmnisport();
+	
+	@Source("images/omnisport.png")
+	public ImageResource logoOmnisportHaut();
 	
 	@Source("images/img01.jpg")
 	public ImageResource img01();
@@ -28,4 +34,7 @@ public interface ASPTT_ProtoImages extends ClientBundle {
 	
 	@Source("images/img03.jpeg")
 	public ImageResource img03();
+	
+	@Source("images/close.png")
+	public ImageResource close();
 }

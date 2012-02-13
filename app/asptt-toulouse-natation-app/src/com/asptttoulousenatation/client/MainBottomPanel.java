@@ -1,6 +1,7 @@
 package com.asptttoulousenatation.client;
 
 import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
+import static com.asptttoulousenatation.client.resources.ASPTT_ProtoResources.IMAGES;
 
 import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent;
 import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent.LoadContentAreaEnum;
@@ -17,6 +18,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Label;
 
@@ -75,7 +77,7 @@ public class MainBottomPanel extends Composite {
 		Label lTitle = new Label("Contact");
 		lTitle.addStyleName(CSS.loginTitle());
 		lHeader.add(lTitle);
-		Label lClose = new Label("X");
+		Image lClose = new Image(IMAGES.close());
 		lClose.addStyleName(CSS.loginClose());
 		lClose.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {

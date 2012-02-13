@@ -43,9 +43,10 @@ body {
 	margin-top: 10px;
 	margin-left: 10px;
 }
-.header-login {
+
+@sprite .header-login {
+	gwt-image: 'lignesGrand';
 	background-color: #80BFE8;
-	background-image: url(http://prototype.asptt-toulouse-natation.com/images/lignes_grand.jpg);
 	-moz-border-radius: 15px;
 	border-radius: 15px;
 	border: 1px dashed #04366E/*8BA1B0*/;
@@ -53,6 +54,11 @@ body {
 	height: 50px;
 	padding-left: 10px;
 	margin-right: 10px;
+	width: 300px;
+}
+
+.header-login-omnisport {
+	margin-top: 40%;
 }
 
 .header-login-inscription-panel {
@@ -80,7 +86,6 @@ body {
 }
 
 .menu-g {
-	margin-top: 2%;
 	margin-bottom: 2%;
 	border: 1px solid #7C858A;
 	-moz-border-radius: 15px;
@@ -104,7 +109,6 @@ color: #FFFFFF;
 .menu-g-title {
 	color: #FFFFFF;
 	font-weight: bold;
-	margin-top: 2%;
 	background-image: url(http://prototype.asptt-toulouse-natation.com/images/degrade_3.png);
 	background-position: top left;
 	background-repeat: repeat-x;
@@ -268,6 +272,10 @@ color: #FFFFFF;
 .header-panel-content {
 	margin-left: 1%;
 	margin-top: 5px;
+	gwt-image: 'logoArenaBoutique';
+	background-position: top left;
+	border: none;
+	cursor: pointer;
 }
 
 .user-header-goBackPublic-button {

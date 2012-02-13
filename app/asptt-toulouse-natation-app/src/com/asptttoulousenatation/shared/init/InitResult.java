@@ -16,6 +16,8 @@ public class InitResult implements Result {
 	private Map<String, AreaUi> area;
 	private Map<Date, List<UiEvent>> events;
 	
+	private String[] photo;
+	
 	public InitResult() {
 		
 	}
@@ -47,4 +49,13 @@ public class InitResult implements Result {
 	public void setEvents(Map<Date, List<UiEvent>> pEvents) {
 		events = pEvents;
 	}
+
+	public String[] getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String[] pPhoto) {
+		photo = pPhoto;
+	}
+	
 }
