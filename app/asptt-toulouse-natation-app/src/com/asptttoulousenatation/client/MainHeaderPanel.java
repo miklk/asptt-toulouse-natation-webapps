@@ -203,6 +203,7 @@ public class MainHeaderPanel extends Composite {
 				popupManager.getPopupValidate().setAction(popupAction);
 				popupManager.setSize("300px", "100px");
 				popupManager.center();
+				emailAddressInput.setFocus(true);
 			}
 		});
 	}

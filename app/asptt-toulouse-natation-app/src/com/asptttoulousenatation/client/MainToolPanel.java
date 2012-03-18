@@ -77,14 +77,14 @@ public class MainToolPanel extends Composite {
 		lBoutiquePanel.setHeaderStyle(CSS.blocTitle());
 		panel.add(lBoutiquePanel);
 
-		// Meteo
-		HTML lMeteo = new HTML(
-				"<div id=\"widget_98a7717ff38d2f8635c0a2316bfabad6\"><a href=\"http://www.my-meteo.fr/previsions+meteo+france/toulouse.html\" title=\"M&eacute;t&eacute;o Toulouse\">M&eacute;t&eacute;o Toulouse</a><script type=\"text/javascript\" src=\"http://www.my-meteo.fr/meteo+webmaster/widget/js.php?ville=263&amp;format=petit-vertical&amp;nb_jours=2&amp;icones&amp;horaires&amp;vent&amp;c1=414141&amp;c2=21a2f3&amp;c3=d4d4d4&amp;c4=FFF&amp;id=98a7717ff38d2f8635c0a2316bfabad6\"></script></div>");
-//				"<div id=\"cont_7b8dcd7d9f2587bff3518640f95fd205\"><h2 id=\"h_7b8dcd7d9f2587bff3518640f95fd205\"><a href=\"http://www.tameteo.com/\" title=\"M&eacute;t&eacute;o\">M&eacute;t&eacute;o</a></h2><a id=\"a_7b8dcd7d9f2587bff3518640f95fd205\" href=\"http://www.tameteo.com/meteo_Toulouse-Europe-France-Haute+Garonne-LFBO-1-26128.html\" target=\"_blank\" title=\"M&eacute;t&eacute;o Toulouse\" style=\"color:#656565;font-family:7;font-size:14px;\">M&eacute;t&eacute;o Toulouse</a><script type=\"text/javascript\" src=\"http://www.tameteo.com/wid_loader/7b8dcd7d9f2587bff3518640f95fd205\"></script></div>");
-		HeaderPanel lMeteoPanel = new HeaderPanel("Météo", lMeteo);
-		lMeteoPanel.addStyleName(CSS.bloc());
-		lMeteoPanel.setHeaderStyle(CSS.blocTitle());
-		panel.add(lMeteoPanel);
+//		// Meteo
+//		HTML lMeteo = new HTML(
+//				"<div id=\"widget_98a7717ff38d2f8635c0a2316bfabad6\"><a href=\"http://www.my-meteo.fr/previsions+meteo+france/toulouse.html\" title=\"M&eacute;t&eacute;o Toulouse\">M&eacute;t&eacute;o Toulouse</a><script type=\"text/javascript\" src=\"http://www.my-meteo.fr/meteo+webmaster/widget/js.php?ville=263&amp;format=petit-vertical&amp;nb_jours=2&amp;icones&amp;horaires&amp;vent&amp;c1=414141&amp;c2=21a2f3&amp;c3=d4d4d4&amp;c4=FFF&amp;id=98a7717ff38d2f8635c0a2316bfabad6\"></script></div>");
+////				"<div id=\"cont_7b8dcd7d9f2587bff3518640f95fd205\"><h2 id=\"h_7b8dcd7d9f2587bff3518640f95fd205\"><a href=\"http://www.tameteo.com/\" title=\"M&eacute;t&eacute;o\">M&eacute;t&eacute;o</a></h2><a id=\"a_7b8dcd7d9f2587bff3518640f95fd205\" href=\"http://www.tameteo.com/meteo_Toulouse-Europe-France-Haute+Garonne-LFBO-1-26128.html\" target=\"_blank\" title=\"M&eacute;t&eacute;o Toulouse\" style=\"color:#656565;font-family:7;font-size:14px;\">M&eacute;t&eacute;o Toulouse</a><script type=\"text/javascript\" src=\"http://www.tameteo.com/wid_loader/7b8dcd7d9f2587bff3518640f95fd205\"></script></div>");
+//		HeaderPanel lMeteoPanel = new HeaderPanel("Météo", lMeteo);
+//		lMeteoPanel.addStyleName(CSS.bloc());
+//		lMeteoPanel.setHeaderStyle(CSS.blocTitle());
+//		panel.add(lMeteoPanel);
 
 		final DatePicker lDatePicker = new DatePicker();
 		// Get event dates

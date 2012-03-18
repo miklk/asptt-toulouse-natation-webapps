@@ -122,7 +122,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 		menuTitleInput = new TextBox();
 		menuTitleInput.setWidth("300px");
 		menuTitleInput.setValue(pMenuUi.getTitle());
-		lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé de la page"));
+		lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé du sous-menu"));
 		lPanel.setWidget(lRowIndex, 1, menuTitleInput);
 		lRowIndex++;
 
@@ -137,14 +137,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 		lRowIndex++;
 
 		// Content
-		CKConfig lConfig = new CKConfig();
-		Toolbar lToolbar = new Toolbar();
-		ToolbarLine lToolbarLine = new ToolbarLine();
-		lToolbarLine.add(CKConfig.TOOLBAR_OPTIONS.Bold);
-		lToolbarLine.add(CKConfig.TOOLBAR_OPTIONS.Blockquote);
-		lToolbar.add(lToolbarLine);
-		lConfig.setToolbar(lToolbar);
-		contentInput = new CKEditor(lConfig);
+		contentInput = new CKEditor(CKConfig.basic);
 		contentInput.setHTML(new String(lContentUI.getData()));
 		lPanel.setWidget(lRowIndex, 0, createLabel("Contenu"));
 		lPanel.setWidget(lRowIndex, 1, contentInput);

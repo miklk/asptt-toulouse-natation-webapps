@@ -9,24 +9,25 @@ public class AlternateBanner extends Composite {
 
 	private SimplePanel panel;
 	private int index;
-	
+
 	private String[] photos;
-	
+
 	public AlternateBanner(String[] pPhotos) {
 		photos = pPhotos;
 		panel = new SimplePanel();
 		initWidget(panel);
 		index = 0;
 		Timer timer = new Timer() {
-			
+
 			@Override
 			public void run() {
-				Image image = new Image(photos[index]);
-				
-				panel.clear();
-				panel.add(image);
-				index = (index + 1) % photos.length;
-				
+				if (photos != null && photos.length > index) {
+					Image image = new Image(photos[index]);
+
+					panel.clear();
+					panel.add(image);
+					index = (index + 1) % photos.length;
+				}
 			}
 		};
 		timer.scheduleRepeating(3000);
