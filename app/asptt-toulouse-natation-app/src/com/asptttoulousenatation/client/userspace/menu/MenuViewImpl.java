@@ -44,8 +44,11 @@ public class MenuViewImpl extends Composite implements MenuView {
 	
 	private InitUserSpaceResult initUserSpaceResult;
 	
+	private Command onShowCommand;
+	
 	public MenuViewImpl(InitUserSpaceResult pInitUserSpaceResult, Command pStackPanelShowCommand) {
 		initUserSpaceResult = pInitUserSpaceResult;
+		onShowCommand = pStackPanelShowCommand;
 		panel = new StackAwarePanel();
 		initWidget(panel);
 		panel.addStyleName(CSS.userSpaceMenu());
@@ -111,6 +114,9 @@ public class MenuViewImpl extends Composite implements MenuView {
 		createAreaButton.addStyleName(CSS.createMenuButton());
 		createAreaButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
+				if(onShowCommand != null) {
+					onShowCommand.execute();
+				}
 				createAreaCreationPanel();
 			}
 		});

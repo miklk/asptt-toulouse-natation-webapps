@@ -89,38 +89,38 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 		title.setWidth("300px");
 		title.setValue(pActuUi.getTitle());
 		lPanel.setWidget(0, 0, createLabel("Titre"));
-		lPanel.setWidget(0, 1, title);
+		lPanel.setWidget(1, 0, title);
 		
 		//Summary
 		summary = new TextBox();
 		summary.setWidth("300px");
 		summary.setValue(pActuUi.getSummary());
-		lPanel.setWidget(1, 0, createLabel("Description courte"));
-		lPanel.setWidget(1, 1, summary);
+		lPanel.setWidget(2, 0, createLabel("Description courte"));
+		lPanel.setWidget(3, 0, summary);
 		
 		//Date
 		date = new DateBox();
 		date.setWidth("200px");
 		date.setValue(pActuUi.getCreationDate());
-		lPanel.setWidget(2, 0, createLabel("Date"));
-		lPanel.setWidget(2, 1, date);
+		lPanel.setWidget(4, 0, createLabel("Date"));
+		lPanel.setWidget(5, 0, date);
 		
 		//Contenu
 	    // Add the components to a panel
 		// Content
 		contentInput = new CKEditor(new EditorToolbar());
 		contentInput.setHTML(pActuUi.getContent());
-		lPanel.setWidget(3, 0, createLabel("Actualité"));
-		lPanel.setWidget(3, 1, contentInput);
+		lPanel.setWidget(6, 0, createLabel("Actualité"));
+		lPanel.setWidget(7, 0, contentInput);
 
 		HorizontalPanel lButtonBar = new HorizontalPanel();
 		lButtonBar.add(updateButton);
 		lButtonBar.add(deleteButton);
 		updateButton.setStyleName(CSS.editButton());
 		deleteButton.setStyleName(CSS.deleteButton());
-		lPanel.setWidget(4, 0, lButtonBar);
-		lCellFormatter.setColSpan(4, 0, 2);
-		lCellFormatter.setHorizontalAlignment(4, 0,
+		lPanel.setWidget(8, 0, lButtonBar);
+		lCellFormatter.setColSpan(8, 0, 2);
+		lCellFormatter.setHorizontalAlignment(8, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
 		
 		actuEditionPanel.setWidget(lPanel);

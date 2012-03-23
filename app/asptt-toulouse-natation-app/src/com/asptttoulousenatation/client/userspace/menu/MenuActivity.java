@@ -77,6 +77,7 @@ public class MenuActivity extends MyAbstractActivity<MenuPlace> {
 					public void onSuccess(CreateAreaResult pResult) {
 						Window.alert("La zone a été créée.");
 						lMenuView.hidePopup();
+						
 						pEventBus.fireEvent(new UpdateContentEvent<UserUi>(
 								MenuItems.ADMIN, user));
 					}
