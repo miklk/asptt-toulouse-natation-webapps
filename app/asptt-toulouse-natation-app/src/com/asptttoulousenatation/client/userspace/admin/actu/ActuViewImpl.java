@@ -4,7 +4,7 @@ import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 
 import java.util.Date;
 
-import com.axeiya.gwtckeditor.client.CKConfig;
+import com.asptttoulousenatation.core.client.ui.EditorToolbar;
 import com.axeiya.gwtckeditor.client.CKEditor;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.Button;
@@ -57,7 +57,7 @@ public class ActuViewImpl extends Composite implements ActuView {
 		//Contenu
 	    // Add the components to a panel
 		// Content
-		contentInput = new CKEditor(CKConfig.full);
+		contentInput = new CKEditor(new EditorToolbar());
 		lPanel.setWidget(3, 0, createLabel("Actualité"));
 		lPanel.setWidget(3, 1, contentInput);
 

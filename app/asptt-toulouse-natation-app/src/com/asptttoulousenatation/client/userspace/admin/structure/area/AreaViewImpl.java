@@ -8,14 +8,13 @@ import com.asptttoulousenatation.client.userspace.admin.structure.menu.ui.MenuCe
 import com.asptttoulousenatation.client.userspace.admin.ui.DocumentCell;
 import com.asptttoulousenatation.client.userspace.admin.util.CellListStyle;
 import com.asptttoulousenatation.client.userspace.document.DocumentWidget;
+import com.asptttoulousenatation.core.client.ui.EditorToolbar;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentUI;
 import com.axeiya.gwtckeditor.client.CKConfig;
 import com.axeiya.gwtckeditor.client.CKEditor;
-import com.axeiya.gwtckeditor.client.Toolbar;
-import com.axeiya.gwtckeditor.client.ToolbarLine;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -137,7 +136,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 		lRowIndex++;
 
 		// Content
-		contentInput = new CKEditor(CKConfig.basic);
+		contentInput = new CKEditor(new EditorToolbar());
 		contentInput.setHTML(new String(lContentUI.getData()));
 		lPanel.setWidget(lRowIndex, 0, createLabel("Contenu"));
 		lPanel.setWidget(lRowIndex, 1, contentInput);
@@ -296,14 +295,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 			lRowIndex++;
 
 			// Content
-			CKConfig lConfig = new CKConfig();
-			Toolbar lToolbar = new Toolbar();
-			ToolbarLine lToolbarLine = new ToolbarLine();
-			lToolbarLine.add(CKConfig.TOOLBAR_OPTIONS.Bold);
-			lToolbarLine.add(CKConfig.TOOLBAR_OPTIONS.Blockquote);
-			lToolbar.add(lToolbarLine);
-			lConfig.setToolbar(lToolbar);
-			menuCreationContentInput = new CKEditor(lConfig);
+			menuCreationContentInput = new CKEditor(new EditorToolbar());
 			lPanel.setWidget(lRowIndex, 0, createLabel("Contenu"));
 			lPanel.setWidget(lRowIndex, 1, menuCreationContentInput);
 
