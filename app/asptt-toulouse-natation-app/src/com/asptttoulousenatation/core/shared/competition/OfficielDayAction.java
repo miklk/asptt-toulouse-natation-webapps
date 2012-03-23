@@ -5,6 +5,7 @@ import net.customware.gwt.dispatch.shared.Action;
 public class OfficielDayAction implements Action<OfficielDayResult> {
 
 	private Long user;
+	private Long competition;
 	private Long day;
 	private boolean add;
 	
@@ -12,9 +13,10 @@ public class OfficielDayAction implements Action<OfficielDayResult> {
 		
 	}
 
-	public OfficielDayAction(Long pUser, Long pDay, boolean pAdd) {
+	public OfficielDayAction(Long pUser, Long pCompetition, Long pDay, boolean pAdd) {
 		super();
 		user = pUser;
+		competition = pCompetition;
 		day = pDay;
 		add = pAdd;
 	}
@@ -25,6 +27,14 @@ public class OfficielDayAction implements Action<OfficielDayResult> {
 
 	public void setUser(Long pUser) {
 		user = pUser;
+	}
+
+	public Long getCompetition() {
+		return competition;
+	}
+
+	public void setCompetition(Long pCompetition) {
+		competition = pCompetition;
 	}
 
 	public Long getDay() {

@@ -37,28 +37,28 @@ public class CompetitionCalendarActivity extends
 				final CompetitionCalendarView lView = clientFactory.getCompetitionCalendarView(user, pResult.getCompetitions());
 				lView.addOfficielButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent pEvent) {
-						dispatchAsync.execute(new OfficielDayAction(user.getId(), lView.getCompetitionDayId(), true), new AsyncCallback<OfficielDayResult>() {
+						dispatchAsync.execute(new OfficielDayAction(user.getId(), lView.getCompetitionId(), lView.getCompetitionDayId(), true), new AsyncCallback<OfficielDayResult>() {
 
 							public void onFailure(Throwable pCaught) {
 								Window.alert("Erreur " + pCaught.getMessage());
 							}
 
 							public void onSuccess(OfficielDayResult pResult) {
-								//Nothing
+								lView.switchOfficielButton(pResult.getCompetitionDayUi());
 							}
 						});
 					}
 				});
 				lView.removeOfficielButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent pEvent) {
-						dispatchAsync.execute(new OfficielDayAction(user.getId(), lView.getCompetitionDayId(), false), new AsyncCallback<OfficielDayResult>() {
+						dispatchAsync.execute(new OfficielDayAction(user.getId(), lView.getCompetitionId(), lView.getCompetitionDayId(), false), new AsyncCallback<OfficielDayResult>() {
 
 							public void onFailure(Throwable pCaught) {
 								Window.alert("Erreur " + pCaught.getMessage());
 							}
 
 							public void onSuccess(OfficielDayResult pResult) {
-								//Nothing
+								lView.switchOfficielButton(pResult.getCompetitionDayUi());
 							}
 						});
 					}

@@ -25,6 +25,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -51,14 +52,19 @@ public class CompetitionCalendarViewImpl extends Composite implements
 			"Ven.", "Sam.", "Dim." };
 
 	private Date current;
-	private Long currentDay;
+	private Long currentCompetition;
+	private CompetitionDayUi currentDay;
 	private Map<String, List<CompetitionDayUi>> currentCompetitions;
 	private List<CompetitionUi> all;
 	private Label title;
 	private UserUi user;
 	
+	private PopupPanel dayPopup;
+	private VerticalPanel dayPanel;
 	private Button addOfficielButton;
 	private Button removeOfficielButton;
+	
+	private Label currentLabel;
 
 	public CompetitionCalendarViewImpl(UserUi pUser, List<CompetitionUi> pCompetitions) {
 		user = pUser;
@@ -213,21 +219,23 @@ public class CompetitionCalendarViewImpl extends Composite implements
 		lLabel.setStyleName(CSS.userSpaceCalendarCompetitionLabel());
 		lLabel.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
-				openCompetitionDetail(lLabel, pCompetitionDayUi);
+				currentLabel = lLabel;
+				openCompetitionDetail(pCompetitionDayUi);
 			}
 		});
 		return lLabel;
 	}
 
-	private void openCompetitionDetail(Label pLabel,
+	private void openCompetitionDetail(
 			CompetitionDayUi pCompetitionDayUi) {
-		currentDay = pCompetitionDayUi.getId();
-		DecoratedPopupPanel lPopup = new DecoratedPopupPanel(true, true);
-		VerticalPanel lPanel = new VerticalPanel();
+		currentCompetition = pCompetitionDayUi.getCompetitionUi().getId();
+		currentDay = pCompetitionDayUi;
+		dayPopup = new DecoratedPopupPanel(true, true);
+		dayPanel = new VerticalPanel();
 		Label lTitle = new Label(pCompetitionDayUi.getCompetitionUi()
 				.getTitle());
 		lTitle.setStyleName(CSS.userSpaceCalendarCompetitionDayValue());
-		lPanel.add(lTitle);
+		dayPanel.add(lTitle);
 		Grid lInfo = new Grid(3, 2);
 		// Date
 		Label lDateLabel = new Label("Date");
@@ -270,24 +278,24 @@ public class CompetitionCalendarViewImpl extends Composite implements
 			lOfficielsLabelValue.setText(lOfficielLabel);
 		}
 		lInfo.setWidget(2, 1, lOfficielsLabelValue);
-		lPanel.add(lInfo);
+		dayPanel.add(lInfo);
 		if(pCompetitionDayUi.isOfficiel(user)) {
-			lPanel.remove(addOfficielButton);
-			lPanel.add(removeOfficielButton);
-			lPanel.setCellHorizontalAlignment(removeOfficielButton, HasHorizontalAlignment.ALIGN_CENTER);
+			dayPanel.remove(addOfficielButton);
+			dayPanel.add(removeOfficielButton);
+			dayPanel.setCellHorizontalAlignment(removeOfficielButton, HasHorizontalAlignment.ALIGN_CENTER);
 		}
 		else {
-			lPanel.remove(removeOfficielButton);
-			lPanel.add(addOfficielButton);
-			lPanel.setCellHorizontalAlignment(addOfficielButton, HasHorizontalAlignment.ALIGN_CENTER);
+			dayPanel.remove(removeOfficielButton);
+			dayPanel.add(addOfficielButton);
+			dayPanel.setCellHorizontalAlignment(addOfficielButton, HasHorizontalAlignment.ALIGN_CENTER);
 		}
 		addOfficielButton.setStyleName(CSS
 				.userSpaceCalendarCompetitionDayButton());
 		removeOfficielButton.setStyleName(CSS
 				.userSpaceCalendarCompetitionDayButton());
 
-		lPopup.add(lPanel);
-		lPopup.showRelativeTo(pLabel);
+		dayPopup.add(dayPanel);
+		dayPopup.showRelativeTo(currentLabel);
 	}
 
 	public HasClickHandlers addOfficielButton() {
@@ -299,7 +307,11 @@ public class CompetitionCalendarViewImpl extends Composite implements
 	}
 
 	public Long getCompetitionDayId() {
-		return currentDay;
+		return currentDay.getId();
+	}
+	
+	public Long getCompetitionId() {
+		return currentCompetition;
 	}
 	
 	private int getColumn(int dayIndex) {
@@ -310,5 +322,15 @@ public class CompetitionCalendarViewImpl extends Composite implements
 		default: result = (dayIndex - 1) % 7;
 		}
 		return result;
+	}
+	
+	public void switchOfficielButton(CompetitionDayUi pCompetitionDayUi) {
+		if(dayPopup != null) {
+			dayPopup.hide();
+		}
+		//Copy data
+		currentDay.setNeeded(pCompetitionDayUi.getNeeded());
+		currentDay.setOfficiels(pCompetitionDayUi.getOfficiels());
+		openCompetitionDetail(currentDay);
 	}
 }
