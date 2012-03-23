@@ -13,7 +13,6 @@ import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentUI;
-import com.axeiya.gwtckeditor.client.CKConfig;
 import com.axeiya.gwtckeditor.client.CKEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -74,6 +73,8 @@ public class AreaViewImpl extends Composite implements AreaView {
 	private TextBox menuCreationSummaryInput;
 	private CKEditor menuCreationContentInput;
 	private Button menuCreationButton;
+	
+	private PopupPanel menuCreationPopup;
 
 	public AreaViewImpl(AreaUi pArea) {
 		area = pArea;
@@ -308,9 +309,9 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 			menuCreationPanel = new SimplePanel();
 			menuCreationPanel.setWidget(lPanel);
-			PopupPanel lPopup = new PopupPanel(true, true);
-			lPopup.setWidget(lPanel);
-			lPopup.center();
+			menuCreationPopup = new PopupPanel(true, true);
+			menuCreationPopup.setWidget(lPanel);
+			menuCreationPopup.center();
 	}
 
 	public Long getContentId() {
@@ -398,5 +399,11 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 	public Long getMenuId() {
 		return selectionModel.getSelectedObject().getId();
+	}
+	
+	public void hideMenuCreationPopup() {
+		if(menuCreationPopup != null) {
+			menuCreationPopup.hide();
+		}
 	}
 }

@@ -102,7 +102,8 @@ public class AreaActivity extends MyAbstractActivity<AreaPlace> {
 					}
 					public void onSuccess(CreateMenuResult pResult) {
 						Window.alert("Menu créé !");
-						pEventBus.fireEvent(new UpdateContentEvent(MenuItems.STRUCTURE));
+						pEventBus.fireEvent(new UpdateContentEvent(MenuItems.STRUCTURE, pResult.getArea()));
+						lAreaView.hideMenuCreationPopup();
 					}
 				});
 			}

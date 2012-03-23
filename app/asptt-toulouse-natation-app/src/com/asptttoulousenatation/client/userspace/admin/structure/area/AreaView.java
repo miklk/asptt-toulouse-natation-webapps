@@ -31,4 +31,6 @@ public interface AreaView extends IsWidget {
 	public HasValue<String> getMenuCreationSummary();
 	public String getMenuCreationContent();
 	
+	public void hideMenuCreationPopup();
+	
 }
