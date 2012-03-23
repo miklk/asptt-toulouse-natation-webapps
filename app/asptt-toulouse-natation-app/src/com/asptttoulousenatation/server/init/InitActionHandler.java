@@ -293,7 +293,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		createMenu(MenuItems.NEWS_PUBLICATION.toString(), "Publier",
 				lAreaAdmActu.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
 				true, true, 1);
-		createMenu(MenuItems.NEWS_EDITION.toString(), "Editer",
+		createMenu(MenuItems.NEWS_EDITION.toString(), "Modification",
 				lAreaAdmActu.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
 				true, true, 2);
 
@@ -303,7 +303,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		createMenu(MenuItems.USER_CREATION.toString(), "Création",
 				lAreaAdmUser.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
 				true, true, 1);
-		createMenu(MenuItems.USER_EDITION.toString(), "Edition",
+		createMenu(MenuItems.USER_EDITION.toString(), "Modification",
 				lAreaAdmUser.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
 				true, true, 2);
 
@@ -330,7 +330,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		lAreaEntity = new AreaEntity(null, "Compétitions saison",
 				ProfileEnum.ADMIN, true, (short) 4);
 		AreaEntity lAreaCompetitionSaison = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.COMPETITION_EDITION.toString(), "Edition",
+		createMenu(MenuItems.COMPETITION_EDITION.toString(), "Modification",
 				lAreaCompetitionSaison.getId(), StringUtils.EMPTY,
 				StringUtils.EMPTY, true, true, 1);
 
