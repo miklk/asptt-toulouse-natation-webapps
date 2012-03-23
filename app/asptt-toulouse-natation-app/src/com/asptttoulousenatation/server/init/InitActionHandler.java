@@ -1,8 +1,5 @@
 package com.asptttoulousenatation.server.init;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -60,12 +57,7 @@ import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentDataKindEnum;
 import com.asptttoulousenatation.shared.util.HTMLUtils;
 import com.google.appengine.api.datastore.Blob;
-import com.google.gdata.client.Query;
 import com.google.gdata.client.photos.PicasawebService;
-import com.google.gdata.data.photos.AlbumFeed;
-import com.google.gdata.data.photos.PhotoEntry;
-import com.google.gdata.util.AuthenticationException;
-import com.google.gdata.util.ServiceException;
 
 public class InitActionHandler implements ActionHandler<InitAction, InitResult> {
 
@@ -296,7 +288,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 
 		// Admin
 		lAreaEntity = new AreaEntity(null, "Actualités", ProfileEnum.ADMIN,
-				true, (short) 1);
+				false, (short) 1);
 		AreaEntity lAreaAdmActu = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.NEWS_PUBLICATION.toString(), "Publier",
 				lAreaAdmActu.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
@@ -306,7 +298,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				true, true, 2);
 
 		lAreaEntity = new AreaEntity(null, "Utilisateur", ProfileEnum.ADMIN,
-				true, (short) 5);
+				false, (short) 5);
 		AreaEntity lAreaAdmUser = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.USER_CREATION.toString(), "Création",
 				lAreaAdmUser.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
@@ -328,7 +320,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 
 		// Officiels
 		lAreaEntity = new AreaEntity(null, "Officier", ProfileEnum.OFFICIEL,
-				true, (short) 6);
+				false, (short) 6);
 		AreaEntity lAreaOfficier = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.OFFICIEL_VIEW.toString(),
 				"Consulter le calendier", lAreaOfficier.getId(),

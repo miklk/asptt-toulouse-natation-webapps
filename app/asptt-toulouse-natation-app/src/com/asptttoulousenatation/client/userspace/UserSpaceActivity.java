@@ -172,6 +172,9 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 															.getContentPanel(),
 													lEventBus);
 											break;
+										case VIDE:
+											lAdminView.getContentPanel().setWidget(new SimplePanel());
+											break;
 										default:
 											HomeActivity lHomeActivity = new HomeActivity(
 													new HomePlace(),

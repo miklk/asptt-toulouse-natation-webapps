@@ -6,12 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.asptttoulousenatation.core.client.ui.StackAwarePanel;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ButtonBase;
 import com.google.gwt.user.client.ui.Composite;
@@ -23,7 +25,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.StackPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -31,7 +32,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class MenuViewImpl extends Composite implements MenuView {
 
 	private Map<String, ButtonBase> menus;
-	private StackPanel panel;
+	private StackAwarePanel panel;
 	private SimplePanel areaContent;
 	private Button createAreaButton;
 	
@@ -43,19 +44,25 @@ public class MenuViewImpl extends Composite implements MenuView {
 	
 	private InitUserSpaceResult initUserSpaceResult;
 	
-	public MenuViewImpl(InitUserSpaceResult pInitUserSpaceResult) {
+	public MenuViewImpl(InitUserSpaceResult pInitUserSpaceResult, Command pStackPanelShowCommand) {
 		initUserSpaceResult = pInitUserSpaceResult;
-		panel = new StackPanel();
+		panel = new StackAwarePanel();
 		initWidget(panel);
 		panel.addStyleName(CSS.userSpaceMenu());
 		menus = new HashMap<String, ButtonBase>();
+		int stackIndex = 0;
 		for(AreaUi lArea: initUserSpaceResult.getArea().values()) {
 			if("Structure du site".equals(lArea.getTitle())) {
-				panel.add(buildAreaContent(), lArea.getTitle());
+				panel.insert(buildAreaContent(), stackIndex);
+				panel.setStackText(stackIndex, lArea.getTitle());
+				panel.addCommand(stackIndex, pStackPanelShowCommand);
 			}
 			else {
-				panel.add(build(lArea), lArea.getTitle());
+				panel.insert(build(lArea), stackIndex);
+				panel.setStackText(stackIndex, lArea.getTitle());
+				panel.addCommand(stackIndex, pStackPanelShowCommand);
 			}
+			stackIndex++;
 		}
 		createArea = new Button("Créer un menu");
 	}
@@ -101,6 +108,7 @@ public class MenuViewImpl extends Composite implements MenuView {
 		}
 		createAreaButton = new Button("Créer un menu");
 		createAreaButton.setStyleName(CSS.userSpaceMenuButton());
+		createAreaButton.addStyleName(CSS.createMenuButton());
 		createAreaButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
 				createAreaCreationPanel();

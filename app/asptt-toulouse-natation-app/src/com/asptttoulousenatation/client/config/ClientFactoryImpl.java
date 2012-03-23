@@ -40,6 +40,7 @@ import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.user.client.Command;
 
 public class ClientFactoryImpl implements ClientFactory {
 
@@ -71,8 +72,8 @@ public class ClientFactoryImpl implements ClientFactory {
 		return new HomeViewImpl(pMenuList);
 	}
 
-	public MenuView getMenuView(InitUserSpaceResult pInitUserSpaceResult) {
-		return new MenuViewImpl(pInitUserSpaceResult);
+	public MenuView getMenuView(InitUserSpaceResult pInitUserSpaceResult, Command pStackPanelShowCommand) {
+		return new MenuViewImpl(pInitUserSpaceResult, pStackPanelShowCommand);
 	}
 
 	public UserSpaceView getAdminView(InitUserSpaceResult pInitUserSpaceResult) {

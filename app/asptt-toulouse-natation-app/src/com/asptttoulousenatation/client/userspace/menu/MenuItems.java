@@ -6,11 +6,11 @@ import java.util.List;
 
 public enum MenuItems {
 
-	NEWS_PUBLICATION(true),
+	NEWS_PUBLICATION(false),
 	NEWS_EDITION,
 	STRUCTURE,
-	USER_CREATION(true),
-	USER_EDITION(true),
+	USER_CREATION(false),
+	USER_EDITION(false),
 	OFFICIEL_VIEW(true),
 	CLUB_GROUP_EDITION,
 	CLUB_SLOT_EDITION,

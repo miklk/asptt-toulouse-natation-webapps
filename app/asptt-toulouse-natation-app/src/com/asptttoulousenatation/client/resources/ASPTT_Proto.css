@@ -280,6 +280,7 @@ color: #FFFFFF;
 
 .user-header-goBackPublic-button {
 	height: 30%;
+	margin-left: 50%;
 	margin-right: 10%;
 	border: 1px solid #CDD8DE;
 	background-color: #F4F5F6;
@@ -513,4 +514,8 @@ color: #FFFFFF;
 	background-position: top left;
 	border: none;
 	cursor: pointer;
+}
+
+.create-menu-button {
+	background-color: #1E82C3;	
 }

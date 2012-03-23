@@ -61,10 +61,11 @@ public class ActuViewImpl extends Composite implements ActuView {
 		lPanel.setWidget(3, 0, createLabel("Actualité"));
 		lPanel.setWidget(3, 1, contentInput);
 
-		publishButton = new Button("Publier");
-		publishButton.setWidth("300px");
-		publishButton.setHeight("50px");
+		publishButton = new Button();
+		publishButton.setTitle("Publier");
+		publishButton.setStyleName(CSS.addButton());
 		lPanel.setWidget(4, 0, publishButton);
+		lCellFormatter.setColSpan(4, 0, 2);
 		lCellFormatter.setHorizontalAlignment(4, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
 		

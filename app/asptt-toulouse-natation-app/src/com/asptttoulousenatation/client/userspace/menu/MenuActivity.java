@@ -12,6 +12,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -28,7 +29,14 @@ public class MenuActivity extends MyAbstractActivity<MenuPlace> {
 	public void start(AcceptsOneWidget pPanel, final EventBus pEventBus) {
 		final EventBus lEventBus = pEventBus;
 		final MenuView lMenuView = clientFactory
-				.getMenuView(initUserSpaceResult);
+				.getMenuView(initUserSpaceResult, new Command() {
+					
+					public void execute() {
+						lEventBus.fireEvent(new UpdateContentEvent(
+								MenuItems.VIDE,
+								null));
+					}
+				});
 		addAction(lEventBus, lMenuView, MenuItems.NEWS_PUBLICATION);
 		addAction(lEventBus, lMenuView, MenuItems.NEWS_EDITION);
 		

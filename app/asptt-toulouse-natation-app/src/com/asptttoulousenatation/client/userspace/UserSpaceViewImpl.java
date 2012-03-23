@@ -60,7 +60,7 @@ public class UserSpaceViewImpl extends Composite implements UserSpaceView {
 	}
 
 	public void setUserName(String pUserName) {
-		titleLabel.setText("Bienvenue sur l'interface d'administration " + pUserName);
+		titleLabel.setText("Bienvenue " + pUserName);
 	}
 
 	public AcceptsOneWidget getMenuPanel() {

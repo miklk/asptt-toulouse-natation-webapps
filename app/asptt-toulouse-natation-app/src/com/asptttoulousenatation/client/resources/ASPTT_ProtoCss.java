@@ -252,4 +252,7 @@ public interface ASPTT_ProtoCss extends CssResource {
 	
 	@ClassName("button-bar")
 	String buttonBar();
+	
+	@ClassName("create-menu-button")
+	String createMenuButton();
 }

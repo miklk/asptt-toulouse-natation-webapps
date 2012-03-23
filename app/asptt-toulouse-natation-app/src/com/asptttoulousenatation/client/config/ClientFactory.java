@@ -26,6 +26,7 @@ import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.user.client.Command;
 
 public interface ClientFactory {
 	public EventBus getEventBus();
@@ -36,7 +37,7 @@ public interface ClientFactory {
 	
 	public UserSpaceView getAdminView(InitUserSpaceResult pInitUserSpaceResult);
 	public HomeView getHomeView(List<MenuUi> pMenuList);
-	public MenuView getMenuView(InitUserSpaceResult pInitUserSpaceResult);
+	public MenuView getMenuView(InitUserSpaceResult pInitUserSpaceResult, Command pStackPanelShowCommand);
 	public ActuView getActuView();
 	public AreaView getAreaView(AreaUi pArea);
 	public ActuEditionView getActuEditionView(List<ActuUi> pData);
