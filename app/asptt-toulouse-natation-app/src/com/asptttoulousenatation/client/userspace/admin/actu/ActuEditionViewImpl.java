@@ -65,6 +65,11 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 		
 		updateButton = new Button("Modifier");
 		deleteButton = new Button("");
+		updateButton = new Button("");
+		updateButton.setTitle("Modifier l'actualité");
+		deleteButton = new Button("");
+		deleteButton.setTitle("Supprimer l'actualité");
+		
 	}
 	
 	public Widget asWidget() {
@@ -111,8 +116,7 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 		HorizontalPanel lButtonBar = new HorizontalPanel();
 		lButtonBar.add(updateButton);
 		lButtonBar.add(deleteButton);
-		updateButton.setWidth("300px");
-		updateButton.setHeight("50px");
+		updateButton.setStyleName(CSS.editButton());
 		deleteButton.setStyleName(CSS.deleteButton());
 		lPanel.setWidget(4, 0, lButtonBar);
 		lCellFormatter.setColSpan(4, 0, 2);
