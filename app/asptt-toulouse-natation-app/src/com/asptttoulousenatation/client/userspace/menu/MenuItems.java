@@ -17,7 +17,8 @@ public enum MenuItems {
 	COMPETITION_EDITION,
 	ADMIN,
 	PUBLIC,
-	VIDE;
+	VIDE,
+	REFRESH_ADMIN;
 	
 	private String salt;
 	private boolean shortcut;

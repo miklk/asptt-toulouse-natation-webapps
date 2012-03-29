@@ -30,7 +30,13 @@ public interface AreaView extends IsWidget {
 	public HasValue<String> getMenuCreationTitle();
 	public HasValue<String> getMenuCreationSummary();
 	public String getMenuCreationContent();
+
+	public Long getParentMenuId();
 	
 	public void hideMenuCreationPopup();
+	
+	//Sub menu creation
+	public HasClickHandlers getSubMenuCreationButton();
+	public HasValue<String> getSubMenuCreationTitle();
 	
 }

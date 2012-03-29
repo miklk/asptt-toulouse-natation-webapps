@@ -13,6 +13,7 @@ import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.search.OrderDao;
 import com.asptttoulousenatation.core.server.service.PMF;
+import com.google.appengine.api.datastore.Key;
 
 public abstract class DaoBase<E extends Entity> {
 
@@ -75,7 +76,7 @@ public abstract class DaoBase<E extends Entity> {
 	 *            Identity of the entity to retrieve.
 	 * @return Entity
 	 */
-	private E get(Class<E> pClass, Long pId) {
+	private E get(Class<E> pClass, Object pId) {
 		E lResult = null;
 		PersistenceManager lPersistenceManager = PMF.getPersistenceManager();
 		try {
@@ -88,6 +89,10 @@ public abstract class DaoBase<E extends Entity> {
 	}
 
 	public E get(Long pId) {
+		return get(getEntityClass(), pId);
+	}
+	
+	public E get(Key pId) {
 		return get(getEntityClass(), pId);
 	}
 

@@ -37,4 +37,11 @@ public class DeleteCompetitionActionHandler extends
 		return new DeleteCompetitionResult();
 	}
 
+	@Override
+	protected void fillResult(DeleteCompetitionAction pAction,
+			DeleteCompetitionResult pResult, ExecutionContext pContext)
+			throws DispatchException {
+		
+	}
+
 }

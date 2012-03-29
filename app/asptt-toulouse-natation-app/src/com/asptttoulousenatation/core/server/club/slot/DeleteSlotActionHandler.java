@@ -31,4 +31,11 @@ public class DeleteSlotActionHandler extends
 	protected DeleteSlotResult getResult() {
 		return new DeleteSlotResult();
 	}
+
+	@Override
+	protected void fillResult(DeleteSlotAction pAction,
+			DeleteSlotResult pResult, ExecutionContext pContext)
+			throws DispatchException {
+		
+	}
 }

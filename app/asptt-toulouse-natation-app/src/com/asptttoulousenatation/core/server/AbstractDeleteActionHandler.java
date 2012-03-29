@@ -22,12 +22,16 @@ public abstract class AbstractDeleteActionHandler<E extends Entity, A extends Ab
 			doBeforeDelete(lEntity, pContext);
 			dao.delete(lEntity);
 		}
-		return getResult();
+		R lResult = getResult();
+		fillResult(pAction, lResult, pContext);
+		return lResult;
 	}
 
 	protected abstract void doBeforeDelete(E pEntity, ExecutionContext pContext)
 			throws DispatchException;
-
+	
+	protected abstract void fillResult(A pAction, R pResult, ExecutionContext pContext) throws DispatchException;
+	
 	public void rollback(A pAction, R pResult, ExecutionContext pContext)
 			throws DispatchException {
 	}

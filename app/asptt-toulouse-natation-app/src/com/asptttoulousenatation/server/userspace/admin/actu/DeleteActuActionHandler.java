@@ -34,4 +34,10 @@ public class DeleteActuActionHandler
 		return new DeleteActuResult();
 	}
 
+	@Override
+	protected void fillResult(DeleteActuAction pAction,
+			DeleteActuResult pResult, ExecutionContext pContext)
+			throws DispatchException {
+	}
+
 }

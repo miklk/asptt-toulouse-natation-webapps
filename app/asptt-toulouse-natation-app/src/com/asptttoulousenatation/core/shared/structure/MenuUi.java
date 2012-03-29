@@ -1,5 +1,6 @@
 package com.asptttoulousenatation.core.shared.structure;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
@@ -29,8 +30,11 @@ public class MenuUi implements IsSerializable {
 	
 	private List<DocumentUi> documentSet;
 	
+	private List<MenuUi> subMenus;
+	
 	public MenuUi() {
 		id = 0l;
+		documentSet = new ArrayList<DocumentUi>(0);
 	}
 
 	public MenuUi(String pMenuKey, String pTitle, List<MenuEditionUI> pSubMenu, Long pParentId,
@@ -125,5 +129,12 @@ public class MenuUi implements IsSerializable {
 	public void setDocumentSet(List<DocumentUi> pDocumentSet) {
 		documentSet = pDocumentSet;
 	}
-	
+
+	public List<MenuUi> getSubMenus() {
+		return subMenus;
+	}
+
+	public void setSubMenus(List<MenuUi> pSubMenus) {
+		subMenus = pSubMenus;
+	}
 }

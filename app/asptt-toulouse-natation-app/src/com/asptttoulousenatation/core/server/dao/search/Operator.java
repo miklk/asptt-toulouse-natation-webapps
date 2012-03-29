@@ -9,7 +9,8 @@ public enum Operator implements Serializable {
 	LESS("<"),
 	LESS_EQ("<="),
 	AND("&&"),
-	OR("||");
+	OR("||"),
+	NULL("is null");
 	
 	private String value;
 	

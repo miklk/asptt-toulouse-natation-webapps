@@ -53,4 +53,11 @@ public class DeleteGroupActionHandler extends
 		return new DeleteGroupResult();
 	}
 
+	@Override
+	protected void fillResult(DeleteGroupAction pAction,
+			DeleteGroupResult pResult, ExecutionContext pContext)
+			throws DispatchException {
+		
+	}
+
 }

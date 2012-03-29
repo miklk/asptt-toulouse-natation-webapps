@@ -16,6 +16,7 @@ import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuResult;
 import com.asptttoulousenatation.core.shared.structure.menu.DeleteMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.DeleteMenuResult;
+import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.UpdateContentAction;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.UpdateContentResult;
@@ -96,14 +97,14 @@ public class AreaActivity extends MyAbstractActivity<AreaPlace> {
 		});
 		lAreaView.getMenuCreationButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
-				dispatchAsync.execute(new CreateMenuAction(lAreaView.getMenuCreationTitle().getValue(), lAreaView.getMenuCreationSummary().getValue(), lAreaView.getMenuCreationContent(), (short)0, area.getId()), new AsyncCallback<CreateMenuResult>() {
+				dispatchAsync.execute(new CreateMenuAction(lAreaView.getMenuCreationTitle().getValue(), lAreaView.getMenuCreationSummary().getValue(), lAreaView.getMenuCreationContent(), (short)0, area.getId(), lAreaView.getParentMenuId()), new AsyncCallback<CreateMenuResult>() {
 					public void onFailure(Throwable pCaught) {
 						Window.alert("Erreur: " + pCaught.getMessage());
 					}
 					public void onSuccess(CreateMenuResult pResult) {
 						Window.alert("Menu créé !");
-						pEventBus.fireEvent(new UpdateContentEvent(MenuItems.STRUCTURE, pResult.getArea()));
 						lAreaView.hideMenuCreationPopup();
+						pEventBus.fireEvent(new UpdateContentEvent(MenuItems.STRUCTURE, pResult.getArea()));
 					}
 				});
 			}
@@ -118,7 +119,7 @@ public class AreaActivity extends MyAbstractActivity<AreaPlace> {
 
 					public void onSuccess(DeleteAreaResult pResult) {
 						Window.alert("Supprimé avec succès.");
-						pEventBus.fireEvent(new UpdateContentEvent(MenuItems.STRUCTURE));
+						pEventBus.fireEvent(new UpdateContentEvent(MenuItems.REFRESH_ADMIN));
 					}
 				});
 			}
@@ -133,7 +134,7 @@ public class AreaActivity extends MyAbstractActivity<AreaPlace> {
 
 					public void onSuccess(DeleteMenuResult pResult) {
 						Window.alert("Supprimé avec succès.");
-						pEventBus.fireEvent(new UpdateContentEvent(MenuItems.STRUCTURE));
+						pEventBus.fireEvent(new UpdateContentEvent(MenuItems.STRUCTURE, pResult.getArea()));
 					}
 				});
 			}

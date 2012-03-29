@@ -11,10 +11,6 @@ import net.customware.gwt.dispatch.shared.DispatchException;
 
 import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.client.util.CollectionUtils;
-import com.asptttoulousenatation.core.server.dao.document.DocumentDao;
-import com.asptttoulousenatation.core.server.dao.entity.document.DocumentEntity;
-import com.asptttoulousenatation.core.server.dao.entity.field.ContentEntityFields;
-import com.asptttoulousenatation.core.server.dao.entity.field.DocumentEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.MenuEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.structure.AreaEntity;
 import com.asptttoulousenatation.core.server.dao.entity.structure.ContentEntity;
@@ -24,14 +20,12 @@ import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.structure.AreaDao;
 import com.asptttoulousenatation.core.server.dao.structure.ContentDao;
 import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
-import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuResult;
+import com.asptttoulousenatation.core.shared.structure.menu.GetMenuAction;
+import com.asptttoulousenatation.core.shared.structure.menu.GetMenuResult;
 import com.asptttoulousenatation.server.userspace.admin.entity.AreaTransformer;
-import com.asptttoulousenatation.server.userspace.admin.entity.ContentTransformer;
-import com.asptttoulousenatation.server.userspace.admin.entity.DocumentTransformer;
-import com.asptttoulousenatation.server.userspace.admin.entity.MenuTransformer;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentDataKindEnum;
 import com.asptttoulousenatation.shared.util.HTMLUtils;
@@ -43,12 +37,8 @@ public class CreateMenuActionHandler implements
 	private MenuDao dao = new MenuDao();
 	private ContentDao contentDao = new ContentDao();
 	private AreaDao areaDao = new AreaDao();
-private DocumentDao documentDao = new DocumentDao();
 	
 	private AreaTransformer areaTransformer = new AreaTransformer();
-	private MenuTransformer menuTransformer = new MenuTransformer();
-	private ContentTransformer contentTransformer = new ContentTransformer();
-	private DocumentTransformer documentTransformer = new DocumentTransformer();
 	
 	public CreateMenuResult execute(CreateMenuAction pAction,
 			ExecutionContext pContext) throws DispatchException {
@@ -62,13 +52,20 @@ private DocumentDao documentDao = new DocumentDao();
 		List<MenuEntity> existenceTest = dao.find(lCriteria);
 		if(CollectionUtils.isEmpty(existenceTest)) {//doesn't exist
 			//Creation
-			MenuEntity lMenu = new MenuEntity(MenuItems.VIDE.toString(), pAction.getTitle(), pAction.getArea(), false, true, pAction.getOrder());
+			MenuEntity lMenu = new MenuEntity(MenuItems.VIDE.toString(), pAction.getTitle(), pAction.getArea(), false, true, pAction.getOrder(), null, pAction.getParent());
 			MenuEntity lMenuEntity = dao.save(lMenu);
 			ContentEntity lContentEntity = new ContentEntity(pAction.getSummary(),
 					new Blob((HTMLUtils.escapeHTML(pAction.getContent())).getBytes()),
-					ContentDataKindEnum.TEXT.toString(), lMenuEntity.getId()
-							.getId());
+					ContentDataKindEnum.TEXT.toString(), lMenuEntity.getId());
 			contentDao.save(lContentEntity);
+			
+			//Update parent
+			if(pAction.getParent() != null) {
+				//Retrieve parent menu
+				MenuEntity lMenuParent = dao.get(pAction.getParent());
+				lMenuParent.getSubMenu().add(lMenuEntity.getId());
+				dao.save(lMenuParent);
+			}
 			
 			//Retrieve area
 			AreaEntity lAreaEntity = areaDao.get(pAction.getArea());
@@ -79,32 +76,9 @@ private DocumentDao documentDao = new DocumentDao();
 			lMenuCriteria.add(lAreaCriterion);
 			List<MenuEntity> lMenuEntities = dao.find(lMenuCriteria);
 			Map<String, MenuUi> lMenuUis = new LinkedHashMap<String, MenuUi>(lMenuEntities.size());
-			
-			List<CriterionDao<? extends Object>> lMenuCriteria2 = new ArrayList<CriterionDao<? extends Object>>(
-					1);
-			CriterionDao<Long> lContentCriterion = new CriterionDao<Long>();
-			lContentCriterion.setEntityField(ContentEntityFields.MENU);
-			lContentCriterion.setOperator(Operator.EQUAL);
-			lMenuCriteria2.add(lContentCriterion);
-			
-			//Get documents
-			List<CriterionDao<? extends Object>> lDocumentCriteria = new ArrayList<CriterionDao<? extends Object>>(
-					1);
-			CriterionDao<Long> lDocumentCriterion = new CriterionDao<Long>();
-			lDocumentCriterion.setEntityField(DocumentEntityFields.MENU);
-			lDocumentCriterion.setOperator(Operator.EQUAL);
-			lDocumentCriteria.add(lDocumentCriterion);
 			for(MenuEntity lMenuEntity2: lMenuEntities) {
-				//Get content
-				lContentCriterion.setValue(lMenuEntity2.getId().getId());
-				List<ContentEntity> lContentEntities = contentDao.find(lMenuCriteria2);
-				MenuUi lMenu2 = menuTransformer.toUi(lMenuEntity2);
-				lDocumentCriterion.setValue(lMenuEntity2.getId().getId());
-				List<DocumentEntity> lDocumentEntities = documentDao.find(lDocumentCriteria);
-				List<DocumentUi> lDocumentUis = documentTransformer.toUi(lDocumentEntities);
-				lMenu2.setContentSet(contentTransformer.toUi(lContentEntities));
-				lMenu2.setDocumentSet(lDocumentUis);
-				lMenuUis.put(lMenu2.getTitle(), lMenu2);
+				GetMenuResult lGetMenuActionResult = pContext.execute(new GetMenuAction(lMenuEntity2.getId()));
+				lMenuUis.put(lGetMenuActionResult.getMenu().getTitle(), lGetMenuActionResult.getMenu());
 			}
 			AreaUi lArea = areaTransformer.toUi(lAreaEntity);
 			lArea.setMenuSet(lMenuUis);

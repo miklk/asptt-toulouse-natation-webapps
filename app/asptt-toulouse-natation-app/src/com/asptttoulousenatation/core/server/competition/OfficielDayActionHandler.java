@@ -43,8 +43,10 @@ public class OfficielDayActionHandler implements
 		CompetitionDayEntity lCompetitionDay = dao.get(pAction.getDay());
 		if(pAction.isAdd()) {
 			lCompetitionDay.getOfficiels().add(pAction.getUser());
+			lCompetitionDay.setNeeded(lCompetitionDay.getNeeded() - 1);
 		} else {
 			lCompetitionDay.getOfficiels().remove(pAction.getUser());
+			lCompetitionDay.setNeeded(lCompetitionDay.getNeeded() + 1);
 		}
 		dao.save(lCompetitionDay);
 		CompetitionDayEntity lDay = dao.get(pAction.getDay());

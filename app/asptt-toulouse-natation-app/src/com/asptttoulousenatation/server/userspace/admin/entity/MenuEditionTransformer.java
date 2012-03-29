@@ -9,7 +9,7 @@ public class MenuEditionTransformer extends
 	@Override
 	public MenuEditionUI toUi(MenuEntity pEntity) {
 		MenuEditionUI lUi = new MenuEditionUI();
-		lUi.setId(pEntity.getId().getId());
+		lUi.setId(pEntity.getId());
 		lUi.setTitle(pEntity.getTitle());
 		lUi.setRoot(true);
 		return lUi;

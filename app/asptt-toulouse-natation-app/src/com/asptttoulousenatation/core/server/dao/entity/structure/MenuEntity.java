@@ -1,5 +1,8 @@
 package com.asptttoulousenatation.core.server.dao.entity.structure;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -7,7 +10,6 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.asptttoulousenatation.core.server.dao.entity.Entity;
-import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
 public class MenuEntity implements Entity {
@@ -19,7 +21,7 @@ public class MenuEntity implements Entity {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key id;
+	private Long id;
 	
 	@Persistent
 	private String title;
@@ -39,24 +41,34 @@ public class MenuEntity implements Entity {
 	@Persistent
 	private int order;
 	
+	@Persistent
+	private Set<Long> subMenu;
+	
+	@Persistent
+	private Long parent;
+	
 	public MenuEntity() {
+		subMenu = new HashSet<Long>();
 	}
 	
 	
-	public MenuEntity(String pMenuKey, String pTitle, Long pArea, boolean pShortcut, boolean pDisplay, int pOrder) {
+	public MenuEntity(String pMenuKey, String pTitle, Long pArea, boolean pShortcut, boolean pDisplay, int pOrder, Set<Long> pSubMenu, Long pParent) {
+		this();
 		menuKey = pMenuKey;
 		title = pTitle;
 		area = pArea;
 		shortcut = pShortcut;
 		display = pDisplay;
 		order = pOrder;
+		subMenu = pSubMenu;
+		parent = pParent;
 	}
 	
-	public Key getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Key pId) {
+	public void setId(Long pId) {
 		id = pId;
 	}
 
@@ -113,5 +125,24 @@ public class MenuEntity implements Entity {
 	public void setOrder(int pOrder) {
 		order = pOrder;
 	}
-	
+
+
+	public Set<Long> getSubMenu() {
+		return subMenu;
+	}
+
+
+	public void setSubMenu(Set<Long> pSubMenu) {
+		subMenu = pSubMenu;
+	}
+
+
+	public Long getParent() {
+		return parent;
+	}
+
+
+	public void setParent(Long pParent) {
+		parent = pParent;
+	}
 }

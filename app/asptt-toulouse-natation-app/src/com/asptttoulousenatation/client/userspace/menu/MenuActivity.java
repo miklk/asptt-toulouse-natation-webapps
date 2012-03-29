@@ -2,6 +2,7 @@ package com.asptttoulousenatation.client.userspace.menu;
 
 import com.asptttoulousenatation.client.config.ClientFactory;
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent;
+import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEventHandler;
 import com.asptttoulousenatation.core.client.MyAbstractActivity;
 import com.asptttoulousenatation.core.shared.structure.area.CreateAreaAction;
 import com.asptttoulousenatation.core.shared.structure.area.CreateAreaResult;
@@ -28,35 +29,29 @@ public class MenuActivity extends MyAbstractActivity<MenuPlace> {
 
 	public void start(AcceptsOneWidget pPanel, final EventBus pEventBus) {
 		final EventBus lEventBus = pEventBus;
-		final MenuView lMenuView = clientFactory
-				.getMenuView(initUserSpaceResult, new Command() {
-					
+		final MenuView lMenuView = clientFactory.getMenuView(
+				initUserSpaceResult, new Command() {
+
 					public void execute() {
 						lEventBus.fireEvent(new UpdateContentEvent(
-								MenuItems.VIDE,
-								null));
+								MenuItems.VIDE, null));
 					}
 				});
 		addAction(lEventBus, lMenuView, MenuItems.NEWS_PUBLICATION);
 		addAction(lEventBus, lMenuView, MenuItems.NEWS_EDITION);
-		
+
 		for (AreaUi lAreaUi : initUserSpaceResult.getAreaResult().getArea()) {
 			final AreaUi lAreaUiFinal = lAreaUi;
 			MenuItems lMenuItems = MenuItems.STRUCTURE;
 			lMenuItems.setSalt(lAreaUi.getTitle());
-			HasClickHandlers lMenuObject = lMenuView
-					.getItem(lMenuItems);
+			HasClickHandlers lMenuObject = lMenuView.getItem(lMenuItems);
 			if (lMenuObject != null) {
-				lMenuObject
-						.addClickHandler(new ClickHandler() {
-							public void onClick(
-									ClickEvent pEvent) {
-								lEventBus
-										.fireEvent(new UpdateContentEvent(
-												MenuItems.STRUCTURE,
-												lAreaUiFinal));
-							}
-						});
+				lMenuObject.addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent pEvent) {
+						lEventBus.fireEvent(new UpdateContentEvent(
+								MenuItems.STRUCTURE, lAreaUiFinal));
+					}
+				});
 			}
 		}
 		addAction(lEventBus, lMenuView, MenuItems.USER_CREATION);
@@ -65,25 +60,38 @@ public class MenuActivity extends MyAbstractActivity<MenuPlace> {
 		addAction(lEventBus, lMenuView, MenuItems.CLUB_SLOT_EDITION);
 		addAction(lEventBus, lMenuView, MenuItems.COMPETITION_EDITION);
 		addAction(lEventBus, lMenuView, MenuItems.OFFICIEL_VIEW);
-		
+
 		lMenuView.getCreateAreaButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
-				dispatchAsync.execute(new CreateAreaAction(lMenuView.getAreaTitle().getValue(), lMenuView.getAreaOrder()), new AsyncCallback<CreateAreaResult>() {
+				dispatchAsync.execute(new CreateAreaAction(lMenuView
+						.getAreaTitle().getValue(), lMenuView.getAreaOrder()),
+						new AsyncCallback<CreateAreaResult>() {
 
-					public void onFailure(Throwable pCaught) {
-						Window.alert("Erreur " + pCaught.getMessage());
-					}
+							public void onFailure(Throwable pCaught) {
+								Window.alert("Erreur " + pCaught.getMessage());
+							}
 
-					public void onSuccess(CreateAreaResult pResult) {
-						Window.alert("La zone a été créée.");
-						lMenuView.hidePopup();
-						
-						pEventBus.fireEvent(new UpdateContentEvent<UserUi>(
-								MenuItems.ADMIN, user));
-					}
-				});
+							public void onSuccess(CreateAreaResult pResult) {
+								Window.alert("La zone a été créée.");
+								lMenuView.hidePopup();
+
+								pEventBus
+										.fireEvent(new UpdateContentEvent<UserUi>(
+												MenuItems.ADMIN, user));
+							}
+						});
 			}
 		});
+		lEventBus.addHandler(UpdateContentEvent.TYPE,
+				new UpdateContentEventHandler() {
+
+					public void updateContent(UpdateContentEvent pEvent) {
+						if (MenuItems.REFRESH_ADMIN.equals(pEvent.getAction())) {
+							pEventBus.fireEvent(new UpdateContentEvent<UserUi>(
+									MenuItems.ADMIN, user));
+						}
+					}
+				});
 		pPanel.setWidget(lMenuView);
 	}
 

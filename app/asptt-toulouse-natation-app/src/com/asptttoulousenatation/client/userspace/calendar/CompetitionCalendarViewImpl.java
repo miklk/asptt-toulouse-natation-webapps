@@ -58,15 +58,16 @@ public class CompetitionCalendarViewImpl extends Composite implements
 	private List<CompetitionUi> all;
 	private Label title;
 	private UserUi user;
-	
+
 	private PopupPanel dayPopup;
 	private VerticalPanel dayPanel;
 	private Button addOfficielButton;
 	private Button removeOfficielButton;
-	
+
 	private Label currentLabel;
 
-	public CompetitionCalendarViewImpl(UserUi pUser, List<CompetitionUi> pCompetitions) {
+	public CompetitionCalendarViewImpl(UserUi pUser,
+			List<CompetitionUi> pCompetitions) {
 		user = pUser;
 		panel = new VerticalPanel();
 		initWidget(panel);
@@ -159,7 +160,8 @@ public class CompetitionCalendarViewImpl extends Composite implements
 		}
 		// Build next date
 		int lRowIndex = 1;
-		for (int i = (lFirstDayIndex + 1); i < (((ROW - 1) * COLUMN) - (lFirstDay.getDay() - 1)); i++) {
+		for (int i = (lFirstDayIndex + 1); i < (((ROW - 1) * COLUMN) - (lFirstDay
+				.getDay() - 1)); i++) {
 			int lNextDayIndex = lFirstDay.getDay() + i;
 			Date lNextDay = (Date) lFirstDay.clone();
 			lNextDay.setDate(lFirstDay.getDate() + i);
@@ -226,8 +228,7 @@ public class CompetitionCalendarViewImpl extends Composite implements
 		return lLabel;
 	}
 
-	private void openCompetitionDetail(
-			CompetitionDayUi pCompetitionDayUi) {
+	private void openCompetitionDetail(CompetitionDayUi pCompetitionDayUi) {
 		currentCompetition = pCompetitionDayUi.getCompetitionUi().getId();
 		currentDay = pCompetitionDayUi;
 		dayPopup = new DecoratedPopupPanel(true, true);
@@ -240,7 +241,8 @@ public class CompetitionCalendarViewImpl extends Composite implements
 		// Date
 		Label lDateLabel = new Label("Date");
 		Label lDateLabelValue = new Label(
-				dayMonthHourFormat.format(pCompetitionDayUi.getBegin()) + " - " + hourFormat.format(pCompetitionDayUi.getEnd()));
+				dayMonthHourFormat.format(pCompetitionDayUi.getBegin()) + " - "
+						+ hourFormat.format(pCompetitionDayUi.getEnd()));
 		lDateLabelValue
 				.setStyleName(CSS.userSpaceCalendarCompetitionDayValue());
 		lInfo.setWidget(0, 0, lDateLabel);
@@ -256,7 +258,8 @@ public class CompetitionCalendarViewImpl extends Composite implements
 		lInfo.setWidget(1, 1, lLieuLabelValue);
 
 		// Officiels
-		Label lOfficielsLabel = new Label("Officiels inscrits (besoin de " + pCompetitionDayUi.getNeeded() + ")");
+		Label lOfficielsLabel = new Label("Officiels inscrits (besoin de "
+				+ pCompetitionDayUi.getNeeded() + ")");
 		Label lOfficielsLabelValue = new Label();
 		lOfficielsLabelValue.setStyleName(CSS
 				.userSpaceCalendarCompetitionDayValue());
@@ -279,21 +282,24 @@ public class CompetitionCalendarViewImpl extends Composite implements
 		}
 		lInfo.setWidget(2, 1, lOfficielsLabelValue);
 		dayPanel.add(lInfo);
-		if(pCompetitionDayUi.isOfficiel(user)) {
+
+		if (pCompetitionDayUi.isOfficiel(user)) {
 			dayPanel.remove(addOfficielButton);
 			dayPanel.add(removeOfficielButton);
-			dayPanel.setCellHorizontalAlignment(removeOfficielButton, HasHorizontalAlignment.ALIGN_CENTER);
-		}
-		else {
+			dayPanel.setCellHorizontalAlignment(removeOfficielButton,
+					HasHorizontalAlignment.ALIGN_CENTER);
+		} else {
 			dayPanel.remove(removeOfficielButton);
-			dayPanel.add(addOfficielButton);
-			dayPanel.setCellHorizontalAlignment(addOfficielButton, HasHorizontalAlignment.ALIGN_CENTER);
+			if (pCompetitionDayUi.getNeeded() > 0) {
+				dayPanel.add(addOfficielButton);
+				dayPanel.setCellHorizontalAlignment(addOfficielButton,
+						HasHorizontalAlignment.ALIGN_CENTER);
+			}
 		}
 		addOfficielButton.setStyleName(CSS
 				.userSpaceCalendarCompetitionDayButton());
 		removeOfficielButton.setStyleName(CSS
 				.userSpaceCalendarCompetitionDayButton());
-
 		dayPopup.add(dayPanel);
 		dayPopup.showRelativeTo(currentLabel);
 	}
@@ -309,26 +315,28 @@ public class CompetitionCalendarViewImpl extends Composite implements
 	public Long getCompetitionDayId() {
 		return currentDay.getId();
 	}
-	
+
 	public Long getCompetitionId() {
 		return currentCompetition;
 	}
-	
+
 	private int getColumn(int dayIndex) {
 		final int result;
-		switch(dayIndex) {
-		case 0: result = dayIndex;
-		break;
-		default: result = (dayIndex - 1) % 7;
+		switch (dayIndex) {
+		case 0:
+			result = dayIndex;
+			break;
+		default:
+			result = (dayIndex - 1) % 7;
 		}
 		return result;
 	}
-	
+
 	public void switchOfficielButton(CompetitionDayUi pCompetitionDayUi) {
-		if(dayPopup != null) {
+		if (dayPopup != null) {
 			dayPopup.hide();
 		}
-		//Copy data
+		// Copy data
 		currentDay.setNeeded(pCompetitionDayUi.getNeeded());
 		currentDay.setOfficiels(pCompetitionDayUi.getOfficiels());
 		openCompetitionDetail(currentDay);

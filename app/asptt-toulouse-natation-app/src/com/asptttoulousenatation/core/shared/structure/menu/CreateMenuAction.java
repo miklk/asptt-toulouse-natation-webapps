@@ -9,22 +9,22 @@ public class CreateMenuAction implements Action<CreateMenuResult> {
 	private String content;
 	private short order;
 	private Long area;
+	private Long parent;
 	
 	public CreateMenuAction() {
 		
 	}
 
-	
 	public CreateMenuAction(String pTitle, String pSummary, String pContent,
-			short pOrder, Long pArea) {
+			short pOrder, Long pArea, Long pParent) {
 		super();
 		title = pTitle;
 		summary = pSummary;
 		content = pContent;
 		order = pOrder;
 		area = pArea;
+		parent = pParent;
 	}
-
 
 	public String getTitle() {
 		return title;
@@ -66,5 +66,13 @@ public class CreateMenuAction implements Action<CreateMenuResult> {
 
 	public void setArea(Long pArea) {
 		area = pArea;
+	}
+
+	public Long getParent() {
+		return parent;
+	}
+
+	public void setParent(Long pParent) {
+		parent = pParent;
 	}
 }

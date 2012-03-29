@@ -4,10 +4,11 @@ import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 
 import java.util.ArrayList;
 
-import com.asptttoulousenatation.client.userspace.admin.structure.menu.ui.MenuCell;
+import com.asptttoulousenatation.client.userspace.admin.structure.menu.ui.MenuTreeViewModel;
 import com.asptttoulousenatation.client.userspace.admin.ui.DocumentCell;
 import com.asptttoulousenatation.client.userspace.admin.util.CellListStyle;
 import com.asptttoulousenatation.client.userspace.document.DocumentWidget;
+import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.client.ui.EditorToolbar;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
@@ -17,6 +18,8 @@ import com.axeiya.gwtckeditor.client.CKEditor;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.user.cellview.client.AbstractCellTree;
+import com.google.gwt.user.cellview.client.CellBrowser;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -40,7 +43,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 	private VerticalPanel panel;
 	private HorizontalPanel menuPanel;
 
-	private CellList<MenuUi> cellList;
+	private AbstractCellTree cellBrowser;
 	private SingleSelectionModel<MenuUi> selectionModel;
 	private SimplePanel editionPanel;
 
@@ -75,6 +78,11 @@ public class AreaViewImpl extends Composite implements AreaView {
 	private Button menuCreationButton;
 	
 	private PopupPanel menuCreationPopup;
+	
+	//Sub menu creation
+	private Button subMenuCreationButton;
+	private TextBox subMenuCreationTitleInput;
+	private Long parentId;
 
 	public AreaViewImpl(AreaUi pArea) {
 		area = pArea;
@@ -86,11 +94,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 		menuPanel = new HorizontalPanel();
 		panel.add(menuPanel);
 
-		cellList = new CellList<MenuUi>(new MenuCell(), new CellListStyle());
-		cellList.setRowData(new ArrayList<MenuUi>(area.getMenuSet().values()));
-		menuPanel.add(cellList);
 		selectionModel = new SingleSelectionModel<MenuUi>();
-		cellList.setSelectionModel(selectionModel);
 		selectionModel
 				.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 
@@ -100,6 +104,10 @@ public class AreaViewImpl extends Composite implements AreaView {
 					}
 				});
 
+		cellBrowser = new CellBrowser(new MenuTreeViewModel(selectionModel, new ArrayList<MenuUi>(area.getMenuSet().values())), null);
+		cellBrowser.setWidth("200px");
+		cellBrowser.setHeight("400px");
+		menuPanel.add(cellBrowser);
 		editionPanel = new SimplePanel();
 		editionPanel.setStyleName(CSS.userSpaceContentEdition());
 		menuPanel.add(editionPanel);
@@ -117,17 +125,40 @@ public class AreaViewImpl extends Composite implements AreaView {
 		FlexTable lPanel = new FlexTable();
 
 		int lRowIndex = 0;
+		
+		//Add sub menu
+		if (pMenuUi.getParentId() == null) {
+			Button lAddSubMenuButton = new Button("Ajouter un sous-menu");
+			lAddSubMenuButton.addClickHandler(new ClickHandler() {
+
+				public void onClick(ClickEvent pEvent) {
+					parentId = selectionModel.getSelectedObject().getId();
+					createMenuCreationPanel();
+				}
+			});
+			lPanel.setWidget(lRowIndex, 0, lAddSubMenuButton);
+			lRowIndex++;
+		} else {
+			parentId = null;
+		}
 
 		// Menu title
 		menuTitleInput = new TextBox();
 		menuTitleInput.setWidth("300px");
 		menuTitleInput.setValue(pMenuUi.getTitle());
-		lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé du sous-menu"));
+		lPanel.setWidget(lRowIndex, 0, createLabel("Titre de la page"));
 		lPanel.setWidget(lRowIndex, 1, menuTitleInput);
 		lRowIndex++;
 
 		// Content edition
-		ContentUI lContentUI = pMenuUi.getContentSet().get(0);
+		final ContentUI lContentUI;
+		if(CollectionUtils.isNotEmpty(pMenuUi.getContentSet())){
+			lContentUI = pMenuUi.getContentSet().get(0);
+		} else {
+			lContentUI = new ContentUI();
+			lContentUI.setId(pMenuUi.getId());
+			lContentUI.setData(new byte[0]);
+		}
 		// Summary
 		summaryInput = new TextBox();
 		summaryInput.setWidth("300px");
@@ -313,6 +344,10 @@ public class AreaViewImpl extends Composite implements AreaView {
 			menuCreationPopup.setWidget(lPanel);
 			menuCreationPopup.center();
 	}
+	
+	private void createSubMenuCreationPanel() {
+		
+	}
 
 	public Long getContentId() {
 		return selectionModel.getSelectedObject().getContentSet().get(0)
@@ -404,6 +439,21 @@ public class AreaViewImpl extends Composite implements AreaView {
 	public void hideMenuCreationPopup() {
 		if(menuCreationPopup != null) {
 			menuCreationPopup.hide();
+			parentId = null;
 		}
+	}
+
+	public Long getParentMenuId() {
+		return parentId;
+	}
+
+	public HasClickHandlers getSubMenuCreationButton() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public HasValue<String> getSubMenuCreationTitle() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

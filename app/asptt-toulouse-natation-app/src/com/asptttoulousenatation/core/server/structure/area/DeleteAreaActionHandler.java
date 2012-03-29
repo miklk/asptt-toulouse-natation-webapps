@@ -41,7 +41,7 @@ public class DeleteAreaActionHandler
 		lAreaCriterion.setValue(pEntity.getId());
 		List<MenuEntity> lMenuEntities = menuDao.find(lCriteria);
 		for (MenuEntity lMenuEntity : lMenuEntities) {
-			pContext.execute(new DeleteMenuAction(lMenuEntity.getId().getId()));
+			pContext.execute(new DeleteMenuAction(lMenuEntity.getId()));
 		}
 	}
 
@@ -53,5 +53,11 @@ public class DeleteAreaActionHandler
 	@Override
 	protected DeleteAreaResult getResult() {
 		return new DeleteAreaResult();
+	}
+
+	@Override
+	protected void fillResult(DeleteAreaAction pAction,
+			DeleteAreaResult pResult, ExecutionContext pContext)
+			throws DispatchException {		
 	}
 }

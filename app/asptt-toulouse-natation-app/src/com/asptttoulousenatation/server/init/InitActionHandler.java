@@ -347,12 +347,11 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 			String pSummary, String pContent, boolean pShortcut,
 			boolean pDisplay, int pOrder) {
 		MenuEntity lMenuHisto = new MenuEntity(pMenuKey, pTitle, pArea,
-				pShortcut, pDisplay, pOrder);
+				pShortcut, pDisplay, pOrder, null, null);
 		MenuEntity lMenuHisto2 = menuDao.save(lMenuHisto);
 		ContentEntity lHistoContentEntity = new ContentEntity(pSummary,
 				new Blob((HTMLUtils.escapeHTML(pContent)).getBytes()),
-				ContentDataKindEnum.TEXT.toString(), lMenuHisto2.getId()
-						.getId());
+				ContentDataKindEnum.TEXT.toString(), lMenuHisto2.getId());
 		contentDao.save(lHistoContentEntity);
 	}
 

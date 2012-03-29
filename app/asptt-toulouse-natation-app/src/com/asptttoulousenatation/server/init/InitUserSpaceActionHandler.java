@@ -90,7 +90,7 @@ public class InitUserSpaceActionHandler implements
 					lMenuEntities.size());
 			for (MenuEntity lMenuEntity : lMenuEntities) {
 				// Get content
-				lContentCriterion.setValue(lMenuEntity.getId().getId());
+				lContentCriterion.setValue(lMenuEntity.getId());
 				List<ContentEntity> lContentEntities = contentDao
 						.find(lMenuCriteria);
 				MenuUi lMenu = menuTransformer.toUi(lMenuEntity);
