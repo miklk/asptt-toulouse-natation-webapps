@@ -111,7 +111,7 @@ public class MainHeaderPanel extends Composite {
 					AreaUi lAreaUi = initResult.getArea("Inscription");
 					if (lAreaUi != null) {
 						MenuUi lMenu = lAreaUi.getMenu("Informations");
-						eventBus.fireEvent(new LoadContentEvent(lMenu.getId(),
+						eventBus.fireEvent(new LoadContentEvent(lMenu,
 								LoadContentAreaEnum.INSCRIPTION, lAreaUi.getTitle(), lMenu.getTitle()));
 					}
 				} else {
@@ -140,7 +140,7 @@ public class MainHeaderPanel extends Composite {
 		AreaUi lAreaUi = initResult.getArea(pAreaTitle);
 		if (lAreaUi != null) {
 			MenuUi lMenu = lAreaUi.getMenu(pMenuTitle);
-			eventBus.fireEvent(new LoadContentEvent(lMenu.getId(), pAreaTitle, pMenuTitle));
+			eventBus.fireEvent(new LoadContentEvent(lMenu, pAreaTitle, pMenuTitle));
 		}
 
 	}
@@ -186,7 +186,7 @@ public class MainHeaderPanel extends Composite {
 							AreaUi lAreaUi = initResult.getArea("Inscription");
 							if (lAreaUi != null) {
 								MenuUi lMenu = lAreaUi.getMenu("MotDePasse");
-								eventBus.fireEvent(new LoadContentEvent(lMenu.getId(),
+								eventBus.fireEvent(new LoadContentEvent(lMenu,
 										LoadContentAreaEnum.FORGET_PASSWORD, lAreaUi.getTitle(), lMenu.getTitle()));
 							}
 						} else {

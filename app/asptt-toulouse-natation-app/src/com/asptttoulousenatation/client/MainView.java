@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.asptttoulousenatation.core.client.ui.PopupValidateAction;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
+import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyPressHandlers;
 import com.google.gwt.user.client.ui.HasValue;
@@ -30,5 +31,7 @@ public interface MainView extends IsWidget {
 	public void loadInscriptionContent(final byte[] pData, List<DocumentUi> pDocuments);
 	public void loadForgetPasswordContent(final byte[] pData);
 	public void loadBottomContent(final byte[] pData);
+	public void setSelectedMenu(MenuUi pMenu);
+	public void loadSubContent(final byte[] pData, List<DocumentUi> pDocuments, String pSubMenuName);
 	
 }

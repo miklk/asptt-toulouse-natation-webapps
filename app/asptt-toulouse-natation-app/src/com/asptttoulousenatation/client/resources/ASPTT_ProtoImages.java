@@ -37,4 +37,7 @@ public interface ASPTT_ProtoImages extends ClientBundle {
 	
 	@Source("images/close.png")
 	public ImageResource close();
+	
+	@Source("images/right_arrow.png")
+	public ImageResource rightArrow();
 }

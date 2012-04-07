@@ -131,7 +131,7 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 											final LoadContentEvent pEvent) {
 										dispatchAsync.execute(
 												new LoadContentAction(pEvent
-														.getMenuId()),
+														.getMenu().getId()),
 												new AsyncCallback<LoadContentResult>() {
 													public void onFailure(
 															Throwable pCaught) {
@@ -162,7 +162,14 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 														case BOTTOM:
 															lMainView.loadBottomContent(pResult.getData());
 															break;
+														case SUB_CONTENT:
+															lMainView
+															.loadContent(
+																	pResult.getData(),
+																	pResult.getDocuments());
+															break;
 														default:
+															lMainView.setSelectedMenu(pEvent.getMenu());
 															lMainView.updateBreadcrumb(pEvent.getAreaTitle(), pEvent.getMenuTitle());
 															lMainView
 																	.loadContent(

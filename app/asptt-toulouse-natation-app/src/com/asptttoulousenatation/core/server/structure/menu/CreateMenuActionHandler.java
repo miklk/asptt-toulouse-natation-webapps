@@ -28,7 +28,6 @@ import com.asptttoulousenatation.core.shared.structure.menu.GetMenuResult;
 import com.asptttoulousenatation.server.userspace.admin.entity.AreaTransformer;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentDataKindEnum;
-import com.asptttoulousenatation.shared.util.HTMLUtils;
 import com.google.appengine.api.datastore.Blob;
 
 public class CreateMenuActionHandler implements
@@ -55,7 +54,7 @@ public class CreateMenuActionHandler implements
 			MenuEntity lMenu = new MenuEntity(MenuItems.VIDE.toString(), pAction.getTitle(), pAction.getArea(), false, true, pAction.getOrder(), null, pAction.getParent());
 			MenuEntity lMenuEntity = dao.save(lMenu);
 			ContentEntity lContentEntity = new ContentEntity(pAction.getSummary(),
-					new Blob((HTMLUtils.escapeHTML(pAction.getContent())).getBytes()),
+					new Blob(pAction.getContent().getBytes()),
 					ContentDataKindEnum.TEXT.toString(), lMenuEntity.getId());
 			contentDao.save(lContentEntity);
 			

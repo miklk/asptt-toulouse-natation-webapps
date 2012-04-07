@@ -345,10 +345,6 @@ public class AreaViewImpl extends Composite implements AreaView {
 			menuCreationPopup.center();
 	}
 	
-	private void createSubMenuCreationPanel() {
-		
-	}
-
 	public Long getContentId() {
 		return selectionModel.getSelectedObject().getContentSet().get(0)
 				.getId();

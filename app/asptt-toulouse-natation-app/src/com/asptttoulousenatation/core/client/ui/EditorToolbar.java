@@ -113,9 +113,10 @@ public class EditorToolbar extends CKConfig {
 		lToolbarLine3.add(CKConfig.TOOLBAR_OPTIONS.BGColor);
 		lToolbarLine3.addBlockSeparator();
 		
-		//Maximize, select block
+		//Maximize, select block, source
 		lToolbarLine3.add(CKConfig.TOOLBAR_OPTIONS.Maximize);
 		lToolbarLine3.add(CKConfig.TOOLBAR_OPTIONS.ShowBlocks);
+		lToolbarLine3.add(CKConfig.TOOLBAR_OPTIONS.Source);
 		lToolbarLine3.addBlockSeparator();
 		lToolbar.add(lToolbarLine);
 		lToolbar.addSeparator();

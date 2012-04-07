@@ -48,7 +48,7 @@ public class MainBottomPanel extends Composite {
 					AreaUi lAreaUi = initResult.getArea("Contact");
 					if (lAreaUi != null) {
 						MenuUi lMenu = lAreaUi.getMenu("Contact");
-						eventBus.fireEvent(new LoadContentEvent(lMenu.getId(),
+						eventBus.fireEvent(new LoadContentEvent(lMenu,
 								LoadContentAreaEnum.BOTTOM, lAreaUi.getTitle(), lMenu.getTitle()));
 					}
 				} else {

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.asptttoulousenatation.core.client.ui.PopupValidateAction;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
+import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitResult;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -58,7 +59,7 @@ public class MainViewImpl extends Composite implements MainView {
 		// TODO center
 		HorizontalPanel layoutPanel_1 = new HorizontalPanel();
 		panel.add(layoutPanel_1, DockPanel.CENTER);
-		contentPanel = new MainContentPanel(initResult);
+		contentPanel = new MainContentPanel(initResult, eventBus);
 		
 		layoutPanel_1.add(contentPanel);
 		toolPanel = new MainToolPanel(initResult, user, eventBus);
@@ -174,5 +175,14 @@ public class MainViewImpl extends Composite implements MainView {
 
 	public void loadForgetPasswordContent(byte[] pData) {
 		headerPanel.loadForgetPasswordContent(pData);
+	}
+
+	public void setSelectedMenu(MenuUi pMenu) {
+		contentPanel.setSelectedMenu(pMenu);
+	}
+
+	public void loadSubContent(byte[] pData, List<DocumentUi> pDocuments,
+			String pSubMenuName) {
+		contentPanel.loadSubContent(pData, pDocuments, pSubMenuName);
 	}
 }

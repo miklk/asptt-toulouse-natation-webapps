@@ -4,14 +4,18 @@ import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 
 import java.util.List;
 
+import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent;
+import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent.LoadContentAreaEnum;
 import com.asptttoulousenatation.client.util.Breadcrumb;
 import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
+import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.shared.init.InitResult;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
@@ -19,6 +23,7 @@ import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -34,9 +39,13 @@ public class MainContentPanel extends Composite {
 
 	private InitResult initResult;
 	private PopupManager popupManager;
+	private MenuUi selectedMenu;
+	private EventBus eventBus;
+	private Panel subMenu;
 
-	public MainContentPanel(InitResult pInitResult) {
+	public MainContentPanel(InitResult pInitResult, EventBus pEventBus) {
 		initResult = pInitResult;
+		eventBus = pEventBus;
 		panel = new VerticalPanel();
 		initWidget(panel);
 
@@ -62,6 +71,10 @@ public class MainContentPanel extends Composite {
 		panel.add(breadcrumb);
 		panel.setCellHeight(breadcrumb, "10px");
 
+		subMenu = new HorizontalPanel();
+		panel.add(subMenu);
+		panel.setCellHeight(subMenu, "0px");
+		
 		// TODO Actu
 		panel.add(content);
 		actuPanel = new FlowPanel();
@@ -93,6 +106,27 @@ public class MainContentPanel extends Composite {
 	public void updateBreadcrumb(final String pAreaName, final String pMenuName) {
 		breadcrumb.update(pAreaName, pMenuName);
 	}
+	
+	private void buildSubMenu() {
+		subMenu.clear();
+		subMenu.removeStyleName(CSS.menuSub());
+		if(selectedMenu != null && CollectionUtils.isNotEmpty(selectedMenu.getSubMenus())) {
+			subMenu.addStyleName(CSS.menuSub());
+			for(final MenuUi lSubMenu: selectedMenu.getSubMenus()) {
+				Label lLabel = new Label(lSubMenu.getTitle());
+				lLabel.addStyleName(CSS.menuSubLabel());
+				lLabel.addClickHandler(new ClickHandler() {
+					
+					public void onClick(ClickEvent pEvent) {
+						eventBus.fireEvent(new LoadContentEvent(lSubMenu, LoadContentAreaEnum.SUB_CONTENT, null,
+								lSubMenu.getTitle()));
+					}
+				});
+				subMenu.add(lLabel);
+			}
+			panel.setCellHeight(subMenu, "20px");	
+		}
+	}
 
 	public void loadContent(final byte[] pData, List<DocumentUi> pDocuments) {
 		if (pData != null) {
@@ -107,6 +141,7 @@ public class MainContentPanel extends Composite {
 			content.setWidget(lPanel);
 			popupManager.hide();
 		}
+		buildSubMenu();
 	}
 
 	private Panel getDocumentPanel(List<DocumentUi> pDocuments) {
@@ -134,5 +169,14 @@ public class MainContentPanel extends Composite {
 
 	public void setPopupManager(PopupManager pPopupManager) {
 		popupManager = pPopupManager;
+	}
+	
+	public void setSelectedMenu(MenuUi pMenu) {
+		selectedMenu = pMenu;
+	}
+	
+	public void loadSubContent(final byte[] pData, List<DocumentUi> pDocuments, String pSubMenuName) {
+		breadcrumb.update(pSubMenuName);
+		loadContent(pData, pDocuments);
 	}
 }

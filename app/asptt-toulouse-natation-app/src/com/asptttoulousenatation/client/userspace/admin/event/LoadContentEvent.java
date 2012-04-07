@@ -1,12 +1,13 @@
 package com.asptttoulousenatation.client.userspace.admin.event;
 
+import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.google.gwt.event.shared.GwtEvent;
 
 public class LoadContentEvent extends GwtEvent<LoadContentEventHandler> {
 
 	public static final Type<LoadContentEventHandler> TYPE = new Type<LoadContentEventHandler>();
 	
-	private Long menuId;
+	private MenuUi menu;
 	private LoadContentAreaEnum area;
 	
 	private String areaTitle;
@@ -17,25 +18,25 @@ public class LoadContentEvent extends GwtEvent<LoadContentEventHandler> {
 		area = LoadContentAreaEnum.CONTENT;
 	}
 	
-	public LoadContentEvent(Long pMenuId, String pAreaTitle, String pMenuTitle) {
+	public LoadContentEvent(MenuUi pMenu, String pAreaTitle, String pMenuTitle) {
 		this();
-		menuId = pMenuId;
+		menu = pMenu;
 		areaTitle = pAreaTitle;
 		menuTitle = pMenuTitle;
 	}
-
-	public LoadContentEvent(Long pMenuId, LoadContentAreaEnum pArea,
+	
+	public LoadContentEvent(MenuUi pMenu, LoadContentAreaEnum pArea,
 			String pAreaTitle, String pMenuTitle) {
-		this(pMenuId, pAreaTitle, pMenuTitle);
+		this(pMenu, pAreaTitle, pMenuTitle);
 		area = pArea;
 	}
-
-	public Long getMenuId() {
-		return menuId;
+	
+	public MenuUi getMenu() {
+		return menu;
 	}
 
-	public void setMenuId(Long pMenuId) {
-		menuId = pMenuId;
+	public void setMenu(MenuUi pMenu) {
+		menu = pMenu;
 	}
 
 	@Override
@@ -78,6 +79,7 @@ public class LoadContentEvent extends GwtEvent<LoadContentEventHandler> {
 		TOOL,
 		INSCRIPTION,
 		FORGET_PASSWORD,
-		BOTTOM;
+		BOTTOM,
+		SUB_CONTENT;
 	}
 }

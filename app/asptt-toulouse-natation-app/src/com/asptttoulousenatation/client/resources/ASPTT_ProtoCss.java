@@ -74,7 +74,7 @@ public interface ASPTT_ProtoCss extends CssResource {
 
 	@ClassName("menu-g-sub-mouseover")
 	String menuGSubMouseOver();
-
+	
 	@ClassName("menu-h")
 	String menuH();
 
@@ -255,4 +255,10 @@ public interface ASPTT_ProtoCss extends CssResource {
 	
 	@ClassName("create-menu-button")
 	String createMenuButton();
+	
+	@ClassName("menu-sub")
+	String menuSub();
+	
+	@ClassName("menu-sub-label")
+	String menuSubLabel();
 }

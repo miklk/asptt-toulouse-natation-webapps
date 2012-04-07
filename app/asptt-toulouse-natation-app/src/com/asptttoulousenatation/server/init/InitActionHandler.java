@@ -1,5 +1,8 @@
 package com.asptttoulousenatation.server.init;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -57,7 +60,12 @@ import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentDataKindEnum;
 import com.asptttoulousenatation.shared.util.HTMLUtils;
 import com.google.appengine.api.datastore.Blob;
+import com.google.gdata.client.Query;
 import com.google.gdata.client.photos.PicasawebService;
+import com.google.gdata.data.photos.AlbumFeed;
+import com.google.gdata.data.photos.PhotoEntry;
+import com.google.gdata.util.AuthenticationException;
+import com.google.gdata.util.ServiceException;
 
 public class InitActionHandler implements ActionHandler<InitAction, InitResult> {
 
@@ -81,10 +89,10 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 	public InitResult execute(InitAction pArg0, ExecutionContext pArg1)
 			throws DispatchException {
 		LOG.info("Init action");
-		
-//		 createData();
+
+		// createData();
 		InitResult lInitResult = new InitResult();
-//		lInitResult.setPhoto(getPicture());
+		 lInitResult.setPhoto(getPicture());
 
 		// Structure
 		List<CriterionDao<? extends Object>> lAreaSelectionCriteria = new ArrayList<CriterionDao<? extends Object>>(
@@ -125,14 +133,18 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 			Map<String, MenuUi> lMenuUis = new LinkedHashMap<String, MenuUi>(
 					lMenuEntities.size());
 			for (MenuEntity lMenuEntity : lMenuEntities) {
-				// Get content
-				// lContentCriterion.setValue(lMenuEntity.getId().getId());
-				// List<ContentEntity> lContentEntities = contentDao
-				// .find(lMenuCriteria);
-				// LOG.info("retrieving content #" + lContentEntities.size());
-				MenuUi lMenu = menuTransformer.toUi(lMenuEntity);
-				// lMenu.setContentSet(contentTransformer.toUi(lContentEntities));
-				lMenuUis.put(lMenu.getTitle(), lMenu);
+				if (lMenuEntity.getParent() == null) {
+					// Retrieve sub menu
+					List<MenuUi> lSubMenuUis = new ArrayList<MenuUi>(
+							lMenuEntity.getSubMenu().size());
+					for (Long lSubMenuId : lMenuEntity.getSubMenu()) {
+						MenuEntity lSubMenu = menuDao.get(lSubMenuId);
+						lSubMenuUis.add(menuTransformer.toUi(lSubMenu));
+					}
+					MenuUi lMenu = menuTransformer.toUi(lMenuEntity);
+					lMenu.setSubMenus(lSubMenuUis);
+					lMenuUis.put(lMenu.getTitle(), lMenu);
+				}
 			}
 			AreaUi lArea = areaTransformer.toUi(lAreaEntity);
 			lArea.setMenuSet(lMenuUis);
@@ -158,10 +170,11 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		for (CompetitionEntity lEntity : lEntities) {
 			for (Long lDay : lEntity.getDays()) {
 				CompetitionDayEntity lDayEntity = competitionDayDao.get(lDay);
-				
-				UiEvent lEvent = competitionDayTransformer.toUiEvent(lDayEntity, lEntity);
+
+				UiEvent lEvent = competitionDayTransformer.toUiEvent(
+						lDayEntity, lEntity);
 				List<UiEvent> lEventList = lEvents.get(lEvent.getEventDate());
-				if(lEventList == null) {
+				if (lEventList == null) {
 					lEventList = new ArrayList<UiEvent>();
 				}
 				lEventList.add(lEvent);
@@ -207,7 +220,8 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				lAreaEntity2.getId(), "contenu de vie du club",
 				"contenu de la vie du club", false, true, 5);
 
-		lAreaEntity = new AreaEntity(null, "Groupes", ProfileEnum.PUBLIC, (short) 2);
+		lAreaEntity = new AreaEntity(null, "Groupes", ProfileEnum.PUBLIC,
+				(short) 2);
 		AreaEntity lAreaGroupes = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.VIDE.toString(), "Ecole de natation",
 				lAreaGroupes.getId(), "contenu de Ecole de natation",
@@ -249,7 +263,8 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				lAreaCompetition.getId(), "contenu de Ranking",
 				"contenu de Ranking", false, true, 4);
 
-		lAreaEntity = new AreaEntity(null, "Boutique", ProfileEnum.PUBLIC, (short) 4);
+		lAreaEntity = new AreaEntity(null, "Boutique", ProfileEnum.PUBLIC,
+				(short) 4);
 		AreaEntity lAreaBoutique = lAreaDao.save(lAreaEntity);
 		createMenu(
 				MenuItems.VIDE.toString(),
@@ -259,7 +274,8 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				"Partenariat avec la boutique arena de blagnac 10% de remise en caisse sur tout le magasin<br />et sur présentation d’un justificatif d’appartenance à l’ASPTT toulouse.",
 				false, true, 1);
 
-		lAreaEntity = new AreaEntity(null, "Inscription", ProfileEnum.PUBLIC, (short) 5);
+		lAreaEntity = new AreaEntity(null, "Inscription", ProfileEnum.PUBLIC,
+				(short) 5);
 		AreaEntity lAreaInscription = lAreaDao.save(lAreaEntity);
 		createMenu(
 				MenuItems.VIDE.toString(),
@@ -275,8 +291,9 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				"contenu de MotDePasse sur l'inscription",
 				"L'espace privé n'est accessible qu'aux licenciés du club. Vous recevez votre mot de passe par e-mail une fois que votre inscription est validé par nos soins.<br />Si toute fois, vous avez oublié votre mot de passe, nous vous invitons à entrer votre adresse e-mail dans le champ suivant afin d'en recevoir un nouveau.",
 				false, false, 2);
-		
-		lAreaEntity = new AreaEntity(null, "Contact", ProfileEnum.PUBLIC, (short) 6);
+
+		lAreaEntity = new AreaEntity(null, "Contact", ProfileEnum.PUBLIC,
+				(short) 6);
 		AreaEntity lAreaContact = lAreaDao.save(lAreaEntity);
 		createMenu(
 				MenuItems.VIDE.toString(),
@@ -476,38 +493,40 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 			lUserDao.delete(lUserEntity);
 		}
 	}
-	
+
 	private String[] getPicture() {
 		String[] result = new String[3];
 		PicasawebService myService = new PicasawebService("asptt_test");
-//		try {
-//		myService.setUserCredentials("webmaster@asptt-toulouse-natation.com", "31000_asptt");
-//		URL feedUrl = new URL("https://picasaweb.google.com/data/feed/api/user/webmaster@asptt-toulouse-natation.com");
-//		
-//		Query myQuery = new Query(feedUrl);
-//		myQuery.setStringCustomParameter("kind", "photo");
-//		myQuery.setStringCustomParameter("tag", "banniere");
-//
-//		AlbumFeed searchResultsFeed = myService.query(myQuery, AlbumFeed.class);
-//
-//			result = new String[searchResultsFeed.getPhotoEntries().size()];
-//			int i = 0;
-//			for(PhotoEntry photo : searchResultsFeed.getPhotoEntries()) {
-//			    result[i] = photo.getMediaThumbnails().get(0).getUrl();
-//			    i++;
-//			}
-//		}catch(AuthenticationException e) {
-//			e.printStackTrace();
-//		} catch (MalformedURLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (ServiceException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		 try {
+		 myService.setUserCredentials("webmaster@asptt-toulouse-natation.com",
+		 "31000_asptt");
+		 URL feedUrl = new URL("https://picasaweb.google.com/data/feed/api/user/webmaster@asptt-toulouse-natation.com");
+		
+		 Query myQuery = new Query(feedUrl);
+		 myQuery.setStringCustomParameter("kind", "photo");
+		 myQuery.setStringCustomParameter("tag", "banniere");
+		
+		 AlbumFeed searchResultsFeed = myService.query(myQuery,
+		 AlbumFeed.class);
+		
+		 result = new String[searchResultsFeed.getPhotoEntries().size()];
+		 int i = 0;
+		 for(PhotoEntry photo : searchResultsFeed.getPhotoEntries()) {
+		 result[i] = photo.getMediaThumbnails().get(0).getUrl();
+		 i++;
+		 }
+		 }catch(AuthenticationException e) {
+		 e.printStackTrace();
+		 } catch (MalformedURLException e) {
+		 // TODO Auto-generated catch block
+		 e.printStackTrace();
+		 } catch (IOException e) {
+		 // TODO Auto-generated catch block
+		 e.printStackTrace();
+		 } catch (ServiceException e) {
+		 // TODO Auto-generated catch block
+		 e.printStackTrace();
+		 }
 		return result;
 	}
 }

@@ -14,6 +14,8 @@ public class Breadcrumb extends Composite {
 	
 	private Label value;
 	
+	private StringBuilder valueAsString;
+	
 	public Breadcrumb() {
 		panel = new SimplePanel();
 		initWidget(panel);
@@ -22,12 +24,16 @@ public class Breadcrumb extends Composite {
 	}
 	
 	public void update(String pAreaName, String pMenuName) {
-		StringBuilder lValue = new StringBuilder(DEFAULT_VALUE);
-		lValue.append(SEPARATOR).append(pAreaName);
+		valueAsString = new StringBuilder(DEFAULT_VALUE);
+		valueAsString.append(SEPARATOR).append(pAreaName);
 		if(!pMenuName.isEmpty()) {
-			lValue.append(SEPARATOR).append(pMenuName);
+			valueAsString.append(SEPARATOR).append(pMenuName);
 		}
-		value.setText(lValue.toString());
+		value.setText(valueAsString.toString());
+	}
+	
+	public void update(String pMenuName) {
+		value.setText(valueAsString.append(SEPARATOR).append(pMenuName).toString());
 	}
 	
 	public HandlerRegistration addClickHandler(ClickHandler pHandler) {
