@@ -164,9 +164,9 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 															break;
 														case SUB_CONTENT:
 															lMainView
-															.loadContent(
+															.loadSubContent(
 																	pResult.getData(),
-																	pResult.getDocuments());
+																	pResult.getDocuments(), pEvent.getMenuTitle());
 															break;
 														default:
 															lMainView.setSelectedMenu(pEvent.getMenu());
