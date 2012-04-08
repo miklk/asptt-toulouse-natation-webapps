@@ -41,7 +41,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 	private AreaUi area;
 	private VerticalPanel panel;
-	private HorizontalPanel menuPanel;
+	private VerticalPanel menuPanel;
 
 	private AbstractCellTree cellBrowser;
 	private SingleSelectionModel<MenuUi> selectionModel;
@@ -91,7 +91,11 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 		createAreaEdition();
 
-		menuPanel = new HorizontalPanel();
+		menuPanel = new VerticalPanel();
+		menuPanel.addStyleName(CSS.userSpaceAreaMenuSelection());
+		Label lMenuPanelTitle = new Label("Editer les pages");
+		lMenuPanelTitle.addStyleName(CSS.userSpaceAreaMenuSelectionTitle());
+		menuPanel.add(lMenuPanelTitle);
 		panel.add(menuPanel);
 
 		selectionModel = new SingleSelectionModel<MenuUi>();
@@ -105,12 +109,11 @@ public class AreaViewImpl extends Composite implements AreaView {
 				});
 
 		cellBrowser = new CellBrowser(new MenuTreeViewModel(selectionModel, new ArrayList<MenuUi>(area.getMenuSet().values())), null);
-		cellBrowser.setWidth("200px");
-		cellBrowser.setHeight("400px");
+		cellBrowser.setWidth("900px");
+		cellBrowser.setHeight("300px");
 		menuPanel.add(cellBrowser);
 		editionPanel = new SimplePanel();
 		editionPanel.setStyleName(CSS.userSpaceContentEdition());
-		menuPanel.add(editionPanel);
 
 		updateButton = new Button("");
 		updateButton.setTitle("Modifier le menu");
@@ -118,7 +121,9 @@ public class AreaViewImpl extends Composite implements AreaView {
 		deleteButton.setTitle("Supprimer le menu");
 		documentUpdateButton = new Button("Mettre à jour le document");
 		documentDeleteButton = new Button("Supprimer le document");
-		menuCreationButton = new Button("Ajouter une page");
+		menuCreationButton = new Button("");
+		menuCreationButton.setTitle("Ajouter une page");
+		menuCreationButton.setStyleName(CSS.newPageButton());
 	}
 
 	private void buildEditionPanel(MenuUi pMenuUi) {
@@ -193,7 +198,10 @@ public class AreaViewImpl extends Composite implements AreaView {
 		lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
 
+		PopupPanel lPopup = new PopupPanel(true, true);
 		editionPanel.setWidget(lPanel);
+		lPopup.add(editionPanel);
+		lPopup.center();
 	}
 
 	private void buildDocumentPanel(final MenuUi pMenuUi) {
@@ -254,6 +262,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
 		lPanel.setHTML(lRowIndex, 0, "Editer le menu");
+		lCellFormatter.setStyleName(lRowIndex, 0, CSS.userSpaceAreaEditionEditTitle());
 		lCellFormatter.setColSpan(lRowIndex, 0, 5);
 		lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
@@ -298,6 +307,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 			}
 		});
 		lPanel.setWidget(lRowIndex, 0, lAddMenuButton);
+		lPanel.addStyleName(CSS.userSpaceAreaEditionEdit());
 		panel.add(lPanel);
 	}
 	

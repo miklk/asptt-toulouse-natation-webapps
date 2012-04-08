@@ -40,4 +40,7 @@ public interface ASPTT_ProtoImages extends ClientBundle {
 	
 	@Source("images/right_arrow.png")
 	public ImageResource rightArrow();
+	
+	@Source("images/icon_edit.png")
+	public ImageResource iconEdit();
 }

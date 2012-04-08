@@ -519,7 +519,7 @@ color: #FFFFFF;
 }
 
 .create-menu-button {
-	background-color: #1E82C3;	
+	background-color:a #1E82C3;	
 }
 
 .menu-sub {
@@ -536,4 +536,36 @@ color: #FFFFFF;
 	background-repeat: repeat-x;
 	cursor: pointer;
 	text-align: center;
+}
+
+.userspace-area-edition-edit {
+	border: 1px solid #0B5A7F;
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+
+.userspace-area-edition-edit-title {
+	background-color: #CAE6F1;
+	font-weight: bold;
+}
+
+.userspace-area-menu-selection {
+	border: 1px solid #0B5A7F;
+	margin-top: 1%;
+}
+
+.userspace-area-menu-selection-title {
+	background-color: #CAE6F1;
+	text-align: center;
+	font-weight: bold;
+	margin-bottom: 2%;
+}
+
+@sprite .new-page-button {
+	height: 33px;
+	width: 33px;
+	gwt-image: 'newPage';
+	background-position: top left;
+	border: none;
+	cursor: pointer;
 }

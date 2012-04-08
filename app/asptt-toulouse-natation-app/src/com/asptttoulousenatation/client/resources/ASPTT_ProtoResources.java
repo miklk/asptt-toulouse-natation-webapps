@@ -34,4 +34,7 @@ public interface ASPTT_ProtoResources extends ClientBundle {
 	
 	@Source("images/lignes_grand.jpg")
 	public ImageResource lignesGrand();
+	
+	@Source("images/new_page.png")
+	public ImageResource newPage();
 }
