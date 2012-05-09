@@ -8,6 +8,7 @@ import com.asptttoulousenatation.core.server.dao.entity.structure.MenuEntity;
 import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
 import com.asptttoulousenatation.core.shared.structure.menu.UpdateMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.UpdateMenuResult;
+import com.asptttoulousenatation.shared.userspace.admin.structure.content.UpdateContentAction;
 
 public class UpdateMenuActionHandler implements
 		ActionHandler<UpdateMenuAction, UpdateMenuResult> {
@@ -16,8 +17,11 @@ public class UpdateMenuActionHandler implements
 	public UpdateMenuResult execute(UpdateMenuAction pAction,
 			ExecutionContext pContext) throws DispatchException {
 		MenuEntity lMenu = dao.get(pAction.getMenu());
+		lMenu.setMenuKey(pAction.getMenuKey());
 		lMenu.setTitle(pAction.getTitle());
-		lMenu.setOrder(pAction.getOrder());
+		dao.save(lMenu);
+		//Update content
+		pContext.execute(new UpdateContentAction(pAction.getContentId(), pAction.getSummary(), pAction.getContent()));
 		return new UpdateMenuResult();
 	}
 

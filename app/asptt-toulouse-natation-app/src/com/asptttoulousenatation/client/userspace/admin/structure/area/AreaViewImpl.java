@@ -8,6 +8,7 @@ import com.asptttoulousenatation.client.userspace.admin.structure.menu.ui.MenuTr
 import com.asptttoulousenatation.client.userspace.admin.ui.DocumentCell;
 import com.asptttoulousenatation.client.userspace.admin.util.CellListStyle;
 import com.asptttoulousenatation.client.userspace.document.DocumentWidget;
+import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.client.ui.EditorToolbar;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
@@ -30,6 +31,7 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -76,6 +78,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 	private TextBox menuCreationSummaryInput;
 	private CKEditor menuCreationContentInput;
 	private Button menuCreationButton;
+	private ListBox menuCreationMenuKey;
 	
 	private PopupPanel menuCreationPopup;
 	
@@ -146,6 +149,20 @@ public class AreaViewImpl extends Composite implements AreaView {
 		} else {
 			parentId = null;
 		}
+		
+		//Menu key
+		menuCreationMenuKey = new ListBox();
+		int i = 0;
+		for (MenuItems lItem : MenuItems.getSelectableMenuItems()) {
+			menuCreationMenuKey.insertItem(lItem.getI18n(), lItem.name(), i);
+			if (pMenuUi.getMenuKey().equals(lItem.name())) {
+				menuCreationMenuKey.setSelectedIndex(i);
+			}
+			i++;
+		}
+		lPanel.setWidget(lRowIndex, 0, createLabel("Clé du menu (non obligatoire)"));
+		lPanel.setWidget(lRowIndex, 1, menuCreationMenuKey);
+		lRowIndex++;
 
 		// Menu title
 		menuTitleInput = new TextBox();
@@ -461,5 +478,9 @@ public class AreaViewImpl extends Composite implements AreaView {
 	public HasValue<String> getSubMenuCreationTitle() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public String getMenuCreationMenuKey() {
+		return menuCreationMenuKey.getValue(menuCreationMenuKey.getSelectedIndex());
 	}
 }

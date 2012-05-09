@@ -9,6 +9,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyPressHandlers;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.Panel;
 
 public interface MainView extends IsWidget {
 
@@ -33,5 +34,7 @@ public interface MainView extends IsWidget {
 	public void loadBottomContent(final byte[] pData);
 	public void setSelectedMenu(MenuUi pMenu);
 	public void loadSubContent(final byte[] pData, List<DocumentUi> pDocuments, String pSubMenuName);
+	
+	public void loadContent(final Panel pPanel);
 	
 }

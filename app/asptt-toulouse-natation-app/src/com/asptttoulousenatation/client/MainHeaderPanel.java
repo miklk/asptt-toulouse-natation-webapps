@@ -25,6 +25,7 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ButtonBase;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
@@ -110,9 +111,9 @@ public class MainHeaderPanel extends Composite {
 				if (inscriptionData == null) {
 					AreaUi lAreaUi = initResult.getArea("Inscription");
 					if (lAreaUi != null) {
-						MenuUi lMenu = lAreaUi.getMenu("Informations");
+						MenuUi lMenu = lAreaUi.getMenuSet().values().iterator().next();
 						eventBus.fireEvent(new LoadContentEvent(lMenu,
-								LoadContentAreaEnum.INSCRIPTION, lAreaUi.getTitle(), lMenu.getTitle()));
+								LoadContentAreaEnum.CONTENT, lAreaUi.getTitle(), lMenu.getTitle()));
 					}
 				} else {
 					buildInscriptionPopup();
@@ -183,7 +184,7 @@ public class MainHeaderPanel extends Composite {
 				lPasswordForget.addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent pEvent) {
 						if (forgetPasswordData == null) {
-							AreaUi lAreaUi = initResult.getArea("Inscription");
+							AreaUi lAreaUi = initResult.getArea("Connexion");
 							if (lAreaUi != null) {
 								MenuUi lMenu = lAreaUi.getMenu("MotDePasse");
 								eventBus.fireEvent(new LoadContentEvent(lMenu,
@@ -283,6 +284,12 @@ public class MainHeaderPanel extends Composite {
 				HasHorizontalAlignment.ALIGN_RIGHT);
 		lClose.getElement().getStyle().setMarginLeft(50, Unit.PX);
 		lFlowPanel.add(lHeader);
+		
+		//Online
+		DisclosurePanel lOnlinePanel = new DisclosurePanel("Inscription en ligne");
+		lFlowPanel.add(lOnlinePanel);
+		
+		
 		FlowPanel lIdPanel = new FlowPanel();
 		lIdPanel.addStyleName(CSS.loginContent());
 		lIdPanel.add(inscriptionData);
@@ -366,7 +373,9 @@ public class MainHeaderPanel extends Composite {
 		lHorizontalPanel.add(lLieux);
 
 		lIdPanel.add(lHorizontalPanel);
-		lFlowPanel.add(lIdPanel);
+		DisclosurePanel lIdPanelWrapper = new DisclosurePanel("Inscription papier");
+		lIdPanelWrapper.setContent(lIdPanel);
+		lFlowPanel.add(lIdPanelWrapper);
 
 		lFlowPanel.add(getDocumentPanel(inscriptionDocuments));
 		popupManager.createPopup(true, true, lFlowPanel);

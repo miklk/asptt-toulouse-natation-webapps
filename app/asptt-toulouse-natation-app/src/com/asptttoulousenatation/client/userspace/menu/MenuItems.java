@@ -17,15 +17,18 @@ public enum MenuItems {
 	COMPETITION_EDITION,
 	ADMIN,
 	PUBLIC,
-	VIDE,
-	REFRESH_ADMIN;
+	VIDE("Pas de valeur"),
+	REFRESH_ADMIN,
+	SUBSCRIPTION_ONLINE("Inscription en ligne");
 	
 	private String salt;
 	private boolean shortcut;
+	private String i18n;
 	
 	private MenuItems() {
 		salt = "";
 		shortcut = false;
+		i18n = "";
 	}
 	
 	private MenuItems(boolean pShortcut) {
@@ -33,11 +36,11 @@ public enum MenuItems {
 		shortcut = pShortcut;
 	}
 	
-	private MenuItems(String pSalt) {
+	private MenuItems(String pI18n) {
 		this();
-		salt = pSalt;
+		i18n = pI18n;
 	}
-
+	
 	public String getSalt() {
 		return salt;
 	}
@@ -53,6 +56,14 @@ public enum MenuItems {
 
 	public void setShortcut(boolean pShortcut) {
 		shortcut = pShortcut;
+	}
+
+	public String getI18n() {
+		return i18n;
+	}
+
+	public void setI18n(String pI18n) {
+		i18n = pI18n;
 	}
 
 	public String toString() {
@@ -72,6 +83,13 @@ public enum MenuItems {
 				lResult.add(lMenuItems);
 			}
 		}
+		return lResult;
+	}
+	
+	public static List<MenuItems> getSelectableMenuItems() {
+		List<MenuItems> lResult = new ArrayList<MenuItems>();
+		lResult.add(MenuItems.VIDE);
+		lResult.add(MenuItems.SUBSCRIPTION_ONLINE);
 		return lResult;
 	}
 }

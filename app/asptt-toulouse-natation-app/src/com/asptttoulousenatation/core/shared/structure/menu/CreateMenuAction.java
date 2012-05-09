@@ -4,6 +4,7 @@ import net.customware.gwt.dispatch.shared.Action;
 
 public class CreateMenuAction implements Action<CreateMenuResult> {
 
+	private String menuKey;
 	private String title;
 	private String summary;
 	private String content;
@@ -15,15 +16,24 @@ public class CreateMenuAction implements Action<CreateMenuResult> {
 		
 	}
 
-	public CreateMenuAction(String pTitle, String pSummary, String pContent,
+	public CreateMenuAction(String pMenuKey, String pTitle, String pSummary, String pContent,
 			short pOrder, Long pArea, Long pParent) {
 		super();
+		menuKey = pMenuKey;
 		title = pTitle;
 		summary = pSummary;
 		content = pContent;
 		order = pOrder;
 		area = pArea;
 		parent = pParent;
+	}
+
+	public String getMenuKey() {
+		return menuKey;
+	}
+
+	public void setMenuKey(String pMenuKey) {
+		menuKey = pMenuKey;
 	}
 
 	public String getTitle() {

@@ -2,6 +2,8 @@ package com.asptttoulousenatation.client;
 
 import com.asptttoulousenatation.client.config.ClientFactory;
 import com.asptttoulousenatation.client.config.MyAbstractActivity;
+import com.asptttoulousenatation.client.subscription.SubscriptionActivity;
+import com.asptttoulousenatation.client.subscription.SubscriptionPlace;
 import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent;
 import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEventHandler;
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent;
@@ -24,6 +26,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class MainActivity extends MyAbstractActivity<MainPlace> {
@@ -149,11 +152,14 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 																	.loadToolContent(pResult
 																			.getData());
 															break;
-														case INSCRIPTION:
-															lMainView
-																	.loadInscriptionContent(
-																			pResult.getData(),
-																			pResult.getDocuments());
+														case SUBSCRIPTION_ONLINE:
+															SubscriptionActivity lSubscriptionActivity = new SubscriptionActivity(new SubscriptionPlace(), clientFactory);
+															SimplePanel lPanel = new SimplePanel();
+															lSubscriptionActivity.start(lPanel, lEventBus);
+															lMainView.setSelectedMenu(pEvent.getMenu());
+															lMainView.updateBreadcrumb(pEvent.getAreaTitle(), pEvent.getMenuTitle());
+															lMainView.loadContent(lPanel);
+															
 															break;
 														case FORGET_PASSWORD:
 															lMainView

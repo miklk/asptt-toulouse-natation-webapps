@@ -10,12 +10,12 @@ public class UserDataTransformer extends
 	@Override
 	public UserDataUi toUi(UserDataEntity pEntity) {
 		UserDataUi lUi = new UserDataUi(pEntity.getFirstName(),
-				pEntity.getLastName(), pEntity.getBirthday(),
+				pEntity.getLastName(), pEntity.getBirthday(), pEntity.getBirthdayPlace(), pEntity.getNationality(),
 				pEntity.getPhonenumber(), pEntity.getAddressRoad(),
 				pEntity.getAddressAdditional(), pEntity.getAddressCode(),
 				pEntity.getAddressCity(), pEntity.getGender(),
 				pEntity.getMeasurementSwimsuit(),
-				pEntity.getMeasurementTshirt(), pEntity.getMeasurementShort());
+				pEntity.getMeasurementTshirt(), pEntity.getMeasurementShort(), pEntity.getContactLastName(), pEntity.getContactFirstName());
 		return lUi;
 	}
 

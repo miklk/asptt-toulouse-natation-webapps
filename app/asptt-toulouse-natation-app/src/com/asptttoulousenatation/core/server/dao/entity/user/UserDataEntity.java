@@ -32,6 +32,12 @@ public class UserDataEntity implements Entity {
 	private Date birthday;
 	
 	@Persistent
+	private String birthdayPlace;
+	
+	@Persistent
+	private String nationality;
+	
+	@Persistent
 	private String phonenumber;
 	
 	@Persistent
@@ -58,6 +64,12 @@ public class UserDataEntity implements Entity {
 	@Persistent
 	private String measurementShort;
 
+	@Persistent
+	private String contactLastName;
+	
+	@Persistent
+	private String contactFirstName;
+	
 	public UserDataEntity() {
 		
 	}
@@ -164,5 +176,37 @@ public class UserDataEntity implements Entity {
 
 	public void setMeasurementShort(String pMeasurementShort) {
 		measurementShort = pMeasurementShort;
+	}
+
+	public String getBirthdayPlace() {
+		return birthdayPlace;
+	}
+
+	public void setBirthdayPlace(String pBirthdayPlace) {
+		birthdayPlace = pBirthdayPlace;
+	}
+
+	public String getNationality() {
+		return nationality;
+	}
+
+	public void setNationality(String pNationality) {
+		nationality = pNationality;
+	}
+
+	public String getContactLastName() {
+		return contactLastName;
+	}
+
+	public void setContactLastName(String pContactLastName) {
+		contactLastName = pContactLastName;
+	}
+
+	public String getContactFirstName() {
+		return contactFirstName;
+	}
+
+	public void setContactFirstName(String pContactFirstName) {
+		contactFirstName = pContactFirstName;
 	}
 }

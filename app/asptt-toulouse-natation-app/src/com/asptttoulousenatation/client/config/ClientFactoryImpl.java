@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.asptttoulousenatation.client.MainView;
 import com.asptttoulousenatation.client.MainViewImpl;
+import com.asptttoulousenatation.client.subscription.SubscriptionView;
+import com.asptttoulousenatation.client.subscription.SubscriptionViewImpl;
 import com.asptttoulousenatation.client.userspace.UserSpaceView;
 import com.asptttoulousenatation.client.userspace.UserSpaceViewImpl;
 import com.asptttoulousenatation.client.userspace.admin.actu.ActuEditionView;
@@ -119,5 +121,9 @@ public class ClientFactoryImpl implements ClientFactory {
 
 	public CompetitionCalendarView getCompetitionCalendarView(UserUi pUser, List<CompetitionUi> pCompetition) {
 		return new CompetitionCalendarViewImpl(pUser, pCompetition);
+	}
+
+	public SubscriptionView getSubscriptionView() {
+		return new SubscriptionViewImpl();
 	}
 }

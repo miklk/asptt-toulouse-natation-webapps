@@ -90,9 +90,9 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 			throws DispatchException {
 		LOG.info("Init action");
 
-		// createData();
+//		 createData();
 		InitResult lInitResult = new InitResult();
-		 lInitResult.setPhoto(getPicture());
+//		lInitResult.setPhoto(getPicture());
 
 		// Structure
 		List<CriterionDao<? extends Object>> lAreaSelectionCriteria = new ArrayList<CriterionDao<? extends Object>>(
@@ -497,36 +497,37 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 	private String[] getPicture() {
 		String[] result = new String[3];
 		PicasawebService myService = new PicasawebService("asptt_test");
-		 try {
-		 myService.setUserCredentials("webmaster@asptt-toulouse-natation.com",
-		 "31000_asptt");
-		 URL feedUrl = new URL("https://picasaweb.google.com/data/feed/api/user/webmaster@asptt-toulouse-natation.com");
-		
-		 Query myQuery = new Query(feedUrl);
-		 myQuery.setStringCustomParameter("kind", "photo");
-		 myQuery.setStringCustomParameter("tag", "banniere");
-		
-		 AlbumFeed searchResultsFeed = myService.query(myQuery,
-		 AlbumFeed.class);
-		
-		 result = new String[searchResultsFeed.getPhotoEntries().size()];
-		 int i = 0;
-		 for(PhotoEntry photo : searchResultsFeed.getPhotoEntries()) {
-		 result[i] = photo.getMediaThumbnails().get(0).getUrl();
-		 i++;
-		 }
-		 }catch(AuthenticationException e) {
-		 e.printStackTrace();
-		 } catch (MalformedURLException e) {
-		 // TODO Auto-generated catch block
-		 e.printStackTrace();
-		 } catch (IOException e) {
-		 // TODO Auto-generated catch block
-		 e.printStackTrace();
-		 } catch (ServiceException e) {
-		 // TODO Auto-generated catch block
-		 e.printStackTrace();
-		 }
+		try {
+			myService.setUserCredentials(
+					"webmaster@asptt-toulouse-natation.com", "31000_asptt");
+			URL feedUrl = new URL(
+					"https://picasaweb.google.com/data/feed/api/user/webmaster@asptt-toulouse-natation.com");
+
+			Query myQuery = new Query(feedUrl);
+			myQuery.setStringCustomParameter("kind", "photo");
+			myQuery.setStringCustomParameter("tag", "banniere");
+
+			AlbumFeed searchResultsFeed = myService.query(myQuery,
+					AlbumFeed.class);
+
+			result = new String[searchResultsFeed.getPhotoEntries().size()];
+			int i = 0;
+			for (PhotoEntry photo : searchResultsFeed.getPhotoEntries()) {
+				result[i] = photo.getMediaContents().get(0).getUrl();
+				i++;
+			}
+		} catch (AuthenticationException e) {
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return result;
 	}
 }

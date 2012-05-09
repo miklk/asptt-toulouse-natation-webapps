@@ -9,6 +9,8 @@ public class UserDataUi implements IsSerializable {
 	private String firstName;
 	private String lastName;
 	private Date birthday;
+	private String birthdayPlace;
+	private String nationality;
 	private String phonenumber;
 	private String addressRoad;
 	private String addressAdditional;
@@ -18,20 +20,26 @@ public class UserDataUi implements IsSerializable {
 	private String measurementSwimsuit;
 	private String measurementTshirt;
 	private String measurementShort;
-	
+	private String contactLastName;
+	private String contactFirstName;
+
 	public UserDataUi() {
-		
+
 	}
 
 	public UserDataUi(String pFirstName, String pLastName, Date pBirthday,
-			String pPhonenumber, String pAddressRoad,
-			String pAddressAdditional, String pAddressCode,
-			String pAddressCity, String pGender, String pMeasurementSwimsuit,
-			String pMeasurementTshirt, String pMeasurementShort) {
+			String pBirthdayPlace, String pNationality, String pPhonenumber,
+			String pAddressRoad, String pAddressAdditional,
+			String pAddressCode, String pAddressCity, String pGender,
+			String pMeasurementSwimsuit, String pMeasurementTshirt,
+			String pMeasurementShort, String pContactLastName,
+			String pContactFirstName) {
 		super();
 		firstName = pFirstName;
 		lastName = pLastName;
 		birthday = pBirthday;
+		birthdayPlace = pBirthdayPlace;
+		nationality = pNationality;
 		phonenumber = pPhonenumber;
 		addressRoad = pAddressRoad;
 		addressAdditional = pAddressAdditional;
@@ -41,7 +49,10 @@ public class UserDataUi implements IsSerializable {
 		measurementSwimsuit = pMeasurementSwimsuit;
 		measurementTshirt = pMeasurementTshirt;
 		measurementShort = pMeasurementShort;
+		contactLastName = pContactLastName;
+		contactFirstName = pContactFirstName;
 	}
+
 
 	public String getFirstName() {
 		return firstName;
@@ -137,5 +148,37 @@ public class UserDataUi implements IsSerializable {
 
 	public void setMeasurementShort(String pMeasurementShort) {
 		measurementShort = pMeasurementShort;
+	}
+
+	public String getBirthdayPlace() {
+		return birthdayPlace;
+	}
+
+	public void setBirthdayPlace(String pBirthdayPlace) {
+		birthdayPlace = pBirthdayPlace;
+	}
+
+	public String getNationality() {
+		return nationality;
+	}
+
+	public void setNationality(String pNationality) {
+		nationality = pNationality;
+	}
+
+	public String getContactLastName() {
+		return contactLastName;
+	}
+
+	public void setContactLastName(String pContactLastName) {
+		contactLastName = pContactLastName;
+	}
+
+	public String getContactFirstName() {
+		return contactFirstName;
+	}
+
+	public void setContactFirstName(String pContactFirstName) {
+		contactFirstName = pContactFirstName;
 	}
 }

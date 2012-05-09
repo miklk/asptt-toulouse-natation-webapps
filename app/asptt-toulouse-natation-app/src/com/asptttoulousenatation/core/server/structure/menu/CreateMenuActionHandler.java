@@ -9,7 +9,6 @@ import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
 
-import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.server.dao.entity.field.MenuEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.structure.AreaEntity;
@@ -51,7 +50,7 @@ public class CreateMenuActionHandler implements
 		List<MenuEntity> existenceTest = dao.find(lCriteria);
 		if(CollectionUtils.isEmpty(existenceTest)) {//doesn't exist
 			//Creation
-			MenuEntity lMenu = new MenuEntity(MenuItems.VIDE.toString(), pAction.getTitle(), pAction.getArea(), false, true, pAction.getOrder(), null, pAction.getParent());
+			MenuEntity lMenu = new MenuEntity(pAction.getMenuKey(), pAction.getTitle(), pAction.getArea(), false, true, pAction.getOrder(), null, pAction.getParent());
 			MenuEntity lMenuEntity = dao.save(lMenu);
 			ContentEntity lContentEntity = new ContentEntity(pAction.getSummary(),
 					new Blob(pAction.getContent().getBytes()),

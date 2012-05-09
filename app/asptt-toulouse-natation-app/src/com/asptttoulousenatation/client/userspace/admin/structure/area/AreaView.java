@@ -27,6 +27,7 @@ public interface AreaView extends IsWidget {
 	
 	//Menu creation
 	public HasClickHandlers getMenuCreationButton();
+	public String getMenuCreationMenuKey();
 	public HasValue<String> getMenuCreationTitle();
 	public HasValue<String> getMenuCreationSummary();
 	public String getMenuCreationContent();

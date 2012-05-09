@@ -14,6 +14,7 @@ public class Breadcrumb extends Composite {
 	
 	private Label value;
 	
+	private StringBuilder valueAsStringBase;
 	private StringBuilder valueAsString;
 	
 	public Breadcrumb() {
@@ -24,15 +25,19 @@ public class Breadcrumb extends Composite {
 	}
 	
 	public void update(String pAreaName, String pMenuName) {
-		valueAsString = new StringBuilder(DEFAULT_VALUE);
-		valueAsString.append(SEPARATOR).append(pAreaName);
+		valueAsStringBase = new StringBuilder(DEFAULT_VALUE);
+		valueAsStringBase.append(SEPARATOR).append(pAreaName);
 		if(!pMenuName.isEmpty()) {
-			valueAsString.append(SEPARATOR).append(pMenuName);
+			valueAsStringBase.append(SEPARATOR).append(pMenuName);
 		}
+		valueAsString = new StringBuilder();
+		valueAsString.append(valueAsStringBase.toString());
 		value.setText(valueAsString.toString());
 	}
 	
 	public void update(String pMenuName) {
+		valueAsString = new StringBuilder();
+		valueAsString.append(valueAsStringBase.toString());
 		value.setText(valueAsString.append(SEPARATOR).append(pMenuName).toString());
 	}
 	

@@ -143,6 +143,12 @@ public class MainContentPanel extends Composite {
 		}
 		buildSubMenu();
 	}
+	
+	public void loadContent(final Panel pPanel) {
+			content.setWidget(pPanel);
+			popupManager.hide();
+		buildSubMenu();
+	}
 
 	private Panel getDocumentPanel(List<DocumentUi> pDocuments) {
 		Grid lPanel = new Grid(2, 1);

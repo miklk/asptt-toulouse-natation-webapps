@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class MainViewImpl extends Composite implements MainView {
@@ -185,4 +186,9 @@ public class MainViewImpl extends Composite implements MainView {
 			String pSubMenuName) {
 		contentPanel.loadSubContent(pData, pDocuments, pSubMenuName);
 	}
+
+	public void loadContent(Panel pPanel) {
+		contentPanel.loadContent(pPanel);
+	}
+
 }

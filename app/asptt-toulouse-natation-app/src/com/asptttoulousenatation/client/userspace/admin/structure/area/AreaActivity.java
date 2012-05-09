@@ -16,10 +16,9 @@ import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuResult;
 import com.asptttoulousenatation.core.shared.structure.menu.DeleteMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.DeleteMenuResult;
-import com.asptttoulousenatation.core.shared.user.UserUi;
+import com.asptttoulousenatation.core.shared.structure.menu.UpdateMenuAction;
+import com.asptttoulousenatation.core.shared.structure.menu.UpdateMenuResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
-import com.asptttoulousenatation.shared.userspace.admin.structure.content.UpdateContentAction;
-import com.asptttoulousenatation.shared.userspace.admin.structure.content.UpdateContentResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.EventBus;
@@ -39,13 +38,13 @@ public class AreaActivity extends MyAbstractActivity<AreaPlace> {
 		final AreaView lAreaView = clientFactory.getAreaView(area);
 		lAreaView.getUpdateButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
-				dispatchAsync.execute(new UpdateContentAction(lAreaView.getContentId(), lAreaView.getSummary().getValue(), lAreaView.getContent().getBytes()), new AsyncCallback<UpdateContentResult>() {
+				dispatchAsync.execute(new UpdateMenuAction(lAreaView.getMenuId(), lAreaView.getMenuCreationMenuKey(), lAreaView.getMenuTitle().getValue(), lAreaView.getContentId(), lAreaView.getSummary().getValue(), lAreaView.getContent().getBytes()), new AsyncCallback<UpdateMenuResult>() {
 
 					public void onFailure(Throwable pCaught) {
 						Window.alert("Erreur " + pCaught.getMessage());
 					}
 
-					public void onSuccess(UpdateContentResult pResult) {
+					public void onSuccess(UpdateMenuResult pResult) {
 						Window.alert("Mis à jour !");
 					}
 				});
@@ -97,7 +96,7 @@ public class AreaActivity extends MyAbstractActivity<AreaPlace> {
 		});
 		lAreaView.getMenuCreationButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
-				dispatchAsync.execute(new CreateMenuAction(lAreaView.getMenuCreationTitle().getValue(), lAreaView.getMenuCreationSummary().getValue(), lAreaView.getMenuCreationContent(), (short)0, area.getId(), lAreaView.getParentMenuId()), new AsyncCallback<CreateMenuResult>() {
+				dispatchAsync.execute(new CreateMenuAction(lAreaView.getMenuCreationMenuKey(), lAreaView.getMenuCreationTitle().getValue(), lAreaView.getMenuCreationSummary().getValue(), lAreaView.getMenuCreationContent(), (short)0, area.getId(), lAreaView.getParentMenuId()), new AsyncCallback<CreateMenuResult>() {
 					public void onFailure(Throwable pCaught) {
 						Window.alert("Erreur: " + pCaught.getMessage());
 					}

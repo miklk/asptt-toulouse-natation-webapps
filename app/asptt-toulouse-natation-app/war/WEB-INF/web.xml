@@ -41,6 +41,17 @@
     <param-value>0</param-value>
   </context-param>
 
+
+<servlet>
+    <servlet-name>ckUploaderServlet</servlet-name>
+    <!-- This is the default servlet, it puts files in session -->
+    <servlet-class>com.asptttoulousenatation.core.server.CkUploadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ckUploaderServlet</servlet-name>
+    <url-pattern>/ckuploader</url-pattern>
+  </servlet-mapping>
+
   <servlet>
     <servlet-name>uploadServlet</servlet-name>
     <!-- This is the default servlet, it puts files in session -->

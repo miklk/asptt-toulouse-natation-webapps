@@ -5,18 +5,25 @@ import net.customware.gwt.dispatch.shared.Action;
 public class UpdateMenuAction implements Action<UpdateMenuResult> {
 
 	private Long menu;
+	private String menuKey;
 	private String title;
-	private short order;
+	private Long contentId;
+	private String summary;
+	private byte[] content;
 	
 	public UpdateMenuAction() {
 		
 	}
 
-	public UpdateMenuAction(Long pMenu, String pTitle, short pOrder) {
+	public UpdateMenuAction(Long pMenu, String pMenuKey, String pTitle, Long pContentId,
+			String pSummary, byte[] pContent) {
 		super();
 		menu = pMenu;
+		menuKey = pMenuKey;
 		title = pTitle;
-		order = pOrder;
+		contentId = pContentId;
+		summary = pSummary;
+		content = pContent;
 	}
 
 	public Long getMenu() {
@@ -27,6 +34,14 @@ public class UpdateMenuAction implements Action<UpdateMenuResult> {
 		menu = pMenu;
 	}
 
+	public String getMenuKey() {
+		return menuKey;
+	}
+
+	public void setMenuKey(String pMenuKey) {
+		menuKey = pMenuKey;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -35,11 +50,28 @@ public class UpdateMenuAction implements Action<UpdateMenuResult> {
 		title = pTitle;
 	}
 
-	public short getOrder() {
-		return order;
+	public String getSummary() {
+		return summary;
 	}
 
-	public void setOrder(short pOrder) {
-		order = pOrder;
+	public void setSummary(String pSummary) {
+		summary = pSummary;
 	}
+
+	public byte[] getContent() {
+		return content;
+	}
+
+	public void setContent(byte[] pContent) {
+		content = pContent;
+	}
+
+	public Long getContentId() {
+		return contentId;
+	}
+
+	public void setContentId(Long pContentId) {
+		contentId = pContentId;
+	}
+	
 }

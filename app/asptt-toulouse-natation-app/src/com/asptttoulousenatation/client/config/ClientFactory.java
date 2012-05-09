@@ -3,6 +3,7 @@ package com.asptttoulousenatation.client.config;
 import java.util.List;
 
 import com.asptttoulousenatation.client.MainView;
+import com.asptttoulousenatation.client.subscription.SubscriptionView;
 import com.asptttoulousenatation.client.userspace.UserSpaceView;
 import com.asptttoulousenatation.client.userspace.admin.actu.ActuEditionView;
 import com.asptttoulousenatation.client.userspace.admin.actu.ActuView;
@@ -48,4 +49,6 @@ public interface ClientFactory {
 	public CompetitionView getCompetitionView(List<CompetitionUi> pCompetitionUis);
 	
 	public CompetitionCalendarView getCompetitionCalendarView(UserUi pUser, List<CompetitionUi> pCompetition);
+	
+	public SubscriptionView getSubscriptionView();
 }
