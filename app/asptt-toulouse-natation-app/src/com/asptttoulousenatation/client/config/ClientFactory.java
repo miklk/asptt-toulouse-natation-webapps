@@ -11,6 +11,8 @@ import com.asptttoulousenatation.client.userspace.admin.club.group.GroupView;
 import com.asptttoulousenatation.client.userspace.admin.club.slot.SlotView;
 import com.asptttoulousenatation.client.userspace.admin.competition.CompetitionView;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaView;
+import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatComputeView;
+import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatView;
 import com.asptttoulousenatation.client.userspace.admin.user.UserCreationView;
 import com.asptttoulousenatation.client.userspace.admin.user.UserEditionView;
 import com.asptttoulousenatation.client.userspace.calendar.CompetitionCalendarView;
@@ -21,6 +23,8 @@ import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.core.shared.competition.CompetitionUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
+import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatComputeUi;
+import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatUi;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitResult;
 import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
@@ -36,7 +40,7 @@ public interface ClientFactory {
 	
 	
 	
-	public UserSpaceView getAdminView(InitUserSpaceResult pInitUserSpaceResult);
+	public UserSpaceView getAdminView();
 	public HomeView getHomeView(List<MenuUi> pMenuList);
 	public MenuView getMenuView(InitUserSpaceResult pInitUserSpaceResult, Command pStackPanelShowCommand);
 	public ActuView getActuView();
@@ -50,5 +54,8 @@ public interface ClientFactory {
 	
 	public CompetitionCalendarView getCompetitionCalendarView(UserUi pUser, List<CompetitionUi> pCompetition);
 	
-	public SubscriptionView getSubscriptionView();
+	public SubscriptionView getSubscriptionView(List<GroupUi> pGroups);
+	
+	public SwimmerStatView getSwimmerStatView(List<SwimmerStatUi> pSwimmerStats);
+	public SwimmerStatComputeView getSwimmerStatComputeView(List<SwimmerStatComputeUi> pSwimmerStats);
 }

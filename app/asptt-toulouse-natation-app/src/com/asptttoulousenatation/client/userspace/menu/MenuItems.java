@@ -19,7 +19,10 @@ public enum MenuItems {
 	PUBLIC,
 	VIDE("Pas de valeur"),
 	REFRESH_ADMIN,
-	SUBSCRIPTION_ONLINE("Inscription en ligne");
+	SUBSCRIPTION_ONLINE("Inscription en ligne"),
+	SWIMMER_STAT_DAY,
+	SWIMMER_STAT_WEEK,
+	SWIMMER_STAT_MONTH;
 	
 	private String salt;
 	private boolean shortcut;

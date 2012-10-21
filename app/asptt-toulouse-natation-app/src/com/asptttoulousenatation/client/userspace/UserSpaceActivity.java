@@ -13,6 +13,8 @@ import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEventHandler;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaActivity;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaPlace;
+import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatActivity;
+import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatPlace;
 import com.asptttoulousenatation.client.userspace.admin.user.UserActivity;
 import com.asptttoulousenatation.client.userspace.admin.user.UserPlace;
 import com.asptttoulousenatation.client.userspace.calendar.CompetitionCalendarActivity;
@@ -23,6 +25,7 @@ import com.asptttoulousenatation.client.userspace.menu.MenuActivity;
 import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.client.userspace.menu.MenuPlace;
 import com.asptttoulousenatation.core.client.MyAbstractActivity;
+import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatEnum;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitUserSpaceAction;
@@ -67,7 +70,7 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 					public void onSuccess(final InitUserSpaceResult pResult) {
 
 						final UserSpaceView lAdminView = clientFactory
-								.getAdminView(pResult);
+								.getAdminView();
 						lAdminView.setUserName(user.getEmailAddress());
 
 						// Set menu
@@ -172,8 +175,43 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 															.getContentPanel(),
 													lEventBus);
 											break;
+										case SWIMMER_STAT_DAY:
+											SwimmerStatActivity lSwimmerStatActivityDay = new SwimmerStatActivity(
+													new SwimmerStatPlace(),
+													clientFactory);
+											lSwimmerStatActivityDay
+													.setKind(SwimmerStatEnum.DAY);
+											lSwimmerStatActivityDay.start(
+													lAdminView
+															.getContentPanel(),
+													lEventBus);
+											break;
+										case SWIMMER_STAT_WEEK:
+											SwimmerStatActivity lSwimmerStatActivityWeek = new SwimmerStatActivity(
+													new SwimmerStatPlace(),
+													clientFactory);
+											lSwimmerStatActivityWeek
+													.setKind(SwimmerStatEnum.WEEK);
+											lSwimmerStatActivityWeek.start(
+													lAdminView
+															.getContentPanel(),
+													lEventBus);
+											break;
+										case SWIMMER_STAT_MONTH:
+											SwimmerStatActivity lSwimmerStatActivityMonth = new SwimmerStatActivity(
+													new SwimmerStatPlace(),
+													clientFactory);
+											lSwimmerStatActivityMonth
+													.setKind(SwimmerStatEnum.MONTH);
+											lSwimmerStatActivityMonth.start(
+													lAdminView
+															.getContentPanel(),
+													lEventBus);
+											break;
 										case VIDE:
-											lAdminView.getContentPanel().setWidget(new SimplePanel());
+											lAdminView.getContentPanel()
+													.setWidget(
+															new SimplePanel());
 											break;
 										default:
 											HomeActivity lHomeActivity = new HomeActivity(

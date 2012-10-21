@@ -2,7 +2,6 @@ package com.asptttoulousenatation.client.userspace;
 
 import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 
-import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Button;
@@ -22,10 +21,7 @@ public class UserSpaceViewImpl extends Composite implements UserSpaceView {
 	private HorizontalPanel headerPanel;
 	private Button goBackPublic;
 	
-	private InitUserSpaceResult initUserSpaceResult;
-	
-	public UserSpaceViewImpl(InitUserSpaceResult pInitUserSpaceResult) {
-		initUserSpaceResult = pInitUserSpaceResult;
+	public UserSpaceViewImpl() {
 		panel = new DockPanel();
 		initWidget(panel);
 		panel.setStyleName(CSS.userSpacePage());

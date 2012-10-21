@@ -37,6 +37,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 public class AreaViewImpl extends Composite implements AreaView {
@@ -47,6 +48,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 	private AbstractCellTree cellBrowser;
 	private SingleSelectionModel<MenuUi> selectionModel;
+	private SelectionChangeEvent.Handler pageSelectionAction;
 	private SimplePanel editionPanel;
 
 	private TextBox menuTitleInput;
@@ -102,14 +104,6 @@ public class AreaViewImpl extends Composite implements AreaView {
 		panel.add(menuPanel);
 
 		selectionModel = new SingleSelectionModel<MenuUi>();
-		selectionModel
-				.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
-					public void onSelectionChange(SelectionChangeEvent pEvent) {
-						buildEditionPanel(selectionModel.getSelectedObject());
-
-					}
-				});
 
 		cellBrowser = new CellBrowser(new MenuTreeViewModel(selectionModel, new ArrayList<MenuUi>(area.getMenuSet().values())), null);
 		cellBrowser.setWidth("900px");
@@ -129,7 +123,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 		menuCreationButton.setStyleName(CSS.newPageButton());
 	}
 
-	private void buildEditionPanel(MenuUi pMenuUi) {
+	public void buildEditionPanel(MenuUi pMenuUi) {
 		FlexTable lPanel = new FlexTable();
 
 		int lRowIndex = 0;
@@ -482,5 +476,9 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 	public String getMenuCreationMenuKey() {
 		return menuCreationMenuKey.getValue(menuCreationMenuKey.getSelectedIndex());
+	}
+
+	public void setPageSelectionAction(Handler pHandler) {
+		selectionModel.addSelectionChangeHandler(pHandler);
 	}
 }

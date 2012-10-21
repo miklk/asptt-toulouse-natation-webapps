@@ -27,6 +27,7 @@ import com.asptttoulousenatation.core.server.dao.ActuDao;
 import com.asptttoulousenatation.core.server.dao.competition.CompetitionDao;
 import com.asptttoulousenatation.core.server.dao.competition.CompetitionDayDao;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
+import com.asptttoulousenatation.core.server.dao.entity.club.subscription.SubscriptionPrice;
 import com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionDayEntity;
 import com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.AreaEntityFields;
@@ -35,6 +36,7 @@ import com.asptttoulousenatation.core.server.dao.entity.field.MenuEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.structure.AreaEntity;
 import com.asptttoulousenatation.core.server.dao.entity.structure.ContentEntity;
 import com.asptttoulousenatation.core.server.dao.entity.structure.MenuEntity;
+import com.asptttoulousenatation.core.server.dao.entity.swimmer.SwimmerEntity;
 import com.asptttoulousenatation.core.server.dao.entity.user.UserDataEntity;
 import com.asptttoulousenatation.core.server.dao.entity.user.UserEntity;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
@@ -43,6 +45,7 @@ import com.asptttoulousenatation.core.server.dao.search.OrderDao;
 import com.asptttoulousenatation.core.server.dao.structure.AreaDao;
 import com.asptttoulousenatation.core.server.dao.structure.ContentDao;
 import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
+import com.asptttoulousenatation.core.server.dao.swimmer.SwimmerDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
@@ -90,9 +93,10 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 			throws DispatchException {
 		LOG.info("Init action");
 
-//		 createData();
+//		createData();
+//		createUsers();
 		InitResult lInitResult = new InitResult();
-//		lInitResult.setPhoto(getPicture());
+		lInitResult.setPhoto(getPicture());
 
 		// Structure
 		List<CriterionDao<? extends Object>> lAreaSelectionCriteria = new ArrayList<CriterionDao<? extends Object>>(
@@ -355,6 +359,20 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				ProfileEnum.ADMIN, (short) 2);
 		lAreaDao.save(lAreaEntity);
 
+		// Swimmer stat
+		lAreaEntity = new AreaEntity(null, "Suivi des nageurs",
+				ProfileEnum.ADMIN, false, (short) 5);
+		AreaEntity lAreaStat = lAreaDao.save(lAreaEntity);
+		createMenu(MenuItems.SWIMMER_STAT_DAY.toString(), "Par jour",
+				lAreaStat.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
+				false, 1);
+		createMenu(MenuItems.SWIMMER_STAT_WEEK.toString(), "Par semaine",
+				lAreaStat.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
+				false, 2);
+		createMenu(MenuItems.SWIMMER_STAT_MONTH.toString(), "Par mois",
+				lAreaStat.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
+				false, 3);
+
 		createUserAdmin();
 		createUserRoot();
 		createUserOfficiel();
@@ -529,5 +547,93 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 			e.printStackTrace();
 		}
 		return result;
+	}
+	
+	private void createUsers() {
+		String[][] lUsers = new String[][] {
+				{"Achotegui", "Nicolas"}, 
+				{"Audouy", "Clément"}, 
+				{"Barboteau", "Elodie"}, 
+				{"Borderas", "Sébastien"}, 
+				{"Bulit", "Florian"}, 
+				{"Cassan-Ferrier", "Alexandra"}, 
+				{"Cavagna", "Cyril"}, 
+				{"Cerisier", "Camille"}, 
+				{"Claverie", "Camille"}, 
+				{"Combanière", "Jérome"}, 
+				{"Costes", "Antony"}, 
+				{"Danho", "Thibault"}, 
+				{"Debeuckelaere", "Alain"}, 
+				{"Delbos", "Lucie"}, 
+				{"Devaud", "Louise"}, 
+				{"Enjalby", "Jérémy"}, 
+				{"Escalante", "Yacine"}, 
+				{"Fauconnier", "Lisa"}, 
+				{"Félix", "Mathieu"}, 
+				{"Féron", "Laura"}, 
+				{"Fourcade", "Annabel"}, 
+				{"Gauliard", "Aurélie"}, 
+				{"Grivel", "Quentin"}, 
+				{"Guermonprez", "Eve-Marie"}, 
+				{"Lehir", "Nicolas"}, 
+				{"Kargbo", "Michaël"}, 
+				{"Kieffer", "Charlotte"}, 
+				{"Lacomme", "David"}, 
+				{"Lehoux", "Edouard"}, 
+				{"Marrot", "Sophie"}, 
+				{"Martin", "Enzo"}, 
+				{"Migeon", "Typhanie"}, 
+				{"Migeon", "Victor"}, 
+				{"Nivoix", "Julie"}, 
+				{"Ramonjiarivony", "Maëva"}, 
+				{"Royo", "Martin"}, 
+				{"Savé", "Jérome"}, 
+				{"Schwarz", "Mickaël"}, 
+				{"Starzec", "Bruno"}, 
+				{"Tranchard", "Guillaume"}, 
+				{"Vignard", "Thomas"}, 
+				{"Vives", "Adrien"}};
+		for(String[] lUser: lUsers) {
+			createUser(lUser[0], lUser[1]);
+		}
+	}
+	
+	private void createUser(String pLastName, String pFirstName) {
+		try {
+			UserEntity lUserEntity = new UserEntity();
+			lUserEntity.setEmailaddress(pLastName + "." + pFirstName + "@asptt-toulouse-natation.com");
+
+			Set<String> lProfiles = new HashSet<String>(3);
+			lProfiles.add(ProfileEnum.NAGEUR.toString());
+			lUserEntity.setProfiles(lProfiles);
+			lUserEntity.setValidated(true);
+			UserDataEntity lUserDataEntity = new UserDataEntity();
+			lUserDataEntity.setFirstName(pFirstName);
+			lUserDataEntity.setLastName(pLastName);
+			UserDataDao lUserDataDao = new UserDataDao();
+			lUserEntity.setUserData(lUserDataDao.save(lUserDataEntity).getId());
+			
+			
+
+			MessageDigest lMessageDigest = Utils.getMD5();
+
+			String lCode = "0123";
+			System.out.println(lCode);
+			String lEncryptedPassword = new String(lMessageDigest.digest(lCode
+					.getBytes()));
+			lUserEntity.setPassword(lEncryptedPassword);
+
+			UserDao lUserDao = new UserDao();
+			UserEntity lUserCreated = lUserDao.save(lUserEntity);
+
+			SwimmerEntity lSwimmerEntity = new SwimmerEntity();
+			lSwimmerEntity.setStat(true);
+			lSwimmerEntity.setUser(lUserCreated.getId());
+			SwimmerDao lSwimmerDao = new SwimmerDao();
+			lSwimmerDao.save(lSwimmerEntity);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

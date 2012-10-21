@@ -9,4 +9,10 @@ public final class DateUtils {
 				&& pDate1.getMonth() == pDate2.getMonth()
 				&& pDate1.getYear() == pDate2.getYear();
 	}
+	
+	public static int[] getHour(int pMinutes) {
+		final int lHour =  pMinutes / 60;
+		final int lMinutes = pMinutes - (lHour * 60);
+		return new int[] {lHour, lMinutes};
+	}
 }

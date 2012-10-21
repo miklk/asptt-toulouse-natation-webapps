@@ -1,5 +1,9 @@
 package com.asptttoulousenatation.shared.init;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +37,7 @@ public class InitResult implements Result {
 	public Map<String, AreaUi> getArea() {
 		return area;
 	}
-
+	
 	public void setArea(Map<String, AreaUi> pArea) {
 		area = pArea;
 	}
@@ -56,6 +60,32 @@ public class InitResult implements Result {
 
 	public void setPhoto(String[] pPhoto) {
 		photo = pPhoto;
+	}
+	
+	public List<AreaUi> getMenu() {
+		Collection<AreaUi> lAreas = area.values();
+		List<AreaUi> result = new ArrayList<AreaUi>(lAreas.size());
+		for(AreaUi lArea: lAreas) {
+			if(lArea.getOrder() != -1) {
+				result.add(lArea);
+			}
+		}
+		
+		Collections.sort(result, new Comparator<AreaUi>() {
+
+			public int compare(AreaUi pO1, AreaUi pO2) {
+				final int result;
+				if(pO1.getOrder() == pO2.getOrder()) {
+					result = 0;
+				} else if(pO1.getOrder() > pO2.getOrder()) {
+					result = 1;
+				} else {
+					result = -1;
+				}
+				return result;
+			}
+		});
+		return result;
 	}
 	
 }

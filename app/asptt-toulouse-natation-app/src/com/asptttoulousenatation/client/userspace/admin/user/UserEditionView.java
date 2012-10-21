@@ -28,6 +28,8 @@ public interface UserEditionView extends IsWidget {
 	public HasValue<String> getMeasurementTshirt();
 	public HasValue<String> getMeasurementShort();
 	
+	public HasValue<Boolean> getSwimmerStat();
+	
 	public HasClickHandlers getUpdateButton();
 	public HasClickHandlers getDeleteButton();
 }

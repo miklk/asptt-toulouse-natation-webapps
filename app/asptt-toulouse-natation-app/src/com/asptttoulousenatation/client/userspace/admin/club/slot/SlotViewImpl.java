@@ -103,15 +103,11 @@ public class SlotViewImpl extends Composite implements SlotView {
 		lTime = Utils.getTime(pUi.getEnd());
 		hourEnd.setTime(null, lTime[0], lTime[1]);
 		
-		group = new ListBox();
-		group.insertItem("Pas de groupe", "-1", 0);
-		int index = 1;
-		for(GroupUi lGroupUi: groupData) {
-			group.insertItem(lGroupUi.getTitle(), Long.toString(lGroupUi.getId()), index);
-			if(pUi.getGroup() != null && (lGroupUi.getId() == pUi.getGroup().getId())) {
-				group.setSelectedIndex(index);
+		group.setSelectedIndex(0);
+		for(int i = 0; i < group.getItemCount(); i++) {
+			if(pUi.getGroup() != null && (group.getValue(i).equals(Long.toString(pUi.getGroup().getId())))) {
+				group.setSelectedIndex(i);
 			}
-			index++;
 		}
 		swimmingPool.setValue(pUi.getSwimmingPool());
 		educateur.setValue(pUi.getEducateur());
@@ -148,8 +144,10 @@ public class SlotViewImpl extends Composite implements SlotView {
 		//Group
 		group = new ListBox();
 		group.insertItem("Pas de groupe", "-1", 0);
+		int index = 1;
 		for(GroupUi lGroupUi: groupData) {
-			group.addItem(lGroupUi.getTitle(), Long.toString(lGroupUi.getId()));
+			group.insertItem(lGroupUi.getTitle(), Long.toString(lGroupUi.getId()), index);
+			index++;
 		}
 		lPanel.setHTML(3, 0, "Groupe");
 		lPanel.setWidget(3, 1, group);

@@ -157,7 +157,7 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 															SimplePanel lPanel = new SimplePanel();
 															lSubscriptionActivity.start(lPanel, lEventBus);
 															lMainView.setSelectedMenu(pEvent.getMenu());
-															lMainView.updateBreadcrumb(pEvent.getAreaTitle(), pEvent.getMenuTitle());
+															lMainView.updateBreadcrumb(pEvent.getMenuTitle());
 															lMainView.loadContent(lPanel);
 															
 															break;

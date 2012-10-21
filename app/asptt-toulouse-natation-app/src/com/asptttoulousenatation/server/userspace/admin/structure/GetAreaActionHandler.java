@@ -72,7 +72,7 @@ public class GetAreaActionHandler implements
 				// Only root menu
 				if (lMenuEntity.getParent() == null) {
 					GetMenuResult lGetMenuActionResult = pContext
-							.execute(new GetMenuAction(lMenuEntity.getId()));
+							.execute(new GetMenuAction(lMenuEntity.getId(), pAction.isAddMenuContent()));
 					MenuUi lMenu = lGetMenuActionResult.getMenu();
 					lMenuUis.put(lMenu.getTitle(), lMenu);
 				}

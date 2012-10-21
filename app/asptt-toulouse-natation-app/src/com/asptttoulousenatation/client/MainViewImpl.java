@@ -158,6 +158,10 @@ public class MainViewImpl extends Composite implements MainView {
 		contentPanel.updateBreadcrumb(pAreaName, pMenuName);
 	}
 	
+	public void updateBreadcrumb(final String pMenuName) {
+		contentPanel.updateBreadcrumb(pMenuName);
+	}
+	
 	public void loadContent(byte[] pData, List<DocumentUi> pDocuments) {
 		contentPanel.loadContent(pData, pDocuments);
 	}

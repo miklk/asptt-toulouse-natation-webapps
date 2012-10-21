@@ -1,0 +1,22 @@
+<!-- Indices written at Sun, 14 Oct 2012 22:40:41 CEST -->
+
+<datastore-indexes autoGenerate="true">
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="AreaEntity" ancestor="false" source="auto">
+        <property name="profile" direction="asc"/>
+        <property name="order" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 6 times in query history -->
+    <datastore-index kind="MenuEntity" ancestor="false" source="auto">
+        <property name="area" direction="asc"/>
+        <property name="order" direction="asc"/>
+    </datastore-index>
+    
+    <datastore-index kind="SwimmerStatEntity" ancestor="false" source="manual">
+        <property name="swimmer" direction="asc"/>
+        <property name="day" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>

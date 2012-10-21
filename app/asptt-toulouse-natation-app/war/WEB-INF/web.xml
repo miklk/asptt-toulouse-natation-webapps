@@ -71,6 +71,16 @@
     <servlet-name>downloadServlet</servlet-name>
     <url-pattern>/downloadDocument</url-pattern>
   </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>expressCheckoutServlet</servlet-name>
+    <!-- This is the default servlet, it puts files in session -->
+    <servlet-class>com.asptttoulousenatation.server.paypal.Expresscheckout</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>expressCheckoutServlet</servlet-name>
+    <url-pattern>/expressCheckout</url-pattern>
+  </servlet-mapping>
 <!--OnPositive Tools-->
 <servlet>
 		<servlet-name>baseViewerServlet</servlet-name>
@@ -106,4 +116,12 @@
 			<role-name>admin</role-name>
 		</auth-constraint>
 	</security-constraint>
+	<security-constraint>
+  <web-resource-collection>
+   <url-pattern>https://api-3t.sandbox.paypal.com/*</url-pattern>
+  </web-resource-collection>
+  <auth-constraint>
+   <role-name>*</role-name>
+  </auth-constraint>
+ </security-constraint>
 </web-app>

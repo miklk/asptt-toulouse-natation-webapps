@@ -3,7 +3,6 @@ package com.asptttoulousenatation.client.resources;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.resources.client.ClientBundle.Source;
 
 public interface ASPTT_ProtoResources extends ClientBundle {
 
@@ -37,4 +36,16 @@ public interface ASPTT_ProtoResources extends ClientBundle {
 	
 	@Source("images/new_page.png")
 	public ImageResource newPage();
+	
+	@Source("images/back.png")
+	public ImageResource back();
+	
+	@Source("images/next.png")
+	public ImageResource next();
+	
+	@Source("images/previous.png")
+	public ImageResource previous();
+	
+	@Source("images/next_2.png")
+	public ImageResource next2();
 }

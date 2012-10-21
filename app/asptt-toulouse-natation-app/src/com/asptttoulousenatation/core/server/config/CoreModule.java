@@ -5,11 +5,13 @@ import net.customware.gwt.dispatch.server.guice.ActionHandlerModule;
 import com.asptttoulousenatation.core.server.club.group.CreateGroupActionHandler;
 import com.asptttoulousenatation.core.server.club.group.DeleteGroupActionHandler;
 import com.asptttoulousenatation.core.server.club.group.GetAllGroupActionHandler;
+import com.asptttoulousenatation.core.server.club.group.GetGroupSlotActionHandler;
 import com.asptttoulousenatation.core.server.club.group.UpdateGroupActionHandler;
 import com.asptttoulousenatation.core.server.club.slot.CreateSlotActionHandler;
 import com.asptttoulousenatation.core.server.club.slot.DeleteSlotActionHandler;
 import com.asptttoulousenatation.core.server.club.slot.GetAllSlotActionHandler;
 import com.asptttoulousenatation.core.server.club.slot.UpdateSlotActionHandler;
+import com.asptttoulousenatation.core.server.club.subscription.GetPriceActionHandler;
 import com.asptttoulousenatation.core.server.competition.CreateCompetitionActionHandler;
 import com.asptttoulousenatation.core.server.competition.DeleteCompetitionActionHandler;
 import com.asptttoulousenatation.core.server.competition.DeleteCompetitionDayActionHandler;
@@ -19,6 +21,7 @@ import com.asptttoulousenatation.core.server.competition.UpdateCompetitionAction
 import com.asptttoulousenatation.core.server.document.DeleteDocumentActionHandler;
 import com.asptttoulousenatation.core.server.document.GetDocumentActionHandler;
 import com.asptttoulousenatation.core.server.document.UpdateDocumentActionHandler;
+import com.asptttoulousenatation.core.server.payment.PaymentActionHandler;
 import com.asptttoulousenatation.core.server.structure.area.CreateAreaActionHandler;
 import com.asptttoulousenatation.core.server.structure.area.DeleteAreaActionHandler;
 import com.asptttoulousenatation.core.server.structure.area.UpdateAreaActionHandler;
@@ -26,6 +29,10 @@ import com.asptttoulousenatation.core.server.structure.menu.CreateMenuActionHand
 import com.asptttoulousenatation.core.server.structure.menu.DeleteMenuActionHandler;
 import com.asptttoulousenatation.core.server.structure.menu.GetMenuActionHandler;
 import com.asptttoulousenatation.core.server.structure.menu.UpdateMenuActionHandler;
+import com.asptttoulousenatation.core.server.swimmer.CreateSwimmerStatActionHandler;
+import com.asptttoulousenatation.core.server.swimmer.GetAllSwimmerStatActionHandler;
+import com.asptttoulousenatation.core.server.swimmer.GetSwimmerActionHandler;
+import com.asptttoulousenatation.core.server.swimmer.UpdateSwimmerStatActionHandler;
 import com.asptttoulousenatation.core.server.user.AuthenticationActionHandler;
 import com.asptttoulousenatation.core.server.user.IsAuthenticatedActionHandler;
 import com.asptttoulousenatation.core.server.user.LogoutActionHandler;
@@ -35,11 +42,13 @@ import com.asptttoulousenatation.core.shared.actu.GetAllActuAction;
 import com.asptttoulousenatation.core.shared.club.group.CreateGroupAction;
 import com.asptttoulousenatation.core.shared.club.group.DeleteGroupAction;
 import com.asptttoulousenatation.core.shared.club.group.GetAllGroupAction;
+import com.asptttoulousenatation.core.shared.club.group.GetGroupSlotAction;
 import com.asptttoulousenatation.core.shared.club.group.UpdateGroupAction;
 import com.asptttoulousenatation.core.shared.club.slot.CreateSlotAction;
 import com.asptttoulousenatation.core.shared.club.slot.DeleteSlotAction;
 import com.asptttoulousenatation.core.shared.club.slot.GetAllSlotAction;
 import com.asptttoulousenatation.core.shared.club.slot.UpdateSlotAction;
+import com.asptttoulousenatation.core.shared.club.subscription.GetPriceAction;
 import com.asptttoulousenatation.core.shared.competition.CreateCompetitionAction;
 import com.asptttoulousenatation.core.shared.competition.DeleteCompetitionAction;
 import com.asptttoulousenatation.core.shared.competition.DeleteCompetitionDayAction;
@@ -49,6 +58,7 @@ import com.asptttoulousenatation.core.shared.competition.UpdateCompetitionAction
 import com.asptttoulousenatation.core.shared.document.DeleteDocumentAction;
 import com.asptttoulousenatation.core.shared.document.GetDocumentAction;
 import com.asptttoulousenatation.core.shared.document.UpdateDocumentAction;
+import com.asptttoulousenatation.core.shared.payment.PaymentAction;
 import com.asptttoulousenatation.core.shared.structure.LoadContentAction;
 import com.asptttoulousenatation.core.shared.structure.area.CreateAreaAction;
 import com.asptttoulousenatation.core.shared.structure.area.DeleteAreaAction;
@@ -57,6 +67,10 @@ import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.DeleteMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.GetMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.UpdateMenuAction;
+import com.asptttoulousenatation.core.shared.swimmer.CreateSwimmerStatAction;
+import com.asptttoulousenatation.core.shared.swimmer.GetAllSwimmerStatAction;
+import com.asptttoulousenatation.core.shared.swimmer.GetSwimmerAction;
+import com.asptttoulousenatation.core.shared.swimmer.UpdateSwimmerStatAction;
 import com.asptttoulousenatation.core.shared.user.AuthenticationAction;
 import com.asptttoulousenatation.core.shared.user.IsAuthenticatedAction;
 import com.asptttoulousenatation.core.shared.user.LogoutAction;
@@ -128,6 +142,8 @@ public class CoreModule extends ActionHandlerModule {
 		bindHandler(UpdateSlotAction.class, UpdateSlotActionHandler.class);
 		bindHandler(DeleteSlotAction.class, DeleteSlotActionHandler.class);
 		
+		bindHandler(GetGroupSlotAction.class, GetGroupSlotActionHandler.class);
+		
 		//Competition
 		bindHandler(CreateCompetitionAction.class, CreateCompetitionActionHandler.class);
 		bindHandler(UpdateCompetitionAction.class, UpdateCompetitionActionHandler.class);
@@ -152,6 +168,15 @@ public class CoreModule extends ActionHandlerModule {
 		bindHandler(UpdateMenuAction.class, UpdateMenuActionHandler.class);
 		bindHandler(DeleteMenuAction.class, DeleteMenuActionHandler.class);
 		bindHandler(GetMenuAction.class, GetMenuActionHandler.class);
+		
+		bindHandler(PaymentAction.class, PaymentActionHandler.class);
+		bindHandler(GetPriceAction.class, GetPriceActionHandler.class);
+		
+		//Swimmer stat
+		bindHandler(CreateSwimmerStatAction.class, CreateSwimmerStatActionHandler.class);
+		bindHandler(UpdateSwimmerStatAction.class, UpdateSwimmerStatActionHandler.class);
+		bindHandler(GetAllSwimmerStatAction.class, GetAllSwimmerStatActionHandler.class);
+		bindHandler(GetSwimmerAction.class, GetSwimmerActionHandler.class);
 		
 	}
 }

@@ -107,6 +107,10 @@ public class MainContentPanel extends Composite {
 		breadcrumb.update(pAreaName, pMenuName);
 	}
 	
+	public void updateBreadcrumb(final String pMenuName) {
+		breadcrumb.update(pMenuName);
+	}
+	
 	private void buildSubMenu() {
 		subMenu.clear();
 		subMenu.removeStyleName(CSS.menuSub());

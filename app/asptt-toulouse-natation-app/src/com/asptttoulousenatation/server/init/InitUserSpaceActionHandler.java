@@ -81,11 +81,12 @@ public class InitUserSpaceActionHandler implements
 		lContentCriterion.setEntityField(ContentEntityFields.MENU);
 		lContentCriterion.setOperator(Operator.EQUAL);
 		lMenuCriteria.add(lContentCriterion);
+		OrderDao lMenuOrder = new OrderDao(MenuEntityFields.ORDER, OrderDao.OrderOperator.ASC);
 
 		for (AreaEntity lAreaEntity : lAreaEntities) {
 			// Get menu
 			lAreaCriterion.setValue(lAreaEntity.getId());
-			List<MenuEntity> lMenuEntities = menuDao.find(lCriteria);
+			List<MenuEntity> lMenuEntities = menuDao.find(lCriteria, lMenuOrder);
 			Map<String, MenuUi> lMenuUis = new LinkedHashMap<String, MenuUi>(
 					lMenuEntities.size());
 			for (MenuEntity lMenuEntity : lMenuEntities) {
@@ -101,7 +102,7 @@ public class InitUserSpaceActionHandler implements
 			lArea.setMenuSet(lMenuUis);
 			lAreaUis.put(lArea.getTitle(), lArea);
 			if("Structure du site".equals(lAreaEntity.getTitle())) {
-				lInitResult.setAreaResult(pContext.execute(new GetAreaAction(false)));
+				lInitResult.setAreaResult(pContext.execute(new GetAreaAction(false, false)));
 			}
 		}
 		lInitResult.setArea(lAreaUis);

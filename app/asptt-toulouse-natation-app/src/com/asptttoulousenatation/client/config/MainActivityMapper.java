@@ -2,6 +2,8 @@ package com.asptttoulousenatation.client.config;
 
 import com.asptttoulousenatation.client.MainActivity;
 import com.asptttoulousenatation.client.MainPlace;
+import com.asptttoulousenatation.client.subscription.SubscriptionActivity;
+import com.asptttoulousenatation.client.subscription.SubscriptionPlace;
 import com.asptttoulousenatation.client.userspace.UserSpaceActivity;
 import com.asptttoulousenatation.client.userspace.UserSpacePlace;
 import com.asptttoulousenatation.client.userspace.admin.actu.ActuActivity;
@@ -41,6 +43,8 @@ public class MainActivityMapper implements ActivityMapper {
 		}
 		else if(pPlace instanceof ActuPlace) {
 			activity = new ActuActivity((ActuPlace) pPlace, clientFactory, false);
+		} else if(pPlace instanceof SubscriptionPlace) {
+			activity = new SubscriptionActivity((SubscriptionPlace) pPlace, clientFactory);
 		}
 		else {
 			activity = null;

@@ -5,14 +5,19 @@ import net.customware.gwt.dispatch.shared.Action;
 public class GetMenuAction implements Action<GetMenuResult> {
 
 	private Long menuId;
+	private boolean addContent;
 	
 	public GetMenuAction() {
 		
 	}
 
-	public GetMenuAction(Long pMenuId) {
-		super();
+	public GetMenuAction(Long pMenuId, boolean pAddContent) {
 		menuId = pMenuId;
+		addContent = pAddContent;
+	}
+	
+	public GetMenuAction(Long pMenuId) {
+		this(pMenuId, true);
 	}
 
 	public Long getMenuId() {
@@ -22,5 +27,14 @@ public class GetMenuAction implements Action<GetMenuResult> {
 	public void setMenuId(Long pMenuId) {
 		menuId = pMenuId;
 	}
+
+	public boolean isAddContent() {
+		return addContent;
+	}
+
+	public void setAddContent(boolean pAddContent) {
+		addContent = pAddContent;
+	}
+	
 
 }

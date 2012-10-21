@@ -16,6 +16,8 @@ import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuResult;
 import com.asptttoulousenatation.core.shared.structure.menu.DeleteMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.DeleteMenuResult;
+import com.asptttoulousenatation.core.shared.structure.menu.GetMenuAction;
+import com.asptttoulousenatation.core.shared.structure.menu.GetMenuResult;
 import com.asptttoulousenatation.core.shared.structure.menu.UpdateMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.UpdateMenuResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
@@ -25,6 +27,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.view.client.SelectionChangeEvent;
 
 public class AreaActivity extends MyAbstractActivity<AreaPlace> {
 
@@ -36,6 +39,22 @@ public class AreaActivity extends MyAbstractActivity<AreaPlace> {
 
 	public void start(AcceptsOneWidget pPanel, final EventBus pEventBus) {
 		final AreaView lAreaView = clientFactory.getAreaView(area);
+		
+		lAreaView.setPageSelectionAction(new SelectionChangeEvent.Handler() {
+			
+			public void onSelectionChange(SelectionChangeEvent pEvent) {
+				dispatchAsync.execute(new GetMenuAction(lAreaView.getMenuId()), new AsyncCallback<GetMenuResult>() {
+					public void onFailure(Throwable pCaught) {
+						Window.alert("Erreur " + pCaught.getMessage());
+					}
+
+					public void onSuccess(GetMenuResult pResult) {
+						lAreaView.buildEditionPanel(pResult.getMenu());
+					}
+				});
+			}
+		});
+		
 		lAreaView.getUpdateButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
 				dispatchAsync.execute(new UpdateMenuAction(lAreaView.getMenuId(), lAreaView.getMenuCreationMenuKey(), lAreaView.getMenuTitle().getValue(), lAreaView.getContentId(), lAreaView.getSummary().getValue(), lAreaView.getContent().getBytes()), new AsyncCallback<UpdateMenuResult>() {

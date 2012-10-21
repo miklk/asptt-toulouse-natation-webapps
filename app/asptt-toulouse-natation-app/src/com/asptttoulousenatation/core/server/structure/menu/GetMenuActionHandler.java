@@ -24,6 +24,7 @@ import com.asptttoulousenatation.core.shared.structure.menu.GetMenuResult;
 import com.asptttoulousenatation.server.userspace.admin.entity.ContentTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.DocumentTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.MenuTransformer;
+import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentDataKindEnum;
 
 public class GetMenuActionHandler implements
 		ActionHandler<GetMenuAction, GetMenuResult> {
@@ -31,45 +32,57 @@ public class GetMenuActionHandler implements
 	private MenuDao menuDao = new MenuDao();
 	private ContentDao contentDao = new ContentDao();
 	private DocumentDao documentDao = new DocumentDao();
-	
+
 	private MenuTransformer menuTransformer = new MenuTransformer();
 	private ContentTransformer contentTransformer = new ContentTransformer();
 	private DocumentTransformer documentTransformer = new DocumentTransformer();
-	
+
 	public GetMenuResult execute(GetMenuAction pAction,
 			ExecutionContext pContext) throws DispatchException {
-		
+
 		MenuEntity lMenuEntity = menuDao.get(pAction.getMenuId());
 		final MenuUi lMenu = menuTransformer.toUi(lMenuEntity);
-		
-		//Content criteria
-		List<CriterionDao<? extends Object>> lMenuCriteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		CriterionDao<Long> lContentCriterion = new CriterionDao<Long>();
-		lContentCriterion.setEntityField(ContentEntityFields.MENU);
-		lContentCriterion.setOperator(Operator.EQUAL);
-		lMenuCriteria.add(lContentCriterion);
-		lContentCriterion.setValue(lMenuEntity.getId());
-		List<ContentEntity> lContentEntities = contentDao.find(lMenuCriteria);
-		lMenu.setContentSet(contentTransformer.toUi(lContentEntities));
-		
-		
-		//Get documents
-		List<CriterionDao<? extends Object>> lDocumentCriteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		CriterionDao<Long> lDocumentCriterion = new CriterionDao<Long>();
-		lDocumentCriterion.setEntityField(DocumentEntityFields.MENU);
-		lDocumentCriterion.setOperator(Operator.EQUAL);
-		lDocumentCriteria.add(lDocumentCriterion);
-		lDocumentCriterion.setValue(lMenuEntity.getId());
-		List<DocumentEntity> lDocumentEntities = documentDao.find(lDocumentCriteria);
-		List<DocumentUi> lDocumentUis = documentTransformer.toUi(lDocumentEntities);
-		lMenu.setDocumentSet(lDocumentUis);
-		
-		//Retrieve sub menu
-		List<MenuUi> lSubMenuUis = new ArrayList<MenuUi>(lMenuEntity.getSubMenu().size());
-		for(Long lSubMenuId: lMenuEntity.getSubMenu()) {
-			GetMenuResult lGetMenuResult = pContext.execute(new GetMenuAction(lSubMenuId));
+
+		if (pAction.isAddContent()) {
+			// Content criteria
+			List<CriterionDao<? extends Object>> lMenuCriteria = new ArrayList<CriterionDao<? extends Object>>(
+					2);
+			
+			
+			//No documents
+			CriterionDao<String> lKindCriterion = new CriterionDao<String>(ContentEntityFields.KIND, ContentDataKindEnum.DOCUMENT.toString(), Operator.NOT_EQUAL);
+			lMenuCriteria.add(lKindCriterion);
+			
+			CriterionDao<Long> lContentCriterion = new CriterionDao<Long>();
+			lContentCriterion.setEntityField(ContentEntityFields.MENU);
+			lContentCriterion.setOperator(Operator.EQUAL);
+			lMenuCriteria.add(lContentCriterion);
+			lContentCriterion.setValue(lMenuEntity.getId());
+			List<ContentEntity> lContentEntities = contentDao
+					.find(lMenuCriteria);
+			lMenu.setContentSet(contentTransformer.toUi(lContentEntities));
+
+			// Get documents
+			List<CriterionDao<? extends Object>> lDocumentCriteria = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			CriterionDao<Long> lDocumentCriterion = new CriterionDao<Long>();
+			lDocumentCriterion.setEntityField(DocumentEntityFields.MENU);
+			lDocumentCriterion.setOperator(Operator.EQUAL);
+			lDocumentCriteria.add(lDocumentCriterion);
+			lDocumentCriterion.setValue(lMenuEntity.getId());
+			List<DocumentEntity> lDocumentEntities = documentDao
+					.find(lDocumentCriteria);
+			List<DocumentUi> lDocumentUis = documentTransformer
+					.toUi(lDocumentEntities);
+			lMenu.setDocumentSet(lDocumentUis);
+		}
+
+		// Retrieve sub menu
+		List<MenuUi> lSubMenuUis = new ArrayList<MenuUi>(lMenuEntity
+				.getSubMenu().size());
+		for (Long lSubMenuId : lMenuEntity.getSubMenu()) {
+			GetMenuResult lGetMenuResult = pContext.execute(new GetMenuAction(
+					lSubMenuId, pAction.isAddContent()));
 			lSubMenuUis.add(lGetMenuResult.getMenu());
 		}
 		lMenu.setSubMenus(lSubMenuUis);

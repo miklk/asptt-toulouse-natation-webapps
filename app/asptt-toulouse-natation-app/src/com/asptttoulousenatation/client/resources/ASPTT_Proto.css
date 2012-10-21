@@ -1,4 +1,4 @@
-/** Add css rules here for your application. */
+x/** Add css rules here for your application. */
 
 body {
 	font-family: Helvetica, Verdana, sans;
@@ -568,4 +568,56 @@ color: #FFFFFF;
 	background-position: top left;
 	border: none;
 	cursor: pointer;
+}
+
+.subscription-button-bar {
+	border: 1px dotted #247596;
+	background-color: #CAE6F1;
+	padding: 3px;
+	width: 100%;
+}
+
+@sprite .subscription-previous {
+	height: 33px;
+	width: 33px;
+	gwt-image: 'back';
+	background-position: top left;
+	border: none;
+	cursor: pointer;
+}
+
+@sprite .subscription-next {
+	height: 33px;
+	width: 33px;
+	gwt-image: 'next';
+	background-position: top left;
+	border: none;
+	cursor: pointer;
+}
+
+.day-panel {
+	margin-top: 1%;
+}
+
+@sprite .day-previous {
+	height: 33px;
+	width: 33px;
+	gwt-image: 'previous';
+	background-position: top left;
+	border: none;
+	cursor: pointer;
+}
+
+@sprite .day-next {
+	height: 33px;
+	width: 33px;
+	gwt-image: 'next2';
+	background-position: top left;
+	border: none;
+	cursor: pointer;
+}
+
+.day-label {
+	margin-right: 10px;
+	font-style: italic;
 }

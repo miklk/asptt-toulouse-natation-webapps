@@ -50,7 +50,11 @@ public class LoadContentEvent extends GwtEvent<LoadContentEventHandler> {
 	}
 
 	public LoadContentAreaEnum getArea() {
-		return area;
+		if(LoadContentAreaEnum.CONTENT.equals(LoadContentAreaEnum.get(menu.getMenuKey()))) {
+			return area;
+		} else {
+			return LoadContentAreaEnum.get(menu.getMenuKey());
+		}
 	}
 
 	public void setArea(LoadContentAreaEnum pArea) {
@@ -82,5 +86,26 @@ public class LoadContentEvent extends GwtEvent<LoadContentEventHandler> {
 		FORGET_PASSWORD,
 		BOTTOM,
 		SUB_CONTENT;
+		
+		public static LoadContentAreaEnum get(String pValue) {
+			boolean lFound = false;
+			int i = 0;
+			while(!lFound && i < values().length) {
+				LoadContentAreaEnum lEnum = values()[i];
+				if(lEnum.name().equals(pValue)) {
+					lFound = true;
+				} else {
+					i++;
+				}	
+				
+			}
+			final LoadContentAreaEnum lEnum;
+			if(lFound) {
+				lEnum = values() [i];
+			} else {
+				lEnum = CONTENT;
+			}
+			return lEnum;
+		}
 	}
 }

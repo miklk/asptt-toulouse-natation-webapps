@@ -113,7 +113,7 @@ public class MainHeaderPanel extends Composite {
 					if (lAreaUi != null) {
 						MenuUi lMenu = lAreaUi.getMenuSet().values().iterator().next();
 						eventBus.fireEvent(new LoadContentEvent(lMenu,
-								LoadContentAreaEnum.CONTENT, lAreaUi.getTitle(), lMenu.getTitle()));
+								LoadContentAreaEnum.get(lMenu.getMenuKey()), lAreaUi.getTitle(), lMenu.getTitle()));
 					}
 				} else {
 					buildInscriptionPopup();

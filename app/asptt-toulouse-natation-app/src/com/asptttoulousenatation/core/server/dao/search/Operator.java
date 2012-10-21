@@ -5,6 +5,7 @@ import java.io.Serializable;
 public enum Operator implements Serializable {
 
 	EQUAL("=="),
+	NOT_EQUAL("!="),
 	GREATER(">"),
 	LESS("<"),
 	LESS_EQ("<="),

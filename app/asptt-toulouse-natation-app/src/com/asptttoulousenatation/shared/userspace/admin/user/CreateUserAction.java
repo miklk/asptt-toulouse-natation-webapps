@@ -23,6 +23,7 @@ public class CreateUserAction implements Action<CreateUserResult> {
 	private String measurementSwimsuit;
 	private String measurementTshirt;
 	private String measurementShort;
+	private boolean swimmerStat;
 	
 	public CreateUserAction() {
 		
@@ -34,7 +35,7 @@ public class CreateUserAction implements Action<CreateUserResult> {
 			String pAddressRoad, String pAddressAdditional,
 			String pAddressCode, String pAddressCity, String pGender,
 			String pMeasurementSwimsuit, String pMeasurementTshirt,
-			String pMeasurementShort) {
+			String pMeasurementShort, boolean pSwimmerStat) {
 		super();
 		emailAddress = pEmailAddress;
 		validated = pValidated;
@@ -52,6 +53,7 @@ public class CreateUserAction implements Action<CreateUserResult> {
 		measurementSwimsuit = pMeasurementSwimsuit;
 		measurementTshirt = pMeasurementTshirt;
 		measurementShort = pMeasurementShort;
+		swimmerStat = pSwimmerStat;
 	}
 
 	public String getEmailAddress() {
@@ -180,5 +182,13 @@ public class CreateUserAction implements Action<CreateUserResult> {
 
 	public void setMeasurementShort(String pMeasurementShort) {
 		measurementShort = pMeasurementShort;
+	}
+
+	public boolean isSwimmerStat() {
+		return swimmerStat;
+	}
+
+	public void setSwimmerStat(boolean pSwimmerStat) {
+		swimmerStat = pSwimmerStat;
 	}
 }

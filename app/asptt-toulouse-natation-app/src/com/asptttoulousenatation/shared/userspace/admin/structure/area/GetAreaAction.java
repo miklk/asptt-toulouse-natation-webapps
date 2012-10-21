@@ -6,13 +6,21 @@ public class GetAreaAction implements Action<GetAreaResult> {
 
 	private boolean onlyDisplay;
 	
+	private boolean addMenuContent;
+	
 	public GetAreaAction() {
-		this(false);
+		onlyDisplay = false;
+		addMenuContent = true;
 	}
 
-	public GetAreaAction(boolean pOnlyDisplay) {
-		super();
+	public GetAreaAction(boolean pOnlyDisplay, boolean pAddMenuContent) {
+		this();
 		onlyDisplay = pOnlyDisplay;
+		addMenuContent = pAddMenuContent;
+	}
+	
+	public GetAreaAction(boolean pOnlyDisplay) {
+		this(pOnlyDisplay, false);
 	}
 
 	public boolean isOnlyDisplay() {
@@ -21,6 +29,14 @@ public class GetAreaAction implements Action<GetAreaResult> {
 
 	public void setOnlyDisplay(boolean pOnlyDisplay) {
 		onlyDisplay = pOnlyDisplay;
+	}
+
+	public boolean isAddMenuContent() {
+		return addMenuContent;
+	}
+
+	public void setAddMenuContent(boolean pAddMenuContent) {
+		addMenuContent = pAddMenuContent;
 	}
 	
 }

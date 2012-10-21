@@ -75,6 +75,8 @@ public class UserEditionViewImpl extends Composite implements
 	private CellList<SlotUi> slotCellList;
 	private MultiSelectionModel<SlotUi> slotSelectionModel;
 	
+	private CheckBox swimmerStat;
+	
 	public UserEditionViewImpl(List<UserUi> pData, List<SlotUi> pSlotData) {
 		data = pData;
 		slotData = new LinkedHashMap<Long, SlotUi>(pSlotData.size());
@@ -292,6 +294,11 @@ public class UserEditionViewImpl extends Composite implements
 		slotCellList.setSelectionModel(slotSelectionModel);
 		lUserSlotPanel.setWidget(index, 1, slotCellList);
 		index++;
+		
+		swimmerStat = new CheckBox();
+		lUserSlotPanel.setHTML(index, 0, "Kilométrage ?");
+		lUserSlotPanel.setWidget(index, 1, swimmerStat);
+		index++;
 
 		updateButton = new Button("");
 		updateButton.setStyleName(CSS.editButton());
@@ -334,6 +341,9 @@ public class UserEditionViewImpl extends Composite implements
 		for(SlotUi lSlot: slotData.values()) {
 			boolean lSelected = pUi.getSlots().contains(lSlot.getId());
 			slotSelectionModel.setSelected(lSlot, lSelected);
+		}
+		if(pUi.getSwimmer() != null) {
+			swimmerStat.setValue(pUi.getSwimmer().isStat());
 		}
 	}
 	
@@ -428,5 +438,9 @@ public class UserEditionViewImpl extends Composite implements
 
 	public HasClickHandlers getDeleteButton() {
 		return deleteButton;
+	}
+
+	public HasValue<Boolean> getSwimmerStat() {
+		return swimmerStat;
 	}
 }

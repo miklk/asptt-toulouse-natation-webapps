@@ -20,8 +20,10 @@ import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
 
+import com.asptttoulousenatation.core.server.dao.entity.swimmer.SwimmerEntity;
 import com.asptttoulousenatation.core.server.dao.entity.user.UserDataEntity;
 import com.asptttoulousenatation.core.server.dao.entity.user.UserEntity;
+import com.asptttoulousenatation.core.server.dao.swimmer.SwimmerDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
 import com.asptttoulousenatation.server.util.Utils;
@@ -33,6 +35,7 @@ public class CreateUserActionHandler implements
 
 	private UserDao userDao = new UserDao();
 	private UserDataDao userDataDao = new UserDataDao();
+	private SwimmerDao swimmerDao = new SwimmerDao();
 	
 	public CreateUserResult execute(CreateUserAction pAction,
 			ExecutionContext pContext) throws DispatchException {
@@ -92,7 +95,17 @@ public class CreateUserActionHandler implements
 				e.printStackTrace();
 			}
 		}
-		userDao.save(lUser);
+		
+		UserEntity userDB = userDao.save(lUser);
+		
+		// Create swimmer
+		if (pAction.isSwimmerStat()) {
+			SwimmerEntity lSwimmerEntity = new SwimmerEntity();
+			lSwimmerEntity.setStat(pAction.isSwimmerStat());
+			lSwimmerEntity.setUser(userDB.getId());
+			swimmerDao.save(lSwimmerEntity);
+		}
+		
 		return new CreateUserResult();
 	}
 

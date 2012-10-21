@@ -27,5 +27,7 @@ public interface UserCreationView extends IsWidget {
 	
 	public Set<Long> getSlots();
 	
+	public HasValue<Boolean> getSwimmerStat();
+	
 	public HasClickHandlers getCreateButton();
 }

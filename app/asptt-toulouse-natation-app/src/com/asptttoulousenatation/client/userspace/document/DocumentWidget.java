@@ -3,7 +3,6 @@ package com.asptttoulousenatation.client.userspace.document;
 import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 import gwtupload.client.IUploadStatus.Status;
 import gwtupload.client.IUploader;
-import gwtupload.client.IUploader.UploadedInfo;
 import gwtupload.client.MultiUploader;
 import gwtupload.client.SingleUploader;
 import gwtupload.client.Uploader;
@@ -21,6 +20,8 @@ public class DocumentWidget extends Composite {
 	private TextBox title;
 	private TextBox summary;
 	private SingleUploader defaultUploader = new SingleUploader();
+	
+	private String servletBase;
 	
 	public DocumentWidget(final Long pMenuId) {
 		panel = new VerticalPanel();
@@ -46,7 +47,10 @@ public class DocumentWidget extends Composite {
 		defaultUploader.addOnStartUploadHandler(new IUploader.OnStartUploaderHandler() {
 			
 			public void onStart(IUploader pUploader) {
-				String lUrl = pUploader.getServletPath() + "?fileTitle=" + title.getValue() + "&fileSummary=" + summary.getValue() + "&menuId=" + pMenuId;
+				if(servletBase == null) {
+					servletBase = pUploader.getServletPath();
+				}
+				String lUrl = servletBase + "?fileTitle=" + title.getValue() + "&fileSummary=" + summary.getValue() + "&menuId=" + pMenuId;
 				pUploader.setServletPath(lUrl);
 			}
 		});
@@ -59,15 +63,8 @@ public class DocumentWidget extends Composite {
 	    public void onFinish(IUploader uploader) {
 	      if (uploader.getStatus() == Status.SUCCESS) {
 	    	  if (uploader.getStatus() == Status.SUCCESS) {
-	    	        String url = uploader.getServletPath() + "?blob-key=" + uploader.getServerInfo().message;
-	    	        System.out.println(url);
-	    	        UploadedInfo info = uploader.getServerInfo();
-	    	        System.out.println("File name " + info.name);
-	    	        System.out.println("File content-type " + info.ctype);
-	    	        System.out.println("File size " + info.size);
-
-	        // You can send any customized message and parse it 
-	        System.out.println("Server message " + info.message);
+	    		  title.setText("");
+	    		  summary.setText("");
 	    	  }
 	      }
 	    }

@@ -1,8 +1,10 @@
 package com.asptttoulousenatation.client.userspace.admin.structure.area;
 
+import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.view.client.SelectionChangeEvent;
 
 public interface AreaView extends IsWidget {
 	public HasValue<String> getMenuTitle();
@@ -39,5 +41,8 @@ public interface AreaView extends IsWidget {
 	//Sub menu creation
 	public HasClickHandlers getSubMenuCreationButton();
 	public HasValue<String> getSubMenuCreationTitle();
+	
+	public void setPageSelectionAction(SelectionChangeEvent.Handler pHandler);
+	public void buildEditionPanel(MenuUi pMenu);
 	
 }

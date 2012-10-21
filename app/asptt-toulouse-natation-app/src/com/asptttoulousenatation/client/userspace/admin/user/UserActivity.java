@@ -97,7 +97,8 @@ public class UserActivity extends MyAbstractActivity<UserPlace> {
 																	.getValue(),
 															lUserEditionView
 																	.getMeasurementShort()
-																	.getValue()),
+																	.getValue(),
+																	lUserEditionView.getSwimmerStat().getValue()),
 													new AsyncCallback<UpdateUserResult>() {
 														public void onFailure(
 																Throwable pCaught) {
@@ -192,7 +193,8 @@ public class UserActivity extends MyAbstractActivity<UserPlace> {
 																			.getValue(),
 																	lCreationView
 																			.getMeasurementShort()
-																			.getValue()),
+																			.getValue(),
+																			lCreationView.getSwimmerStat().getValue()),
 															new AsyncCallback<CreateUserResult>() {
 																public void onFailure(
 																		Throwable pCaught) {

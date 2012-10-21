@@ -57,6 +57,7 @@ public class UserCreationViewImpl extends Composite implements
 	private List<SlotUi> slotData;
 	private CellList<SlotUi> slotCellList;
 	private MultiSelectionModel<SlotUi> slotSelectionModel;
+	private CheckBox swimmerStat;
 
 	public UserCreationViewImpl(List<SlotUi> pSlotData) {
 		slotData = pSlotData;
@@ -241,6 +242,12 @@ public class UserCreationViewImpl extends Composite implements
 		slotCellList.setSelectionModel(slotSelectionModel);
 		lUserSlotPanel.setWidget(index, 1, slotCellList);
 		index++;
+		
+		swimmerStat = new CheckBox();
+		lUserSlotPanel.setHTML(index, 0, "Kilométrage ?");
+		lUserSlotPanel.setWidget(index, 1, swimmerStat);
+		index++;
+		
 		lUserPanel.add(lUserSlotPanel);
 
 		creationButton = new Button("Créer");
@@ -340,5 +347,9 @@ public class UserCreationViewImpl extends Composite implements
 
 	public HasValue<String> getMeasurementShort() {
 		return measurementShort;
+	}
+
+	public HasValue<Boolean> getSwimmerStat() {
+		return swimmerStat;
 	}
 }

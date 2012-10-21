@@ -44,8 +44,7 @@ public class MainMenuPanel extends Composite {
 		initWidget(panel);
 		panel.setStyleName(CSS.menuG());
 		int space = 6;
-		List<AreaUi> lAreaUis = new ArrayList<AreaUi>(initResult.getArea()
-				.values());
+		List<AreaUi> lAreaUis = new ArrayList<AreaUi>(initResult.getMenu());
 		// First
 		final AreaUi lFirstArea = lAreaUis.get(0);
 		lAreaUis.remove(0);

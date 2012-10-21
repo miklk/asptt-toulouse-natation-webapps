@@ -276,4 +276,25 @@ public interface ASPTT_ProtoCss extends CssResource {
 	
 	@ClassName("new-page-button")
 	String newPageButton();
+	
+	@ClassName("subscription-button-bar")
+	String subscriptionButtonBar();
+
+	@ClassName("subscription-previous")
+	String subscriptionPreviousButton();
+
+	@ClassName("subscription-next")
+	String subscriptionNextButton();
+	
+	@ClassName("day-panel")
+	String dayPanel();
+	
+	@ClassName("day-previous")
+	String dayPreviousButton();
+	
+	@ClassName("day-next")
+	String dayNextButton();
+	
+	@ClassName("day-label")
+	String dayLabel();
 }

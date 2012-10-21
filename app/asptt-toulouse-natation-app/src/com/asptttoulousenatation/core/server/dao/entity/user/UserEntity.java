@@ -41,7 +41,6 @@ public class UserEntity implements Entity {
 	@Persistent
 	private Long userData;
 	
-	
 	public UserEntity() {
 		
 	}
@@ -121,5 +120,4 @@ public class UserEntity implements Entity {
 		}
 		slots.add(pSlot);
 	}
-	
 }

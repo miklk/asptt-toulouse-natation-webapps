@@ -11,7 +11,6 @@ public class BasicPlace<O extends Object> extends Place {
 		}
 
 		public String getToken(BasicPlace<?> pPlace) {
-			// TODO Auto-generated method stub
 			return null;
 		}
 		

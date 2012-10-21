@@ -20,6 +20,10 @@ import com.asptttoulousenatation.client.userspace.admin.competition.CompetitionV
 import com.asptttoulousenatation.client.userspace.admin.competition.CompetitionViewImpl;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaView;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaViewImpl;
+import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatComputeView;
+import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatComputeViewImpl;
+import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatView;
+import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatViewImpl;
 import com.asptttoulousenatation.client.userspace.admin.user.UserCreationView;
 import com.asptttoulousenatation.client.userspace.admin.user.UserCreationViewImpl;
 import com.asptttoulousenatation.client.userspace.admin.user.UserEditionView;
@@ -35,6 +39,8 @@ import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.core.shared.competition.CompetitionUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
+import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatComputeUi;
+import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatUi;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitResult;
 import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
@@ -78,8 +84,8 @@ public class ClientFactoryImpl implements ClientFactory {
 		return new MenuViewImpl(pInitUserSpaceResult, pStackPanelShowCommand);
 	}
 
-	public UserSpaceView getAdminView(InitUserSpaceResult pInitUserSpaceResult) {
-		return new UserSpaceViewImpl(pInitUserSpaceResult);
+	public UserSpaceView getAdminView() {
+		return new UserSpaceViewImpl();
 	}
 
 	public ActuView getActuView() {
@@ -123,7 +129,16 @@ public class ClientFactoryImpl implements ClientFactory {
 		return new CompetitionCalendarViewImpl(pUser, pCompetition);
 	}
 
-	public SubscriptionView getSubscriptionView() {
-		return new SubscriptionViewImpl();
+	public SubscriptionView getSubscriptionView(List<GroupUi> pGroups) {
+		return new SubscriptionViewImpl(pGroups);
+	}
+
+	public SwimmerStatView getSwimmerStatView(List<SwimmerStatUi> pSwimmerStats) {
+		return new SwimmerStatViewImpl(pSwimmerStats);
+	}
+
+	public SwimmerStatComputeView getSwimmerStatComputeView(
+			List<SwimmerStatComputeUi> pSwimmerStats) {
+		return new SwimmerStatComputeViewImpl(pSwimmerStats);
 	}
 }

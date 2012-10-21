@@ -21,7 +21,6 @@ import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.DOM;
@@ -30,6 +29,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.EventBus;
 
 public class Asptt_toulouse_natation_app implements EntryPoint {
 
@@ -80,7 +80,6 @@ public class Asptt_toulouse_natation_app implements EntryPoint {
 				DOM.setStyleAttribute(RootPanel.get("gwt-container").getElement(), "visibility", "visible");
 			}
 		});
-		
 
 		lEventBus.addHandler(UpdateContentEvent.TYPE,
 				new UpdateContentEventHandler() {
