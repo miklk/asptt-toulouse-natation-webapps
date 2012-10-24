@@ -55,30 +55,21 @@ public class PasswordForgetActionHandler implements
 				String lEncryptedPassword = new String(
 						lMessageDigest.digest(lCode.getBytes("UTF-8")));
 				lUser.setPassword(lEncryptedPassword);
-				System.out.println(lUser.getPassword());
-			} catch (NoSuchAlgorithmException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
-			Properties props = new Properties();
-			Session session = Session.getDefaultInstance(props, null);
+				Properties props = new Properties();
+				Session session = Session.getDefaultInstance(props, null);
 
-			String msgBody = "Vous pouvez maintenant accéder à votre espace utilisateur sur le site de l'ASPTT Toulouse Natation http://asptt-toulouse-natation.com/ utilisant le code suivant: "
-					+ lUser.getPassword();
+				String msgBody = "Vous pouvez maintenant accéder à votre espace utilisateur sur le site de l'ASPTT Toulouse Natation http://asptt-toulouse-natation.com/ utilisant le code suivant: "
+						+ lCode;
 
-			try {
-				Message msg = new MimeMessage(session);
+				MimeMessage msg = new MimeMessage(session);
 				msg.setFrom(new InternetAddress(
 						"webmaster@asptt-toulouse-natation.com",
 						"ASPTT Toulouse Natation"));
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 						lUser.getEmailaddress()));
-				msg.setSubject("Votre mot de passe a été initialisé");
-				msg.setText(msgBody);
+				msg.setSubject("Votre mot de passe a été initialisé", "UTF-8");
+				msg.setText(msgBody, "UTF-8");
 				Transport.send(msg);
 
 			} catch (AddressException e) {
@@ -88,6 +79,9 @@ public class PasswordForgetActionHandler implements
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			userDao.save(lUser);
 			lResult.setSended(true);

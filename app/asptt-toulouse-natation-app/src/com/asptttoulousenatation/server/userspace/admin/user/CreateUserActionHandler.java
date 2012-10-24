@@ -1,7 +1,6 @@
 package com.asptttoulousenatation.server.userspace.admin.user;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
@@ -36,7 +35,7 @@ public class CreateUserActionHandler implements
 	private UserDao userDao = new UserDao();
 	private UserDataDao userDataDao = new UserDataDao();
 	private SwimmerDao swimmerDao = new SwimmerDao();
-	
+
 	public CreateUserResult execute(CreateUserAction pAction,
 			ExecutionContext pContext) throws DispatchException {
 		UserDataEntity lUserData = new UserDataEntity();
@@ -49,55 +48,57 @@ public class CreateUserActionHandler implements
 		lUserData.setAddressCode(pAction.getAddressCode());
 		lUserData.setAddressCity(pAction.getAddressCity());
 		UserDataEntity lUserDataCreated = userDataDao.save(lUserData);
-		
+
 		UserEntity lUser = new UserEntity();
 		lUser.setEmailaddress(pAction.getEmailAddress());
 		lUser.setValidated(pAction.isValidated());
 		lUser.setProfiles(new HashSet<String>(pAction.getProfiles()));
 		lUser.setSlots(pAction.getSlots());
 		lUser.setUserData(lUserDataCreated.getId());
-		
-		if(pAction.isValidated()) {
-			
+
+		if (pAction.isValidated()) {
+
 			try {
 				Random lRandom = new Random(42788);
 				MessageDigest lMessageDigest = Utils.getMD5();
 				String lCode = Integer.toString(lRandom.nextInt(1000));
 				System.out.println(lCode);
 				lMessageDigest.update(lCode.getBytes());
-				String lEncryptedPassword = new String(lMessageDigest.digest(), Charset.forName("ISO-8859-1"));
+				String lEncryptedPassword = new String(lMessageDigest.digest());
 				lUser.setPassword(lEncryptedPassword);
 				System.out.println(lUser.getPassword());
+
+				Properties props = new Properties();
+				Session session = Session.getDefaultInstance(props, null);
+
+				String msgBody = "Vous pouvez maintenant accéder à votre espace utilisateur sur le site de l'ASPTT Toulouse Natation http://asptt-toulouse-natation.com/ utilisant le code suivant: "
+						+ lCode;
+
+				MimeMessage msg = new MimeMessage(session);
+				msg.setFrom(new InternetAddress(
+						"webmaster@asptt-toulouse-natation.com",
+						"ASPTT Toulouse Natation"));
+				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+						lUser.getEmailaddress()));
+				msg.setSubject("Votre compte web a été activé.", "UTF-8");
+				msg.setText(msgBody, "UTF-8");
+				Transport.send(msg);
+
+			} catch (AddressException e) {
+				// ...
+			} catch (MessagingException e) {
+				// ...
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			} catch (NoSuchAlgorithmException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}			
-			Properties props = new Properties();
-	        Session session = Session.getDefaultInstance(props, null);
-
-	        String msgBody = "Vous pouvez maintenant accéder à votre espace utilisateur sur le site de l'ASPTT Toulouse Natation http://asptt-toulouse-natation.com/ utilisant le code suivant: " + lUser.getPassword();
-
-	        try {
-	            Message msg = new MimeMessage(session);
-	            msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
-	            msg.addRecipient(Message.RecipientType.TO,
-	                             new InternetAddress(lUser.getEmailaddress()));
-	            msg.setSubject("Votre compte web a été activé.");
-	            msg.setText(msgBody);
-	            Transport.send(msg);
-	    
-	        } catch (AddressException e) {
-	            // ...
-	        } catch (MessagingException e) {
-	            // ...
-	        } catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
-		
+
 		UserEntity userDB = userDao.save(lUser);
-		
+
 		// Create swimmer
 		if (pAction.isSwimmerStat()) {
 			SwimmerEntity lSwimmerEntity = new SwimmerEntity();
@@ -105,7 +106,7 @@ public class CreateUserActionHandler implements
 			lSwimmerEntity.setUser(userDB.getId());
 			swimmerDao.save(lSwimmerEntity);
 		}
-		
+
 		return new CreateUserResult();
 	}
 

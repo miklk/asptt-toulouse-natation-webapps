@@ -2,11 +2,16 @@ package com.asptttoulousenatation.client.userspace.admin.swimmer;
 
 import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatComputeUi;
+import com.google.gwt.cell.client.SafeHtmlCell;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -63,11 +68,19 @@ public class SwimmerStatComputeViewImpl extends Composite implements
 		};
 		cellTable.addColumn(bodybuildingColumn, "Musculation");
 		
-		TextColumn<SwimmerStatComputeUi> commentColumn = new TextColumn<SwimmerStatComputeUi>() {
+		Column<SwimmerStatComputeUi, SafeHtml> commentColumn = new Column<SwimmerStatComputeUi, SafeHtml>(new SafeHtmlCell()) {
 
 			@Override
-			public String getValue(SwimmerStatComputeUi pObject) {
-				return pObject.getComment();
+			public SafeHtml getValue(SwimmerStatComputeUi pObject) {
+				SafeHtmlBuilder lCommentBuilder = new SafeHtmlBuilder();
+				Iterator<String> lCommentIterator = pObject.getComment().listIterator();
+				while(lCommentIterator.hasNext()) {
+					lCommentBuilder.appendEscaped(lCommentIterator.next());
+					if(lCommentIterator.hasNext()) {
+						lCommentBuilder.appendHtmlConstant("<br />");
+					}
+				}
+				return lCommentBuilder.toSafeHtml();
 			}
 		};
 		cellTable.addColumn(commentColumn, "Commentaires");
@@ -76,17 +89,22 @@ public class SwimmerStatComputeViewImpl extends Composite implements
 	}
 
 	private void buildDayPanel() {
+		HorizontalPanel lInnerDayPanel = new HorizontalPanel();
 		previousButton = new Button();
 		previousButton.setStyleName(CSS.dayPreviousButton());
 		nextButton = new Button();
 		nextButton.setStyleName(CSS.dayNextButton());
-		dayPanel = new HorizontalPanel();
-		dayPanel.setStyleName(CSS.dayPanel());
-		dayPanel.add(previousButton);
+		
 		currentDayLabel = new Label();
 		currentDayLabel.setStyleName(CSS.dayLabel());
-		dayPanel.add(currentDayLabel);
-		dayPanel.add(nextButton);
+		
+		lInnerDayPanel.add(previousButton);
+		lInnerDayPanel.add(currentDayLabel);
+		lInnerDayPanel.add(nextButton);
+		
+		dayPanel = new HorizontalPanel();
+		dayPanel.setStyleName(CSS.dayPanel());
+		dayPanel.add(lInnerDayPanel);
 		panel.add(dayPanel);
 	}
 

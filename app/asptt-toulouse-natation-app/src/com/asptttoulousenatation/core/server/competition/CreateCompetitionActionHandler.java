@@ -11,9 +11,11 @@ import com.asptttoulousenatation.core.server.dao.competition.CompetitionDao;
 import com.asptttoulousenatation.core.server.dao.competition.CompetitionDayDao;
 import com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionDayEntity;
 import com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionEntity;
+import com.asptttoulousenatation.core.server.dao.entity.structure.MenuEntity;
 import com.asptttoulousenatation.core.shared.competition.CompetitionDayUi;
 import com.asptttoulousenatation.core.shared.competition.CreateCompetitionAction;
 import com.asptttoulousenatation.core.shared.competition.CreateCompetitionResult;
+import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 
 public class CreateCompetitionActionHandler implements
@@ -50,6 +52,7 @@ public class CreateCompetitionActionHandler implements
 		lCompetitionEntity.setEnd(pAction.getEnd());
 		lCompetitionEntity.setDays(lCompetitionDay);
 		dao.save(lCompetitionEntity);
+		pContext.execute(new SetDataUpdateAction(CompetitionEntity.class, true));
 		return new CreateCompetitionResult();
 	}
 

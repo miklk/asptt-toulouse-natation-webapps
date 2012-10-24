@@ -13,7 +13,6 @@ import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.StrBuilder;
 
 import com.asptttoulousenatation.core.server.dao.entity.field.SwimmerEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SwimmerStatEntityFields;
@@ -45,8 +44,9 @@ public class GetAllSwimmerStatActionHandler implements
 	private UserDataDao userDataDao = new UserDataDao();
 	private SwimmerDao swimmerDao = new SwimmerDao();
 
-	public GetAllSwimmerStatResult<? extends ISwimmerStatUi> execute(GetAllSwimmerStatAction pAction,
-			ExecutionContext pContext) throws DispatchException {
+	public GetAllSwimmerStatResult<? extends ISwimmerStatUi> execute(
+			GetAllSwimmerStatAction pAction, ExecutionContext pContext)
+			throws DispatchException {
 		// Swimmer concerned
 		List<CriterionDao<? extends Object>> lSwimmerCriteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
@@ -90,16 +90,14 @@ public class GetAllSwimmerStatActionHandler implements
 			Calendar lCalendar = GregorianCalendar.getInstance();
 			lCalendar.setFirstDayOfWeek(Calendar.MONDAY);
 			lCalendar.setTime(lCurrentDate);
-			
+
 			lCalendar.set(Calendar.DAY_OF_WEEK, lCalendar.getFirstDayOfWeek());
 			Date lBeginDate = lCalendar.getTime();
 			lCalendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 			Date lEndDate = lCalendar.getTime();
-			
-			beginDay = Utils.format(lBeginDate,
-					SwimmerStatEntity.DAY_FORMAT);
-			endDay = Utils.format(lEndDate,
-					SwimmerStatEntity.DAY_FORMAT);
+
+			beginDay = Utils.format(lBeginDate, SwimmerStatEntity.DAY_FORMAT);
+			endDay = Utils.format(lEndDate, SwimmerStatEntity.DAY_FORMAT);
 			currentDayText = beginDay + " - " + endDay;
 			beginDate = pAction.getBeginDate();
 		}
@@ -108,22 +106,22 @@ public class GetAllSwimmerStatActionHandler implements
 			Date lCurrentDate = pAction.getBeginDate();
 			Calendar lCalendar = GregorianCalendar.getInstance();
 			lCalendar.setTime(lCurrentDate);
-			int beginDayOfWeek = lCalendar.getActualMinimum(Calendar.DAY_OF_MONTH);
-			int endDayOfWeek = lCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-			
+			int beginDayOfWeek = lCalendar
+					.getActualMinimum(Calendar.DAY_OF_MONTH);
+			int endDayOfWeek = lCalendar
+					.getActualMaximum(Calendar.DAY_OF_MONTH);
+
 			lCalendar.set(Calendar.DAY_OF_MONTH, beginDayOfWeek);
 			Date lBeginDate = lCalendar.getTime();
 			lCalendar.set(Calendar.DAY_OF_MONTH, endDayOfWeek);
 			Date lEndDate = lCalendar.getTime();
-			
-			beginDay = Utils.format(lBeginDate,
-					SwimmerStatEntity.DAY_FORMAT);
-			endDay = Utils.format(lEndDate,
-					SwimmerStatEntity.DAY_FORMAT);
+
+			beginDay = Utils.format(lBeginDate, SwimmerStatEntity.DAY_FORMAT);
+			endDay = Utils.format(lEndDate, SwimmerStatEntity.DAY_FORMAT);
 			currentDayText = beginDay + " - " + endDay;
 			beginDate = pAction.getBeginDate();
 		}
-		break;
+			break;
 		default: {
 			beginDate = null;
 			beginDay = null;
@@ -149,10 +147,9 @@ public class GetAllSwimmerStatActionHandler implements
 			case WEEK:
 			case MONTH:
 
-				lCriteria
-						.add(new CriterionDao<String>(
-								SwimmerStatEntityFields.DAY, beginDay,
-								Operator.GREATER));
+				lCriteria.add(new CriterionDao<String>(
+						SwimmerStatEntityFields.DAY, beginDay,
+						Operator.GREATER_EQ));
 				lCriteria.add(new CriterionDao<String>(
 						SwimmerStatEntityFields.DAY, endDay, Operator.LESS_EQ));
 				lSwimmerStatUi = new SwimmerStatComputeUi();
@@ -175,12 +172,14 @@ public class GetAllSwimmerStatActionHandler implements
 					lSwimmerStatDataUi.setComment(entity.getComment());
 					lSwimmerStatDataList.add(lSwimmerStatDataUi);
 				} else {
-					if(DayTimeEnum.MUSCU.name().equals(entity.getDayTime())) {
-						bodybuildingCount+= entity.getDistance();
+					if (DayTimeEnum.MUSCU.name().equals(entity.getDayTime())) {
+						bodybuildingCount += entity.getDistance();
 					} else {
 						distance += entity.getDistance();
 					}
-					comments.add(entity.getComment());
+					if (StringUtils.isNotEmpty(entity.getComment())) {
+						comments.add(entity.getComment());
+					}
 				}
 			}
 			// Get user name
@@ -197,14 +196,9 @@ public class GetAllSwimmerStatActionHandler implements
 						.setDistances(lSwimmerStatDataList);
 			} else {
 				((SwimmerStatComputeUi) lSwimmerStatUi).setDistance(distance);
-				((SwimmerStatComputeUi) lSwimmerStatUi).setBodybuilding(bodybuildingCount);
-				if (!comments.isEmpty()) {
-					StrBuilder lComment = new StrBuilder();
-					lComment = lComment
-							.appendWithSeparators(comments, "<br />");
-					((SwimmerStatComputeUi) lSwimmerStatUi).setComment(lComment
-							.toString());
-				}
+				((SwimmerStatComputeUi) lSwimmerStatUi)
+						.setBodybuilding(bodybuildingCount);
+				((SwimmerStatComputeUi) lSwimmerStatUi).setComment(comments);
 			}
 			lResults.add(lSwimmerStatUi);
 		}
@@ -215,7 +209,8 @@ public class GetAllSwimmerStatActionHandler implements
 				return pO1.getSwimmer().compareTo(pO2.getSwimmer());
 			}
 		});
-		return new GetAllSwimmerStatResult<ISwimmerStatUi>(beginDate, currentDayText, lResults);
+		return new GetAllSwimmerStatResult<ISwimmerStatUi>(beginDate,
+				currentDayText, lResults);
 	}
 
 	public void rollback(GetAllSwimmerStatAction pAction,

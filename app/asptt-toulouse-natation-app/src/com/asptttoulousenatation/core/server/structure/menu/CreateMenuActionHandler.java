@@ -19,6 +19,7 @@ import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.structure.AreaDao;
 import com.asptttoulousenatation.core.server.dao.structure.ContentDao;
 import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
+import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuResult;
@@ -81,6 +82,7 @@ public class CreateMenuActionHandler implements
 			AreaUi lArea = areaTransformer.toUi(lAreaEntity);
 			lArea.setMenuSet(lMenuUis);
 			result.setArea(lArea);
+			pContext.execute(new SetDataUpdateAction(MenuEntity.class, true));
 		} else {
 			result.setExists(true);
 		}

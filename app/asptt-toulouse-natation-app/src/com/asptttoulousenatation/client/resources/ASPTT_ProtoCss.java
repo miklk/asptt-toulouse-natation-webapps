@@ -297,4 +297,7 @@ public interface ASPTT_ProtoCss extends CssResource {
 	
 	@ClassName("day-label")
 	String dayLabel();
+	
+	@ClassName("swimmer-stat-action-valid")
+	String swimmerStatActionsValid();
 }

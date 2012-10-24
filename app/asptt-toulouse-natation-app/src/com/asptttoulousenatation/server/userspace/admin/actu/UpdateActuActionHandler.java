@@ -6,6 +6,7 @@ import net.customware.gwt.dispatch.shared.DispatchException;
 
 import com.asptttoulousenatation.core.server.dao.ActuDao;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
+import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
 import com.asptttoulousenatation.shared.userspace.admin.actu.UpdateActuAction;
 import com.asptttoulousenatation.shared.userspace.admin.actu.UpdateActuResult;
 import com.google.appengine.api.datastore.Text;
@@ -25,6 +26,7 @@ public class UpdateActuActionHandler implements
 		lActu.setCreationDate(pAction.getCreationDate());
 		lActu.setContent(new Text(pAction.getContent()));
 		lActuDao.save(lActu);
+		pContext.execute(new SetDataUpdateAction(ActuEntity.class, true));
 		return new UpdateActuResult();
 	}
 

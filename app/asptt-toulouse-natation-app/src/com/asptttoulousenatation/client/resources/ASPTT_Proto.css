@@ -597,6 +597,7 @@ color: #FFFFFF;
 
 .day-panel {
 	margin-top: 1%;
+	width: 100%;
 }
 
 @sprite .day-previous {
@@ -620,4 +621,15 @@ color: #FFFFFF;
 .day-label {
 	margin-right: 10px;
 	font-style: italic;
+}
+
+.swimmer-stat-action-valid {
+	border: 1px solid #FFFFFF;
+	background-color: #0996E2;
+	color: #FFFFFF;
+	font-size: 1em;
+	font-weight: bold;
+	text-transform: capitalize;
+	width: 150px;
+	height: 30px;
 }

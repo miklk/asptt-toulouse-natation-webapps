@@ -22,6 +22,8 @@ import com.asptttoulousenatation.core.server.document.DeleteDocumentActionHandle
 import com.asptttoulousenatation.core.server.document.GetDocumentActionHandler;
 import com.asptttoulousenatation.core.server.document.UpdateDocumentActionHandler;
 import com.asptttoulousenatation.core.server.payment.PaymentActionHandler;
+import com.asptttoulousenatation.core.server.reference.IsDataUpdateActionHandler;
+import com.asptttoulousenatation.core.server.reference.SetDataUpdateActionHandler;
 import com.asptttoulousenatation.core.server.structure.area.CreateAreaActionHandler;
 import com.asptttoulousenatation.core.server.structure.area.DeleteAreaActionHandler;
 import com.asptttoulousenatation.core.server.structure.area.UpdateAreaActionHandler;
@@ -59,6 +61,8 @@ import com.asptttoulousenatation.core.shared.document.DeleteDocumentAction;
 import com.asptttoulousenatation.core.shared.document.GetDocumentAction;
 import com.asptttoulousenatation.core.shared.document.UpdateDocumentAction;
 import com.asptttoulousenatation.core.shared.payment.PaymentAction;
+import com.asptttoulousenatation.core.shared.reference.IsDataUpdateAction;
+import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
 import com.asptttoulousenatation.core.shared.structure.LoadContentAction;
 import com.asptttoulousenatation.core.shared.structure.area.CreateAreaAction;
 import com.asptttoulousenatation.core.shared.structure.area.DeleteAreaAction;
@@ -177,6 +181,10 @@ public class CoreModule extends ActionHandlerModule {
 		bindHandler(UpdateSwimmerStatAction.class, UpdateSwimmerStatActionHandler.class);
 		bindHandler(GetAllSwimmerStatAction.class, GetAllSwimmerStatActionHandler.class);
 		bindHandler(GetSwimmerAction.class, GetSwimmerActionHandler.class);
+		
+		//Data update
+		bindHandler(SetDataUpdateAction.class, SetDataUpdateActionHandler.class);
+		bindHandler(IsDataUpdateAction.class, IsDataUpdateActionHandler.class);
 		
 	}
 }

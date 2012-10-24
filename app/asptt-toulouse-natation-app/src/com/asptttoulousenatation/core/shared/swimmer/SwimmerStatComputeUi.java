@@ -1,5 +1,9 @@
 package com.asptttoulousenatation.core.shared.swimmer;
 
+import java.util.List;
+
+import com.google.gwt.safehtml.shared.SafeHtml;
+
 
 
 public class SwimmerStatComputeUi implements ISwimmerStatUi {
@@ -7,7 +11,7 @@ public class SwimmerStatComputeUi implements ISwimmerStatUi {
 	private String swimmer;
 	private int distance;
 	private int bodybuilding;
-	private String comment;
+	private List<String> comment;
 	
 	public SwimmerStatComputeUi() {
 		
@@ -47,11 +51,11 @@ public class SwimmerStatComputeUi implements ISwimmerStatUi {
 		bodybuilding = pBodybuilding;
 	}
 
-	public String getComment() {
+	public List<String> getComment() {
 		return comment;
 	}
 
-	public void setComment(String pComment) {
+	public void setComment(List<String> pComment) {
 		comment = pComment;
 	}
 	

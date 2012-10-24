@@ -15,6 +15,7 @@ import com.asptttoulousenatation.core.shared.competition.CompetitionDayUi;
 import com.asptttoulousenatation.core.shared.competition.DeleteCompetitionDayAction;
 import com.asptttoulousenatation.core.shared.competition.UpdateCompetitionAction;
 import com.asptttoulousenatation.core.shared.competition.UpdateCompetitionResult;
+import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 
 public class UpdateCompetitionActionHandler implements
@@ -64,6 +65,7 @@ public class UpdateCompetitionActionHandler implements
 		lCompetitionEntity.setEnd(pAction.getEnd());
 		lCompetitionEntity.setDays(lCompetitionDay);
 		dao.save(lCompetitionEntity);
+		pContext.execute(new SetDataUpdateAction(CompetitionEntity.class, true));
 		return new UpdateCompetitionResult();
 	}
 

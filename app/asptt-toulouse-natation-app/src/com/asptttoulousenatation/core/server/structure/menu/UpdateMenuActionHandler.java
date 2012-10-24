@@ -6,6 +6,7 @@ import net.customware.gwt.dispatch.shared.DispatchException;
 
 import com.asptttoulousenatation.core.server.dao.entity.structure.MenuEntity;
 import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
+import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
 import com.asptttoulousenatation.core.shared.structure.menu.UpdateMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.UpdateMenuResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.UpdateContentAction;
@@ -22,6 +23,7 @@ public class UpdateMenuActionHandler implements
 		dao.save(lMenu);
 		//Update content
 		pContext.execute(new UpdateContentAction(pAction.getContentId(), pAction.getSummary(), pAction.getContent()));
+		pContext.execute(new SetDataUpdateAction(MenuEntity.class, true));
 		return new UpdateMenuResult();
 	}
 

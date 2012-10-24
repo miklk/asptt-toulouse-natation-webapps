@@ -15,6 +15,7 @@ import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.structure.AreaDao;
 import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
+import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
 import com.asptttoulousenatation.core.shared.structure.area.DeleteAreaAction;
 import com.asptttoulousenatation.core.shared.structure.area.DeleteAreaResult;
 import com.asptttoulousenatation.core.shared.structure.menu.DeleteMenuAction;
@@ -43,6 +44,7 @@ public class DeleteAreaActionHandler
 		for (MenuEntity lMenuEntity : lMenuEntities) {
 			pContext.execute(new DeleteMenuAction(lMenuEntity.getId()));
 		}
+		pContext.execute(new SetDataUpdateAction(AreaEntity.class, true));
 	}
 
 	@Override

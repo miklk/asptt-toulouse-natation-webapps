@@ -1,12 +1,14 @@
 package com.asptttoulousenatation.core.client.ui;
 
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class PopupManager {
 
 	private static PopupManager POPUP_MANAGER;
 
-	private PopupLayout popup;
+	private PopupPanel popup;
 
 	private PopupManager() {
 	}
@@ -18,9 +20,10 @@ public class PopupManager {
 		return POPUP_MANAGER;
 	}
 
-	public PopupLayout getPopup(boolean pAutoHide, boolean pModal,
+	public PopupPanel getPopup(boolean pAutoHide, boolean pModal,
 			final String pHeaderText, final Widget pWidget) {
-		popup = new PopupLayout(pAutoHide, pModal, pHeaderText, pWidget);
+		popup = new PopupPanel(pAutoHide, pModal);
+		popup.setWidget(pWidget);
 		return popup;
 	}
 	
@@ -29,6 +32,13 @@ public class PopupManager {
 	}
 
 	public void hide() {
-		popup.hide();
+		if(popup != null) {
+			popup.hide();
+		}
+	}
+	
+	public static void loading() {
+		PopupManager.getInstance().getPopup(false, true, "Chargement", new Label("Chargement en cours..."));
+		PopupManager.getInstance().center();
 	}
 }

@@ -13,6 +13,7 @@ import com.asptttoulousenatation.core.server.dao.entity.structure.AreaEntity;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.structure.AreaDao;
+import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
 import com.asptttoulousenatation.core.shared.structure.area.CreateAreaAction;
 import com.asptttoulousenatation.core.shared.structure.area.CreateAreaResult;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
@@ -37,6 +38,7 @@ public class CreateAreaActionHandler implements
 		} else {
 			result.setExists(true);
 		}
+		pContext.execute(new SetDataUpdateAction(AreaEntity.class, true));
 		return result;
 	}
 

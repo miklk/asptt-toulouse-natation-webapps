@@ -20,6 +20,7 @@ import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.structure.AreaDao;
 import com.asptttoulousenatation.core.server.dao.structure.ContentDao;
 import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
+import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.structure.menu.DeleteMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.DeleteMenuResult;
@@ -60,6 +61,7 @@ public class DeleteMenuActionHandler extends AbstractDeleteActionHandler<MenuEnt
 		List<ContentEntity> lContentEntities = contentDao.find(lContentCriteria);
 		for(ContentEntity lContent: lContentEntities) {
 			contentDao.delete(lContent);
+			pContext.execute(new SetDataUpdateAction(MenuEntity.class, true));
 		}
 		
 		//Update parent
@@ -68,6 +70,7 @@ public class DeleteMenuActionHandler extends AbstractDeleteActionHandler<MenuEnt
 			MenuEntity lMenuParent = lMenuDao.get(pEntity.getParent());
 			lMenuParent.getSubMenu().remove(pEntity.getId());
 			lMenuDao.save(lMenuParent);
+			pContext.execute(new SetDataUpdateAction(MenuEntity.class, true));
 		}
 	}
 

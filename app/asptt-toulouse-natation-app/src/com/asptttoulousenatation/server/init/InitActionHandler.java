@@ -27,7 +27,6 @@ import com.asptttoulousenatation.core.server.dao.ActuDao;
 import com.asptttoulousenatation.core.server.dao.competition.CompetitionDao;
 import com.asptttoulousenatation.core.server.dao.competition.CompetitionDayDao;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
-import com.asptttoulousenatation.core.server.dao.entity.club.subscription.SubscriptionPrice;
 import com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionDayEntity;
 import com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.AreaEntityFields;
@@ -49,8 +48,12 @@ import com.asptttoulousenatation.core.server.dao.swimmer.SwimmerDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
+import com.asptttoulousenatation.core.shared.reference.IsDataUpdateAction;
+import com.asptttoulousenatation.core.shared.reference.IsDataUpdateResult;
+import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
+import com.asptttoulousenatation.server.ApplicationLoader;
 import com.asptttoulousenatation.server.userspace.admin.entity.ActuTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.AreaTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.CompetitionDayTransformer;
@@ -84,87 +87,116 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 
 	private CompetitionDao competitionDao = new CompetitionDao();
 	private CompetitionDayDao competitionDayDao = new CompetitionDayDao();
+
 	private CompetitionDayTransformer competitionDayTransformer = new CompetitionDayTransformer();
+
+	private ApplicationLoader applicationLoader = ApplicationLoader
+			.getInstance();
 
 	private static final Logger LOG = Logger.getLogger(InitActionHandler.class
 			.getName());
 
-	public InitResult execute(InitAction pArg0, ExecutionContext pArg1)
+	public InitResult execute(InitAction pAction, ExecutionContext pContext)
 			throws DispatchException {
 		LOG.info("Init action");
 
-//		createData();
-//		createUsers();
+		// createData();
+		// createUsers();
 		InitResult lInitResult = new InitResult();
 		lInitResult.setPhoto(getPicture());
 
-		// Structure
-		List<CriterionDao<? extends Object>> lAreaSelectionCriteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		CriterionDao<String> lAreaSelectionCriterion = new CriterionDao<String>(
-				AreaEntityFields.PROFILE, ProfileEnum.PUBLIC.toString(),
-				Operator.EQUAL);
-		lAreaSelectionCriteria.add(lAreaSelectionCriterion);
-		// Order
-		OrderDao lOrderDao = new OrderDao(AreaEntityFields.ORDER,
-				OrderDao.OrderOperator.ASC);
-		List<AreaEntity> lAreaEntities = areaDao.find(lAreaSelectionCriteria,
-				lOrderDao);
-		Map<String, AreaUi> lAreaUis = new LinkedHashMap<String, AreaUi>(
-				lAreaEntities.size());
-		List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		CriterionDao<Long> lAreaCriterion = new CriterionDao<Long>();
-		lAreaCriterion.setEntityField(MenuEntityFields.AREA);
-		lAreaCriterion.setOperator(Operator.EQUAL);
-		lCriteria.add(lAreaCriterion);
-		OrderDao lMenuOrder = new OrderDao(MenuEntityFields.ORDER,
-				OrderDao.OrderOperator.ASC);
+		IsDataUpdateResult lAreaUpdateResult = pContext
+				.execute(new IsDataUpdateAction(AreaEntity.class));
+		IsDataUpdateResult lMenuUpdateResult = pContext
+				.execute(new IsDataUpdateAction(MenuEntity.class));
+		if (lAreaUpdateResult.isDataUpdated()
+				|| lMenuUpdateResult.isDataUpdated()) {
 
-		List<CriterionDao<? extends Object>> lMenuCriteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		CriterionDao<Long> lContentCriterion = new CriterionDao<Long>();
-		lContentCriterion.setEntityField(ContentEntityFields.MENU);
-		lContentCriterion.setOperator(Operator.EQUAL);
-		lMenuCriteria.add(lContentCriterion);
-		LOG.info("retrieving actu #" + lAreaEntities.size());
-		for (AreaEntity lAreaEntity : lAreaEntities) {
-			// Get menu
-			lAreaCriterion.setValue(lAreaEntity.getId());
-			List<MenuEntity> lMenuEntities = menuDao
-					.find(lCriteria, lMenuOrder);
-			LOG.info("retrieving menu #" + lMenuEntities.size());
-			Map<String, MenuUi> lMenuUis = new LinkedHashMap<String, MenuUi>(
-					lMenuEntities.size());
-			for (MenuEntity lMenuEntity : lMenuEntities) {
-				if (lMenuEntity.getParent() == null) {
-					// Retrieve sub menu
-					List<MenuUi> lSubMenuUis = new ArrayList<MenuUi>(
-							lMenuEntity.getSubMenu().size());
-					for (Long lSubMenuId : lMenuEntity.getSubMenu()) {
-						MenuEntity lSubMenu = menuDao.get(lSubMenuId);
-						lSubMenuUis.add(menuTransformer.toUi(lSubMenu));
+			// Structure
+			List<CriterionDao<? extends Object>> lAreaSelectionCriteria = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			CriterionDao<String> lAreaSelectionCriterion = new CriterionDao<String>(
+					AreaEntityFields.PROFILE, ProfileEnum.PUBLIC.toString(),
+					Operator.EQUAL);
+			lAreaSelectionCriteria.add(lAreaSelectionCriterion);
+			// Order
+			OrderDao lOrderDao = new OrderDao(AreaEntityFields.ORDER,
+					OrderDao.OrderOperator.ASC);
+			List<AreaEntity> lAreaEntities = areaDao.find(
+					lAreaSelectionCriteria, lOrderDao);
+			Map<String, AreaUi> lAreaUis = new LinkedHashMap<String, AreaUi>(
+					lAreaEntities.size());
+			List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			CriterionDao<Long> lAreaCriterion = new CriterionDao<Long>();
+			lAreaCriterion.setEntityField(MenuEntityFields.AREA);
+			lAreaCriterion.setOperator(Operator.EQUAL);
+			lCriteria.add(lAreaCriterion);
+			OrderDao lMenuOrder = new OrderDao(MenuEntityFields.ORDER,
+					OrderDao.OrderOperator.ASC);
+
+			List<CriterionDao<? extends Object>> lMenuCriteria = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			CriterionDao<Long> lContentCriterion = new CriterionDao<Long>();
+			lContentCriterion.setEntityField(ContentEntityFields.MENU);
+			lContentCriterion.setOperator(Operator.EQUAL);
+			lMenuCriteria.add(lContentCriterion);
+			LOG.info("retrieving actu #" + lAreaEntities.size());
+			for (AreaEntity lAreaEntity : lAreaEntities) {
+				// Get menu
+				lAreaCriterion.setValue(lAreaEntity.getId());
+				List<MenuEntity> lMenuEntities = menuDao.find(lCriteria,
+						lMenuOrder);
+				LOG.info("retrieving menu #" + lMenuEntities.size());
+				Map<String, MenuUi> lMenuUis = new LinkedHashMap<String, MenuUi>(
+						lMenuEntities.size());
+				for (MenuEntity lMenuEntity : lMenuEntities) {
+					if (lMenuEntity.getParent() == null) {
+						// Retrieve sub menu
+						List<MenuUi> lSubMenuUis = new ArrayList<MenuUi>(
+								lMenuEntity.getSubMenu().size());
+						for (Long lSubMenuId : lMenuEntity.getSubMenu()) {
+							MenuEntity lSubMenu = menuDao.get(lSubMenuId);
+							lSubMenuUis.add(menuTransformer.toUi(lSubMenu));
+						}
+						MenuUi lMenu = menuTransformer.toUi(lMenuEntity);
+						lMenu.setSubMenus(lSubMenuUis);
+						lMenuUis.put(lMenu.getTitle(), lMenu);
 					}
-					MenuUi lMenu = menuTransformer.toUi(lMenuEntity);
-					lMenu.setSubMenus(lSubMenuUis);
-					lMenuUis.put(lMenu.getTitle(), lMenu);
 				}
+				AreaUi lArea = areaTransformer.toUi(lAreaEntity);
+				lArea.setMenuSet(lMenuUis);
+				lAreaUis.put(lArea.getTitle(), lArea);
 			}
-			AreaUi lArea = areaTransformer.toUi(lAreaEntity);
-			lArea.setMenuSet(lMenuUis);
-			lAreaUis.put(lArea.getTitle(), lArea);
+			pContext.execute(new SetDataUpdateAction(AreaEntity.class, false));
+			pContext.execute(new SetDataUpdateAction(MenuEntity.class, false));
+			applicationLoader.setArea(lAreaUis);
 		}
-		lInitResult.setArea(lAreaUis);
 
-		// Actu
-		List<ActuEntity> lActuEntities = actuDao.getAll();
-		LOG.info("retrieving actu #" + lActuEntities.size());
-		ArrayList<ActuUi> lActu = new ArrayList<ActuUi>(
-				actuTransformer.toUi(lActuEntities));
-		lInitResult.setActu(lActu);
+		IsDataUpdateResult lActuUpdateResult = pContext
+				.execute(new IsDataUpdateAction(ActuEntity.class));
+		if (lActuUpdateResult.isDataUpdated()) {
+			// Actu
+			List<ActuEntity> lActuEntities = actuDao.getAll();
+			LOG.info("retrieving actu #" + lActuEntities.size());
+			ArrayList<ActuUi> lActu = new ArrayList<ActuUi>(
+					actuTransformer.toUi(lActuEntities));
+			pContext.execute(new SetDataUpdateAction(ActuEntity.class, false));
+			applicationLoader.setActu(lActu);
+		}
 
-		// Events "calendar"
-		lInitResult.setEvents(getEvents());
+		IsDataUpdateResult lEventUpdateResult = pContext
+				.execute(new IsDataUpdateAction(CompetitionEntity.class));
+		if (lEventUpdateResult.isDataUpdated()) {
+			// Events "calendar"
+			pContext.execute(new SetDataUpdateAction(CompetitionEntity.class,
+					false));
+			applicationLoader.setEvents(getEvents());
+		}
+
+		lInitResult.setArea(applicationLoader.getArea());
+		lInitResult.setActu(applicationLoader.getActu());
+		lInitResult.setEvents(applicationLoader.getEvents());
 		return lInitResult;
 	}
 
@@ -548,60 +580,40 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		}
 		return result;
 	}
-	
+
 	private void createUsers() {
-		String[][] lUsers = new String[][] {
-				{"Achotegui", "Nicolas"}, 
-				{"Audouy", "Clément"}, 
-				{"Barboteau", "Elodie"}, 
-				{"Borderas", "Sébastien"}, 
-				{"Bulit", "Florian"}, 
-				{"Cassan-Ferrier", "Alexandra"}, 
-				{"Cavagna", "Cyril"}, 
-				{"Cerisier", "Camille"}, 
-				{"Claverie", "Camille"}, 
-				{"Combanière", "Jérome"}, 
-				{"Costes", "Antony"}, 
-				{"Danho", "Thibault"}, 
-				{"Debeuckelaere", "Alain"}, 
-				{"Delbos", "Lucie"}, 
-				{"Devaud", "Louise"}, 
-				{"Enjalby", "Jérémy"}, 
-				{"Escalante", "Yacine"}, 
-				{"Fauconnier", "Lisa"}, 
-				{"Félix", "Mathieu"}, 
-				{"Féron", "Laura"}, 
-				{"Fourcade", "Annabel"}, 
-				{"Gauliard", "Aurélie"}, 
-				{"Grivel", "Quentin"}, 
-				{"Guermonprez", "Eve-Marie"}, 
-				{"Lehir", "Nicolas"}, 
-				{"Kargbo", "Michaël"}, 
-				{"Kieffer", "Charlotte"}, 
-				{"Lacomme", "David"}, 
-				{"Lehoux", "Edouard"}, 
-				{"Marrot", "Sophie"}, 
-				{"Martin", "Enzo"}, 
-				{"Migeon", "Typhanie"}, 
-				{"Migeon", "Victor"}, 
-				{"Nivoix", "Julie"}, 
-				{"Ramonjiarivony", "Maëva"}, 
-				{"Royo", "Martin"}, 
-				{"Savé", "Jérome"}, 
-				{"Schwarz", "Mickaël"}, 
-				{"Starzec", "Bruno"}, 
-				{"Tranchard", "Guillaume"}, 
-				{"Vignard", "Thomas"}, 
-				{"Vives", "Adrien"}};
-		for(String[] lUser: lUsers) {
+		String[][] lUsers = new String[][] { { "Achotegui", "Nicolas" },
+				{ "Audouy", "Clément" }, { "Barboteau", "Elodie" },
+				{ "Borderas", "Sébastien" }, { "Bulit", "Florian" },
+				{ "Cassan-Ferrier", "Alexandra" }, { "Cavagna", "Cyril" },
+				{ "Cerisier", "Camille" }, { "Claverie", "Camille" },
+				{ "Combanière", "Jérome" }, { "Costes", "Antony" },
+				{ "Danho", "Thibault" }, { "Debeuckelaere", "Alain" },
+				{ "Delbos", "Lucie" }, { "Devaud", "Louise" },
+				{ "Enjalby", "Jérémy" }, { "Escalante", "Yacine" },
+				{ "Fauconnier", "Lisa" }, { "Félix", "Mathieu" },
+				{ "Féron", "Laura" }, { "Fourcade", "Annabel" },
+				{ "Gauliard", "Aurélie" }, { "Grivel", "Quentin" },
+				{ "Guermonprez", "Eve-Marie" }, { "Lehir", "Nicolas" },
+				{ "Kargbo", "Michaël" }, { "Kieffer", "Charlotte" },
+				{ "Lacomme", "David" }, { "Lehoux", "Edouard" },
+				{ "Marrot", "Sophie" }, { "Martin", "Enzo" },
+				{ "Migeon", "Typhanie" }, { "Migeon", "Victor" },
+				{ "Nivoix", "Julie" }, { "Ramonjiarivony", "Maëva" },
+				{ "Royo", "Martin" }, { "Savé", "Jérome" },
+				{ "Schwarz", "Mickaël" }, { "Starzec", "Bruno" },
+				{ "Tranchard", "Guillaume" }, { "Vignard", "Thomas" },
+				{ "Vives", "Adrien" } };
+		for (String[] lUser : lUsers) {
 			createUser(lUser[0], lUser[1]);
 		}
 	}
-	
+
 	private void createUser(String pLastName, String pFirstName) {
 		try {
 			UserEntity lUserEntity = new UserEntity();
-			lUserEntity.setEmailaddress(pLastName + "." + pFirstName + "@asptt-toulouse-natation.com");
+			lUserEntity.setEmailaddress(pLastName + "." + pFirstName
+					+ "@asptt-toulouse-natation.com");
 
 			Set<String> lProfiles = new HashSet<String>(3);
 			lProfiles.add(ProfileEnum.NAGEUR.toString());
@@ -612,8 +624,6 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 			lUserDataEntity.setLastName(pLastName);
 			UserDataDao lUserDataDao = new UserDataDao();
 			lUserEntity.setUserData(lUserDataDao.save(lUserDataEntity).getId());
-			
-			
 
 			MessageDigest lMessageDigest = Utils.getMD5();
 

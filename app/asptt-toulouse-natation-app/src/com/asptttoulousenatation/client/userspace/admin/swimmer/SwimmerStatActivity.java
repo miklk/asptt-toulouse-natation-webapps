@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.asptttoulousenatation.client.config.ClientFactory;
 import com.asptttoulousenatation.client.config.MyAbstractActivity;
+import com.asptttoulousenatation.core.client.ui.PopupManager;
 import com.asptttoulousenatation.core.client.ui.SwimmerStatWidget;
 import com.asptttoulousenatation.core.shared.swimmer.DayTimeEnum;
 import com.asptttoulousenatation.core.shared.swimmer.GetAllSwimmerStatAction;
@@ -51,16 +52,19 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 	}
 
 	private void openStatView(final SimplePanel pPanel) {
+		PopupManager.loading();
 		dispatchAsync.execute(new GetAllSwimmerStatAction(kind,
 				new Date(), null),
 				new AsyncCallback<GetAllSwimmerStatResult<?>>() {
 
 					public void onFailure(Throwable pCaught) {
+						PopupManager.getInstance().hide();
 						Window.alert("Erreur " + pCaught.getMessage());
 					}
 
 					public void onSuccess(
 							GetAllSwimmerStatResult<?> pResult) {
+						PopupManager.getInstance().hide();
 						final SwimmerStatView lView = clientFactory
 								.getSwimmerStatView((List<SwimmerStatUi>) pResult
 										.getResults());
@@ -68,6 +72,7 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 								new ClickHandler() {
 
 									public void onClick(ClickEvent pEvent) {
+										PopupManager.loading();
 										dispatchAsync.execute(
 												new UpdateSwimmerStatAction(
 														getUpdateData(
@@ -77,6 +82,7 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 
 													public void onFailure(
 															Throwable pCaught) {
+														PopupManager.getInstance().hide();
 														Window.alert("Erreur "
 																+ pCaught
 																		.getMessage());
@@ -84,6 +90,7 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 
 													public void onSuccess(
 															UpdateSwimmerStatResult pResult) {
+														PopupManager.getInstance().hide();
 														Window.alert("Suivi à jour");
 													}
 												});
@@ -94,6 +101,7 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 								new ClickHandler() {
 
 									public void onClick(ClickEvent pEvent) {
+										PopupManager.loading();
 										dispatchAsync
 												.execute(
 														new GetAllSwimmerStatAction(
@@ -104,6 +112,7 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 
 															public void onFailure(
 																	Throwable pCaught) {
+																PopupManager.getInstance().hide();
 																Window.alert("Erreur "
 																		+ pCaught
 																				.getMessage());
@@ -111,6 +120,7 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 
 															public void onSuccess(
 																	GetAllSwimmerStatResult<?> pResult) {
+																PopupManager.getInstance().hide();
 																lView.setCurrentDay(pResult
 																		.getCurrentDay());
 																lView.setCurrentDayText(pResult
@@ -125,6 +135,7 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 								new ClickHandler() {
 
 									public void onClick(ClickEvent pEvent) {
+										PopupManager.loading();
 										dispatchAsync
 												.execute(
 														new GetAllSwimmerStatAction(
@@ -135,6 +146,7 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 
 															public void onFailure(
 																	Throwable pCaught) {
+																PopupManager.getInstance().hide();
 																Window.alert("Erreur "
 																		+ pCaught
 																				.getMessage());
@@ -142,6 +154,7 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 
 															public void onSuccess(
 																	GetAllSwimmerStatResult<?> pResult) {
+																PopupManager.getInstance().hide();
 																lView.setCurrentDay(pResult
 																		.getCurrentDay());
 																lView.setCurrentDayText(pResult
@@ -161,6 +174,7 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 	}
 
 	private void openComputeView(final SimplePanel pPanel) {
+		PopupManager.loading();
 		dispatchAsync
 				.execute(
 						new GetAllSwimmerStatAction(kind,
@@ -168,11 +182,13 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 						new AsyncCallback<GetAllSwimmerStatResult<?>>() {
 
 							public void onFailure(Throwable pCaught) {
+								PopupManager.getInstance().hide();
 								Window.alert("Erreur " + pCaught.getMessage());
 							}
 
 							public void onSuccess(
 									GetAllSwimmerStatResult<?> pResult) {
+								PopupManager.getInstance().hide();
 								SwimmerStatComputeView lView = clientFactory
 										.getSwimmerStatComputeView((List<SwimmerStatComputeUi>) pResult
 												.getResults());

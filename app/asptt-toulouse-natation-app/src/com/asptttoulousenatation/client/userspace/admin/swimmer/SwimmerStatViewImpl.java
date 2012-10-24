@@ -18,6 +18,8 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -190,8 +192,8 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 		setData(pSwimmerStats);
 		panel.add(cellTable);
 
-		validButton = new Button("Valider");
-		panel.add(validButton);
+		
+//		panel.add(validButton);
 
 	}
 
@@ -203,17 +205,24 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 	}
 
 	private void buildDayPanel() {
+		HorizontalPanel lInnerDayPanel = new HorizontalPanel();
 		previousButton = new Button();
 		previousButton.setStyleName(CSS.dayPreviousButton());
 		nextButton = new Button();
 		nextButton.setStyleName(CSS.dayNextButton());
-		dayPanel = new HorizontalPanel();
-		dayPanel.setStyleName(CSS.dayPanel());
-		dayPanel.add(previousButton);
+		
+		lInnerDayPanel.add(previousButton);
 		currentDayLabel = new Label();
 		currentDayLabel.setStyleName(CSS.dayLabel());
-		dayPanel.add(currentDayLabel);
-		dayPanel.add(nextButton);
+		lInnerDayPanel.add(currentDayLabel);
+		lInnerDayPanel.add(nextButton);
+		dayPanel = new HorizontalPanel();
+		dayPanel.setStyleName(CSS.dayPanel());
+		dayPanel.add(lInnerDayPanel);
+		validButton = new Button("Valider");
+		validButton.setStyleName(CSS.swimmerStatActionsValid());
+		dayPanel.add(validButton);
+		dayPanel.setCellHorizontalAlignment(validButton, HasHorizontalAlignment.ALIGN_RIGHT);
 		panel.add(dayPanel);
 	}
 

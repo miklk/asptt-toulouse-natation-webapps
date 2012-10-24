@@ -7,6 +7,7 @@ public enum Operator implements Serializable {
 	EQUAL("=="),
 	NOT_EQUAL("!="),
 	GREATER(">"),
+	GREATER_EQ(">="),
 	LESS("<"),
 	LESS_EQ("<="),
 	AND("&&"),
