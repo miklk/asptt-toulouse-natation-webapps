@@ -62,11 +62,9 @@ public class CreateUserActionHandler implements
 				Random lRandom = new Random(42788);
 				MessageDigest lMessageDigest = Utils.getMD5();
 				String lCode = Integer.toString(lRandom.nextInt(1000));
-				System.out.println(lCode);
 				lMessageDigest.update(lCode.getBytes());
 				String lEncryptedPassword = new String(lMessageDigest.digest());
 				lUser.setPassword(lEncryptedPassword);
-				System.out.println(lUser.getPassword());
 
 				Properties props = new Properties();
 				Session session = Session.getDefaultInstance(props, null);

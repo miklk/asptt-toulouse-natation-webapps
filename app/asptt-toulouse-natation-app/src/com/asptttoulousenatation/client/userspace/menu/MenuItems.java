@@ -12,6 +12,7 @@ public enum MenuItems {
 	USER_CREATION(false),
 	USER_EDITION(false),
 	OFFICIEL_VIEW(true),
+	OFFICIEL_SUBSCRIPTION,
 	CLUB_GROUP_EDITION,
 	CLUB_SLOT_EDITION,
 	COMPETITION_EDITION,
@@ -22,7 +23,10 @@ public enum MenuItems {
 	SUBSCRIPTION_ONLINE("Inscription en ligne"),
 	SWIMMER_STAT_DAY,
 	SWIMMER_STAT_WEEK,
-	SWIMMER_STAT_MONTH;
+	SWIMMER_STAT_MONTH,
+	SWIMMER_STAT_YEAR,
+	PROFILE_PASSWORD,
+	;
 	
 	private String salt;
 	private boolean shortcut;

@@ -300,4 +300,10 @@ public interface ASPTT_ProtoCss extends CssResource {
 	
 	@ClassName("swimmer-stat-action-valid")
 	String swimmerStatActionsValid();
+	
+	@ClassName("swimmer-stat-action-calendar")
+	String swimmerStatActionsCalendar();
+	
+	@ClassName("popup-close-button")
+	String popupCloseButton();
 }

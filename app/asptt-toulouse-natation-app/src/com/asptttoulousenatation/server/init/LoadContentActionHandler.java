@@ -29,6 +29,7 @@ public class LoadContentActionHandler implements
 	
 	public LoadContentResult execute(LoadContentAction pAction,
 			ExecutionContext pContext) throws DispatchException {
+		long startTime = System.currentTimeMillis();
 		List<CriterionDao<? extends Object>> lContentCriteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		CriterionDao<Long> lContentCriterion = new CriterionDao<Long>();
@@ -51,6 +52,8 @@ public class LoadContentActionHandler implements
 		List<DocumentEntity> lDocumentEntities = documentDao.find(lDocumentCriteria);
 		List<DocumentUi> lDocumentUis = documentTransformer.toUi(lDocumentEntities);
 		lResult.setDocuments(lDocumentUis);
+		long endTime = System.currentTimeMillis();
+		System.out.println("Loading in: " + (endTime - startTime) + " ms");
 		return lResult;
 	}
 

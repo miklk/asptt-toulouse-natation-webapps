@@ -23,13 +23,13 @@ public class SwimmerStatEntity implements Entity {
 	private Long id;
 	
 	@Persistent
-	private String day;
+	private Long day;
 	
 	@Persistent
 	private Long swimmer;
 	
 	@Persistent
-	private String dayTime;
+	private String daytime;
 	
 	@Persistent
 	private int distance;
@@ -49,11 +49,11 @@ public class SwimmerStatEntity implements Entity {
 		id = pId;
 	}
 
-	public String getDay() {
+	public Long getDay() {
 		return day;
 	}
 
-	public void setDay(String pDay) {
+	public void setDay(Long pDay) {
 		day = pDay;
 	}
 
@@ -65,12 +65,12 @@ public class SwimmerStatEntity implements Entity {
 		swimmer = pSwimmer;
 	}
 
-	public String getDayTime() {
-		return dayTime;
+	public String getDaytime() {
+		return daytime;
 	}
 
-	public void setDayTime(String pDayTime) {
-		dayTime = pDayTime;
+	public void setDaytime(String pDaytime) {
+		daytime = pDaytime;
 	}
 
 	public int getDistance() {

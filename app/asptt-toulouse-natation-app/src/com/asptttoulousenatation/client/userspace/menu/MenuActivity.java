@@ -3,7 +3,7 @@ package com.asptttoulousenatation.client.userspace.menu;
 import com.asptttoulousenatation.client.config.ClientFactory;
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent;
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEventHandler;
-import com.asptttoulousenatation.core.client.MyAbstractActivity;
+import com.asptttoulousenatation.client.config.MyAbstractActivity;
 import com.asptttoulousenatation.core.shared.structure.area.CreateAreaAction;
 import com.asptttoulousenatation.core.shared.structure.area.CreateAreaResult;
 import com.asptttoulousenatation.core.shared.user.UserUi;
@@ -12,7 +12,7 @@ import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -60,9 +60,12 @@ public class MenuActivity extends MyAbstractActivity<MenuPlace> {
 		addAction(lEventBus, lMenuView, MenuItems.CLUB_SLOT_EDITION);
 		addAction(lEventBus, lMenuView, MenuItems.COMPETITION_EDITION);
 		addAction(lEventBus, lMenuView, MenuItems.OFFICIEL_VIEW);
+		addAction(lEventBus, lMenuView, MenuItems.OFFICIEL_SUBSCRIPTION);
 		addAction(lEventBus, lMenuView, MenuItems.SWIMMER_STAT_DAY);
 		addAction(lEventBus, lMenuView, MenuItems.SWIMMER_STAT_WEEK);
 		addAction(lEventBus, lMenuView, MenuItems.SWIMMER_STAT_MONTH);
+		addAction(lEventBus, lMenuView, MenuItems.SWIMMER_STAT_YEAR);
+		addAction(lEventBus, lMenuView, MenuItems.PROFILE_PASSWORD);
 
 		lMenuView.getCreateAreaButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {

@@ -85,6 +85,14 @@ public class CompetitionUi implements IsSerializable {
 
 	public void setDays(Set<CompetitionDayUi> pDays) {
 		days = pDays;
+		if(days.isEmpty()) {
+			CompetitionDayUi lDayUi = new CompetitionDayUi();
+			lDayUi.setBegin(getBegin());
+			lDayUi.setEnd(getEnd());
+			lDayUi.setDay(1);
+			lDayUi.setCompetitionUi(this);
+			days.add(lDayUi);
+		}
 	}
 	
 	public Set<Date> getCalendarEntries() {

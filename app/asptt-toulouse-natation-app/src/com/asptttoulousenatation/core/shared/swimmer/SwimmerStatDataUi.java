@@ -4,6 +4,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class SwimmerStatDataUi implements IsSerializable {
 	private Long id;
+	private DayTimeEnum dayTime;
 	private int distance;
 	private String comment;
 
@@ -16,6 +17,14 @@ public class SwimmerStatDataUi implements IsSerializable {
 
 	public void setId(Long pId) {
 		id = pId;
+	}
+
+	public DayTimeEnum getDayTime() {
+		return dayTime;
+	}
+
+	public void setDayTime(DayTimeEnum pDayTime) {
+		dayTime = pDayTime;
 	}
 
 	public int getDistance() {

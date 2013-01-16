@@ -6,23 +6,33 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.asptttoulousenatation.core.client.ui.PopupManager;
 import com.asptttoulousenatation.core.client.ui.SwimmerStatWidget;
 import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatDataUi;
 import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatUi;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextInputCell;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.datepicker.client.DatePicker;
+import com.google.gwt.view.client.ListDataProvider;
+import com.ibm.icu.util.Calendar;
 
 public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 
@@ -34,7 +44,9 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 	private Date currentDay;
 	
 	private Label currentDayLabel;
-
+	
+	private DatePicker datePicker;
+	
 	private Button previousButton;
 	private Button nextButton;
 	private Button validButton;
@@ -61,11 +73,10 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 
 			@Override
 			public String getValue(SwimmerStatUi pObject) {
-				List<SwimmerStatDataUi> lData = ((SwimmerStatUi) pObject)
-						.getData();
+				SwimmerStatDataUi lData = ((SwimmerStatUi) pObject).getMorning();
 				final String lValue;
-				if (lData != null && lData.size() >= 1) {
-					lValue = Integer.toString(lData.get(0).getDistance());
+				if (lData != null) {
+					lValue = Integer.toString(lData.getDistance());
 				} else {
 					lValue = "0";
 				}
@@ -76,7 +87,10 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 		morningColumn.setFieldUpdater(new FieldUpdater<SwimmerStatUi, String>() {
 			
 			public void update(int pIndex, SwimmerStatUi pObject, String pValue) {
-				data.get(pIndex).getMorning().setValue(pValue);
+				SwimmerStatWidget lWidget = data.get(pIndex);
+				lWidget.getMorning().setValue(pValue);
+				lWidget.setUpdatedMorning(true);
+				
 			}
 		});
 
@@ -85,11 +99,10 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 
 			@Override
 			public String getValue(SwimmerStatUi pObject) {
-				List<SwimmerStatDataUi> lData = ((SwimmerStatUi) pObject)
-						.getData();
+				SwimmerStatDataUi lData = ((SwimmerStatUi) pObject).getMidday();
 				final String lValue;
-				if (lData != null && lData.size() >= 2) {
-					lValue = Integer.toString(lData.get(1).getDistance());
+				if (lData != null) {
+					lValue = Integer.toString(lData.getDistance());
 				} else {
 					lValue = "0";
 				}
@@ -100,7 +113,9 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 		middayColumn.setFieldUpdater(new FieldUpdater<SwimmerStatUi, String>() {
 			
 			public void update(int pIndex, SwimmerStatUi pObject, String pValue) {
-				data.get(pIndex).getMidday().setValue(pValue);
+				SwimmerStatWidget lWidget = data.get(pIndex);
+				lWidget.getMidday().setValue(pValue);
+				lWidget.setUpdatedMidday(true);
 			}
 		});
 
@@ -109,11 +124,10 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 
 			@Override
 			public String getValue(SwimmerStatUi pObject) {
-				List<SwimmerStatDataUi> lData = ((SwimmerStatUi) pObject)
-						.getData();
+				SwimmerStatDataUi lData = ((SwimmerStatUi) pObject).getNight();
 				final String lValue;
-				if (lData != null && lData.size() >= 3) {
-					lValue = Integer.toString(lData.get(2).getDistance());
+				if (lData != null) {
+					lValue = Integer.toString(lData.getDistance());
 				} else {
 					lValue = "0";
 				}
@@ -124,7 +138,9 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 		nightColumn.setFieldUpdater(new FieldUpdater<SwimmerStatUi, String>() {
 			
 			public void update(int pIndex, SwimmerStatUi pObject, String pValue) {
-				data.get(pIndex).getNight().setValue(pValue);
+				SwimmerStatWidget lWidget = data.get(pIndex);
+				lWidget.getNight().setValue(pValue);
+				lWidget.setUpdatedNight(true);
 			}
 		});
 
@@ -133,11 +149,10 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 
 			@Override
 			public Boolean getValue(SwimmerStatUi pObject) {
-				List<SwimmerStatDataUi> lData = ((SwimmerStatUi) pObject)
-						.getData();
+				SwimmerStatDataUi lData = ((SwimmerStatUi) pObject).getBodybuilding();
 				final Boolean lValue;
-				if (lData != null && lData.size() >= 4) {
-					switch (lData.get(3).getDistance()) {
+				if (lData != null) {
+					switch (lData.getDistance()) {
 					case 0:
 						lValue = false;
 						break;
@@ -157,11 +172,13 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 		bodybuildingColumn.setFieldUpdater(new FieldUpdater<SwimmerStatUi, Boolean>() {
 			
 			public void update(int pIndex, SwimmerStatUi pObject, Boolean pValue) {
+				SwimmerStatWidget lWidget = data.get(pIndex);
 				if(pValue) {
-					data.get(pIndex).getBodybuilding().setValue("1");
+					lWidget.getBodybuilding().setValue("1");
 				} else {
-					data.get(pIndex).getBodybuilding().setValue("0");
+					lWidget.getBodybuilding().setValue("0");
 				}
+				lWidget.setUpdatedBodybuilding(true);
 			}
 		});
 
@@ -170,11 +187,10 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 
 			@Override
 			public String getValue(SwimmerStatUi pObject) {
-				List<SwimmerStatDataUi> lData = ((SwimmerStatUi) pObject)
-						.getData();
+				String lData = ((SwimmerStatUi) pObject).getComment();
 				final String lValue;
-				if (lData != null && lData.size() >= 1) {
-					lValue = lData.get(0).getComment();
+				if (lData != null) {
+					lValue = lData;
 				} else {
 					lValue = "";
 				}
@@ -185,13 +201,19 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 		commentColumn.setFieldUpdater(new FieldUpdater<SwimmerStatUi, String>() {
 			
 			public void update(int pIndex, SwimmerStatUi pObject, String pValue) {
-				data.get(pIndex).getComment().setValue(pValue);
+				SwimmerStatWidget lWidget = data.get(pIndex);
+				lWidget.getComment().setValue(pValue);
+				lWidget.setUpdatedComment(true);
 			}
 		});
 
 		setData(pSwimmerStats);
+		SimplePager.Resources pagerResources = GWT.create(SimplePager.Resources.class);
+		SimplePager pager = new SimplePager(TextLocation.CENTER, pagerResources, false, 0, true);
+		pager.setPageSize(10);
+		pager.setDisplay(cellTable);
+		panel.add(pager);
 		panel.add(cellTable);
-
 		
 //		panel.add(validButton);
 
@@ -216,13 +238,28 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 		currentDayLabel.setStyleName(CSS.dayLabel());
 		lInnerDayPanel.add(currentDayLabel);
 		lInnerDayPanel.add(nextButton);
+		Button dayButton = new Button("Calendrier");
+		dayButton.setStyleName(CSS.swimmerStatActionsCalendar());
+		datePicker = new DatePicker();
+		dayButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				final PopupPanel lPopup = PopupManager.getInstance().getPopup(false, true, "Calendrier", datePicker);
+				lPopup.show();
+				
+			}
+		});
 		dayPanel = new HorizontalPanel();
 		dayPanel.setStyleName(CSS.dayPanel());
 		dayPanel.add(lInnerDayPanel);
+		
+		dayPanel.add(dayButton);
+		dayPanel.setCellHorizontalAlignment(dayButton, HasHorizontalAlignment.ALIGN_RIGHT);
+		
 		validButton = new Button("Valider");
 		validButton.setStyleName(CSS.swimmerStatActionsValid());
 		dayPanel.add(validButton);
 		dayPanel.setCellHorizontalAlignment(validButton, HasHorizontalAlignment.ALIGN_RIGHT);
+		
 		panel.add(dayPanel);
 	}
 
@@ -251,12 +288,17 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 	}
 
 	public void setData(List<SwimmerStatUi> pSwimmerStats) {
+		ListDataProvider<SwimmerStatUi> lDataProvider = new	ListDataProvider<SwimmerStatUi>(pSwimmerStats);
+		lDataProvider.addDataDisplay(cellTable);
 		cellTable.setRowCount(pSwimmerStats.size(), true);
-		cellTable.setRowData(pSwimmerStats);
 		buildData(pSwimmerStats);
 	}
 
 	public void setCurrentDayText(String pCurrentDayText) {
 		currentDayLabel.setText(pCurrentDayText);
+	}
+
+	public HasValueChangeHandlers<Date> getNewDate() {
+		return datePicker;
 	}
 }

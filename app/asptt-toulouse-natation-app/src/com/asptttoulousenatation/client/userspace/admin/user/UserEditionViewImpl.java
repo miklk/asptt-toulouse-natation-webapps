@@ -16,6 +16,7 @@ import com.asptttoulousenatation.client.userspace.admin.util.CellListStyle;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
 import com.asptttoulousenatation.core.shared.user.UserUi;
+import com.google.gwt.dom.client.Style.Visibility;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
@@ -101,6 +102,7 @@ public class UserEditionViewImpl extends Composite implements
 		
 		editionPanel = new SimplePanel();
 		editionPanel.setStyleName(CSS.userSpaceContentEdition());
+		editionPanel.getElement().getStyle().setVisibility(Visibility.HIDDEN);
 		panel.add(editionPanel);
 
 		buildPanel();
@@ -316,6 +318,7 @@ public class UserEditionViewImpl extends Composite implements
 	}
 
 	private void buildEditionPanel(UserUi pUi) {
+		editionPanel.getElement().getStyle().setVisibility(Visibility.VISIBLE);
 		emailAddress.setValue(pUi.getEmailAddress());
 		validated.setValue(pUi.isValidated());
 		for(String lProfile: pUi.getProfiles()) {

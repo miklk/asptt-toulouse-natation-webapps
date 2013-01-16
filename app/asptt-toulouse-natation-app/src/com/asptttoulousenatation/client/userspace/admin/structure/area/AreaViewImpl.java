@@ -80,6 +80,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 	private TextBox menuCreationSummaryInput;
 	private CKEditor menuCreationContentInput;
 	private Button menuCreationButton;
+	private Button menuCreationCloseButton;
 	private ListBox menuCreationMenuKey;
 	
 	private PopupPanel menuCreationPopup;
@@ -106,11 +107,13 @@ public class AreaViewImpl extends Composite implements AreaView {
 		selectionModel = new SingleSelectionModel<MenuUi>();
 
 		cellBrowser = new CellBrowser(new MenuTreeViewModel(selectionModel, new ArrayList<MenuUi>(area.getMenuSet().values())), null);
-		cellBrowser.setWidth("900px");
+		cellBrowser.setWidth("400px");
 		cellBrowser.setHeight("300px");
 		menuPanel.add(cellBrowser);
+		
 		editionPanel = new SimplePanel();
 		editionPanel.setStyleName(CSS.userSpaceContentEdition());
+		panel.add(editionPanel);
 
 		updateButton = new Button("");
 		updateButton.setTitle("Modifier le menu");
@@ -121,12 +124,29 @@ public class AreaViewImpl extends Composite implements AreaView {
 		menuCreationButton = new Button("");
 		menuCreationButton.setTitle("Ajouter une page");
 		menuCreationButton.setStyleName(CSS.newPageButton());
+		
+		menuCreationCloseButton = new Button();
+		menuCreationCloseButton.setTitle("Fermer");
+		menuCreationCloseButton.setStyleName(CSS.popupCloseButton());
+		menuCreationCloseButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				menuCreationPopup.hide();
+			}
+		});
 	}
 
 	public void buildEditionPanel(MenuUi pMenuUi) {
 		FlexTable lPanel = new FlexTable();
 
 		int lRowIndex = 0;
+		
+		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
+		lPanel.setHTML(lRowIndex, 0, "Editer " + pMenuUi.getTitle());
+		lCellFormatter.setStyleName(lRowIndex, 0, CSS.userSpaceAreaEditionEditTitle());
+		lCellFormatter.setColSpan(lRowIndex, 0, 5);
+		lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
+				HasHorizontalAlignment.ALIGN_CENTER);
+		lRowIndex++;
 		
 		//Add sub menu
 		if (pMenuUi.getParentId() == null) {
@@ -204,15 +224,12 @@ public class AreaViewImpl extends Composite implements AreaView {
 		updateButton.setStyleName(CSS.editButton());
 		deleteButton.setStyleName(CSS.deleteButton());
 		lPanel.setWidget(lRowIndex, 0, lButtonBar);
-		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
+		lCellFormatter = lPanel.getFlexCellFormatter();
 		lCellFormatter.setColSpan(lRowIndex, 0, 2);
 		lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
 
-		PopupPanel lPopup = new PopupPanel(true, true);
 		editionPanel.setWidget(lPanel);
-		lPopup.add(editionPanel);
-		lPopup.center();
 	}
 
 	private void buildDocumentPanel(final MenuUi pMenuUi) {
@@ -237,7 +254,6 @@ public class AreaViewImpl extends Composite implements AreaView {
 		documentEditionPanel.setStyleName(CSS.userSpaceContentEdition());
 		documentEditionPanel.setWidget(new DocumentWidget(pMenuUi.getId()));
 		documentPanel.add(documentEditionPanel);
-
 	}
 
 	private void buildDocumentEditionPanel(final DocumentUi pDocument,
@@ -332,6 +348,17 @@ public class AreaViewImpl extends Composite implements AreaView {
 			lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
 					HasHorizontalAlignment.ALIGN_CENTER);
 			lRowIndex++;
+			
+			//Menu key
+			menuCreationMenuKey = new ListBox();
+			int i = 0;
+			for (MenuItems lItem : MenuItems.getSelectableMenuItems()) {
+				menuCreationMenuKey.insertItem(lItem.getI18n(), lItem.name(), i);
+				i++;
+			}
+			lPanel.setWidget(lRowIndex, 0, createLabel("Clé du menu (non obligatoire)"));
+			lPanel.setWidget(lRowIndex, 1, menuCreationMenuKey);
+			lRowIndex++;
 
 			// Menu title
 			menuCreationTitleInput = new TextBox();
@@ -354,20 +381,28 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 			lRowIndex++;
 
-			lPanel.setWidget(lRowIndex, 0, menuCreationButton);
+			HorizontalPanel lButtonBar = new HorizontalPanel();
+			lButtonBar.setStyleName(CSS.buttonBar());
+			lButtonBar.add(menuCreationButton);
+			lButtonBar.add(menuCreationCloseButton);
+			lButtonBar.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+			lButtonBar.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
+			updateAreaButton.setStyleName(CSS.editButton());
+			deleteAreaButton.setStyleName(CSS.deleteButton());
 			lCellFormatter.setColSpan(lRowIndex, 0, 2);
-			lCellFormatter.setHorizontalAlignment(lRowIndex, 0,
-					HasHorizontalAlignment.ALIGN_CENTER);
-
+			lCellFormatter.setHorizontalAlignment(lRowIndex, 0, HasHorizontalAlignment.ALIGN_CENTER);
+			lPanel.setWidget(lRowIndex, 0, lButtonBar);
+			
 			menuCreationPanel = new SimplePanel();
 			menuCreationPanel.setWidget(lPanel);
-			menuCreationPopup = new PopupPanel(true, true);
+			menuCreationPopup = new PopupPanel(false, true);
 			menuCreationPopup.setWidget(lPanel);
 			menuCreationPopup.center();
 	}
 	
 	public Long getContentId() {
-		return selectionModel.getSelectedObject().getContentSet().get(0)
+		MenuUi lMenu = selectionModel.getSelectedObject();
+		return lMenu.getContentSet().get(0)
 				.getId();
 	}
 

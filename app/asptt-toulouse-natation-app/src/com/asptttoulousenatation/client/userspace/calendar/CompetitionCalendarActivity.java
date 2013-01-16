@@ -1,7 +1,7 @@
 package com.asptttoulousenatation.client.userspace.calendar;
 
 import com.asptttoulousenatation.client.config.ClientFactory;
-import com.asptttoulousenatation.core.client.MyAbstractActivity;
+import com.asptttoulousenatation.client.config.MyAbstractActivity;
 import com.asptttoulousenatation.core.shared.competition.GetAllCompetitionAction;
 import com.asptttoulousenatation.core.shared.competition.GetAllCompetitionResult;
 import com.asptttoulousenatation.core.shared.competition.OfficielDayAction;
@@ -9,7 +9,7 @@ import com.asptttoulousenatation.core.shared.competition.OfficielDayResult;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;

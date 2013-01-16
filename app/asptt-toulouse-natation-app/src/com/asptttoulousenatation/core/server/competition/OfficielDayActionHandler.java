@@ -18,6 +18,8 @@ import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
 import com.asptttoulousenatation.core.server.entity.UserDataTransformer;
 import com.asptttoulousenatation.core.server.entity.UserTransformer;
 import com.asptttoulousenatation.core.shared.competition.CompetitionDayUi;
+import com.asptttoulousenatation.core.shared.competition.GetAllCompetitionAction;
+import com.asptttoulousenatation.core.shared.competition.GetAllCompetitionResult;
 import com.asptttoulousenatation.core.shared.competition.OfficielDayAction;
 import com.asptttoulousenatation.core.shared.competition.OfficielDayResult;
 import com.asptttoulousenatation.core.shared.user.UserUi;
@@ -67,7 +69,13 @@ public class OfficielDayActionHandler implements
 		CompetitionDayUi lCompetitionDayUi = transformer.toUi(lDay);
 		lCompetitionDayUi.setOfficiels(lOfficielEntities);
 		lCompetitionDayUi.setCompetitionUi(competitionTransformer.toUi(lCompetitionEntity));
-		return new OfficielDayResult(lCompetitionDayUi);
+		
+		OfficielDayResult result = new OfficielDayResult(lCompetitionDayUi);
+		
+		//Load competions
+		GetAllCompetitionResult competitionResult = pContext.execute(new GetAllCompetitionAction());
+		result.setCompetitions(competitionResult.getCompetitions());
+		return result;
 	}
 
 	public Class<OfficielDayAction> getActionType() {

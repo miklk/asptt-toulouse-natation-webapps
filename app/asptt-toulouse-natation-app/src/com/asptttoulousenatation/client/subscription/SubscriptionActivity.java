@@ -2,7 +2,7 @@ package com.asptttoulousenatation.client.subscription;
 
 
 import com.asptttoulousenatation.client.config.ClientFactory;
-import com.asptttoulousenatation.core.client.MyAbstractActivity;
+import com.asptttoulousenatation.client.config.MyAbstractActivity;
 import com.asptttoulousenatation.core.shared.club.group.GetAllGroupResult;
 import com.asptttoulousenatation.core.shared.club.group.GetGroupSlotAction;
 import com.asptttoulousenatation.core.shared.club.subscription.GetPriceAction;
@@ -11,13 +11,13 @@ import com.asptttoulousenatation.core.shared.payment.PaymentAction;
 import com.asptttoulousenatation.core.shared.payment.PaymentResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.web.bindery.event.shared.EventBus;
 
 public class SubscriptionActivity extends MyAbstractActivity<SubscriptionPlace> {
 

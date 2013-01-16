@@ -27,35 +27,35 @@ public class ActuViewImpl extends Composite implements ActuView {
 	private CKEditor contentInput;
 	private Button publishButton;
 	private Label errorMessage;
-	
+
 	public ActuViewImpl() {
 		panel = new HorizontalPanel();
 		initWidget(panel);
-		//Input
+		// Input
 		FlexTable lPanel = new FlexTable();
 		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
-		//Title
+		// Title
 		title = new TextBox();
 		title.setWidth("300px");
 		lPanel.setWidget(0, 0, createLabel("Titre"));
 		lPanel.setWidget(0, 1, title);
-		
-		//Summary
+
+		// Summary
 		summary = new TextBox();
 		summary.setWidth("300px");
 		lPanel.setWidget(1, 0, createLabel("Description courte"));
 		lCellFormatter.setWidth(1, 0, "400px");
 		lPanel.setWidget(1, 1, summary);
-		
-		//Date
+
+		// Date
 		date = new DateBox();
 		date.setValue(new Date());
 		date.setWidth("200px");
 		lPanel.setWidget(2, 0, createLabel("Date"));
 		lPanel.setWidget(2, 1, date);
-		
-		//Contenu
-	    // Add the components to a panel
+
+		// Contenu
+		// Add the components to a panel
 		// Content
 		contentInput = new CKEditor(new EditorToolbar());
 		lPanel.setWidget(3, 0, createLabel("Actualité"));
@@ -68,12 +68,12 @@ public class ActuViewImpl extends Composite implements ActuView {
 		lCellFormatter.setColSpan(4, 0, 2);
 		lCellFormatter.setHorizontalAlignment(4, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
-		
+
 		errorMessage = new Label();
 		panel.add(errorMessage);
 		panel.add(lPanel);
 	}
-	
+
 	public HasClickHandlers getCloseButton() {
 		// TODO Auto-generated method stub
 		return null;
@@ -103,7 +103,7 @@ public class ActuViewImpl extends Composite implements ActuView {
 	public HasValue<Date> getCreationDate() {
 		return date;
 	}
-	
+
 	private Label createLabel(String pLabel) {
 		Label lLabel = new Label(pLabel);
 		lLabel.setStyleName(CSS.userSpaceContentLabel());

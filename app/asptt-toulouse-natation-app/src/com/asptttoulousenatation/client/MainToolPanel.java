@@ -19,7 +19,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -30,6 +30,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.datepicker.client.DatePicker;
+import com.google.web.bindery.event.shared.EventBus;
 
 public class MainToolPanel extends Composite {
 
@@ -37,7 +38,6 @@ public class MainToolPanel extends Composite {
 
 	private InitResult initResult;
 	private PopupManager popupManager;
-	private UserUi user;
 
 	private EventBus eventBus;
 	private HTML boutiqueData;
@@ -46,7 +46,6 @@ public class MainToolPanel extends Composite {
 			EventBus pEventBus) {
 		initResult = pInitResult;
 		eventBus = pEventBus;
-		user = pUser;
 		panel = new VerticalPanel();
 		initWidget(panel);
 
@@ -58,66 +57,91 @@ public class MainToolPanel extends Composite {
 		lLogoArena.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent pEvent) {
-				if (boutiqueData == null) {
 					AreaUi lAreaUi = initResult.getArea("Boutique");
 					if (lAreaUi != null) {
-						MenuUi lMenu = lAreaUi.getMenu("Informations");
+						MenuUi lMenu = lAreaUi.getMenu("Boutique");
 						eventBus.fireEvent(new LoadContentEvent(lMenu,
-								LoadContentAreaEnum.TOOL, lAreaUi.getTitle(), lMenu.getTitle()));
+								LoadContentAreaEnum.CONTENT, lAreaUi.getTitle(),
+								lMenu.getTitle()));
 					}
-				} else {
-					buildBoutiquePopup();
-				}
 			}
 		});
 		SimplePanel lImagePanel = new SimplePanel();
 		lImagePanel.setWidget(lLogoArena);
 		HeaderPanel lBoutiquePanel = new HeaderPanel("Boutique", lLogoArena);
+		lBoutiquePanel.getHeader().addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				AreaUi boutiqueArea = initResult.getArea("Boutique");
+				MenuUi boutiqueMenu = boutiqueArea.getMenu("Boutique");
+				eventBus.fireEvent(new LoadContentEvent(boutiqueMenu, LoadContentAreaEnum.CONTENT, boutiqueArea.getTitle(), boutiqueMenu.getTitle()));
+			}
+		});
 		lBoutiquePanel.addStyleName(CSS.bloc());
 		lBoutiquePanel.setHeaderStyle(CSS.blocTitle());
 		panel.add(lBoutiquePanel);
 
-//		// Meteo
-//		HTML lMeteo = new HTML(
-//				"<div id=\"widget_98a7717ff38d2f8635c0a2316bfabad6\"><a href=\"http://www.my-meteo.fr/previsions+meteo+france/toulouse.html\" title=\"M&eacute;t&eacute;o Toulouse\">M&eacute;t&eacute;o Toulouse</a><script type=\"text/javascript\" src=\"http://www.my-meteo.fr/meteo+webmaster/widget/js.php?ville=263&amp;format=petit-vertical&amp;nb_jours=2&amp;icones&amp;horaires&amp;vent&amp;c1=414141&amp;c2=21a2f3&amp;c3=d4d4d4&amp;c4=FFF&amp;id=98a7717ff38d2f8635c0a2316bfabad6\"></script></div>");
-////				"<div id=\"cont_7b8dcd7d9f2587bff3518640f95fd205\"><h2 id=\"h_7b8dcd7d9f2587bff3518640f95fd205\"><a href=\"http://www.tameteo.com/\" title=\"M&eacute;t&eacute;o\">M&eacute;t&eacute;o</a></h2><a id=\"a_7b8dcd7d9f2587bff3518640f95fd205\" href=\"http://www.tameteo.com/meteo_Toulouse-Europe-France-Haute+Garonne-LFBO-1-26128.html\" target=\"_blank\" title=\"M&eacute;t&eacute;o Toulouse\" style=\"color:#656565;font-family:7;font-size:14px;\">M&eacute;t&eacute;o Toulouse</a><script type=\"text/javascript\" src=\"http://www.tameteo.com/wid_loader/7b8dcd7d9f2587bff3518640f95fd205\"></script></div>");
-//		HeaderPanel lMeteoPanel = new HeaderPanel("Météo", lMeteo);
-//		lMeteoPanel.addStyleName(CSS.bloc());
-//		lMeteoPanel.setHeaderStyle(CSS.blocTitle());
-//		panel.add(lMeteoPanel);
+		Timer timer = new Timer() {
 
-		final DatePicker lDatePicker = new DatePicker();
-		// Get event dates
-		lDatePicker.addStyleToDates(CSS.calendarEvt(), initResult.getEvents()
-				.keySet());
+			@Override
+			public void run() {
 
-		lDatePicker.addValueChangeHandler(new ValueChangeHandler<Date>() {
-			public void onValueChange(ValueChangeEvent<Date> pEvent) {
-				Date lSearchDate = new Date(Date.UTC(pEvent.getValue().getYear(), pEvent.getValue().getMonth(), pEvent.getValue().getDate(), 0, 0, 0));
-				List<UiEvent> lUiEvents = initResult.getEvents()
-						.get(lSearchDate);
-				if (lUiEvents != null && !lUiEvents.isEmpty()) {
-					StringBuilder lMsg = new StringBuilder();
-					for(UiEvent lUiEvent: lUiEvents) {
-						lMsg.append(lUiEvent.getEventTitle()).append("<br />");
+				final DatePicker lDatePicker = new DatePicker();
+				// Get event dates
+				lDatePicker.addStyleToDates(CSS.calendarEvt(), initResult
+						.getEvents().keySet());
+
+				lDatePicker
+						.addValueChangeHandler(new ValueChangeHandler<Date>() {
+							public void onValueChange(
+									ValueChangeEvent<Date> pEvent) {
+								Date lSearchDate = new Date(Date.UTC(pEvent
+										.getValue().getYear(), pEvent
+										.getValue().getMonth(), pEvent
+										.getValue().getDate(), 0, 0, 0));
+								List<UiEvent> lUiEvents = initResult
+										.getEvents().get(lSearchDate);
+								if (lUiEvents != null && !lUiEvents.isEmpty()) {
+									StringBuilder lMsg = new StringBuilder();
+									for (UiEvent lUiEvent : lUiEvents) {
+										lMsg.append(lUiEvent.getEventTitle())
+												.append("<br />");
+									}
+									popupManager.createPopup(true, true,
+											new HTML(lMsg.toString()));
+									popupManager.showRelativeTo(lDatePicker);
+								}
+							}
+						});
+				lDatePicker.setSize("100%", "100%");
+				HeaderPanel lEventPanel = new HeaderPanel("Evènement",
+						lDatePicker);
+				lEventPanel.getHeader().addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent pEvent) {
+						AreaUi eventArea = initResult.getArea("Compétitions");
+						MenuUi eventMenu = eventArea.getMenu("Calendrier");
+						eventBus.fireEvent(new LoadContentEvent(eventMenu, LoadContentAreaEnum.CONTENT, eventArea.getTitle(), eventMenu.getTitle()));
 					}
-					popupManager.createPopup(true, true, new HTML(lMsg.toString()));
-					popupManager.showRelativeTo(lDatePicker);
-				}
-			}
-		});
-		lDatePicker.setSize("100%", "100%");
-		HeaderPanel lEventPanel = new HeaderPanel("Evènement", lDatePicker);
-		lEventPanel.setHeaderStyle(CSS.blocTitle());
-		lEventPanel.addStyleName(CSS.bloc());
-		panel.add(lEventPanel);
+				});
+				lEventPanel.setHeaderStyle(CSS.blocTitle());
+				lEventPanel.addStyleName(CSS.bloc());
+				panel.add(lEventPanel);
 
-		AlternateBanner_Part lAlternateBanner_Part = new AlternateBanner_Part();
-		HeaderPanel lPartnerPanel = new HeaderPanel("Partenaires",
-				lAlternateBanner_Part);
-		lPartnerPanel.setHeaderStyle(CSS.blocTitle());
-		lPartnerPanel.addStyleName(CSS.bloc());
-		panel.add(lPartnerPanel);
+				AlternateBanner_Part lAlternateBanner_Part = new AlternateBanner_Part();
+				HeaderPanel lPartnerPanel = new HeaderPanel("Partenaires",
+						lAlternateBanner_Part);
+				lPartnerPanel.getHeader().addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent pEvent) {
+						AreaUi partnerArea = initResult.getArea("Club des partenaires");
+						MenuUi partnerMenu = partnerArea.getMenu("Partenaires");
+						eventBus.fireEvent(new LoadContentEvent(partnerMenu, LoadContentAreaEnum.CONTENT, partnerArea.getTitle(), partnerMenu.getTitle()));
+					}
+				});
+				lPartnerPanel.setHeaderStyle(CSS.blocTitle());
+				lPartnerPanel.addStyleName(CSS.bloc());
+				panel.add(lPartnerPanel);
+			}
+		};
+		timer.schedule(2000);
 	}
 
 	public void setPopupManager(PopupManager pPopupManager) {

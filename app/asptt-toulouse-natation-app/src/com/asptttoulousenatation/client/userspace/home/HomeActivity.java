@@ -6,14 +6,14 @@ import java.util.List;
 import com.asptttoulousenatation.client.config.ClientFactory;
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent;
 import com.asptttoulousenatation.client.userspace.menu.MenuItems;
-import com.asptttoulousenatation.core.client.MyAbstractActivity;
+import com.asptttoulousenatation.client.config.MyAbstractActivity;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 
 public class HomeActivity extends MyAbstractActivity<HomePlace> {

@@ -12,7 +12,7 @@ public class MainPlace extends BasicPlace<UserUi> {
 		}
 
 		public String getToken(MainPlace pPlace) {
-			return null;
+			return "";
 		}
 		
 	}

@@ -15,7 +15,6 @@ import com.asptttoulousenatation.shared.init.InitResult;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
@@ -29,6 +28,7 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.web.bindery.event.shared.EventBus;
 
 public class MainContentPanel extends Composite {
 
@@ -58,12 +58,17 @@ public class MainContentPanel extends Composite {
 		lblAspttGrandToulouse.setStyleName(CSS.title());
 		panel.add(lblAspttGrandToulouse);
 		panel.setCellHeight(lblAspttGrandToulouse, "20px");
+		
+		HTML oldAnchor = new HTML("<a href=\"http://asptt-toulouse-natation.com\">Ancienne version du site</a>");
+		panel.add(oldAnchor);
+		panel.setCellHeight(oldAnchor, "20px");
 
 		breadcrumb = new Breadcrumb();
 		breadcrumb.update("Accueil", "");
 		breadcrumb.setStyleName(CSS.tetiere());
 		breadcrumb.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
+				subMenu.clear();
 				content.setWidget(actuPanel);
 				breadcrumb.update("Accueil", "");
 			}
@@ -92,7 +97,10 @@ public class MainContentPanel extends Composite {
 		for (ActuUi lActuUi : initResult.getActu()) {
 			DisclosurePanel lActuDetail = new DisclosurePanel(
 					lActuUi.getSummary());
-			lActuDetail.add(new HTML(lActuUi.getContent()));
+			VerticalPanel lContentPanel = new VerticalPanel();
+			lContentPanel.add(new HTML(lActuUi.getContent()));
+			lContentPanel.add(getActuDocumentPanel(lActuUi.getDocumentSet()));
+			lActuDetail.add(lContentPanel);
 			lActuDetail.getContent().getElement().getStyle()
 					.clearBackgroundColor();
 			HeaderPanel lHeaderPanel = new HeaderPanel(
@@ -163,9 +171,13 @@ public class MainContentPanel extends Composite {
 		lPanel.setWidget(0, 0, lTitle);
 
 		// Documents
-		FlowPanel lDocumentPanel = new FlowPanel();
+		VerticalPanel lDocumentPanel = new VerticalPanel();
 		for (DocumentUi lDocument : pDocuments) {
-			Anchor lAnchor = new Anchor(lDocument.getTitle());
+			String text = lDocument.getTitle();
+			if(lDocument.getSummary() != null && !lDocument.getSummary().isEmpty()) {
+				text+= " - " + lDocument.getSummary();
+			}
+			Anchor lAnchor = new Anchor(text);
 			lAnchor.setTitle(lDocument.getSummary());
 			lAnchor.setHref(GWT.getHostPageBaseURL()
 					+ "downloadDocument?documentId=" + lDocument.getId()
@@ -175,6 +187,25 @@ public class MainContentPanel extends Composite {
 		}
 		lPanel.setWidget(1, 0, lDocumentPanel);
 		return lPanel;
+	}
+	
+	private Panel getActuDocumentPanel(List<DocumentUi> pDocuments) {
+		// Documents
+		VerticalPanel lDocumentPanel = new VerticalPanel();
+		for (DocumentUi lDocument : pDocuments) {
+			String text = lDocument.getTitle();
+			if(lDocument.getSummary() != null && !lDocument.getSummary().isEmpty()) {
+				text+= " - " + lDocument.getSummary();
+			}
+			Anchor lAnchor = new Anchor(text);
+			lAnchor.setTitle(lDocument.getSummary());
+			lAnchor.setHref(GWT.getHostPageBaseURL()
+					+ "downloadDocument?documentId=" + lDocument.getId()
+					+ "&fileId=" + lDocument.getData());
+			lAnchor.addStyleName(CSS.areaDocumentItem());
+			lDocumentPanel.add(lAnchor);
+		}
+		return lDocumentPanel;
 	}
 
 	public void setPopupManager(PopupManager pPopupManager) {

@@ -1,40 +1,63 @@
 package com.asptttoulousenatation.client;
 
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.dom.client.Style.Visibility;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.SimplePanel;
 
 public class AlternateBanner extends Composite {
 
-	private SimplePanel panel;
+	private static int IMAGE_HEIGHT = 270;
+	private HorizontalPanel panel;
 	private int index;
+	private int oldIndex;
 
 	private String[] photos;
+	private Image[] images;
 
 	public AlternateBanner(String[] pPhotos) {
+		images = new Image[pPhotos.length];
 		photos = pPhotos;
-		panel = new SimplePanel();
+		panel = new HorizontalPanel();
+		panel.setWidth("100%");
 		panel.setHeight("291px");
 		initWidget(panel);
 		index = 0;
+		oldIndex = 0;
+		for (int i = 0; i < photos.length; i++) {
+			String url = photos[i];
+			Image image = new Image(url);
+			image.getElement().getStyle().setPosition(Position.ABSOLUTE);
+			image.getElement().getStyle().setLeft(30, Unit.PCT);
+
+			// Ratio
+			float ratio = image.getWidth() / IMAGE_HEIGHT;
+			// image.setHeight(IMAGE_HEIGHT + "px");
+			// image.setWidth(ratio * IMAGE_HEIGHT+ "px");
+			image.getElement().getStyle().setVisibility(Visibility.HIDDEN);
+			images[i] = image;
+			panel.add(images[i]);
+		}
+		images[0].getElement().getStyle().setVisibility(Visibility.VISIBLE);
+
 		Timer timer = new Timer() {
 
 			@Override
 			public void run() {
-				if (photos != null && photos.length > index) {
-					Image image = new Image(photos[index]);
-
-					//Ratio
-					float ratio = image.getWidth() / 290;
-					image.setHeight("290px");
-					image.setWidth(ratio * 290 + "px");
-					panel.clear();
-					panel.add(image);
-					index = (index + 1) % photos.length;
+				for (int i = 0; i < images.length; i++) {
+					images[i].getElement().getStyle()
+							.setVisibility(Visibility.HIDDEN);
+					images[i].getElement().getStyle().setZIndex(-1);
 				}
+				images[index].getElement().getStyle()
+						.setVisibility(Visibility.VISIBLE);
+				images[index].getElement().getStyle().setZIndex(1);
+				index = (index + 1) % photos.length;
 			}
 		};
-		timer.scheduleRepeating(3000);
+		timer.scheduleRepeating(5000);
 	}
 }

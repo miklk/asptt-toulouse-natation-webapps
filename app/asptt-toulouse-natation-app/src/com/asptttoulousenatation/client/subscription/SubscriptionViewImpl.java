@@ -8,6 +8,7 @@ import com.asptttoulousenatation.client.subscription.ui.GroupSlotTreeViewModel;
 import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.core.shared.club.subscription.SubscriptionPriceUi;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -134,7 +135,7 @@ public class SubscriptionViewImpl extends Composite implements SubscriptionView 
 	public SubscriptionViewImpl(List<GroupUi> pGroups) {
 		panel = new VerticalPanel();
 		Anchor anchor = new Anchor("Ouvrir le formulaire dans une nouvelle page");
-		anchor.setHref("http://127.0.0.1:8888/Asptt_toulouse_natation_app.html?gwt.codesvr=127.0.0.1:9997#SubscriptionPlace:null");
+		anchor.setHref(GWT.getHostPageBaseURL() + "#SubscriptionPlace:null");
 		anchor.setTarget("_blank");
 		panel.add(anchor);
 		groups = pGroups;

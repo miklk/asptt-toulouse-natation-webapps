@@ -13,7 +13,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyPressHandlers;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockPanel;
@@ -23,6 +22,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.web.bindery.event.shared.EventBus;
 
 public class MainViewImpl extends Composite implements MainView {
 
@@ -37,7 +37,7 @@ public class MainViewImpl extends Composite implements MainView {
 	private PopupManager popupManager;
 
 	private UserUi user;
-	
+
 	private EventBus eventBus;
 
 	public MainViewImpl(InitResult pInitResult, UserUi pUser, EventBus pEventBus) {
@@ -48,7 +48,8 @@ public class MainViewImpl extends Composite implements MainView {
 		initWidget(panel);
 		panel.setStyleName(CSS.page());
 
-		headerPanel = new MainHeaderPanel(initResult, user, eventBus, popupManager);
+		headerPanel = new MainHeaderPanel(initResult, user, eventBus,
+				popupManager);
 		panel.add(headerPanel, DockPanel.NORTH);
 
 		bottomPanel = new MainBottomPanel(initResult, eventBus);
@@ -61,12 +62,13 @@ public class MainViewImpl extends Composite implements MainView {
 		HorizontalPanel layoutPanel_1 = new HorizontalPanel();
 		panel.add(layoutPanel_1, DockPanel.CENTER);
 		contentPanel = new MainContentPanel(initResult, eventBus);
-		
+
 		layoutPanel_1.add(contentPanel);
+
 		toolPanel = new MainToolPanel(initResult, user, eventBus);
 		layoutPanel_1.add(toolPanel);
 		// TODO content
-		
+
 	}
 
 	public HasClickHandlers getAuthenticationButton() {
@@ -157,11 +159,11 @@ public class MainViewImpl extends Composite implements MainView {
 	public void updateBreadcrumb(final String pAreaName, final String pMenuName) {
 		contentPanel.updateBreadcrumb(pAreaName, pMenuName);
 	}
-	
+
 	public void updateBreadcrumb(final String pMenuName) {
 		contentPanel.updateBreadcrumb(pMenuName);
 	}
-	
+
 	public void loadContent(byte[] pData, List<DocumentUi> pDocuments) {
 		contentPanel.loadContent(pData, pDocuments);
 	}

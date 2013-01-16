@@ -5,13 +5,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -23,6 +27,7 @@ import net.customware.gwt.dispatch.shared.DispatchException;
 import org.apache.commons.lang.StringUtils;
 
 import com.asptttoulousenatation.client.userspace.menu.MenuItems;
+import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.server.dao.ActuDao;
 import com.asptttoulousenatation.core.server.dao.competition.CompetitionDao;
 import com.asptttoulousenatation.core.server.dao.competition.CompetitionDayDao;
@@ -48,6 +53,7 @@ import com.asptttoulousenatation.core.server.dao.swimmer.SwimmerDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
+import com.asptttoulousenatation.core.shared.actu.GetAllActuAction;
 import com.asptttoulousenatation.core.shared.reference.IsDataUpdateAction;
 import com.asptttoulousenatation.core.shared.reference.IsDataUpdateResult;
 import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
@@ -57,6 +63,7 @@ import com.asptttoulousenatation.server.ApplicationLoader;
 import com.asptttoulousenatation.server.userspace.admin.entity.ActuTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.AreaTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.CompetitionDayTransformer;
+import com.asptttoulousenatation.server.userspace.admin.entity.CompetitionTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.MenuTransformer;
 import com.asptttoulousenatation.server.util.Utils;
 import com.asptttoulousenatation.shared.event.UiEvent;
@@ -68,8 +75,11 @@ import com.asptttoulousenatation.shared.util.HTMLUtils;
 import com.google.appengine.api.datastore.Blob;
 import com.google.gdata.client.Query;
 import com.google.gdata.client.photos.PicasawebService;
+import com.google.gdata.data.Link;
+import com.google.gdata.data.photos.AlbumEntry;
 import com.google.gdata.data.photos.AlbumFeed;
 import com.google.gdata.data.photos.PhotoEntry;
+import com.google.gdata.data.photos.UserFeed;
 import com.google.gdata.util.AuthenticationException;
 import com.google.gdata.util.ServiceException;
 
@@ -88,6 +98,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 	private CompetitionDao competitionDao = new CompetitionDao();
 	private CompetitionDayDao competitionDayDao = new CompetitionDayDao();
 
+	private CompetitionTransformer competitionTransformer = new CompetitionTransformer();
 	private CompetitionDayTransformer competitionDayTransformer = new CompetitionDayTransformer();
 
 	private ApplicationLoader applicationLoader = ApplicationLoader
@@ -99,9 +110,11 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 	public InitResult execute(InitAction pAction, ExecutionContext pContext)
 			throws DispatchException {
 		LOG.info("Init action");
+		Long startTime = System.currentTimeMillis();
 
 		// createData();
 		// createUsers();
+		// createCompetition();
 		InitResult lInitResult = new InitResult();
 		lInitResult.setPhoto(getPicture());
 
@@ -110,8 +123,8 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		IsDataUpdateResult lMenuUpdateResult = pContext
 				.execute(new IsDataUpdateAction(MenuEntity.class));
 		if (lAreaUpdateResult.isDataUpdated()
-				|| lMenuUpdateResult.isDataUpdated()) {
-
+				|| lMenuUpdateResult.isDataUpdated()
+				|| applicationLoader.getArea() == null) {
 			// Structure
 			List<CriterionDao<? extends Object>> lAreaSelectionCriteria = new ArrayList<CriterionDao<? extends Object>>(
 					1);
@@ -160,6 +173,21 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 							lSubMenuUis.add(menuTransformer.toUi(lSubMenu));
 						}
 						MenuUi lMenu = menuTransformer.toUi(lMenuEntity);
+						Collections.sort(lSubMenuUis, new Comparator<MenuUi>() {
+
+							public int compare(MenuUi pO1, MenuUi pO2) {
+								final int result;
+								if (pO1.getOrder() == pO2.getOrder()) {
+									result = 0;
+								} else if (pO1.getOrder() > pO2.getOrder()) {
+									result = 1;
+								} else {
+									result = -1;
+								}
+								return result;
+							}
+
+						});
 						lMenu.setSubMenus(lSubMenuUis);
 						lMenuUis.put(lMenu.getTitle(), lMenu);
 					}
@@ -175,19 +203,19 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 
 		IsDataUpdateResult lActuUpdateResult = pContext
 				.execute(new IsDataUpdateAction(ActuEntity.class));
-		if (lActuUpdateResult.isDataUpdated()) {
+		if (lActuUpdateResult.isDataUpdated()
+				|| applicationLoader.getActu() == null) {
 			// Actu
-			List<ActuEntity> lActuEntities = actuDao.getAll();
-			LOG.info("retrieving actu #" + lActuEntities.size());
-			ArrayList<ActuUi> lActu = new ArrayList<ActuUi>(
-					actuTransformer.toUi(lActuEntities));
+			List<ActuUi> lActu = pContext.execute(new GetAllActuAction()).getResult();
+			LOG.info("retrieving actu #" + lActu.size());
 			pContext.execute(new SetDataUpdateAction(ActuEntity.class, false));
 			applicationLoader.setActu(lActu);
 		}
 
 		IsDataUpdateResult lEventUpdateResult = pContext
 				.execute(new IsDataUpdateAction(CompetitionEntity.class));
-		if (lEventUpdateResult.isDataUpdated()) {
+		if (lEventUpdateResult.isDataUpdated()
+				|| applicationLoader.getEvents() == null) {
 			// Events "calendar"
 			pContext.execute(new SetDataUpdateAction(CompetitionEntity.class,
 					false));
@@ -197,6 +225,8 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		lInitResult.setArea(applicationLoader.getArea());
 		lInitResult.setActu(applicationLoader.getActu());
 		lInitResult.setEvents(applicationLoader.getEvents());
+		Long endTime = System.currentTimeMillis();
+		LOG.info("Loading duration: " + (endTime - startTime) + " ms");
 		return lInitResult;
 	}
 
@@ -215,6 +245,23 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				}
 				lEventList.add(lEvent);
 				lEvents.put(lEvent.getEventDate(), lEventList);
+			}
+			if (CollectionUtils.isEmpty(lEntity.getDays())) {
+				List<UiEvent> lEventUis = competitionTransformer
+						.toUiEvent(lEntity);
+				for (UiEvent lEvent : lEventUis) {
+					List<UiEvent> lEventList;
+					Date lDate = new Date(Date.UTC(lEvent.getEventDate()
+							.getYear(), lEvent.getEventDate().getMonth(),
+							lEvent.getEventDate().getDate(), 0, 0, 0));
+					if (lEvents.containsKey(lDate)) {
+						lEventList = lEvents.get(lDate);
+					} else {
+						lEventList = new ArrayList<UiEvent>();
+					}
+					lEventList.add(lEvent);
+					lEvents.put(lDate, lEventList);
+				}
 			}
 		}
 		return lEvents;
@@ -376,8 +423,11 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				false, (short) 6);
 		AreaEntity lAreaOfficier = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.OFFICIEL_VIEW.toString(),
-				"Consulter le calendier", lAreaOfficier.getId(),
+				"Consulter le calendrier", lAreaOfficier.getId(),
 				StringUtils.EMPTY, StringUtils.EMPTY, true, true, 1);
+		createMenu(MenuItems.OFFICIEL_SUBSCRIPTION.toString(), "Inscription",
+				lAreaOfficier.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
+				true, true, 2);
 
 		// Compétition
 		lAreaEntity = new AreaEntity(null, "Compétitions saison",
@@ -404,6 +454,17 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		createMenu(MenuItems.SWIMMER_STAT_MONTH.toString(), "Par mois",
 				lAreaStat.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
 				false, 3);
+		createMenu(MenuItems.SWIMMER_STAT_YEAR.toString(), "Par année",
+				lAreaStat.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
+				false, 4);
+
+		// Profil
+		lAreaEntity = new AreaEntity(null, "Mon profil", ProfileEnum.NAGEUR,
+				false, (short) 5);
+		AreaEntity lAreaProfil = lAreaDao.save(lAreaEntity);
+		createMenu(MenuItems.PROFILE_PASSWORD.toString(),
+				"Changer de mot de passe", lAreaProfil.getId(),
+				StringUtils.EMPTY, StringUtils.EMPTY, true, false, 1);
 
 		createUserAdmin();
 		createUserRoot();
@@ -545,26 +606,43 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 	}
 
 	private String[] getPicture() {
-		String[] result = new String[3];
+		String[] result = null;
 		PicasawebService myService = new PicasawebService("asptt_test");
 		try {
 			myService.setUserCredentials(
 					"webmaster@asptt-toulouse-natation.com", "31000_asptt");
 			URL feedUrl = new URL(
-					"https://picasaweb.google.com/data/feed/api/user/webmaster@asptt-toulouse-natation.com");
+					"https://picasaweb.google.com/data/feed/api/user/webmaster@asptt-toulouse-natation.com?kind=album");
 
 			Query myQuery = new Query(feedUrl);
-			myQuery.setStringCustomParameter("kind", "photo");
-			myQuery.setStringCustomParameter("tag", "banniere");
 
-			AlbumFeed searchResultsFeed = myService.query(myQuery,
-					AlbumFeed.class);
+			UserFeed searchResultsFeed = myService.query(myQuery,
+					UserFeed.class);
+			// Get 'Banniere' album
+			AlbumEntry lBanniereAlbum = null;
+			boolean found = false;
+			ListIterator<AlbumEntry> lEntryIt = searchResultsFeed
+					.getAlbumEntries().listIterator();
+			while (lEntryIt.hasNext() && !found) {
+				AlbumEntry adaptedEntry = lEntryIt.next();
+				AlbumEntry lAlbum = (AlbumEntry) adaptedEntry;
+				if ("Banniere".equals(lAlbum.getName())) {
+					lBanniereAlbum = lAlbum;
+					found = true;
+				}
+			}
+			if (lBanniereAlbum != null) {
+				String feedHref = getLinkByRel(lBanniereAlbum.getLinks(),
+						Link.Rel.FEED);
+				AlbumFeed lAlbumEntries = myService.query(new Query(new URL(
+						feedHref)), AlbumFeed.class);
 
-			result = new String[searchResultsFeed.getPhotoEntries().size()];
-			int i = 0;
-			for (PhotoEntry photo : searchResultsFeed.getPhotoEntries()) {
-				result[i] = photo.getMediaContents().get(0).getUrl();
-				i++;
+				result = new String[lAlbumEntries.getPhotoEntries().size()];
+				int i = 0;
+				for (PhotoEntry photo : lAlbumEntries.getPhotoEntries()) {
+					result[i] = photo.getMediaContents().get(0).getUrl();
+					i++;
+				}
 			}
 		} catch (AuthenticationException e) {
 			e.printStackTrace();
@@ -579,6 +657,18 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	/**
+	 * Helper function to get a link by a rel value.
+	 */
+	public String getLinkByRel(List<Link> links, String relValue) {
+		for (Link link : links) {
+			if (relValue.equals(link.getRel())) {
+				return link.getHref();
+			}
+		}
+		throw new IllegalArgumentException("Missing " + relValue + " link.");
 	}
 
 	private void createUsers() {
@@ -643,6 +733,488 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 			lSwimmerDao.save(lSwimmerEntity);
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private void createCompetition() {
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		CompetitionDao dao = new CompetitionDao();
+		CompetitionEntity competition = new CompetitionEntity();
+		try {
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("ENF 2");
+			competition.setBegin(format.parse("21/10/2012"));
+			competition.setEnd(format.parse("21/10/2012"));
+			competition.setPlace("Muret");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("ENF 3");
+			competition.setBegin(format.parse("28/10/2012"));
+			competition.setEnd(format.parse("28/10/2012"));
+			competition.setPlace("Balma");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Championnats Interclubs Benjamins");
+			competition.setBegin(format.parse("28/10/2012"));
+			competition.setEnd(format.parse("28/10/2012"));
+			competition.setPlace("Balma");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Interclubs Départementaux");
+			competition.setBegin(format.parse("11/11/2012"));
+			competition.setEnd(format.parse("11/11/2012"));
+			competition.setPlace("Colomiers");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Interclubs Régionaux ");
+			competition.setBegin(format.parse("10/11/2012"));
+			competition.setEnd(format.parse("11/11/2012"));
+			competition.setPlace("Muret");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Championnats France 25m");
+			competition.setBegin(format.parse("15/11/2012"));
+			competition.setEnd(format.parse("18/11/2012"));
+			competition.setPlace("Angers");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("1er Championnat Départemental Maîtres");
+			competition.setBegin(format.parse("17/11/2012"));
+			competition.setEnd(format.parse("17/11/2012"));
+			competition.setPlace("Toulouse (Nakache)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("ENF 3");
+			competition.setBegin(format.parse("17/11/2012"));
+			competition.setEnd(format.parse("17/11/2012"));
+			competition.setPlace("Nakache");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("1ère Trophées Paule Lacoste");
+			competition.setBegin(format.parse("18/11/2012"));
+			competition.setEnd(format.parse("18/11/2012"));
+			competition.setPlace("Toulouse (Nakache)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("ENF 2");
+			competition.setBegin(format.parse("18/11/2012"));
+			competition.setEnd(format.parse("18/11/2012"));
+			competition.setPlace("Nakache");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Championnat Départemental 25m");
+			competition.setBegin(format.parse("24/11/2012"));
+			competition.setEnd(format.parse("25/11/2012"));
+			competition.setPlace("Portet / Garonne");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("1ères Médailles du TOAC");
+			competition.setBegin(format.parse("01/12/2012"));
+			competition.setEnd(format.parse("01/12/2012"));
+			competition.setPlace("Toulouse (Léo Lagrange)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Meeting Régional Interclubs");
+			competition.setBegin(format.parse("02/12/2012"));
+			competition.setEnd(format.parse("02/12/2012"));
+			competition.setPlace("Colomiers");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Championnats Régionaux 25m");
+			competition.setBegin(format.parse("08/12/2012"));
+			competition.setEnd(format.parse("09/12/2012"));
+			competition.setPlace("Castres");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("1er Pass'compétition");
+			competition.setBegin(format.parse("04/12/2012"));
+			competition.setEnd(format.parse("04/12/2012"));
+			competition.setPlace("Muret");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("17ème Meeting Alex Jany");
+			competition.setBegin(format.parse("15/12/2012"));
+			competition.setEnd(format.parse("16/12/2012"));
+			competition.setPlace("Léo Lagrange");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Chpts de France N2 25m");
+			competition.setBegin(format.parse("21/12/2012"));
+			competition.setEnd(format.parse("23/12/2012"));
+			competition.setPlace("Bayonne");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("ENF 2");
+			competition.setBegin(format.parse("13/01/2013"));
+			competition.setEnd(format.parse("13/01/2013"));
+			competition.setPlace("Muret");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Championnat Régional Michel Ducros étape 1");
+			competition.setBegin(format.parse("13/01/2013"));
+			competition.setEnd(format.parse("13/01/2013"));
+			competition.setPlace("Toulouse (Alex Jany)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("2ème Trophées Paule Lacoste");
+			competition.setBegin(format.parse("20/01/2013"));
+			competition.setEnd(format.parse("20/01/2013"));
+			competition.setPlace("Muret");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("ENF 3");
+			competition.setBegin(format.parse("26/01/2013"));
+			competition.setEnd(format.parse("26/01/2013"));
+			competition.setPlace("Nakache");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("2ème Championnat Départemental Maîtres");
+			competition.setBegin(format.parse("26/01/2013"));
+			competition.setEnd(format.parse("26/01/2013"));
+			competition.setPlace("Toulouse (Nakache)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Interclubs Nationaux des Maîtres");
+			competition.setBegin(format.parse("26/01/2013"));
+			competition.setEnd(format.parse("27/01/2013"));
+			competition.setPlace("Le Puy en Velay");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Etape Meeting Speedo");
+			competition.setBegin(format.parse("27/01/2013"));
+			competition.setEnd(format.parse("27/01/2013"));
+			competition.setPlace("Toulouse (Nakache)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Interclubs Régionaux Benjamins / Minimes");
+			competition.setBegin(format.parse("03/02/2013"));
+			competition.setEnd(format.parse("03/02/2013"));
+			competition.setPlace("Pamiers");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition
+					.setTitle("Interclubs Départementaux Benjamins / Minimes");
+			competition.setBegin(format.parse("03/02/2013"));
+			competition.setEnd(format.parse("03/02/2013"));
+			competition.setPlace("Balma");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Championnat Régional Michel Ducros étape 2");
+			competition.setBegin(format.parse("10/02/2013"));
+			competition.setEnd(format.parse("10/02/2013"));
+			competition.setPlace("Auch");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Meeting international d'hiver FFN");
+			competition.setBegin(format.parse("15/02/2013"));
+			competition.setEnd(format.parse("16/02/2013"));
+			competition.setPlace("Nancy");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("2èmes Médailles du TOAC");
+			competition.setBegin(format.parse("16/02/2013"));
+			competition.setEnd(format.parse("16/02/2013"));
+			competition.setPlace("Toulouse (Léo Lagrange)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Meeting Départemental 1");
+			competition.setBegin(format.parse("17/02/2013"));
+			competition.setEnd(format.parse("17/02/2013"));
+			competition.setPlace("Toulouse (Léo Lagrange)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("5ème Grand Prix de la ville d'Agen");
+			competition.setBegin(format.parse("23/02/2013"));
+			competition.setEnd(format.parse("24/02/2013"));
+			competition.setPlace("Agen");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("3ème Championnat Départemental Maîtres");
+			competition.setBegin(format.parse("23/02/2013"));
+			competition.setEnd(format.parse("23/02/2013"));
+			competition.setPlace("Colomiers");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Chpts de France Hiver 25m Maîtres");
+			competition.setBegin(format.parse("07/03/2013"));
+			competition.setEnd(format.parse("10/03/2013"));
+			competition.setPlace("Chartres");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Meeting Régional 50m");
+			competition.setBegin(format.parse("08/03/2013"));
+			competition.setEnd(format.parse("10/03/2013"));
+			competition.setPlace("Toulouse (Léo Lagrange)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("ENF 2");
+			competition.setBegin(format.parse("16/03/2013"));
+			competition.setEnd(format.parse("16/03/2013"));
+			competition.setPlace("Toulouse (Jean Boiteux)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("1er Natathlon Départemental");
+			competition.setBegin(format.parse("17/03/2013"));
+			competition.setEnd(format.parse("17/03/2013"));
+			competition.setPlace("Toulouse (Alex Jany)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("ENF 3");
+			competition.setBegin(format.parse("17/03/2013"));
+			competition.setEnd(format.parse("17/03/2013"));
+			competition.setPlace("Toulouse (Alex Jany)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Chpts de France N2 Hiver 50m");
+			competition.setBegin(format.parse("22/03/2013"));
+			competition.setEnd(format.parse("24/03/2013"));
+			competition.setPlace("Angoulème ");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("3ème Trophées Paule Lacoste");
+			competition.setBegin(format.parse("24/03/2013"));
+			competition.setEnd(format.parse("24/03/2013"));
+			competition.setPlace("Muret");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Championnats de France Jeunes");
+			competition.setBegin(format.parse("02/04/2013"));
+			competition.setEnd(format.parse("06/04/2013"));
+			competition.setPlace("?");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Meeting Départemental 2");
+			competition.setBegin(format.parse("06/04/2013"));
+			competition.setEnd(format.parse("07/04/2013"));
+			competition.setPlace("Toulouse (Léo Lagrange)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Championnats de France Elite");
+			competition.setBegin(format.parse("09/04/2013"));
+			competition.setEnd(format.parse("14/04/2013"));
+			competition.setPlace("Rennes");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Team Cup Départementale");
+			competition.setBegin(format.parse("13/04/2013"));
+			competition.setEnd(format.parse("13/04/2013"));
+			competition.setPlace(" Colomiers");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("2ème Natathlon Départemental");
+			competition.setBegin(format.parse("14/04/2013"));
+			competition.setEnd(format.parse("14/04/2013"));
+			competition.setPlace("Saverdun");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("ENF 3");
+			competition.setBegin(format.parse("14/04/2013"));
+			competition.setEnd(format.parse("14/04/2013"));
+			competition.setPlace("Saverdun");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("20ème Coupe des Régions Trophée Jean Pommat");
+			competition.setBegin(format.parse("10/05/2013"));
+			competition.setEnd(format.parse("11/05/2013"));
+			competition.setPlace("Toulouse (Léo Lagrange)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("23èmes Nautiques de Tarbes");
+			competition.setBegin(format.parse("11/05/2013"));
+			competition.setEnd(format.parse("12/05/2013"));
+			competition.setPlace("Tarbes");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Meeting National des Maîtres");
+			competition.setBegin(format.parse("18/05/2013"));
+			competition.setEnd(format.parse("18/05/2013"));
+			competition.setPlace("Toulouse (Léo Lagrange)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("3ème Natathlon Départemental");
+			competition.setBegin(format.parse("19/05/2013"));
+			competition.setEnd(format.parse("19/05/2013"));
+			competition.setPlace("Toulouse (Alex Jany)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Championnat Régional 50m");
+			competition.setBegin(format.parse("25/05/2013"));
+			competition.setEnd(format.parse("26/05/2013"));
+			competition.setPlace("Tarbes");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Finales TOAC");
+			competition.setBegin(format.parse("01/06/2013"));
+			competition.setEnd(format.parse("01/06/2013"));
+			competition.setPlace("Toulouse (Léo Lagrange)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Championnat Régional Eté des Maîtres");
+			competition.setBegin(format.parse("02/06/2013"));
+			competition.setEnd(format.parse("02/06/2013"));
+			competition.setPlace("Tarbes");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition
+					.setTitle("Meeting Départemental + Finale Challenge Speedo");
+			competition.setBegin(format.parse("02/06/2013"));
+			competition.setEnd(format.parse("02/06/2013"));
+			competition.setPlace("Toulouse (Léo Lagrange)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Finale Régionale Team Cup ");
+			competition.setBegin(format.parse("08/06/2013"));
+			competition.setEnd(format.parse("08/06/2013"));
+			competition.setPlace("Montauban");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Open EDF");
+			competition.setBegin(format.parse("14/06/2013"));
+			competition.setEnd(format.parse("15/06/2013"));
+			competition.setPlace("Paris");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Finale des Trophées");
+			competition.setBegin(format.parse("16/06/2013"));
+			competition.setEnd(format.parse("16/06/2013"));
+			competition.setPlace("Saint-Gaudens");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Finale Régionale Natathlon");
+			competition.setBegin(format.parse("16/06/2013"));
+			competition.setEnd(format.parse("16/06/2013"));
+			competition.setPlace("Saint-Affrique");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("9ème Trophée national Lucien-Zins");
+			competition.setBegin(format.parse("22/06/2013"));
+			competition.setEnd(format.parse("23/06/2013"));
+			competition.setPlace("Tarbes");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Finale Interrégionale Natathlon");
+			competition.setBegin(format.parse("22/06/2013"));
+			competition.setEnd(format.parse("22/06/2013"));
+			competition.setPlace("Agen ?");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Chpts de France Eté 50m Maîtres");
+			competition.setBegin(format.parse("20/06/2013"));
+			competition.setEnd(format.parse("23/06/2013"));
+			competition.setPlace("Antibes");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Chpt Départemental Eté");
+			competition.setBegin(format.parse("22/06/2013"));
+			competition.setEnd(format.parse("23/06/2013"));
+			competition.setPlace("Toulouse (Léo Lagrange)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Finale Départementale Natathlon");
+			competition.setBegin(format.parse("22/06/2013"));
+			competition.setEnd(format.parse("23/06/2013"));
+			competition.setPlace("Toulouse (Léo Lagrange)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Championnats de France N2 Eté 50m");
+			competition.setBegin(format.parse("28/06/2013"));
+			competition.setEnd(format.parse("30/06/2013"));
+			competition.setPlace("Toulouse (Léo Lagrange)");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Chpt de France Eté Open Maîtres Eau Libre");
+			competition.setBegin(format.parse("06/07/13"));
+			competition.setEnd(format.parse("06/07/13"));
+			competition.setPlace("Torcy");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Coupe des Départements");
+			competition.setBegin(format.parse("06/07/2013"));
+			competition.setEnd(format.parse("07/07/2013"));
+			competition.setPlace("Alex Jany ou Colomiers");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Championnats Nationaux (16 ans et +)");
+			competition.setBegin(format.parse("11/07/2013"));
+			competition.setEnd(format.parse("14/07/2013"));
+			competition.setPlace("Dunkerque");
+			dao.save(competition);
+			competition = new CompetitionEntity();
+			competition.setSaison("2012-2013");
+			competition.setTitle("Championnats de France Minimes");
+			competition.setBegin(format.parse("18/07/2013"));
+			competition.setEnd(format.parse("21/07/2013"));
+			competition.setPlace("Béthune");
+
+			dao.save(competition);
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 	}

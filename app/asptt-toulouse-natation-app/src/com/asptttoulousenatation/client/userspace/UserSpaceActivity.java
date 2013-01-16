@@ -17,6 +17,8 @@ import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatActiv
 import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatPlace;
 import com.asptttoulousenatation.client.userspace.admin.user.UserActivity;
 import com.asptttoulousenatation.client.userspace.admin.user.UserPlace;
+import com.asptttoulousenatation.client.userspace.admin.user.password.ChangePasswordActivity;
+import com.asptttoulousenatation.client.userspace.admin.user.password.ChangePasswordPlace;
 import com.asptttoulousenatation.client.userspace.calendar.CompetitionCalendarActivity;
 import com.asptttoulousenatation.client.userspace.calendar.CompetitionCalendarPlace;
 import com.asptttoulousenatation.client.userspace.home.HomeActivity;
@@ -24,7 +26,9 @@ import com.asptttoulousenatation.client.userspace.home.HomePlace;
 import com.asptttoulousenatation.client.userspace.menu.MenuActivity;
 import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.client.userspace.menu.MenuPlace;
-import com.asptttoulousenatation.core.client.MyAbstractActivity;
+import com.asptttoulousenatation.client.userspace.officiel.OfficielSubscriptionActivity;
+import com.asptttoulousenatation.client.userspace.officiel.OfficielSubscriptionPlace;
+import com.asptttoulousenatation.client.config.MyAbstractActivity;
 import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatEnum;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
 import com.asptttoulousenatation.core.shared.user.UserUi;
@@ -33,7 +37,7 @@ import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -175,6 +179,11 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 															.getContentPanel(),
 													lEventBus);
 											break;
+										case OFFICIEL_SUBSCRIPTION:
+											OfficielSubscriptionActivity lOfficielSubscriptionActivity = new OfficielSubscriptionActivity(new OfficielSubscriptionPlace(), clientFactory);
+											lOfficielSubscriptionActivity.setUser(user);
+											lOfficielSubscriptionActivity.start(lAdminView.getContentPanel(), lEventBus);
+											break;
 										case SWIMMER_STAT_DAY:
 											SwimmerStatActivity lSwimmerStatActivityDay = new SwimmerStatActivity(
 													new SwimmerStatPlace(),
@@ -207,6 +216,22 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 													lAdminView
 															.getContentPanel(),
 													lEventBus);
+											break;
+										case SWIMMER_STAT_YEAR:
+											SwimmerStatActivity lSwimmerStatActivityYear = new SwimmerStatActivity(
+													new SwimmerStatPlace(),
+													clientFactory);
+											lSwimmerStatActivityYear
+													.setKind(SwimmerStatEnum.YEAR);
+											lSwimmerStatActivityYear.start(
+													lAdminView
+															.getContentPanel(),
+													lEventBus);
+											break;
+										case PROFILE_PASSWORD:
+											ChangePasswordActivity lActivity = new ChangePasswordActivity(new ChangePasswordPlace(), clientFactory);
+											lActivity.setUser(user);
+											lActivity.start(lAdminView.getContentPanel(), lEventBus);
 											break;
 										case VIDE:
 											lAdminView.getContentPanel()

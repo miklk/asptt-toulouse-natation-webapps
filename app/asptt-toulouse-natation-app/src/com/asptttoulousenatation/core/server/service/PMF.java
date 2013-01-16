@@ -15,10 +15,6 @@ public final class PMF {
 
 	}
 
-	public static PersistenceManagerFactory get() {
-		return persistenceManagerFactory;
-	}
-	
 	public static PersistenceManager getPersistenceManager() {
 		if(PM == null || PM.isClosed()) {
 			PM = persistenceManagerFactory.getPersistenceManager();

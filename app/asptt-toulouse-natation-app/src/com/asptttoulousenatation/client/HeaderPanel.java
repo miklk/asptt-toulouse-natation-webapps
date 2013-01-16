@@ -61,4 +61,12 @@ public class HeaderPanel extends Composite {
 	public void setContentStyle(String pStyle) {
 		content.addStyleName(pStyle);
 	}
+
+	public Label getHeader() {
+		return header;
+	}
+
+	public void setHeader(Label pHeader) {
+		header = pHeader;
+	}
 }

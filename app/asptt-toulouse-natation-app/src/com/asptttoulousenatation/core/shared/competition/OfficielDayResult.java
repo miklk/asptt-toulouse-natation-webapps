@@ -1,10 +1,13 @@
 package com.asptttoulousenatation.core.shared.competition;
 
+import java.util.List;
+
 import net.customware.gwt.dispatch.shared.Result;
 
 public class OfficielDayResult implements Result {
 	
-	CompetitionDayUi competitionDayUi;
+	private CompetitionDayUi competitionDayUi;
+	private List<CompetitionUi> competitions;
 
 	public OfficielDayResult() {
 		
@@ -21,5 +24,13 @@ public class OfficielDayResult implements Result {
 
 	public void setCompetitionDayUi(CompetitionDayUi pCompetitionDayUi) {
 		competitionDayUi = pCompetitionDayUi;
+	}
+
+	public List<CompetitionUi> getCompetitions() {
+		return competitions;
+	}
+
+	public void setCompetitions(List<CompetitionUi> pCompetitions) {
+		competitions = pCompetitions;
 	}
 }

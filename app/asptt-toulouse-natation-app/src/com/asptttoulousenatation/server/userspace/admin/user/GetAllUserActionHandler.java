@@ -1,9 +1,13 @@
 package com.asptttoulousenatation.server.userspace.admin.user;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
 
 import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
@@ -59,6 +63,17 @@ public class GetAllUserActionHandler implements
 			}
 			lUsers.add(lUserUi);
 		}
+		Collections.sort(lUsers, new Comparator<UserUi>() {
+			public int compare(UserUi pUser, UserUi pUser2) {
+				int compare = 0;
+				if(pUser.getUserData() != null && pUser2.getUserData() != null) {
+					if(StringUtils.isNotEmpty(pUser.getUserData().getLastName()) && StringUtils.isNotEmpty(pUser2.getUserData().getLastName())) {
+						compare = pUser.getUserData().getLastName().compareTo(pUser2.getUserData().getLastName()); 
+					}
+				}
+				return compare;
+			}
+		});
 		GetAllSlotResult lSlotResult = pContext.execute(new GetAllSlotAction());
 		return new GetAllUserResult(lUsers, lSlotResult.getSlots());
 	}

@@ -3,7 +3,7 @@ package com.asptttoulousenatation.client.userspace.admin.competition;
 import com.asptttoulousenatation.client.config.ClientFactory;
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent;
 import com.asptttoulousenatation.client.userspace.menu.MenuItems;
-import com.asptttoulousenatation.core.client.MyAbstractActivity;
+import com.asptttoulousenatation.client.config.MyAbstractActivity;
 import com.asptttoulousenatation.core.shared.competition.CreateCompetitionAction;
 import com.asptttoulousenatation.core.shared.competition.CreateCompetitionResult;
 import com.asptttoulousenatation.core.shared.competition.DeleteCompetitionAction;
@@ -14,7 +14,7 @@ import com.asptttoulousenatation.core.shared.competition.UpdateCompetitionAction
 import com.asptttoulousenatation.core.shared.competition.UpdateCompetitionResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;

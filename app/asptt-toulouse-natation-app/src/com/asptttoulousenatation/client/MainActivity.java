@@ -22,12 +22,12 @@ import com.asptttoulousenatation.shared.init.InitAction;
 import com.asptttoulousenatation.shared.init.InitResult;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.web.bindery.event.shared.EventBus;
 
 public class MainActivity extends MyAbstractActivity<MainPlace> {
 
@@ -41,7 +41,7 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 	public MainActivity(MainPlace pPlace, ClientFactory pClientFactory,
 			UserUi pUser) {
 		this(pPlace, pClientFactory);
-		user = pUser;
+		user = pPlace.getObject();
 	}
 
 	public void start(AcceptsOneWidget pPanel, EventBus pEventBus) {
@@ -132,58 +132,78 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 
 									public void loadContent(
 											final LoadContentEvent pEvent) {
-										dispatchAsync.execute(
-												new LoadContentAction(pEvent
-														.getMenu().getId()),
-												new AsyncCallback<LoadContentResult>() {
-													public void onFailure(
-															Throwable pCaught) {
-														Window.alert("Erreur "
-																+ pCaught
-																		.getMessage());
-													}
+										dispatchAsync
+												.execute(
+														new LoadContentAction(
+																pEvent.getMenu()
+																		.getId()),
+														new AsyncCallback<LoadContentResult>() {
+															public void onFailure(
+																	Throwable pCaught) {
+																Window.alert("Erreur "
+																		+ pCaught
+																				.getMessage());
+															}
 
-													public void onSuccess(
-															LoadContentResult pResult) {
-														switch (pEvent
-																.getArea()) {
-														case TOOL:
-															lMainView
-																	.loadToolContent(pResult
-																			.getData());
-															break;
-														case SUBSCRIPTION_ONLINE:
-															SubscriptionActivity lSubscriptionActivity = new SubscriptionActivity(new SubscriptionPlace(), clientFactory);
-															SimplePanel lPanel = new SimplePanel();
-															lSubscriptionActivity.start(lPanel, lEventBus);
-															lMainView.setSelectedMenu(pEvent.getMenu());
-															lMainView.updateBreadcrumb(pEvent.getMenuTitle());
-															lMainView.loadContent(lPanel);
-															
-															break;
-														case FORGET_PASSWORD:
-															lMainView
-															.loadForgetPasswordContent(pResult.getData());
-													break;
-														case BOTTOM:
-															lMainView.loadBottomContent(pResult.getData());
-															break;
-														case SUB_CONTENT:
-															lMainView
-															.loadSubContent(
-																	pResult.getData(),
-																	pResult.getDocuments(), pEvent.getMenuTitle());
-															break;
-														default:
-															lMainView.setSelectedMenu(pEvent.getMenu());
-															lMainView.updateBreadcrumb(pEvent.getAreaTitle(), pEvent.getMenuTitle());
-															lMainView
-																	.loadContent(
-																			pResult.getData(),
-																			pResult.getDocuments());
-														}
-													}
-												});
+															public void onSuccess(
+																	LoadContentResult pResult) {
+																switch (pEvent
+																		.getArea()) {
+																case TOOL:
+																	lMainView
+																			.loadToolContent(pResult
+																					.getData());
+																	break;
+																case SUBSCRIPTION_ONLINE:
+																	SubscriptionActivity lSubscriptionActivity = new SubscriptionActivity(
+																			new SubscriptionPlace(),
+																			clientFactory);
+																	SimplePanel lPanel = new SimplePanel();
+																	lSubscriptionActivity
+																			.start(lPanel,
+																					lEventBus);
+																	lMainView
+																			.setSelectedMenu(pEvent
+																					.getMenu());
+																	lMainView
+																			.updateBreadcrumb(pEvent
+																					.getMenuTitle());
+																	lMainView
+																			.loadContent(lPanel);
+
+																	break;
+																case FORGET_PASSWORD:
+																	lMainView
+																			.loadForgetPasswordContent(pResult
+																					.getData());
+																	break;
+																case BOTTOM:
+																	lMainView
+																			.loadBottomContent(pResult
+																					.getData());
+																	break;
+																case SUB_CONTENT:
+																	lMainView
+																			.loadSubContent(
+																					pResult.getData(),
+																					pResult.getDocuments(),
+																					pEvent.getMenuTitle());
+																	break;
+																default:
+																	lMainView
+																			.setSelectedMenu(pEvent
+																					.getMenu());
+																	lMainView
+																			.updateBreadcrumb(
+																					pEvent.getAreaTitle(),
+																					pEvent.getMenuTitle());
+																	lMainView
+																			.loadContent(
+																					pResult.getData(),
+																					pResult.getDocuments());
+																}
+															}
+														});
 									}
 								});
 						lPanel.add(lMainView);

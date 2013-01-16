@@ -15,6 +15,7 @@ public class MenuTransformer extends
 		lUi.setRoot(true);
 		lUi.setShortcut(pEntity.isShortcut());
 		lUi.setDisplay(pEntity.isDisplay());
+		lUi.setOrder(pEntity.getOrder());
 		return lUi;
 	}
 

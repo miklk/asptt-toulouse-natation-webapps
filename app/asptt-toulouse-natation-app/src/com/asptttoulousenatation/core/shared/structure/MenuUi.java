@@ -32,6 +32,8 @@ public class MenuUi implements IsSerializable {
 	
 	private List<MenuUi> subMenus;
 	
+	private int order;
+	
 	public MenuUi() {
 		id = 0l;
 		documentSet = new ArrayList<DocumentUi>(0);
@@ -137,4 +139,13 @@ public class MenuUi implements IsSerializable {
 	public void setSubMenus(List<MenuUi> pSubMenus) {
 		subMenus = pSubMenus;
 	}
+
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int pOrder) {
+		order = pOrder;
+	}
+	
 }

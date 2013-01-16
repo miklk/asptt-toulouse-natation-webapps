@@ -28,12 +28,16 @@ import com.asptttoulousenatation.client.userspace.admin.user.UserCreationView;
 import com.asptttoulousenatation.client.userspace.admin.user.UserCreationViewImpl;
 import com.asptttoulousenatation.client.userspace.admin.user.UserEditionView;
 import com.asptttoulousenatation.client.userspace.admin.user.UserEditionViewImpl;
+import com.asptttoulousenatation.client.userspace.admin.user.password.ChangePasswordView;
+import com.asptttoulousenatation.client.userspace.admin.user.password.ChangePasswordViewImpl;
 import com.asptttoulousenatation.client.userspace.calendar.CompetitionCalendarView;
 import com.asptttoulousenatation.client.userspace.calendar.CompetitionCalendarViewImpl;
 import com.asptttoulousenatation.client.userspace.home.HomeView;
 import com.asptttoulousenatation.client.userspace.home.HomeViewImpl;
 import com.asptttoulousenatation.client.userspace.menu.MenuView;
 import com.asptttoulousenatation.client.userspace.menu.MenuViewImpl;
+import com.asptttoulousenatation.client.userspace.officiel.OfficielSubscriptionView;
+import com.asptttoulousenatation.client.userspace.officiel.OfficielSubscriptionViewImpl;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
@@ -45,7 +49,7 @@ import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitResult;
 import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.Command;
@@ -140,5 +144,13 @@ public class ClientFactoryImpl implements ClientFactory {
 	public SwimmerStatComputeView getSwimmerStatComputeView(
 			List<SwimmerStatComputeUi> pSwimmerStats) {
 		return new SwimmerStatComputeViewImpl(pSwimmerStats);
+	}
+
+	public ChangePasswordView getChangePasswordView() {
+		return new ChangePasswordViewImpl();
+	}
+
+	public OfficielSubscriptionView getOfficielSubscriptionView() {
+		return new OfficielSubscriptionViewImpl();
 	}
 }

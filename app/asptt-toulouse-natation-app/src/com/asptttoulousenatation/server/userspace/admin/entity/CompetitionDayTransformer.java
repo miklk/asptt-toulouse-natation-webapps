@@ -25,7 +25,7 @@ public class CompetitionDayTransformer extends
 		UiEvent lUi = new UiEvent();
 		Date lDate = new Date(Date.UTC(pEntity.getBegin().getYear(), pEntity.getBegin().getMonth(), pEntity.getBegin().getDate(), 0, 0, 0));
 		lUi.setEventDate(lDate);
-		lUi.setEventTitle(pCompetitionEntity.getTitle() + " - Journée " + pEntity.getDay());
+		lUi.setEventTitle(pCompetitionEntity.getTitle() + " - Réunion " + pEntity.getDay());
 		return lUi;
 	}
 }

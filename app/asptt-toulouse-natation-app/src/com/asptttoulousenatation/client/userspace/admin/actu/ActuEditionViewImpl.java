@@ -5,8 +5,12 @@ import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 import java.util.Date;
 import java.util.List;
 
+import com.asptttoulousenatation.client.userspace.admin.ui.DocumentCell;
+import com.asptttoulousenatation.client.userspace.admin.util.CellListStyle;
+import com.asptttoulousenatation.client.userspace.document.DocumentWidget;
 import com.asptttoulousenatation.core.client.ui.EditorToolbar;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
+import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.axeiya.gwtckeditor.client.CKEditor;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.resources.client.ImageResource;
@@ -20,6 +24,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -34,14 +39,24 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 	private CellList<ActuUi> cellList;
 	private SingleSelectionModel<ActuUi> selectionModel;
 	private SimplePanel actuEditionPanel;
-	
+
 	private TextBox title;
 	private TextBox summary;
 	private DateBox date;
 	private CKEditor contentInput;
 	private Button updateButton;
 	private Button deleteButton;
-	
+
+	// Document edition
+	private HorizontalPanel documentPanel;
+	private CellList<DocumentUi> documentCellList;
+	private SingleSelectionModel<DocumentUi> documentSelectionModel;
+	private SimplePanel documentEditionPanel;
+	private TextBox documentTitleInput;
+	private TextBox documentSummaryInput;
+	private Button documentUpdateButton;
+	private Button documentDeleteButton;
+
 	public ActuEditionViewImpl(List<ActuUi> pData) {
 		data = pData;
 		panel = new HorizontalPanel();
@@ -51,27 +66,80 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 		panel.add(cellList);
 		selectionModel = new SingleSelectionModel<ActuUi>();
 		cellList.setSelectionModel(selectionModel);
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-			
-			public void onSelectionChange(SelectionChangeEvent pEvent) {
-				buildActuEditionPanel(selectionModel.getSelectedObject());
-				
-			}
-		});
-		
+		selectionModel
+				.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+					public void onSelectionChange(SelectionChangeEvent pEvent) {
+						buildActuEditionPanel(selectionModel
+								.getSelectedObject());
+
+					}
+				});
+
 		actuEditionPanel = new SimplePanel();
 		actuEditionPanel.setStyleName(CSS.userSpaceAreaEdition());
 		panel.add(actuEditionPanel);
-		
+
 		updateButton = new Button("Modifier");
 		deleteButton = new Button("");
 		updateButton = new Button("");
 		updateButton.setTitle("Modifier l'actualité");
 		deleteButton = new Button("");
 		deleteButton.setTitle("Supprimer l'actualité");
-		
+
 	}
-	
+
+	private void buildDocumentPanel(final ActuUi pUi) {
+		documentPanel = new HorizontalPanel();
+		documentCellList = new CellList<DocumentUi>(new DocumentCell(),
+				new CellListStyle());
+		documentCellList.setRowData(pUi.getDocumentSet());
+		documentPanel.add(documentCellList);
+		documentSelectionModel = new SingleSelectionModel<DocumentUi>();
+		documentCellList.setSelectionModel(documentSelectionModel);
+		documentSelectionModel
+				.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+					public void onSelectionChange(SelectionChangeEvent pEvent) {
+						buildDocumentEditionPanel(
+								documentSelectionModel.getSelectedObject(),
+								pUi.getId());
+
+					}
+				});
+		documentEditionPanel = new SimplePanel();
+		documentEditionPanel.setStyleName(CSS.userSpaceContentEdition());
+		documentEditionPanel.setWidget(new DocumentWidget(pUi.getId()));
+		documentPanel.add(documentEditionPanel);
+	}
+
+	private void buildDocumentEditionPanel(final DocumentUi pDocument,
+			final Long pMenu) {
+		FlexTable lPanel = new FlexTable();
+		int lRowIndex = 0;
+
+		// Title
+		documentTitleInput = new TextBox();
+		documentTitleInput.setValue(pDocument.getTitle());
+		lPanel.setWidget(lRowIndex, 0, createLabel("Titre"));
+		lPanel.setWidget(lRowIndex, 1, documentTitleInput);
+		lRowIndex++;
+
+		// Summary
+		documentSummaryInput = new TextBox();
+		documentSummaryInput.setValue(pDocument.getSummary());
+		lPanel.setWidget(lRowIndex, 0, createLabel("Résumé"));
+		lPanel.setWidget(lRowIndex, 1, documentSummaryInput);
+		lRowIndex++;
+
+		lPanel.setWidget(lRowIndex, 0, documentUpdateButton);
+		lPanel.setWidget(lRowIndex, 1, documentDeleteButton);
+
+		PopupPanel lPopup = new PopupPanel(true, true);
+		lPopup.setWidget(lPanel);
+		lPopup.center();
+	}
+
 	public Widget asWidget() {
 		return this;
 	}
@@ -79,50 +147,61 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 	public HasClickHandlers getUpdateButton() {
 		return updateButton;
 	}
-	
+
 	private void buildActuEditionPanel(ActuUi pActuUi) {
-		//Input
+		// Input
 		FlexTable lPanel = new FlexTable();
 		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
-		//Title
+		
+		int rowIndex = 0;
+		// Title
 		title = new TextBox();
 		title.setWidth("300px");
 		title.setValue(pActuUi.getTitle());
-		lPanel.setWidget(0, 0, createLabel("Titre"));
-		lPanel.setWidget(1, 0, title);
-		
-		//Summary
+		lPanel.setWidget(rowIndex, 0, createLabel("Titre"));
+		lPanel.setWidget(rowIndex, 1, title);
+		rowIndex++;
+
+		// Summary
 		summary = new TextBox();
 		summary.setWidth("300px");
 		summary.setValue(pActuUi.getSummary());
-		lPanel.setWidget(2, 0, createLabel("Description courte"));
-		lPanel.setWidget(3, 0, summary);
-		
-		//Date
+		lPanel.setWidget(rowIndex, 0, createLabel("Description courte"));
+		lPanel.setWidget(rowIndex, 1, summary);
+		rowIndex++;
+
+		// Date
 		date = new DateBox();
 		date.setWidth("200px");
 		date.setValue(pActuUi.getCreationDate());
-		lPanel.setWidget(4, 0, createLabel("Date"));
-		lPanel.setWidget(5, 0, date);
-		
-		//Contenu
-	    // Add the components to a panel
+		lPanel.setWidget(rowIndex, 0, createLabel("Date"));
+		lPanel.setWidget(rowIndex, 1, date);
+		rowIndex++;
+
+		// Contenu
+		// Add the components to a panel
 		// Content
 		contentInput = new CKEditor(new EditorToolbar());
 		contentInput.setHTML(pActuUi.getContent());
-		lPanel.setWidget(6, 0, createLabel("Actualité"));
-		lPanel.setWidget(7, 0, contentInput);
+		lPanel.setWidget(rowIndex, 0, createLabel("Actualité"));
+		lPanel.setWidget(rowIndex, 1, contentInput);
+		rowIndex++;
+		
+		buildDocumentPanel(pActuUi);
+		lPanel.setWidget(rowIndex, 0, createLabel("Documents attachés"));
+		lPanel.setWidget(rowIndex, 1, documentPanel);
+		rowIndex++;
 
 		HorizontalPanel lButtonBar = new HorizontalPanel();
 		lButtonBar.add(updateButton);
 		lButtonBar.add(deleteButton);
 		updateButton.setStyleName(CSS.editButton());
 		deleteButton.setStyleName(CSS.deleteButton());
-		lPanel.setWidget(8, 0, lButtonBar);
-		lCellFormatter.setColSpan(8, 0, 2);
-		lCellFormatter.setHorizontalAlignment(8, 0,
+		lPanel.setWidget(rowIndex, 0, lButtonBar);
+		lCellFormatter.setColSpan(rowIndex, 0, 2);
+		lCellFormatter.setHorizontalAlignment(rowIndex, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
-		
+
 		actuEditionPanel.setWidget(lPanel);
 	}
 
@@ -145,7 +224,7 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 	public HasValue<Date> getCreationDate() {
 		return date;
 	}
-	
+
 	public class CellResources implements CellList.Resources {
 
 		public ImageResource cellListSelectedBackground() {
@@ -189,9 +268,9 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 				}
 			};
 		}
-		
+
 	}
-	
+
 	private Label createLabel(String pLabel) {
 		Label lLabel = new Label(pLabel);
 		lLabel.setStyleName(CSS.userSpaceContentLabel());

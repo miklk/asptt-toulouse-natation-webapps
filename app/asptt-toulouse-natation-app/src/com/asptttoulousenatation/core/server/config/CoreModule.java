@@ -1,3 +1,4 @@
+
 package com.asptttoulousenatation.core.server.config;
 
 import net.customware.gwt.dispatch.server.guice.ActionHandlerModule;
@@ -31,11 +32,11 @@ import com.asptttoulousenatation.core.server.structure.menu.CreateMenuActionHand
 import com.asptttoulousenatation.core.server.structure.menu.DeleteMenuActionHandler;
 import com.asptttoulousenatation.core.server.structure.menu.GetMenuActionHandler;
 import com.asptttoulousenatation.core.server.structure.menu.UpdateMenuActionHandler;
-import com.asptttoulousenatation.core.server.swimmer.CreateSwimmerStatActionHandler;
 import com.asptttoulousenatation.core.server.swimmer.GetAllSwimmerStatActionHandler;
 import com.asptttoulousenatation.core.server.swimmer.GetSwimmerActionHandler;
 import com.asptttoulousenatation.core.server.swimmer.UpdateSwimmerStatActionHandler;
 import com.asptttoulousenatation.core.server.user.AuthenticationActionHandler;
+import com.asptttoulousenatation.core.server.user.ChangePasswordActionHandler;
 import com.asptttoulousenatation.core.server.user.IsAuthenticatedActionHandler;
 import com.asptttoulousenatation.core.server.user.LogoutActionHandler;
 import com.asptttoulousenatation.core.server.user.PasswordForgetActionHandler;
@@ -71,11 +72,11 @@ import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.DeleteMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.GetMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.UpdateMenuAction;
-import com.asptttoulousenatation.core.shared.swimmer.CreateSwimmerStatAction;
 import com.asptttoulousenatation.core.shared.swimmer.GetAllSwimmerStatAction;
 import com.asptttoulousenatation.core.shared.swimmer.GetSwimmerAction;
 import com.asptttoulousenatation.core.shared.swimmer.UpdateSwimmerStatAction;
 import com.asptttoulousenatation.core.shared.user.AuthenticationAction;
+import com.asptttoulousenatation.core.shared.user.ChangePasswordAction;
 import com.asptttoulousenatation.core.shared.user.IsAuthenticatedAction;
 import com.asptttoulousenatation.core.shared.user.LogoutAction;
 import com.asptttoulousenatation.core.shared.user.PasswordForgetAction;
@@ -130,6 +131,7 @@ public class CoreModule extends ActionHandlerModule {
 		bindHandler(IsAuthenticatedAction.class, IsAuthenticatedActionHandler.class);
 		bindHandler(LogoutAction.class, LogoutActionHandler.class);
 		bindHandler(PasswordForgetAction.class, PasswordForgetActionHandler.class);
+		bindHandler(ChangePasswordAction.class, ChangePasswordActionHandler.class);
 		
 		bindHandler(InitAction.class, InitActionHandler.class);
 		bindHandler(InitUserSpaceAction.class, InitUserSpaceActionHandler.class);
@@ -177,7 +179,6 @@ public class CoreModule extends ActionHandlerModule {
 		bindHandler(GetPriceAction.class, GetPriceActionHandler.class);
 		
 		//Swimmer stat
-		bindHandler(CreateSwimmerStatAction.class, CreateSwimmerStatActionHandler.class);
 		bindHandler(UpdateSwimmerStatAction.class, UpdateSwimmerStatActionHandler.class);
 		bindHandler(GetAllSwimmerStatAction.class, GetAllSwimmerStatActionHandler.class);
 		bindHandler(GetSwimmerAction.class, GetSwimmerActionHandler.class);

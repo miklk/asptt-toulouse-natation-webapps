@@ -1,8 +1,5 @@
 package com.asptttoulousenatation.core.client.ui;
 
-import java.util.List;
-
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatDataUi;
 import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatUi;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.google.gwt.user.client.ui.TextBox;
@@ -15,12 +12,22 @@ public class SwimmerStatWidget implements IsSerializable {
 	private TextBox night;
 	private TextBox bodybuilding;
 	private TextBox comment;
+	private boolean updatedMorning;
+	private boolean updatedMidday;
+	private boolean updatedNight;
+	private boolean updatedBodybuilding;
+	private boolean updatedComment;
 
 	public SwimmerStatWidget() {
-
+		updatedMorning = false;
+		updatedMidday = false;
+		updatedNight = false;
+		updatedBodybuilding = false;
+		updatedComment = false;
 	}
 
 	public SwimmerStatWidget(SwimmerStatUi pSwimmerStat) {
+		this();
 		swimmerStat = pSwimmerStat;
 		morning = new TextBox();
 		midday = new TextBox();
@@ -31,30 +38,33 @@ public class SwimmerStatWidget implements IsSerializable {
 	}
 
 	private void setValues() {
-		List<SwimmerStatDataUi> lData = swimmerStat.getData();
-		if (lData != null) {
-			if (lData.size() >= 1) {
-				morning.setValue(Integer.toString(lData.get(0).getDistance()));
-				comment.setValue(lData.get(0).getComment());
-			} else {
-				morning.setValue("0");
-			}
-			if (lData.size() >= 2) {
-				midday.setValue(Integer.toString(lData.get(1).getDistance()));
-			} else {
-				midday.setValue("0");
-			}
-			if (lData.size() >= 3) {
-				night.setValue(Integer.toString(lData.get(2).getDistance()));
-			} else {
-				night.setValue("0");
-			}
-			if (lData.size() >= 4) {
-				bodybuilding.setValue(Integer.toString(lData.get(3)
-						.getDistance()));
-			} else {
-				bodybuilding.setValue("0");
-			}
+		if (swimmerStat.getMorning() != null) {
+			morning.setValue(Integer.toString(swimmerStat.getMorning()
+					.getDistance()));
+		} else {
+			morning.setValue("0");
+		}
+		if (swimmerStat.getMidday() != null) {
+			midday.setValue(Integer.toString(swimmerStat.getMidday()
+					.getDistance()));
+		} else {
+			midday.setValue("0");
+		}
+		if (swimmerStat.getNight() != null) {
+			night.setValue(Integer.toString(swimmerStat.getNight()
+					.getDistance()));
+		} else {
+			night.setValue("0");
+		}
+		if (swimmerStat.getBodybuilding() != null) {
+			bodybuilding.setValue(Integer.toString(swimmerStat
+					.getBodybuilding().getDistance()));
+		} else {
+			bodybuilding.setValue("0");
+		}
+		if (swimmerStat.getComment() != null
+				&& !swimmerStat.getComment().isEmpty()) {
+			comment.setValue(swimmerStat.getComment());
 		}
 	}
 
@@ -104,5 +114,45 @@ public class SwimmerStatWidget implements IsSerializable {
 
 	public void setComment(TextBox pComment) {
 		comment = pComment;
+	}
+
+	public boolean isUpdatedMorning() {
+		return updatedMorning;
+	}
+
+	public void setUpdatedMorning(boolean pUpdatedMorning) {
+		updatedMorning = pUpdatedMorning;
+	}
+
+	public boolean isUpdatedMidday() {
+		return updatedMidday;
+	}
+
+	public void setUpdatedMidday(boolean pUpdatedMidday) {
+		updatedMidday = pUpdatedMidday;
+	}
+
+	public boolean isUpdatedNight() {
+		return updatedNight;
+	}
+
+	public void setUpdatedNight(boolean pUpdatedNight) {
+		updatedNight = pUpdatedNight;
+	}
+
+	public boolean isUpdatedBodybuilding() {
+		return updatedBodybuilding;
+	}
+
+	public void setUpdatedBodybuilding(boolean pUpdatedBodybuilding) {
+		updatedBodybuilding = pUpdatedBodybuilding;
+	}
+
+	public boolean isUpdatedComment() {
+		return updatedComment;
+	}
+
+	public void setUpdatedComment(boolean pUpdatedComment) {
+		updatedComment = pUpdatedComment;
 	}
 }

@@ -1,8 +1,7 @@
-x/** Add css rules here for your application. */
+/** Add css rules here for your application. */
 
 body {
 	font-family: Helvetica, Verdana, sans;
-	background-color: #81C7E3;
 }
 
 .fonce {
@@ -268,6 +267,7 @@ color: #FFFFFF;
 
 .header-panel-header {
 	font-weight: bold;
+	cursor: pointer; 
 }
 
 .header-panel-content {
@@ -280,14 +280,15 @@ color: #FFFFFF;
 }
 
 .user-header-goBackPublic-button {
-	height: 30%;
+	height: 20px;
 	margin-left: 50%;
 	margin-right: 10%;
 	border: 1px solid #CDD8DE;
 	background-color: #F4F5F6;
 	width: 290px;
 	font-size: 1em;
-	margin-top: 10px;
+	margin-top: 5px;
+	margin-bottom: 1px;
 }
 
 .user-header {
@@ -338,7 +339,7 @@ color: #FFFFFF;
 
 .userspace-header {
 	width: 1250px;
-	height: 100px;
+	height: 20px;
 	background-color: #83C6F2;
 	background-image: url(http://prototype.asptt-toulouse-natation.com/images/water.jpg);
 }
@@ -393,7 +394,7 @@ color: #FFFFFF;
 .userspace-edition {
 	border: solid 1px #6C9BC9;
 	height: 100%;
-	margin-left: 10%;
+	margin-top: 1%;
 }
 
 .userspace-content-competition-day-list {
@@ -570,6 +571,15 @@ color: #FFFFFF;
 	cursor: pointer;
 }
 
+@sprite .popup-close-button {
+	height: 33px;
+	width: 33px;
+	gwt-image: 'windowClose';
+	background-position: top left;
+	border: none;
+	cursor: pointer;
+}
+
 .subscription-button-bar {
 	border: 1px dotted #247596;
 	background-color: #CAE6F1;
@@ -626,6 +636,17 @@ color: #FFFFFF;
 .swimmer-stat-action-valid {
 	border: 1px solid #FFFFFF;
 	background-color: #0996E2;
+	color: #FFFFFF;
+	font-size: 1em;
+	font-weight: bold;
+	text-transform: capitalize;
+	width: 150px;
+	height: 30px;
+}
+
+.swimmer-stat-action-calendar {
+	border: 1px solid #FFFFFF;
+	background-color: #FFAA17;
 	color: #FFFFFF;
 	font-size: 1em;
 	font-weight: bold;
