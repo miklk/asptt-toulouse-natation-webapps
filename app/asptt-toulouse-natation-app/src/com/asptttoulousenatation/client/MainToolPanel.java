@@ -49,7 +49,12 @@ public class MainToolPanel extends Composite {
 		panel = new VerticalPanel();
 		initWidget(panel);
 
+		
 		// Arena
+		Timer boutiqueTimer = new Timer() {
+			
+			@Override
+			public void run() {
 		Image lLogoArena = new Image(IMAGES.logoArenaBoutique());
 		lLogoArena.setAltText("Boutique");
 		lLogoArena.setTitle("Boutique");
@@ -79,6 +84,9 @@ public class MainToolPanel extends Composite {
 		lBoutiquePanel.addStyleName(CSS.bloc());
 		lBoutiquePanel.setHeaderStyle(CSS.blocTitle());
 		panel.add(lBoutiquePanel);
+			}
+		};
+		boutiqueTimer.schedule(3000);
 
 		Timer timer = new Timer() {
 

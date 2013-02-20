@@ -7,6 +7,7 @@ import java.util.Date;
 import com.asptttoulousenatation.core.client.ui.EditorToolbar;
 import com.axeiya.gwtckeditor.client.CKEditor;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -36,19 +37,21 @@ public class ActuViewImpl extends Composite implements ActuView {
 		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
 		// Title
 		title = new TextBox();
-		title.setWidth("300px");
+		title.setWidth("150px");
 		lPanel.setWidget(0, 0, createLabel("Titre"));
 		lPanel.setWidget(0, 1, title);
 
 		// Summary
 		summary = new TextBox();
-		summary.setWidth("300px");
+		summary.setWidth("150px");
 		lPanel.setWidget(1, 0, createLabel("Description courte"));
 		lCellFormatter.setWidth(1, 0, "400px");
 		lPanel.setWidget(1, 1, summary);
 
 		// Date
 		date = new DateBox();
+		date.setFormat(new DateBox.DefaultFormat(DateTimeFormat
+				.getFormat("dd MMMM yyyy")));
 		date.setValue(new Date());
 		date.setWidth("200px");
 		lPanel.setWidget(2, 0, createLabel("Date"));
@@ -73,15 +76,12 @@ public class ActuViewImpl extends Composite implements ActuView {
 		panel.add(errorMessage);
 		panel.add(lPanel);
 	}
-
-	public HasClickHandlers getCloseButton() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public HasClickHandlers getSaveButton() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public void init() {
+		title.setValue("");
+		summary.setValue("");
+		date.setValue(new Date());
+		contentInput.setData("");
 	}
 
 	public HasClickHandlers getPublishButton() {

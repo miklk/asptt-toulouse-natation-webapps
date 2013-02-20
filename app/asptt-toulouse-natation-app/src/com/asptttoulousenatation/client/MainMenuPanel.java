@@ -18,18 +18,17 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.web.bindery.event.shared.EventBus;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.web.bindery.event.shared.EventBus;
 
 public class MainMenuPanel extends Composite {
 
 	private InitResult initResult;
-	private PopupManager popupManager;
-	private UserUi user;
 
 	private EventBus eventBus;
 
@@ -39,12 +38,11 @@ public class MainMenuPanel extends Composite {
 			EventBus pEventBus) {
 		initResult = pInitResult;
 		eventBus = pEventBus;
-		user = pUser;
 		panel = new FlowPanel();
 		initWidget(panel);
 		panel.setStyleName(CSS.menuG());
-		int space = 6;
-		List<AreaUi> lAreaUis = new ArrayList<AreaUi>(initResult.getMenu());
+		final List<AreaUi> lAreaUis = new ArrayList<AreaUi>(
+				initResult.getMenu());
 		// First
 		final AreaUi lFirstArea = lAreaUis.get(0);
 		lAreaUis.remove(0);
@@ -52,46 +50,26 @@ public class MainMenuPanel extends Composite {
 		lFirstAreaTitle.setStyleName(CSS.menuGTitleFirst());
 		panel.add(lFirstAreaTitle);
 		// Build menu
-		FlowPanel lSubMenu = new FlowPanel();
-		lSubMenu.getElement().getStyle().setBackgroundColor("#FFFFFF");
-		for (final MenuUi lMenu : lFirstArea.getMenuSet().values()) {
-			if (lMenu.isDisplay()) {
-				final Label lMenuLabel;
-					lMenuLabel = new Label(lMenu.getTitle());
-				lMenuLabel.addClickHandler(new ClickHandler() {
-					public void onClick(ClickEvent pEvent) {
-						if (CollectionUtils.isEmpty(lMenu.getSubMenus())) {
-							loadContent(lFirstArea.getTitle(), lMenu.getTitle(), lMenu);
-						} else {
-							openMenuSubMenu(lMenuLabel, lMenu,
-									lFirstArea.getTitle());
-						}
-					}
-				});
+		final FlowPanel lSubMenu = new FlowPanel();
+		Timer timer = new Timer() {
 
-				lMenuLabel.setStyleName(CSS.menuGSub());
-				addMenuGSubStyle(lMenuLabel);
-				lSubMenu.add(lMenuLabel);
-				space += 5;
-			}
-		}
-		panel.add(lSubMenu);
-		for (final AreaUi lArea : lAreaUis) {
-			if (lArea.canDisplay()) {
-				Label lAreaTitle = new Label(lArea.getTitle());
-				lAreaTitle.setStyleName(CSS.menuGTitle());
-				panel.add(lAreaTitle);
-				space += 6;
-				// Build menu
-				lSubMenu = new FlowPanel();
+			@Override
+			public void run() {
+				int space = 6;
 				lSubMenu.getElement().getStyle().setBackgroundColor("#FFFFFF");
-				for (final MenuUi lMenu : lArea.getMenuSet().values()) {
+				for (final MenuUi lMenu : lFirstArea.getMenuSet().values()) {
 					if (lMenu.isDisplay()) {
-						final Label lMenuLabel = new Label(lMenu.getTitle());
+						final Label lMenuLabel;
+						lMenuLabel = new Label(lMenu.getTitle());
 						lMenuLabel.addClickHandler(new ClickHandler() {
 							public void onClick(ClickEvent pEvent) {
-									loadContent(lArea.getTitle(),
+								if (CollectionUtils.isEmpty(lMenu.getSubMenus())) {
+									loadContent(lFirstArea.getTitle(),
 											lMenu.getTitle(), lMenu);
+								} else {
+									openMenuSubMenu(lMenuLabel, lMenu,
+											lFirstArea.getTitle());
+								}
 							}
 						});
 
@@ -102,13 +80,45 @@ public class MainMenuPanel extends Composite {
 					}
 				}
 				panel.add(lSubMenu);
+				for (final AreaUi lArea : lAreaUis) {
+					if (lArea.canDisplay()) {
+						Label lAreaTitle = new Label(lArea.getTitle());
+						lAreaTitle.setStyleName(CSS.menuGTitle());
+						panel.add(lAreaTitle);
+						space += 6;
+						// Build menu
+						FlowPanel lSubMenu2 = new FlowPanel();
+						lSubMenu2.getElement().getStyle()
+								.setBackgroundColor("#FFFFFF");
+						for (final MenuUi lMenu : lArea.getMenuSet().values()) {
+							if (lMenu.isDisplay()) {
+								final Label lMenuLabel = new Label(
+										lMenu.getTitle());
+								lMenuLabel.addClickHandler(new ClickHandler() {
+									public void onClick(ClickEvent pEvent) {
+										loadContent(lArea.getTitle(),
+												lMenu.getTitle(), lMenu);
+									}
+								});
+
+								lMenuLabel.setStyleName(CSS.menuGSub());
+								addMenuGSubStyle(lMenuLabel);
+								lSubMenu2.add(lMenuLabel);
+								space += 5;
+							}
+						}
+						panel.add(lSubMenu2);
+					}
+				}
+
 			}
-		}
+		};
+		timer.schedule(5000);
 	}
 
-	private void loadContent(final String pAreaTitle, final String pMenuTitle, MenuUi pMenu) {
-			eventBus.fireEvent(new LoadContentEvent(pMenu, pAreaTitle,
-					pMenuTitle));
+	private void loadContent(final String pAreaTitle, final String pMenuTitle,
+			MenuUi pMenu) {
+		eventBus.fireEvent(new LoadContentEvent(pMenu, pAreaTitle, pMenuTitle));
 	}
 
 	private void addMenuGSubStyle(final Label pLabel) {
@@ -144,9 +154,5 @@ public class MainMenuPanel extends Composite {
 		lPopupPanel.setWidget(lPanel);
 		lPopupPanel.getElement().getStyle().setMarginLeft(150, Unit.PX);
 		lPopupPanel.showRelativeTo(pLabel);
-	}
-
-	public void setPopupManager(PopupManager pPopupManager) {
-		popupManager = pPopupManager;
 	}
 }

@@ -25,6 +25,7 @@ public class AlternateBanner extends Composite {
 		panel.setWidth("100%");
 		panel.setHeight("291px");
 		initWidget(panel);
+		if(pPhotos != null && pPhotos.length >0) {
 		index = 0;
 		oldIndex = 0;
 		for (int i = 0; i < photos.length; i++) {
@@ -41,7 +42,9 @@ public class AlternateBanner extends Composite {
 			images[i] = image;
 			panel.add(images[i]);
 		}
-		images[0].getElement().getStyle().setVisibility(Visibility.VISIBLE);
+		if (images != null && images.length > 0) {
+			images[0].getElement().getStyle().setVisibility(Visibility.VISIBLE);
+		}
 
 		Timer timer = new Timer() {
 
@@ -59,5 +62,6 @@ public class AlternateBanner extends Composite {
 			}
 		};
 		timer.scheduleRepeating(5000);
+	}
 	}
 }

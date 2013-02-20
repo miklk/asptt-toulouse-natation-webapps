@@ -8,8 +8,7 @@ import com.google.gwt.user.client.ui.IsWidget;
 
 public interface ActuView extends IsWidget {
 
-	public HasClickHandlers getCloseButton();
-	public HasClickHandlers getSaveButton();
+	public void init();
 	public HasClickHandlers getPublishButton();
 	public HasValue<String> getTitre();
 	public HasValue<String> getSummary();

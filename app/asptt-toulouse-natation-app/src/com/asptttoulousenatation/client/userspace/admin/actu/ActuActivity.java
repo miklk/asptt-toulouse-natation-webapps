@@ -117,6 +117,7 @@ public class ActuActivity extends MyAbstractActivity<ActuPlace> {
 								public void onSuccess(
 										PublishActionResult pResult) {
 									Window.alert("Succès");
+									lActuView.init();
 								}
 							});
 				}

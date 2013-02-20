@@ -93,7 +93,7 @@ public class MainContentPanel extends Composite {
 		lblALaUne.setStyleName(CSS.blocTitle());
 		actuPanel.add(lblALaUne);
 		DateTimeFormat lDateTimeFormat = DateTimeFormat
-				.getFormat("dd MMMM yyyy - HH:mm:ss");
+				.getFormat("dd MMMM yyyy");
 		for (ActuUi lActuUi : initResult.getActu()) {
 			DisclosurePanel lActuDetail = new DisclosurePanel(
 					lActuUi.getSummary());

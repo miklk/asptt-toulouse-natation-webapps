@@ -34,6 +34,10 @@ public class ActuEntity implements Entity {
 	
 	@Persistent
 	private Date creationDate;
+	
+	public ActuEntity() {
+		
+	}
 
 	public ActuEntity(Long pId, String pTitle, String pSummary,
 			Text pContent, Date pCreationDate) {

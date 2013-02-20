@@ -86,7 +86,6 @@ public class MainViewImpl extends Composite implements MainView {
 	public void setPopupManager(PopupManager pPopupManager) {
 		popupManager = pPopupManager;
 		headerPanel.setPopupManager(pPopupManager);
-		menuPanel.setPopupManager(pPopupManager);
 		toolPanel.setPopupManager(pPopupManager);
 		contentPanel.setPopupManager(pPopupManager);
 		bottomPanel.setPopupManager(pPopupManager);

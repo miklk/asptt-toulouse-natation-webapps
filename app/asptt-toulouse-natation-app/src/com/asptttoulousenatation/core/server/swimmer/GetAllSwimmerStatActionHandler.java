@@ -72,8 +72,9 @@ public class GetAllSwimmerStatActionHandler implements
 			} else {
 				Calendar lCalendar = GregorianCalendar.getInstance();
 				lCalendar.setTime(pAction.getBeginDate());
+				int amount = pAction.getPreviousNext() ? 1:-1;
 				lCalendar
-						.roll(Calendar.DAY_OF_YEAR, pAction.getPreviousNext());
+						.add(Calendar.DAY_OF_YEAR, amount);
 				currentDate = lCalendar.getTime();
 			}
 			// Set to midnight
@@ -95,8 +96,9 @@ public class GetAllSwimmerStatActionHandler implements
 			} else {
 				Calendar lCalendar = GregorianCalendar.getInstance();
 				lCalendar.setTime(pAction.getBeginDate());
-				lCalendar.roll(Calendar.WEEK_OF_YEAR,
-						pAction.getPreviousNext());
+				int amount = pAction.getPreviousNext() ? 1:-1;
+				lCalendar.add(Calendar.WEEK_OF_YEAR,
+						amount);
 				currentDate = lCalendar.getTime();
 			}
 			Calendar lCalendar = GregorianCalendar.getInstance();
@@ -125,7 +127,8 @@ public class GetAllSwimmerStatActionHandler implements
 			} else {
 				Calendar lCalendar = GregorianCalendar.getInstance();
 				lCalendar.setTime(pAction.getBeginDate());
-				lCalendar.roll(Calendar.MONTH, pAction.getPreviousNext());
+				int amount = pAction.getPreviousNext() ? 1:-1;
+				lCalendar.add(Calendar.MONTH, amount);
 				currentDate = lCalendar.getTime();
 			}
 			Calendar lCalendar = GregorianCalendar.getInstance();
@@ -159,7 +162,8 @@ public class GetAllSwimmerStatActionHandler implements
 			} else {
 				Calendar lCalendar = GregorianCalendar.getInstance();
 				lCalendar.setTime(pAction.getBeginDate());
-				lCalendar.roll(Calendar.YEAR, pAction.getPreviousNext());
+				int amount = pAction.getPreviousNext() ? 1:-1;
+				lCalendar.add(Calendar.YEAR, amount);
 				currentDate = lCalendar.getTime();
 			}
 			Calendar lCalendar = GregorianCalendar.getInstance();

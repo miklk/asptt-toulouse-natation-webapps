@@ -20,6 +20,8 @@ import com.asptttoulousenatation.core.shared.user.PasswordForgetResult;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitAction;
 import com.asptttoulousenatation.shared.init.InitResult;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
@@ -61,13 +63,25 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 						lMainView.setPopupManager(lPopupManager);
 						lMainView.setConnexionAction(new PopupValidateAction() {
 							public void execute() {
-								fireAuthentication(lEventBus, lMainView);
+								GWT.runAsync(new RunAsyncCallback() {
+									
+									public void onSuccess() {
+										fireAuthentication(lEventBus, lMainView);
+									}
+									
+									public void onFailure(Throwable pReason) {
+										GWT.log("Erreur lors du chargement du code (connexion panel)", pReason);
+									}
+								});
 							}
 						});
 						lMainView.getDisconnectButton().addClickHandler(
 								new ClickHandler() {
 									public void onClick(ClickEvent pEvent) {
-										dispatchAsync
+										GWT.runAsync(new RunAsyncCallback() {
+											
+											public void onSuccess() {
+												dispatchAsync
 												.execute(
 														new LogoutAction(),
 														new AsyncCallback<LogoutResult>() {
@@ -85,7 +99,12 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 																				MenuItems.PUBLIC));
 															}
 														});
-
+											}
+											
+											public void onFailure(Throwable pReason) {
+												GWT.log("Erreur lors du chargement du code (disconnect panel)", pReason);
+											}
+										});
 									}
 								});
 						lMainView.getPriveSpaceButton().addClickHandler(
@@ -99,7 +118,10 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 						lMainView.getPasswordForgetButton().addClickHandler(
 								new ClickHandler() {
 									public void onClick(ClickEvent pEvent) {
-										dispatchAsync
+										GWT.runAsync(new RunAsyncCallback() {
+											
+											public void onSuccess() {
+												dispatchAsync
 												.execute(
 														new PasswordForgetAction(
 																lMainView
@@ -125,6 +147,12 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 																}
 															}
 														});
+											}
+											
+											public void onFailure(Throwable pReason) {
+												GWT.log("Erreur lors du chargement du code (password panel)", pReason);
+											}
+										});
 									}
 								});
 						lEventBus.addHandler(LoadContentEvent.TYPE,

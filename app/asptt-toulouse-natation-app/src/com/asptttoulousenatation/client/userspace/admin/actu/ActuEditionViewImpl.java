@@ -13,6 +13,7 @@ import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.axeiya.gwtckeditor.client.CKEditor;
 import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellList.Style;
@@ -172,6 +173,8 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 
 		// Date
 		date = new DateBox();
+		date.setFormat(new DateBox.DefaultFormat(DateTimeFormat
+				.getFormat("dd MMMM yyyy")));
 		date.setWidth("200px");
 		date.setValue(pActuUi.getCreationDate());
 		lPanel.setWidget(rowIndex, 0, createLabel("Date"));
