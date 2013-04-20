@@ -31,7 +31,7 @@ public class GetAllActuActionHandler implements
 	public GetAllActuResult execute(GetAllActuAction pAction,
 			ExecutionContext pContext) throws DispatchException {
 		ActuDao lActuDao = new ActuDao();
-		List<ActuEntity> lEntities = lActuDao.getAll();
+		List<ActuEntity> lEntities = lActuDao.getAll(pAction.getLimitStart(), pAction.getLimitEnd());
 		List<ActuUi> lResult = new ArrayList<ActuUi>(lEntities.size());
 		for (ActuEntity entity : lEntities) {
 			ActuUi lUi = transformer.toUi(entity);
@@ -50,7 +50,7 @@ public class GetAllActuActionHandler implements
 			lUi.setDocumentSet(lDocumentUis);
 			lResult.add(lUi);
 		}
-		return new GetAllActuResult(lResult);
+		return new GetAllActuResult(lResult, pAction.getLimitStart(), pAction.getLimitEnd());
 	}
 
 	public Class<GetAllActuAction> getActionType() {

@@ -19,7 +19,6 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import net.customware.gwt.dispatch.server.ActionHandler;
@@ -56,6 +55,7 @@ import com.asptttoulousenatation.core.server.dao.user.UserDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.actu.GetAllActuAction;
+import com.asptttoulousenatation.core.shared.actu.GetAllActuResult;
 import com.asptttoulousenatation.core.shared.reference.IsDataUpdateAction;
 import com.asptttoulousenatation.core.shared.reference.IsDataUpdateResult;
 import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
@@ -210,8 +210,10 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		if (lActuUpdateResult.isDataUpdated()
 				|| applicationLoader.getActu() == null) {
 			// Actu
-			List<ActuUi> lActu = pContext.execute(new GetAllActuAction())
-					.getResult();
+			GetAllActuResult actuResult = pContext.execute(new GetAllActuAction(0, 7));
+			List<ActuUi> lActu = actuResult.getResult();
+			lInitResult.setActuStart(actuResult.getLimitStart());
+			lInitResult.setActuEnd(actuResult.getLimitEnd());
 			LOG.info("retrieving actu #" + lActu.size());
 			pContext.execute(new SetDataUpdateAction(ActuEntity.class, false));
 			applicationLoader.setActu(lActu);

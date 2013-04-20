@@ -44,6 +44,7 @@ public class DocumentWidget extends Composite {
 		lCellFormatter.setColSpan(2, 0, 2);
 		
 		panel.add(lPanel);
+		defaultUploader.avoidRepeatFiles(false);
 		defaultUploader.addOnStartUploadHandler(new IUploader.OnStartUploaderHandler() {
 			
 			public void onStart(IUploader pUploader) {

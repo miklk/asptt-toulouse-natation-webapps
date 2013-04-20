@@ -20,6 +20,9 @@ public class InitResult implements Result {
 	private Map<String, AreaUi> area;
 	private Map<Date, List<UiEvent>> events;
 	
+	private int actuStart;
+	private int actuEnd;
+	
 	private String[] photo;
 	
 	public InitResult() {
@@ -87,5 +90,20 @@ public class InitResult implements Result {
 		});
 		return result;
 	}
-	
+
+	public int getActuStart() {
+		return actuStart;
+	}
+
+	public void setActuStart(int pActuStart) {
+		actuStart = pActuStart;
+	}
+
+	public int getActuEnd() {
+		return actuEnd;
+	}
+
+	public void setActuEnd(int pActuEnd) {
+		actuEnd = pActuEnd;
+	}
 }

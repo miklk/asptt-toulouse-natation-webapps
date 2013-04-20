@@ -13,10 +13,14 @@ import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.shared.init.InitResult;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Cursor;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -42,6 +46,9 @@ public class MainContentPanel extends Composite {
 	private MenuUi selectedMenu;
 	private EventBus eventBus;
 	private Panel subMenu;
+	
+	private Button moreActuButton;
+	private int moreActuEnd;
 
 	public MainContentPanel(InitResult pInitResult, EventBus pEventBus) {
 		initResult = pInitResult;
@@ -54,23 +61,32 @@ public class MainContentPanel extends Composite {
 		content = new ScrollPanel();
 		content.addStyleName(CSS.mainContent());
 
-		Label lblAspttGrandToulouse = new Label("ASPTT Grand Toulouse Natation");
-		lblAspttGrandToulouse.setStyleName(CSS.title());
-		panel.add(lblAspttGrandToulouse);
-		panel.setCellHeight(lblAspttGrandToulouse, "20px");
+		VerticalPanel lTitlePanel = new VerticalPanel();
+		lTitlePanel.setStyleName(CSS.titrePanel());
+		Label lblAspttGrandToulouse = new Label("Accueil");
+		lblAspttGrandToulouse.setStyleName(CSS.accueilTitre());
+		lblAspttGrandToulouse.getElement().getStyle().setCursor(Cursor.POINTER);
+		lblAspttGrandToulouse.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent pEvent) {
+				subMenu.clear();
+				content.setWidget(actuPanel);
+				breadcrumb.update("", "");
+			}
+		});
+		lTitlePanel.add(lblAspttGrandToulouse);
 		
-		HTML oldAnchor = new HTML("<a href=\"http://asptt-toulouse-natation.com\">Ancienne version du site</a>");
-		panel.add(oldAnchor);
-		panel.setCellHeight(oldAnchor, "20px");
+		HTML oldAnchor = new HTML("<a href=\"http://old.asptt-toulouse-natation.com\">Ancienne version du site</a>");
+		oldAnchor.setStyleName(CSS.oldVersion());
+		lTitlePanel.add(oldAnchor);
+		panel.add(lTitlePanel);
 
 		breadcrumb = new Breadcrumb();
-		breadcrumb.update("Accueil", "");
 		breadcrumb.setStyleName(CSS.tetiere());
 		breadcrumb.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
 				subMenu.clear();
 				content.setWidget(actuPanel);
-				breadcrumb.update("Accueil", "");
+				breadcrumb.update("", "");
 			}
 		});
 		panel.add(breadcrumb);
@@ -83,20 +99,27 @@ public class MainContentPanel extends Composite {
 		// TODO Actu
 		panel.add(content);
 		actuPanel = new FlowPanel();
-		actuPanel.setStyleName(CSS.bloc());
+		actuPanel.setStyleName(CSS.actuBloc());
 		content.setWidget(actuPanel);
 		buildActuPanel();
 	}
 
 	private void buildActuPanel() {
+		moreActuEnd = initResult.getActuEnd();
 		Label lblALaUne = new Label("A la une");
 		lblALaUne.setStyleName(CSS.blocTitle());
 		actuPanel.add(lblALaUne);
 		DateTimeFormat lDateTimeFormat = DateTimeFormat
 				.getFormat("dd MMMM yyyy");
 		for (ActuUi lActuUi : initResult.getActu()) {
-			DisclosurePanel lActuDetail = new DisclosurePanel(
-					lActuUi.getSummary());
+			DisclosurePanel lActuDetail = new DisclosurePanel();
+			HorizontalPanel headerPanel = new HorizontalPanel();
+			Label open = new Label("+");
+			open.getElement().getStyle().setMarginRight(5, Unit.PX);
+			headerPanel.add(open);
+			headerPanel.add(new HTML(
+					lActuUi.getSummary()));
+			lActuDetail.setHeader(headerPanel);
 			VerticalPanel lContentPanel = new VerticalPanel();
 			lContentPanel.add(new HTML(lActuUi.getContent()));
 			lContentPanel.add(getActuDocumentPanel(lActuUi.getDocumentSet()));
@@ -106,9 +129,14 @@ public class MainContentPanel extends Composite {
 			HeaderPanel lHeaderPanel = new HeaderPanel(
 					lDateTimeFormat.format(lActuUi.getCreationDate()) + " - "
 							+ lActuUi.getTitle(), lActuDetail);
+			lHeaderPanel.setHeaderStyle(CSS.actuBlocHeader());
+			lHeaderPanel.setContentStyle(CSS.actuBlocContent());	
 			lHeaderPanel.isOdd();
 			actuPanel.add(lHeaderPanel);
 		}
+		moreActuButton = new Button("Plus anciennes");
+		moreActuButton.setStyleName(CSS.moreActuButton());
+		actuPanel.add(moreActuButton);
 	}
 	
 	public void updateBreadcrumb(final String pAreaName, final String pMenuName) {
@@ -219,5 +247,44 @@ public class MainContentPanel extends Composite {
 	public void loadSubContent(final byte[] pData, List<DocumentUi> pDocuments, String pSubMenuName) {
 		breadcrumb.update(pSubMenuName);
 		loadContent(pData, pDocuments);
+	}
+	
+	public HasClickHandlers getMoreActuButton() {
+		return moreActuButton;
+	}
+	
+	public int getMoreActuEnd() {
+		return moreActuEnd;
+	}
+	
+	public void setMoreActu(List<ActuUi> pActu, int end) {
+		moreActuEnd = end;
+		actuPanel.remove(moreActuButton);
+		DateTimeFormat lDateTimeFormat = DateTimeFormat
+				.getFormat("dd MMMM yyyy");
+		for (ActuUi lActuUi : pActu) {
+			DisclosurePanel lActuDetail = new DisclosurePanel();
+			HorizontalPanel headerPanel = new HorizontalPanel();
+			Label open = new Label("+");
+			open.getElement().getStyle().setMarginRight(5, Unit.PX);
+			headerPanel.add(open);
+			headerPanel.add(new HTML(
+					lActuUi.getSummary()));
+			lActuDetail.setHeader(headerPanel);
+			VerticalPanel lContentPanel = new VerticalPanel();
+			lContentPanel.add(new HTML(lActuUi.getContent()));
+			lContentPanel.add(getActuDocumentPanel(lActuUi.getDocumentSet()));
+			lActuDetail.add(lContentPanel);
+			lActuDetail.getContent().getElement().getStyle()
+					.clearBackgroundColor();
+			HeaderPanel lHeaderPanel = new HeaderPanel(
+					lDateTimeFormat.format(lActuUi.getCreationDate()) + " - "
+							+ lActuUi.getTitle(), lActuDetail);
+			lHeaderPanel.setHeaderStyle(CSS.actuBlocHeader());
+			lHeaderPanel.setContentStyle(CSS.actuBlocContent());	
+			lHeaderPanel.isOdd();
+			actuPanel.add(lHeaderPanel);
+		}
+		actuPanel.add(moreActuButton);
 	}
 }

@@ -32,45 +32,50 @@ public class ActuViewImpl extends Composite implements ActuView {
 	public ActuViewImpl() {
 		panel = new HorizontalPanel();
 		initWidget(panel);
+		int rowIndex = 0;
 		// Input
 		FlexTable lPanel = new FlexTable();
 		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
 		// Title
 		title = new TextBox();
 		title.setWidth("150px");
-		lPanel.setWidget(0, 0, createLabel("Titre"));
-		lPanel.setWidget(0, 1, title);
-
+		lPanel.setWidget(rowIndex, 0, createLabel("Titre"));
+		lPanel.setWidget(rowIndex, 1, title);
+		rowIndex++;
+		
 		// Summary
 		summary = new TextBox();
-		summary.setWidth("150px");
-		lPanel.setWidget(1, 0, createLabel("Description courte"));
-		lCellFormatter.setWidth(1, 0, "400px");
-		lPanel.setWidget(1, 1, summary);
+		summary.setWidth("300px");
+		lPanel.setWidget(rowIndex, 0, createLabel("Description courte"));
+		lPanel.setWidget(rowIndex, 1, summary);
+		rowIndex++;
 
 		// Date
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat(DateTimeFormat
-				.getFormat("dd MMMM yyyy")));
+				.getFormat("dd MMMM yyyy HH:mm:ss")));
 		date.setValue(new Date());
 		date.setWidth("200px");
-		lPanel.setWidget(2, 0, createLabel("Date"));
-		lPanel.setWidget(2, 1, date);
+		lPanel.setWidget(rowIndex, 0, createLabel("Date"));
+		lPanel.setWidget(rowIndex, 1, date);
+		rowIndex++;
 
 		// Contenu
 		// Add the components to a panel
 		// Content
 		contentInput = new CKEditor(new EditorToolbar());
-		lPanel.setWidget(3, 0, createLabel("Actualité"));
-		lPanel.setWidget(3, 1, contentInput);
+		lPanel.setWidget(rowIndex, 0, createLabel("Actualité"));
+		lPanel.setWidget(rowIndex, 1, contentInput);
+		rowIndex++;
 
 		publishButton = new Button();
 		publishButton.setTitle("Publier");
 		publishButton.setStyleName(CSS.addButton());
-		lPanel.setWidget(4, 0, publishButton);
-		lCellFormatter.setColSpan(4, 0, 2);
-		lCellFormatter.setHorizontalAlignment(4, 0,
+		lPanel.setWidget(rowIndex, 0, publishButton);
+		lCellFormatter.setColSpan(rowIndex, 0, 2);
+		lCellFormatter.setHorizontalAlignment(rowIndex, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
+		rowIndex++;
 
 		errorMessage = new Label();
 		panel.add(errorMessage);
@@ -79,7 +84,6 @@ public class ActuViewImpl extends Composite implements ActuView {
 	
 	public void init() {
 		title.setValue("");
-		summary.setValue("");
 		date.setValue(new Date());
 		contentInput.setData("");
 	}
@@ -90,10 +94,6 @@ public class ActuViewImpl extends Composite implements ActuView {
 
 	public HasValue<String> getTitre() {
 		return title;
-	}
-
-	public HasValue<String> getSummary() {
-		return summary;
 	}
 
 	public String getContent() {
@@ -108,5 +108,9 @@ public class ActuViewImpl extends Composite implements ActuView {
 		Label lLabel = new Label(pLabel);
 		lLabel.setStyleName(CSS.userSpaceContentLabel());
 		return lLabel;
+	}
+
+	public HasValue<String> getSummary() {
+		return summary;
 	}
 }

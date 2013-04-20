@@ -33,7 +33,10 @@ import com.asptttoulousenatation.core.shared.swimmer.ISwimmerStatUi;
 import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatComputeUi;
 import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatDataUi;
 import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatEnum;
+import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatMonthUi;
 import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatUi;
+import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatWeekUi;
+import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatYearUi;
 import com.asptttoulousenatation.server.util.Utils;
 
 public class GetAllSwimmerStatActionHandler implements
@@ -216,14 +219,28 @@ public class GetAllSwimmerStatActionHandler implements
 
 				break;
 			case WEEK:
+				lCriteria.add(new CriterionDao<Long>(
+						SwimmerStatEntityFields.DAY, beginDay,
+						Operator.GREATER_EQ));
+				lCriteria.add(new CriterionDao<Long>(
+						SwimmerStatEntityFields.DAY, endDay, Operator.LESS_EQ));
+				lSwimmerStatUi = new SwimmerStatWeekUi();
+				break;
 			case MONTH:
+				lCriteria.add(new CriterionDao<Long>(
+						SwimmerStatEntityFields.DAY, beginDay,
+						Operator.GREATER_EQ));
+				lCriteria.add(new CriterionDao<Long>(
+						SwimmerStatEntityFields.DAY, endDay, Operator.LESS_EQ));
+				lSwimmerStatUi = new SwimmerStatMonthUi();
+				break;
 			case YEAR:
 				lCriteria.add(new CriterionDao<Long>(
 						SwimmerStatEntityFields.DAY, beginDay,
 						Operator.GREATER_EQ));
 				lCriteria.add(new CriterionDao<Long>(
 						SwimmerStatEntityFields.DAY, endDay, Operator.LESS_EQ));
-				lSwimmerStatUi = new SwimmerStatComputeUi();
+				lSwimmerStatUi = new SwimmerStatYearUi();
 				break;
 			default:// Do nothing
 				lSwimmerStatUi = null;
@@ -234,6 +251,8 @@ public class GetAllSwimmerStatActionHandler implements
 			int bodybuildingCount = 0;
 			List<String> comments = new ArrayList<String>();
 			StringBuilder lComment = new StringBuilder();
+			Calendar calendar = GregorianCalendar.getInstance();
+			calendar.setFirstDayOfWeek(Calendar.MONDAY);
 			for (SwimmerStatEntity entity : entities) {
 				if (SwimmerStatEnum.DAY.equals(pAction.getPeriod())) {
 					SwimmerStatUi lDaySwimmerStatUi = (SwimmerStatUi) lSwimmerStatUi;
@@ -264,7 +283,26 @@ public class GetAllSwimmerStatActionHandler implements
 				} else {
 					if (DayTimeEnum.MUSCU.name().equals(entity.getDaytime())) {
 						bodybuildingCount += entity.getDistance();
-					} else {
+					} else if(SwimmerStatEnum.WEEK.equals(pAction.getPeriod())) {
+						int index = 0;
+						switch (DayTimeEnum.valueOf(entity.getDaytime())) {
+						case MATIN: index = 0;
+						break;
+						case MIDI: index = 1;
+						break;
+						case SOIR: index = 2;
+						break;
+						default:
+						}
+						calendar.setTimeInMillis(entity.getDay());
+						((SwimmerStatWeekUi) lSwimmerStatUi).addDistance(calendar.get(Calendar.DAY_OF_WEEK) - 2, index, entity.getDistance());
+					} else if(SwimmerStatEnum.MONTH.equals(pAction.getPeriod())) {
+						calendar.setTimeInMillis(entity.getDay());
+						((SwimmerStatMonthUi) lSwimmerStatUi).addDistance(calendar.get(Calendar.WEEK_OF_MONTH), entity.getDistance());
+					}else if(SwimmerStatEnum.YEAR.equals(pAction.getPeriod())) {
+								calendar.setTimeInMillis(entity.getDay());
+								((SwimmerStatYearUi) lSwimmerStatUi).addDistance(calendar.get(Calendar.MONTH), entity.getDistance());
+				}else {
 						distance += entity.getDistance();
 					}
 					if (StringUtils.isNotEmpty(entity.getComment())) {
@@ -281,10 +319,24 @@ public class GetAllSwimmerStatActionHandler implements
 			lSwimmerStatUi.setSwimmer(userDataEntity.getLastName() + " "
 					+ userDataEntity.getFirstName());
 
-			if (SwimmerStatEnum.DAY.equals(pAction.getPeriod())) {
+			switch(pAction.getPeriod()) {
+			case DAY: {
 				((SwimmerStatUi) lSwimmerStatUi)
-						.setComment(lComment.toString());
-			} else {
+				.setComment(lComment.toString());
+			}
+			break;
+			case WEEK: {
+				
+			}break;
+			case MONTH: {
+				
+			}
+			break;
+			case YEAR: {
+				
+			}
+			break;
+			default:
 				((SwimmerStatComputeUi) lSwimmerStatUi).setDistance(distance);
 				((SwimmerStatComputeUi) lSwimmerStatUi)
 						.setBodybuilding(bodybuildingCount);

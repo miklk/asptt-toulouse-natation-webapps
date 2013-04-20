@@ -16,22 +16,19 @@ public class PublishActuAction implements Action<PublishActionResult> {
 	
 	public PublishActuAction(String pTitle, String pSummary, String pContent,
 			Date pCreationDate) {
+		super();
 		title = pTitle;
 		summary = pSummary;
 		content = pContent;
 		creationDate = pCreationDate;
 	}
+
+
 	public String getTitle() {
 		return title;
 	}
 	public void setTitle(String pTitle) {
 		title = pTitle;
-	}
-	public String getSummary() {
-		return summary;
-	}
-	public void setSummary(String pSummary) {
-		summary = pSummary;
 	}
 	public String getContent() {
 		return content;
@@ -44,5 +41,13 @@ public class PublishActuAction implements Action<PublishActionResult> {
 	}
 	public void setCreationDate(Date pCreationDate) {
 		creationDate = pCreationDate;
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String pSummary) {
+		summary = pSummary;
 	}
 }

@@ -19,8 +19,6 @@ public class UpdateActuActionHandler implements
 		//Load actu
 		ActuDao lActuDao = new ActuDao();
 		ActuEntity lActu = lActuDao.get(pAction.getId());
-		
-		//update
 		lActu.setTitle(pAction.getTitle());
 		lActu.setSummary(pAction.getSummary());
 		lActu.setCreationDate(pAction.getCreationDate());

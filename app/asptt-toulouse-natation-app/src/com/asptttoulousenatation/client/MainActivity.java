@@ -9,6 +9,8 @@ import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEventHa
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent;
 import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.core.client.ui.PopupValidateAction;
+import com.asptttoulousenatation.core.shared.actu.GetAllActuAction;
+import com.asptttoulousenatation.core.shared.actu.GetAllActuResult;
 import com.asptttoulousenatation.core.shared.structure.LoadContentAction;
 import com.asptttoulousenatation.core.shared.structure.LoadContentResult;
 import com.asptttoulousenatation.core.shared.user.AuthenticationAction;
@@ -56,7 +58,7 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 						Window.alert("Erreur " + pCaught.getMessage());
 					}
 
-					public void onSuccess(InitResult pResult) {
+					public void onSuccess(final InitResult pResult) {
 						final PopupManager lPopupManager = new PopupManager();
 						final MainView lMainView = clientFactory.getMainView(
 								pResult, user, lEventBus);
@@ -71,6 +73,21 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 									
 									public void onFailure(Throwable pReason) {
 										GWT.log("Erreur lors du chargement du code (connexion panel)", pReason);
+									}
+								});
+							}
+						});
+						lMainView.getMoreActuButton().addClickHandler(new ClickHandler() {
+							
+							public void onClick(ClickEvent pEvent) {
+								dispatchAsync.execute(new GetAllActuAction(lMainView.getMoreActuEnd(), lMainView.getMoreActuEnd() + 5), new AsyncCallback<GetAllActuResult>() {
+
+									public void onFailure(Throwable pCaught) {
+										Window.alert("Erreur " + pCaught.getMessage());
+									}
+
+									public void onSuccess(GetAllActuResult pResult) {
+										lMainView.setMoreActu(pResult.getResult(), pResult.getLimitEnd());
 									}
 								});
 							}

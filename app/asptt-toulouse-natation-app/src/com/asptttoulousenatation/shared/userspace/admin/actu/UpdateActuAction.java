@@ -16,12 +16,12 @@ public class UpdateActuAction implements Action<UpdateActuResult> {
 		
 	}
 	
-	public UpdateActuAction(Long pId, String pTitle, String pSummary,
-			Date pCreationDate, String pContent) {
+	public UpdateActuAction(Long pId, String pTitle,
+			Date pCreationDate, String pSummary, String pContent) {
 		id = pId;
 		title = pTitle;
-		summary = pSummary;
 		creationDate = pCreationDate;
+		summary = pSummary;
 		content = pContent;
 	}
 	public Long getId() {
@@ -36,12 +36,15 @@ public class UpdateActuAction implements Action<UpdateActuResult> {
 	public void setTitle(String pTitle) {
 		title = pTitle;
 	}
+	
 	public String getSummary() {
 		return summary;
 	}
+
 	public void setSummary(String pSummary) {
 		summary = pSummary;
 	}
+
 	public Date getCreationDate() {
 		return creationDate;
 	}

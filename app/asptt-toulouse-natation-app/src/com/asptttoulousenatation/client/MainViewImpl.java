@@ -5,6 +5,7 @@ import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 import java.util.List;
 
 import com.asptttoulousenatation.core.client.ui.PopupValidateAction;
+import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.user.UserUi;
@@ -196,4 +197,15 @@ public class MainViewImpl extends Composite implements MainView {
 		contentPanel.loadContent(pPanel);
 	}
 
+	public HasClickHandlers getMoreActuButton() {
+		return contentPanel.getMoreActuButton();
+	}
+
+	public void setMoreActu(List<ActuUi> pActu, int pEnd) {
+		contentPanel.setMoreActu(pActu, pEnd);
+	}
+
+	public int getMoreActuEnd() {
+		return contentPanel.getMoreActuEnd();
+	}
 }

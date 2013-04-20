@@ -19,7 +19,7 @@ body {
 .page {
 	-moz-border-radius: 20px;
 	border-radius: 20px;
-	margin: 15px 0 0 15px;
+	margin: 15px 0 0 3%;
 }
 .root {
 	background-color: #EBF1F5;
@@ -33,7 +33,7 @@ body {
 }
 
 .header-logo {
-	margin-top: 50px;
+	margin-top: 90px;
 	margin-left: 10px;
 	width: 310px;
 }
@@ -57,7 +57,7 @@ body {
 }
 
 .header-login-omnisport {
-	margin-top: 40%;
+	margin-top: 20%;
 }
 
 .header-login-inscription-panel {
@@ -146,9 +146,10 @@ color: #FFFFFF;
 	padding: 5%;
 }
 .tetiere {
-	font-size: 0.7em;
+	font-size: 1em;
 	font-style: italic;
 	margin-bottom: 5px;
+	margin-left: 46%;
 }
 .title {
 	font-size: 1.5em;
@@ -653,4 +654,49 @@ color: #FFFFFF;
 	text-transform: capitalize;
 	width: 150px;
 	height: 30px;
+}
+
+.accueil-titre {
+	font-size: 1.5em;
+	margin-left: 30%;
+}
+
+.titre-panel {
+	margin-left: 40%;
+}
+
+.old-version {
+}
+
+.actu-bloc {
+border: 2px solid #7C858A;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	background-image: url(http://prototype.asptt-toulouse-natation.com/images/degrade_3.png);
+	background-position: top left;
+	background-repeat: repeat-x;
+	background: -moz-linear-gradient(left center, #0A577A 0%, #18A0DF 68%);
+	backgroud: -webkit-gradient(linear, left top, right top, color-stop(0, #0A577A), color-stop(0.68, #18A0DF));
+	font-family: Comic Sans MS;	
+}
+
+.actu-bloc-header {
+	font-family: Comic Sans MS;
+}
+
+.actu-bloc-content {
+	font-family: Comic Sans MS;
+}
+
+.more-actu-button {
+	height: 33px;
+	width: 90%;
+	border: none;
+	cursor: pointer;
+	margin-left: 5%;
+	margin-top: 1%;
+	margin-bottom: 1%;
+	font-style: italic;
+	background-color: #C4E5F3;
+	text-transform: uppercase;
 }

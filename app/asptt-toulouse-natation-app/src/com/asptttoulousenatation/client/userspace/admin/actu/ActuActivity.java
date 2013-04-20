@@ -54,11 +54,9 @@ public class ActuActivity extends MyAbstractActivity<ActuPlace> {
 																	.getTitre()
 																	.getValue(),
 															lActuEditionView
-																	.getSummary()
-																	.getValue(),
-															lActuEditionView
 																	.getCreationDate()
 																	.getValue(),
+																	lActuEditionView.getSummary().getValue(),
 															lActuEditionView
 																	.getContent()),
 													new AsyncCallback<UpdateActuResult>() {
@@ -103,8 +101,7 @@ public class ActuActivity extends MyAbstractActivity<ActuPlace> {
 			lActuView.getPublishButton().addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent pEvent) {
 					PublishActuAction lPublishActuAction = new PublishActuAction(
-							lActuView.getTitre().getValue(), lActuView
-									.getSummary().getValue(), lActuView
+							lActuView.getTitre().getValue(), lActuView.getSummary().getValue(), lActuView
 									.getContent(), lActuView.getCreationDate()
 									.getValue());
 					dispatchAsync.execute(lPublishActuAction,

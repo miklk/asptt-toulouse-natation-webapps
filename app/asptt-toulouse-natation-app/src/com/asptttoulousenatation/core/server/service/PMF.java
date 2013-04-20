@@ -9,16 +9,11 @@ public final class PMF {
 	private static final PersistenceManagerFactory persistenceManagerFactory = JDOHelper
 			.getPersistenceManagerFactory("transactions-optional");
 	
-	private static PersistenceManager PM;
-
 	private PMF() {
 
 	}
 
 	public static PersistenceManager getPersistenceManager() {
-		if(PM == null || PM.isClosed()) {
-			PM = persistenceManagerFactory.getPersistenceManager();
-		}
-		return PM;
+		return persistenceManagerFactory.getPersistenceManager();
 	}
 }

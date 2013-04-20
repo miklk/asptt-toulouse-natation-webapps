@@ -8,7 +8,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 
 public class Breadcrumb extends Composite {
 
-	private static final String DEFAULT_VALUE = "ASPTT Grand Toulouse Natation";
+	private static final String DEFAULT_VALUE = "Accueil";
 	private static final String SEPARATOR = " ~ ";
 	private SimplePanel panel;
 	

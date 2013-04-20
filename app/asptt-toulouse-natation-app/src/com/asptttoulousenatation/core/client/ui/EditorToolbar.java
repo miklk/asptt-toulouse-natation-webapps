@@ -8,6 +8,7 @@ public class EditorToolbar extends CKConfig {
 
 	public EditorToolbar() {
 		super();
+		setWidth("800px");
 		buildToolbar();
 	}
 	

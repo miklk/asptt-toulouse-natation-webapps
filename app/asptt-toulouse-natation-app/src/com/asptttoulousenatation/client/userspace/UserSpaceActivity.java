@@ -1,6 +1,7 @@
 package com.asptttoulousenatation.client.userspace;
 
 import com.asptttoulousenatation.client.config.ClientFactory;
+import com.asptttoulousenatation.client.config.MyAbstractActivity;
 import com.asptttoulousenatation.client.userspace.admin.actu.ActuActivity;
 import com.asptttoulousenatation.client.userspace.admin.actu.ActuPlace;
 import com.asptttoulousenatation.client.userspace.admin.club.group.GroupActivity;
@@ -14,7 +15,10 @@ import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaActivity;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaPlace;
 import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatActivity;
+import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatMonthActivity;
 import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatPlace;
+import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatWeekActivity;
+import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatYearActivity;
 import com.asptttoulousenatation.client.userspace.admin.user.UserActivity;
 import com.asptttoulousenatation.client.userspace.admin.user.UserPlace;
 import com.asptttoulousenatation.client.userspace.admin.user.password.ChangePasswordActivity;
@@ -28,7 +32,6 @@ import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.client.userspace.menu.MenuPlace;
 import com.asptttoulousenatation.client.userspace.officiel.OfficielSubscriptionActivity;
 import com.asptttoulousenatation.client.userspace.officiel.OfficielSubscriptionPlace;
-import com.asptttoulousenatation.client.config.MyAbstractActivity;
 import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatEnum;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
 import com.asptttoulousenatation.core.shared.user.UserUi;
@@ -37,11 +40,11 @@ import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.web.bindery.event.shared.EventBus;
 
 public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 
@@ -196,7 +199,7 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 													lEventBus);
 											break;
 										case SWIMMER_STAT_WEEK:
-											SwimmerStatActivity lSwimmerStatActivityWeek = new SwimmerStatActivity(
+											SwimmerStatWeekActivity lSwimmerStatActivityWeek = new SwimmerStatWeekActivity(
 													new SwimmerStatPlace(),
 													clientFactory);
 											lSwimmerStatActivityWeek
@@ -207,7 +210,7 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 													lEventBus);
 											break;
 										case SWIMMER_STAT_MONTH:
-											SwimmerStatActivity lSwimmerStatActivityMonth = new SwimmerStatActivity(
+											SwimmerStatMonthActivity lSwimmerStatActivityMonth = new SwimmerStatMonthActivity(
 													new SwimmerStatPlace(),
 													clientFactory);
 											lSwimmerStatActivityMonth
@@ -218,7 +221,7 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 													lEventBus);
 											break;
 										case SWIMMER_STAT_YEAR:
-											SwimmerStatActivity lSwimmerStatActivityYear = new SwimmerStatActivity(
+											SwimmerStatYearActivity lSwimmerStatActivityYear = new SwimmerStatYearActivity(
 													new SwimmerStatPlace(),
 													clientFactory);
 											lSwimmerStatActivityYear

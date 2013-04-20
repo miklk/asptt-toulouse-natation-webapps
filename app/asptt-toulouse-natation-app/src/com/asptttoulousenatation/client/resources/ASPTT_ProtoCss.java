@@ -306,4 +306,25 @@ public interface ASPTT_ProtoCss extends CssResource {
 	
 	@ClassName("popup-close-button")
 	String popupCloseButton();
+	
+	@ClassName("titre-panel")
+	String titrePanel();
+	
+	@ClassName("accueil-titre")
+	String accueilTitre();
+	
+	@ClassName("old-version")
+	String oldVersion();
+	
+	@ClassName("actu-bloc")
+	String actuBloc();
+	
+	@ClassName("actu-bloc-header")
+	String actuBlocHeader();
+	
+	@ClassName("actu-bloc-content")
+	String actuBlocContent();
+	
+	@ClassName("more-actu-button")
+	String moreActuButton();
 }

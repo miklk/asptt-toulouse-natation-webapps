@@ -15,10 +15,11 @@ public class ActuDao extends DaoBase<ActuEntity> {
 		return ActuEntity.class;
 	}
 	
-	public List<ActuEntity> getAll() {
+	public List<ActuEntity> getAll(int limitStart, int limitEnd) {
 		PersistenceManager lPersistenceManager = PMF.getPersistenceManager();
 		Query lQuery = lPersistenceManager.newQuery(ActuEntity.class);
 		lQuery.setOrdering("creationDate DESC");
+		lQuery.setRange(limitStart, limitEnd);
 		final List<ActuEntity> lResult;
 		try {
 			lResult = (List<ActuEntity>) lPersistenceManager
@@ -31,5 +32,9 @@ public class ActuDao extends DaoBase<ActuEntity> {
 			}
 		}
 		return lResult;
+	}
+	
+	public List<ActuEntity> getAll() {
+		return getAll(0, 100);
 	}
 }

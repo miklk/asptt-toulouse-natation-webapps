@@ -164,17 +164,17 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 		rowIndex++;
 
 		// Summary
-		summary = new TextBox();
-		summary.setWidth("300px");
-		summary.setValue(pActuUi.getSummary());
-		lPanel.setWidget(rowIndex, 0, createLabel("Description courte"));
-		lPanel.setWidget(rowIndex, 1, summary);
-		rowIndex++;
-
+				summary = new TextBox();
+				summary.setWidth("300px");
+				summary.setValue(pActuUi.getSummary());
+				lPanel.setWidget(rowIndex, 0, createLabel("Description courte"));
+				lPanel.setWidget(rowIndex, 1, summary);
+				rowIndex++;
+				
 		// Date
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat(DateTimeFormat
-				.getFormat("dd MMMM yyyy")));
+				.getFormat("dd MMMM yyyy HH:mm:ss")));
 		date.setWidth("200px");
 		date.setValue(pActuUi.getCreationDate());
 		lPanel.setWidget(rowIndex, 0, createLabel("Date"));
@@ -219,7 +219,7 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 	public HasValue<String> getSummary() {
 		return summary;
 	}
-
+	
 	public String getContent() {
 		return contentInput.getHTML();
 	}
