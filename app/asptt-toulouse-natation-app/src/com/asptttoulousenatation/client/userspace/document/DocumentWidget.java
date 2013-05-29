@@ -23,6 +23,8 @@ public class DocumentWidget extends Composite {
 	
 	private String servletBase;
 	
+	private Long documentId;
+	
 	public DocumentWidget(final Long pMenuId) {
 		panel = new VerticalPanel();
 		initWidget(panel);
@@ -66,6 +68,7 @@ public class DocumentWidget extends Composite {
 	    	  if (uploader.getStatus() == Status.SUCCESS) {
 	    		  title.setText("");
 	    		  summary.setText("");
+	    		  documentId = Long.valueOf(uploader.getServerResponse());
 	    	  }
 	      }
 	    }
@@ -93,4 +96,20 @@ public class DocumentWidget extends Composite {
 		  }
 
 		}
+
+	public Long getDocumentId() {
+		return documentId;
+	}
+
+	public void setDocumentId(Long pDocumentId) {
+		documentId = pDocumentId;
+	}
+
+	public TextBox getDocumentTitle() {
+		return title;
+	}
+
+	public void setDocumentTitle(TextBox pTitle) {
+		title = pTitle;
+	}
 }

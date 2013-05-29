@@ -15,7 +15,7 @@ public class ActuDao extends DaoBase<ActuEntity> {
 		return ActuEntity.class;
 	}
 	
-	public List<ActuEntity> getAll(int limitStart, int limitEnd) {
+	public List<ActuEntity> getAll(long limitStart, long limitEnd) {
 		PersistenceManager lPersistenceManager = PMF.getPersistenceManager();
 		Query lQuery = lPersistenceManager.newQuery(ActuEntity.class);
 		lQuery.setOrdering("creationDate DESC");

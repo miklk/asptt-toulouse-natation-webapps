@@ -40,6 +40,6 @@ public interface MainView extends IsWidget {
 	public void loadContent(final Panel pPanel);
 	
 	public HasClickHandlers getMoreActuButton();
-	public void setMoreActu(List<ActuUi> pActu, int end);
-	public int getMoreActuEnd();
+	public void setMoreActu(List<ActuUi> pActu, long end);
+	public long getMoreActuEnd();
 }

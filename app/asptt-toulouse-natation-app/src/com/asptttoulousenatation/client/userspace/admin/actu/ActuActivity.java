@@ -100,10 +100,13 @@ public class ActuActivity extends MyAbstractActivity<ActuPlace> {
 			final ActuView lActuView = clientFactory.getActuView();
 			lActuView.getPublishButton().addClickHandler(new ClickHandler() {
 				public void onClick(ClickEvent pEvent) {
+					if(lActuView.isDocumentSet()) {
+						Window.alert("Envoyez le document avant de créer l'actualité");
+					} else {
 					PublishActuAction lPublishActuAction = new PublishActuAction(
 							lActuView.getTitre().getValue(), lActuView.getSummary().getValue(), lActuView
 									.getContent(), lActuView.getCreationDate()
-									.getValue());
+									.getValue(), lActuView.getDocumentId());
 					dispatchAsync.execute(lPublishActuAction,
 							new AsyncCallback<PublishActionResult>() {
 
@@ -117,6 +120,7 @@ public class ActuActivity extends MyAbstractActivity<ActuPlace> {
 									lActuView.init();
 								}
 							});
+					}
 				}
 			});
 			pPanel.setWidget(lActuView);

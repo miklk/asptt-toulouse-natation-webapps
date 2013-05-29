@@ -8,8 +8,8 @@ import net.customware.gwt.dispatch.shared.Result;
 public class GetAllActuResult implements Result {
 
 	private List<ActuUi> result;
-	private int limitStart;
-	private int limitEnd;
+	private long limitStart;
+	private long limitEnd;
 
 	public GetAllActuResult() {
 		limitStart = -1;
@@ -21,7 +21,7 @@ public class GetAllActuResult implements Result {
 		result = pResult;
 	}
 
-	public GetAllActuResult(List<ActuUi> pResult, int pLimitStart, int pLimitEnd) {
+	public GetAllActuResult(List<ActuUi> pResult, long pLimitStart, long pLimitEnd) {
 		super();
 		result = pResult;
 		limitStart = pLimitStart;
@@ -36,20 +36,19 @@ public class GetAllActuResult implements Result {
 		result = pResult;
 	}
 
-	public int getLimitStart() {
+	public long getLimitStart() {
 		return limitStart;
 	}
 
-	public void setLimitStart(int pLimitStart) {
+	public void setLimitStart(long pLimitStart) {
 		limitStart = pLimitStart;
 	}
 
-	public int getLimitEnd() {
+	public long getLimitEnd() {
 		return limitEnd;
 	}
 
-	public void setLimitEnd(int pLimitEnd) {
+	public void setLimitEnd(long pLimitEnd) {
 		limitEnd = pLimitEnd;
 	}
-	
 }

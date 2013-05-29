@@ -124,4 +124,28 @@
    <role-name>*</role-name>
   </auth-constraint>
  </security-constraint>
+ <servlet>
+        <servlet-name>GetActuAction</servlet-name>
+        <servlet-class>com.asptttoulousenatation.GetActuAction</servlet-class>
+ </servlet>
+ <servlet-mapping>
+  <servlet-name>GetActuAction</servlet-name>
+  <url-pattern>/v2/GetActuAction.do</url-pattern>
+ </servlet-mapping>
+ <servlet>
+        <servlet-name>GetStructureAction</servlet-name>
+        <servlet-class>com.asptttoulousenatation.GetStructureAction</servlet-class>
+ </servlet>
+ <servlet-mapping>
+  <servlet-name>GetStructureAction</servlet-name>
+  <url-pattern>/v2/GetStructureAction.do</url-pattern>
+ </servlet-mapping>
+ <servlet>
+        <servlet-name>GetContentAction</servlet-name>
+        <servlet-class>com.asptttoulousenatation.GetContentAction</servlet-class>
+ </servlet>
+ <servlet-mapping>
+  <servlet-name>GetContentAction</servlet-name>
+  <url-pattern>/v2/GetContentAction.do</url-pattern>
+ </servlet-mapping>
 </web-app>

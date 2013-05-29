@@ -10,17 +10,19 @@ public class PublishActuAction implements Action<PublishActionResult> {
 	private String summary;
 	private String content;
 	private Date creationDate;
+	private Long documentId;
 	
 	public PublishActuAction() {
 	}
 	
 	public PublishActuAction(String pTitle, String pSummary, String pContent,
-			Date pCreationDate) {
+			Date pCreationDate, Long pDocumentId) {
 		super();
 		title = pTitle;
 		summary = pSummary;
 		content = pContent;
 		creationDate = pCreationDate;
+		documentId = pDocumentId;
 	}
 
 
@@ -49,5 +51,13 @@ public class PublishActuAction implements Action<PublishActionResult> {
 
 	public void setSummary(String pSummary) {
 		summary = pSummary;
+	}
+
+	public Long getDocumentId() {
+		return documentId;
+	}
+
+	public void setDocumentId(Long pDocumentId) {
+		documentId = pDocumentId;
 	}
 }

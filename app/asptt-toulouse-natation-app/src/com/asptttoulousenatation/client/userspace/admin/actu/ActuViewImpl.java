@@ -4,6 +4,7 @@ import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 
 import java.util.Date;
 
+import com.asptttoulousenatation.client.userspace.document.DocumentWidget;
 import com.asptttoulousenatation.core.client.ui.EditorToolbar;
 import com.axeiya.gwtckeditor.client.CKEditor;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -16,6 +17,7 @@ import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.datepicker.client.DateBox;
 
@@ -26,6 +28,12 @@ public class ActuViewImpl extends Composite implements ActuView {
 	private TextBox summary;
 	private DateBox date;
 	private CKEditor contentInput;
+
+	// Document edition
+	private HorizontalPanel documentPanel;
+	private SimplePanel documentEditionPanel;
+	private DocumentWidget documentWidget;
+
 	private Button publishButton;
 	private Label errorMessage;
 
@@ -42,7 +50,7 @@ public class ActuViewImpl extends Composite implements ActuView {
 		lPanel.setWidget(rowIndex, 0, createLabel("Titre"));
 		lPanel.setWidget(rowIndex, 1, title);
 		rowIndex++;
-		
+
 		// Summary
 		summary = new TextBox();
 		summary.setWidth("300px");
@@ -67,6 +75,11 @@ public class ActuViewImpl extends Composite implements ActuView {
 		lPanel.setWidget(rowIndex, 0, createLabel("Actualité"));
 		lPanel.setWidget(rowIndex, 1, contentInput);
 		rowIndex++;
+		
+		buildDocumentPanel();
+		lPanel.setWidget(rowIndex, 0, createLabel("Documents attachés"));
+		lPanel.setWidget(rowIndex, 1, documentPanel);
+		rowIndex++;
 
 		publishButton = new Button();
 		publishButton.setTitle("Publier");
@@ -82,6 +95,15 @@ public class ActuViewImpl extends Composite implements ActuView {
 		panel.add(lPanel);
 	}
 	
+	private void buildDocumentPanel() {
+		documentPanel = new HorizontalPanel();
+		documentEditionPanel = new SimplePanel();
+		documentEditionPanel.setStyleName(CSS.userSpaceContentEdition());
+		documentWidget = new DocumentWidget(null);
+		documentEditionPanel.setWidget(documentWidget);
+		documentPanel.add(documentEditionPanel);
+	}
+
 	public void init() {
 		title.setValue("");
 		date.setValue(new Date());
@@ -112,5 +134,13 @@ public class ActuViewImpl extends Composite implements ActuView {
 
 	public HasValue<String> getSummary() {
 		return summary;
+	}
+
+	public Long getDocumentId() {
+		return documentWidget.getDocumentId();
+	}
+	
+	public boolean isDocumentSet() {
+		return documentWidget.getDocumentTitle().getValue() != null && !documentWidget.getDocumentTitle().getValue().isEmpty() && documentWidget.getDocumentId() == null;
 	}
 }

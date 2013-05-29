@@ -201,11 +201,11 @@ public class MainViewImpl extends Composite implements MainView {
 		return contentPanel.getMoreActuButton();
 	}
 
-	public void setMoreActu(List<ActuUi> pActu, int pEnd) {
+	public void setMoreActu(List<ActuUi> pActu, long pEnd) {
 		contentPanel.setMoreActu(pActu, pEnd);
 	}
 
-	public int getMoreActuEnd() {
+	public long getMoreActuEnd() {
 		return contentPanel.getMoreActuEnd();
 	}
 }

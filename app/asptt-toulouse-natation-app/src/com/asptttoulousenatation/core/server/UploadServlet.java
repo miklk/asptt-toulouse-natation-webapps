@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.server.dao.document.DocumentDao;
 import com.asptttoulousenatation.core.server.dao.entity.document.DocumentEntity;
@@ -45,14 +46,23 @@ public class UploadServlet extends UploadAction {
 		String lTitle = request.getParameter("fileTitle");
 		String lSummary = request.getParameter("fileSummary");
 		String lMenuId = request.getParameter("menuId");
+		final Long menuId;
+		if("null".equals(lMenuId)) {
+			menuId = null;
+		} else {
+			menuId = Long.valueOf(lMenuId);
+		}
 		FileItem lFile = sessionFiles.get(0);
 		ContentEntity lEntity = new ContentEntity(lTitle,
 				new Blob(lFile.get()), ContentDataKindEnum.DOCUMENT.toString(),
-				Long.valueOf(lMenuId));
+				menuId);
 		ContentEntity lSavedEntity = dao.save(lEntity);
+		
+		
+		
 		DocumentEntity lDocumentEntity = new DocumentEntity(lTitle, lSummary,
 				lFile.getContentType(), lFile.getName(), new Date(),
-				lSavedEntity.getId(), Long.valueOf(lMenuId));
+				lSavedEntity.getId(), menuId);
 		documentDao.save(lDocumentEntity);
 		return Long.toString(lSavedEntity.getId());
 	}

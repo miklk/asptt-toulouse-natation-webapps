@@ -48,7 +48,7 @@ public class MainContentPanel extends Composite {
 	private Panel subMenu;
 	
 	private Button moreActuButton;
-	private int moreActuEnd;
+	private long moreActuEnd;
 
 	public MainContentPanel(InitResult pInitResult, EventBus pEventBus) {
 		initResult = pInitResult;
@@ -253,11 +253,11 @@ public class MainContentPanel extends Composite {
 		return moreActuButton;
 	}
 	
-	public int getMoreActuEnd() {
+	public long getMoreActuEnd() {
 		return moreActuEnd;
 	}
 	
-	public void setMoreActu(List<ActuUi> pActu, int end) {
+	public void setMoreActu(List<ActuUi> pActu, long end) {
 		moreActuEnd = end;
 		actuPanel.remove(moreActuButton);
 		DateTimeFormat lDateTimeFormat = DateTimeFormat

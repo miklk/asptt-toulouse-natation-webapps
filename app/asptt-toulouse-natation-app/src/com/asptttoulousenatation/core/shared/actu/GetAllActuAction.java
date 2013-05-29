@@ -5,35 +5,33 @@ import net.customware.gwt.dispatch.shared.Action;
 
 public class GetAllActuAction implements Action<GetAllActuResult> {
 	
-	private int limitStart;
-	private int limitEnd;
+	private long limitStart;
+	private long limitEnd;
 
 	public GetAllActuAction() {
-		limitStart = -1;
-		limitEnd = -1;
+		limitStart = 0;
+		limitEnd = Long.MAX_VALUE;
 	}
 
-	public GetAllActuAction(int pLimitStart, int pLimitEnd) {
+	public GetAllActuAction(long pLimitStart, long pLimitEnd) {
 		super();
 		limitStart = pLimitStart;
 		limitEnd = pLimitEnd;
 	}
 
-
-	public int getLimitStart() {
+	public long getLimitStart() {
 		return limitStart;
 	}
 
-	public void setLimitStart(int pLimitStart) {
+	public void setLimitStart(long pLimitStart) {
 		limitStart = pLimitStart;
 	}
 
-	public int getLimitEnd() {
+	public long getLimitEnd() {
 		return limitEnd;
 	}
 
-	public void setLimitEnd(int pLimitEnd) {
+	public void setLimitEnd(long pLimitEnd) {
 		limitEnd = pLimitEnd;
 	}
-	
 }

@@ -57,7 +57,7 @@ public class AlternateBanner extends Composite {
 				}
 				images[index].getElement().getStyle()
 						.setVisibility(Visibility.VISIBLE);
-				images[index].getElement().getStyle().setZIndex(1);
+				images[index].getElement().getStyle().setZIndex(0);
 				index = (index + 1) % photos.length;
 			}
 		};
