@@ -8,170 +8,12 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/i18n/jquery-ui-i18n.min.js"></script>
-<!-- SlidesJS Required (if responsive): Sets the page width to the device width. -->
-  <meta name="viewport" content="width=device-width">
-  <!-- End SlidesJS Required -->
+    <!-- bxSlider Javascript file -->
+<script src="js/jquery.bxslider.min.js"></script>
 
-  <!-- CSS for slidesjs.com example -->
-  <link rel="stylesheet" href="css/example.css">
-  <link rel="stylesheet" href="css/font-awesome.min.css">
-  <link rel="stylesheet" href="css/popup.css">
-  <!-- End CSS for slidesjs.com example -->
-
-  <!-- SlidesJS Optional: If you'd like to use this design -->
-  <style>
-    #slides {
-      display: none
-    }
-
-    #slides .slidesjs-navigation {
-      margin-top:5px;
-    }
-
-    a.slidesjs-next,
-    a.slidesjs-previous,
-    a.slidesjs-play,
-    a.slidesjs-stop {
-      background-image: url(img/btns-next-prev.png);
-      background-repeat: no-repeat;
-      display:block;
-      width:12px;
-      height:18px;
-      overflow: hidden;
-      text-indent: -9999px;
-      float: left;
-      margin-right:5px;
-    }
-
-    a.slidesjs-next {
-      margin-right:10px;
-      background-position: -12px 0;
-    }
-
-    a:hover.slidesjs-next {
-      background-position: -12px -18px;
-    }
-
-    a.slidesjs-previous {
-      background-position: 0 0;
-    }
-
-    a:hover.slidesjs-previous {
-      background-position: 0 -18px;
-    }
-
-    a.slidesjs-play {
-      width:15px;
-      background-position: -25px 0;
-    }
-
-    a:hover.slidesjs-play {
-      background-position: -25px -18px;
-    }
-
-    a.slidesjs-stop {
-      width:18px;
-      background-position: -41px 0;
-    }
-
-    a:hover.slidesjs-stop {
-      background-position: -41px -18px;
-    }
-
-    .slidesjs-pagination {
-      margin: 7px 0 0;
-      float: right;
-      list-style: none;
-    }
-
-    .slidesjs-pagination li {
-      float: left;
-      margin: 0 1px;
-    }
-
-    .slidesjs-pagination li a {
-      display: block;
-      width: 13px;
-      height: 0;
-      padding-top: 13px;
-      background-image: url(img/pagination.png);
-      background-position: 0 0;
-      float: left;
-      overflow: hidden;
-    }
-
-    .slidesjs-pagination li a.active,
-    .slidesjs-pagination li a:hover.active {
-      background-position: 0 -13px
-    }
-
-    .slidesjs-pagination li a:hover {
-      background-position: 0 -26px
-    }
-
-    #slides a:link,
-    #slides a:visited {
-      color: #333
-    }
-
-    #slides a:hover,
-    #slides a:active {
-      color: #9e2020
-    }
-
-    .navbar {
-      overflow: hidden
-    }
-    
-    #slides img {
-    	width: 400px;
-    }
-  </style>
-  <!-- End SlidesJS Optional-->
-
-  <!-- SlidesJS Required: These styles are required if you'd like a responsive slideshow -->
-  <style>
-    #slides {
-      display: none
-    }
-
-    .container {
-      margin: 0 auto
-    }
-
-    /* For tablets & smart phones */
-    @media (max-width: 767px) {
-      body {
-        padding-left: 20px;
-        padding-right: 20px;
-      }
-      .container {
-        width: auto
-      }
-    }
-
-    /* For smartphones */
-    @media (max-width: 480px) {
-      .container {
-        width: auto
-      }
-    }
-
-    /* For smaller displays like laptops */
-    @media (min-width: 768px) and (max-width: 979px) {
-      .container {
-        width: 724px
-      }
-    }
-
-    /* For larger displays */
-    @media (min-width: 1200px) {
-      .container {
-        width: 1170px
-      }
-    }
-  </style>
-  <!-- SlidesJS Required: -->
+  <!-- bxSlider CSS file -->
+<link rel="stylesheet" href="css/jquery.bxslider.css" />
+<link rel="stylesheet" href="css/popup.css" />
   </head>
 
   <body>
@@ -180,11 +22,8 @@
     <header>
     	<section id="global-nav">
     		<nav>
+    			<a href="v2.html"><img src="img/logo.png" /></a>
     			<ul id="global-nav-menu">
-    				<li><a href="v2.html">Accueil</a></li>
-    			</ul>
-    			<ul id="global-nav-actions">
-    				<li>Inscription</li>
     				<li><a href="#login_form">Identification</a></li>
     			</ul>
     		</nav>
@@ -193,30 +32,23 @@
     <div id="container">
     	<section id="main">
     	<header>
-    		<div style="float:left"><img src="img/logo.png" /></div>
-    		<div id="slides">
-    				<img src="img/img1.jpg" style="width:400px" />
-    				<img src="img/img2.jpg" style="width:400px"/>
-    				<img src="img/img3.jpg" style="width:400px"/>
-    				<img src="img/n1_hiver_2013.jpg" />
-    		</div>
+
+    		<ul class="bxslider">
+    			<li>	<img src="img/img1.jpg" style="width:400px" /></li>
+    			<li>	<img src="img/img2.jpg" style="width:400px"/></li>
+    			<li>	<img src="img/img3.jpg" style="width:400px"/></li>
+    			<li>	<img src="img/n1_hiver_2013.jpg" /></li>
+    		</ul>
+    		    		
     	</header>
-    	<aside id="menu">
-    	<nav>
-    		<dl id="menu-liste">
-    		</dl>
-    	</nav>
-    	</aside>
     	<aside id="tools">
     			<section id="partenaires">
     				<header>Partenaires</header>
-    				<div id="partenaires-carousel">
-    					<ul>
-    						<li><img src="img/logo-acadomia.png" /></li>
-    						<li><img src="img/logo-CD31.gif" /></li>
-    						<li><img src="img/logo-CRMP.jpg" /></li>
-    						<li><img src="img/logo-ffn.jpg" /></li>
-    					</ul>
+    				<div>
+    						<div><img src="img/logo-acadomia.png" /></div>
+    						<div><img src="img/logo-CD31.gif" /></div>
+    						<div><img src="img/logo-CRMP.jpg" /></div>
+    						<div><img src="img/logo-ffn.jpg" /></div>
     				</div>
     			</section>
 		</aside>
@@ -250,40 +82,15 @@
             <a class="close" href="#close"></a>
         </div>
     
-    <!-- SlidesJS Required: Link to jquery.slides.js -->
-  <script src="js/jquery.slides.js"></script>
-  <!-- End SlidesJS Required -->
-
-  <!-- SlidesJS Required: Initialize SlidesJS with a jQuery doc ready -->
-  <script>
-    $(function() {
-      $('#slides').slidesjs({
-        width: 400,
-        height: 150,
-        navigation: {
-            active: false,
-        },
-        play: {
-          active: false,
-          auto: true,
-          interval: 4000,
-          swap: true
-        }
-      });
-    });
-  </script>
-  <!-- End SlidesJS Required -->
     <script type="text/javascript">
 	$(document).ready(function(){
-	
-		$("#partenaires-carousel").each(function(){
-			var t = setInterval(function(){
-				$("#partenaires-carousel ul").animate({marginLeft:-130},1000,function(){
-					$("#partenaires-carousel ul li:last").after($("#partenaires-carousel ul li:first"));
-					$(this).css({marginLeft:0});
-				})
-			},3000);
-		});
+			  $('.bxslider').bxSlider({
+				  mode: 'fade',
+				  captions: true,
+				  auto: true,
+				  adaptiveHeight: true
+			  });
+		
 		
 		getActu(0);
 
@@ -294,20 +101,8 @@
             	var dataJson = $.parseJSON(data);
             	$.each(dataJson, function() {
             		var areaId = "menu-liste-" + this.id;
-            		$("#menu-liste").append('<dt id="'+areaId+'">'+this.title+'</dt>');
-            		$.each(this.menuSet, function() {
-            			var menu = this;
-            			var menuIdentifier = menu.id
-            			var menuId = areaId + "-" + menuIdentifier;
-            			$("#menu-liste").append('<dd id="'+menuId+'">'+menu.title+'</dd>');
-            			$("#" + menuId).click(function() {
-            				$("#content-header").html(menu.title);
-            				$.post("GetContentAction.do", {menuId: menuIdentifier}).done(function(content) {
-            					var contentJson = $.parseJSON(content);
-            					$("#content-data").html(contentJson.contenu);
-            				});
-            			});
-            		});
+            		$("#global-nav-menu").append('<li id="'+areaId+'">'+this.title+'</li>');
+            		
             	});
             }
 		});
@@ -319,7 +114,7 @@
             success: function(data){
             	var dataJson = $.parseJSON(data);
             	$.each(dataJson, function() {
-            		$("#content-data").append('<article><div class="content-actu-header">' + this.title + '</div><details><summary>' +  this.summary + '</summary>' + this.content.value + '</details></article>');
+            		$("#content-data").append('<article><div class="content-actu-header">' + this.title + '</div><div>' + this.content.value + '</div></article>');
             	});
             	$("#content-data").append('<article><div id="content-actu-more">Plus de news</div></article>');
             	$("#content-actu-more").click(function() {

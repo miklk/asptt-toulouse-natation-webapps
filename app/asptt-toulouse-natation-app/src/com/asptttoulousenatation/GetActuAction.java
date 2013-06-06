@@ -25,7 +25,7 @@ public class GetActuAction extends HttpServlet {
 			throws ServletException, IOException {
 		System.out.println("tiens on m'appelle");
 		ActuDao lActuDao = new ActuDao();
-		List<ActuEntity> lEntities = lActuDao.getAll();
+		List<ActuEntity> lEntities = lActuDao.getAll(0, 5);
 		Gson gson = new Gson();
 		String json = gson.toJson(lEntities);
 		System.out.println(json);
