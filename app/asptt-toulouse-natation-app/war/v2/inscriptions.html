@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>ASPTT Grand Toulouse Natation - Inscription 2013-2014</title>
+    <link rel="stylesheet" href="index.css" type="text/css" />
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/cupertino/jquery-ui.css" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/i18n/jquery-ui-i18n.min.js"></script>
+  </head>
+
+  <body>
+  
+  	<form method="post" action="ACTION.do">
+  		<fieldset>
+  			<legend>Etat civil</legend>
+  			<p>
+  				<label for="monsieur">Monsieur</label><input id="monsieur" type="radio" name="civilite" value="0" />
+  				<label for="madame">Madame</label><input id="madame" type="radio" name="civilite" value="1" />
+  				<label for="mademoiselle">Mademoiselle</label><input id="mademoiselle" type="radio" name="civilite" value="2" />
+  			</p>
+  			<p><label for="nom">Nom</label><input type="text" id="nom" /></p>
+  			<p><label for="prenom">Prénom</label><input type="text" id="prenom" /></p>
+  			<p>
+  				<label for="dateNaissance">Date de naissance</label><input type="date" id="dateNaissance" />
+  				<label for="lieuNaissance">Lieu de naissance</label><input type="text" id="lieuNaissance" />
+  				<label for="nationalite">Nationalite</label><input type="text" id="nationalite" />
+  			</p>
+  		</fieldset>
+  		
+  		<fieldset>
+  			<legend>Adresse postale</legend>
+  			<p>
+  				<label for="adresse">Adresse complète</label><input type="text" id="adresse" />
+  			</p>
+  			<p>
+  				<label for="codePostal">Code postal</label><input type="text" id="codePostal" />
+  				<label for="ville">Ville</label><input type="text" id="ville" />
+  			</p>
+  		</fieldset>
+  		
+  		<fieldset>
+  			<legend>Contact</legend>
+  			<p><label for="telephone">Numéro de téléphone principal</label><input type="text" id="telephone" /></p>
+  		</fieldset>
+  	</form>
+  	
+
+    <script type="text/javascript">
+	$(document).ready(function(){
+	
+	});
+	function getActu(fromIndex) {
+		$.ajax({
+            type: "POST",
+            url: "GetActuAction.do?from=" + fromIndex,
+            success: function(data){
+            	var dataJson = $.parseJSON(data);
+            	$.each(dataJson, function() {
+            		$("#content-data").append('<article><div class="content-actu-header">' + this.title + '</div><details><summary>' +  this.summary + '</summary>' + this.content.value + '</details></article>');
+            	});
+            	$("#content-data").append('<article><div id="content-actu-more">Plus de news</div></article>');
+            	$("#content-actu-more").click(function() {
+            		getActu(fromIndex + 10);
+            	});
+            }
+        });
+	}
+</script>
+  </body>
+</html>
