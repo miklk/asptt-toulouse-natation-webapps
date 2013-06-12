@@ -43,26 +43,119 @@
   		<fieldset>
   			<legend>Contact</legend>
   			<p><label for="telephone">Numéro de téléphone principal</label><input type="text" id="telephone" /></p>
+  			<p>
+				<label for="telephonePere">Numéro de téléphone père</label><input type="text" id="telephonePere" />
+				<label for="telephonePerePro">Numéro de téléphone professionel du père</label><input type="text" id="telephonePerePro" />
+			</p>
+			<p>
+				<label for="telephoneMere">Numéro de téléphone mère</label><input type="text" id="telephoneMere" />
+				<label for="telephoneMerePro">Numéro de téléphone professionel du mère</label><input type="text" id="telephoneMerePro" />
+			</p>
+			<p><label for="email">Adresse e-mail</label><input type="text" id="email" /></p>
   		</fieldset>
+  		
+  			<fieldset>
+  				<legend>Licence</legend>
+  				<p><label for="licenceFFN">Licence fédérale FFN</label><input type="checkbox" id="licenceFFN" /></p>
+  				<p><label for="competition">Compétition</label><input type="checkbox" id="competition" /></p>
+  			</fieldset>
+  			
+  			<fieldset>
+  				<legend>Equipement - mensuration</legend>
+  				<p>
+  					<label for="maillot">Maillot de bain</label><input type="text" id="maillot" />
+  					<label for="tshirt">T-Shirt</label><input type="text" id="tshirt" />
+  					<label for="short">Short</label><input type="text" id="short" />
+  				</p>
+  			</fieldset>
+  			
+  		<fieldset>
+  			<legend>Groupe - créneaux</legend>
+  			<div id="groupes" style="float:left"></div>
+  			<div id="creneaux">Midi</div>
+  			
+  		</fieldset>
+  		<fieldset>
+  			<legend>Fonction dans la section</legend>
+  			<p>
+  				<label for="president">Président(e)</label><input type="checkbox" id="president" />
+  				<label for="secretaire">Secrétiaire</label><input type="checkbox" id="secretaire" />
+  				<label for="tresorier">Trésorier(e)</label><input type="checkbox" id="tresorier" />
+  				<label for="bureau">Membre Bureau Section</label><input type="checkbox" id="bureau" />
+  				<label for="cadre">Cadre technique</label><input type="checkbox" id="cadre" />
+  				<label for="officiel">Arbitre / Officiel</label><input type="checkbox" id="officiel" />
+  				<label for="conseil">Membre du conseil administratif ASPTT</label><input type="checkbox" id="conseil" />
+  			</p>
+  		</fieldset>
+  		
+  		<fieldset>
+  			<legend>Renseignements confidentiels et facultatifs</legend>
+  			<p>
+  				<label for="scolaire">Scolaire</label><input type="radio" id="scolaire" name="profession" />
+  				<label for="etudiant">Etudiant</label><input type="radio" id="etudiant" name="profession" />
+  				<label for="salarie">Salarié</label><input type="radio" id="salarie" name="profession" />
+  				<label for="retraite">Retraité</label><input type="radio" id="retraite" name="profession" />
+  				<label for="demandeur">Demandeur d'emploi</label><input type="radio" id="demandeur" name="profession" />
+  			</p>
+  			<p>
+  				<label for="profession">Profession</label><input type="text" id="profession" />
+  			</p>
+  		</fieldset>
+  		
+  		<fieldset>
+  			<legend>Accord de licence</legend>
+  			<p>
+  				<label for="accordNomPrenom">Je, soussigné</label><input type="text" id="accordNomPrenom" /> reconnais avoir pris connaissance:
+  			</p>
+  		</fieldset>
+  		
+  		<fieldset>
+  			<legend>Autorisation parentale pour les mineurs</legend>
+  			<p>
+  				<label for="mineurParent">Je, soussigné</label><input type="text" id="mineurParent" /><label for="mineur">représentant légal de</label><input type="text" id="mineur" />
+  			</p>
+  		</fieldset>
+  		
+  		<fieldset>
+  			<legend>Personne à contacter en cas d'accident</legend>
+  			<p>
+  				<label for="accidentNom1">Nom</label><input type="text" id="accidentNom1" />
+  				<label for="accidentPrenom1">Prénom</label><input type="text" id="accidentPrenom1" />
+  				<label for="accidentTelephone1">Téléphone</label><input type="text" id="accidentTelephone1" />
+  			</p>
+  			<p>
+  				<label for="accidentNom2">Nom</label><input type="text" id="accidentNom2" />
+  				<label for="accidentPrenom2">Prénom</label><input type="text" id="accidentPrenom2" />
+  				<label for="accidentTelephone2">Téléphone</label><input type="text" id="accidentTelephone2" />
+  			</p>
+  		</fieldset>
+  		
+  		<fieldset>
+  			<legend>Type de licences Fédération Sportive des ASPTT</legend>
+  			<p>
+  				<label for="typeLicence1">Licence SANS autre fédération</label><input type="radio" id="typeLicence1" name="typeLicence" />
+  				<label for="typeLicence2">Licence loisir: 8 euros</label><input type="radio" id="typeLicence2" name="typeLicence" />
+  				<label for="typeLicence3">Licence adhésion: 4 euros</label><input type="radio" id="typeLicence3" name="typeLicence" />
+  			</p>
+  		</fieldset>
+  		
+  		<p><button type="button">Calculer mon tarif</button></p>
+  		<p><button type="submit">Valider mon inscription</button></p>
   	</form>
   	
 
     <script type="text/javascript">
 	$(document).ready(function(){
-	
+		getGroupes();
 	});
-	function getActu(fromIndex) {
+	function getGroupes() {
 		$.ajax({
             type: "POST",
-            url: "GetActuAction.do?from=" + fromIndex,
+            url: "InscriptionAction.do?action=loadGroupes",
+            dataType: "json",
             success: function(data){
-            	var dataJson = $.parseJSON(data);
-            	$.each(dataJson, function() {
-            		$("#content-data").append('<article><div class="content-actu-header">' + this.title + '</div><details><summary>' +  this.summary + '</summary>' + this.content.value + '</details></article>');
-            	});
-            	$("#content-data").append('<article><div id="content-actu-more">Plus de news</div></article>');
-            	$("#content-actu-more").click(function() {
-            		getActu(fromIndex + 10);
+            	$.each(data, function() {
+            		$("#groupes").append('<p>' + this.title + '</p>');
             	});
             }
         });
