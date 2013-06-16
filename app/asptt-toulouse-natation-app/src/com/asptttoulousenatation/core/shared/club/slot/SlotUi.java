@@ -8,7 +8,9 @@ public class SlotUi implements IsSerializable {
 private Long id;
 	private String dayOfWeek;
 	private int begin;
+	private String beginStr;
 	private int end;
+	private String endStr;
 	private GroupUi group;
 	private String swimmingPool;
 	private String educateur;
@@ -80,5 +82,21 @@ private Long id;
 
 	public void setEducateur(String pEducateur) {
 		educateur = pEducateur;
+	}
+
+	public String getBeginStr() {
+		return beginStr;
+	}
+
+	public void setBeginStr(String pBeginStr) {
+		beginStr = pBeginStr;
+	}
+
+	public String getEndStr() {
+		return endStr;
+	}
+
+	public void setEndStr(String pEndStr) {
+		endStr = pEndStr;
 	}
 }

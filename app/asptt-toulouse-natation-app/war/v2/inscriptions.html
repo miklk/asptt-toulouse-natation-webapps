@@ -1,90 +1,196 @@
 <!doctype html>
 <html lang="fr">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
     <title>ASPTT Grand Toulouse Natation - Inscription 2013-2014</title>
     <link rel="stylesheet" href="index.css" type="text/css" />
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/themes/cupertino/jquery-ui.css" type="text/css" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/start/jquery-ui.css" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/i18n/jquery-ui-i18n.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    
+    <style>
+  #dialog label, #dialog input { display:block; }
+  #dialog label { margin-top: 0.5em; }
+  #dialog input, #dialog textarea { width: 95%; }
+  #tabs { margin-top: 1em; }
+  #tabs li .ui-icon-close { float: left; margin: 0.4em 0.2em 0 0; cursor: pointer; }
+  #add_tab { cursor: pointer; }
+  </style>
+  
+  <script>
+  $(function() {
+    var tabTitle = $( "#tab_title" ),
+      tabContent = $( "#tab_content" ),
+      tabTemplate = "<li><a href='#{href}'>#{label}</a> <span class='ui-icon ui-icon-close' role='presentation'>Remove Tab</span></li>",
+      tabTemplateContent = $("#contentTemplate").html(),
+      tabCounter = 2;
+ 
+    var tabs = $( "#tabs" ).tabs();
+ 
+    // actual addTab function: adds new tab using the input from the form above
+    function addTab() {
+      var label = "Adhérent " + tabCounter,
+        id = "tabs-" + tabCounter,
+        li = $( tabTemplate.replace( /#\{href\}/g, "#" + id ).replace( /#\{label\}/g, label ) ),
+        tabContentHtml = tabTemplateContent.replace( /#\{tabId\}/g, id + "_" );
+ 
+      tabs.find( ".ui-tabs-nav" ).append( li );
+      tabs.append( "<div id='" + id + "'></div>" );
+      $("#" + id).append(tabContentHtml);
+      tabs.tabs( "refresh" );
+      tabCounter++;
+    }
+ 
+    // addTab button: just opens the dialog
+    $( "#add_tab" )
+      .button()
+      .click(function() {
+        addTab();
+      });
+ 
+    // close icon: removing the tab on click
+    tabs.delegate( "span.ui-icon-close", "click", function() {
+      var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
+      $( "#" + panelId ).remove();
+      tabs.tabs( "refresh" );
+    });
+ 
+    tabs.bind( "keyup", function( event ) {
+      if ( event.altKey && event.keyCode === $.ui.keyCode.BACKSPACE ) {
+        var panelId = tabs.find( ".ui-tabs-active" ).remove().attr( "aria-controls" );
+        $( "#" + panelId ).remove();
+        tabs.tabs( "refresh" );
+      }
+    });
+	function getGroupes() {
+		$.ajax({
+            type: "POST",
+            url: "InscriptionAction.do?action=loadGroupes",
+            dataType: "json",
+            success: function(data){
+            	$.each(data, function() {
+            		var groupId = this.id;
+            		var groupe = $('<p>' + this.title + '</p>');
+            		$("#groupes").append(groupe);
+            		groupe.click(function() {
+            			getCreneaux(groupId);
+            		});
+            	});
+            }
+        });
+	}
+	
+	function getCreneaux(groupeId) {
+		$.ajax({
+            type: "POST",
+            url: "InscriptionAction.do?action=loadCreneaux&selectedGroupe=" + groupeId,
+            dataType: "json",
+            success: function(data){
+            	$("#creneaux").empty();
+            	$.each(data, function() {
+            		var creneauId = "creneau" + this.id
+            		$("#creneaux").append('<p><input type=\'checkbox\' id=\'' + creneauId + '\' name=\'' + creneauId + '\' /><label for=\'' + creneauId + '\' />' + this.swimmingPool + '<br />' + this.dayOfWeek + ' ' + this.beginStr + '-' + this.endStr +'</label></p>');
+            	});
+            }
+        });
+	}
+	getGroupes();
+	$("#valid").click(function() {
+		  $("#1_form").submit();
+		  $("#" + tabCounter +"_form").submit();
+	  });
+  });
+  
+  
+  
+  </script>
   </head>
 
   <body>
-  
-  	<form method="post" action="ACTION.do">
+  	<form id="1_form" method="post" action="InscriptionAction.do">
+  	<input type="hidden" name="action" value="inscription" />
+	<button id="add_tab" type="button">Ajouter un enfant</button>
+ 
+<div id="tabs">
+<ul>
+    <li><a href="#tabs-1">1er adhérent</a></li>
+     </ul>
+     <div id="tabs-1">
+  	
   		<fieldset>
   			<legend>Etat civil</legend>
   			<p>
-  				<label for="monsieur">Monsieur</label><input id="monsieur" type="radio" name="civilite" value="0" />
-  				<label for="madame">Madame</label><input id="madame" type="radio" name="civilite" value="1" />
-  				<label for="mademoiselle">Mademoiselle</label><input id="mademoiselle" type="radio" name="civilite" value="2" />
+  				<label for="monsieur">Monsieur</label><input type="radio" id="monsieur" name="civilite" value="0" />
+  				<label for="madame">Madame</label><input type="radio" id="madame" name="civilite" value="1" />
+  				<label for="mademoiselle">Mademoiselle</label><input type="radio" id="mademoiselle" name="civilite" value="2" />
   			</p>
-  			<p><label for="nom">Nom</label><input type="text" id="nom" /></p>
-  			<p><label for="prenom">Prénom</label><input type="text" id="prenom" /></p>
+  			<p><label for="nom">Nom</label><input type="text" id="nom" name="nom" /></p>
+  			<p><label for="prenom">Prénom</label><input type="text" name="prenom" id="prenom" /></p>
   			<p>
-  				<label for="dateNaissance">Date de naissance</label><input type="date" id="dateNaissance" />
-  				<label for="lieuNaissance">Lieu de naissance</label><input type="text" id="lieuNaissance" />
-  				<label for="nationalite">Nationalite</label><input type="text" id="nationalite" />
+  				<label for="dateNaissance">Date de naissance</label><input type="date" id="dateNaissance" name="dateNaissance" />
+  				<label for="lieuNaissance">Lieu de naissance</label><input type="text" id="lieuNaissance" name="lieuNaissance" />
+  				<label for="nationalite">Nationalite</label><input type="text" id="nationalite" name="nationalite" />
   			</p>
   		</fieldset>
   		
   		<fieldset>
   			<legend>Adresse postale</legend>
   			<p>
-  				<label for="adresse">Adresse complète</label><input type="text" id="adresse" />
+  				<label for="adresse">Adresse complète</label><input type="text" id="adresse" name="adresse" />
   			</p>
   			<p>
-  				<label for="codePostal">Code postal</label><input type="text" id="codePostal" />
-  				<label for="ville">Ville</label><input type="text" id="ville" />
+  				<label for="codePostal">Code postal</label><input type="text" id="codePostal" name="codePostal" />
+  				<label for="ville">Ville</label><input type="text" id="ville" name="ville" />
   			</p>
   		</fieldset>
   		
   		<fieldset>
   			<legend>Contact</legend>
-  			<p><label for="telephone">Numéro de téléphone principal</label><input type="text" id="telephone" /></p>
+  			<p><label for="telephone">Numéro de téléphone principal</label><input type="text" id="telephone" name="telephone" /></p>
   			<p>
-				<label for="telephonePere">Numéro de téléphone père</label><input type="text" id="telephonePere" />
-				<label for="telephonePerePro">Numéro de téléphone professionel du père</label><input type="text" id="telephonePerePro" />
+				<label for="telephonePere">Numéro de téléphone père</label><input type="text" id="telephonePere" name="telephonePere" />
+				<label for="telephonePerePro">Numéro de téléphone professionel du père</label><input type="text" id="telephonePerePro" name="telephonePerePro" />
 			</p>
 			<p>
-				<label for="telephoneMere">Numéro de téléphone mère</label><input type="text" id="telephoneMere" />
-				<label for="telephoneMerePro">Numéro de téléphone professionel du mère</label><input type="text" id="telephoneMerePro" />
+				<label for="telephoneMere">Numéro de téléphone mère</label><input type="text" id="telephoneMere" name="telephoneMere" />
+				<label for="telephoneMerePro">Numéro de téléphone professionel du mère</label><input type="text" id="telephoneMerePro" name="telephoneMerePro" />
 			</p>
-			<p><label for="email">Adresse e-mail</label><input type="text" id="email" /></p>
+			<p><label for="email">Adresse e-mail</label><input type="text" id="email" name="email" /></p>
   		</fieldset>
   		
   			<fieldset>
   				<legend>Licence</legend>
-  				<p><label for="licenceFFN">Licence fédérale FFN</label><input type="checkbox" id="licenceFFN" /></p>
-  				<p><label for="competition">Compétition</label><input type="checkbox" id="competition" /></p>
+  				<p><label for="licenceFFN">Licence fédérale FFN</label><input type="checkbox" id="licenceFFN" name="licenceFFN" /></p>
+  				<p><label for="competition">Compétition</label><input type="checkbox" id="competition" name="competition" /></p>
   			</fieldset>
   			
   			<fieldset>
   				<legend>Equipement - mensuration</legend>
   				<p>
-  					<label for="maillot">Maillot de bain</label><input type="text" id="maillot" />
-  					<label for="tshirt">T-Shirt</label><input type="text" id="tshirt" />
-  					<label for="short">Short</label><input type="text" id="short" />
+  					<label for="maillot">Maillot de bain</label><input type="text" id="maillot" name="maillot" />
+  					<label for="tshirt">T-Shirt</label><input type="text" id="tshirt" name="tshirt" />
+  					<label for="shortPantalon">Short</label><input type="text" id="shortPantalon" name="shortPantalon" />
   				</p>
   			</fieldset>
   			
   		<fieldset>
   			<legend>Groupe - créneaux</legend>
   			<div id="groupes" style="float:left"></div>
-  			<div id="creneaux">Midi</div>
+  			<div id="creneaux"></div>
   			
   		</fieldset>
   		<fieldset>
   			<legend>Fonction dans la section</legend>
   			<p>
-  				<label for="president">Président(e)</label><input type="checkbox" id="president" />
-  				<label for="secretaire">Secrétiaire</label><input type="checkbox" id="secretaire" />
-  				<label for="tresorier">Trésorier(e)</label><input type="checkbox" id="tresorier" />
-  				<label for="bureau">Membre Bureau Section</label><input type="checkbox" id="bureau" />
-  				<label for="cadre">Cadre technique</label><input type="checkbox" id="cadre" />
-  				<label for="officiel">Arbitre / Officiel</label><input type="checkbox" id="officiel" />
-  				<label for="conseil">Membre du conseil administratif ASPTT</label><input type="checkbox" id="conseil" />
+  				<label for="president">Président(e)</label><input type="checkbox" id="president" name="president" />
+  				<label for="secretaire">Secrétiaire</label><input type="checkbox" id="secretaire" name="secretaire" />
+  				<label for="tresorier">Trésorier(e)</label><input type="checkbox" id="tresorier" name="tresorier" />
+  				<label for="bureau">Membre Bureau Section</label><input type="checkbox" id="bureau" name="bureau" />
+  				<label for="cadre">Cadre technique</label><input type="checkbox" id="cadre" name="cadre" />
+  				<label for="officiel">Arbitre / Officiel</label><input type="checkbox" id="officiel" name="officiel" />
+  				<label for="conseil">Membre du conseil administratif ASPTT</label><input type="checkbox" id="conseil" name="conseil" />
   			</p>
   		</fieldset>
   		
@@ -98,35 +204,35 @@
   				<label for="demandeur">Demandeur d'emploi</label><input type="radio" id="demandeur" name="profession" />
   			</p>
   			<p>
-  				<label for="profession">Profession</label><input type="text" id="profession" />
+  				<label for="profession">Profession</label><input type="text" id="profession" name="professionText" />
   			</p>
   		</fieldset>
   		
   		<fieldset>
   			<legend>Accord de licence</legend>
   			<p>
-  				<label for="accordNomPrenom">Je, soussigné</label><input type="text" id="accordNomPrenom" /> reconnais avoir pris connaissance:
+  				<label for="accordNomPrenom">Je, soussigné</label><input type="text" id="accordNomPrenom" name="accordNomPrenom" /> reconnais avoir pris connaissance:
   			</p>
   		</fieldset>
   		
   		<fieldset>
   			<legend>Autorisation parentale pour les mineurs</legend>
   			<p>
-  				<label for="mineurParent">Je, soussigné</label><input type="text" id="mineurParent" /><label for="mineur">représentant légal de</label><input type="text" id="mineur" />
+  				<label for="mineurParent">Je, soussigné</label><input type="text" id="mineurParent" name="mineurParent" /><label for="mineur">représentant légal de</label><input type="text" id="mineur" name="mineur" />
   			</p>
   		</fieldset>
   		
   		<fieldset>
   			<legend>Personne à contacter en cas d'accident</legend>
   			<p>
-  				<label for="accidentNom1">Nom</label><input type="text" id="accidentNom1" />
-  				<label for="accidentPrenom1">Prénom</label><input type="text" id="accidentPrenom1" />
-  				<label for="accidentTelephone1">Téléphone</label><input type="text" id="accidentTelephone1" />
+  				<label for="accidentNom1">Nom</label><input type="text" id="accidentNom1" name="accidentNom1" />
+  				<label for="accidentPrenom1">Prénom</label><input type="text" id="accidentPrenom1" name="accidentPrenom1" />
+  				<label for="accidentTelephone1">Téléphone</label><input type="text" id="accidentTelephone1" name="accidentTelephone1" />
   			</p>
   			<p>
-  				<label for="accidentNom2">Nom</label><input type="text" id="accidentNom2" />
-  				<label for="accidentPrenom2">Prénom</label><input type="text" id="accidentPrenom2" />
-  				<label for="accidentTelephone2">Téléphone</label><input type="text" id="accidentTelephone2" />
+  				<label for="accidentNom2">Nom</label><input type="text" id="accidentNom2" name="accidentNom2" />
+  				<label for="accidentPrenom2">Prénom</label><input type="text" id="accidentPrenom2" name="accidentPrenom2" />
+  				<label for="accidentTelephone2">Téléphone</label><input type="text" id="accidentTelephone2" name="accidentTelephone2" />
   			</p>
   		</fieldset>
   		
@@ -138,28 +244,99 @@
   				<label for="typeLicence3">Licence adhésion: 4 euros</label><input type="radio" id="typeLicence3" name="typeLicence" />
   			</p>
   		</fieldset>
-  		
   		<p><button type="button">Calculer mon tarif</button></p>
-  		<p><button type="submit">Valider mon inscription</button></p>
-  	</form>
-  	
-
-    <script type="text/javascript">
-	$(document).ready(function(){
-		getGroupes();
-	});
-	function getGroupes() {
-		$.ajax({
-            type: "POST",
-            url: "InscriptionAction.do?action=loadGroupes",
-            dataType: "json",
-            success: function(data){
-            	$.each(data, function() {
-            		$("#groupes").append('<p>' + this.title + '</p>');
-            	});
-            }
-        });
-	}
-</script>
+  		<p><button type="button" id="valid">Valider mon inscription</button></p>
+  		</div>
+</form>
+  		
+<div id="contentTemplate" style="display:none">
+<form id="#{tabId}_form">
+<fieldset>
+  			<legend>Etat civil</legend>
+  			<p>
+  				<label for="#{tabId}monsieur">Monsieur</label><input id="#{tabId}monsieur" type="radio" name="#{tabId}civilite" value="0" />
+  				<label for="#{tabId}madame">Madame</label><input id="#{tabId}madame" type="radio" name="#{tabId}civilite" value="1" />
+  				<label for="#{tabId}mademoiselle">Mademoiselle</label><input id="#{tabId}mademoiselle" type="radio" name="#{tabId}civilite" value="2" />
+  			</p>
+  			<p><label for="#{tabId}nom">Nom</label><input type="text" id="#{tabId}nom" name="#{tabId}nom" /></p>
+  			<p><label for="#{tabId}prenom">Prénom</label><input type="text" id="#{tabId}prenom" /></p>
+  			<p>
+  				<label for="#{tabId}dateNaissance">Date de naissance</label><input type="date" id="#{tabId}dateNaissance" />
+  				<label for="#{tabId}lieuNaissance">Lieu de naissance</label><input type="text" id="#{tabId}lieuNaissance" />
+  				<label for="#{tabId}nationalite">Nationalite</label><input type="text" id="#{tabId}nationalite" />
+  			</p>
+  		</fieldset>
+  		<fieldset>
+  				<legend>Licence</legend>
+  				<p><label for="#{tabId}licenceFFN">Licence fédérale FFN</label><input type="checkbox" id="#{tabId}licenceFFN" /></p>
+  				<p><label for="#{tabId}competition">Compétition</label><input type="checkbox" id="#{tabId}competition" /></p>
+  			</fieldset>
+  			
+  			<fieldset>
+  				<legend>Equipement - mensuration</legend>
+  				<p>
+  					<label for="#{tabId}maillot">Maillot de bain</label><input type="text" id="#{tabId}maillot" />
+  					<label for="#{tabId}tshirt">T-Shirt</label><input type="text" id="#{tabId}tshirt" />
+  					<label for="#{tabId}short">Short</label><input type="text" id="#{tabId}short" />
+  				</p>
+  			</fieldset>
+  			
+  		<fieldset>
+  			<legend>Groupe - créneaux</legend>
+  			<div id="#{tabId}groupes" style="float:left"></div>
+  			<div id="#{tabId}creneaux"></div>
+  			
+  		</fieldset>
+  		<fieldset>
+  			<legend>Fonction dans la section</legend>
+  			<p>
+  				<label for="#{tabId}president">Président(e)</label><input type="checkbox" id="#{tabId}president" />
+  				<label for="#{tabId}secretaire">Secrétiaire</label><input type="checkbox" id="#{tabId}secretaire" />
+  				<label for="#{tabId}tresorier">Trésorier(e)</label><input type="checkbox" id="#{tabId}tresorier" />
+  				<label for="#{tabId}bureau">Membre Bureau Section</label><input type="checkbox" id="#{tabId}bureau" />
+  				<label for="#{tabId}cadre">Cadre technique</label><input type="checkbox" id="#{tabId}cadre" />
+  				<label for="#{tabId}officiel">Arbitre / Officiel</label><input type="checkbox" id="#{tabId}officiel" />
+  				<label for="#{tabId}conseil">Membre du conseil administratif ASPTT</label><input type="checkbox" id="#{tabId}conseil" />
+  			</p>
+  		</fieldset>
+  		
+  		<fieldset>
+  			<legend>Renseignements confidentiels et facultatifs</legend>
+  			<p>
+  				<label for="#{tabId}scolaire">Scolaire</label><input type="radio" id="#{tabId}scolaire" name="#{tabId}profession" />
+  				<label for="#{tabId}etudiant">Etudiant</label><input type="radio" id="#{tabId}etudiant" name="#{tabId}profession" />
+  				<label for="#{tabId}salarie">Salarié</label><input type="radio" id="#{tabId}salarie" name="#{tabId}profession" />
+  				<label for="#{tabId}retraite">Retraité</label><input type="radio" id="#{tabId}retraite" name="#{tabId}profession" />
+  				<label for="#{tabId}demandeur">Demandeur d'emploi</label><input type="radio" id="#{tabId}demandeur" name="#{tabId}profession" />
+  			</p>
+  			<p>
+  				<label for="#{tabId}profession">Profession</label><input type="text" id="#{tabId}profession" />
+  			</p>
+  		</fieldset>
+  		
+  		<fieldset>
+  			<legend>Accord de licence</legend>
+  			<p>
+  				<label for="#{tabId}accordNomPrenom">Je, soussigné</label><input type="text" id="#{tabId}accordNomPrenom" /> reconnais avoir pris connaissance:
+  			</p>
+  		</fieldset>
+  		
+  		<fieldset>
+  			<legend>Autorisation parentale pour les mineurs</legend>
+  			<p>
+  				<label for="#{tabId}mineurParent">Je, soussigné</label><input type="text" id="#{tabId}mineurParent" /><label for="#{tabId}mineur">représentant légal de</label><input type="text" id="#{tabId}mineur" />
+  			</p>
+  		</fieldset>
+  		<fieldset>
+  			<legend>Type de licences Fédération Sportive des ASPTT</legend>
+  			<p>
+  				<label for="#{tabId}typeLicence1">Licence SANS autre fédération</label><input type="radio" id="#{tabId}typeLicence1" name="#{tabId}typeLicence" />
+  				<label for="#{tabId}typeLicence2">Licence loisir: 8 euros</label><input type="radio" id="#{tabId}typeLicence2" name="#{tabId}typeLicence" />
+  				<label for="#{tabId}typeLicence3">Licence adhésion: 4 euros</label><input type="radio" id="#{tabId}typeLicence3" name="#{tabId}typeLicence" />
+  			</p>
+  		</fieldset>
+  		</form>
+</div>
+</div>
   </body>
 </html>
