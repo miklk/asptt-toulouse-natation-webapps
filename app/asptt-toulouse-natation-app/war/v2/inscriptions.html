@@ -98,9 +98,35 @@
 	}
 	getGroupes();
 	$("#valid").click(function() {
-		  $("#1_form").submit();
-		  $("#" + tabCounter +"_form").submit();
+		  $.ajax({type:"POST", data: $("#1_form").serialize(), url:"InscriptionAction.do", 
+				success: function(data){
+					$("#result").append(data).append("<br />");
+					submitTabs(2);
+				},
+	                        error: function(){
+				        alert('Une erreur est survenue.');
+				}
+			});
 	  });
+	
+	function submitTabs(index) {
+		$("#result").append(index + " en cours...<br />");
+		$.ajax({type:"POST", data: $("#tabs-" + index +"_form").serialize(), url:"InscriptionAction.do", 
+			success: function(data){
+				$("#result").append(data).append("<br />");
+				index++;
+				if(index  < tabCounter) {
+					submitTabs(index);
+				} else {
+					$("#result").append("terminé");
+					$('html, body').animate({ scrollTop: 0 }, 'slow');
+				}
+			},
+                        error: function(){
+                        	alert('Une erreur est survenue.');
+			}
+		});
+	}
   });
   
   
@@ -109,6 +135,7 @@
   </head>
 
   <body>
+  <div id="result"></div>
   	<form id="1_form" method="post" action="InscriptionAction.do">
   	<input type="hidden" name="action" value="inscription" />
 	<button id="add_tab" type="button">Ajouter un enfant</button>
@@ -250,7 +277,8 @@
 </form>
   		
 <div id="contentTemplate" style="display:none">
-<form id="#{tabId}_form">
+<form id="#{tabId}form">
+<input type="hidden" name="action" value="inscription" />
 <fieldset>
   			<legend>Etat civil</legend>
   			<p>
@@ -258,8 +286,8 @@
   				<label for="#{tabId}madame">Madame</label><input id="#{tabId}madame" type="radio" name="#{tabId}civilite" value="1" />
   				<label for="#{tabId}mademoiselle">Mademoiselle</label><input id="#{tabId}mademoiselle" type="radio" name="#{tabId}civilite" value="2" />
   			</p>
-  			<p><label for="#{tabId}nom">Nom</label><input type="text" id="#{tabId}nom" name="#{tabId}nom" /></p>
-  			<p><label for="#{tabId}prenom">Prénom</label><input type="text" id="#{tabId}prenom" /></p>
+  			<p><label for="#{tabId}nom">Nom</label><input type="text" id="#{tabId}nom" name="nom" /></p>
+  			<p><label for="#{tabId}prenom">Prénom</label><input type="text" id="#{tabId}prenom" name="prenom" /></p>
   			<p>
   				<label for="#{tabId}dateNaissance">Date de naissance</label><input type="date" id="#{tabId}dateNaissance" />
   				<label for="#{tabId}lieuNaissance">Lieu de naissance</label><input type="text" id="#{tabId}lieuNaissance" />

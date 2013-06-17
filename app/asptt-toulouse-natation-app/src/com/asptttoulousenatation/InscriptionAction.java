@@ -21,6 +21,7 @@ import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity;
+import com.asptttoulousenatation.core.server.dao.inscription.InscriptionDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
@@ -84,6 +85,7 @@ public class InscriptionAction extends HttpServlet {
 	
 	protected void inscription(HttpServletRequest pReq,
 			HttpServletResponse pResp) throws ServletException, IOException {
+		System.out.println("inscription");
 		StringBuilder creneau = new StringBuilder();
 		Enumeration params = pReq.getParameterNames();
 		while(params.hasMoreElements()) {
@@ -99,6 +101,8 @@ public class InscriptionAction extends HttpServlet {
 		entity.setCreneaux(creneau.toString());
 		try {
 			BeanUtils.populate(entity, pReq.getParameterMap());
+			InscriptionDao dao = new InscriptionDao();
+			dao.save(entity);
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -106,6 +110,6 @@ public class InscriptionAction extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(ReflectionToStringBuilder.toString(entity));
+		pResp.getWriter().write(ReflectionToStringBuilder.toString(entity));
 	}
 }
