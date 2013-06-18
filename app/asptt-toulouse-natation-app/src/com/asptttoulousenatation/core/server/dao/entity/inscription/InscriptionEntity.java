@@ -98,6 +98,8 @@ public class InscriptionEntity implements Entity {
 	private String typeLicence;
 	@Persistent
 	private String creneaux;
+	@Persistent
+	private Long principal;
 	
 	public InscriptionEntity() {
 		
@@ -421,5 +423,13 @@ public class InscriptionEntity implements Entity {
 
 	public void setCreneaux(String pCreneaux) {
 		creneaux = pCreneaux;
+	}
+
+	public Long getPrincipal() {
+		return principal;
+	}
+
+	public void setPrincipal(Long pPrincipal) {
+		principal = pPrincipal;
 	}
 }

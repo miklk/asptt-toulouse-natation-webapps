@@ -51,7 +51,9 @@ public class InscriptionAction extends HttpServlet {
 			loadCreneaux(pReq, pResp);
 		} else if("inscription".equals(action)) {
 			inscription(pReq, pResp);
-		}
+		} else if("inscriptionSub".equals(action)) {
+				inscriptionSub(pReq, pResp);
+			}
 	}
 
 	protected void loadGroupes(HttpServletRequest pReq,
@@ -86,6 +88,7 @@ public class InscriptionAction extends HttpServlet {
 	protected void inscription(HttpServletRequest pReq,
 			HttpServletResponse pResp) throws ServletException, IOException {
 		System.out.println("inscription");
+		pReq.getSession().removeAttribute("inscriptionId");
 		StringBuilder creneau = new StringBuilder();
 		Enumeration params = pReq.getParameterNames();
 		while(params.hasMoreElements()) {
@@ -99,6 +102,41 @@ public class InscriptionAction extends HttpServlet {
 		}
 		InscriptionEntity entity = new InscriptionEntity();
 		entity.setCreneaux(creneau.toString());
+		try {
+			BeanUtils.populate(entity, pReq.getParameterMap());
+			InscriptionDao dao = new InscriptionDao();
+			Long inscriptionId = dao.save(entity).getId();
+			System.out.println("ID = " + inscriptionId);
+			pReq.getSession().setAttribute("inscriptionId", inscriptionId);
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		pResp.getWriter().write(ReflectionToStringBuilder.toString(entity));
+	}
+	
+	protected void inscriptionSub(HttpServletRequest pReq,
+			HttpServletResponse pResp) throws ServletException, IOException {
+		Long principalId = (Long) pReq.getSession().getAttribute("inscriptionId");
+		System.out.println("GET ID = " + principalId);
+		System.out.println("inscription sub");
+		StringBuilder creneau = new StringBuilder();
+		Enumeration params = pReq.getParameterNames();
+		while(params.hasMoreElements()) {
+			String param = (String) params.nextElement();
+			if(param.contains("creneau")) {
+				String paramValue = pReq.getParameter(param);
+				if(BooleanUtils.toBoolean(paramValue)) {
+					creneau.append(param.replace("creneau", "")).append(";");
+				}
+			}
+		}
+		InscriptionEntity entity = new InscriptionEntity();
+		entity.setCreneaux(creneau.toString());
+		entity.setPrincipal(principalId);
 		try {
 			BeanUtils.populate(entity, pReq.getParameterMap());
 			InscriptionDao dao = new InscriptionDao();

@@ -41,6 +41,7 @@
       $("#" + id).append(tabContentHtml);
       tabs.tabs( "refresh" );
       tabCounter++;
+      getGroupes(id + "_");
     }
  
     // addTab button: just opens the dialog
@@ -64,7 +65,7 @@
         tabs.tabs( "refresh" );
       }
     });
-	function getGroupes() {
+	function getGroupes(tabId) {
 		$.ajax({
             type: "POST",
             url: "InscriptionAction.do?action=loadGroupes",
@@ -73,16 +74,16 @@
             	$.each(data, function() {
             		var groupId = this.id;
             		var groupe = $('<p>' + this.title + '</p>');
-            		$("#groupes").append(groupe);
+            		$("# " + tabId + "groupes").append(groupe);
             		groupe.click(function() {
-            			getCreneaux(groupId);
+            			getCreneaux(tabId, groupId);
             		});
             	});
             }
         });
 	}
 	
-	function getCreneaux(groupeId) {
+	function getCreneaux(tabId, groupeId) {
 		$.ajax({
             type: "POST",
             url: "InscriptionAction.do?action=loadCreneaux&selectedGroupe=" + groupeId,
@@ -91,16 +92,15 @@
             	$("#creneaux").empty();
             	$.each(data, function() {
             		var creneauId = "creneau" + this.id
-            		$("#creneaux").append('<p><input type=\'checkbox\' id=\'' + creneauId + '\' name=\'' + creneauId + '\' /><label for=\'' + creneauId + '\' />' + this.swimmingPool + '<br />' + this.dayOfWeek + ' ' + this.beginStr + '-' + this.endStr +'</label></p>');
+            		$("#"+tabId+"creneaux").append('<p><input type=\'checkbox\' id=\'' + creneauId + '\' name=\'' + creneauId + '\' /><label for=\'' + creneauId + '\' />' + this.swimmingPool + '<br />' + this.dayOfWeek + ' ' + this.beginStr + '-' + this.endStr +'</label></p>');
             	});
             }
         });
 	}
-	getGroupes();
+	getGroupes("");
 	$("#valid").click(function() {
 		  $.ajax({type:"POST", data: $("#1_form").serialize(), url:"InscriptionAction.do", 
 				success: function(data){
-					$("#result").append(data).append("<br />");
 					submitTabs(2);
 				},
 	                        error: function(){
@@ -110,15 +110,13 @@
 	  });
 	
 	function submitTabs(index) {
-		$("#result").append(index + " en cours...<br />");
 		$.ajax({type:"POST", data: $("#tabs-" + index +"_form").serialize(), url:"InscriptionAction.do", 
 			success: function(data){
-				$("#result").append(data).append("<br />");
 				index++;
 				if(index  < tabCounter) {
 					submitTabs(index);
 				} else {
-					$("#result").append("terminé");
+					$("#result").append("Inscription terminée");
 					$('html, body').animate({ scrollTop: 0 }, 'slow');
 				}
 			},
@@ -278,7 +276,7 @@
   		
 <div id="contentTemplate" style="display:none">
 <form id="#{tabId}form">
-<input type="hidden" name="action" value="inscription" />
+<input type="hidden" name="action" value="inscriptionSub" />
 <fieldset>
   			<legend>Etat civil</legend>
   			<p>
@@ -339,13 +337,6 @@
   			</p>
   			<p>
   				<label for="#{tabId}profession">Profession</label><input type="text" id="#{tabId}profession" />
-  			</p>
-  		</fieldset>
-  		
-  		<fieldset>
-  			<legend>Accord de licence</legend>
-  			<p>
-  				<label for="#{tabId}accordNomPrenom">Je, soussigné</label><input type="text" id="#{tabId}accordNomPrenom" /> reconnais avoir pris connaissance:
   			</p>
   		</fieldset>
   		
