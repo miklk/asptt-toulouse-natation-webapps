@@ -1,4 +1,4 @@
-package com.asptttoulousenatation.shared.util;
+package com.asptttoulousenatation.server.util;
 
 import java.util.Date;
 
@@ -16,5 +16,9 @@ public final class DateUtils {
 		final int lHour =  pMinutes / 60;
 		final int lMinutes = pMinutes - (lHour * 60);
 		return new int[] {lHour, lMinutes};
+	}
+	
+	public static String formatMinutes(int pMinutes) {
+		return StringUtils.leftPad(Integer.toString(pMinutes), 2, "0");
 	}
 }

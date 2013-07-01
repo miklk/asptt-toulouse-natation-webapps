@@ -49,12 +49,14 @@ public class CriterionDao<T extends Object> {
 		StringBuilder lBuilder = new StringBuilder();
 		lBuilder.append("this.").append(entityField.name().toLowerCase());
 		lBuilder.append(" ").append(operator).append(" ");
-		if (entityField.getEntityClass().equals(String.class)) {
-			lBuilder.append("\"").append(value).append("\"");
-		} else if (entityField.getEntityClass().equals(Date.class)) {
-			lBuilder.append("\"").append(value).append("\"");
-		} else {
-			lBuilder.append(value);
+		if (!Operator.NULL.equals(operator)) {
+			if (entityField.getEntityClass().equals(String.class)) {
+				lBuilder.append("\"").append(value).append("\"");
+			} else if (entityField.getEntityClass().equals(Date.class)) {
+				lBuilder.append("\"").append(value).append("\"");
+			} else {
+				lBuilder.append(value);
+			}
 		}
 		return lBuilder.toString();
 	}

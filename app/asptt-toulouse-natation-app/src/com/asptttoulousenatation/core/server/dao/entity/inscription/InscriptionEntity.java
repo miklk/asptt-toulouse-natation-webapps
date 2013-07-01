@@ -61,6 +61,8 @@ public class InscriptionEntity implements Entity {
 	@Persistent
 	private String shortPantalon;
 	@Persistent
+	private String adherent;
+	@Persistent
 	private String president;
 	@Persistent
 	private String tresorier;
@@ -77,7 +79,9 @@ public class InscriptionEntity implements Entity {
 	@Persistent
 	private String profession;
 	@Persistent
-	private String professionText;
+	private String professionTextPere;
+	@Persistent
+	private String professionTextMere;
 	@Persistent
 	private String accordNomPrenom;
 	@Persistent
@@ -100,6 +104,10 @@ public class InscriptionEntity implements Entity {
 	private String creneaux;
 	@Persistent
 	private Long principal;
+	@Persistent
+	private Long groupe;
+	@Persistent
+	private Long nouveauGroupe;
 	
 	public InscriptionEntity() {
 		
@@ -337,14 +345,6 @@ public class InscriptionEntity implements Entity {
 		profession = pProfession;
 	}
 
-	public String getProfessionText() {
-		return professionText;
-	}
-
-	public void setProfessionText(String pProfessionText) {
-		professionText = pProfessionText;
-	}
-
 	public String getAccordNomPrenom() {
 		return accordNomPrenom;
 	}
@@ -431,5 +431,45 @@ public class InscriptionEntity implements Entity {
 
 	public void setPrincipal(Long pPrincipal) {
 		principal = pPrincipal;
+	}
+
+	public String getAdherent() {
+		return adherent;
+	}
+
+	public void setAdherent(String pAdherent) {
+		adherent = pAdherent;
+	}
+
+	public String getProfessionTextPere() {
+		return professionTextPere;
+	}
+
+	public void setProfessionTextPere(String pProfessionTextPere) {
+		professionTextPere = pProfessionTextPere;
+	}
+
+	public String getProfessionTextMere() {
+		return professionTextMere;
+	}
+
+	public void setProfessionTextMere(String pProfessionTextMere) {
+		professionTextMere = pProfessionTextMere;
+	}
+
+	public Long getGroupe() {
+		return groupe;
+	}
+
+	public void setGroupe(Long pGroupe) {
+		groupe = pGroupe;
+	}
+
+	public Long getNouveauGroupe() {
+		return nouveauGroupe;
+	}
+
+	public void setNouveauGroupe(Long pNouveauGroupe) {
+		nouveauGroupe = pNouveauGroupe;
 	}
 }

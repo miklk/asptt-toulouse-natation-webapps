@@ -4,7 +4,7 @@ import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
-import com.asptttoulousenatation.shared.util.DateUtils;
+import com.asptttoulousenatation.server.util.DateUtils;
 
 public class SlotTransformer extends
 		AbstractEntityTransformer<SlotUi, SlotEntity> {
@@ -21,9 +21,9 @@ public class SlotTransformer extends
 		lUi.setSwimmingPool(pEntity.getSwimmingPool());
 		lUi.setEducateur(pEntity.getEducateur());
 		int[] begin = DateUtils.getHour(pEntity.getBegin());
-		lUi.setBeginStr(begin[0] + ":" + begin[1]);
+		lUi.setBeginStr(begin[0] + ":" + DateUtils.formatMinutes(begin[1]));
 		int[] end = DateUtils.getHour(pEntity.getEnd());
-		lUi.setEndStr(end[0] + ":" + end[1]);
+		lUi.setEndStr(end[0] + ":" + DateUtils.formatMinutes(end[1]));
 		return lUi;
 	}
 	
@@ -33,4 +33,6 @@ public class SlotTransformer extends
 		lUi.setGroup(lGroupUi);
 		return lUi;
 	}
+	
+	
 }

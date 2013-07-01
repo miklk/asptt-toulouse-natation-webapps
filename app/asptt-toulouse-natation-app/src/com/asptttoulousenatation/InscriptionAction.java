@@ -13,12 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
+import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity;
 import com.asptttoulousenatation.core.server.dao.inscription.InscriptionDao;
@@ -53,15 +55,31 @@ public class InscriptionAction extends HttpServlet {
 			inscription(pReq, pResp);
 		} else if("inscriptionSub".equals(action)) {
 				inscriptionSub(pReq, pResp);
-			}
+		} else if("findEmail".equals(action)) {
+			findEmail(pReq, pResp);
+		} else if("loadOldGroupe".equals(action)) {
+			loadOldGroupe(pReq, pResp);
+		}
 	}
 
 	protected void loadGroupes(HttpServletRequest pReq,
 			HttpServletResponse pResp) throws ServletException, IOException {
+		Long groupId = Long.valueOf(pReq.getParameter("groupeId"));
 		GroupDao lGroupDao = new GroupDao();
-		List<GroupEntity> lEntities = lGroupDao.getAll();
+		GroupEntity lEntity = lGroupDao.get(groupId);
 		Gson gson = new Gson();
-		String json = gson.toJson(lEntities);
+		String json = gson.toJson(lEntity);
+		pResp.setContentType("application/json;charset=UTF-8");
+		pResp.getWriter().write(json);
+	}
+	
+	protected void loadOldGroupe(HttpServletRequest pReq,
+			HttpServletResponse pResp) throws ServletException, IOException {
+		Long groupId = Long.valueOf(pReq.getParameter("groupeId"));
+		GroupDao lGroupDao = new GroupDao();
+		GroupEntity lEntity = lGroupDao.get(groupId);
+		Gson gson = new Gson();
+		String json = gson.toJson(lEntity);
 		pResp.setContentType("application/json;charset=UTF-8");
 		pResp.getWriter().write(json);
 	}
@@ -100,7 +118,9 @@ public class InscriptionAction extends HttpServlet {
 				}
 			}
 		}
-		InscriptionEntity entity = new InscriptionEntity();
+		
+		List<InscriptionEntity> adherents = (List<InscriptionEntity>) pReq.getSession().getAttribute("data");
+		InscriptionEntity entity = adherents.get(0);
 		entity.setCreneaux(creneau.toString());
 		try {
 			BeanUtils.populate(entity, pReq.getParameterMap());
@@ -124,6 +144,7 @@ public class InscriptionAction extends HttpServlet {
 		System.out.println("GET ID = " + principalId);
 		System.out.println("inscription sub");
 		StringBuilder creneau = new StringBuilder();
+		String adherentIndexStr = StringUtils.EMPTY;
 		Enumeration params = pReq.getParameterNames();
 		while(params.hasMoreElements()) {
 			String param = (String) params.nextElement();
@@ -132,9 +153,23 @@ public class InscriptionAction extends HttpServlet {
 				if(BooleanUtils.toBoolean(paramValue)) {
 					creneau.append(param.replace("creneau", "")).append(";");
 				}
+			} else if(param.contains("adherentIndex")) {
+				adherentIndexStr = pReq.getParameter(param);
 			}
 		}
-		InscriptionEntity entity = new InscriptionEntity();
+		
+		final InscriptionEntity entity;
+		if(StringUtils.isNotBlank(adherentIndexStr)) {
+			Integer adherentIndex = Integer.valueOf(adherentIndexStr) - 1;
+			List<InscriptionEntity> adherents = (List<InscriptionEntity>) pReq.getSession().getAttribute("data");
+			if(adherentIndex < adherents.size()) {
+				entity = adherents.get(adherentIndex);
+			} else {
+				entity = new InscriptionEntity();	
+			}
+		} else {
+			entity = new InscriptionEntity();
+		}
 		entity.setCreneaux(creneau.toString());
 		entity.setPrincipal(principalId);
 		try {
@@ -149,5 +184,29 @@ public class InscriptionAction extends HttpServlet {
 			e.printStackTrace();
 		}
 		pResp.getWriter().write(ReflectionToStringBuilder.toString(entity));
+	}
+	
+	protected void findEmail(HttpServletRequest pReq,
+			HttpServletResponse pResp) throws ServletException, IOException {
+		String email = pReq.getParameter("find_email");
+		InscriptionDao inscriptionDao = new InscriptionDao();
+		List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(2);
+		CriterionDao<String> lEmailAddressCriterion = new CriterionDao<String>(InscriptionEntityFields.EMAIL, email, Operator.EQUAL);
+		lCriteria.add(lEmailAddressCriterion);
+		CriterionDao<Long> lPrincipalCriterion = new CriterionDao<Long>(InscriptionEntityFields.PRINCIPAL, null, Operator.NULL);
+		lCriteria.add(lPrincipalCriterion);
+		List<InscriptionEntity> adherents = inscriptionDao.find(lCriteria);
+		InscriptionEntity adherent = adherents.get(0);
+		List<CriterionDao<? extends Object>> lPrincipalCriteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		CriterionDao<Long> lAdherentsCriterion = new CriterionDao<Long>(InscriptionEntityFields.PRINCIPAL, adherent.getId(), Operator.EQUAL);
+		lPrincipalCriteria.add(lAdherentsCriterion);
+		adherents.addAll(inscriptionDao.find(lPrincipalCriteria));
+		
+		pReq.getSession().setAttribute("data", adherents);
+		Gson gson = new Gson();
+		String json = gson.toJson(adherents);
+		System.out.println(json);
+		pResp.setContentType("application/json;charset=UTF-8");
+		pResp.getWriter().write(json);
 	}
 }

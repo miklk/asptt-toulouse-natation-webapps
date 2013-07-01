@@ -12,7 +12,7 @@ public enum Operator implements Serializable {
 	LESS_EQ("<="),
 	AND("&&"),
 	OR("||"),
-	NULL("is null");
+	NULL("== null");
 	
 	private String value;
 	
