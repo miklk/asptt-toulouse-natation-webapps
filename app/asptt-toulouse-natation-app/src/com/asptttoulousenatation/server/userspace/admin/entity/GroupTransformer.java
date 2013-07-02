@@ -8,7 +8,7 @@ public class GroupTransformer extends
 
 	@Override
 	public GroupUi toUi(GroupEntity pEntity) {
-		GroupUi lUi = new GroupUi(pEntity.getId(), pEntity.getTitle());
+		GroupUi lUi = new GroupUi(pEntity.getId(), pEntity.getTitle(), pEntity.getLicenceFfn());
 		return lUi;
 	}
 

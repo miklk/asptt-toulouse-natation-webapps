@@ -9,6 +9,7 @@ import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
@@ -25,38 +26,40 @@ public class GroupViewImpl extends Composite implements GroupView {
 
 	private List<GroupUi> data;
 	private HorizontalPanel panel;
-	
+
 	private CellList<GroupUi> cellList;
 	private SingleSelectionModel<GroupUi> selectionModel;
 	private SimplePanel editionPanel;
-	
+
 	private Button createButton;
 	private Button updateButton;
 	private Button deleteButton;
-	
+
 	private TextBox groupTitle;
-	
+	private CheckBox groupLicenceFfn;
+
 	public GroupViewImpl(List<GroupUi> pGroups) {
 		data = pGroups;
 		panel = new HorizontalPanel();
 		initWidget(panel);
-		
+
 		cellList = new CellList<GroupUi>(new GroupCell(), new CellListStyle());
 		cellList.setRowData(data);
 		panel.add(cellList);
 		selectionModel = new SingleSelectionModel<GroupUi>();
 		cellList.setSelectionModel(selectionModel);
-		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-			
-			public void onSelectionChange(SelectionChangeEvent pEvent) {
-				buildEditionPanel(selectionModel.getSelectedObject());
-				
-			}
-		});
+		selectionModel
+				.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+
+					public void onSelectionChange(SelectionChangeEvent pEvent) {
+						buildEditionPanel(selectionModel.getSelectedObject());
+
+					}
+				});
 		editionPanel = new SimplePanel();
 		editionPanel.setStyleName(CSS.userSpaceContentEdition());
 		panel.add(editionPanel);
-		
+
 		createButton = new Button("");
 		createButton.setStyleName(CSS.addButton());
 		updateButton = new Button("");
@@ -65,28 +68,35 @@ public class GroupViewImpl extends Composite implements GroupView {
 		deleteButton.setStyleName(CSS.deleteButton());
 		updateButton.setVisible(false);
 		deleteButton.setVisible(false);
-		
+
 		buildCreationPanel();
 	}
-	
+
 	private void buildEditionPanel(GroupUi pGroupUi) {
 		groupTitle.setValue(pGroupUi.getTitle());
+		groupLicenceFfn.setValue(pGroupUi.isLicenceFfn());
 		updateButton.setVisible(true);
 		deleteButton.setVisible(true);
 	}
-	
+
 	private void buildCreationPanel() {
 		FlexTable lPanel = new FlexTable();
-		
-		//Input
+
+		// Input
 		int lRowIndex = 0;
-		//Title
+		// Title
 		groupTitle = new TextBox();
 		groupTitle.setWidth("200px");
 		lPanel.setWidget(lRowIndex, 0, createLabel("Nom"));
 		lPanel.setWidget(lRowIndex, 1, groupTitle);
 		lRowIndex++;
-		
+
+		// Licence FFN
+		groupLicenceFfn = new CheckBox();
+		lPanel.setWidget(lRowIndex, 0, createLabel("Licence FFN"));
+		lPanel.setWidget(lRowIndex, 1, groupLicenceFfn);
+		lRowIndex++;
+
 		HorizontalPanel lButtonBar = new HorizontalPanel();
 		lButtonBar.setStyleName(CSS.buttonBar());
 		lButtonBar.add(updateButton);
@@ -100,7 +110,7 @@ public class GroupViewImpl extends Composite implements GroupView {
 		editionPanel.clear();
 		editionPanel.setWidget(lPanel);
 	}
-	
+
 	public HasValue<String> getGroupTitle() {
 		return groupTitle;
 	}
@@ -116,7 +126,7 @@ public class GroupViewImpl extends Composite implements GroupView {
 	public Long getGroupId() {
 		return selectionModel.getSelectedObject().getId();
 	}
-	
+
 	private Label createLabel(String pLabel) {
 		Label lLabel = new Label(pLabel);
 		lLabel.setStyleName(CSS.userSpaceContentLabel());
@@ -125,5 +135,9 @@ public class GroupViewImpl extends Composite implements GroupView {
 
 	public HasClickHandlers getDeleteButton() {
 		return deleteButton;
+	}
+
+	public HasValue<Boolean> getGroupLicenceFfn() {
+		return groupLicenceFfn;
 	}
 }

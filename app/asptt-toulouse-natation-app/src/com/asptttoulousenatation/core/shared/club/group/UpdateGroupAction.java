@@ -6,15 +6,17 @@ public class UpdateGroupAction implements Action<UpdateGroupResult> {
 
 	private Long id;
 	private String title;
+	private boolean licenceFfn;
 	
 	public UpdateGroupAction() {
 	}
+	
 
-
-	public UpdateGroupAction(Long id, String title) {
+	public UpdateGroupAction(Long pId, String pTitle, boolean pLicenceFfn) {
 		super();
-		this.id = id;
-		this.title = title;
+		id = pId;
+		title = pTitle;
+		licenceFfn = pLicenceFfn;
 	}
 
 	public Long getId() {
@@ -32,4 +34,15 @@ public class UpdateGroupAction implements Action<UpdateGroupResult> {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
+
+	public boolean isLicenceFfn() {
+		return licenceFfn;
+	}
+
+
+	public void setLicenceFfn(boolean pLicenceFfn) {
+		licenceFfn = pLicenceFfn;
+	}
+	
 }

@@ -2,11 +2,13 @@ package com.asptttoulousenatation.core.server.dao.entity.inscription;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.asptttoulousenatation.core.server.dao.entity.Entity;
+import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
 public class InscriptionEntity implements Entity {
@@ -108,6 +110,11 @@ public class InscriptionEntity implements Entity {
 	private Long groupe;
 	@Persistent
 	private Long nouveauGroupe;
+	
+	@NotPersistent
+	private boolean supprimer;
+	@NotPersistent
+	private GroupEntity groupEntity;
 	
 	public InscriptionEntity() {
 		
@@ -472,4 +479,21 @@ public class InscriptionEntity implements Entity {
 	public void setNouveauGroupe(Long pNouveauGroupe) {
 		nouveauGroupe = pNouveauGroupe;
 	}
+
+	public boolean isSupprimer() {
+		return supprimer;
+	}
+
+	public void setSupprimer(boolean pSupprimer) {
+		supprimer = pSupprimer;
+	}
+
+	public GroupEntity getGroupEntity() {
+		return groupEntity;
+	}
+
+	public void setGroupEntity(GroupEntity pGroupEntity) {
+		groupEntity = pGroupEntity;
+	}
+	
 }

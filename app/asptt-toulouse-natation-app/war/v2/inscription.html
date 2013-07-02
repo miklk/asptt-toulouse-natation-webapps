@@ -72,26 +72,8 @@
             dataType: "json",
             success: function(data){
             		var groupId = data.id;
-            		var groupe = $('<p>A la prochaine saison vous serez dans le groupe <span><b>' + data.title + '</b></span></p>');
-            		$("#" + tabId + "groupes").append(groupe);
-            		groupe.click(function() {
-            			$("#" + tabId + "groupes > p").each(function() {
-            				$(this).removeClass('selected');
-            			}); 
-            			groupe.toggleClass('selected');
-            			getCreneaux(tabId, groupId);
-            		});
-            }
-        });
-	}
-	
-	function getOldGroupe(groupId, tabId) {
-		$.ajax({
-            type: "POST",
-            url: "InscriptionAction.do?action=loadOldGroupe&groupeId=" + groupId,
-            dataType: "json",
-            success: function(data){
-            		var sousTitre = $("#" + tabId + "groupes").append('<p>A la saison dernière, vous étiez dans le groupe ' + data.title + "</p>");
+            		$("#" + tabId + "groupeLegende").append("Saison 2013-2014 Groupe - <span><b>" + data.title + "</b></span>");
+            		getCreneaux(tabId, groupId);
             }
         });
 	}
@@ -102,16 +84,19 @@
             url: "InscriptionAction.do?action=loadCreneaux&selectedGroupe=" + groupeId,
             dataType: "json",
             success: function(data){
-            	$("#creneaux").empty();
+            	$("#"+tabId+"creneaux").empty();
             	$.each(data, function() {
-            		var creneauId = "creneau" + this.id;
+            		var creneauId = tabId + "creneau" + this.id;
             		$("#"+tabId+"creneaux").css('visibility', 'visible');
             		$("#"+tabId+"creneaux").append('<p><label for=\'' + creneauId + '\'>' + this.swimmingPool + '<br />' + this.dayOfWeek + ' ' + this.beginStr + '-' + this.endStr +'</label><input type=\'checkbox\' id=\'' + creneauId + '\' name=\'' + creneauId + '\' /></p>');
             	});
             }
         });
 	}
+	$("#valid").button();
 	$("#valid").click(function() {
+		if(confirm("Etes-vous sûr de l'exactitude des informations fournies ?")) {
+			$(this).attr('disabled', 'disabled');
 		  $.ajax({type:"POST", data: $("#1_form").serialize(), url:"InscriptionAction.do", 
 				success: function(data){
 					submitTabs(2);
@@ -120,8 +105,9 @@
 				        alert('Une erreur est survenue.');
 				}
 			});
+		}
 	  });
-	
+	$("#valid_find_email").button();
 	$("#valid_find_email").click(function() {
 		$.ajax({type: "POST", data: $("#formFind").serialize(), url: "InscriptionAction.do?action=findEmail", dataType: "json",
 			success: function(data) {
@@ -161,8 +147,8 @@
 				           }
 				       }
 				   });
-				getOldGroupe(elt.nouveauGroupe, groupeId);
-				getGroupes(elt.nouveauGroupe, groupeId);
+        		$("#" + groupeId + "groupeLegende").append("Saison 2013-2014 Groupe - <span><b>" + elt.groupEntity.title + "</b></span>");
+        		getCreneaux(groupeId, elt.groupEntity.id);
 				});
 				$("#find").fadeOut(function() {
 					$("#adhesion").fadeIn(1000);
@@ -173,6 +159,7 @@
 			}
 		})
 	});
+	$("#valid_find_prenom").button();
 	$("#valid_find_prenom").click(function() {
 		$.ajax({type: "POST", data: $("#formFind").serialize(), url: "InscriptionAction.do?action=findNomPrenom",
 			success: function(data) {
@@ -193,7 +180,10 @@
 				if(index  < tabCounter) {
 					submitTabs(index);
 				} else {
-					$("#result").append("Inscription terminée");
+					$("#adhesion").fadeOut(function() {
+						$("#result").fadeIn(1000);
+						$("#result").append("Inscription terminée");
+					});
 					$('html, body').animate({ scrollTop: 0 }, 'slow');
 				}
 			},
@@ -208,37 +198,38 @@
   </head>
 
   <body>
-  <div id="find">
   <h1>Bienvenue sur le module d'inscription pour la saison sportive 2013-2014</h1>
+  <div id="find">
   <form id="formFind" method="post" action="InscriptionAction.do">
    <fieldset>
-  			<legend>Identification</legend>
+  			<legend>Je m'identifie l'adresse e-mail que j'ai fournie en début d'année</legend>
   			<p>
   				<label for="find_email">Adresse e-mail</label><input type="text" id="find_email" name="find_email" size="50" />
-  				<button type="button" id="valid_find_email" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-  	<span class="ui-button-text">Valider</span>
-  </button>
-  			</p>
+  				<button type="button" id="valid_find_email">Valider</button>
+  </p>
+  </fieldset>
+  <p style="font-weight: bold; font-size: 1.1em; text-align:center">OU</p>
+  <fieldset>
+  	<legend>Je m'identifie par nom, prénom et ma date de naissance</legend>
   			<p>
   				<label for="find_nom">Nom</label><input type="text" id="find_nom" name="find_nom" size="50" />
   				&nbsp;
   				<label for="find_prenom">Prénom</label><input type="text" id="find_prenom" name="find_prenom" size="50" />
-  				<button type="button" id="valid_find_prenom" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-  	<span class="ui-button-text">Valider</span>
-  </button>
+  				&nbsp;
+  				<label for="find_dateNaissance">Date de naissance</label><input type="text" id="find_dateNaissance" name="find_dateNaissance" size="50" />
+  				<button type="button" id="valid_find_prenom">Valider</button>
   			</p>
   </fieldset>
   </form>
   </div>
+  <div id="result" style="display:none">
+  </div>
   <div id="adhesion" style="display:none">
-  <div id="result"></div>
   	<form id="1_form" method="post" action="InscriptionAction.do">
   	<input type="hidden" name="action" value="inscription" />
   	<div id="bar">
 	<button id="add_tab" type="button">Ajouter un enfant</button>
-	<button type="button" id="valid" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
-  			<span class="ui-button-text">Valider mon inscription</span>
-  		</button>
+	<button type="button" id="valid">Valider mon inscription</button>
   		</div>
 <div id="tabs">
 <ul>
@@ -260,6 +251,12 @@
   				<label for="lieuNaissance">Lieu de naissance</label><input type="text" id="lieuNaissance" name="lieuNaissance" size="50" />
   				<label for="nationalite">Nationalite</label><input type="text" id="nationalite" name="nationalite" size="30" />
   			</p>
+  		</fieldset>
+  		
+  		<fieldset>
+  			<legend id="groupeLegende"></legend>
+  			<p>Veuillez choisir le créneau pour effectuer un test</p>
+  			<div id="creneaux" class="creneaux"></div>
   		</fieldset>
   		
   		<fieldset>
@@ -286,20 +283,6 @@
 			</p>
 			<p><label for="email">Adresse e-mail (usuelle pour toutes les communications)</label><input type="text" id="email" name="email" size="50" /></p>
   		</fieldset>
-  		
-  			<fieldset>
-  				<legend>Licence</legend>
-  				<p><label for="licenceFFN">Licence fédérale FFN</label><input type="checkbox" id="licenceFFN" name="licenceFFN" /></p>
-  				<p><label for="competition">Compétition</label><input type="checkbox" id="competition" name="competition" /></p>
-  			</fieldset>
-  			<fieldset>
-	  			<legend>Type de licences Fédération Sportive des ASPTT</legend>
-	  			<p>
-	  				<label for="typeLicence1">Licence SANS autre fédération</label><input type="radio" id="typeLicence1" name="typeLicence" />
-	  				<label for="typeLicence2">Licence loisir: 8 euros</label><input type="radio" id="typeLicence2" name="typeLicence" />
-	  				<label for="typeLicence3">Licence adhésion: 4 euros</label><input type="radio" id="typeLicence3" name="typeLicence" />
-	  			</p>
-  			</fieldset>
   			
   			<fieldset>
   				<legend>Equipement - mensuration (Taille Arena)</legend>
@@ -323,12 +306,6 @@
   						</select>
   				</p>
   			</fieldset>
-  			
-  		<fieldset>
-  			<legend>Groupe - Créneaux</legend>
-  			<div id="groupes" class="groupes" style="float:left"></div>
-  			<div id="creneaux" class="creneaux" style="visibility: hidden"></div>
-  		</fieldset>
   		<fieldset>
   			<legend>Fonction dans la section</legend>
   			<p>
@@ -391,15 +368,16 @@
 <div id="contentTemplate" style="display:none">
 <form id="#{tabId}form">
 <input type="hidden" name="action" value="inscriptionSub" />
+<p><label for="#{tabId}supprimer">Pour la saison 2013-2014, je souhaite supprimer cette adhésion</label><input type="checkbox" id="#{tabId}supprimer" name="supprimer" /></p>
 <fieldset>
   			<legend>Etat civil</legend>
   			<p>
-  				<label for="#{tabId}monsieur">Monsieur</label><input id="#{tabId}monsieur" type="radio" name="#{tabId}civilite" value="0" />
-  				<label for="#{tabId}madame">Madame</label><input id="#{tabId}madame" type="radio" name="#{tabId}civilite" value="1" />
-  				<label for="#{tabId}mademoiselle">Mademoiselle</label><input id="#{tabId}mademoiselle" type="radio" name="#{tabId}civilite" value="2" />
+  				<label for="#{tabId}monsieur">Monsieur</label><input id="#{tabId}monsieur" type="radio" name="civilite" value="0" />
+  				<label for="#{tabId}madame">Madame</label><input id="#{tabId}madame" type="radio" name="civilite" value="1" />
+  				<label for="#{tabId}mademoiselle">Mademoiselle</label><input id="#{tabId}mademoiselle" type="radio" name="#civilite" value="2" />
   			</p>
-  			<p><label for="#{tabId}nom">Nom</label><input type="text" id="#{tabId}nom" name="nom" /></p>
-  			<p><label for="#{tabId}prenom">Prénom</label><input type="text" id="#{tabId}prenom" name="prenom" /></p>
+  			<p><label for="#{tabId}nom">Nom</label><input type="text" id="#{tabId}nom" name="nom" size="100" /></p>
+  			<p><label for="#{tabId}prenom">Prénom</label><input type="text" id="#{tabId}prenom" name="prenom"  size="100" /></p>
   			<p>
   				<label for="#{tabId}dateNaissance">Date de naissance</label><input type="date" id="#{tabId}dateNaissance" name="dateNaissance" />
   				<label for="#{tabId}lieuNaissance">Lieu de naissance</label><input type="text" id="#{tabId}lieuNaissance" name="lieuNaissance" size="50" />
@@ -407,45 +385,43 @@
   			</p>
   		</fieldset>
   		<fieldset>
-  				<legend>Licence</legend>
-  				<p><label for="#{tabId}licenceFFN">Licence fédérale FFN</label><input type="checkbox" id="#{tabId}licenceFFN" /></p>
-  				<p><label for="#{tabId}competition">Compétition</label><input type="checkbox" id="#{tabId}competition" /></p>
-  		</fieldset>
-  		<fieldset>
-  			<legend>Type de licences Fédération Sportive des ASPTT</legend>
-  			<p>
-  				<label for="#{tabId}typeLicence1">Licence SANS autre fédération</label><input type="radio" id="#{tabId}typeLicence1" name="#{tabId}typeLicence" />
-  				<label for="#{tabId}typeLicence2">Licence loisir: 8 euros</label><input type="radio" id="#{tabId}typeLicence2" name="#{tabId}typeLicence" />
-  				<label for="#{tabId}typeLicence3">Licence adhésion: 4 euros</label><input type="radio" id="#{tabId}typeLicence3" name="#{tabId}typeLicence" />
-  			</p>
-  		</fieldset>
+  			<legend id="#{tabId}groupeLegende"></legend>
+  			<div id="#{tabId}creneaux" class="creneaux"></div>
   			
+  		</fieldset>
   			<fieldset>
   				<legend>Equipement - mensuration (Arena)</legend>
   				<p>
-  					<label for="#{tabId}maillot">Maillot de bain</label><input type="text" id="#{tabId}maillot" />
-  					<label for="#{tabId}tshirt">T-Shirt</label><input type="text" id="#{tabId}tshirt" />
-  					<label for="#{tabId}short">Short</label><input type="text" id="#{tabId}short" />
+  					<label for="#{tabId}maillot">Maillot de bain</label><input type="text" id="#{tabId}maillot" name="maillot" size="5" />
+  					<label for="#{tabId}tshirt">T-Shirt</label>
+	  					<select id="#{tabId}tshirt" name="tshirt">
+	  						<option>XS</option>
+	  						<option>S</option>
+	  						<option>M</option>
+	  						<option>L</option>
+	  						<option>XL</option>
+	  					</select>
+  					<label for="#{tabId}shortPantalon">Short</label>
+  						<select id="#{tabId}shortPantalon" name="shortPantalon">
+  							<option>XS</option>
+	  						<option>S</option>
+	  						<option>M</option>
+	  						<option>L</option>
+	  						<option>XL</option>
+  						</select>
   				</p>
   			</fieldset>
-  			
-  		<fieldset>
-  			<legend>Groupe - Créneaux</legend>
-  			<div id="#{tabId}groupes" class="groupes" style="float:left"></div>
-  			<div id="#{tabId}creneaux" class="creneaux" style="visibility: hidden"></div>
-  			
-  		</fieldset>
   		<fieldset>
   			<legend>Fonction dans la section</legend>
   			<p>
-  				<label for="#{tabId}adherent">Adhérent(e)</label><input type="checkbox" id="#{tabId}adherent" checked="checked" />
-  				<label for="#{tabId}president">Président(e)</label><input type="checkbox" id="#{tabId}president" />
-  				<label for="#{tabId}secretaire">Secrétiaire</label><input type="checkbox" id="#{tabId}secretaire" />
-  				<label for="#{tabId}tresorier">Trésorier(e)</label><input type="checkbox" id="#{tabId}tresorier" />
-  				<label for="#{tabId}bureau">Membre Bureau Section</label><input type="checkbox" id="#{tabId}bureau" />
-  				<label for="#{tabId}cadre">Cadre technique</label><input type="checkbox" id="#{tabId}cadre" />
-  				<label for="#{tabId}officiel">Arbitre / Officiel</label><input type="checkbox" id="#{tabId}officiel" />
-  				<label for="#{tabId}conseil">Membre du conseil administratif ASPTT</label><input type="checkbox" id="#{tabId}conseil" />
+  				<label for="#{tabId}adherent">Adhérent(e)</label><input type="checkbox" id="#{tabId}adherent" name="adherent" checked="checked" />
+  				<label for="#{tabId}president">Président(e)</label><input type="checkbox" id="#{tabId}president" name="president" />
+  				<label for="#{tabId}secretaire">Secrétiaire</label><input type="checkbox" id="#{tabId}secretaire" name="secretaire" />
+  				<label for="#{tabId}tresorier">Trésorier(e)</label><input type="checkbox" id="#{tabId}tresorier" name="tresorier" />
+  				<label for="#{tabId}bureau">Membre Bureau Section</label><input type="checkbox" id="#{tabId}bureau" name="bureau" />
+  				<label for="#{tabId}cadre">Cadre technique</label><input type="checkbox" id="#{tabId}cadre" name="cadre" />
+  				<label for="#{tabId}officiel">Arbitre / Officiel</label><input type="checkbox" id="#{tabId}officiel" name="officiel" />
+  				<label for="#{tabId}conseil">Membre du conseil administratif ASPTT</label><input type="checkbox" id="#{tabId}conseil" name="conseil" />
   			</p>
   		</fieldset>
   		
@@ -458,15 +434,12 @@
   				<label for="#{tabId}retraite">Retraité</label><input type="radio" id="#{tabId}retraite" name="#{tabId}profession" />
   				<label for="#{tabId}demandeur">Demandeur d'emploi</label><input type="radio" id="#{tabId}demandeur" name="#{tabId}profession" />
   			</p>
-  			<p>
-  				<label for="#{tabId}profession">Profession</label><input type="text" id="#{tabId}profession" />
-  			</p>
   		</fieldset>
   		
   		<fieldset>
   			<legend>Autorisation parentale pour les mineurs</legend>
   			<p>
-  				<label for="#{tabId}mineurParent">Je, soussigné</label><input type="text" id="#{tabId}mineurParent" /><label for="#{tabId}mineur">représentant légal de</label><input type="text" id="#{tabId}mineur" />
+  				<label for="#{tabId}mineurParent">Je, soussigné</label><input type="text" id="#{tabId}mineurParent" name="mineurParent" /><label for="#{tabId}mineur">représentant légal de</label><input type="text" id="#{tabId}mineur" name="mineur" />
   			</p>
   		</fieldset>
   		</form>

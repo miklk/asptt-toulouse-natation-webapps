@@ -10,5 +10,6 @@ public interface GroupView extends IsWidget {
 	public HasClickHandlers getUpdateButton();
 	public HasClickHandlers getDeleteButton();
 	public HasValue<String> getGroupTitle();
+	public HasValue<Boolean> getGroupLicenceFfn();
 	public Long getGroupId();
 }

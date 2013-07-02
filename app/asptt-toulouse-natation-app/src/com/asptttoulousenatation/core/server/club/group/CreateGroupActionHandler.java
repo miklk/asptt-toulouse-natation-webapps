@@ -19,6 +19,7 @@ public class CreateGroupActionHandler implements
 		//Build entity
 		GroupEntity lEntity = new GroupEntity();
 		lEntity.setTitle(pAction.getTitle());
+		lEntity.setLicenceFfn(pAction.isLicenceFfn());
 		dao.save(lEntity);
 		return new CreateGroupResult();
 	}

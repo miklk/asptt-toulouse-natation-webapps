@@ -23,6 +23,9 @@ public class GroupEntity implements Entity {
 	@Persistent
 	private String title;
 	
+	@Persistent
+	private Boolean licenceFfn;
+	
 	public GroupEntity() {
 		
 	}
@@ -42,5 +45,12 @@ public class GroupEntity implements Entity {
 	public void setTitle(String pTitle) {
 		title = pTitle;
 	}
-	
+
+	public Boolean getLicenceFfn() {
+		return licenceFfn;
+	}
+
+	public void setLicenceFfn(Boolean pLicenceFfn) {
+		licenceFfn = pLicenceFfn;
+	}
 }

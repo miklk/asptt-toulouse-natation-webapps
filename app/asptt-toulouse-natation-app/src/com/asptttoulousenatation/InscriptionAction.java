@@ -27,6 +27,7 @@ import com.asptttoulousenatation.core.server.dao.inscription.InscriptionDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
+import com.asptttoulousenatation.server.userspace.admin.entity.InscriptionTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
 import com.google.gson.Gson;
 
@@ -36,6 +37,8 @@ public class InscriptionAction extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 4178809147424818945L;
+	
+	private InscriptionTransformer inscriptionTransformer = new InscriptionTransformer();
 	
 	@Override
 	protected void doGet(HttpServletRequest pReq, HttpServletResponse pResp)
@@ -47,9 +50,7 @@ public class InscriptionAction extends HttpServlet {
 	protected void doPost(HttpServletRequest pReq, HttpServletResponse pResp)
 			throws ServletException, IOException {
 		String action = pReq.getParameter("action");
-		if ("loadGroupes".equals(action)) {
-			loadGroupes(pReq, pResp);
-		} else if ("loadCreneaux".equals(action)) {
+		if ("loadCreneaux".equals(action)) {
 			loadCreneaux(pReq, pResp);
 		} else if("inscription".equals(action)) {
 			inscription(pReq, pResp);
@@ -57,31 +58,7 @@ public class InscriptionAction extends HttpServlet {
 				inscriptionSub(pReq, pResp);
 		} else if("findEmail".equals(action)) {
 			findEmail(pReq, pResp);
-		} else if("loadOldGroupe".equals(action)) {
-			loadOldGroupe(pReq, pResp);
 		}
-	}
-
-	protected void loadGroupes(HttpServletRequest pReq,
-			HttpServletResponse pResp) throws ServletException, IOException {
-		Long groupId = Long.valueOf(pReq.getParameter("groupeId"));
-		GroupDao lGroupDao = new GroupDao();
-		GroupEntity lEntity = lGroupDao.get(groupId);
-		Gson gson = new Gson();
-		String json = gson.toJson(lEntity);
-		pResp.setContentType("application/json;charset=UTF-8");
-		pResp.getWriter().write(json);
-	}
-	
-	protected void loadOldGroupe(HttpServletRequest pReq,
-			HttpServletResponse pResp) throws ServletException, IOException {
-		Long groupId = Long.valueOf(pReq.getParameter("groupeId"));
-		GroupDao lGroupDao = new GroupDao();
-		GroupEntity lEntity = lGroupDao.get(groupId);
-		Gson gson = new Gson();
-		String json = gson.toJson(lEntity);
-		pResp.setContentType("application/json;charset=UTF-8");
-		pResp.getWriter().write(json);
 	}
 
 	protected void loadCreneaux(HttpServletRequest pReq,
@@ -124,6 +101,7 @@ public class InscriptionAction extends HttpServlet {
 		entity.setCreneaux(creneau.toString());
 		try {
 			BeanUtils.populate(entity, pReq.getParameterMap());
+			inscriptionTransformer.update(entity);
 			InscriptionDao dao = new InscriptionDao();
 			Long inscriptionId = dao.save(entity).getId();
 			System.out.println("ID = " + inscriptionId);
@@ -174,8 +152,13 @@ public class InscriptionAction extends HttpServlet {
 		entity.setPrincipal(principalId);
 		try {
 			BeanUtils.populate(entity, pReq.getParameterMap());
+			inscriptionTransformer.update(entity);
 			InscriptionDao dao = new InscriptionDao();
-			dao.save(entity);
+			if(entity.isSupprimer()) {
+				dao.delete(entity);
+			} else {
+				dao.save(entity);
+			}
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -201,6 +184,13 @@ public class InscriptionAction extends HttpServlet {
 		CriterionDao<Long> lAdherentsCriterion = new CriterionDao<Long>(InscriptionEntityFields.PRINCIPAL, adherent.getId(), Operator.EQUAL);
 		lPrincipalCriteria.add(lAdherentsCriterion);
 		adherents.addAll(inscriptionDao.find(lPrincipalCriteria));
+		
+		//Get groupes
+		GroupDao lGroupDao = new GroupDao();
+		for(InscriptionEntity entity: adherents) {
+			GroupEntity groupEntity = lGroupDao.get(entity.getNouveauGroupe());
+			entity.setGroupEntity(groupEntity);
+		}
 		
 		pReq.getSession().setAttribute("data", adherents);
 		Gson gson = new Gson();

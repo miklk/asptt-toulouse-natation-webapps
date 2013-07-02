@@ -19,6 +19,7 @@ public class UpdateGroupActionHandler implements
 		//Load entity
 		GroupEntity lEntity = dao.get(pAction.getId());
 		lEntity.setTitle(pAction.getTitle());
+		lEntity.setLicenceFfn(pAction.isLicenceFfn());
 		dao.save(lEntity);
 		return new UpdateGroupResult();
 	}
