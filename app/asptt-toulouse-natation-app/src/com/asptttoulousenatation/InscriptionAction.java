@@ -16,6 +16,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
@@ -58,6 +59,8 @@ public class InscriptionAction extends HttpServlet {
 				inscriptionSub(pReq, pResp);
 		} else if("findEmail".equals(action)) {
 			findEmail(pReq, pResp);
+		} else if("findNomPrenom".equals(action)) {
+			findNomPrenom(pReq, pResp);
 		}
 	}
 
@@ -169,34 +172,97 @@ public class InscriptionAction extends HttpServlet {
 		pResp.getWriter().write(ReflectionToStringBuilder.toString(entity));
 	}
 	
-	protected void findEmail(HttpServletRequest pReq,
-			HttpServletResponse pResp) throws ServletException, IOException {
+	protected void findEmail(HttpServletRequest pReq, HttpServletResponse pResp)
+			throws ServletException, IOException {
 		String email = pReq.getParameter("find_email");
 		InscriptionDao inscriptionDao = new InscriptionDao();
-		List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(2);
-		CriterionDao<String> lEmailAddressCriterion = new CriterionDao<String>(InscriptionEntityFields.EMAIL, email, Operator.EQUAL);
+		List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(
+				2);
+		CriterionDao<String> lEmailAddressCriterion = new CriterionDao<String>(
+				InscriptionEntityFields.EMAIL, email, Operator.EQUAL);
 		lCriteria.add(lEmailAddressCriterion);
-		CriterionDao<Long> lPrincipalCriterion = new CriterionDao<Long>(InscriptionEntityFields.PRINCIPAL, null, Operator.NULL);
+		CriterionDao<Long> lPrincipalCriterion = new CriterionDao<Long>(
+				InscriptionEntityFields.PRINCIPAL, null, Operator.NULL);
 		lCriteria.add(lPrincipalCriterion);
 		List<InscriptionEntity> adherents = inscriptionDao.find(lCriteria);
-		InscriptionEntity adherent = adherents.get(0);
-		List<CriterionDao<? extends Object>> lPrincipalCriteria = new ArrayList<CriterionDao<? extends Object>>(1);
-		CriterionDao<Long> lAdherentsCriterion = new CriterionDao<Long>(InscriptionEntityFields.PRINCIPAL, adherent.getId(), Operator.EQUAL);
-		lPrincipalCriteria.add(lAdherentsCriterion);
-		adherents.addAll(inscriptionDao.find(lPrincipalCriteria));
-		
-		//Get groupes
-		GroupDao lGroupDao = new GroupDao();
-		for(InscriptionEntity entity: adherents) {
-			GroupEntity groupEntity = lGroupDao.get(entity.getNouveauGroupe());
-			entity.setGroupEntity(groupEntity);
+		if (CollectionUtils.isNotEmpty(adherents)) {
+			InscriptionEntity adherent = adherents.get(0);
+			List<CriterionDao<? extends Object>> lPrincipalCriteria = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			CriterionDao<Long> lAdherentsCriterion = new CriterionDao<Long>(
+					InscriptionEntityFields.PRINCIPAL, adherent.getId(),
+					Operator.EQUAL);
+			lPrincipalCriteria.add(lAdherentsCriterion);
+			adherents.addAll(inscriptionDao.find(lPrincipalCriteria));
+
+			// Get groupes
+			GroupDao lGroupDao = new GroupDao();
+			for (InscriptionEntity entity : adherents) {
+				GroupEntity groupEntity = lGroupDao.get(entity
+						.getNouveauGroupe());
+				entity.setGroupEntity(groupEntity);
+			}
+
+			pReq.getSession().setAttribute("data", adherents);
+			Gson gson = new Gson();
+			String json = gson.toJson(adherents);
+			System.out.println(json);
+			pResp.setContentType("application/json;charset=UTF-8");
+			pResp.getWriter().write(json);
+		} else {
+			pResp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			pResp.getWriter().write(
+					"L'adresse e-mail " + email
+							+ " n'est pas enregistrée dans nos fichiers");
 		}
-		
-		pReq.getSession().setAttribute("data", adherents);
-		Gson gson = new Gson();
-		String json = gson.toJson(adherents);
-		System.out.println(json);
-		pResp.setContentType("application/json;charset=UTF-8");
-		pResp.getWriter().write(json);
+	}
+	
+	protected void findNomPrenom(HttpServletRequest pReq, HttpServletResponse pResp)
+			throws ServletException, IOException {
+		String nom = pReq.getParameter("find_nom");
+		String prenom = pReq.getParameter("find_prenom");
+		String dateNaissance = pReq.getParameter("find_dateNaissance");
+		InscriptionDao inscriptionDao = new InscriptionDao();
+		List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(
+				3);
+		lCriteria.add(new CriterionDao<String>(
+				InscriptionEntityFields.NOM, nom, Operator.EQUAL));
+		lCriteria.add(new CriterionDao<String>(
+				InscriptionEntityFields.PRENOM, prenom, Operator.EQUAL));
+		lCriteria.add(new CriterionDao<String>(
+				InscriptionEntityFields.DATENAISSANCE, dateNaissance, Operator.EQUAL));
+		List<InscriptionEntity> adherents = inscriptionDao.find(lCriteria);
+		if (CollectionUtils.isNotEmpty(adherents)) {
+			InscriptionEntity adherent = adherents.get(0);
+			if(adherent.getPrincipal() != null) {
+				adherents.clear();
+				adherents.add(inscriptionDao.get(adherent.getPrincipal()));
+				List<CriterionDao<? extends Object>> lPrincipalCriteria = new ArrayList<CriterionDao<? extends Object>>(
+						1);
+				CriterionDao<Long> lAdherentsCriterion = new CriterionDao<Long>(
+						InscriptionEntityFields.PRINCIPAL, adherent.getPrincipal(),
+						Operator.EQUAL);
+				lPrincipalCriteria.add(lAdherentsCriterion);
+				adherents.addAll(inscriptionDao.find(lPrincipalCriteria));
+			}
+			// Get groupes
+			GroupDao lGroupDao = new GroupDao();
+			for (InscriptionEntity entity : adherents) {
+				GroupEntity groupEntity = lGroupDao.get(entity
+						.getNouveauGroupe());
+				entity.setGroupEntity(groupEntity);
+			}
+
+			pReq.getSession().setAttribute("data", adherents);
+			Gson gson = new Gson();
+			String json = gson.toJson(adherents);
+			System.out.println(json);
+			pResp.setContentType("application/json;charset=UTF-8");
+			pResp.getWriter().write(json);
+		} else {
+			pResp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			pResp.getWriter().write(
+					"Cet adhérent n'est pas enregistrée dans nos fichiers");
+		}
 	}
 }

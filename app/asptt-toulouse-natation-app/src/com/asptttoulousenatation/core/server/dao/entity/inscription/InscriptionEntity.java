@@ -110,6 +110,8 @@ public class InscriptionEntity implements Entity {
 	private Long groupe;
 	@Persistent
 	private Long nouveauGroupe;
+	@Persistent
+	private String facture;
 	
 	@NotPersistent
 	private boolean supprimer;
@@ -495,5 +497,12 @@ public class InscriptionEntity implements Entity {
 	public void setGroupEntity(GroupEntity pGroupEntity) {
 		groupEntity = pGroupEntity;
 	}
-	
+
+	public String getFacture() {
+		return facture;
+	}
+
+	public void setFacture(String facture) {
+		this.facture = facture;
+	}
 }

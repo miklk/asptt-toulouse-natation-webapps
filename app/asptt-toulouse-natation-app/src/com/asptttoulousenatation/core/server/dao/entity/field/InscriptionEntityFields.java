@@ -1,10 +1,12 @@
 package com.asptttoulousenatation.core.server.dao.entity.field;
 
+
 public enum InscriptionEntityFields implements IEntityFields {
 	EMAIL(String.class),
 	NOM(String.class),
 	PRENOM(String.class),
-	PRINCIPAL(Long.class);
+	PRINCIPAL(Long.class),
+	DATENAISSANCE(String.class);
 	
 	private Class<? extends Object> clazz;
 	
