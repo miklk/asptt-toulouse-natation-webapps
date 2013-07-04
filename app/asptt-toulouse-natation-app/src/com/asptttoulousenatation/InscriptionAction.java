@@ -1,12 +1,16 @@
 package com.asptttoulousenatation;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +19,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
@@ -28,6 +34,7 @@ import com.asptttoulousenatation.core.server.dao.inscription.InscriptionDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
+import com.asptttoulousenatation.server.Xlsx;
 import com.asptttoulousenatation.server.userspace.admin.entity.InscriptionTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
 import com.google.gson.Gson;
@@ -61,6 +68,8 @@ public class InscriptionAction extends HttpServlet {
 			findEmail(pReq, pResp);
 		} else if("findNomPrenom".equals(action)) {
 			findNomPrenom(pReq, pResp);
+		} else if("imprimer".equals(action)) {
+			imprimer(pReq, pResp);
 		}
 	}
 
@@ -264,5 +273,35 @@ public class InscriptionAction extends HttpServlet {
 			pResp.getWriter().write(
 					"Cet adhérent n'est pas enregistrée dans nos fichiers");
 		}
+	}
+	
+	protected void imprimer(HttpServletRequest pReq,
+			HttpServletResponse pResp) throws ServletException, IOException {
+//		Long principalId = (Long) pReq.getSession().getAttribute("inscriptionId");
+//		
+//		final List<InscriptionEntity> inscriptions = new ArrayList<>();
+//		InscriptionDao dao = new InscriptionDao();
+//		InscriptionEntity adherent = dao.get(principalId);
+//		inscriptions.add(adherent);
+//		List<CriterionDao<? extends Object>> lPrincipalCriteria = new ArrayList<CriterionDao<? extends Object>>(
+//				1);
+//		lPrincipalCriteria.add(new CriterionDao<Long>(
+//				InscriptionEntityFields.PRINCIPAL, adherent.getId(),
+//				Operator.EQUAL));
+//		inscriptions.addAll(dao.find(lPrincipalCriteria));
+		
+		InputStream adhesion = new FileInputStream(getServletContext().getRealPath("v2"
+                + System.getProperty("file.separator") + "doc" + System.getProperty("file.separator") + "adhesion.xlsx"));
+		
+		ServletOutputStream out = pResp.getOutputStream();
+        String contentType = "application/excel";
+        String contentDisposition = "attachment;filename=adh.xlsx;";
+        pResp.setContentType(contentType);
+        pResp.setHeader("Content-Disposition", contentDisposition);
+        
+        Xlsx.getXlsx(adhesion, out);
+
+        out.flush();
+        out.close();
 	}
 }
