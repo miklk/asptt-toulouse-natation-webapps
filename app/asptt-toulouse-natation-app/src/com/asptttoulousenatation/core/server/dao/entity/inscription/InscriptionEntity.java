@@ -29,15 +29,15 @@ public class InscriptionEntity implements Entity {
 	@Persistent
 	private String prenom;
 	@Persistent
-	private String dateNaissance;
+	private String datenaissance;
 	@Persistent
-	private String lieuNaissance;
+	private String lieunaissance;
 	@Persistent
 	private String nationalite;
 	@Persistent
 	private String adresse;
 	@Persistent
-	private String codePostal;
+	private String codepostal;
 	@Persistent
 	private String ville;
 	@Persistent
@@ -112,6 +112,8 @@ public class InscriptionEntity implements Entity {
 	private Long nouveauGroupe;
 	@Persistent
 	private String facture;
+	@Persistent
+	private Boolean saisie;
 	
 	@NotPersistent
 	private boolean supprimer;
@@ -153,24 +155,33 @@ public class InscriptionEntity implements Entity {
 	public void setPrenom(String pPrenom) {
 		prenom = pPrenom;
 	}
+	
 
-	public String getDateNaissance() {
-		return dateNaissance;
+		public String getDatenaissance() {
+		return datenaissance;
 	}
 
-	public void setDateNaissance(String pDateNaissance) {
-		dateNaissance = pDateNaissance;
+	public void setDatenaissance(String pDatenaissance) {
+		datenaissance = pDatenaissance;
 	}
 
-	public String getLieuNaissance() {
-		return lieuNaissance;
+	public String getLieunaissance() {
+		return lieunaissance;
 	}
 
-	public void setLieuNaissance(String pLieuNaissance) {
-		lieuNaissance = pLieuNaissance;
+	public void setLieunaissance(String pLieunaissance) {
+		lieunaissance = pLieunaissance;
 	}
 
-	public String getNationalite() {
+	public String getCodepostal() {
+		return codepostal;
+	}
+
+	public void setCodepostal(String pCodepostal) {
+		codepostal = pCodepostal;
+	}
+
+		public String getNationalite() {
 		return nationalite;
 	}
 
@@ -184,14 +195,6 @@ public class InscriptionEntity implements Entity {
 
 	public void setAdresse(String pAdresse) {
 		adresse = pAdresse;
-	}
-
-	public String getCodePostal() {
-		return codePostal;
-	}
-
-	public void setCodePostal(String pCodePostal) {
-		codePostal = pCodePostal;
 	}
 
 	public String getVille() {
@@ -504,5 +507,13 @@ public class InscriptionEntity implements Entity {
 
 	public void setFacture(String facture) {
 		this.facture = facture;
+	}
+
+	public Boolean getSaisie() {
+		return saisie;
+	}
+
+	public void setSaisie(Boolean pSaisie) {
+		saisie = pSaisie;
 	}
 }

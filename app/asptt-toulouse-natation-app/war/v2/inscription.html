@@ -147,8 +147,10 @@
 				           }
 				       }
 				   });
+				if(elt.groupEntity != null) {
         		$("#" + groupeId + "groupeLegende").append("Saison 2013-2014 Groupe - <span><b>" + elt.groupEntity.title + "</b></span>");
         		getCreneaux(groupeId, elt.groupEntity.id);
+				}
 				});
 				$("#find").fadeOut(function() {
 					$("#adhesion").fadeIn(1000);
@@ -164,15 +166,60 @@
 		})
 	});
 	$("#valid_find_prenom").button();
-	$("#valid_find_prenom").click(function() {
+	$("#valid_find_prenom").click(function(e) {
 		$.ajax({type: "POST", data: $("#formFind").serialize(), url: "InscriptionAction.do?action=findNomPrenom",
 			success: function(data) {
+				$.each(data, function(i, elt) {
+					var tabId = "tabs-" + (i + 1) + "_";
+					var groupeId = tabId;
+					if(i == 0) {
+						tabId = "1_";
+						groupeId = "";
+					} else {
+						addTab();
+					}
+				$.each(elt, function(i, el) {
+				      var 
+				          fel = $("#"+ tabId + "form").find('*[name="' + i + '"]'),
+				          type = "", tag = "";
+
+				       if (fel.length > 0) {
+
+				           tag = fel[0].tagName.toLowerCase();
+
+				           if (tag == "select" || tag == "textarea") { //...
+				              $(fel).val(el);
+				           }
+				           else if (tag == "input") {
+				              type = $(fel[0]).attr("type");
+				               if (type == "text" || type == "password" || type == "hidden" || type == "date") {
+				                  fel.val(el);
+				               } 
+				               else if (type == "checkbox") {
+				                  if (el)  
+				                     fel.attr("checked", "checked"); 
+				               }
+				               else if (type == "radio") {
+				                   fel.filter('[value="'+el+'"]').attr("checked", "checked"); 
+				               }
+				           }
+				       }
+				   });
+				if(elt.groupEntity != null) {
+        		$("#" + groupeId + "groupeLegende").append("Saison 2013-2014 Groupe - <span><b>" + elt.groupEntity.title + "</b></span>");
+        		getCreneaux(groupeId, elt.groupEntity.id);
+				}
+				});
 				$("#find").fadeOut(function() {
 					$("#adhesion").fadeIn(1000);
 				});
 			},
-			error: function() {
-				alert("Une erreur est survenue.");
+			error:  function(jqXHR, textStatus, errorThrown) {
+				if(jqXHR.responseText !== ''){
+			        alert(jqXHR.responseText);
+			    }else{
+			        alert('Une erreur est survenue.');
+			    }  
 			}
 		})
 	});
@@ -186,7 +233,10 @@
 				} else {
 					$("#adhesion").fadeOut(function() {
 						$("#result").fadeIn(1000);
-						$("#result").append("Inscription terminée");
+						$("#result").append("Votre inscription en ligne est maintenant terminée.<br />Vous allez être invité à télécharger le dossier d'inscription. Celui-ci devra nous être retourné accompagné du ou des certificats médicaux ainsi que du paiement à l'adresse suivante:<br />ASPTT Grand Toulouse Natation<br />54 rue des Sept Troubadours<br />Bureau 215<br />31000 Toulouse.");
+						$("#result").append("<p>Si le téléchargement ne démarre pas, veuillez <a href=\"InscriptionAction.do?action=imprimer\">cliquer ici</a>.</p>");
+						alert("Vous devez maintenant télécharger le dossier d'inscription qui devra nous être retourné avec le ou les certificats médicaux ainsi que le paiement.");
+					    window.location.href = 'InscriptionAction.do?action=imprimer';
 					});
 					$('html, body').animate({ scrollTop: 0 }, 'slow');
 				}
@@ -205,7 +255,7 @@
   <h1>Bienvenue sur le module d'inscription pour la saison sportive 2013-2014</h1>
   <div id="find">
   <fieldset>
-  	<legend>Informations préalables importantes</legend>
+  	<legend><span class="note-importante">Informations importantes</span></legend>
   	<p>Il est nécessaire, avant toute chose, de consulter et de prendre connaissance des documents joints, préalables à l’inscription en ligne (tarifs, planning récapitulé, lettre présidente….).</p>
   	<ul>
   		<li><a href="tarifs_ecoleLoisir.pdf">Tarifs - Ecole de natation, Loisirs</a></li>
@@ -225,13 +275,14 @@
   </fieldset>
   <p style="font-weight: bold; font-size: 1.1em; text-align:center">OU</p>
   <fieldset>
-  	<legend>Je m'identifi par nom, prénom et ma date de naissance</legend>
+  	<legend>Je m'identifie par nom, prénom et ma date de naissance</legend>
   			<p>
   				<label for="find_nom">Nom</label><input type="text" id="find_nom" name="find_nom" size="50" />
   				&nbsp;
   				<label for="find_prenom">Prénom</label><input type="text" id="find_prenom" name="find_prenom" size="50" />
-  				&nbsp;
-  				<label for="find_dateNaissance">Date de naissance</label><input type="text" id="find_dateNaissance" name="find_dateNaissance" />
+  				<br />
+  				<label for="find_dateNaissance">Date de naissance</label><input type="date" id="find_dateNaissance" name="find_dateNaissance" /> (Année-Mois-Jour, ex: 1990-12-27 pour 27 décembre 1990)
+  				<br />
   				<button type="button" id="valid_find_prenom">Valider</button>
   			</p>
   </fieldset>
@@ -262,8 +313,9 @@
   			<p><label for="nom">Nom</label><input type="text" id="nom" name="nom" size="100" /></p>
   			<p><label for="prenom">Prénom</label><input type="text" name="prenom" id="prenom" size="100" /></p>
   			<p>
-  				<label for="dateNaissance">Date de naissance</label><input type="date" id="dateNaissance" name="dateNaissance" />
-  				<label for="lieuNaissance">Lieu de naissance</label><input type="text" id="lieuNaissance" name="lieuNaissance" size="50" />
+  				<label for="dateNaissance">Date de naissance</label><input type="date" id="dateNaissance" name="datenaissance" />(Année-Mois-Jour, ex: 1990-12-27 pour 27 décembre 1990)
+  				<br />
+  				<label for="lieuNaissance">Lieu de naissance</label><input type="text" id="lieuNaissance" name="lieunaissance" size="50" />
   				<label for="nationalite">Nationalite</label><input type="text" id="nationalite" name="nationalite" size="30" />
   			</p>
   		</fieldset>
@@ -280,7 +332,7 @@
   				<label for="adresse">Adresse complète</label><input type="text" id="adresse" name="adresse" size="100" />
   			</p>
   			<p>
-  				<label for="codePostal">Code postal</label><input type="text" id="codePostal" name="codePostal" size="10" />
+  				<label for="codePostal">Code postal</label><input type="text" id="codePostal" name="codepostal" size="10" />
   				<label for="ville">Ville</label><input type="text" id="ville" name="ville" size="50" />
   			</p>
   		</fieldset>
@@ -338,11 +390,11 @@
   		<fieldset>
   			<legend>Renseignements confidentiels (obligatoire)</legend>
   			<p>
-  				<label for="scolaire">Scolaire</label><input type="radio" id="scolaire" name="profession" />
-  				<label for="etudiant">Etudiant</label><input type="radio" id="etudiant" name="profession" />
-  				<label for="salarie">Salarié</label><input type="radio" id="salarie" name="profession" />
-  				<label for="retraite">Retraité</label><input type="radio" id="retraite" name="profession" />
-  				<label for="demandeur">Demandeur d'emploi</label><input type="radio" id="demandeur" name="profession" />
+  				<label for="scolaire">Scolaire</label><input type="radio" id="scolaire" name="profession" value="scolaire" />
+  				<label for="etudiant">Etudiant</label><input type="radio" id="etudiant" name="profession" value="etudiant" />
+  				<label for="salarie">Salarié</label><input type="radio" id="salarie" name="profession" value="salarie" />
+  				<label for="retraite">Retraité</label><input type="radio" id="retraite" name="profession" value="retraite" />
+  				<label for="demandeur">Demandeur d'emploi</label><input type="radio" id="demandeur" name="profession" value="demandeur" />
   			</p>
   			<p>
   				<label for="professionPere">Profession du père</label><input type="text" id="professionPere" name="professionTextPere" />
@@ -398,8 +450,9 @@
   			<p><label for="#{tabId}nom">Nom</label><input type="text" id="#{tabId}nom" name="nom" size="100" /></p>
   			<p><label for="#{tabId}prenom">Prénom</label><input type="text" id="#{tabId}prenom" name="prenom"  size="100" /></p>
   			<p>
-  				<label for="#{tabId}dateNaissance">Date de naissance</label><input type="date" id="#{tabId}dateNaissance" name="dateNaissance" />
-  				<label for="#{tabId}lieuNaissance">Lieu de naissance</label><input type="text" id="#{tabId}lieuNaissance" name="lieuNaissance" size="50" />
+  				<label for="#{tabId}dateNaissance">Date de naissance</label><input type="date" id="#{tabId}dateNaissance" name="datenaissance" />(Année-Mois-Jour, ex: 1990-12-27 pour 27 décembre 1990)
+  				<br />
+  				<label for="#{tabId}lieuNaissance">Lieu de naissance</label><input type="text" id="#{tabId}lieuNaissance" name="lieunaissance" size="50" />
   				<label for="#{tabId}nationalite">Nationalite</label><input type="text" id="#{tabId}nationalite" name="nationalite" size="30" />
   			</p>
   		</fieldset>
