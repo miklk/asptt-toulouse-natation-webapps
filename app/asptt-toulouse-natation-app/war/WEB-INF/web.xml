@@ -63,6 +63,16 @@
   </servlet-mapping>
   
   <servlet>
+    <servlet-name>importServlet</servlet-name>
+    <!-- This is the default servlet, it puts files in session -->
+    <servlet-class>com.asptttoulousenatation.core.server.ImportServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>importServlet</servlet-name>
+    <url-pattern>/v2/importServlet.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
     <servlet-name>downloadServlet</servlet-name>
     <!-- This is the default servlet, it puts files in session -->
     <servlet-class>com.asptttoulousenatation.core.server.DownloadServlet</servlet-class>

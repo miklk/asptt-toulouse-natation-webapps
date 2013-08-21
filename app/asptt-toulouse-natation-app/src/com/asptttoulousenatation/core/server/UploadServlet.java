@@ -64,6 +64,7 @@ public class UploadServlet extends UploadAction {
 				lFile.getContentType(), lFile.getName(), new Date(),
 				lSavedEntity.getId(), menuId);
 		documentDao.save(lDocumentEntity);
+		sessionFiles.remove(0);
 		return Long.toString(lSavedEntity.getId());
 	}
 

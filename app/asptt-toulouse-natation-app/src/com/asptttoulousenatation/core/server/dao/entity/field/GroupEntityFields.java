@@ -1,14 +1,14 @@
 package com.asptttoulousenatation.core.server.dao.entity.field;
 
-public enum SlotEntityFields implements IEntityFields {
+public enum GroupEntityFields implements IEntityFields {
 
-	GROUP(Long.class),
-	DAYOFWEEK(String.class),
+	TITLE(String.class),
+	INSCRIPTION(Boolean.class),
 	;
 	
 	private Class<? extends Object> clazz;
 
-	private SlotEntityFields(Class<? extends Object> pClazz) {
+	private GroupEntityFields(Class<? extends Object> pClazz) {
 		clazz = pClazz;
 	}
 

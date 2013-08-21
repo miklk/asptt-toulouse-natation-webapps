@@ -7,16 +7,18 @@ public class UpdateGroupAction implements Action<UpdateGroupResult> {
 	private Long id;
 	private String title;
 	private boolean licenceFfn;
+	private boolean inscription;
 	
 	public UpdateGroupAction() {
 	}
 	
 
-	public UpdateGroupAction(Long pId, String pTitle, boolean pLicenceFfn) {
+	public UpdateGroupAction(Long pId, String pTitle, boolean pLicenceFfn, boolean pInscription) {
 		super();
 		id = pId;
 		title = pTitle;
 		licenceFfn = pLicenceFfn;
+		inscription = pInscription;
 	}
 
 	public Long getId() {
@@ -44,5 +46,16 @@ public class UpdateGroupAction implements Action<UpdateGroupResult> {
 	public void setLicenceFfn(boolean pLicenceFfn) {
 		licenceFfn = pLicenceFfn;
 	}
+
+
+	public boolean isInscription() {
+		return inscription;
+	}
+
+
+	public void setInscription(boolean pInscription) {
+		inscription = pInscription;
+	}
+	
 	
 }

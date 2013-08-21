@@ -1,5 +1,7 @@
 package com.asptttoulousenatation.core.server.club.slot;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
@@ -24,6 +26,15 @@ public class UpdateSlotActionHandler implements
 		lEntity.setSwimmingPool(pAction.getSwimmingPool());
 		lEntity.setEducateur(pAction.getEducateur());
 		lEntity.setGroup(pAction.getGroup());
+		if(StringUtils.isNumeric(pAction.getPlaceDisponible())) {
+			Integer old = lEntity.getPlaceDisponible();
+			lEntity.setPlaceDisponible(Integer.valueOf(pAction.getPlaceDisponible()));
+			if(lEntity.getPlaceRestante() != null) {
+				lEntity.setPlaceRestante(lEntity.getPlaceRestante() + (lEntity.getPlaceDisponible() - old));
+			} else {
+				lEntity.setPlaceRestante(lEntity.getPlaceDisponible());
+			}
+		}
 		dao.save(lEntity);
 		return new UpdateSlotResult();
 	}

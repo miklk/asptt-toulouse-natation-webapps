@@ -3,12 +3,24 @@ package com.asptttoulousenatation;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Properties;
+import java.util.Random;
+import java.util.logging.Logger;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -18,21 +30,23 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
+import com.asptttoulousenatation.core.server.dao.entity.field.GroupEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity;
 import com.asptttoulousenatation.core.server.dao.inscription.InscriptionDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
+import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.server.Xlsx;
+import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.InscriptionTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
 import com.google.gson.Gson;
@@ -44,7 +58,12 @@ public class InscriptionAction extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 4178809147424818945L;
 
+	private static final Logger LOG = Logger.getLogger(InscriptionAction.class
+			.getName());
+
 	private InscriptionTransformer inscriptionTransformer = new InscriptionTransformer();
+	private InscriptionDao inscriptionDao = new InscriptionDao();
+	private SlotDao slotDao = new SlotDao();
 
 	@Override
 	protected void doGet(HttpServletRequest pReq, HttpServletResponse pResp)
@@ -68,6 +87,12 @@ public class InscriptionAction extends HttpServlet {
 			findNomPrenom(pReq, pResp);
 		} else if ("imprimer".equals(action)) {
 			imprimer(pReq, pResp);
+		} else if ("imprimerAdherent".equals(action)) {
+			imprimerAdherent(pReq, pResp);
+		} else if ("loadGroupes".equals(action)) {
+			loadGroupes(pReq, pResp);
+		} else if("nouveau".equals(action)) {
+			nouveau(pReq, pResp);
 		}
 	}
 
@@ -83,16 +108,21 @@ public class InscriptionAction extends HttpServlet {
 		SlotDao slotDao = new SlotDao();
 		List<SlotEntity> lEntities = slotDao.find(lSlotCriteria);
 		List<SlotUi> lUis = new SlotTransformer().toUi(lEntities);
+		Collections.sort(lUis, new Comparator<SlotUi>() {
+
+			public int compare(SlotUi pO1, SlotUi pO2) {
+				return pO1.getDayOfWeek().compareTo(pO2.getDayOfWeek());
+			}
+		});
 		Gson gson = new Gson();
 		String json = gson.toJson(lUis);
-		System.out.println(json);
 		pResp.setContentType("application/json;charset=UTF-8");
 		pResp.getWriter().write(json);
 	}
 
 	protected void inscription(HttpServletRequest pReq,
 			HttpServletResponse pResp) throws ServletException, IOException {
-		System.out.println("inscription");
+		pReq.getSession().removeAttribute("inscriptionIds");
 		pReq.getSession().removeAttribute("inscriptionId");
 		StringBuilder creneau = new StringBuilder();
 		Enumeration params = pReq.getParameterNames();
@@ -101,7 +131,14 @@ public class InscriptionAction extends HttpServlet {
 			if (param.contains("creneau")) {
 				String paramValue = pReq.getParameter(param);
 				if (BooleanUtils.toBoolean(paramValue)) {
-					creneau.append(param.replace("creneau", "")).append(";");
+					String creneauId = param.replace("creneau", "");
+					//Update creneaux
+					SlotEntity creneauEntity = slotDao.get(Long.valueOf(creneauId));
+					if(creneauEntity != null) {
+						creneauEntity.setPlaceRestante(creneauEntity.getPlaceRestante() - 1);
+						slotDao.save(creneauEntity);
+					}
+					creneau.append(creneauId).append(";");
 				}
 			}
 		}
@@ -110,14 +147,18 @@ public class InscriptionAction extends HttpServlet {
 				.getSession().getAttribute("data");
 		InscriptionEntity entity = adherents.get(0);
 		entity.setCreneaux(creneau.toString());
+		
 		try {
 			BeanUtils.populate(entity, pReq.getParameterMap());
 			inscriptionTransformer.update(entity);
 			entity.setSaisie(true);
-			InscriptionDao dao = new InscriptionDao();
-			Long inscriptionId = dao.save(entity).getId();
-			System.out.println("ID = " + inscriptionId);
+			Long inscriptionId = inscriptionDao.save(entity).getId();
+			List<Long> inscriptionIds = new ArrayList<Long>(2);
+			inscriptionIds.add(inscriptionId);
+			pReq.getSession().setAttribute("inscriptionIds", inscriptionIds);
 			pReq.getSession().setAttribute("inscriptionId", inscriptionId);
+			pResp.setContentType("application/text;charset=UTF-8");
+			pResp.getWriter().write("1");
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -125,15 +166,12 @@ public class InscriptionAction extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		pResp.getWriter().write(ReflectionToStringBuilder.toString(entity));
 	}
 
 	protected void inscriptionSub(HttpServletRequest pReq,
 			HttpServletResponse pResp) throws ServletException, IOException {
 		Long principalId = (Long) pReq.getSession().getAttribute(
 				"inscriptionId");
-		System.out.println("GET ID = " + principalId);
-		System.out.println("inscription sub");
 		StringBuilder creneau = new StringBuilder();
 		String adherentIndexStr = StringUtils.EMPTY;
 		Enumeration params = pReq.getParameterNames();
@@ -142,37 +180,68 @@ public class InscriptionAction extends HttpServlet {
 			if (param.contains("creneau")) {
 				String paramValue = pReq.getParameter(param);
 				if (BooleanUtils.toBoolean(paramValue)) {
-					creneau.append(param.replace("creneau", "")).append(";");
+					String creneauId = param.replace("creneau", "");
+					if(creneauId.contains("_")) {
+						creneauId = creneauId.split("_")[1];
+					}
+					//Update creneaux
+					SlotEntity creneauEntity = slotDao.get(Long.valueOf(creneauId));
+					if(creneauEntity != null) {
+						creneauEntity.setPlaceRestante(creneauEntity.getPlaceRestante() - 1);
+						slotDao.save(creneauEntity);
+					}
+					creneau.append(creneauId).append(";");
 				}
 			} else if (param.contains("adherentIndex")) {
 				adherentIndexStr = pReq.getParameter(param);
 			}
 		}
-
-		final InscriptionEntity entity;
-		if (StringUtils.isNotBlank(adherentIndexStr)) {
-			Integer adherentIndex = Integer.valueOf(adherentIndexStr) - 1;
-			List<InscriptionEntity> adherents = (List<InscriptionEntity>) pReq
-					.getSession().getAttribute("data");
-			if (adherentIndex < adherents.size()) {
-				entity = adherents.get(adherentIndex);
+		try {
+			final InscriptionEntity entity;
+			if (StringUtils.isNotBlank(adherentIndexStr)) {
+				Integer adherentIndex = Integer.valueOf(adherentIndexStr) - 1;
+				List<InscriptionEntity> adherents = (List<InscriptionEntity>) pReq
+						.getSession().getAttribute("data");
+				if (adherentIndex < adherents.size()) {
+					entity = adherents.get(adherentIndex);
+				} else {
+					entity = new InscriptionEntity();
+				}
 			} else {
 				entity = new InscriptionEntity();
 			}
-		} else {
-			entity = new InscriptionEntity();
-		}
-		entity.setCreneaux(creneau.toString());
-		entity.setPrincipal(principalId);
-		try {
+			entity.setCreneaux(creneau.toString());
+			entity.setPrincipal(principalId);
+
 			BeanUtils.populate(entity, pReq.getParameterMap());
+			String dateNaissance = entity.getDatenaissance();
+			if(dateNaissance.length() == 10 && StringUtils.isNumeric(dateNaissance.substring(2, 2))) {
+				String separateur = dateNaissance.substring(2, 2);
+				String[] dateNaissanceSplit = dateNaissance.split(separateur);
+				dateNaissance = dateNaissanceSplit[2] + dateNaissanceSplit[1] + dateNaissanceSplit[0];
+				entity.setDatenaissance(dateNaissance);
+			}
+			InscriptionEntity findEntity = findByUniqueNomPrenomNaissance(
+					entity.getNom().toUpperCase(), entity.getPrenom().toUpperCase(),
+					entity.getDatenaissance());
+			if (findEntity != null) {
+				entity.setId(findEntity.getId());
+			}
 			entity.setSaisie(true);
 			inscriptionTransformer.update(entity);
-			InscriptionDao dao = new InscriptionDao();
 			if (entity.isSupprimer()) {
-				dao.delete(entity);
+				inscriptionDao.delete(entity);
 			} else {
-				dao.save(entity);
+				InscriptionEntity inscriptionSaved = inscriptionDao
+						.save(entity);
+				List<Long> inscriptionIds = (List<Long>) pReq.getSession()
+						.getAttribute("inscriptionIds");
+				if (inscriptionIds == null) {
+					inscriptionIds = new ArrayList<Long>(1);
+				}
+				inscriptionIds.add(inscriptionSaved.getId());
+				pReq.getSession()
+						.setAttribute("inscriptionIds", inscriptionIds);
 			}
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
@@ -181,35 +250,83 @@ public class InscriptionAction extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		pResp.getWriter().write(ReflectionToStringBuilder.toString(entity));
+		pResp.setContentType("text/plain;charset=UTF-8");
+		List<Long> inscriptionIds = (List<Long>) pReq.getSession()
+				.getAttribute("inscriptionIds");
+		pResp.getWriter().write(Integer.toString(inscriptionIds.size()));
+	}
+
+	protected void nouveau(HttpServletRequest pReq, HttpServletResponse pResp)
+			throws ServletException, IOException {
+		String email = pReq.getParameter("nouveau_email");
+		try {
+			InscriptionEntity entity = new InscriptionEntity();
+			entity.setEmail(email);
+			Random lRandom = new Random(42788);
+			String lCode = Integer.toString(lRandom.nextInt(1000));
+			entity.setMotdepasse(lCode);
+			inscriptionDao.save(entity);
+
+			Properties props = new Properties();
+			Session session = Session.getDefaultInstance(props, null);
+
+			String msgBody = "Vous pouvez maintenant accéder au formulaire d'inscription en utilisant le code suivant: "+ lCode + "." +
+					"ASPTT Toulouse Natation http://asptt-toulouse-natation.com/v2/inscription.html";
+
+			MimeMessage msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress(
+					"webmaster@asptt-toulouse-natation.com",
+					"ASPTT Toulouse Natation"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					entity.getEmail()));
+			msg.setSubject("Votre compte web a été créé.", "UTF-8");
+			msg.setText(msgBody, "UTF-8");
+			Transport.send(msg);
+		} catch (AddressException e) {
+			// ...
+		} catch (MessagingException e) {
+			// ...
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	protected void findEmail(HttpServletRequest pReq, HttpServletResponse pResp)
 			throws ServletException, IOException {
 		String email = pReq.getParameter("find_email");
-		InscriptionDao inscriptionDao = new InscriptionDao();
-		List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(
+		String motdepasse = pReq.getParameter("find_email_motdepasse");
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				2);
-		CriterionDao<String> lEmailAddressCriterion = new CriterionDao<String>(
-				InscriptionEntityFields.EMAIL, email, Operator.EQUAL);
-		lCriteria.add(lEmailAddressCriterion);
-		lCriteria.add(new CriterionDao<Long>(InscriptionEntityFields.PRINCIPAL,
-				null, Operator.NULL));
-		List<InscriptionEntity> adherents = inscriptionDao.find(lCriteria);
+		criteria.add(new CriterionDao<String>(InscriptionEntityFields.EMAIL,
+				email, Operator.EQUAL));
+		criteria.add(new CriterionDao<String>(
+				InscriptionEntityFields.MOTDEPASSE, motdepasse, Operator.EQUAL));
+		List<InscriptionEntity> adherents = inscriptionDao.find(criteria);
 		if (CollectionUtils.isNotEmpty(adherents)) {
 			InscriptionEntity adherent = adherents.get(0);
-			List<CriterionDao<? extends Object>> lPrincipalCriteria = new ArrayList<CriterionDao<? extends Object>>(
-					1);
-			CriterionDao<Long> lAdherentsCriterion = new CriterionDao<Long>(
-					InscriptionEntityFields.PRINCIPAL, adherent.getId(),
-					Operator.EQUAL);
-			lPrincipalCriteria.add(lAdherentsCriterion);
-			adherents.addAll(inscriptionDao.find(lPrincipalCriteria));
-
+			if (adherent.getPrincipal() != null) {
+				adherents.clear();
+				adherents.add(inscriptionDao.get(adherent.getPrincipal()));
+				List<CriterionDao<? extends Object>> lPrincipalCriteria = new ArrayList<CriterionDao<? extends Object>>(
+						1);
+				lPrincipalCriteria.add(new CriterionDao<Long>(
+						InscriptionEntityFields.PRINCIPAL, adherent
+								.getPrincipal(), Operator.EQUAL));
+				adherents.addAll(inscriptionDao.find(lPrincipalCriteria));
+			} else {
+				List<CriterionDao<? extends Object>> lPrincipalCriteria = new ArrayList<CriterionDao<? extends Object>>(
+						1);
+				lPrincipalCriteria.add(new CriterionDao<Long>(
+						InscriptionEntityFields.PRINCIPAL, adherent.getId(),
+						Operator.EQUAL));
+				adherents.addAll(inscriptionDao.find(lPrincipalCriteria));
+			}
 			// Get groupes
 			GroupDao lGroupDao = new GroupDao();
 			for (InscriptionEntity entity : adherents) {
-				if (entity.getNouveauGroupe() != null) {
+				if (entity.getNouveauGroupe() != null
+						&& entity.getNouveauGroupe() != 0l) {
 					GroupEntity groupEntity = lGroupDao.get(entity
 							.getNouveauGroupe());
 					entity.setGroupEntity(groupEntity);
@@ -217,18 +334,17 @@ public class InscriptionAction extends HttpServlet {
 			}
 
 			pResp.setContentType("text/plain;charset=UTF-8");
-//			if (adherent.isSaisie()) {
-//				pResp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-//				pResp.getWriter()
-//						.write("Votre dossier a déjà été saisie, en cas de problème veuillez prendre contact par e-mail: webmaster@asptt-toulouse-natation.com");
-//			} else {
-				pReq.getSession().setAttribute("data", adherents);
-				Gson gson = new Gson();
-				String json = gson.toJson(adherents);
-				System.out.println(json);
-				pResp.setContentType("application/json;charset=UTF-8");
-				pResp.getWriter().write(json);
-//			}
+			// if (adherent.isSaisie()) {
+			// pResp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			// pResp.getWriter()
+			// .write("Votre dossier a déjà été saisie, en cas de problème veuillez prendre contact par e-mail: webmaster@asptt-toulouse-natation.com");
+			// } else {
+			pReq.getSession().setAttribute("data", adherents);
+			Gson gson = new Gson();
+			String json = gson.toJson(adherents);
+			pResp.setContentType("application/json;charset=UTF-8");
+			pResp.getWriter().write(json);
+			// }
 		} else {
 			pResp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			pResp.getWriter().write(
@@ -239,16 +355,39 @@ public class InscriptionAction extends HttpServlet {
 
 	protected void findNomPrenom(HttpServletRequest pReq,
 			HttpServletResponse pResp) throws ServletException, IOException {
+		pReq.getSession().removeAttribute("inscriptionIds");
+		pReq.getSession().removeAttribute("inscriptionId");
+		pReq.getSession().removeAttribute("data");
 		String nom = pReq.getParameter("find_nom");
 		String prenom = pReq.getParameter("find_prenom");
 		String dateNaissance = pReq.getParameter("find_dateNaissance");
-		InscriptionDao inscriptionDao = new InscriptionDao();
+		LOG.warning(nom + " " + prenom + " " + dateNaissance);
+		List<InscriptionEntity> adherents = findByNomPrenomNaissance(nom,
+				prenom, dateNaissance);
+		if (CollectionUtils.isNotEmpty(adherents)) {
+
+			pReq.getSession().setAttribute("data", adherents);
+			Gson gson = new Gson();
+			String json = gson.toJson(adherents);
+			System.out.println(json);
+			pResp.setContentType("application/json;charset=UTF-8");
+			pResp.getWriter().write(json);
+		} else {
+			pResp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			pResp.setContentType("application/text;charset=UTF-8");
+			pResp.getWriter().write(
+					"Cet adhérent n'est pas enregistrée dans nos fichiers");
+		}
+	}
+
+	private List<InscriptionEntity> findByNomPrenomNaissance(String nom,
+			String prenom, String dateNaissance) {
 		List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(
 				3);
-		lCriteria.add(new CriterionDao<String>(InscriptionEntityFields.NOM,
-				nom, Operator.EQUAL));
+		lCriteria.add(new CriterionDao<String>(InscriptionEntityFields.NOM, nom
+				.toUpperCase(), Operator.EQUAL));
 		lCriteria.add(new CriterionDao<String>(InscriptionEntityFields.PRENOM,
-				prenom, Operator.EQUAL));
+				prenom.toUpperCase(), Operator.EQUAL));
 		lCriteria.add(new CriterionDao<String>(
 				InscriptionEntityFields.DATENAISSANCE, dateNaissance,
 				Operator.EQUAL));
@@ -260,68 +399,165 @@ public class InscriptionAction extends HttpServlet {
 				adherents.add(inscriptionDao.get(adherent.getPrincipal()));
 				List<CriterionDao<? extends Object>> lPrincipalCriteria = new ArrayList<CriterionDao<? extends Object>>(
 						1);
-				CriterionDao<Long> lAdherentsCriterion = new CriterionDao<Long>(
-						InscriptionEntityFields.PRINCIPAL,
-						adherent.getPrincipal(), Operator.EQUAL);
-				lPrincipalCriteria.add(lAdherentsCriterion);
+				lPrincipalCriteria.add(new CriterionDao<Long>(
+						InscriptionEntityFields.PRINCIPAL, adherent
+								.getPrincipal(), Operator.EQUAL));
+				adherents.addAll(inscriptionDao.find(lPrincipalCriteria));
+			} else {
+				List<CriterionDao<? extends Object>> lPrincipalCriteria = new ArrayList<CriterionDao<? extends Object>>(
+						1);
+				lPrincipalCriteria.add(new CriterionDao<Long>(
+						InscriptionEntityFields.PRINCIPAL, adherent.getId(),
+						Operator.EQUAL));
 				adherents.addAll(inscriptionDao.find(lPrincipalCriteria));
 			}
 			// Get groupes
 			GroupDao lGroupDao = new GroupDao();
 			for (InscriptionEntity entity : adherents) {
-				if (entity.getNouveauGroupe() != null) {
+				if (entity.getNouveauGroupe() != null
+						&& entity.getNouveauGroupe() != 0l) {
 					GroupEntity groupEntity = lGroupDao.get(entity
 							.getNouveauGroupe());
 					entity.setGroupEntity(groupEntity);
 				}
 			}
-
-			pReq.getSession().setAttribute("data", adherents);
-			Gson gson = new Gson();
-			String json = gson.toJson(adherents);
-			System.out.println(json);
-			pResp.setContentType("application/json;charset=UTF-8");
-			pResp.getWriter().write(json);
-		} else {
-			pResp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			pResp.setContentType("charset=UTF-8");
-			pResp.getWriter().write(
-					"Cet adhérent n'est pas enregistrée dans nos fichiers");
 		}
+		return adherents;
+	}
+
+	private InscriptionEntity findByUniqueNomPrenomNaissance(String nom,
+			String prenom, String dateNaissance) {
+		List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(
+				3);
+		lCriteria.add(new CriterionDao<String>(InscriptionEntityFields.NOM, nom
+				.toUpperCase(), Operator.EQUAL));
+		lCriteria.add(new CriterionDao<String>(InscriptionEntityFields.PRENOM,
+				prenom.toUpperCase(), Operator.EQUAL));
+		lCriteria.add(new CriterionDao<String>(
+				InscriptionEntityFields.DATENAISSANCE, dateNaissance,
+				Operator.EQUAL));
+		List<InscriptionEntity> adherents = inscriptionDao.find(lCriteria);
+		final InscriptionEntity adherent;
+		if (CollectionUtils.isNotEmpty(adherents)) {
+			adherent = adherents.get(0);
+		} else {
+			adherent = null;
+		}
+		return adherent;
 	}
 
 	protected void imprimer(HttpServletRequest pReq, HttpServletResponse pResp)
 			throws ServletException, IOException {
-		Long principalId = (Long) pReq.getSession().getAttribute(
-				"inscriptionId");
+		Integer numero = 0;
+		try {
+			numero = Integer.valueOf(pReq.getParameter("numero"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		List<Long> inscriptionIds = (List<Long>) pReq.getSession()
+				.getAttribute("inscriptionIds");
+		final Long principalId;
+		if (inscriptionIds != null && numero >= inscriptionIds.size()) {
+			if ((numero - 1) >= inscriptionIds.size()) {
+				principalId = inscriptionIds.get(0);
+			} else {
+				principalId = inscriptionIds.get((numero - 1));
+			}
+		} else {
+			principalId = inscriptionIds.get(numero);
+		}
 
 		final List<InscriptionEntity> inscriptions = new ArrayList<InscriptionEntity>();
-		InscriptionDao dao = new InscriptionDao();
-		InscriptionEntity adherent = dao.get(principalId);
+		InscriptionEntity adherent = inscriptionDao.get(principalId);
 		inscriptions.add(adherent);
 		List<CriterionDao<? extends Object>> lPrincipalCriteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		lPrincipalCriteria.add(new CriterionDao<Long>(
 				InscriptionEntityFields.PRINCIPAL, adherent.getId(),
 				Operator.EQUAL));
-		inscriptions.addAll(dao.find(lPrincipalCriteria));
+		inscriptions.addAll(inscriptionDao.find(lPrincipalCriteria));
 
 		ServletOutputStream out = pResp.getOutputStream();
 		String contentType = "application/excel";
-		String contentDisposition = "attachment;filename=dossierInscription_asptt_natation.xlsx;";
+		String contentDisposition = "attachment;filename=dossierInscription_asptt_natation.xls;";
 		pResp.setContentType(contentType);
 		pResp.setHeader("Content-Disposition", contentDisposition);
 
-		for(InscriptionEntity inscription: inscriptions) {
+		for (InscriptionEntity inscription : inscriptions) {
 			InputStream adhesion = new FileInputStream(getServletContext()
 					.getRealPath(
 							"v2" + System.getProperty("file.separator") + "doc"
 									+ System.getProperty("file.separator")
-									+ "adhesion.xlsx"));
+									+ "adhesion.xls"));
 			Xlsx.getXlsx(adhesion, out, adherent, inscription);
 		}
 
 		out.flush();
 		out.close();
+	}
+
+	protected void imprimerAdherent(HttpServletRequest pReq,
+			HttpServletResponse pResp) throws ServletException, IOException {
+		Long principalId = 0l;
+		try {
+			principalId = Long.valueOf(pReq.getParameter("adherentId"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		final List<InscriptionEntity> inscriptions = new ArrayList<InscriptionEntity>();
+		InscriptionEntity adherent = inscriptionDao.get(principalId);
+		inscriptions.add(adherent);
+		List<CriterionDao<? extends Object>> lPrincipalCriteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		lPrincipalCriteria.add(new CriterionDao<Long>(
+				InscriptionEntityFields.PRINCIPAL, adherent.getId(),
+				Operator.EQUAL));
+		inscriptions.addAll(inscriptionDao.find(lPrincipalCriteria));
+
+		ServletOutputStream out = pResp.getOutputStream();
+		String contentType = "application/excel";
+		String contentDisposition = "attachment;filename=dossierInscription_asptt_natation.xls;";
+		pResp.setContentType(contentType);
+		pResp.setHeader("Content-Disposition", contentDisposition);
+
+		for (InscriptionEntity inscription : inscriptions) {
+			InputStream adhesion = new FileInputStream(getServletContext()
+					.getRealPath(
+							"v2" + System.getProperty("file.separator") + "doc"
+									+ System.getProperty("file.separator")
+									+ "adhesion.xls"));
+			Xlsx.getXlsx(adhesion, out, adherent, inscription);
+		}
+
+		out.flush();
+		out.close();
+	}
+
+	protected void loadGroupes(HttpServletRequest pReq,
+			HttpServletResponse pResp) throws ServletException, IOException {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Boolean>(GroupEntityFields.INSCRIPTION,
+				Boolean.TRUE, Operator.EQUAL));
+		GroupDao dao = new GroupDao();
+		List<GroupEntity> entities = dao.find(criteria);
+		List<GroupUi> lUis = new GroupTransformer().toUi(entities);
+		Collections.sort(lUis, new Comparator<GroupUi>() {
+
+			@Override
+			public int compare(GroupUi pO1, GroupUi pO2) {
+				if(StringUtils.containsIgnoreCase(pO1.getTitle(), "Ecole")) {
+					return -1;
+				} else {
+					return 1;
+				}
+			}
+		});
+		Gson gson = new Gson();
+		String json = gson.toJson(lUis);
+		pResp.setContentType("application/json;charset=UTF-8");
+		pResp.getWriter().write(json);
 	}
 }
