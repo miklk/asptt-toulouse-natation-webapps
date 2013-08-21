@@ -6,7 +6,9 @@ public enum InscriptionEntityFields implements IEntityFields {
 	NOM(String.class),
 	PRENOM(String.class),
 	PRINCIPAL(Long.class),
-	DATENAISSANCE(String.class);
+	DATENAISSANCE(String.class),
+	MOTDEPASSE(String.class),
+	;
 	
 	private Class<? extends Object> clazz;
 	

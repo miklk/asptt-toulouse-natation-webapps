@@ -5,7 +5,7 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class SlotUi implements IsSerializable {
 
-private Long id;
+	private Long id;
 	private String dayOfWeek;
 	private int begin;
 	private String beginStr;
@@ -14,37 +14,46 @@ private Long id;
 	private GroupUi group;
 	private String swimmingPool;
 	private String educateur;
-	
+	private int placeDisponible;
+	private int placeRestante;
+
 	public SlotUi() {
-		
+
 	}
-	
-	public SlotUi(Long pId, String pDayOfWeek, int pBegin, int pEnd,
-			GroupUi pGroup, String pSwimmingPool, String pEducateur) {
+
+	public SlotUi(Long pId, String pDayOfWeek, int pBegin, String pBeginStr,
+			int pEnd, String pEndStr, GroupUi pGroup, String pSwimmingPool,
+			String pEducateur, int pPlaceDisponible, int pPlaceRestante) {
 		super();
 		id = pId;
 		dayOfWeek = pDayOfWeek;
 		begin = pBegin;
+		beginStr = pBeginStr;
 		end = pEnd;
+		endStr = pEndStr;
 		group = pGroup;
 		swimmingPool = pSwimmingPool;
 		educateur = pEducateur;
+		placeDisponible = pPlaceDisponible;
+		placeRestante = pPlaceRestante;
 	}
-
 
 	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getDayOfWeek() {
 		return dayOfWeek;
 	}
+
 	public void setDayOfWeek(String dayOfWeek) {
 		this.dayOfWeek = dayOfWeek;
 	}
-	
+
 	public int getBegin() {
 		return begin;
 	}
@@ -72,6 +81,7 @@ private Long id;
 	public String getSwimmingPool() {
 		return swimmingPool;
 	}
+
 	public void setSwimmingPool(String swimmingPool) {
 		this.swimmingPool = swimmingPool;
 	}
@@ -98,5 +108,21 @@ private Long id;
 
 	public void setEndStr(String pEndStr) {
 		endStr = pEndStr;
+	}
+
+	public int getPlaceDisponible() {
+		return placeDisponible;
+	}
+
+	public void setPlaceDisponible(int pPlaceDisponible) {
+		placeDisponible = pPlaceDisponible;
+	}
+
+	public int getPlaceRestante() {
+		return placeRestante;
+	}
+
+	public void setPlaceRestante(int pPlaceRestante) {
+		placeRestante = pPlaceRestante;
 	}
 }

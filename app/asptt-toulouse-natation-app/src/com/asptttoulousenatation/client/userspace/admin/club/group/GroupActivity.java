@@ -38,7 +38,7 @@ public class GroupActivity extends MyAbstractActivity<GroupPlace> {
 				final GroupView lGroupView = new GroupViewImpl(pResult.getGroups());
 				lGroupView.getCreateButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
-						dispatchAsync.execute(new CreateGroupAction(lGroupView.getGroupTitle().getValue(), lGroupView.getGroupLicenceFfn().getValue()), new AsyncCallback<CreateGroupResult>() {
+						dispatchAsync.execute(new CreateGroupAction(lGroupView.getGroupTitle().getValue(), lGroupView.getGroupLicenceFfn().getValue(), lGroupView.getGroupInscription().getValue()), new AsyncCallback<CreateGroupResult>() {
 
 							public void onFailure(Throwable pCaught) {
 								Window.alert("Erreur " + pCaught.getMessage());
@@ -54,7 +54,7 @@ public class GroupActivity extends MyAbstractActivity<GroupPlace> {
 				
 				lGroupView.getUpdateButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
-						dispatchAsync.execute(new UpdateGroupAction(lGroupView.getGroupId(), lGroupView.getGroupTitle().getValue(), lGroupView.getGroupLicenceFfn().getValue()), new AsyncCallback<UpdateGroupResult>() {
+						dispatchAsync.execute(new UpdateGroupAction(lGroupView.getGroupId(), lGroupView.getGroupTitle().getValue(), lGroupView.getGroupLicenceFfn().getValue(), lGroupView.getGroupInscription().getValue()), new AsyncCallback<UpdateGroupResult>() {
 
 							public void onFailure(Throwable pCaught) {
 								Window.alert("Erreur " + pCaught.getMessage());

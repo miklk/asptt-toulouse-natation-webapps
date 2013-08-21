@@ -2,7 +2,9 @@ package com.asptttoulousenatation.core.server.dao.entity.field;
 
 public enum SlotEntityFields implements IEntityFields {
 
-	GROUP(Long.class);
+	GROUP(Long.class),
+	DAYOFWEEK(String.class),
+	;
 	
 	private Class<? extends Object> clazz;
 

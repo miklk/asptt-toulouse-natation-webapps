@@ -49,6 +49,7 @@ public class SlotViewImpl extends Composite implements SlotView {
 	private ListBox group;
 	private TextBox swimmingPool;
 	private TextBox educateur;
+	private TextBox placeDisponible;
 	
 	static {
 		dayOfWeekMap = new HashMap<String, Integer>(7);
@@ -111,6 +112,7 @@ public class SlotViewImpl extends Composite implements SlotView {
 		}
 		swimmingPool.setValue(pUi.getSwimmingPool());
 		educateur.setValue(pUi.getEducateur());
+		placeDisponible.setValue(Integer.toString(pUi.getPlaceDisponible()));
 		updateButton.setVisible(true);
 		deleteButton.setVisible(true);
 	}
@@ -118,12 +120,15 @@ public class SlotViewImpl extends Composite implements SlotView {
 	private void buildCreationPanel() {
 		FlexTable lPanel = new FlexTable();
 		lPanel.setCellSpacing(6);
+		
+		int rowIndex = 0;
 
 		FlexCellFormatter lCellFormatter = lPanel.getFlexCellFormatter();
-		lPanel.setHTML(0, 0, "Information du créneau");
-		lCellFormatter.setColSpan(0, 0, 2);
-		lCellFormatter.setHorizontalAlignment(0, 0,
+		lPanel.setHTML(rowIndex, 0, "Information du créneau");
+		lCellFormatter.setColSpan(rowIndex, 0, 2);
+		lCellFormatter.setHorizontalAlignment(rowIndex, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
+		rowIndex++;
 		
 		//Input
 		//Day of week
@@ -131,15 +136,17 @@ public class SlotViewImpl extends Composite implements SlotView {
 		for(Map.Entry<String, Integer> lDay: dayOfWeekMap.entrySet()) {
 			dayOfWeek.insertItem(lDay.getKey(), lDay.getKey(), lDay.getValue());
 		}
-		lPanel.setHTML(1, 0, "Jour de la semaine");
-		lPanel.setWidget(1, 1, dayOfWeek);
+		lPanel.setHTML(rowIndex, 0, "Jour de la semaine");
+		lPanel.setWidget(rowIndex, 1, dayOfWeek);
+		rowIndex++;
 		
 		//Hour range
 		hourBegin = new HourMinutePicker(PickerFormat._24_HOUR);
-		lPanel.setHTML(2, 0, "Plage horaire");
-		lPanel.setWidget(2, 1, hourBegin);
+		lPanel.setHTML(rowIndex, 0, "Plage horaire");
+		lPanel.setWidget(rowIndex, 1, hourBegin);
 		hourEnd = new HourMinutePicker(PickerFormat._24_HOUR);
-		lPanel.setWidget(2, 2, hourEnd);
+		lPanel.setWidget(rowIndex, 2, hourEnd);
+		rowIndex++;
 		
 		//Group
 		group = new ListBox();
@@ -149,27 +156,36 @@ public class SlotViewImpl extends Composite implements SlotView {
 			group.insertItem(lGroupUi.getTitle(), Long.toString(lGroupUi.getId()), index);
 			index++;
 		}
-		lPanel.setHTML(3, 0, "Groupe");
-		lPanel.setWidget(3, 1, group);
+		lPanel.setHTML(rowIndex, 0, "Groupe");
+		lPanel.setWidget(rowIndex, 1, group);
+		rowIndex++;
 		
 		//Swimming pool
 		swimmingPool = new TextBox();
-		lPanel.setHTML(4, 0, "Piscine");
-		lPanel.setWidget(4, 1, swimmingPool);
+		lPanel.setHTML(rowIndex, 0, "Piscine");
+		lPanel.setWidget(rowIndex, 1, swimmingPool);
+		rowIndex++;
 		
 		//Educateur
 		educateur = new TextBox();
-		lPanel.setHTML(5, 0, "Educateur");
-		lPanel.setWidget(5, 1, educateur);
+		lPanel.setHTML(rowIndex, 0, "Educateur");
+		lPanel.setWidget(rowIndex, 1, educateur);
+		rowIndex++;
+		
+		// Places disponibles
+		placeDisponible = new TextBox();
+		lPanel.setHTML(rowIndex, 0, "Places disponibles");
+		lPanel.setWidget(rowIndex, 1, placeDisponible);
+		rowIndex++;
 		
 		HorizontalPanel lButtonBar = new HorizontalPanel();
 		lButtonBar.setStyleName(CSS.buttonBar());
 		lButtonBar.add(updateButton);
 		lButtonBar.add(deleteButton);
 		lButtonBar.add(createButton);
-		lPanel.setWidget(6, 0, lButtonBar);
-		lCellFormatter.setColSpan(6, 0, 3);
-		lCellFormatter.setHorizontalAlignment(6, 0,
+		lPanel.setWidget(rowIndex, 0, lButtonBar);
+		lCellFormatter.setColSpan(rowIndex, 0, 3);
+		lCellFormatter.setHorizontalAlignment(rowIndex, 0,
 				HasHorizontalAlignment.ALIGN_CENTER);
 		editionPanel.clear();
 		editionPanel.setWidget(lPanel);
@@ -219,5 +235,10 @@ public class SlotViewImpl extends Composite implements SlotView {
 
 	public HasClickHandlers getDeleteButton() {
 		return deleteButton;
+	}
+
+	@Override
+	public HasValue<String> getPlaceDisponible() {
+		return placeDisponible;
 	}
 }

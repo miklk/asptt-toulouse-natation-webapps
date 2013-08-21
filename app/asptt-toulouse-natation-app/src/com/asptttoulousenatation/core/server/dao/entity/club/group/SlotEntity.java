@@ -38,12 +38,19 @@ public class SlotEntity implements Entity {
 	@Persistent
 	private String educateur;
 	
+	@Persistent
+	private Integer placeDisponible;
+	
+	@Persistent
+	private Integer placeRestante;
+	
 	public SlotEntity() {
 		
 	}
 
 	public SlotEntity(Long pId, String pDayOfWeek, int pBegin, int pEnd,
-			Long pGroup, String pSwimmingPool, String pEducateur) {
+			Long pGroup, String pSwimmingPool, String pEducateur,
+			Integer pPlaceDisponible, Integer pPlaceRestante) {
 		super();
 		id = pId;
 		dayOfWeek = pDayOfWeek;
@@ -52,7 +59,10 @@ public class SlotEntity implements Entity {
 		group = pGroup;
 		swimmingPool = pSwimmingPool;
 		educateur = pEducateur;
+		placeDisponible = pPlaceDisponible;
+		placeRestante = pPlaceRestante;
 	}
+
 
 	public Long getId() {
 		return id;
@@ -109,4 +119,21 @@ public class SlotEntity implements Entity {
 	public void setEducateur(String pEducateur) {
 		educateur = pEducateur;
 	}
+
+	public Integer getPlaceDisponible() {
+		return placeDisponible;
+	}
+
+	public void setPlaceDisponible(Integer pPlaceDisponible) {
+		placeDisponible = pPlaceDisponible;
+	}
+
+	public Integer getPlaceRestante() {
+		return placeRestante;
+	}
+
+	public void setPlaceRestante(Integer pPlaceRestante) {
+		placeRestante = pPlaceRestante;
+	}
+	
 }

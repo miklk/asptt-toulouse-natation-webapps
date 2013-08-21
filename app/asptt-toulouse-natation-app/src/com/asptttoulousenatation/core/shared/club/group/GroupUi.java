@@ -12,6 +12,7 @@ public class GroupUi implements IsSerializable {
 	private Long id;
 	private String title;
 	private boolean licenceFfn;
+	private boolean inscription;
 	private List<SlotUi> slots;
 	
 	public GroupUi() {
@@ -19,11 +20,12 @@ public class GroupUi implements IsSerializable {
 		slots = new ArrayList<SlotUi>(0);
 	}
 	
-	public GroupUi(Long pId, String pTitle, boolean pLicenceFfn) {
+	public GroupUi(Long pId, String pTitle, boolean pLicenceFfn, boolean pInscription) {
 		super();
 		id = pId;
 		title = pTitle;
 		licenceFfn = pLicenceFfn;
+		inscription = pInscription;
 	}
 
 	public Long getId() {
@@ -62,5 +64,12 @@ public class GroupUi implements IsSerializable {
 	public void setLicenceFfn(boolean pLicenceFfn) {
 		licenceFfn = pLicenceFfn;
 	}
-	
+
+	public boolean isInscription() {
+		return inscription;
+	}
+
+	public void setInscription(boolean pInscription) {
+		inscription = pInscription;
+	}
 }

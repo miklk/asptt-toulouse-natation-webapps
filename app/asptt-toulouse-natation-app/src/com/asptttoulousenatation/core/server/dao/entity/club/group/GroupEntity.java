@@ -26,6 +26,9 @@ public class GroupEntity implements Entity {
 	@Persistent
 	private Boolean licenceFfn;
 	
+	@Persistent
+	private Boolean inscription;
+	
 	public GroupEntity() {
 		
 	}
@@ -53,4 +56,13 @@ public class GroupEntity implements Entity {
 	public void setLicenceFfn(Boolean pLicenceFfn) {
 		licenceFfn = pLicenceFfn;
 	}
+
+	public Boolean getInscription() {
+		return inscription;
+	}
+
+	public void setInscription(Boolean pInscription) {
+		inscription = pInscription;
+	}
+	
 }

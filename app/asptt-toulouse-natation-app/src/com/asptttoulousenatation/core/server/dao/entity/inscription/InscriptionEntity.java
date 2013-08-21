@@ -120,6 +120,9 @@ public class InscriptionEntity implements Entity {
 	@NotPersistent
 	private GroupEntity groupEntity;
 	
+	@Persistent
+	private String motdepasse;
+	
 	public InscriptionEntity() {
 		
 	}
@@ -515,5 +518,13 @@ public class InscriptionEntity implements Entity {
 
 	public void setSaisie(Boolean pSaisie) {
 		saisie = pSaisie;
+	}
+
+	public String getMotdepasse() {
+		return motdepasse;
+	}
+
+	public void setMotdepasse(String pMotdepasse) {
+		motdepasse = pMotdepasse;
 	}
 }

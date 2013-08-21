@@ -24,6 +24,13 @@ public class SlotTransformer extends
 		lUi.setBeginStr(begin[0] + ":" + DateUtils.formatMinutes(begin[1]));
 		int[] end = DateUtils.getHour(pEntity.getEnd());
 		lUi.setEndStr(end[0] + ":" + DateUtils.formatMinutes(end[1]));
+		
+		if(pEntity.getPlaceDisponible() != null) {
+			lUi.setPlaceDisponible(pEntity.getPlaceDisponible());
+		}
+		if(pEntity.getPlaceRestante() != null) {
+			lUi.setPlaceRestante(pEntity.getPlaceRestante());
+		}
 		return lUi;
 	}
 	
@@ -33,6 +40,4 @@ public class SlotTransformer extends
 		lUi.setGroup(lGroupUi);
 		return lUi;
 	}
-	
-	
 }

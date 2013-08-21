@@ -37,6 +37,7 @@ public class GroupViewImpl extends Composite implements GroupView {
 
 	private TextBox groupTitle;
 	private CheckBox groupLicenceFfn;
+	private CheckBox groupInscription;
 
 	public GroupViewImpl(List<GroupUi> pGroups) {
 		data = pGroups;
@@ -75,6 +76,7 @@ public class GroupViewImpl extends Composite implements GroupView {
 	private void buildEditionPanel(GroupUi pGroupUi) {
 		groupTitle.setValue(pGroupUi.getTitle());
 		groupLicenceFfn.setValue(pGroupUi.isLicenceFfn());
+		groupInscription.setValue(pGroupUi.isLicenceFfn());
 		updateButton.setVisible(true);
 		deleteButton.setVisible(true);
 	}
@@ -95,6 +97,12 @@ public class GroupViewImpl extends Composite implements GroupView {
 		groupLicenceFfn = new CheckBox();
 		lPanel.setWidget(lRowIndex, 0, createLabel("Licence FFN"));
 		lPanel.setWidget(lRowIndex, 1, groupLicenceFfn);
+		lRowIndex++;
+
+		// Inscription
+		groupInscription = new CheckBox();
+		lPanel.setWidget(lRowIndex, 0, createLabel("Valable à l'inscription"));
+		lPanel.setWidget(lRowIndex, 1, groupInscription);
 		lRowIndex++;
 
 		HorizontalPanel lButtonBar = new HorizontalPanel();
@@ -139,5 +147,9 @@ public class GroupViewImpl extends Composite implements GroupView {
 
 	public HasValue<Boolean> getGroupLicenceFfn() {
 		return groupLicenceFfn;
+	}
+
+	public HasValue<Boolean> getGroupInscription() {
+		return groupInscription;
 	}
 }
