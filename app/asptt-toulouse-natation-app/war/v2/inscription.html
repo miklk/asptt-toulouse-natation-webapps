@@ -115,8 +115,10 @@
             		}
             		if(this.placeRestante == 0) {
             			checkboxCreneau.prop('disabled', true);
+            			$(ligne).append("&nbsp;<span style='font-style:italic'>Ce créneau est complet.</span>");
+            		} else {
+            			$(ligne).append("&nbsp;<span style='font-style:italic'>" + this.placeRestante + "/" + this.placeDisponible + "</span>");
             		}
-            		$(ligne).append("&nbsp;<span style='font-style:italic'>Ce créneau est complet.</span>");
             		$("#"+tabId+"creneaux").append(ligne);
             	});
             	if(data.length == 0) {
@@ -337,7 +339,7 @@
   			<p><span style="font-weight: bold">a. <span class="link" onclick="$('#nouveauPopup').dialog('open')">Je demande un code d'accès</span></span></p>
   			<p><span style="font-weight: bold">b. Je m'identifie avec mon adresse e-mail et le code d'accès reçu (l'e-mail peut être classé dans les spams)</span><br />
   				<label for="find_email">Adresse e-mail</label><input type="text" id="find_email" name="find_email" size="50" />
-  				<label for="find_email_motdepasse">Mot de passe</label><input type="text" id="find_email_motdepasse" name="find_email_motdepasse" size="50" />
+  				<label for="find_email_motdepasse">Mot de passe (3 chiffres)</label><input type="text" id="find_email_motdepasse" name="find_email_motdepasse" size="50" />
   				<button type="button" id="valid_find_email">Valider</button>
   			</p>
   </fieldset>

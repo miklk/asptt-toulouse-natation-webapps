@@ -41,5 +41,12 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/stax-api-1.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlbeans-2.3.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/itextpdf-5.4.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.asm-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.beans-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.context-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.core-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.expression-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.web-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.web.servlet-3.0.1.RELEASE-A.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

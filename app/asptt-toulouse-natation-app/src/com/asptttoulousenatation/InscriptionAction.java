@@ -91,7 +91,7 @@ public class InscriptionAction extends HttpServlet {
 			imprimerAdherent(pReq, pResp);
 		} else if ("loadGroupes".equals(action)) {
 			loadGroupes(pReq, pResp);
-		} else if("nouveau".equals(action)) {
+		} else if ("nouveau".equals(action)) {
 			nouveau(pReq, pResp);
 		}
 	}
@@ -132,10 +132,12 @@ public class InscriptionAction extends HttpServlet {
 				String paramValue = pReq.getParameter(param);
 				if (BooleanUtils.toBoolean(paramValue)) {
 					String creneauId = param.replace("creneau", "");
-					//Update creneaux
-					SlotEntity creneauEntity = slotDao.get(Long.valueOf(creneauId));
-					if(creneauEntity != null) {
-						creneauEntity.setPlaceRestante(creneauEntity.getPlaceRestante() - 1);
+					// Update creneaux
+					SlotEntity creneauEntity = slotDao.get(Long
+							.valueOf(creneauId));
+					if (creneauEntity != null) {
+						creneauEntity.setPlaceRestante(creneauEntity
+								.getPlaceRestante() - 1);
 						slotDao.save(creneauEntity);
 					}
 					creneau.append(creneauId).append(";");
@@ -147,7 +149,7 @@ public class InscriptionAction extends HttpServlet {
 				.getSession().getAttribute("data");
 		InscriptionEntity entity = adherents.get(0);
 		entity.setCreneaux(creneau.toString());
-		
+
 		try {
 			BeanUtils.populate(entity, pReq.getParameterMap());
 			inscriptionTransformer.update(entity);
@@ -181,13 +183,15 @@ public class InscriptionAction extends HttpServlet {
 				String paramValue = pReq.getParameter(param);
 				if (BooleanUtils.toBoolean(paramValue)) {
 					String creneauId = param.replace("creneau", "");
-					if(creneauId.contains("_")) {
+					if (creneauId.contains("_")) {
 						creneauId = creneauId.split("_")[1];
 					}
-					//Update creneaux
-					SlotEntity creneauEntity = slotDao.get(Long.valueOf(creneauId));
-					if(creneauEntity != null) {
-						creneauEntity.setPlaceRestante(creneauEntity.getPlaceRestante() - 1);
+					// Update creneaux
+					SlotEntity creneauEntity = slotDao.get(Long
+							.valueOf(creneauId));
+					if (creneauEntity != null) {
+						creneauEntity.setPlaceRestante(creneauEntity
+								.getPlaceRestante() - 1);
 						slotDao.save(creneauEntity);
 					}
 					creneau.append(creneauId).append(";");
@@ -215,15 +219,17 @@ public class InscriptionAction extends HttpServlet {
 
 			BeanUtils.populate(entity, pReq.getParameterMap());
 			String dateNaissance = entity.getDatenaissance();
-			if(dateNaissance.length() == 10 && StringUtils.isNumeric(dateNaissance.substring(2, 2))) {
+			if (dateNaissance.length() == 10
+					&& StringUtils.isNumeric(dateNaissance.substring(2, 2))) {
 				String separateur = dateNaissance.substring(2, 2);
 				String[] dateNaissanceSplit = dateNaissance.split(separateur);
-				dateNaissance = dateNaissanceSplit[2] + dateNaissanceSplit[1] + dateNaissanceSplit[0];
+				dateNaissance = dateNaissanceSplit[2] + dateNaissanceSplit[1]
+						+ dateNaissanceSplit[0];
 				entity.setDatenaissance(dateNaissance);
 			}
 			InscriptionEntity findEntity = findByUniqueNomPrenomNaissance(
-					entity.getNom().toUpperCase(), entity.getPrenom().toUpperCase(),
-					entity.getDatenaissance());
+					entity.getNom().toUpperCase(), entity.getPrenom()
+							.toUpperCase(), entity.getDatenaissance());
 			if (findEntity != null) {
 				entity.setId(findEntity.getId());
 			}
@@ -270,8 +276,10 @@ public class InscriptionAction extends HttpServlet {
 			Properties props = new Properties();
 			Session session = Session.getDefaultInstance(props, null);
 
-			String msgBody = "Vous pouvez maintenant accéder au formulaire d'inscription en utilisant le code suivant: "+ lCode + "." +
-					"ASPTT Toulouse Natation http://asptt-toulouse-natation.com/v2/inscription.html";
+			String msgBody = "Vous pouvez maintenant accéder au formulaire d'inscription en utilisant le code suivant: "
+					+ lCode
+					+ "."
+					+ "ASPTT Toulouse Natation http://asptt-toulouse-natation.com/v2/inscription.html";
 
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(
@@ -468,30 +476,23 @@ public class InscriptionAction extends HttpServlet {
 			principalId = inscriptionIds.get(numero);
 		}
 
-		final List<InscriptionEntity> inscriptions = new ArrayList<InscriptionEntity>();
 		InscriptionEntity adherent = inscriptionDao.get(principalId);
-		inscriptions.add(adherent);
-		List<CriterionDao<? extends Object>> lPrincipalCriteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		lPrincipalCriteria.add(new CriterionDao<Long>(
-				InscriptionEntityFields.PRINCIPAL, adherent.getId(),
-				Operator.EQUAL));
-		inscriptions.addAll(inscriptionDao.find(lPrincipalCriteria));
-
+		InscriptionEntity parent = null;
+		if (adherent.getPrincipal() != null) {
+			parent = inscriptionDao.get(adherent.getPrincipal());
+		}
 		ServletOutputStream out = pResp.getOutputStream();
 		String contentType = "application/excel";
 		String contentDisposition = "attachment;filename=dossierInscription_asptt_natation.xls;";
 		pResp.setContentType(contentType);
 		pResp.setHeader("Content-Disposition", contentDisposition);
 
-		for (InscriptionEntity inscription : inscriptions) {
-			InputStream adhesion = new FileInputStream(getServletContext()
-					.getRealPath(
-							"v2" + System.getProperty("file.separator") + "doc"
-									+ System.getProperty("file.separator")
-									+ "adhesion.xls"));
-			Xlsx.getXlsx(adhesion, out, adherent, inscription);
-		}
+		InputStream adhesion = new FileInputStream(getServletContext()
+				.getRealPath(
+						"v2" + System.getProperty("file.separator") + "doc"
+								+ System.getProperty("file.separator")
+								+ "adhesion.xls"));
+		Xlsx.getXlsx(adhesion, out, parent, adherent);
 
 		out.flush();
 		out.close();
@@ -506,30 +507,23 @@ public class InscriptionAction extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		final List<InscriptionEntity> inscriptions = new ArrayList<InscriptionEntity>();
 		InscriptionEntity adherent = inscriptionDao.get(principalId);
-		inscriptions.add(adherent);
-		List<CriterionDao<? extends Object>> lPrincipalCriteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		lPrincipalCriteria.add(new CriterionDao<Long>(
-				InscriptionEntityFields.PRINCIPAL, adherent.getId(),
-				Operator.EQUAL));
-		inscriptions.addAll(inscriptionDao.find(lPrincipalCriteria));
-
+		InscriptionEntity parent = null;
+		if (adherent.getPrincipal() != null) {
+			parent = inscriptionDao.get(adherent.getPrincipal());
+		}
 		ServletOutputStream out = pResp.getOutputStream();
 		String contentType = "application/excel";
 		String contentDisposition = "attachment;filename=dossierInscription_asptt_natation.xls;";
 		pResp.setContentType(contentType);
 		pResp.setHeader("Content-Disposition", contentDisposition);
 
-		for (InscriptionEntity inscription : inscriptions) {
-			InputStream adhesion = new FileInputStream(getServletContext()
-					.getRealPath(
-							"v2" + System.getProperty("file.separator") + "doc"
-									+ System.getProperty("file.separator")
-									+ "adhesion.xls"));
-			Xlsx.getXlsx(adhesion, out, adherent, inscription);
-		}
+		InputStream adhesion = new FileInputStream(getServletContext()
+				.getRealPath(
+						"v2" + System.getProperty("file.separator") + "doc"
+								+ System.getProperty("file.separator")
+								+ "adhesion.xls"));
+		Xlsx.getXlsx(adhesion, out, parent, adherent);
 
 		out.flush();
 		out.close();
@@ -548,7 +542,7 @@ public class InscriptionAction extends HttpServlet {
 
 			@Override
 			public int compare(GroupUi pO1, GroupUi pO2) {
-				if(StringUtils.containsIgnoreCase(pO1.getTitle(), "Ecole")) {
+				if (StringUtils.containsIgnoreCase(pO1.getTitle(), "Ecole")) {
 					return -1;
 				} else {
 					return 1;
