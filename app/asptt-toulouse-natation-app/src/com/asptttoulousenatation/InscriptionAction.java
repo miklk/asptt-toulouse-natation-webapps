@@ -477,7 +477,7 @@ public class InscriptionAction extends HttpServlet {
 		}
 
 		InscriptionEntity adherent = inscriptionDao.get(principalId);
-		InscriptionEntity parent = null;
+		InscriptionEntity parent = adherent;
 		if (adherent.getPrincipal() != null) {
 			parent = inscriptionDao.get(adherent.getPrincipal());
 		}
@@ -508,7 +508,7 @@ public class InscriptionAction extends HttpServlet {
 		}
 
 		InscriptionEntity adherent = inscriptionDao.get(principalId);
-		InscriptionEntity parent = null;
+		InscriptionEntity parent = adherent;
 		if (adherent.getPrincipal() != null) {
 			parent = inscriptionDao.get(adherent.getPrincipal());
 		}

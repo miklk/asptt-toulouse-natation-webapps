@@ -92,10 +92,10 @@ public class Xlsx {
 			sheet.getRow(75)
 					.getCell(0)
 					.setCellValue(StringUtils.upperCase(
-							pPrincipal.getAccidentNom1() + " "
-									+ pPrincipal.getAccidentPrenom1()));
+							pPrincipal.getAccidentNom2() + " "
+									+ pPrincipal.getAccidentPrenom2()));
 			sheet.getRow(75).getCell(13)
-					.setCellValue(pPrincipal.getAccidentTelephone1());
+					.setCellValue(pPrincipal.getAccidentTelephone2());
 
 			if (BooleanUtils.toBoolean(pEntity.getPresident())) {
 				sheet.getRow(79).getCell(0).setCellValue("X");
