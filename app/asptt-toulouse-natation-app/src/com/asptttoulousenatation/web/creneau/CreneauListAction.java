@@ -77,17 +77,17 @@ public class CreneauListAction extends HttpServlet {
 			List<SlotEntity> entities = slotDao.find(criteria);
 			Map<String, CreneauListResultBean> resultsMap = new HashMap<String, CreneauListResultBean>();
 			for (SlotEntity entity : entities) {
-				String cle = entity.getSwimmingPool() + entity.getBegin();
+				String cle = entity.getDayOfWeek();
 				final CreneauListResultBean creneau;
 				if (resultsMap.containsKey(cle)) {
 					creneau = resultsMap.get(cle);
 				} else {
 					creneau = new CreneauListResultBean();
 					creneau.setJour(entity.getDayOfWeek());
-					creneau.setDebut(entity.getBegin());
-					creneau.setFin(entity.getEnd());
 					resultsMap.put(cle, creneau);
 				}
+				
+				
 				// Load group
 				GroupEntity group = groupDao.get(entity.getGroup());
 				int effectif = 0;
