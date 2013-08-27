@@ -117,7 +117,7 @@
             			checkboxCreneau.prop('disabled', true);
             			$(ligne).append("&nbsp;<span style='font-style:italic'>Ce créneau est complet.</span>");
             		} else {
-            			$(ligne).append("&nbsp;<span style='font-style:italic'>" + this.placeRestante + "/" + this.placeDisponible + "</span>");
+            			$(ligne).append("&nbsp;<span style='font-style:italic'>Il reste " + this.placeRestante + " (sur " + this.placeDisponible + " disponibles)</span>");
             		}
             		$("#"+tabId+"creneaux").append(ligne);
             	});

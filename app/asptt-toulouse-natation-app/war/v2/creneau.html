@@ -46,7 +46,17 @@
 	function search() {
 		$.ajax({type: "POST", data: $("#form").serialize(), url: "CreneauList.do?action=search", dataType: "json",
 			success: function(data) {
-				alert(data.length);
+				alert(data);
+				var row = $("#resultsRow");
+				$.each(data, function() {
+					var td = $("<td>" + this.jour + "</td>");
+					var table = $("<table><tr><td>Groupes</td><td>Horaire</td></tr></table>");
+					$.each(this.creneaux, function() {
+						alert(this[0]);
+					});
+					td.append(table);
+					row.append(td);
+				});
 			},
 			error:  function(jqXHR, textStatus, errorThrown) {
 				if(jqXHR.responseText !== ''){
@@ -80,7 +90,7 @@
   </form>
   
   <table id="results">
-  	<tr>
+  	<tr id="resultsRow">
   		<td>Lundi
   			<table>
   				<tr><td>Groupes</td><td>18h</td></tr>

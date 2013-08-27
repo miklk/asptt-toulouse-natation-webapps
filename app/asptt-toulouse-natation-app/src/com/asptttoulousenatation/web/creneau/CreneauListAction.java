@@ -95,7 +95,8 @@ public class CreneauListAction extends HttpServlet {
 					effectif = entity.getPlaceDisponible()
 							- entity.getPlaceRestante();
 				}
-				creneau.addGroupe(group.getTitle(), effectif);
+				
+				creneau.addCreneau(entity.getBegin(), group.getTitle(), effectif);
 			}
 			
 			Gson gson = new Gson();
