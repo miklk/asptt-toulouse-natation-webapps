@@ -47,7 +47,7 @@ public class CriterionDao<T extends Object> {
 
 	public String asWhereClause() {
 		StringBuilder lBuilder = new StringBuilder();
-		lBuilder.append("this.").append(entityField.name().toLowerCase());
+		lBuilder.append("this.").append(entityField.getFieldName());
 		lBuilder.append(" ").append(operator).append(" ");
 		if (!Operator.NULL.equals(operator)) {
 			if (entityField.getEntityClass().equals(String.class)) {

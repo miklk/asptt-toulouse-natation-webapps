@@ -12,4 +12,9 @@ public enum DataUpdateEntityFields implements IEntityFields {
 	public Class<? extends Object> getEntityClass() {
 		return clazz;
 	}
+	
+	@Override
+	public String getFieldName() {
+		return name().toLowerCase();
+	}
 }

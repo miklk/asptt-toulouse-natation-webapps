@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <title>ASPTT Grand Toulouse Natation - Inscription 2013-2014</title>
+    <link rel="stylesheet" href="css/inscription.css" type="text/css" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/start/jquery-ui.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    
+ 
+  </style>
+  
+  <script>
+  $( document ).ready(function() {
+	  $( "#loading" ).dialog({
+	      height: 140,
+	      modal: true,
+	      autoOpen: false,
+	      dialogClass: 'loading-dialog'	
+	    });
+	$( document ).ajaxSend(function() {
+		$("#loading").dialog("open");
+	});
+	$( document ).ajaxComplete(function() {
+		$("#loading").dialog("close");
+		});
+	$.ajax({
+            type: "POST",
+            url: "CreneauList.do?action=load",
+            dataType: "json",
+            success: function(data){
+            		var select = $("#piscine");
+                	$.each(data, function() {
+                		select.append('<option value="' + this + '">' + this + '</option>');
+                	});
+                	select.change(function() {
+                		search();
+                	});
+            }
+        });
+	});
+	
+	function search() {
+		$.ajax({type: "POST", data: $("#form").serialize(), url: "CreneauList.do?action=search", dataType: "json",
+			success: function(data) {
+				var row = $("#resultsRow");
+				row.empty();
+				$.each(data, function() {
+					var td = $("<td>" + this.jour + "</td>");
+					var rowHoraire = $("<tr><td>Groupes</td></tr>");
+					var table = $("<table></table>");
+					table.append(rowHoraire);
+					$.each(this.creneaux, function() {
+						//Horaire
+						rowHoraire.append("<td>" + this.first + "</td>");
+						$.each(this.second, function() {
+							var rowGroupe = $("#" + this.id);
+							if(!rowGroupe.length) {
+								rowGroupe = $('<tr id="' + this.id + '"><td>'+this.groupe+'</td></tr>');
+								table.append(rowGroupe);
+							}
+							rowGroupe.append("<td>" + this.effectif + "</td>");	
+						});
+					});
+					td.append(table);
+					row.append(td);
+				});
+			},
+			error:  function(jqXHR, textStatus, errorThrown) {
+				if(jqXHR.responseText !== ''){
+			        alert(jqXHR.responseText);
+			    }else{
+			        alert('Une erreur est survenue.');
+			    }  
+			}
+		})
+	}
+  </script>
+  </head>
+
+  <body>
+  <div id="loading" title="Chargement en cours..." style="display:none">
+  	<div style="text-align: center; color:#FFFFFF">
+  		<img src="img/loader.gif" /><br />Chargement en cours...
+  	</div>
+  </div>
+  <img src="img/logo.png" />
+  <h1 style="float:right">Effectifs des bassins 2013-2014</h1>
+  
+  <form id="form" action="CreneauList">
+	  <fieldset>
+	  	<legend>Critère de recherche</legend>
+	  	<p><label for="piscine">Piscine</label>
+	  	<select id="piscine" name="piscine">
+	  		<option value="Aucune">Aucune</option>
+	  	</select>
+	  </fieldset>
+  </form>
+  
+  <table id="results">
+  	<tr id="resultsRow">
+  		
+  	</tr>
+  </table>
+  </body>
+</html>

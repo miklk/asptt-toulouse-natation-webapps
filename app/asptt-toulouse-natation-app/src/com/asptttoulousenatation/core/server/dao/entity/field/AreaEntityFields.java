@@ -15,4 +15,9 @@ public enum AreaEntityFields implements IEntityFields {
 		return clazz;
 	}
 
+	@Override
+	public String getFieldName() {
+		return name().toLowerCase();
+	}
+
 }
