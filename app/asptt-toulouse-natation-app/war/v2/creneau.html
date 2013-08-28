@@ -46,13 +46,24 @@
 	function search() {
 		$.ajax({type: "POST", data: $("#form").serialize(), url: "CreneauList.do?action=search", dataType: "json",
 			success: function(data) {
-				alert(data);
 				var row = $("#resultsRow");
+				row.empty();
 				$.each(data, function() {
 					var td = $("<td>" + this.jour + "</td>");
-					var table = $("<table><tr><td>Groupes</td><td>Horaire</td></tr></table>");
+					var rowHoraire = $("<tr><td>Groupes</td></tr>");
+					var table = $("<table></table>");
+					table.append(rowHoraire);
 					$.each(this.creneaux, function() {
-						alert(this[0]);
+						//Horaire
+						rowHoraire.append("<td>" + this.first + "</td>");
+						$.each(this.second, function() {
+							var rowGroupe = $("#" + this.id);
+							if(!rowGroupe.length) {
+								rowGroupe = $('<tr id="' + this.id + '"><td>'+this.groupe+'</td></tr>');
+								table.append(rowGroupe);
+							}
+							rowGroupe.append("<td>" + this.effectif + "</td>");	
+						});
 					});
 					td.append(table);
 					row.append(td);
@@ -91,13 +102,7 @@
   
   <table id="results">
   	<tr id="resultsRow">
-  		<td>Lundi
-  			<table>
-  				<tr><td>Groupes</td><td>18h</td></tr>
-  				<tr><td>Masters</td><td>5</td></tr>
-  				<tr><td>Tritons</td><td>15</td></tr>
-  			</table>
-  		</td>
+  		
   	</tr>
   </table>
   </body>

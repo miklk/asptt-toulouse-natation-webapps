@@ -2,6 +2,7 @@ package com.asptttoulousenatation.core.server.dao.entity.field;
 
 public enum SlotEntityFields implements IEntityFields {
 
+	ID(Long.class),
 	GROUP(Long.class),
 	DAYOFWEEK(String.class),
 	SWIMMINGPOOL(String.class, "swimmingPool"),

@@ -2,24 +2,24 @@ package com.asptttoulousenatation.web.creneau;
 
 public class CoupleValue<F extends Object, S extends Object> {
 
-	private String first;
+	private F first;
 	private S second;
 	
 	public CoupleValue() {
 		
 	}
 
-	public CoupleValue(String pFirst, S pSecond) {
+	public CoupleValue(F pFirst, S pSecond) {
 		super();
 		first = pFirst;
 		second = pSecond;
 	}
 
-	public String getFirst() {
+	public F getFirst() {
 		return first;
 	}
 
-	public void setFirst(String pFirst) {
+	public void setFirst(F pFirst) {
 		first = pFirst;
 	}
 

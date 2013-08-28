@@ -69,7 +69,7 @@ public class CreneauListAction extends HttpServlet {
 			HttpServletResponse pResp) throws ServletException, IOException {
 		if (StringUtils.isNotBlank(form.getPiscine())) {
 			// Load creneaux
-			ArrayList<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 					1);
 			criteria.add(new CriterionDao<String>(
 					SlotEntityFields.SWIMMINGPOOL, form.getPiscine(),
@@ -96,7 +96,7 @@ public class CreneauListAction extends HttpServlet {
 							- entity.getPlaceRestante();
 				}
 				
-				creneau.addCreneau(entity.getBegin(), group.getTitle(), effectif);
+				creneau.addCreneau(entity.getBegin(), group.getTitle(), effectif, entity.getDayOfWeek());
 			}
 			
 			Gson gson = new Gson();

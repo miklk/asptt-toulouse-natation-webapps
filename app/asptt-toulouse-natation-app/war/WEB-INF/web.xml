@@ -163,8 +163,8 @@
         <servlet-class>com.asptttoulousenatation.InscriptionAction</servlet-class>
  </servlet>
  <servlet>
-        <servlet-name>CreneauAction</servlet-name>
-        <servlet-class>com.asptttoulousenatation.CreneauAction</servlet-class>
+        <servlet-name>CreneauNull</servlet-name>
+        <servlet-class>com.asptttoulousenatation.CreneauNullAction</servlet-class>
  </servlet>
  <servlet>
         <servlet-name>CreneauList</servlet-name>
@@ -175,12 +175,12 @@
   <url-pattern>/v2/InscriptionAction.do</url-pattern>
  </servlet-mapping>
  <servlet-mapping>
-  <servlet-name>CreneauAction</servlet-name>
-  <url-pattern>/v2/CreneauAction.do</url-pattern>
- </servlet-mapping>
- <servlet-mapping>
   <servlet-name>CreneauList</servlet-name>
   <url-pattern>/v2/CreneauList.do</url-pattern>
+ </servlet-mapping>
+ <servlet-mapping>
+  <servlet-name>CreneauNull</servlet-name>
+  <url-pattern>/v2/CreneauNull.do</url-pattern>
  </servlet-mapping>
  
   <servlet>
