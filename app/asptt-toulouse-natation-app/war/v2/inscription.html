@@ -130,16 +130,29 @@
 	}
 	$(".valid").button();
 	$(".valid").click(function() {
-		if(confirm("Etes-vous sûr de l'exactitude des informations fournies ?")) {
-			$(this).attr('disabled', 'disabled');
-		  $.ajax({type:"POST", data: $("#1_form").serialize(), url:"InscriptionAction.do", 
-				success: function(data){
-					submitTabs(2);
-				},
-	                        error: function(){
-				        alert('Une erreur est survenue.');
-				}
-			});
+		var creneauOk = true;
+		var creneauError = 1;
+		creneauOk = $("#creneaux input:checked").length != 0;
+		for(i = 2; i < tabCounter; i++) {
+			if($("#tabs-" + i + "_creneaux input:checked").length == 0) {
+				creneauOk = false;
+				creneauError = i;
+			}
+		}
+		if(!creneauOk) {
+			alert("Vous devez sélectionner avant de valider votre inscription (formulaire n°"+creneauError+").");		
+		} else {
+			if(confirm("Etes-vous sûr de l'exactitude des informations fournies ?")) {
+				$(this).attr('disabled', 'disabled');
+			  $.ajax({type:"POST", data: $("#1_form").serialize(), url:"InscriptionAction.do", 
+					success: function(data){
+						submitTabs(2);
+					},
+		                        error: function(){
+					        alert('Une erreur est survenue.');
+					}
+				});
+			}
 		}
 	  });
 	$("#valid_find_email").button();
