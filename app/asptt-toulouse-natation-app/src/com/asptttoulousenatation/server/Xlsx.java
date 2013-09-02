@@ -3,6 +3,7 @@ package com.asptttoulousenatation.server;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Logger;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +14,9 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity;
 
 public class Xlsx {
+	
+	private static final Logger LOG = Logger.getLogger(Xlsx.class
+			.getName());
 
 	public static void getXlsx(InputStream in, OutputStream out,
 			InscriptionEntity pPrincipal, InscriptionEntity pEntity) {
@@ -39,12 +43,16 @@ public class Xlsx {
 			sheet.getRow(11).getCell(6).setCellValue(StringUtils.upperCase(pEntity.getPrenom()));
 			// Date de naissance
 			if (StringUtils.isNotBlank(pEntity.getDatenaissance())) {
+				try {
 				sheet.getRow(13).getCell(4)
 						.setCellValue(pEntity.getDatenaissance().split("-")[2]);
 				sheet.getRow(13).getCell(7)
 						.setCellValue(pEntity.getDatenaissance().split("-")[1]);
 				sheet.getRow(13).getCell(10)
 						.setCellValue(pEntity.getDatenaissance().split("-")[0]);
+				} catch(Exception e) {
+					LOG.log(java.util.logging.Level.SEVERE, "Date de naissance", e);
+				}
 			}
 			sheet.getRow(13).getCell(24)
 					.setCellValue(pEntity.getLieunaissance());
@@ -142,8 +150,7 @@ public class Xlsx {
 			
 			workbook.write(out);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.log(java.util.logging.Level.SEVERE, "Erreur d'écriture du bulletin d'adhésion", e);
 		}
 	}
 }

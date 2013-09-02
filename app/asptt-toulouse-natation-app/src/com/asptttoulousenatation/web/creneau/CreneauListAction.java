@@ -3,6 +3,9 @@ package com.asptttoulousenatation.web.creneau;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +32,8 @@ public class CreneauListAction extends HttpServlet {
 	private static final long serialVersionUID = -4912389865312123661L;
 	private GroupDao groupDao = new GroupDao();
 	private SlotDao slotDao = new SlotDao();
-
+	private String[] jours = new String[] {"Dimanche", "Samedi", "Vendredi", "Jeudi", "Mercredi", "Mardi", "Lundi"};
+	
 	@Override
 	protected void doPost(HttpServletRequest pReq, HttpServletResponse pResp)
 			throws ServletException, IOException {
@@ -86,8 +90,11 @@ public class CreneauListAction extends HttpServlet {
 					creneau.setJour(entity.getDayOfWeek());
 					resultsMap.put(cle, creneau);
 				}
-				
-				
+				creneau.addHoraire(entity.getBegin());
+			}
+			for (SlotEntity entity : entities) {
+				String cle = entity.getDayOfWeek();
+				final CreneauListResultBean creneau = resultsMap.get(cle);
 				// Load group
 				GroupEntity group = groupDao.get(entity.getGroup());
 				int effectif = 0;
@@ -96,11 +103,23 @@ public class CreneauListAction extends HttpServlet {
 							- entity.getPlaceRestante();
 				}
 				
-				creneau.addCreneau(entity.getBegin(), group.getTitle(), effectif, entity.getDayOfWeek());
+				creneau.addCreneau(entity.getBegin(), group.getTitle(), effectif, entity.getDayOfWeek(), entity);
 			}
+			//Tri sur les jours
+			List<CreneauListResultBean> results = new ArrayList<CreneauListResultBean>(resultsMap.values());
+			Collections.sort(results, new Comparator<CreneauListResultBean>() {
+				
+				@Override
+				public int compare(CreneauListResultBean pO1,
+						CreneauListResultBean pO2) {
+					Integer o1 = Arrays.binarySearch(jours, pO1.getJour());
+					Integer o2 = Arrays.binarySearch(jours, pO2.getJour());
+					return o1.compareTo(o2);
+				}
+			});
 			
 			Gson gson = new Gson();
-			String json = gson.toJson(resultsMap.values());
+			String json = gson.toJson(results);
 			pResp.setContentType("application/json;charset=UTF-8");
 			pResp.getWriter().write(json);
 		}

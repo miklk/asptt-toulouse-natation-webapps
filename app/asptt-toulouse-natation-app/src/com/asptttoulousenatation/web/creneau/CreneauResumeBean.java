@@ -2,42 +2,26 @@ package com.asptttoulousenatation.web.creneau;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class CreneauResumeBean implements Serializable {
 
 	private static final long serialVersionUID = -519221937238047033L;
-	private String id;
-	private String groupe;
-	private String jour;
+	private String heure;
 	private int effectif;
+	private int total;
+	private boolean exists;
+	private boolean complet;
 	
 	public CreneauResumeBean() {
-
-	}
-	
-	public void buildId() {
-		String identifier = StringUtils.join(groupe.split(" "), "_");
-		identifier = identifier + jour.trim();
-		id = identifier;
+		exists = false;
+		complet = true;
 	}
 
-	public String getId() {
-		return id;
+	public String getHeure() {
+		return heure;
 	}
 
-
-	public void setId(String pId) {
-		id = pId;
-	}
-
-
-	public String getGroupe() {
-		return groupe;
-	}
-
-	public void setGroupe(String pGroupe) {
-		groupe = pGroupe;
+	public void setHeure(String pHeure) {
+		heure = pHeure;
 	}
 
 	public int getEffectif() {
@@ -48,13 +32,28 @@ public class CreneauResumeBean implements Serializable {
 		effectif = pEffectif;
 	}
 
-	public String getJour() {
-		return jour;
+	public int getTotal() {
+		return total;
 	}
 
-	public void setJour(String pJour) {
-		jour = pJour;
+	public void setTotal(int pTotal) {
+		total = pTotal;
 	}
-	
+
+	public boolean isExists() {
+		return exists;
+	}
+
+	public void setExists(boolean pExists) {
+		exists = pExists;
+	}
+
+	public boolean isComplet() {
+		return complet;
+	}
+
+	public void setComplet(boolean pComplet) {
+		complet = pComplet;
+	}
 	
 }
