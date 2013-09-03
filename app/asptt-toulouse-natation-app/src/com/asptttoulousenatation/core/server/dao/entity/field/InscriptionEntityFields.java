@@ -8,6 +8,7 @@ public enum InscriptionEntityFields implements IEntityFields {
 	PRINCIPAL(Long.class),
 	DATENAISSANCE(String.class),
 	MOTDEPASSE(String.class),
+	SAISIE(Boolean.class),
 	;
 	
 	private Class<? extends Object> clazz;
