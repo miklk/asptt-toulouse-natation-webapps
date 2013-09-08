@@ -42,20 +42,20 @@ public class InscritsAction extends HttpServlet {
 			throws ServletException, IOException {
 		doPost(pReq, pResp);
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest pReq, HttpServletResponse pResp)
 			throws ServletException, IOException {
 		String action = pReq.getParameter("action");
-		if("inscrits".equals(action)) {
+		if ("inscrits".equals(action)) {
 			inscrits(pReq, pResp);
-		} else if("emailLeo".equals(action)) {
+		} else if ("emailLeo".equals(action)) {
 			emailLeo(pResp);
-		} else if("renouvellement".equals(action)) {
+		} else if ("renouvellement".equals(action)) {
 			renouvellement(pReq, pResp);
-		} else if("nonRenouvellement".equals(action)) {
+		} else if ("nonRenouvellement".equals(action)) {
 			nonRenouvellement(pReq, pResp);
-		} else if("nouveau".equals(action)) {
+		} else if ("nouveau".equals(action)) {
 			nouveau(pReq, pResp);
 		}
 	}
@@ -150,45 +150,47 @@ public class InscritsAction extends HttpServlet {
 		pResp.getOutputStream().print(
 				entities.size() + "\n" + builder.toString());
 	}
-	
-	private void renouvellement(HttpServletRequest pReq, HttpServletResponse pResp)
-			throws ServletException, IOException {
+
+	private void renouvellement(HttpServletRequest pReq,
+			HttpServletResponse pResp) throws ServletException, IOException {
 		StrBuilder builder = new StrBuilder();
 
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		criteria.add(new CriterionDao<Boolean>(InscriptionEntityFields.SAISIE,
 				Boolean.TRUE, Operator.EQUAL));
-		criteria.add(new CriterionDao<String>(InscriptionEntityFields.MOTDEPASSE,
-				"701", Operator.NOT_EQUAL));
 		List<InscriptionEntity> entities = inscriptionDao.find(criteria);
+		int counter = 0;
 		for (InscriptionEntity entity : entities) {
 			try {
-				List<String> results = new ArrayList<String>();
-				results.add(Long.toString(entity.getId()));
-				results.add(entity.getNom());
-				results.add(entity.getPrenom());
-				if (entity.getNouveauGroupe() != null) {
-					GroupEntity group = groupDao.get(entity.getNouveauGroupe());
-					results.add(group.getTitle());
-				}
+				if (StringUtils.isEmpty(entity.getMotdepasse())) {
+					counter++;
+					List<String> results = new ArrayList<String>();
+					results.add(Long.toString(entity.getId()));
+					results.add(entity.getNom());
+					results.add(entity.getPrenom());
+					if (entity.getNouveauGroupe() != null) {
+						GroupEntity group = groupDao.get(entity
+								.getNouveauGroupe());
+						results.add(group.getTitle());
+					}
 
-				if (StringUtils.isNotBlank(entity.getCreneaux())) {
-					String[] creneaux = entity.getCreneaux().split(";");
-					results.add(Integer.toString(creneaux.length));
+					if (StringUtils.isNotBlank(entity.getCreneaux())) {
+						String[] creneaux = entity.getCreneaux().split(";");
+						results.add(Integer.toString(creneaux.length));
+					}
+					StrBuilder resultAsString = new StrBuilder();
+					resultAsString.appendWithSeparators(results, ";");
+					builder.append(resultAsString.toString()).appendNewLine();
 				}
-				StrBuilder resultAsString = new StrBuilder();
-				resultAsString.appendWithSeparators(results, ";");
-				builder.append(resultAsString.toString()).appendNewLine();
 			} catch (Exception e) {
 				builder.append("Erreur avec l'adhérent " + entity.getId()
 						+ " (" + e.getMessage() + ")");
 			}
 		}
-		pResp.getOutputStream().print(
-				entities.size() + "\n" + builder.toString());
+		pResp.getOutputStream().print(counter + "\n" + builder.toString());
 	}
-	
+
 	private void nouveau(HttpServletRequest pReq, HttpServletResponse pResp)
 			throws ServletException, IOException {
 		StrBuilder builder = new StrBuilder();
@@ -197,8 +199,8 @@ public class InscritsAction extends HttpServlet {
 				1);
 		criteria.add(new CriterionDao<Boolean>(InscriptionEntityFields.SAISIE,
 				Boolean.TRUE, Operator.EQUAL));
-		criteria.add(new CriterionDao<String>(InscriptionEntityFields.MOTDEPASSE,
-				"701", Operator.EQUAL));
+		criteria.add(new CriterionDao<String>(
+				InscriptionEntityFields.MOTDEPASSE, "701", Operator.EQUAL));
 		List<InscriptionEntity> entities = inscriptionDao.find(criteria);
 		for (InscriptionEntity entity : entities) {
 			try {
@@ -226,42 +228,44 @@ public class InscritsAction extends HttpServlet {
 		pResp.getOutputStream().print(
 				entities.size() + "\n" + builder.toString());
 	}
-	
-	private void nonRenouvellement(HttpServletRequest pReq, HttpServletResponse pResp)
-			throws ServletException, IOException {
+
+	private void nonRenouvellement(HttpServletRequest pReq,
+			HttpServletResponse pResp) throws ServletException, IOException {
 		StrBuilder builder = new StrBuilder();
 
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		criteria.add(new CriterionDao<Boolean>(InscriptionEntityFields.SAISIE,
 				Boolean.FALSE, Operator.NULL));
-		criteria.add(new CriterionDao<String>(InscriptionEntityFields.MOTDEPASSE,
-				"701", Operator.NOT_EQUAL));
 		List<InscriptionEntity> entities = inscriptionDao.find(criteria);
+		int counter = 0;
 		for (InscriptionEntity entity : entities) {
 			try {
-				List<String> results = new ArrayList<String>();
-				results.add(Long.toString(entity.getId()));
-				results.add(entity.getNom());
-				results.add(entity.getPrenom());
-				if (entity.getNouveauGroupe() != null) {
-					GroupEntity group = groupDao.get(entity.getNouveauGroupe());
-					results.add(group.getTitle());
-				}
+				if (StringUtils.isEmpty(entity.getMotdepasse())) {
+					counter++;
+					List<String> results = new ArrayList<String>();
+					results.add(Long.toString(entity.getId()));
+					results.add(entity.getNom());
+					results.add(entity.getPrenom());
+					if (entity.getNouveauGroupe() != null) {
+						GroupEntity group = groupDao.get(entity
+								.getNouveauGroupe());
+						results.add(group.getTitle());
+					}
 
-				if (StringUtils.isNotBlank(entity.getCreneaux())) {
-					String[] creneaux = entity.getCreneaux().split(";");
-					results.add(Integer.toString(creneaux.length));
+					if (StringUtils.isNotBlank(entity.getCreneaux())) {
+						String[] creneaux = entity.getCreneaux().split(";");
+						results.add(Integer.toString(creneaux.length));
+					}
+					StrBuilder resultAsString = new StrBuilder();
+					resultAsString.appendWithSeparators(results, ";");
+					builder.append(resultAsString.toString()).appendNewLine();
 				}
-				StrBuilder resultAsString = new StrBuilder();
-				resultAsString.appendWithSeparators(results, ";");
-				builder.append(resultAsString.toString()).appendNewLine();
 			} catch (Exception e) {
 				builder.append("Erreur avec l'adhérent " + entity.getId()
 						+ " (" + e.getMessage() + ")");
 			}
 		}
-		pResp.getOutputStream().print(
-				entities.size() + "\n" + builder.toString());
+		pResp.getOutputStream().print(counter + "\n" + builder.toString());
 	}
 }

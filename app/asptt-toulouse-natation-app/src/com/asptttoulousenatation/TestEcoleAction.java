@@ -1,6 +1,8 @@
 package com.asptttoulousenatation;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -37,6 +39,8 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 public class TestEcoleAction extends HttpServlet {
@@ -61,6 +65,8 @@ public class TestEcoleAction extends HttpServlet {
 			loadCreneaux(pReq, pResp);
 		} else if ("export".equals(action)) {
 			export(pReq, pResp);
+		} else if ("test".equals(action)) {
+			test(pReq, pResp);
 		}
 	}
 
@@ -101,35 +107,35 @@ public class TestEcoleAction extends HttpServlet {
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				cell.setColspan(8);
 				table.addCell(cell);
-				
+
 				cell = new PdfPCell(new Paragraph("NB"));
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(cell);
-				
+
 				cell = new PdfPCell(new Paragraph("Nom"));
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(cell);
-				
+
 				cell = new PdfPCell(new Paragraph("Prénom"));
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(cell);
-				
+
 				cell = new PdfPCell(new Paragraph("Année"));
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(cell);
-				
+
 				cell = new PdfPCell(new Paragraph("Moniteur"));
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(cell);
-				
+
 				cell = new PdfPCell(new Paragraph("Groupe"));
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(cell);
-				
+
 				cell = new PdfPCell(new Paragraph("Horaire"));
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(cell);
-				
+
 				cell = new PdfPCell(new Paragraph("Ligne d'eau"));
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(cell);
@@ -138,10 +144,12 @@ public class TestEcoleAction extends HttpServlet {
 				Font content = FontFactory.getFont(FontFactory.HELVETICA, 9);
 				for (InscriptionEntity entity : entities) {
 					if (StringUtils.contains(entity.getCreneaux(), creneau)) {
-						table.addCell(new Paragraph(Integer.toString(counter), content));
+						table.addCell(new Paragraph(Integer.toString(counter),
+								content));
 						table.addCell(new Paragraph(entity.getNom(), content));
 						table.addCell(new Paragraph(entity.getPrenom(), content));
-						table.addCell(new Paragraph(entity.getDatenaissance(), content));
+						table.addCell(new Paragraph(entity.getDatenaissance(),
+								content));
 						table.addCell("");
 						table.addCell("");
 						table.addCell("");
@@ -155,8 +163,9 @@ public class TestEcoleAction extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			out.flush();
+			out.close();
 		}
-
 	}
 
 	protected void loadCreneaux(HttpServletRequest pReq,
@@ -220,5 +229,33 @@ public class TestEcoleAction extends HttpServlet {
 			pResp.setContentType("application/json;charset=UTF-8");
 			pResp.getWriter().write(json);
 		}
+	}
+
+	protected void test(HttpServletRequest pReq, HttpServletResponse pResp)
+			throws ServletException, IOException {
+		InputStream template = new FileInputStream(getServletContext()
+				.getRealPath(
+						"v2" + System.getProperty("file.separator") + "doc"
+								+ System.getProperty("file.separator")
+								+ "templace_test.pdf"));
+
+		PdfReader reader = new PdfReader(template);
+		ServletOutputStream out = pResp.getOutputStream();
+		String contentType = "application/pdf";
+		String contentDisposition = "attachment;filename=test.pdf;";
+		pResp.setContentType(contentType);
+		pResp.setHeader("Content-Disposition", contentDisposition);
+		try {
+			PdfStamper stamper = new PdfStamper(reader, out);
+			stamper.getAcroFields().setField("nom_prenom", "YAHOUUUUUU");
+			stamper.close();
+			reader.close();
+			out.flush();
+			out.close();
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 }
