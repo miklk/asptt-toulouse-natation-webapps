@@ -298,10 +298,12 @@ public class InscriptionAction extends HttpServlet {
 
 				Multipart mp = new MimeMultipart();
 				MimeBodyPart htmlPart = new MimeBodyPart();
-				String msgBody = "Vous pouvez maintenant accéder au formulaire d'inscription en utilisant le code suivant: "
-						+ lCode
+				String msgBody = "Madame, Monsieurs,<br />"
+						+ "Vous pouvez maintenant accéder au formulaire d'inscription en utilisant le code suivant: "
+						+ "<b>" + lCode + "</b>"
 						+ ".<br />"
-						+ "ASPTT Toulouse Natation http://asptt-toulouse-natation.com/v2/inscription.html";
+						+ "<a href=\"http://asptt-toulouse-natation.com/v2/inscription.html\">Inscription en ligne - ASPTT Toulouse Natation</a>"
+						+ "<p>Sportivement,<br />ASPTT Toulouse Natation</p>";
 
 				htmlPart.setContent(msgBody, "text/html");
 				mp.addBodyPart(htmlPart);
