@@ -8,8 +8,8 @@ import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionE
 public class InscriptionTransformer {
 
 	public void update(InscriptionEntity pEntity) {
-		pEntity.setNom(pEntity.getNom().toUpperCase());
-		pEntity.setPrenom(pEntity.getPrenom().toUpperCase());
+		pEntity.setNom(pEntity.getNom().trim().toUpperCase());
+		pEntity.setPrenom(pEntity.getPrenom().trim().toUpperCase());
 		// Handle date
 		String dateNaissance = pEntity.getDatenaissance();
 		if (dateNaissance.length() == 10

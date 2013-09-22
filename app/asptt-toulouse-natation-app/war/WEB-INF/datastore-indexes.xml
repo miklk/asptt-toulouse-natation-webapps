@@ -23,5 +23,15 @@
         <property name="saisie" direction="asc"/>
         <property name="motdepasse" direction="asc"/>
     </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity" ancestor="false" source="manual">
+        <property name="nouveauGroupe" direction="asc"/>
+        <property name="nom" direction="asc"/>
+    </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity" ancestor="false" source="manual">
+        <property name="prenom" direction="asc"/>
+        <property name="nom" direction="asc"/>
+    </datastore-index>
 
 </datastore-indexes>

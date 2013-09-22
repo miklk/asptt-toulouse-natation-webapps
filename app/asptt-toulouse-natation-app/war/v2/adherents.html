@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <title>ASPTT Grand Toulouse Natation - Adhérents</title>
+    <link rel="stylesheet" href="css/adherents.css" type="text/css" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/start/jquery-ui.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="js/ckeditor/adapters/jquery.js"></script>
+    
+    <style>
+  #dialog label, #dialog input { display:block; }
+  #dialog label { margin-top: 0.5em; }
+  #dialog input, #dialog textarea { width: 95%; }
+  </style>
+  
+  <script>
+  $(function() {
+	$("#search").button();
+	$("#search").click(function() {
+	  $.ajax({
+		  type:"POST",
+		  data: $("#formSearch").serialize(),
+		  url:"adherentList.do?action=search",
+		  dataType: "json", 
+		  success: function(data){
+			var tbody = $("#result-table-body");
+			tbody.empty();
+			var index = 0;
+			$.each(data, function() {
+				index++;
+				var row = $("<tr></tr>");
+				tbody.append(row);
+				row.append('<td><input type="checkbox" name="email.destinataires" value="' + this.email + '" />&nbsp;<button type="button" onclick="openAffecterPopup('+this.id+')">Affecter</button></td>').append("<td>" + index + "</td>").append("<td>" + this.nom + "</td><td>" + this.prenom + "</td><td>" + this.dateNaissance + "</td><td>"+this.email+"</td><td>" + this.groupe + "</td>");
+				var creneau = "";
+				$.each(this.creneaux, function() {
+					creneau = creneau + this + "<br />";
+				});
+				row.append("<td>" + creneau + "</td></tr>");
+			});
+		   },
+		   error:  function(jqXHR, textStatus, errorThrown) {
+				if(jqXHR.responseText !== ''){
+			        alert(jqXHR.responseText);
+			    }else{
+			        alert('Une erreur est survenue.');
+			    }  
+			}
+		});
+	});
+	
+	$("#sendEmail").button();
+	$("#sendEmail").click(function() {
+		$("#sendEmailPopup").dialog("open");
+		$('#corps').ckeditor();
+	});
+	
+	$("#sendEmailSend").button();
+	$("#sendEmailSend").click(function() {
+		$.ajax({
+		  type:"POST",
+		  data: $("#formSendEmail").serialize() + "&" + $("#formResult").serialize(),
+		  url:"adherentList.do?action=sendEmail",
+		  dataType: "text", 
+		  success: function(data){
+			  $("#sendEmailPopup").dialog("close");
+			  alert("L'e-mail a été envoyé avec succès");
+		   },
+           error: function(){
+        	   $("#sendEmailPopup").dialog("close");
+				alert('Une erreur est survenue.');
+			}
+		});
+	});
+	
+	$("#sendConfirmation").button();
+	$("#sendConfirmation").click(function() {
+		$.ajax({
+		  type:"POST",
+		  data: $("#formResult").serialize(),
+		  url:"adherentList.do?action=sendConfirmation",
+		  dataType: "text", 
+		  success: function(data){
+			  $("#sendEmailPopup").dialog("close");
+			  alert("L'e-mail a été envoyé avec succès");
+		   },
+           error: function(){
+        	   $("#sendEmailPopup").dialog("close");
+				alert('Une erreur est survenue.');
+			}
+		});
+	});
+	
+	$("#sendConfirmationLeo").button();
+	$("#sendConfirmationLeo").click(function() {
+		$.ajax({
+		  type:"POST",
+		  data: $("#formResult").serialize(),
+		  url:"adherentList.do?action=sendConfirmationLeo",
+		  dataType: "text", 
+		  success: function(data){
+			  $("#sendEmailPopup").dialog("close");
+			  alert("L'e-mail a été envoyé avec succès");
+		   },
+           error: function(){
+        	   $("#sendEmailPopup").dialog("close");
+				alert('Une erreur est survenue.');
+			}
+		});
+	});
+	
+	$("#affecterAction").button();
+	$("#affecterAction").click(function() {
+		$.ajax({
+		  type:"POST",
+		  data: $("#formAffecter").serialize(),
+		  url:"adherentList.do?action=affecter",
+		  dataType: "text", 
+		  success: function(data){
+			  $("#affecterPopup").dialog("close");
+			  alert("L'adhérent a été affecté avec succès");
+		   },
+           error: function(){
+        	   $("#affecterPopup").dialog("close");
+				alert('Une erreur est survenue.');
+			}
+		});
+	});
+	
+	$( "#loading" ).dialog({
+	      height: 140,
+	      modal: true,
+	      autoOpen: false,
+	      dialogClass: 'loading-dialog'	
+	    });
+	$( "#sendEmailPopup" ).dialog({
+	      height: 600,
+	      width: 800,
+	      modal: true,
+	      autoOpen: false
+	    });
+	
+	$( "#affecterPopup" ).dialog({
+	      height: 400,
+	      widht: 500,
+	      modal: true,
+	      autoOpen: false
+	    });
+
+	$( document ).ajaxSend(function() {
+		$("#loading").dialog("open");
+	});
+	$( document ).ajaxComplete(function() {
+		$("#loading").dialog("close");
+	});
+	getGroupes();
+  });
+  
+  function openAffecterPopup(adherentId) {
+	  $("#affecterAdherent").val("" + adherentId);
+	  $("#affecterPopup").dialog("open");
+		getGroupesAffecter();
+  }
+  
+  function getGroupes() {
+		$.ajax({
+          type: "POST",
+          url: "adherentList.do?action=loadGroupes",
+          dataType: "json",
+          success: function(data){
+       		var select = $("#groupe");
+       		select.empty();
+       		select.append('<option value="-1">Aucune sélection</option>');
+           	$.each(data, function() {
+           		select.append('<option value="' + this.id + '">' + this.title + '</option>');
+           	});
+           	select.change(function() {
+       			getCreneaux($(this).val());		
+       		});
+          }
+      });
+	}
+  
+  function getGroupesAffecter() {
+	  $("#divAffecterCreneau").hide();
+		$.ajax({
+        type: "POST",
+        url: "adherentList.do?action=loadGroupes",
+        dataType: "json",
+        success: function(data){
+     		var select = $("#affecterGroupe");
+     		select.empty();
+     		select.append('<option value="-1">Aucune sélection</option>');
+         	$.each(data, function() {
+         		select.append('<option value="' + this.id + '">' + this.title + '</option>');
+         	});
+         	select.change(function() {
+     			getCreneauxAffecter($(this).val());		
+     		});
+        }
+    });
+	}
+  
+  function getCreneauxAffecter(groupeId) {
+		$.ajax({
+        type: "POST",
+        url: "adherentList.do?action=loadCreneaux&selectedGroupe=" + groupeId,
+        dataType: "json",
+        success: function(data){
+      	  	var select = $("#affecterCreneau");
+    	  	select.empty();
+       		select.append('<option value="-1">Aucune sélection</option>');
+           	$.each(data, function() {
+           		select.append('<option value="' + this.id + '">' + this.swimmingPool + " - " + this.dayOfWeek + " " + this.beginStr + " - " + this.endStr + '</option>');
+           	});
+           	$("#divAffecterCreneau").show();
+        }
+    });
+	}
+	
+	function getCreneaux(groupeId) {
+		$.ajax({
+          type: "POST",
+          url: "adherentList.do?action=loadCreneaux&selectedGroupe=" + groupeId,
+          dataType: "json",
+          success: function(data){
+        	  var select = $("#creneau");
+          		select.empty();
+          		select.append('<option value="">Aucune sélection</option>');
+               	$.each(data, function() {
+               		select.append('<option value="' + this.id + '">' + this.swimmingPool + " - " + this.dayOfWeek + " " + this.beginStr + " - " + this.endStr + '</option>');
+               	});
+          }
+      });
+	}
+  
+  </script>
+  </head>
+
+  <body>
+  <div id="loading" title="Chargement en cours..." style="display:none">
+  	<div style="text-align: center; color:#FFFFFF">
+  		<img src="img/loader.gif" /><br />Chargement en cours...
+  	</div>
+  </div>
+  <div id="sendEmailPopup" title="Envoyer un e-mail">
+  	<div>
+  		<form id="formSendEmail" method="post" action="">
+  			<p><label for="sujet">Sujet</label><input type="text" id="email.sujet" name="email.sujet" size="50" />
+	  		<label for="corps">Corps</label><textarea id="corps" name="email.corps">Corps du message</textarea>
+	  		</p>
+	  		<button type="button" id="sendEmailSend">Envoyer l'e-mail</button>
+  		</form>
+  	</div>
+  </div>
+  <div id="affecterPopup" title="Affecter un groupe et/ou un créneau">
+  	<form id="formAffecter">
+  		<p><label for="affecterGroupe">Sélectionner un groupe</label>
+  			<select id="affecterGroupe" name="affecter.affecterGroupe">
+  			</select>
+  		</p>
+  		
+  		<div id="divAffecterCreneau" style="display: none"><label for="affecterCreneau">Sélectionner un créneau</label>
+  			<select id="affecterCreneau" name="affecter.affecterCreneau" multiple="multiple">
+  			</select>
+  		</div>
+  		<input type="hidden" id="affecterAdherent" name="affecter.affecterAdherent" value="-1" />
+  		<button type="button" id="affecterAction">Affecter</button>
+  	</form>
+  </div>
+  <img src="img/logo.png" />
+  <h1 style="float:right">Adhérents saison sportive 2013-2014</h1>
+  <div id="find">
+  	<form id="formSearch" method="POST" action="AdherentList.do">
+  		<fieldset>
+  			<legend>Critères de recherche</legend>
+	  		<p><label for="nom">Nom</label><input type="text" id="nom" name="nom" size="50" />
+	  		<label for="prenom">Prénom</label><input type="text" id="prenom" name="prenom" size="50" />
+	  		</p>
+	  		<p>
+	  		<label for="groupe">Groupe</label><select id="groupe" name="groupe"><option value="-1">Aucune sélection</option></select>
+	  		<label for="creneau">Créneau</label><select id="creneau" name="creneau"><option value="">Aucune sélection</option></select>
+	  		</p>
+	  		<label for="dossier">Dossier complet ?</label><input type="checkbox" id="dossier" name="dossier" />
+	  		<div style="text-align: center">
+	  		<button type="button" id="search">Rechercher</button>
+	  		</div>
+  		</fieldset>
+  		
+  	</form>
+  </div>
+  <div id="result" style="">
+  <form id="formResult" method="post" action="">
+  	<table id="result-table">
+  	<thead>
+  		<tr>
+  			<th></th>
+  			<th>N°</th>
+  			<th>Nom</th>
+  			<th>Prénom</th>
+  			<th>Date de naissance</th>
+  			<th>E-mail</th>
+  			<th>Groupe</th>
+  			<th>Créneaux</th>
+  		</tr>
+  	</thead>
+  	<tbody id="result-table-body">
+  	</tbody>
+  </table>
+  <div id="actions">
+  	<button type="button" id="sendEmail">Envoyer un e-mail</button>
+  	<button type="button" id="sendConfirmation">Confirmer le dossier</button>
+  	<button type="button" id="sendConfirmationLeo">Confirmer le dossier (Léo Lagrange)</button>
+  </div>
+  </form>
+  </div>
+  </body>
+</html>

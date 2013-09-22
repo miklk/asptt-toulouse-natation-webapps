@@ -122,6 +122,8 @@ public class InscriptionEntity implements Entity {
 	
 	@Persistent
 	private String motdepasse;
+	@Persistent
+	private Boolean complet;
 	
 	public InscriptionEntity() {
 		
@@ -527,4 +529,13 @@ public class InscriptionEntity implements Entity {
 	public void setMotdepasse(String pMotdepasse) {
 		motdepasse = pMotdepasse;
 	}
+
+	public Boolean getComplet() {
+		return complet;
+	}
+
+	public void setComplet(Boolean pComplet) {
+		complet = pComplet;
+	}
+	
 }
