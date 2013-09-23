@@ -16,19 +16,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
 
 import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
-import com.asptttoulousenatation.core.server.dao.entity.field.GroupEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity;
 import com.asptttoulousenatation.core.server.dao.inscription.InscriptionDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
+import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
 import com.google.gson.Gson;
 import com.itextpdf.text.Document;
@@ -67,6 +71,8 @@ public class TestEcoleAction extends HttpServlet {
 			export(pReq, pResp);
 		} else if ("test".equals(action)) {
 			test(pReq, pResp);
+		} else if ("presence".equals(action)) {
+			presence(pReq, pResp);
 		}
 	}
 
@@ -87,10 +93,12 @@ public class TestEcoleAction extends HttpServlet {
 		List<SlotEntity> creneaux = slotDao.find(criteria);
 		if (CollectionUtils.isNotEmpty(creneaux)) {
 			SlotEntity creneauEntity = creneaux.get(0);
+			GroupEntity group = groupDao.get(creneauEntity.getGroup());
 			ServletOutputStream out = pResp.getOutputStream();
 			String contentType = "application/pdf";
 			String contentDisposition = "attachment;filename="
-					+ creneauEntity.getDayOfWeek() + ".pdf;";
+					+ group.getTitle() + "_" + creneauEntity.getDayOfWeek()
+					+ ".pdf;";
 			pResp.setContentType(contentType);
 			pResp.setHeader("Content-Disposition", contentDisposition);
 			try {
@@ -100,10 +108,11 @@ public class TestEcoleAction extends HttpServlet {
 				float[] cellWidth = { 1f, 2f, 2f, 2f, 2f, 2f, 2f, 2f };
 				PdfPTable table = new PdfPTable(cellWidth);
 				table.setWidthPercentage(90);
-				Font title = FontFactory.getFont(FontFactory.HELVETICA, 14,
+				Font titleFont = FontFactory.getFont(FontFactory.HELVETICA, 14,
 						Font.BOLD);
-				PdfPCell cell = new PdfPCell(new Paragraph(
-						creneauEntity.getDayOfWeek(), title));
+				String title = group.getTitle() + " "
+						+ creneauEntity.getDayOfWeek();
+				PdfPCell cell = new PdfPCell(new Paragraph(title, titleFont));
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				cell.setColspan(8);
 				table.addCell(cell);
@@ -170,65 +179,26 @@ public class TestEcoleAction extends HttpServlet {
 
 	protected void loadCreneaux(HttpServletRequest pReq,
 			HttpServletResponse pResp) throws ServletException, IOException {
-		String groupe = "ECOLE DE NATATION - nouveaux adhérents";
-		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		criteria.add(new CriterionDao<String>(GroupEntityFields.TITLE, groupe,
-				Operator.EQUAL));
-		List<GroupEntity> groupes = groupDao.find(criteria);
-		if (CollectionUtils.isNotEmpty(groupes)) {
-			GroupEntity groupeEntity = groupes.get(0);
-			// Retrieve slots
-			criteria = new ArrayList<CriterionDao<? extends Object>>(1);
-			criteria.add(new CriterionDao<Long>(SlotEntityFields.GROUP,
-					groupeEntity.getId(), Operator.EQUAL));
-			List<SlotEntity> lEntities = slotDao.find(criteria);
-			List<SlotUi> lUis = new SlotTransformer().toUi(lEntities);
-			Collections.sort(lUis, new Comparator<SlotUi>() {
-
-				public int compare(SlotUi pO1, SlotUi pO2) {
-					return pO1.getDayOfWeek().compareTo(pO2.getDayOfWeek());
-				}
-
-				protected void loadCreneaux(HttpServletRequest pReq,
-						HttpServletResponse pResp) throws ServletException,
-						IOException {
-					String groupe = "ECOLE DE NATATION - nouveaux adhérents";
-					List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-							1);
-					criteria.add(new CriterionDao<String>(
-							GroupEntityFields.TITLE, groupe, Operator.EQUAL));
-					List<GroupEntity> groupes = groupDao.find(criteria);
-					if (CollectionUtils.isNotEmpty(groupes)) {
-						GroupEntity groupeEntity = groupes.get(0);
-						// Retrieve slots
-						criteria = new ArrayList<CriterionDao<? extends Object>>(
-								1);
-						criteria.add(new CriterionDao<Long>(
-								SlotEntityFields.GROUP, groupeEntity.getId(),
-								Operator.EQUAL));
-						List<SlotEntity> lEntities = slotDao.find(criteria);
-						List<SlotUi> lUis = new SlotTransformer()
-								.toUi(lEntities);
-						Collections.sort(lUis, new Comparator<SlotUi>() {
-
-							public int compare(SlotUi pO1, SlotUi pO2) {
-								return pO1.getDayOfWeek().compareTo(
-										pO2.getDayOfWeek());
-							}
-						});
-						Gson gson = new Gson();
-						String json = gson.toJson(lUis);
-						pResp.setContentType("application/json;charset=UTF-8");
-						pResp.getWriter().write(json);
-					}
-				}
-			});
-			Gson gson = new Gson();
-			String json = gson.toJson(lUis);
-			pResp.setContentType("application/json;charset=UTF-8");
-			pResp.getWriter().write(json);
+		// Retrieve slots
+		List<SlotEntity> entities = slotDao.getAll();
+		List<SlotUi> lUis = new ArrayList<SlotUi>();
+		for (SlotEntity entity : entities) {
+			SlotUi ui = new SlotTransformer().toUi(entity);
+			lUis.add(ui);
+			GroupEntity group = groupDao.get(entity.getGroup());
+			ui.setGroup(new GroupTransformer().toUi(group));
 		}
+		Collections.sort(lUis, new Comparator<SlotUi>() {
+
+			public int compare(SlotUi pO1, SlotUi pO2) {
+				return pO1.getGroup().getTitle()
+						.compareTo(pO2.getGroup().getTitle());
+			}
+		});
+		Gson gson = new Gson();
+		String json = gson.toJson(lUis);
+		pResp.setContentType("application/json;charset=UTF-8");
+		pResp.getWriter().write(json);
 	}
 
 	protected void test(HttpServletRequest pReq, HttpServletResponse pResp)
@@ -257,5 +227,105 @@ public class TestEcoleAction extends HttpServlet {
 			e.printStackTrace();
 		}
 
+	}
+
+	protected void presence(HttpServletRequest pReq, HttpServletResponse pResp)
+			throws ServletException, IOException {
+		// Créneau
+		String creneau = pReq.getParameter("selectedCreneau");
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Long>(SlotEntityFields.ID, Long
+				.valueOf(creneau), Operator.EQUAL));
+		List<SlotEntity> creneaux = slotDao.find(criteria);
+		if (CollectionUtils.isNotEmpty(creneaux)) {
+			SlotEntity creneauEntity = creneaux.get(0);
+			GroupEntity group = groupDao.get(creneauEntity.getGroup());
+			ServletOutputStream out = pResp.getOutputStream();
+			String contentType = "application/x-download";
+			String fileName = "presence_"
+					+ StringUtils.replace(StringUtils.replace(group.getTitle(), " ", "_"), "-", "_") + "_" + creneauEntity.getDayOfWeek()
+					+ ".xls";
+			String contentDisposition = "attachment;filename=" + fileName;
+			pResp.setContentType(contentType);
+			pResp.setHeader("Content-Disposition", contentDisposition);
+
+			InputStream fichier = new FileInputStream(getServletContext()
+					.getRealPath(
+							"v2" + System.getProperty("file.separator") + "doc"
+									+ System.getProperty("file.separator")
+									+ "presence.xls"));
+			try {
+				HSSFWorkbook workbook = new HSSFWorkbook(fichier);
+				HSSFSheet sheet = workbook.getSheetAt(0);
+				sheet.getPrintSetup().setLandscape(false);
+				sheet.getRow(7)
+						.getCell(0)
+						.setCellValue(
+								group.getTitle()
+										+ " "
+										+ creneauEntity.getDayOfWeek()
+										+ " "
+										+ creneauEntity.getBegin()
+										/ 60
+										+ ":"
+										+ StringUtils.rightPad(
+												"" + creneauEntity.getBegin()
+														% 60, 2, "0"));
+
+				// Adherent
+				criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+				criteria.add(new CriterionDao<Long>(
+						InscriptionEntityFields.NOUVEAUGROUPE, group.getId(),
+						Operator.EQUAL));
+				int row = 19;
+				int count = 0;
+				List<InscriptionEntity> adherents = inscriptionDao
+						.find(criteria);
+				for (InscriptionEntity adherent : adherents) {
+					if (StringUtils.isNotBlank(adherent.getCreneaux())
+							&& adherent.getCreneaux().contains(creneau)) {
+						try {
+
+							sheet.getRow(row).getCell(0)
+									.setCellValue(adherent.getNom());
+							sheet.getRow(row).getCell(1)
+									.setCellValue(adherent.getPrenom());
+							sheet.getRow(row)
+									.getCell(2)
+									.setCellValue(
+											adherent.getDatenaissance().split(
+													"-")[0]);
+						} catch (Exception e) {
+							LOG.severe(e.getMessage());
+						}
+						row++;
+						count++;
+					}
+				}
+				if(sheet != null) {
+					if(sheet.getRow(row) != null) {
+						if(sheet.getRow(row).getCell(0) != null) {
+							sheet.getRow(row).getCell(0)
+							.setCellValue(count + " nageurs");			
+						} else {
+							LOG.warning("Cell null");
+						}
+					} else {
+						LOG.warning("Row null");
+					}
+				} else {
+					LOG.warning("sheet null");
+				}
+				
+				workbook.write(out);
+			} catch (IOException e) {
+				LOG.log(java.util.logging.Level.SEVERE,
+						"Erreur d'écriture de la fiche de présence du créneau "
+								+ creneauEntity.getId(), e);
+			}
+			out.flush();
+			out.close();
+		}
 	}
 }
