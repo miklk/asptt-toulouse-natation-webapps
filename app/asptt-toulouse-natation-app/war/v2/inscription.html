@@ -115,7 +115,7 @@
             		if(currentCreneaux != null && currentCreneaux.indexOf(this.id) !=-1) {
             			checkboxCreneau.prop('checked', true);
             		}
-            		if(this.placeRestante == 0) {
+            		if(this.placeRestante <= 0) {
             			checkboxCreneau.prop('disabled', true);
             			$(ligne).append("&nbsp;<span style='font-style:italic'>Ce créneau est complet.</span>");
             		} else {

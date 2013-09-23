@@ -139,16 +139,16 @@ public class InscriptionAction extends HttpServlet {
 				if (BooleanUtils.toBoolean(paramValue)) {
 					String creneauId = param.replace("creneau", "");
 					// Update creneaux
-					if(!StringUtils.contains(entity.getCreneaux(), creneauId)) {
-					SlotEntity creneauEntity = slotDao.get(Long
-							.valueOf(creneauId));
-					if (creneauEntity != null) {
-						creneauEntity.setPlaceRestante(creneauEntity
-								.getPlaceRestante() - 1);
-						slotDao.save(creneauEntity);
+					if (!StringUtils.contains(entity.getCreneaux(), creneauId)) {
+						SlotEntity creneauEntity = slotDao.get(Long
+								.valueOf(creneauId));
+						if (creneauEntity != null) {
+							creneauEntity.setPlaceRestante(creneauEntity
+									.getPlaceRestante() - 1);
+							slotDao.save(creneauEntity);
+						}
 					}
 					creneau.append(creneauId).append(";");
-					}
 				}
 			}
 		}
@@ -421,9 +421,9 @@ public class InscriptionAction extends HttpServlet {
 		List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(
 				3);
 		lCriteria.add(new CriterionDao<String>(InscriptionEntityFields.NOM, nom
-				.toUpperCase(), Operator.EQUAL));
+				.trim().toUpperCase(), Operator.EQUAL));
 		lCriteria.add(new CriterionDao<String>(InscriptionEntityFields.PRENOM,
-				prenom.toUpperCase(), Operator.EQUAL));
+				prenom.trim().toUpperCase(), Operator.EQUAL));
 		lCriteria.add(new CriterionDao<String>(
 				InscriptionEntityFields.DATENAISSANCE, dateNaissance,
 				Operator.EQUAL));
