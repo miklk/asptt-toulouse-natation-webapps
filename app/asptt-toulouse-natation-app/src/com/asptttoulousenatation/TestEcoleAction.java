@@ -16,9 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Row;
 
 import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
@@ -31,6 +31,8 @@ import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionE
 import com.asptttoulousenatation.core.server.dao.inscription.InscriptionDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
+import com.asptttoulousenatation.core.server.dao.search.OrderDao;
+import com.asptttoulousenatation.core.server.dao.search.OrderDao.OrderOperator;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
@@ -244,7 +246,9 @@ public class TestEcoleAction extends HttpServlet {
 			ServletOutputStream out = pResp.getOutputStream();
 			String contentType = "application/x-download";
 			String fileName = "presence_"
-					+ StringUtils.replace(StringUtils.replace(group.getTitle(), " ", "_"), "-", "_") + "_" + creneauEntity.getDayOfWeek()
+					+ StringUtils.replace(
+							StringUtils.replace(group.getTitle(), " ", "_"),
+							"-", "_") + "_" + creneauEntity.getDayOfWeek()
 					+ ".xls";
 			String contentDisposition = "attachment;filename=" + fileName;
 			pResp.setContentType(contentType);
@@ -254,12 +258,12 @@ public class TestEcoleAction extends HttpServlet {
 					.getRealPath(
 							"v2" + System.getProperty("file.separator") + "doc"
 									+ System.getProperty("file.separator")
-									+ "presence.xls"));
+									+ "presence_template.xls"));
 			try {
 				HSSFWorkbook workbook = new HSSFWorkbook(fichier);
 				HSSFSheet sheet = workbook.getSheetAt(0);
 				sheet.getPrintSetup().setLandscape(false);
-				sheet.getRow(7)
+				sheet.getRow(35)
 						.getCell(0)
 						.setCellValue(
 								group.getTitle()
@@ -278,46 +282,47 @@ public class TestEcoleAction extends HttpServlet {
 				criteria.add(new CriterionDao<Long>(
 						InscriptionEntityFields.NOUVEAUGROUPE, group.getId(),
 						Operator.EQUAL));
-				int row = 19;
+				int row = 13;
 				int count = 0;
 				List<InscriptionEntity> adherents = inscriptionDao
-						.find(criteria);
+						.find(criteria, new OrderDao(InscriptionEntityFields.NOM, OrderOperator.ASC));
 				for (InscriptionEntity adherent : adherents) {
-					if (StringUtils.isNotBlank(adherent.getCreneaux())
-							&& adherent.getCreneaux().contains(creneau)) {
-						try {
+					HSSFRow sheetRow = sheet.getRow(row);
+					if (sheetRow != null) {
+						if (StringUtils.isNotBlank(adherent.getCreneaux())
+								&& adherent.getCreneaux().contains(creneau)) {
+							try {
 
-							sheet.getRow(row).getCell(0)
-									.setCellValue(adherent.getNom());
-							sheet.getRow(row).getCell(1)
-									.setCellValue(adherent.getPrenom());
-							sheet.getRow(row)
-									.getCell(2)
-									.setCellValue(
-											adherent.getDatenaissance().split(
-													"-")[0]);
-						} catch (Exception e) {
-							LOG.severe(e.getMessage());
-						}
-						row++;
-						count++;
-					}
-				}
-				if(sheet != null) {
-					if(sheet.getRow(row) != null) {
-						if(sheet.getRow(row).getCell(0) != null) {
-							sheet.getRow(row).getCell(0)
-							.setCellValue(count + " nageurs");			
-						} else {
-							LOG.warning("Cell null");
+								sheet.getRow(row)
+										.getCell(1)
+										.setCellValue(
+												adherent.getNom() + " "
+														+ adherent.getPrenom());
+
+								String anneeNaissance;
+								if (StringUtils.isNotBlank(adherent
+										.getDatenaissance())
+										&& StringUtils.contains(
+												adherent.getDatenaissance(),
+												"-")) {
+
+									anneeNaissance = adherent
+											.getDatenaissance().split("-")[0];
+								} else {
+									anneeNaissance = "-";
+								}
+								sheet.getRow(row).getCell(2)
+										.setCellValue(anneeNaissance);
+							} catch (Exception e) {
+								LOG.severe("Adherent " + adherent.getId() + " " + e.getMessage());
+							}
+							row++;
+							count++;
 						}
 					} else {
-						LOG.warning("Row null");
+						LOG.warning("Row null " + row);
 					}
-				} else {
-					LOG.warning("sheet null");
 				}
-				
 				workbook.write(out);
 			} catch (IOException e) {
 				LOG.log(java.util.logging.Level.SEVERE,
