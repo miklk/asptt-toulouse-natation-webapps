@@ -75,11 +75,6 @@ public class MainContentPanel extends Composite {
 		});
 		lTitlePanel.add(lblAspttGrandToulouse);
 		
-		HTML oldAnchor = new HTML("<a href=\"http://old.asptt-toulouse-natation.com\">Ancienne version du site</a>");
-		oldAnchor.setStyleName(CSS.oldVersion());
-		lTitlePanel.add(oldAnchor);
-		panel.add(lTitlePanel);
-
 		breadcrumb = new Breadcrumb();
 		breadcrumb.setStyleName(CSS.tetiere());
 		breadcrumb.addClickHandler(new ClickHandler() {
@@ -94,7 +89,7 @@ public class MainContentPanel extends Composite {
 
 		subMenu = new HorizontalPanel();
 		panel.add(subMenu);
-		panel.setCellHeight(subMenu, "0px");
+		panel.setCellHeight(subMenu, "20px");
 		
 		// TODO Actu
 		panel.add(content);
