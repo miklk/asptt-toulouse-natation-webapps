@@ -1,3 +1,2 @@
 # Module asptt_toulouse_natation_app
 # RPC service class, partial path of RPC policy file
-net.customware.gwt.dispatch.client.standard.StandardDispatchService, 91132AB9B0E2D95E0FFF6A5430F69C67.gwt.rpc
