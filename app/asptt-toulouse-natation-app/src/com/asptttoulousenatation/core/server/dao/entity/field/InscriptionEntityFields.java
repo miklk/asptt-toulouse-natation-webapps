@@ -11,6 +11,7 @@ public enum InscriptionEntityFields implements IEntityFields {
 	SAISIE(Boolean.class),
 	NOUVEAUGROUPE(Long.class, "nouveauGroupe"),
 	CRENEAUX(String.class),
+	COMPLET(Boolean.class),
 	;
 	
 	private Class<? extends Object> clazz;

@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -27,6 +28,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean2;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -102,6 +104,14 @@ public class AdherentListAction extends HttpServlet {
 			fixEmail(pReq, pResp);
 		} else if ("sendConfirmationLeo".equals(action)) {
 			sendConfirmationLeo(pReq, pResp, form);
+		} else if("supprimer".equals(action)) {
+			supprimer(pReq, pResp);
+		} else if ("sendExcuse".equals(action)) {
+			sendExcuse(pReq, pResp, form);
+		} else if("loadAdherent".equals(action)) {
+			loadAdherent(pReq, pResp);
+		} else if("updateAdherent".equals(action)) {
+			updateAdherent(pReq, pResp);
 		}
 	}
 
@@ -111,18 +121,41 @@ public class AdherentListAction extends HttpServlet {
 
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				5);
-		if (StringUtils.isNotBlank(form.getNom())) {
+		if (StringUtils.isNotBlank(form.getSearchNom())) {
 			criteria.add(new CriterionDao<String>(InscriptionEntityFields.NOM,
-					form.getNom().toUpperCase(), Operator.EQUAL));
+					form.getSearchNom().toUpperCase(), Operator.EQUAL));
 		}
-		if (StringUtils.isNotBlank(form.getPrenom())) {
+		if (StringUtils.isNotBlank(form.getSearchPrenom())) {
 			criteria.add(new CriterionDao<String>(
-					InscriptionEntityFields.PRENOM, form.getPrenom()
+					InscriptionEntityFields.PRENOM, form.getSearchPrenom()
 							.toUpperCase(), Operator.EQUAL));
 		}
-		if (form.getGroupe() != null && form.getGroupe() != -1) {
+		if (form.getSearchGroupe() != null && form.getSearchGroupe() != -1) {
 			criteria.add(new CriterionDao<Long>(
-					InscriptionEntityFields.NOUVEAUGROUPE, form.getGroupe(),
+					InscriptionEntityFields.NOUVEAUGROUPE, form.getSearchGroupe(),
+					Operator.EQUAL));
+		} else if(form.getSearchGroupe() != null && form.getSearchGroupe() == -2) {
+			criteria.add(new CriterionDao<Long>(
+					InscriptionEntityFields.NOUVEAUGROUPE, null,
+					Operator.NULL));
+		}
+		if(form.isSearchDossier()) {
+			criteria.add(new CriterionDao<Boolean>(
+					InscriptionEntityFields.COMPLET, form.isSearchDossier(),
+					Operator.EQUAL));
+		}
+		if(form.isSaisie()) {
+			criteria.add(new CriterionDao<Boolean>(
+					InscriptionEntityFields.SAISIE, form.isSaisie(),
+					Operator.EQUAL));
+		}
+		if(form.isSansEmail()) {
+			List<CriterionDao<?>> orCriteria = new ArrayList<CriterionDao<?>>(2);
+			orCriteria.add(new CriterionDao<Object>(
+					InscriptionEntityFields.EMAIL, null,
+					Operator.NULL));
+			orCriteria.add(new CriterionDao<String>(
+					InscriptionEntityFields.EMAIL, "",
 					Operator.EQUAL));
 		}
 
@@ -131,9 +164,14 @@ public class AdherentListAction extends HttpServlet {
 		List<AdherentListResultBean> results = new ArrayList<AdherentListResultBean>();
 		for (InscriptionEntity entity : entities) {
 			try {
-				if (StringUtils.isBlank(form.getCreneau())
-						|| StringUtils.contains(entity.getCreneaux(),
-								form.getCreneau())) {
+				if (StringUtils.isBlank(form.getSearchCreneau()) || "-1".equals(form.getSearchCreneau())) {
+					results.add(AdherentListResultBeanTransformer.getInstance()
+							.get(entity));
+				} else if("-2".equals(form.getSearchCreneau()) && StringUtils.isBlank(entity.getCreneaux())) {
+					results.add(AdherentListResultBeanTransformer.getInstance()
+							.get(entity));
+				} else if(StringUtils.isNotBlank(form.getSearchCreneau()) && StringUtils.contains(entity.getCreneaux(),
+						form.getSearchCreneau())) {
 					results.add(AdherentListResultBeanTransformer.getInstance()
 							.get(entity));
 				}
@@ -205,6 +243,10 @@ public class AdherentListAction extends HttpServlet {
 			msg.setFrom(new InternetAddress(
 					"webmaster@asptt-toulouse-natation.com",
 					"ASPTT Toulouse Natation"));
+			Address[] replyTo = {new InternetAddress(
+					"contact@asptt-toulouse-natation.com",
+					"ASPTT Toulouse Natation")};
+			msg.setReplyTo(replyTo);
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					"contact@asptt-toulouse-natation.com"));
 			for (String destinataire : form.getEmail().getDestinataires()) {
@@ -242,6 +284,10 @@ public class AdherentListAction extends HttpServlet {
 				msg.setFrom(new InternetAddress(
 						"webmaster@asptt-toulouse-natation.com",
 						"ASPTT Toulouse Natation"));
+				Address[] replyTo = {new InternetAddress(
+						"contact@asptt-toulouse-natation.com",
+						"ASPTT Toulouse Natation")};
+				msg.setReplyTo(replyTo);
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 						destinataire));
 
@@ -317,6 +363,10 @@ public class AdherentListAction extends HttpServlet {
 				msg.setFrom(new InternetAddress(
 						"webmaster@asptt-toulouse-natation.com",
 						"ASPTT Toulouse Natation"));
+				Address[] replyTo = {new InternetAddress(
+						"contact@asptt-toulouse-natation.com",
+						"ASPTT Toulouse Natation")};
+				msg.setReplyTo(replyTo);
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 						destinataire));
 
@@ -373,6 +423,55 @@ public class AdherentListAction extends HttpServlet {
 				LOG.severe("Erreur pour l'e-mail: " + destinataire + "("
 						+ e.getMessage() + ")");
 			}
+		}
+		pResp.setContentType("text/html;charset=UTF-8");
+		pResp.getWriter().write("ok");
+	}
+	
+	protected void sendExcuse(HttpServletRequest pReq,
+			HttpServletResponse pResp, AdherentListForm form)
+			throws ServletException, IOException {
+		Properties props = new Properties();
+		Session session = Session.getDefaultInstance(props, null);
+		try {
+			Multipart mp = new MimeMultipart();
+			MimeBodyPart htmlPart = new MimeBodyPart();
+
+			MimeMessage msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress(
+					"webmaster@asptt-toulouse-natation.com",
+					"ASPTT Toulouse Natation"));
+
+			msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
+					"contact@asptt-toulouse-natation.com"));
+			Address[] replyTo = {new InternetAddress(
+					"contact@asptt-toulouse-natation.com",
+					"ASPTT Toulouse Natation")};
+			msg.setReplyTo(replyTo);
+
+			for (String destinataire : form.getEmail().getDestinataires()) {
+				msg.addRecipient(Message.RecipientType.BCC,
+						new InternetAddress(destinataire));
+			}
+
+			StringBuilder message = new StringBuilder(
+					"Chers adhérents,<p>Suite à l’incendie survenu à la piscine Léo Lagrange et la ré-affection tardive des bassins par la Mairie de Toulouse, nous avons dû faire face à des difficultés lors des premières séances de natation.<br />Nous remercions les parents et nageurs qui nous ont aidé à gérer ces inconvénients.<br />Nous sommes désolés pour les désagréments occasionnés et nous mettons tout en œuvre pour améliorer la situation. Nous retrouverons un fonctionnement normal dès la réouverture du bassin Léo Lagrange, la date annoncée par la Mairie de Toulouse est la mi-novembre.</p>"
+							+ "<br />Nous vous informons que des créneaux d’entrainement sont encore disponibles. Vous pouvez les consulter sur notre site web et nous contacter par e-mail si vous souhaitez en bénéficier."
+							+ "<p>Sportivement,<br />Le Bureau de la section Natation</p>");
+
+			htmlPart.setContent(message.toString(), "text/html");
+			mp.addBodyPart(htmlPart);
+
+			msg.setSubject("Démarrage de la saison de natation", "UTF-8");
+			msg.setContent(mp);
+			Transport.send(msg);
+		} catch (AddressException e) {
+			// ...
+		} catch (MessagingException e) {
+			// ...
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		pResp.setContentType("text/html;charset=UTF-8");
 		pResp.getWriter().write("ok");
@@ -439,13 +538,13 @@ public class AdherentListAction extends HttpServlet {
 		StringBuilder builder = new StringBuilder();
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
-		criteria.add(new CriterionDao<Object>(InscriptionEntityFields.EMAIL,
-				"", Operator.NULL));
+		criteria.add(new CriterionDao<Boolean>(InscriptionEntityFields.SAISIE,
+				Boolean.TRUE, Operator.EQUAL));
 		List<InscriptionEntity> adherents = inscriptionDao.find(criteria);
 		builder.append(adherents.size()).append(" adhérents ");
 		LOG.warning(adherents.size() + " adhérents sans e-mail");
 		for (InscriptionEntity adherent : adherents) {
-			if (adherent.getPrincipal() != null) {
+			if (StringUtils.isBlank(adherent.getEmail()) && adherent.getPrincipal() != null) {
 				try {
 					InscriptionEntity adherentPrincipal = inscriptionDao
 							.get(adherent.getPrincipal());
@@ -488,6 +587,7 @@ public class AdherentListAction extends HttpServlet {
 								.valueOf(creneauId));
 						slotEntity.setPlaceRestante(slotEntity
 								.getPlaceRestante() + 1);
+						slotDao.save(slotEntity);
 					}
 				}
 			}
@@ -517,6 +617,61 @@ public class AdherentListAction extends HttpServlet {
 		inscriptionDao.save(adherent);
 
 		pResp.setContentType("application/json;charset=UTF-8");
+		pResp.getWriter().write("ok");
+	}
+	
+	protected void supprimer(HttpServletRequest pReq, HttpServletResponse pResp) throws ServletException, IOException {
+		InscriptionEntity adherent = inscriptionDao.get(Long.valueOf(pReq.getParameter("selectedAdherent")));
+		// Suppression des créneaux actuels
+		if (StringUtils.isNotBlank(adherent.getCreneaux())) {
+			String[] creneauSplit = adherent.getCreneaux().split(";");
+			for (String creneau : creneauSplit) {
+				if (StringUtils.isNotBlank(creneau)) {
+					final String creneauId;
+					if (StringUtils.contains(creneau, "_")) {
+						creneauId = creneau.split("_")[1];
+					} else {
+						creneauId = creneau;
+					}
+					if (StringUtils.isNumeric(creneauId)) {
+						SlotEntity slotEntity = slotDao.get(Long
+								.valueOf(creneauId));
+						slotEntity.setPlaceRestante(slotEntity
+								.getPlaceRestante() + 1);
+						slotDao.save(slotEntity);
+					}
+				}
+			}
+		}
+		inscriptionDao.delete(adherent);
+		pResp.setContentType("application/json;charset=UTF-8");
+		pResp.getWriter().write("ok");
+	}
+	
+	protected void loadAdherent(HttpServletRequest pReq,
+			HttpServletResponse pResp) throws ServletException, IOException {
+		InscriptionEntity adherent = inscriptionDao.get(Long.valueOf(pReq.getParameter("selectedAdherent")));
+		Gson gson = new Gson();
+		String json = gson.toJson(adherent);
+		pResp.setContentType("application/json;charset=UTF-8");
+		pResp.getWriter().write(json);
+	}
+	
+	protected void updateAdherent(HttpServletRequest pReq,
+			HttpServletResponse pResp) throws ServletException, IOException {
+		Long adherentId = Long.valueOf(pReq.getParameter("adherentId"));
+		
+		InscriptionEntity entity = inscriptionDao.get(adherentId);
+		try {
+			BeanUtils.populate(entity, pReq.getParameterMap());
+			inscriptionDao.save(entity);
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		pResp.getWriter().write("ok");
 	}
 }

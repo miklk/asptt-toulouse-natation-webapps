@@ -62,3 +62,20 @@ legend {
 	padding: 5px;
 	vertical-align: top;
 }
+
+.info-set {
+	border: 1px solid #000000;
+	padding-left: 1%;
+	margin-bottom: 1%;
+}
+
+.info-value {
+	font-weight: bold;
+}
+
+.info-set-title {
+	font-weight: bold;
+	font-size: 1.1em;
+	font-style: italic;
+	background-color: #c7d4e4;
+}

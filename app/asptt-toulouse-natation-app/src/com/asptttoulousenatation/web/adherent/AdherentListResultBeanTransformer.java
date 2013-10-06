@@ -8,15 +8,11 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
-import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity;
-import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
-import com.asptttoulousenatation.core.server.dao.search.Operator;
 
 public class AdherentListResultBeanTransformer implements Serializable {
 
@@ -60,8 +56,14 @@ public class AdherentListResultBeanTransformer implements Serializable {
 	}
 
 	private String getGroupe(Long groupeId) {
-		GroupEntity entity = groupDao.get(groupeId);
-		return entity.getTitle();
+		final String groupe;
+		if(groupeId != null && groupeId != 0) {
+			GroupEntity entity = groupDao.get(groupeId);
+			groupe = entity.getTitle();
+		} else {
+			groupe = "";
+		}
+		return groupe;
 	}
 
 	public Set<String> getCreneaux(String creneaux) {

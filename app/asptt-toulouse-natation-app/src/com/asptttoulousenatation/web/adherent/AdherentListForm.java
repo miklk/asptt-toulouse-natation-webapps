@@ -8,58 +8,81 @@ public class AdherentListForm implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1388609378452601726L;
-	private String nom;
-	private String prenom;
-	private Long groupe;
-	private String creneau;
-	private boolean dossier;
+	private String searchNom;
+	private String searchPrenom;
+	private Long searchGroupe;
+	private String searchCreneau;
+	private boolean searchDossier;
+	private boolean searchSaisie;
+	private boolean sansEmail;
 	private AdherentListEmailBean email;
 	private AdherentAffecterBean affecter;
 	
 	public AdherentListForm() {
+		searchSaisie = true;
 		email = new AdherentListEmailBean();
 		affecter = new AdherentAffecterBean();
 	}
 
-	public String getNom() {
-		return nom;
+	public String getSearchNom() {
+		return searchNom;
 	}
 
-	public void setNom(String pNom) {
-		nom = pNom;
+
+	public void setSearchNom(String pSearchNom) {
+		searchNom = pSearchNom;
 	}
 
-	public String getPrenom() {
-		return prenom;
+
+	public String getSearchPrenom() {
+		return searchPrenom;
 	}
 
-	public void setPrenom(String pPrenom) {
-		prenom = pPrenom;
+
+	public void setSearchPrenom(String pSearchPrenom) {
+		searchPrenom = pSearchPrenom;
 	}
 
-	public Long getGroupe() {
-		return groupe;
+
+	public Long getSearchGroupe() {
+		return searchGroupe;
 	}
 
-	public void setGroupe(Long pGroupe) {
-		groupe = pGroupe;
+
+	public void setSearchGroupe(Long pSearchGroupe) {
+		searchGroupe = pSearchGroupe;
 	}
 
-	public String getCreneau() {
-		return creneau;
+
+	public String getSearchCreneau() {
+		return searchCreneau;
 	}
 
-	public void setCreneau(String pCreneau) {
-		creneau = pCreneau;
+
+	public void setSearchCreneau(String pSearchCreneau) {
+		searchCreneau = pSearchCreneau;
 	}
 
-	public boolean isDossier() {
-		return dossier;
+
+	public boolean isSearchDossier() {
+		return searchDossier;
 	}
 
-	public void setDossier(boolean pDossier) {
-		dossier = pDossier;
+
+	public void setSearchDossier(boolean pSearchDossier) {
+		searchDossier = pSearchDossier;
 	}
+
+
+	public boolean isSearchSaisie() {
+		return searchSaisie;
+	}
+
+
+	public void setSearchSaisie(boolean pSearchSaisie) {
+		searchSaisie = pSearchSaisie;
+	}
+
 
 	public AdherentListEmailBean getEmail() {
 		return email;
@@ -76,5 +99,20 @@ public class AdherentListForm implements Serializable {
 	public void setAffecter(AdherentAffecterBean pAffecter) {
 		affecter = pAffecter;
 	}
-	
+
+	public boolean isSaisie() {
+		return searchSaisie;
+	}
+
+	public void setSaisie(boolean pSaisie) {
+		searchSaisie = pSaisie;
+	}
+
+	public boolean isSansEmail() {
+		return sansEmail;
+	}
+
+	public void setSansEmail(boolean pSansEmail) {
+		sansEmail = pSansEmail;
+	}
 }

@@ -21,36 +21,13 @@
   <script>
   $(function() {
 	$("#search").button();
+	$("#nom").keypress(function(e) {
+	    if (e.keyCode == $.ui.keyCode.ENTER) {
+	          doSearch();
+	    }
+	});
 	$("#search").click(function() {
-	  $.ajax({
-		  type:"POST",
-		  data: $("#formSearch").serialize(),
-		  url:"adherentList.do?action=search",
-		  dataType: "json", 
-		  success: function(data){
-			var tbody = $("#result-table-body");
-			tbody.empty();
-			var index = 0;
-			$.each(data, function() {
-				index++;
-				var row = $("<tr></tr>");
-				tbody.append(row);
-				row.append('<td><input type="checkbox" name="email.destinataires" value="' + this.email + '" />&nbsp;<button type="button" onclick="openAffecterPopup('+this.id+')">Affecter</button></td>').append("<td>" + index + "</td>").append("<td>" + this.nom + "</td><td>" + this.prenom + "</td><td>" + this.dateNaissance + "</td><td>"+this.email+"</td><td>" + this.groupe + "</td>");
-				var creneau = "";
-				$.each(this.creneaux, function() {
-					creneau = creneau + this + "<br />";
-				});
-				row.append("<td>" + creneau + "</td></tr>");
-			});
-		   },
-		   error:  function(jqXHR, textStatus, errorThrown) {
-				if(jqXHR.responseText !== ''){
-			        alert(jqXHR.responseText);
-			    }else{
-			        alert('Une erreur est survenue.');
-			    }  
-			}
-		});
+	  doSearch();
 	});
 	
 	$("#sendEmail").button();
@@ -113,6 +90,24 @@
 		});
 	});
 	
+	$("#sendExcuse").button();
+	$("#sendExcuse").click(function() {
+		$.ajax({
+		  type:"POST",
+		  data: $("#formResult").serialize(),
+		  url:"adherentList.do?action=sendExcuse",
+		  dataType: "text", 
+		  success: function(data){
+			  $("#sendEmailPopup").dialog("close");
+			  alert("L'e-mail a été envoyé avec succès");
+		   },
+           error: function(){
+        	   $("#sendEmailPopup").dialog("close");
+				alert('Une erreur est survenue.');
+			}
+		});
+	});
+	
 	$("#affecterAction").button();
 	$("#affecterAction").click(function() {
 		$.ajax({
@@ -131,6 +126,13 @@
 		});
 	});
 	
+	$("button:first" ).button({
+	      icons: {
+	        primary: "ui-icon-locked"
+	      },
+	      text: false
+	});
+	
 	$( "#loading" ).dialog({
 	      height: 140,
 	      modal: true,
@@ -146,7 +148,14 @@
 	
 	$( "#affecterPopup" ).dialog({
 	      height: 400,
-	      widht: 500,
+	      width: 600,
+	      modal: true,
+	      autoOpen: false
+	    });
+	
+	$( "#infoPopup" ).dialog({
+	      height: 600,
+	      width: 800,
 	      modal: true,
 	      autoOpen: false
 	    });
@@ -158,12 +167,116 @@
 		$("#loading").dialog("close");
 	});
 	getGroupes();
+	
+	$("#selectAll").click(function() {
+		var checkedStatus = this.checked;
+		$("input[name='email.destinataires']").each(function () {
+			$(this).attr('checked', checkedStatus);
+		});
+	});
   });
   
   function openAffecterPopup(adherentId) {
 	  $("#affecterAdherent").val("" + adherentId);
 	  $("#affecterPopup").dialog("open");
 		getGroupesAffecter();
+  }
+  
+  function openInfoPopup(adherentId) {
+	  $("#infoPopup").dialog("open");
+	  $.ajax({
+          type: "POST",
+          url: "adherentList.do?action=loadAdherent&selectedAdherent=" + adherentId,
+          dataType: "json",
+          success: function(data){
+       		var div = $("#info-data");
+       		div.empty();
+       		var etatCivileDiv = $("<div class=\"info-set\"></div>");
+       		etatCivileDiv.append("<p class=\"info-set-title\">Etat civil</p>");
+       		etatCivileDiv.append("<p></p>").append("Civilité: <span class=\"info-value\">" + data.civilite + "</span>");
+       		etatCivileDiv.append("<p></p>").append("Nom: <span id=\"" + data.id + "_nom\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'nom', '" + data.nom + "')\">" + data.nom + "</span>");
+       		etatCivileDiv.append("<p></p>").append("Prénom: <span id=\"" + data.id + "_prenom\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'prenom', '" + data.prenom + "')\">" + data.prenom + "</span>");
+       		etatCivileDiv.append("<p></p>").append("Date de naissance: <span id=\"" + data.id + "_datenaissance\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'datenaissance', '" + data.datenaissance + "')\">" + data.datenaissance + "</span>");
+       		etatCivileDiv.append("<p></p>").append("Lieu de naissance: <span id=\"" + data.id + "_lieunaissance\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'lieunaissance', '" + data.lieunaissance + "')\">" + data.lieunaissance + "</span>");
+       		etatCivileDiv.append("<p></p>").append("Nationalité: <span id=\"" + data.id + "_nationalite\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'nationalite', '" + data.nationalite + "')\">" + data.nationalite + "</span>");
+       		div.append(etatCivileDiv);
+       		
+       		var adresseDiv = $("<div class=\"info-set\"></div>");
+       		adresseDiv.append("<p class=\"info-set-title\">Adresse</p>");
+       		adresseDiv.append("<p></p>").append("Adresse postale: <span id=\"" + data.id + "_adresse\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'adresse', '" + data.adresse + "')\">" + data.adresse + "</span>");
+       		adresseDiv.append("<p></p>").append("Code postal: <span id=\"" + data.id + "_codepostal\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'codepostal', '" + data.codepostal + "')\">" + data.codepostal + "</span>");
+       		adresseDiv.append("<p></p>").append("Ville: <span id=\"" + data.id + "_ville\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'ville', '" + data.ville + "')\">" + data.ville + "</span>");
+       		div.append(adresseDiv);
+       		
+       		var contactDiv = $("<div class=\"info-set\"></div>");
+       		contactDiv.append("<p class=\"info-set-title\">Contact</p>");
+       		contactDiv.append("<p></p>").append("Téléphone: <span id=\"" + data.id + "_telephone\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'telephone', '" + data.telephone + "')\">" + data.telephone + "</span>");
+       		contactDiv.append("<p></p>").append("Téléphone (père): <span id=\"" + data.id + "telephonePere\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'telephonePere', '" + data.telephonePere + "')\">" + data.telephonePere + "</span>");
+       		contactDiv.append("<p></p>").append("Téléphone pro (père): <span id=\"" + data.id + "_telephonePerePro\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'telephonePerePro', '" + data.telephonePerePro + "')\">" + data.telephonePerePro + "</span>");
+       		contactDiv.append("<p></p>").append("Téléphone (mère): <span id=\"" + data.id + "_telephoneMere\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'telephoneMere', '" + data.telephoneMere + "')\">" + data.telephoneMere + "</span>");
+       		contactDiv.append("<p></p>").append("Téléphone pro (mère): <span id=\"" + data.id + "_telephoneMerePro\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'telephoneMerePro', '" + data.telephoneMerePro + "')\">" + data.telephoneMerePro + "</span>");
+       		contactDiv.append("<p></p>").append("E-mail: <span id=\"" + data.id + "_email\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'email', '" + data.email + "')\">" + data.email + "</span>");
+       		div.append(contactDiv);
+       		
+       		var equipementDiv = $("<div class=\"info-set\"></div>");
+       		equipementDiv.append("<p class=\"info-set-title\">Equipement - mensuration</p>");
+       		equipementDiv.append("<p></p>").append("Maillot: <span id=\"" + data.id + "_maillot\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'maillot', '" + data.maillot + "')\">" + data.maillot + "</span>");
+       		equipementDiv.append("<p></p>").append("T-shirt: <span id=\"" + data.id + "_tshirt\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'tshirt', '" + data.tshirt + "')\">" + data.tshirt + "</span>");
+       		equipementDiv.append("<p></p>").append("Short - Pantalon: <span id=\"" + data.id + "_shortPantalon\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'shortPantalon', '" + data.shortPantalon + "')\">" + data.shortPantalon + "</span>");
+       		div.append(equipementDiv);
+       		
+       		var fonctionDiv = $("<div class=\"info-set\"></div>");
+       		fonctionDiv.append("<p class=\"info-set-title\">Fonction au sein du club</p>");
+       		fonctionDiv.append("<p></p>").append("Adhérent: <span id=\"" + data.id + "_adherent\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'adherent', '" + data.adherent + "')\">" + data.adherent + "</span>");
+       		fonctionDiv.append("<p></p>").append("Président: <span id=\"" + data.id + "_president\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'president', '" + data.president + "')\">" + data.president + "</span>");
+       		fonctionDiv.append("<p></p>").append("Trésorier: <span id=\"" + data.id + "_tresorier\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'tresorier', '" + data.tresorier + "')\">" + data.tresorier + "</span>");
+       		fonctionDiv.append("<p></p>").append("Secrétaire: <span id=\"" + data.id + "_secretaire\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'secretaire', '" + data.secretaire + "')\">" + data.secretaire + "</span>");
+       		fonctionDiv.append("<p></p>").append("Bureau: <span id=\"" + data.id + "_bureau\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'bureau', '" + data.bureau + "')\">" + data.bureau + "</span>");
+       		fonctionDiv.append("<p></p>").append("Cadre: <span id=\"" + data.id + "_cadre\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'cadre', '" + data.cadre + "')\">" + data.cadre + "</span>");
+       		fonctionDiv.append("<p></p>").append("Officiel: <span id=\"" + data.id + "_officiel\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'officiel', '" + data.officiel + "')\">" + data.officiel + "</span>");
+       		fonctionDiv.append("<p></p>").append("Conseil: <span id=\"" + data.id + "_conseil\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'conseil', '" + data.conseil + "')\">" + data.conseil + "</span>");
+       		div.append(fonctionDiv);
+       		
+       		var renseignementDiv = $("<div class=\"info-set\"></div>");
+       		renseignementDiv.append("<p class=\"info-set-title\">Renseignements confidentiels</p>");
+       		renseignementDiv.append("<p></p>").append("Profession: <span id=\"" + data.id + "_profession\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'profession', '" + data.profession + "')\">" + data.profession + "</span>");
+       		renseignementDiv.append("<p></p>").append("Profession (père): <span id=\"" + data.id + "_professionTextPere\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'professionTextPere', '" + data.professionTextPere + "')\">" + data.professionTextPere + "</span>");
+       		renseignementDiv.append("<p></p>").append("Profession (mère): <span id=\"" + data.id + "_professionTextMere\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'professionTextMere', '" + data.professionTextMere + "')\">" + data.professionTextMere + "</span>");
+       		div.append(renseignementDiv);
+       		
+       		var accidentDiv = $("<div class=\"info-set\"></div>");
+       		accidentDiv.append("<p class=\"info-set-title\">Personnes à contacter en cas d'accidentRenseignements confidentiels</p>");
+       		accidentDiv.append("<p></p>").append("Nom 1: <span id=\"" + data.id + "_accidentNom1\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'accidentNom1', '" + data.accidentNom1 + "')\">" + data.accidentNom1 + "</span>");
+       		accidentDiv.append("<p></p>").append("Prénom 1: <span id=\"" + data.id + "_accidentPrenom1\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'accidentPrenom1', '" + data.accidentPrenom1 + "')\">" + data.accidentPrenom1 + "</span>");
+       		accidentDiv.append("<p></p>").append("Téléphone 1: <span id=\"" + data.id + "_accidentTelephone1\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'accidentTelephone1', '" + data.accidentTelephone1 + "')\">" + data.accidentTelephone1 + "</span>");
+       		accidentDiv.append("<p></p>").append("Nom 2: <span id=\"" + data.id + "_accidentNom2\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'accidentNom2', '" + data.accidentNom2 + "')\">" + data.accidentNom2 + "</span>");
+       		accidentDiv.append("<p></p>").append("Prénom 2: <span id=\"" + data.id + "_accidentPrenom2\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'accidentPrenom2', '" + data.accidentPrenom2 + "')\">" + data.accidentPrenom2 + "</span>");
+       		accidentDiv.append("<p></p>").append("Téléphone 2: <span id=\"" + data.id + "_accidentTelephone2\" class=\"info-value\" onclick=\"edit(" + data.id + ", 'accidentTelephone2', '" + data.accidentTelephone2 + "')\">" + data.accidentTelephone2 + "</span>");
+       		div.append(accidentDiv);
+          }
+      });
+  }
+  
+  function edit(adherentId, field, fieldValue) {
+	  var input = $('<input type="text" id="' + adherentId + '_' + field + '_input" value="' + fieldValue + '" />');
+	  $(input).blur(function() {
+		  if(input.val() != fieldValue) {
+			  doUpdate(adherentId, field);
+		  }
+		});
+	  $("#" + adherentId + "_" + field).replaceWith(input);
+  }
+  
+  function doUpdate(adherentId, field) {
+	  var input = $("#" + adherentId + "_" + field  + "_input");
+	  $.ajax({
+          type: "POST",
+          url: "adherentList.do?action=updateAdherent&adherentId=" + adherentId + "&" + field + "=" + input.val(),
+          dataType: "text",
+          success: function(data) {
+       		input.after('<img src="img/accept.png" />');
+          }
+      });  
   }
   
   function getGroupes() {
@@ -175,6 +288,7 @@
        		var select = $("#groupe");
        		select.empty();
        		select.append('<option value="-1">Aucune sélection</option>');
+       		select.append('<option value="-2">Sans groupe</option>');
            	$.each(data, function() {
            		select.append('<option value="' + this.id + '">' + this.title + '</option>');
            	});
@@ -231,11 +345,58 @@
         	  var select = $("#creneau");
           		select.empty();
           		select.append('<option value="">Aucune sélection</option>');
+          		select.append('<option value="-2">Sans créneaux</option>');
                	$.each(data, function() {
                		select.append('<option value="' + this.id + '">' + this.swimmingPool + " - " + this.dayOfWeek + " " + this.beginStr + " - " + this.endStr + '</option>');
                	});
           }
       });
+	}
+	
+	function supprimer(id, nom, prenom) {
+		if(confirm(nom + " " + prenom + " va être définitivement supprimé")) {
+			$.ajax({
+		          type: "POST",
+		          url: "adherentList.do?action=supprimer&selectedAdherent=" + id,
+		          dataType: "text",
+		          success: function() {
+		        	  $("#" + id).hide();
+		        	  alert("Supprimé avec succès.");
+		          }
+		      });
+		}
+	}
+	
+	function doSearch() {
+		$.ajax({
+			  type:"POST",
+			  data: $("#formSearch").serialize(),
+			  url:"adherentList.do?action=search",
+			  dataType: "json", 
+			  success: function(data){
+				var tbody = $("#result-table-body");
+				tbody.empty();
+				var index = 0;
+				$.each(data, function() {
+					index++;
+					var row = $('<tr id="'+this.id+'"></tr>');
+					tbody.append(row);
+					row.append('<td><input type="checkbox" name="email.destinataires" value="' + this.email + '" />&nbsp;<button type="button" onclick="openInfoPopup('+this.id+')">Info</button>&nbsp;<button type="button" onclick="openAffecterPopup('+this.id+')">Affecter</button><button type="button" onclick="supprimer('+this.id+',\''+this.nom+'\',\''+this.prenom+'\')">X</button></td>').append("<td>" + index + "</td>").append("<td>" + this.nom + "</td><td>" + this.prenom + "</td><td>" + this.dateNaissance + "</td><td>"+this.email+"</td><td>" + this.groupe + "</td>");
+					var creneau = "";
+					$.each(this.creneaux, function() {
+						creneau = creneau + this + "<br />";
+					});
+					row.append("<td>" + creneau + "</td></tr>");
+				});
+			   },
+			   error:  function(jqXHR, textStatus, errorThrown) {
+					if(jqXHR.responseText !== ''){
+				        alert(jqXHR.responseText);
+				    }else{
+				        alert('Une erreur est survenue.');
+				    }  
+				}
+			});
 	}
   
   </script>
@@ -265,7 +426,7 @@
   		</p>
   		
   		<div id="divAffecterCreneau" style="display: none"><label for="affecterCreneau">Sélectionner un créneau</label>
-  			<select id="affecterCreneau" name="affecter.affecterCreneau" multiple="multiple">
+  			<select id="affecterCreneau" name="affecter.affecterCreneau" multiple="multiple" size="10">
   			</select>
   		</div>
   		<input type="hidden" id="affecterAdherent" name="affecter.affecterAdherent" value="-1" />
@@ -278,14 +439,16 @@
   	<form id="formSearch" method="POST" action="AdherentList.do">
   		<fieldset>
   			<legend>Critères de recherche</legend>
-	  		<p><label for="nom">Nom</label><input type="text" id="nom" name="nom" size="50" />
-	  		<label for="prenom">Prénom</label><input type="text" id="prenom" name="prenom" size="50" />
+	  		<p><label for="nom">Nom</label><input type="text" id="nom" name="searchNom" size="50" />
+	  		<label for="prenom">Prénom</label><input type="text" id="prenom" name="searchPrenom" size="50" />
 	  		</p>
 	  		<p>
-	  		<label for="groupe">Groupe</label><select id="groupe" name="groupe"><option value="-1">Aucune sélection</option></select>
-	  		<label for="creneau">Créneau</label><select id="creneau" name="creneau"><option value="">Aucune sélection</option></select>
+	  		<label for="groupe">Groupe</label><select id="groupe" name="searchGroupe"><option value="-1">Aucune sélection</option></select>
+	  		<label for="creneau">Créneau</label><select id="creneau" name="searchCreneau"><option value="">Aucune sélection</option><option value="-2">Sans créneaux</option></select>
 	  		</p>
-	  		<label for="dossier">Dossier complet ?</label><input type="checkbox" id="dossier" name="dossier" />
+	  		<label for="dossier">Dossier complet</label><input type="checkbox" id="dossier" name="searchDossier" />
+	  		<label for="saisie">Inscrit</label><input type="checkbox" id="saisie" name="searchSaisie" />
+	  		<!-- <label for="sansEmail">Sans e-mail</label><input type="checkbox" id="sansEmail" name="sansEmail" />-->
 	  		<div style="text-align: center">
 	  		<button type="button" id="search">Rechercher</button>
 	  		</div>
@@ -298,7 +461,7 @@
   	<table id="result-table">
   	<thead>
   		<tr>
-  			<th></th>
+  			<th><input type="checkbox" name="selectAll" id="selectAll" /></th>
   			<th>N°</th>
   			<th>Nom</th>
   			<th>Prénom</th>
@@ -315,8 +478,18 @@
   	<button type="button" id="sendEmail">Envoyer un e-mail</button>
   	<button type="button" id="sendConfirmation">Confirmer le dossier</button>
   	<button type="button" id="sendConfirmationLeo">Confirmer le dossier (Léo Lagrange)</button>
+  	<button type="button" id="sendExcuse">Excuse</button>
   </div>
   </form>
+  </div>
+  
+   <div id="infoPopup" title="Information de l'adhérent">
+  	<div>
+  		<form id="formInfo" method="post" action="">
+  			<div id="info-data">
+  			</div>
+  		</form>
+  	</div>
   </div>
   </body>
 </html>
