@@ -90,7 +90,7 @@
 		});
 	});
 	
-	$("#sendExcuse").button();
+	//$("#sendExcuse").button();
 	$("#sendExcuse").click(function() {
 		$.ajax({
 		  type:"POST",
@@ -126,12 +126,6 @@
 		});
 	});
 	
-	$("button:first" ).button({
-	      icons: {
-	        primary: "ui-icon-locked"
-	      },
-	      text: false
-	});
 	
 	$( "#loading" ).dialog({
 	      height: 140,
@@ -167,10 +161,11 @@
 		$("#loading").dialog("close");
 	});
 	getGroupes();
+	getPiscines();
 	
 	$("#selectAll").click(function() {
 		var checkedStatus = this.checked;
-		$("input[name='email.destinataires']").each(function () {
+		$("input[name='sendEmail.destinataires']").each(function () {
 			$(this).attr('checked', checkedStatus);
 		});
 	});
@@ -258,7 +253,7 @@
   }
   
   function edit(adherentId, field, fieldValue) {
-	  var input = $('<input type="text" id="' + adherentId + '_' + field + '_input" value="' + fieldValue + '" />');
+	  var input = $('<input type="text" id="' + adherentId + '_' + field + '_input" value="' + fieldValue + '" />&nbsp; <img id="' + adherentId + '_' + field + '_img" src="img/application_edit.png" onclick="doUpdate("'+adherentId+', '+field+'")" />');
 	  $(input).blur(function() {
 		  if(input.val() != fieldValue) {
 			  doUpdate(adherentId, field);
@@ -274,6 +269,7 @@
           url: "adherentList.do?action=updateAdherent&adherentId=" + adherentId + "&" + field + "=" + input.val(),
           dataType: "text",
           success: function(data) {
+        	$("#" + adherentId + "_" + field  + "_img").remove();
        		input.after('<img src="img/accept.png" />');
           }
       });  
@@ -381,7 +377,7 @@
 					index++;
 					var row = $('<tr id="'+this.id+'"></tr>');
 					tbody.append(row);
-					row.append('<td><input type="checkbox" name="email.destinataires" value="' + this.email + '" />&nbsp;<button type="button" onclick="openInfoPopup('+this.id+')">Info</button>&nbsp;<button type="button" onclick="openAffecterPopup('+this.id+')">Affecter</button><button type="button" onclick="supprimer('+this.id+',\''+this.nom+'\',\''+this.prenom+'\')">X</button></td>').append("<td>" + index + "</td>").append("<td>" + this.nom + "</td><td>" + this.prenom + "</td><td>" + this.dateNaissance + "</td><td>"+this.email+"</td><td>" + this.groupe + "</td>");
+					row.append('<td><input type="checkbox" name="sendEmail.destinataires" value="' + this.email + '" />&nbsp;<button type="button" onclick="openInfoPopup('+this.id+')">Info</button>&nbsp;<button type="button" onclick="openAffecterPopup('+this.id+')">Affecter</button><button type="button" onclick="supprimer('+this.id+',\''+this.nom+'\',\''+this.prenom+'\')">X</button></td>').append("<td>" + index + "</td>").append("<td>" + this.nom + "</td><td>" + this.prenom + "</td><td>" + this.dateNaissance + "</td><td>"+this.email+"</td><td>" + this.groupe + "</td>");
 					var creneau = "";
 					$.each(this.creneaux, function() {
 						creneau = creneau + this + "<br />";
@@ -398,6 +394,25 @@
 				}
 			});
 	}
+	
+	function getPiscines() {
+		$.ajax({
+	          type: "POST",
+	          url: "adherentList.do?action=loadPiscines",
+	          dataType: "json",
+	          success: function(data){
+	       		var select = $("#piscines");
+	       		select.empty();
+	       		select.append('<option value="-1">Aucune sélection</option>');
+	           	$.each(data, function() {
+	           		select.append('<option value="' + this + '">' + this + '</option>');
+	           	});
+	           	select.change(function () {
+	           		doSearch();
+	           	});
+	          }
+	      });
+	}
   
   </script>
   </head>
@@ -411,8 +426,8 @@
   <div id="sendEmailPopup" title="Envoyer un e-mail">
   	<div>
   		<form id="formSendEmail" method="post" action="">
-  			<p><label for="sujet">Sujet</label><input type="text" id="email.sujet" name="email.sujet" size="50" />
-	  		<label for="corps">Corps</label><textarea id="corps" name="email.corps">Corps du message</textarea>
+  			<p><label for="sujet">Sujet</label><input type="text" id="email.sujet" name="sendEmail.sujet" size="50" ></p>
+	  		<p><label for="corps">Corps</label><textarea id="corps" name="sendEmail.corps">Corps du message</textarea>
 	  		</p>
 	  		<button type="button" id="sendEmailSend">Envoyer l'e-mail</button>
   		</form>
@@ -445,9 +460,10 @@
 	  		<p>
 	  		<label for="groupe">Groupe</label><select id="groupe" name="searchGroupe"><option value="-1">Aucune sélection</option></select>
 	  		<label for="creneau">Créneau</label><select id="creneau" name="searchCreneau"><option value="">Aucune sélection</option><option value="-2">Sans créneaux</option></select>
+	  		<label for="piscines">Piscines</label><select id="piscines" name="searchPiscine"><option value="">Aucune sélection</option></select>
 	  		</p>
 	  		<label for="dossier">Dossier complet</label><input type="checkbox" id="dossier" name="searchDossier" />
-	  		<label for="saisie">Inscrit</label><input type="checkbox" id="saisie" name="searchSaisie" />
+	  		<label for="saisie">Inscrit</label><input type="checkbox" id="saisie" name="searchSaisie" checked="checked" />
 	  		<!-- <label for="sansEmail">Sans e-mail</label><input type="checkbox" id="sansEmail" name="sansEmail" />-->
 	  		<div style="text-align: center">
 	  		<button type="button" id="search">Rechercher</button>
@@ -478,7 +494,7 @@
   	<button type="button" id="sendEmail">Envoyer un e-mail</button>
   	<button type="button" id="sendConfirmation">Confirmer le dossier</button>
   	<button type="button" id="sendConfirmationLeo">Confirmer le dossier (Léo Lagrange)</button>
-  	<button type="button" id="sendExcuse">Excuse</button>
+  	<!-- <button type="button" id="sendExcuse">Excuse</button>-->
   </div>
   </form>
   </div>

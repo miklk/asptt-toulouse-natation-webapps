@@ -12,15 +12,15 @@ public class AdherentListForm implements Serializable {
 	private String searchPrenom;
 	private Long searchGroupe;
 	private String searchCreneau;
+	private String searchPiscine;
 	private boolean searchDossier;
 	private boolean searchSaisie;
 	private boolean sansEmail;
-	private AdherentListEmailBean email;
+	private AdherentListEmailBean sendEmail;
 	private AdherentAffecterBean affecter;
 	
 	public AdherentListForm() {
-		searchSaisie = true;
-		email = new AdherentListEmailBean();
+		sendEmail = new AdherentListEmailBean();
 		affecter = new AdherentAffecterBean();
 	}
 
@@ -84,12 +84,12 @@ public class AdherentListForm implements Serializable {
 	}
 
 
-	public AdherentListEmailBean getEmail() {
-		return email;
+	public AdherentListEmailBean getSendEmail() {
+		return sendEmail;
 	}
 
-	public void setEmail(AdherentListEmailBean pEmail) {
-		email = pEmail;
+	public void setEmail(AdherentListEmailBean pSendEmail) {
+		sendEmail = pSendEmail;
 	}
 
 	public AdherentAffecterBean getAffecter() {
@@ -115,4 +115,13 @@ public class AdherentListForm implements Serializable {
 	public void setSansEmail(boolean pSansEmail) {
 		sansEmail = pSansEmail;
 	}
+
+	public String getSearchPiscine() {
+		return searchPiscine;
+	}
+
+	public void setSearchPiscine(String pSearchPiscine) {
+		searchPiscine = pSearchPiscine;
+	}
+	
 }

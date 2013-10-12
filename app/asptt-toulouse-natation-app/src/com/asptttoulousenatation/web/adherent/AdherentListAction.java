@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -78,40 +79,50 @@ public class AdherentListAction extends HttpServlet {
 		AdherentListForm form = new AdherentListForm();
 		String action = pReq.getParameter("action");
 		try {
-			BeanUtilsBean2.getInstance().populate(form, pReq.getParameterMap());
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		if ("search".equals(action)) {
+			BeanUtilsBean2.getInstance().populate(form, pReq.getParameterMap());
 			search(pReq, pResp, form);
 		} else if ("loadGroupes".equals(action)) {
 			loadGroupes(pReq, pResp);
 		} else if ("loadCreneaux".equals(action)) {
 			loadCreneaux(pReq, pResp);
 		} else if ("sendEmail".equals(action)) {
+			BeanUtilsBean2.getInstance().populate(form, pReq.getParameterMap());
 			sendEmail(pReq, pResp, form);
 		} else if ("fixCreneaux".equals(action)) {
 			fixCreneaux(pReq, pResp);
 		} else if ("sendConfirmation".equals(action)) {
+			BeanUtilsBean2.getInstance().populate(form, pReq.getParameterMap());
 			sendConfirmation(pReq, pResp, form);
 		} else if ("affecter".equals(action)) {
+			BeanUtilsBean2.getInstance().populate(form, pReq.getParameterMap());
 			affecter(pReq, pResp, form);
 		} else if ("fixEmail".equals(action)) {
 			fixEmail(pReq, pResp);
 		} else if ("sendConfirmationLeo".equals(action)) {
+			BeanUtilsBean2.getInstance().populate(form, pReq.getParameterMap());
 			sendConfirmationLeo(pReq, pResp, form);
 		} else if("supprimer".equals(action)) {
 			supprimer(pReq, pResp);
 		} else if ("sendExcuse".equals(action)) {
+			BeanUtilsBean2.getInstance().populate(form, pReq.getParameterMap());
 			sendExcuse(pReq, pResp, form);
 		} else if("loadAdherent".equals(action)) {
 			loadAdherent(pReq, pResp);
 		} else if("updateAdherent".equals(action)) {
 			updateAdherent(pReq, pResp);
+		} else if("loadPiscines".equals(action)) {
+			loadPiscines(pReq, pResp);
+		} else if("fixPrincipal".equals(action)) {
+			fixPrincipal(pReq, pResp);
+		}
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -130,14 +141,14 @@ public class AdherentListAction extends HttpServlet {
 					InscriptionEntityFields.PRENOM, form.getSearchPrenom()
 							.toUpperCase(), Operator.EQUAL));
 		}
-		if (form.getSearchGroupe() != null && form.getSearchGroupe() != -1) {
-			criteria.add(new CriterionDao<Long>(
-					InscriptionEntityFields.NOUVEAUGROUPE, form.getSearchGroupe(),
-					Operator.EQUAL));
-		} else if(form.getSearchGroupe() != null && form.getSearchGroupe() == -2) {
+		if(form.getSearchGroupe() != null && form.getSearchGroupe() == -2) {
 			criteria.add(new CriterionDao<Long>(
 					InscriptionEntityFields.NOUVEAUGROUPE, null,
 					Operator.NULL));
+		} else if (form.getSearchGroupe() != null && form.getSearchGroupe() != -1) {
+			criteria.add(new CriterionDao<Long>(
+					InscriptionEntityFields.NOUVEAUGROUPE, form.getSearchGroupe(),
+					Operator.EQUAL));
 		}
 		if(form.isSearchDossier()) {
 			criteria.add(new CriterionDao<Boolean>(
@@ -158,19 +169,41 @@ public class AdherentListAction extends HttpServlet {
 					InscriptionEntityFields.EMAIL, "",
 					Operator.EQUAL));
 		}
-
-		List<InscriptionEntity> entities = inscriptionDao.find(criteria,
-				new OrderDao(InscriptionEntityFields.NOM, OrderOperator.ASC));
+		
+		
+		final List<InscriptionEntity> entities;
+		if (criteria.isEmpty())
+			if (!"-1".equals(form.getSearchPiscine())) {
+				entities = inscriptionDao.getAll();
+			} else {
+				entities = Collections.emptyList();
+			}
+		else {
+			entities = inscriptionDao.find(criteria, new OrderDao(
+					InscriptionEntityFields.NOM, OrderOperator.ASC));
+		}
 		List<AdherentListResultBean> results = new ArrayList<AdherentListResultBean>();
 		for (InscriptionEntity entity : entities) {
 			try {
 				if (StringUtils.isBlank(form.getSearchCreneau()) || "-1".equals(form.getSearchCreneau())) {
-					results.add(AdherentListResultBeanTransformer.getInstance()
-							.get(entity));
+					AdherentListResultBean adherentUi = AdherentListResultBeanTransformer.getInstance()
+							.get(entity);
+					if(StringUtils.isNotBlank(form.getSearchPiscine()) &&  !"-1".equals(form.getSearchPiscine())) {
+						boolean trouve = false;
+						Iterator<String> it = adherentUi.getCreneaux().iterator();
+						while(it.hasNext() && !trouve) {
+							trouve = it.next().contains(form.getSearchPiscine());
+						}
+						if(trouve) {
+							results.add(adherentUi);
+						}
+					} else {
+						results.add(adherentUi);
+					}
 				} else if("-2".equals(form.getSearchCreneau()) && StringUtils.isBlank(entity.getCreneaux())) {
 					results.add(AdherentListResultBeanTransformer.getInstance()
 							.get(entity));
-				} else if(StringUtils.isNotBlank(form.getSearchCreneau()) && StringUtils.contains(entity.getCreneaux(),
+				} else if(StringUtils.contains(entity.getCreneaux(),
 						form.getSearchCreneau())) {
 					results.add(AdherentListResultBeanTransformer.getInstance()
 							.get(entity));
@@ -237,7 +270,7 @@ public class AdherentListAction extends HttpServlet {
 
 			Multipart mp = new MimeMultipart();
 			MimeBodyPart htmlPart = new MimeBodyPart();
-			htmlPart.setContent(form.getEmail().getCorps(), "text/html");
+			htmlPart.setContent(form.getSendEmail().getCorps(), "text/html");
 			mp.addBodyPart(htmlPart);
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(
@@ -249,11 +282,13 @@ public class AdherentListAction extends HttpServlet {
 			msg.setReplyTo(replyTo);
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					"contact@asptt-toulouse-natation.com"));
-			for (String destinataire : form.getEmail().getDestinataires()) {
-				msg.addRecipient(Message.RecipientType.BCC,
-						new InternetAddress(destinataire));
+			for (String destinataire : form.getSendEmail().getDestinataires()) {
+				if (StringUtils.isNotBlank(destinataire)) {
+					msg.addRecipient(Message.RecipientType.BCC,
+							new InternetAddress(destinataire));
+				}
 			}
-			msg.setSubject(form.getEmail().getSujet(), "UTF-8");
+			msg.setSubject(form.getSendEmail().getSujet(), "UTF-8");
 			msg.setContent(mp);
 			Transport.send(msg);
 			pResp.setContentType("text/html;charset=UTF-8");
@@ -275,7 +310,7 @@ public class AdherentListAction extends HttpServlet {
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
 
-		for (String destinataire : form.getEmail().getDestinataires()) {
+		for (String destinataire : form.getSendEmail().getDestinataires()) {
 			try {
 				Multipart mp = new MimeMultipart();
 				MimeBodyPart htmlPart = new MimeBodyPart();
@@ -354,7 +389,7 @@ public class AdherentListAction extends HttpServlet {
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
 
-		for (String destinataire : form.getEmail().getDestinataires()) {
+		for (String destinataire : form.getSendEmail().getDestinataires()) {
 			try {
 				Multipart mp = new MimeMultipart();
 				MimeBodyPart htmlPart = new MimeBodyPart();
@@ -449,7 +484,7 @@ public class AdherentListAction extends HttpServlet {
 					"ASPTT Toulouse Natation")};
 			msg.setReplyTo(replyTo);
 
-			for (String destinataire : form.getEmail().getDestinataires()) {
+			for (String destinataire : form.getSendEmail().getDestinataires()) {
 				msg.addRecipient(Message.RecipientType.BCC,
 						new InternetAddress(destinataire));
 			}
@@ -673,5 +708,29 @@ public class AdherentListAction extends HttpServlet {
 			e.printStackTrace();
 		}
 		pResp.getWriter().write("ok");
+	}
+	
+	protected void loadPiscines(HttpServletRequest pReq,
+			HttpServletResponse pResp) throws ServletException, IOException {
+		List<String> piscines = slotDao.getPiscines();
+		Gson gson = new Gson();
+		String json = gson.toJson(piscines);
+		pResp.setContentType("application/json;charset=UTF-8");
+		pResp.getWriter().write(json);
+	}
+	
+	protected void fixPrincipal(HttpServletRequest pReq, HttpServletResponse pResp)
+			throws ServletException, IOException {
+		List<InscriptionEntity> entities = inscriptionDao.getAll();
+		for(InscriptionEntity entity: entities) {
+			if(entity.getPrincipal() != null) {
+				try {
+					inscriptionDao.get(entity.getPrincipal());
+				} catch(Exception e) {
+					entity.setPrincipal(null);
+					inscriptionDao.save(entity);
+				}
+			}
+		}
 	}
 }
