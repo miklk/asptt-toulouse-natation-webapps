@@ -44,7 +44,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 			
 			@Override
 			public void onClick(ClickEvent pEvent) {
-				Window.open("http://www.asptt-toulouse-natation.com/v2/inscription.html", "Gestion des adhérents", "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes");
+				Window.open("http://www.asptt-toulouse-natation.com/v2/inscription.html", "Inscriptions", "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes");
 			}
 		});
 		panel.add(button);
@@ -54,7 +54,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 			
 			@Override
 			public void onClick(ClickEvent pEvent) {
-				Window.open("http://www.asptt-toulouse-natation.com/v2/creneau.html", "Gestion des adhérents", "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes");
+				Window.open("http://www.asptt-toulouse-natation.com/v2/creneau.html", "Créneaux", "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes");
 			}
 		});
 		panel.add(button);
@@ -64,7 +64,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 			
 			@Override
 			public void onClick(ClickEvent pEvent) {
-				Window.open("http://www.asptt-toulouse-natation.com/v2/presence.html", "Gestion des adhérents", "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes");
+				Window.open("http://www.asptt-toulouse-natation.com/v2/presence.html", "Fiche de présence", "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes");
 			}
 		});
 		panel.add(button);
