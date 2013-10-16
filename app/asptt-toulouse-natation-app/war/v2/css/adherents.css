@@ -79,3 +79,41 @@ legend {
 	font-style: italic;
 	background-color: #c7d4e4;
 }
+
+.adherent-edit {
+	background:url(../img/application_edit.png) no-repeat;
+	border: none;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+}
+
+.adherent-valid {
+	background:url(../img/application_accept.png) no-repeat;
+	border: none;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+}
+
+.adherent-action-edit {
+	background:url(../img/folder.png) no-repeat;
+	border: none;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+}
+.adherent-action-affecter {
+	background:url(../img/processes.png) no-repeat;
+	border: none;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;	
+}
+.adherent-action-supprimer {
+	background:url(../img/remove.png) no-repeat;
+	border: none;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+}

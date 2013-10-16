@@ -25,6 +25,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -116,6 +117,8 @@ public class AdherentListAction extends HttpServlet {
 			loadPiscines(pReq, pResp);
 		} else if("fixPrincipal".equals(action)) {
 			fixPrincipal(pReq, pResp);
+		} else if("facture".equals(action)) {
+			facture(pReq, pResp);
 		}
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
@@ -732,5 +735,28 @@ public class AdherentListAction extends HttpServlet {
 				}
 			}
 		}
+	}
+	
+	protected void facture(HttpServletRequest pReq, HttpServletResponse pResp)
+			throws ServletException, IOException {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<String>(InscriptionEntityFields.FACTURE,
+				"on", Operator.EQUAL));
+		List<InscriptionEntity> adherents = inscriptionDao.find(criteria);
+		
+		StrBuilder results = new StrBuilder();
+		for(InscriptionEntity adherent: adherents) {
+			results.append(adherent.getNom() + " " + adherent.getPrenom()).appendNewLine();
+		}
+		ServletOutputStream out = pResp.getOutputStream();
+		String contentType = "application/text";
+		String contentDisposition = "attachment;filename=factures.txt;";
+		pResp.setContentType(contentType);
+		pResp.setHeader("Content-Disposition", contentDisposition);
+
+		out.print(results.toString());
+		out.flush();
+		out.close();
 	}
 }
