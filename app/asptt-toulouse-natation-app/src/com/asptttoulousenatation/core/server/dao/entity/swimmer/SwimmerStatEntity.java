@@ -37,6 +37,9 @@ public class SwimmerStatEntity implements Entity {
 	@Persistent
 	private String comment;
 	
+	@Persistent
+	private Boolean presence;
+	
 	public SwimmerStatEntity() {
 		
 	}
@@ -87,5 +90,13 @@ public class SwimmerStatEntity implements Entity {
 
 	public void setComment(String pComment) {
 		comment = pComment;
+	}
+
+	public Boolean getPresence() {
+		return presence;
+	}
+
+	public void setPresence(Boolean pPresence) {
+		presence = pPresence;
 	}
 }
