@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.client.util.CollectionUtils;
@@ -288,9 +289,9 @@ public class InscriptionAction extends HttpServlet {
 			try {
 				InscriptionEntity entity = new InscriptionEntity();
 				entity.setEmail(email);
-				Random lRandom = new Random(42788);
-				String lCode = Integer.toString(lRandom.nextInt(1000));
-				entity.setMotdepasse(lCode);
+				String code = RandomStringUtils.randomNumeric(4);
+				System.out.println("Code " + code);
+				entity.setMotdepasse(code);
 				inscriptionDao.save(entity);
 
 				Properties props = new Properties();
@@ -300,7 +301,7 @@ public class InscriptionAction extends HttpServlet {
 				MimeBodyPart htmlPart = new MimeBodyPart();
 				String msgBody = "Madame, Monsieurs,<br />"
 						+ "Vous pouvez maintenant accéder au formulaire d'inscription en utilisant le code suivant: "
-						+ "<b>" + lCode + "</b>"
+						+ "<b>" + code + "</b>"
 						+ ".<br />"
 						+ "<a href=\"http://asptt-toulouse-natation.com/v2/inscription.html\">Inscription en ligne - ASPTT Toulouse Natation</a>"
 						+ "<p>Sportivement,<br />ASPTT Toulouse Natation</p>";
