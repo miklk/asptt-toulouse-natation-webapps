@@ -16,11 +16,14 @@ import java.util.logging.Logger;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -124,6 +127,9 @@ public class InscriptionAction extends HttpServlet {
 			HttpServletResponse pResp) throws ServletException, IOException {
 		pReq.getSession().removeAttribute("inscriptionIds");
 		pReq.getSession().removeAttribute("inscriptionId");
+		List<InscriptionEntity> adherents = (List<InscriptionEntity>) pReq
+				.getSession().getAttribute("data");
+		InscriptionEntity entity = adherents.get(0);
 		StringBuilder creneau = new StringBuilder();
 		Enumeration params = pReq.getParameterNames();
 		while (params.hasMoreElements()) {
@@ -133,6 +139,7 @@ public class InscriptionAction extends HttpServlet {
 				if (BooleanUtils.toBoolean(paramValue)) {
 					String creneauId = param.replace("creneau", "");
 					// Update creneaux
+					if(!StringUtils.contains(entity.getCreneaux(), creneauId)) {
 					SlotEntity creneauEntity = slotDao.get(Long
 							.valueOf(creneauId));
 					if (creneauEntity != null) {
@@ -141,15 +148,12 @@ public class InscriptionAction extends HttpServlet {
 						slotDao.save(creneauEntity);
 					}
 					creneau.append(creneauId).append(";");
+					}
 				}
 			}
 		}
 
-		List<InscriptionEntity> adherents = (List<InscriptionEntity>) pReq
-				.getSession().getAttribute("data");
-		InscriptionEntity entity = adherents.get(0);
 		entity.setCreneaux(creneau.toString());
-
 		try {
 			BeanUtils.populate(entity, pReq.getParameterMap());
 			inscriptionTransformer.update(entity);
@@ -174,8 +178,22 @@ public class InscriptionAction extends HttpServlet {
 			HttpServletResponse pResp) throws ServletException, IOException {
 		Long principalId = (Long) pReq.getSession().getAttribute(
 				"inscriptionId");
+		String adherentIndexStr = pReq.getParameter("adherentIndex");
+		final InscriptionEntity entity;
+		if (StringUtils.isNotBlank(adherentIndexStr)) {
+			Integer adherentIndex = Integer.valueOf(adherentIndexStr) - 1;
+			List<InscriptionEntity> adherents = (List<InscriptionEntity>) pReq
+					.getSession().getAttribute("data");
+			if (adherentIndex < adherents.size()) {
+				entity = adherents.get(adherentIndex);
+			} else {
+				entity = new InscriptionEntity();
+			}
+		} else {
+			entity = new InscriptionEntity();
+		}
+		
 		StringBuilder creneau = new StringBuilder();
-		String adherentIndexStr = StringUtils.EMPTY;
 		Enumeration params = pReq.getParameterNames();
 		while (params.hasMoreElements()) {
 			String param = (String) params.nextElement();
@@ -187,6 +205,7 @@ public class InscriptionAction extends HttpServlet {
 						creneauId = creneauId.split("_")[1];
 					}
 					// Update creneaux
+					if(!StringUtils.contains(entity.getCreneaux(), creneauId)) {
 					SlotEntity creneauEntity = slotDao.get(Long
 							.valueOf(creneauId));
 					if (creneauEntity != null) {
@@ -195,25 +214,12 @@ public class InscriptionAction extends HttpServlet {
 						slotDao.save(creneauEntity);
 					}
 					creneau.append(creneauId).append(";");
+					}
 				}
-			} else if (param.contains("adherentIndex")) {
-				adherentIndexStr = pReq.getParameter(param);
 			}
 		}
 		try {
-			final InscriptionEntity entity;
-			if (StringUtils.isNotBlank(adherentIndexStr)) {
-				Integer adherentIndex = Integer.valueOf(adherentIndexStr) - 1;
-				List<InscriptionEntity> adherents = (List<InscriptionEntity>) pReq
-						.getSession().getAttribute("data");
-				if (adherentIndex < adherents.size()) {
-					entity = adherents.get(adherentIndex);
-				} else {
-					entity = new InscriptionEntity();
-				}
-			} else {
-				entity = new InscriptionEntity();
-			}
+			
 			entity.setCreneaux(creneau.toString());
 			entity.setPrincipal(principalId);
 
@@ -265,38 +271,59 @@ public class InscriptionAction extends HttpServlet {
 	protected void nouveau(HttpServletRequest pReq, HttpServletResponse pResp)
 			throws ServletException, IOException {
 		String email = pReq.getParameter("nouveau_email");
-		try {
-			InscriptionEntity entity = new InscriptionEntity();
-			entity.setEmail(email);
-			Random lRandom = new Random(42788);
-			String lCode = Integer.toString(lRandom.nextInt(1000));
-			entity.setMotdepasse(lCode);
-			inscriptionDao.save(entity);
+		// Exists
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				2);
+		criteria.add(new CriterionDao<String>(InscriptionEntityFields.EMAIL,
+				email, Operator.EQUAL));
+		List<InscriptionEntity> entities = inscriptionDao.find(criteria);
+		if (CollectionUtils.isNotEmpty(entities)) {
+			pResp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			pResp.setContentType("application/text;charset=UTF-8");
+			pResp.getWriter()
+					.write("L'adresse e-mail "
+							+ email
+							+ " est déjà enregistrée. Vous avez dû recevoir votre code d'accès (pensez à vérifier vos spams). Dans le cas contraire contactez webmaster@asptt-toulouse-natation.com");
+		} else {
+			try {
+				InscriptionEntity entity = new InscriptionEntity();
+				entity.setEmail(email);
+				Random lRandom = new Random(42788);
+				String lCode = Integer.toString(lRandom.nextInt(1000));
+				entity.setMotdepasse(lCode);
+				inscriptionDao.save(entity);
 
-			Properties props = new Properties();
-			Session session = Session.getDefaultInstance(props, null);
+				Properties props = new Properties();
+				Session session = Session.getDefaultInstance(props, null);
 
-			String msgBody = "Vous pouvez maintenant accéder au formulaire d'inscription en utilisant le code suivant: "
-					+ lCode
-					+ "."
-					+ "ASPTT Toulouse Natation http://asptt-toulouse-natation.com/v2/inscription.html";
+				Multipart mp = new MimeMultipart();
+				MimeBodyPart htmlPart = new MimeBodyPart();
+				String msgBody = "Madame, Monsieurs,<br />"
+						+ "Vous pouvez maintenant accéder au formulaire d'inscription en utilisant le code suivant: "
+						+ "<b>" + lCode + "</b>"
+						+ ".<br />"
+						+ "<a href=\"http://asptt-toulouse-natation.com/v2/inscription.html\">Inscription en ligne - ASPTT Toulouse Natation</a>"
+						+ "<p>Sportivement,<br />ASPTT Toulouse Natation</p>";
 
-			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress(
-					"webmaster@asptt-toulouse-natation.com",
-					"ASPTT Toulouse Natation"));
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					entity.getEmail()));
-			msg.setSubject("Votre compte web a été créé.", "UTF-8");
-			msg.setText(msgBody, "UTF-8");
-			Transport.send(msg);
-		} catch (AddressException e) {
-			// ...
-		} catch (MessagingException e) {
-			// ...
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				htmlPart.setContent(msgBody, "text/html");
+				mp.addBodyPart(htmlPart);
+				MimeMessage msg = new MimeMessage(session);
+				msg.setFrom(new InternetAddress(
+						"webmaster@asptt-toulouse-natation.com",
+						"ASPTT Toulouse Natation"));
+				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+						entity.getEmail()));
+				msg.setSubject("Votre compte web a été créé.", "UTF-8");
+				msg.setContent(mp);
+				Transport.send(msg);
+			} catch (AddressException e) {
+				// ...
+			} catch (MessagingException e) {
+				// ...
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -355,9 +382,10 @@ public class InscriptionAction extends HttpServlet {
 			// }
 		} else {
 			pResp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			pResp.setContentType("application/text;charset=UTF-8");
 			pResp.getWriter().write(
 					"L'adresse e-mail " + email
-							+ " n'est pas enregistrée dans nos fichiers");
+							+ " n'est pas enregistrée. Avez-vous entrez les trois chiffres composant votre code d'accès ?");
 		}
 	}
 
@@ -384,7 +412,7 @@ public class InscriptionAction extends HttpServlet {
 			pResp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			pResp.setContentType("application/text;charset=UTF-8");
 			pResp.getWriter().write(
-					"Cet adhérent n'est pas enregistrée dans nos fichiers");
+					"Cet adhérent n'est pas enregistrée dans nos fichiers. Il doit s'agir d'une erreur de frappe dans nos fichiers, contactez-nous webmaster@asptt-toulouse-natation.com");
 		}
 	}
 

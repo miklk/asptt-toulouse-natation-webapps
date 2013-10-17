@@ -18,5 +18,10 @@
         <property name="swimmer" direction="asc"/>
         <property name="day" direction="asc"/>
     </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity" ancestor="false" source="manual">
+        <property name="saisie" direction="asc"/>
+        <property name="motdepasse" direction="asc"/>
+    </datastore-index>
 
 </datastore-indexes>

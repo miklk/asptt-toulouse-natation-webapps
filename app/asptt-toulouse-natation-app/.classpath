@@ -33,12 +33,19 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.2.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-lang3-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/gwt-ckeditor-1.0.jar"/>
-	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-ooxml-3.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-3.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-ooxml-schemas-3.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/stax-api-1.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlbeans-2.3.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.asm-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.beans-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.context-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.core-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.expression-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.web-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.springframework.web.servlet-3.0.1.RELEASE-A.jar"/>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

@@ -73,7 +73,7 @@ public class CreneauNullAction extends HttpServlet {
 							if (CollectionUtils.isEmpty(slotEntities)) {
 								creneauMisAJour++;
 								GroupEntity group = groupDao.get(entity.getNouveauGroupe());
-										builder.append(entity.getNom()).append(" ").append(entity.getPrenom()).append(" ").append(entity.getTelephone()).append(" ").append(entity.getEmail()).append(" ").append(group.getTitle()).appendNewLine();
+										builder.append(entity.getNom()).append(" ").append(entity.getPrenom()).append(" ").append(entity.getTelephone()).append(" ").append(entity.getEmail()).append(" ").append(group.getTitle()).append(" creneau manquant est ").append(creneauId).appendNewLine();
 							}
 						}
 					}

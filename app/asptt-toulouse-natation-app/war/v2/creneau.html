@@ -5,13 +5,11 @@
     <meta http-equiv="pragma" content="no-cache" />
     <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
     <title>ASPTT Grand Toulouse Natation - Inscription 2013-2014</title>
-    <link rel="stylesheet" href="css/inscription.css" type="text/css" />
+    <link rel="stylesheet" href="css/global.css" type="text/css" />
+    <link rel="stylesheet" href="css/creneau.css" type="text/css" />
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/start/jquery-ui.css" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    
- 
-  </style>
   
   <script>
   $( document ).ready(function() {
@@ -49,20 +47,27 @@
 				var row = $("#resultsRow");
 				row.empty();
 				$.each(data, function() {
-					var td = $("<td>" + this.jour + "</td>");
+					var td = $('<td class="jour"><span class="jour-text">' + this.jour + '</span></td>');
 					var rowHoraire = $("<tr><td>Groupes</td></tr>");
+					$.each(this.creneauHeures, function() {
+						rowHoraire.append("<td>" + this + "</td>");
+					});
 					var table = $("<table></table>");
 					table.append(rowHoraire);
 					$.each(this.creneaux, function() {
+						var rowGroupe = $("<tr><td>"+this.first+"</td></tr>");
+						table.append(rowGroupe);
 						//Horaire
-						rowHoraire.append("<td>" + this.first + "</td>");
 						$.each(this.second, function() {
-							var rowGroupe = $("#" + this.id);
-							if(!rowGroupe.length) {
-								rowGroupe = $('<tr id="' + this.id + '"><td>'+this.groupe+'</td></tr>');
-								table.append(rowGroupe);
+							var classTd = "";
+							if(this.complet && this.effectif != 0) {
+								classTd= "complet";
 							}
-							rowGroupe.append("<td>" + this.effectif + "</td>");	
+							if(this.exists) {
+								rowGroupe.append("<td class=\"" + classTd + "\">"+this.effectif+"/"+this.total+"</td>");
+							} else {
+								rowGroupe.append("<td class=\"no-exist\">&nbsp;</td>");
+							}
 						});
 					});
 					td.append(table);

@@ -58,6 +58,7 @@
     tabs.delegate( "span.ui-icon-close", "click", function() {
       var panelId = $( this ).closest( "li" ).remove().attr( "aria-controls" );
       $( "#" + panelId ).remove();
+      tabCounter--;
       tabs.tabs( "refresh" );
     });
  
@@ -65,6 +66,7 @@
       if ( event.altKey && event.keyCode === $.ui.keyCode.BACKSPACE ) {
         var panelId = tabs.find( ".ui-tabs-active" ).remove().attr( "aria-controls" );
         $( "#" + panelId ).remove();
+        tabCounter--;
         tabs.tabs( "refresh" );
       }
     });
@@ -130,16 +132,29 @@
 	}
 	$(".valid").button();
 	$(".valid").click(function() {
-		if(confirm("Etes-vous sûr de l'exactitude des informations fournies ?")) {
-			$(this).attr('disabled', 'disabled');
-		  $.ajax({type:"POST", data: $("#1_form").serialize(), url:"InscriptionAction.do", 
-				success: function(data){
-					submitTabs(2);
-				},
-	                        error: function(){
-				        alert('Une erreur est survenue.');
-				}
-			});
+		var creneauOk = true;
+		var creneauError = 1;
+		creneauOk = $("#creneaux input:checked").length != 0;
+		for(i = 2; i < tabCounter; i++) {
+			if($("#tabs-" + i + "_creneaux input:checked").length == 0) {
+				creneauOk = false;
+				creneauError = i;
+			}
+		}
+		if(!creneauOk) {
+			alert("Vous devez sélectionner avant de valider votre inscription (formulaire n°"+creneauError+").");		
+		} else {
+			if(confirm("Etes-vous sûr de l'exactitude des informations fournies ?")) {
+				$(this).attr('disabled', 'disabled');
+			  $.ajax({type:"POST", data: $("#1_form").serialize(), url:"InscriptionAction.do", 
+					success: function(data){
+						submitTabs(2);
+					},
+		                        error: function(){
+					        alert('Une erreur est survenue.');
+					}
+				});
+			}
 		}
 	  });
 	$("#valid_find_email").button();
@@ -263,6 +278,13 @@
 			success: function(data) {
 				alert('Le code d\'accès vous a été envoyé par e-mail');
 				$("#nouveauPopup").dialog('close');
+			},
+			error:  function(jqXHR, textStatus, errorThrown) {
+				if(jqXHR.responseText !== ''){
+			        alert(jqXHR.responseText);
+			    }else{
+			        alert('Une erreur est survenue.');
+			    }  
 			}
 		});
 	});
@@ -275,6 +297,12 @@
 	$( "#nouveauPopup" ).dialog({
 		  width: 540,
 	      height: 140,
+	      modal: true,
+	      autoOpen: false,
+	    });
+	$( "#infoLeoLagrange" ).dialog({
+		  width: 540,
+	      height: 440,
 	      modal: true,
 	      autoOpen: false,
 	    });
@@ -309,11 +337,32 @@
   		<li><a href="doc/Tarifs_Competition_2013_2014.pdf">Tarifs - Compétition</a></li>
   		<li><a href="doc/Modalites_de_fonctionnement_2013_2014.pdf">Modalités de fonctionnement</a></li>
   		<li><a href="doc/Note_dinformation_2013-2014.pdf">Note d'information</a></li>
-  		
-  		
-  		
   	</ul>
+  	<p style="text-align: center;"><span style="font-weight: bold;font-size: 1.1em; text-transform: uppercase" class="link" onclick="$('#infoLeoLagrange').dialog('open')">Fermeture de Léo Lagrange (cliquez-ici pour plus d'informations)</span></p>
   </fieldset>
+  <div id="infoLeoLagrange" title="Fermeture Léo Lagrange" style="display:none">
+  <p>
+	<span style="font-size:14px;"><span style="font-family:comic sans ms,cursive;">En effet, nous venons seulement d&#39;avoir de plus amples informations de la municipalit&eacute; ce jour (<a href="http://www.toulouse.fr/web/la-mairie/-/fermeture-de-la-piscine-leo-lagrange-reorganisation-des-cours-et-de-l-accueil-du-public">http://www.toulouse.fr/web/la-mairie/-/fermeture-de-la-piscine-leo-lagrange-reorganisation-des-cours-et-de-l-accueil-du-public</a>).</span></span></p>
+<p>
+	<span style="font-size:14px;"><span style="font-family:comic sans ms,cursive;">En attendant que les travaux de d&eacute;pollution soient r&eacute;alis&eacute;s, nous allons ainsi vous proposer une organisation provisoire afin de vous proposer des cr&eacute;neaux de substitution et ne pas &ecirc;tre p&eacute;nalis&eacute;s dans le d&eacute;marrage de votre activit&eacute; favorite.</span></span></p>
+<p>
+	<span style="font-size:14px;"><span style="font-family:comic sans ms,cursive;"><span style="color:#ff0000;">A cette fin, les groupes de L&eacute;o Lagrange des Jeudi et Vendredi soirs seront d&eacute;plac&eacute;s sur la piscine Alex Jany (Argoulets) tout au long de la semaine</span> ; voici le d&eacute;tail :</span></span></p>
+<p>
+	<span style="font-size:14px;"><span style="font-family:comic sans ms,cursive;">- <strong>Groupes Tritons, Dauphins, Avenirs, Licornes, Marsouins, Cachalots, Perfs Ados et Loisirs Adultes :</strong> pourront venir pratiquer le Mercredi soir (19h &agrave; 21h) sur Alex Jany.</span></span></p>
+<p>
+	<span style="font-size:14px;"><span style="font-family:comic sans ms,cursive;">- <strong>Groupes Tritons, Dauphins, Avenirs, Licornes, Marsouins, Cachalots :&nbsp;</strong>pourront &eacute;voluer le Samedi matin (09h &agrave; 12h) sur Alex Jany.</span></span></p>
+<p>
+	<span style="font-size:14px;"><span style="font-family:comic sans ms,cursive;">- <strong>Groupes T&eacute;tards et Aquagym :&nbsp;</strong>pourront nager les Mardi ou Vendredi soirs, de 19h &agrave; 19h50 pour les petits, et de 19h &agrave; 19h50 ou 19h55 &agrave; 20h45 pour les dames de l&#39;Aquagym.</span></span></p>
+<p>
+	<span style="font-size:14px;"><span style="font-family:comic sans ms,cursive;">Afin de d&eacute;terminer votre cr&eacute;neau, n&#39;h&eacute;sitez pas &agrave; prendre contact avec le secr&eacute;tariat du club en t&eacute;l&eacute;phonant au 05.61.62.68.45 ou 06.52.82.97.52, ou en nous envoyant un mail contact@asptt-toulouse-natation.com.</span></span></p>
+<p>
+	<span style="font-size:14px;"><span style="font-family:comic sans ms,cursive;">Les modalit&eacute;s exactes (r&eacute;partition exacte des cr&eacute;neaux par groupes) vous seront communiqu&eacute;es rapidement, pour une date de reprise des cours, qui surviendra la semaine du 23 Septembre.</span></span></p>
+<p>
+	<span style="font-size:14px;"><span style="font-family:comic sans ms,cursive;">Avec toutes notre compr&eacute;hension pour le d&eacute;sagr&eacute;ment occasionn&eacute;,</span></span></p>
+<p>
+	&nbsp;</p>
+  
+  </div>
   <div id="nouveauPopup" title="Nouvel adhérent" style="display:none">
   	<form id="formNouveau" method="POST" action="InscriptionAction.do">
   		<label for="nouveau_email">Adresse e-mail</label><input type="text" id="nouveau_email" name="nouveau_email" size="50" />
@@ -332,7 +381,9 @@
   				<br />
   				<button type="button" id="valid_find_prenom">Valider</button>
   			</p>
-  			<p>Lors du démarrage des inscriptions en ligne, un certain nombre d'entre vous (notamment l'école de natation) n'ont pu accéder au formulaire.<br />Veuillez nous excusez pour ce désagrément, nous nous efforçons de combler ces lacunes au plus vite.<br />N'hésitez pas à nous contacter par e-mail si vous avez des problèmes d'identification (à noter, n'oubliez pas les accents dans les noms et prénoms).</p>
+  			<p>En tant qu'adhérent lors de la saison précédente, votre groupe de cette année est déjà pré-déterminé.<br />
+  			Ainsi afin d'inscrire vous, votre conjoint(e) et vos enfants, nous vous demandons de le faire via cette page avec les informations suivantes 'Nom', 'Prénom' et 'Date de naissance'.<br />
+  			<span style="text-transform: uppercase; font-weight: bold">(Il ne faut pas utiliser le bouton 'Ajouter un adhérent' réservé pour les nouveaux adhérents)</span>.</p>
   </fieldset>
    <fieldset>
   			<legend><span class="note-importante">3. C'est ma première inscription </span></legend>
@@ -352,7 +403,7 @@
   	<form id="1_form" method="post" action="InscriptionAction.do">
   	<input type="hidden" name="action" value="inscription" />
   	<div class="bar">
-	<button class="add_tab" type="button">Ajouter un adhérent</button>
+	<button class="add_tab" type="button">Ajouter un adhérent (uniquement nouvelle adhésion)</button>
 	<button type="button" class="valid">Valider mon inscription</button>
   		</div>
 <div id="tabs">
