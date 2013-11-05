@@ -63,6 +63,8 @@ public class AdherentListAction extends HttpServlet {
 
 	private static final Logger LOG = Logger.getLogger(AdherentListAction.class
 			.getName());
+	
+	private static final int EMAIL_PAQUET = 1;
 
 	private InscriptionDao inscriptionDao = new InscriptionDao();
 	private SlotDao slotDao = new SlotDao();
@@ -270,32 +272,44 @@ public class AdherentListAction extends HttpServlet {
 		try {
 			Properties props = new Properties();
 			Session session = Session.getDefaultInstance(props, null);
+			int recipents = 0;
+			
+			for (int i = 0; i < form.getSendEmail().getDestinataires().length; i += EMAIL_PAQUET) {
 
-			Multipart mp = new MimeMultipart();
-			MimeBodyPart htmlPart = new MimeBodyPart();
-			htmlPart.setContent(form.getSendEmail().getCorps(), "text/html");
-			mp.addBodyPart(htmlPart);
-			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress(
-					"webmaster@asptt-toulouse-natation.com",
-					"ASPTT Toulouse Natation"));
-			Address[] replyTo = {new InternetAddress(
-					"contact@asptt-toulouse-natation.com",
-					"ASPTT Toulouse Natation")};
-			msg.setReplyTo(replyTo);
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					"contact@asptt-toulouse-natation.com"));
-			for (String destinataire : form.getSendEmail().getDestinataires()) {
-				if (StringUtils.isNotBlank(destinataire)) {
-					msg.addRecipient(Message.RecipientType.BCC,
-							new InternetAddress(destinataire));
+				Multipart mp = new MimeMultipart();
+				MimeBodyPart htmlPart = new MimeBodyPart();
+				htmlPart.setContent(form.getSendEmail().getCorps(), "text/html");
+				mp.addBodyPart(htmlPart);
+				MimeMessage msg = new MimeMessage(session);
+				msg.setFrom(new InternetAddress(
+						"webmaster@asptt-toulouse-natation.com",
+						"ASPTT Toulouse Natation"));
+				Address[] replyTo = { new InternetAddress(
+						"contact@asptt-toulouse-natation.com",
+						"ASPTT Toulouse Natation") };
+				msg.setReplyTo(replyTo);
+				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+						"contact@asptt-toulouse-natation.com"));
+
+				int first = i;
+				int end = Math.min(first + EMAIL_PAQUET, form.getSendEmail()
+						.getDestinataires().length);
+				for (int j = first; j < end; j++) {
+					String destinataire = form.getSendEmail()
+							.getDestinataires()[j];
+					if (StringUtils.isNotBlank(destinataire)) {
+						LOG.warning("Send to " + destinataire);
+						msg.addRecipient(Message.RecipientType.BCC,
+								new InternetAddress(destinataire));
+						recipents++;
+					}
 				}
+				msg.setSubject(form.getSendEmail().getSujet(), "UTF-8");
+				msg.setContent(mp);
+				Transport.send(msg);
 			}
-			msg.setSubject(form.getSendEmail().getSujet(), "UTF-8");
-			msg.setContent(mp);
-			Transport.send(msg);
 			pResp.setContentType("text/html;charset=UTF-8");
-			pResp.getWriter().write("ok");
+			pResp.getWriter().write(Integer.toString(recipents));
 		} catch (AddressException e) {
 			// ...
 		} catch (MessagingException e) {
@@ -409,11 +423,15 @@ public class AdherentListAction extends HttpServlet {
 						destinataire));
 
 				StringBuilder message = new StringBuilder(
-						"Madame, Monsieur,<p>Nous avons le plaisir de vous compter parmi nous pour cette nouvelle saison sportive 2013-2014.<br />"
-								+ "Nous vous confirmons la bonne réception de votre dossier qui finalise ainsi votre inscription. <br />"
-								+ "Toutefois, nous ne serons en capacité de reprendre les cours sur Léo Lagrange, qu’à compter du retour des vacances de la Toussaint, c’est-à-dire début Novembre (date précisée ultérieurement).<br />"
-								+ "<p>Néanmoins, nous pouvons d’ores et déjà vous proposer des créneaux de substitution, dès la semaine du 23/09, sur le Mercredi soir (19h à 20h45) ou le Samedi matin (09h à 12h) à chaque fois sur Alex Jany, selon les groupes et les places disponibles. Merci de vous positionner au préalable par retour de mail ou appel téléphonique.</p>"
-								+ "Pour rappel, le créneau sur lequel vous vous êtes positionnés initialement sur le jeudi ou vendredi soirs (voir ci-dessous) :<br />");
+						"<p>Madame, Monsieur,</p><p>A ce jour nous n&#39;avons aucune information&nbsp;de la part de la Mairie au sujet de la r&eacute;ouverture de la piscine L&eacute;o Lagrange.</p><p>En effet cette r&eacute;ouverture devait avoir lieu cette semaine mais elle est repouss&eacute;e. En coulisse, par le biais du personnel travaillant sur site,&nbsp;nous avons eu vent du mardi 12 novembre pour une r&eacute;ouverture aux clubs.<br /><br />"
+						+ "Ainsi, les cours de substitution propos&eacute;s le mercredi soir et le samedi matin&nbsp;<strong>restent maintenus</strong>&nbsp;jusqu&#39;&agrave; l&#39;ouverture effective de L&eacute;o Lagrange.<br />"
+						+ "Pour ceux ne pouvant s&#39;y rendre, des cours de rattrapage vous seront propos&eacute;s lors des vacances d&#39;Hiver (F&eacute;vrier) ou de P&acirc;ques (Avril) 2014.<br />"
+						+ "Nous vous tenons inform&eacute; d&egrave;s que nous avons plus d&#39;information de la part de la mairie.<br />"
+						+ "&nbsp;</p>"
+						+ "<p>En esp&eacute;rant votre compr&eacute;hension,<br />"
+						+ "Le secr&eacute;tariat,<br />"
+						+ "<a href=\"http://www.asptt-toulouse-natation.com\">http://www.asptt-toulouse-natation.com</a>"
+					+ "</p>");
 
 				List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 						1);
@@ -738,6 +756,29 @@ public class AdherentListAction extends HttpServlet {
 	}
 	
 	protected void facture(HttpServletRequest pReq, HttpServletResponse pResp)
+			throws ServletException, IOException {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<String>(InscriptionEntityFields.FACTURE,
+				"on", Operator.EQUAL));
+		List<InscriptionEntity> adherents = inscriptionDao.find(criteria);
+		
+		StrBuilder results = new StrBuilder();
+		for(InscriptionEntity adherent: adherents) {
+			results.append(adherent.getNom() + " " + adherent.getPrenom()).appendNewLine();
+		}
+		ServletOutputStream out = pResp.getOutputStream();
+		String contentType = "application/text";
+		String contentDisposition = "attachment;filename=factures.txt;";
+		pResp.setContentType(contentType);
+		pResp.setHeader("Content-Disposition", contentDisposition);
+
+		out.print(results.toString());
+		out.flush();
+		out.close();
+	}
+	
+	protected void telephone(HttpServletRequest pReq, HttpServletResponse pResp, AdherentListForm form)
 			throws ServletException, IOException {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
