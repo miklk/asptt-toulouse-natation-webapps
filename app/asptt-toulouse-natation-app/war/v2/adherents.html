@@ -40,12 +40,12 @@
 	$("#sendEmailSend").click(function() {
 		$.ajax({
 		  type:"POST",
-		  data: $("#formSendEmail").serialize() + "&" + $("#formResult").serialize(),
 		  url:"adherentList.do?action=sendEmail",
+		  data: $("#formSendEmail").serialize() + "&" + $("#formResult").serialize(),
 		  dataType: "text", 
 		  success: function(data){
 			  $("#sendEmailPopup").dialog("close");
-			  alert("L'e-mail a été envoyé avec succès");
+			  alert("L'e-mail a été envoyé à " + data + " adhérent(s) avec succès");
 		   },
            error: function(){
         	   $("#sendEmailPopup").dialog("close");
@@ -72,7 +72,6 @@
 		});
 	});
 	
-	$("#sendConfirmationLeo").button();
 	$("#sendConfirmationLeo").click(function() {
 		$.ajax({
 		  type:"POST",
@@ -494,8 +493,8 @@
   <div id="actions">
   	<button type="button" id="sendEmail" style="font-size: 0.8em;width:130px; height: 30px">Envoyer un e-mail</button>
   	<button type="button" id="sendConfirmation" style="font-size: 0.8em;width:150px; height: 30px">Confirmer le dossier</button>
-  	<button type="button" id="sendConfirmationLeo" style="font-size: 0.8em;width:200px; height: 40px">Confirmer le dossier (Léo Lagrange)</button>
-  	<!-- <button type="button" id="sendExcuse">Excuse</button>-->
+  	<!-- <button type="button" id="sendConfirmationLeo" style="font-size: 0.8em;width:200px; height: 40px">Confirmer le dossier (Léo Lagrange)</button>
+  	<button type="button" id="sendExcuse">Excuse</button>-->
   </div>
   </form>
   </div>
