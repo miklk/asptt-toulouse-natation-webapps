@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="fr" ng-app="adherentsApp">
+  <head>
+    <meta charset="utf-8" />
+    <title>ASPTT Grand Toulouse Natation - Adhérents</title>
+    <link rel="stylesheet" href="css/adherents.css" type="text/css" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/start/jquery-ui.css" />
+    <link rel="stylesheet" href="js/bootstrap/css/bootstrap.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>	
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" src="js/ckeditor/adapters/jquery.js"></script>
+	<script type="text/javascript" src="js/controllers.js"></script>
+	<script type="text/javascript" src="js/services.js"></script>
+	<script type="text/javascript" src="js/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="js/angular-js/angular-resource.js"></script>
+   </head>
+   
+   <body ng-controller="AdherentListCtrl">
+   Query : {{query}}
+   <div class="container-fluid">
+   	<div class="row-fluid">
+   		<div class="span2">
+   			Search: <input ng-model="query">
+   		</div>
+   		<div class="span10">
+		   <table>
+		  	<thead>
+		  		<tr>
+		  			<th><input type="checkbox" name="selectAll" id="selectAll" /></th>
+		  			<th>N°</th>
+		  			<th>Nom</th>
+		  			<th>Prénom</th>
+		  			<th>Date de naissance</th>
+		  			<th>E-mail</th>
+		  			<th>Groupe</th>
+		  			<th>Créneaux</th>
+		  		</tr>
+		  	</thead>
+		  	<tbody id="result-table-body">
+		  		<tr ng-repeat="adherent in adherents.inscriptionEntity | filter:query">
+		  			<td><input type="checkbox" name="selectAll" /></td>
+		  			<td>1</td>
+		  			<td>{{adherent.nom}}</td>
+		  			<td>{{adherent.prenom}}</td>
+		  			<td>{{adherent.datedenaissance}}</td>
+		  			<td>{{adherent.email}}</td>
+		  			<td>{{adherent.groupe}}</td>
+		  			<td>{{adherent.nom}}</td>
+		  		</tr>
+		  	</tbody>
+		  </table>
+		  </div>
+  	</div>
+  </body>
+</html>
