@@ -6,11 +6,13 @@ import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.asptttoulousenatation.core.server.dao.entity.Entity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
+@XmlRootElement
 public class InscriptionEntity implements Entity {
 
 	/**

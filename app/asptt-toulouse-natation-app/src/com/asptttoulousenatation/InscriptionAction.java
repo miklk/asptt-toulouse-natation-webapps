@@ -11,7 +11,6 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 import java.util.logging.Logger;
 
 import javax.mail.Message;
@@ -290,7 +289,6 @@ public class InscriptionAction extends HttpServlet {
 				InscriptionEntity entity = new InscriptionEntity();
 				entity.setEmail(email);
 				String code = RandomStringUtils.randomNumeric(4);
-				System.out.println("Code " + code);
 				entity.setMotdepasse(code);
 				inscriptionDao.save(entity);
 
