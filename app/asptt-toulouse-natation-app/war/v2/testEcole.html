@@ -26,7 +26,7 @@
             	$("#formCreneau").empty();
             	$.each(data, function() {
             		var ligne = $("<p></p>");
-            		$(ligne).append('<a href="testEcole.do?action=export&selectedCreneau=' + this.id + '" >'+ this.swimmingPool + ' - ' + this.dayOfWeek + ' ' + this.beginStr + '-' + this.endStr +'</a>');
+            		$(ligne).append('<a href="testEcole.do?action=export&selectedCreneau=' + this.id + '" >' + this.group.title + ' ' + this.swimmingPool + ' - ' + this.dayOfWeek + ' ' + this.beginStr + '-' + this.endStr +'</a>');
             		$("#formCreneau").append(ligne);
             	});
             }

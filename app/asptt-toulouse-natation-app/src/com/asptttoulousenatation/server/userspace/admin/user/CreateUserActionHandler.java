@@ -5,7 +5,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Properties;
-import java.util.Random;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -18,6 +17,8 @@ import javax.mail.internet.MimeMessage;
 import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
+
+import org.apache.commons.lang3.RandomStringUtils;
 
 import com.asptttoulousenatation.core.server.dao.entity.swimmer.SwimmerEntity;
 import com.asptttoulousenatation.core.server.dao.entity.user.UserDataEntity;
@@ -59,9 +60,8 @@ public class CreateUserActionHandler implements
 		if (pAction.isValidated()) {
 
 			try {
-				Random lRandom = new Random(42788);
 				MessageDigest lMessageDigest = Utils.getMD5();
-				String lCode = Integer.toString(lRandom.nextInt(1000));
+				String lCode = RandomStringUtils.randomNumeric(4);
 				lMessageDigest.update(lCode.getBytes());
 				String lEncryptedPassword = new String(lMessageDigest.digest());
 				lUser.setPassword(lEncryptedPassword);

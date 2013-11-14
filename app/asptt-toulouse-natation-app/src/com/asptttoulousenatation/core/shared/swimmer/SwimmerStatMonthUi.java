@@ -10,8 +10,8 @@ public class SwimmerStatMonthUi implements ISwimmerStatUi {
 	private List<Integer> distances;
 
 	public SwimmerStatMonthUi() {
-		distances = new ArrayList<Integer>(5);
-		for (int i = 0; i < 5; i++) {
+		distances = new ArrayList<Integer>(6);
+		for (int i = 0; i < 6; i++) {
 			distances.add(0);
 		}
 	}

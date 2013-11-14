@@ -25,43 +25,44 @@ public class AlternateBanner extends Composite {
 		panel.setWidth("100%");
 		panel.setHeight("291px");
 		initWidget(panel);
-		if(pPhotos != null && pPhotos.length >0) {
-		index = 0;
-		oldIndex = 0;
-		for (int i = 0; i < photos.length; i++) {
-			String url = photos[i];
-			Image image = new Image(url);
-			image.getElement().getStyle().setPosition(Position.ABSOLUTE);
-			image.getElement().getStyle().setLeft(30, Unit.PCT);
+		if (pPhotos != null && pPhotos.length > 0) {
+			index = 0;
+			oldIndex = 0;
+			for (int i = 0; i < photos.length; i++) {
+				String url = photos[i];
+				Image image = new Image(url);
+				image.getElement().getStyle().setPosition(Position.ABSOLUTE);
+				image.getElement().getStyle().setLeft(30, Unit.PCT);
 
-			// Ratio
-			float ratio = image.getWidth() / IMAGE_HEIGHT;
-			// image.setHeight(IMAGE_HEIGHT + "px");
-			// image.setWidth(ratio * IMAGE_HEIGHT+ "px");
-			image.getElement().getStyle().setVisibility(Visibility.HIDDEN);
-			images[i] = image;
-			panel.add(images[i]);
-		}
-		if (images != null && images.length > 0) {
-			images[0].getElement().getStyle().setVisibility(Visibility.VISIBLE);
-		}
-
-		Timer timer = new Timer() {
-
-			@Override
-			public void run() {
-				for (int i = 0; i < images.length; i++) {
-					images[i].getElement().getStyle()
-							.setVisibility(Visibility.HIDDEN);
-					images[i].getElement().getStyle().setZIndex(-1);
-				}
-				images[index].getElement().getStyle()
-						.setVisibility(Visibility.VISIBLE);
-				images[index].getElement().getStyle().setZIndex(0);
-				index = (index + 1) % photos.length;
+				// Ratio
+				float ratio = image.getWidth() / IMAGE_HEIGHT;
+				// image.setHeight(IMAGE_HEIGHT + "px");
+				// image.setWidth(ratio * IMAGE_HEIGHT+ "px");
+				image.getElement().getStyle().setVisibility(Visibility.HIDDEN);
+				images[i] = image;
+				panel.add(images[i]);
 			}
-		};
-		timer.scheduleRepeating(5000);
-	}
+			if (images != null && images.length > 0) {
+				images[0].getElement().getStyle()
+						.setVisibility(Visibility.VISIBLE);
+			}
+
+			Timer timer = new Timer() {
+
+				@Override
+				public void run() {
+					for (int i = 0; i < images.length; i++) {
+						images[i].getElement().getStyle()
+								.setVisibility(Visibility.HIDDEN);
+						images[i].getElement().getStyle().setZIndex(-1);
+					}
+					images[index].getElement().getStyle()
+							.setVisibility(Visibility.VISIBLE);
+					images[index].getElement().getStyle().setZIndex(0);
+					index = (index + 1) % photos.length;
+				}
+			};
+			timer.scheduleRepeating(5000);
+		}
 	}
 }

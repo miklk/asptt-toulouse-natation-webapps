@@ -41,6 +41,7 @@ public class ApplicationLaunch {
 		Asptt_toulouse_natation_app.CSS.ensureInjected();
 		AutohitsCoreResource.RESOURCE.css().ensureInjected();
 		final SimplePanel lPanel = new SimplePanel();
+		DOM.setStyleAttribute(lPanel.getElement(), "width", "0px");
 
 		final ClientFactory lClientFactory = new ClientFactoryImpl();
 		final EventBus lEventBus = lClientFactory.getEventBus();

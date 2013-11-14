@@ -115,7 +115,7 @@
             		if(currentCreneaux != null && currentCreneaux.indexOf(this.id) !=-1) {
             			checkboxCreneau.prop('checked', true);
             		}
-            		if(this.placeRestante == 0) {
+            		if(this.placeRestante <= 0) {
             			checkboxCreneau.prop('disabled', true);
             			$(ligne).append("&nbsp;<span style='font-style:italic'>Ce créneau est complet.</span>");
             		} else {
@@ -361,6 +361,7 @@
 	<span style="font-size:14px;"><span style="font-family:comic sans ms,cursive;">Avec toutes notre compr&eacute;hension pour le d&eacute;sagr&eacute;ment occasionn&eacute;,</span></span></p>
 <p>
 	&nbsp;</p>
+	<p><a href="http://www.asptt-toulouse-natation.com/downloadDocument?documentId=6253562577289216&fileId=5114605969866752" target="_blank">Créneaux substitution - Organisation concrète</a>
   
   </div>
   <div id="nouveauPopup" title="Nouvel adhérent" style="display:none">

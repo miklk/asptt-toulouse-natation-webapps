@@ -11,7 +11,6 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 import java.util.logging.Logger;
 
 import javax.mail.Message;
@@ -32,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.client.util.CollectionUtils;
@@ -139,16 +139,16 @@ public class InscriptionAction extends HttpServlet {
 				if (BooleanUtils.toBoolean(paramValue)) {
 					String creneauId = param.replace("creneau", "");
 					// Update creneaux
-					if(!StringUtils.contains(entity.getCreneaux(), creneauId)) {
-					SlotEntity creneauEntity = slotDao.get(Long
-							.valueOf(creneauId));
-					if (creneauEntity != null) {
-						creneauEntity.setPlaceRestante(creneauEntity
-								.getPlaceRestante() - 1);
-						slotDao.save(creneauEntity);
+					if (!StringUtils.contains(entity.getCreneaux(), creneauId)) {
+						SlotEntity creneauEntity = slotDao.get(Long
+								.valueOf(creneauId));
+						if (creneauEntity != null) {
+							creneauEntity.setPlaceRestante(creneauEntity
+									.getPlaceRestante() - 1);
+							slotDao.save(creneauEntity);
+						}
 					}
 					creneau.append(creneauId).append(";");
-					}
 				}
 			}
 		}
@@ -288,9 +288,8 @@ public class InscriptionAction extends HttpServlet {
 			try {
 				InscriptionEntity entity = new InscriptionEntity();
 				entity.setEmail(email);
-				Random lRandom = new Random(42788);
-				String lCode = Integer.toString(lRandom.nextInt(1000));
-				entity.setMotdepasse(lCode);
+				String code = RandomStringUtils.randomNumeric(4);
+				entity.setMotdepasse(code);
 				inscriptionDao.save(entity);
 
 				Properties props = new Properties();
@@ -300,7 +299,7 @@ public class InscriptionAction extends HttpServlet {
 				MimeBodyPart htmlPart = new MimeBodyPart();
 				String msgBody = "Madame, Monsieurs,<br />"
 						+ "Vous pouvez maintenant accéder au formulaire d'inscription en utilisant le code suivant: "
-						+ "<b>" + lCode + "</b>"
+						+ "<b>" + code + "</b>"
 						+ ".<br />"
 						+ "<a href=\"http://asptt-toulouse-natation.com/v2/inscription.html\">Inscription en ligne - ASPTT Toulouse Natation</a>"
 						+ "<p>Sportivement,<br />ASPTT Toulouse Natation</p>";
@@ -421,9 +420,9 @@ public class InscriptionAction extends HttpServlet {
 		List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(
 				3);
 		lCriteria.add(new CriterionDao<String>(InscriptionEntityFields.NOM, nom
-				.toUpperCase(), Operator.EQUAL));
+				.trim().toUpperCase(), Operator.EQUAL));
 		lCriteria.add(new CriterionDao<String>(InscriptionEntityFields.PRENOM,
-				prenom.toUpperCase(), Operator.EQUAL));
+				prenom.trim().toUpperCase(), Operator.EQUAL));
 		lCriteria.add(new CriterionDao<String>(
 				InscriptionEntityFields.DATENAISSANCE, dateNaissance,
 				Operator.EQUAL));

@@ -141,10 +141,10 @@ public class SlotViewImpl extends Composite implements SlotView {
 		rowIndex++;
 		
 		//Hour range
-		hourBegin = new HourMinutePicker(PickerFormat._24_HOUR);
+		hourBegin = new HourMinutePicker(PickerFormat._24_HOUR, 6, 23, 12);
 		lPanel.setHTML(rowIndex, 0, "Plage horaire");
 		lPanel.setWidget(rowIndex, 1, hourBegin);
-		hourEnd = new HourMinutePicker(PickerFormat._24_HOUR);
+		hourEnd = new HourMinutePicker(PickerFormat._24_HOUR, 6, 23, 12);
 		lPanel.setWidget(rowIndex, 2, hourEnd);
 		rowIndex++;
 		
