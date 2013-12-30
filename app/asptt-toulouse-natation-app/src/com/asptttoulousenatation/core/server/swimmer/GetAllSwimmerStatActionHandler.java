@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.logging.Logger;
 
 import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
@@ -41,6 +42,9 @@ import com.asptttoulousenatation.server.util.Utils;
 
 public class GetAllSwimmerStatActionHandler implements
 		ActionHandler<GetAllSwimmerStatAction, GetAllSwimmerStatResult<?>> {
+	
+	private static final Logger LOG = Logger.getLogger(GetAllSwimmerStatActionHandler.class
+			.getName());
 
 	private SwimmerStatDao dao = new SwimmerStatDao();
 	private UserDao userDao = new UserDao();
@@ -295,8 +299,13 @@ public class GetAllSwimmerStatActionHandler implements
 						default:
 						}
 						calendar.setTimeInMillis(entity.getDay());
+						try {
 						((SwimmerStatWeekUi) lSwimmerStatUi).addDistance(calendar.get(Calendar.DAY_OF_WEEK) - 2, index, entity.getDistance());
-					} else if(SwimmerStatEnum.MONTH.equals(pAction.getPeriod())) {
+						} catch(Exception e) {
+							e.printStackTrace();
+							LOG.severe(entity.getId() + " " + entity.getDay() + " " + entity.getSwimmer());
+						}
+ 					} else if(SwimmerStatEnum.MONTH.equals(pAction.getPeriod())) {
 						calendar.setTimeInMillis(entity.getDay());
 						((SwimmerStatMonthUi) lSwimmerStatUi).addDistance(calendar.get(Calendar.WEEK_OF_MONTH), entity.getDistance());
 					}else if(SwimmerStatEnum.YEAR.equals(pAction.getPeriod())) {

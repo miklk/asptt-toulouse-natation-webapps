@@ -108,6 +108,7 @@ public class MainContentPanel extends Composite {
 				.getFormat("dd MMMM yyyy");
 		for (ActuUi lActuUi : initResult.getActu()) {
 			DisclosurePanel lActuDetail = new DisclosurePanel();
+			lActuDetail.setOpen(true);
 			HorizontalPanel headerPanel = new HorizontalPanel();
 			Label open = new Label("+");
 			open.getElement().getStyle().setMarginRight(5, Unit.PX);

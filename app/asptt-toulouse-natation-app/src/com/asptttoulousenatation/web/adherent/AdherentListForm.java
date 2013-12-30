@@ -16,10 +16,12 @@ public class AdherentListForm implements Serializable {
 	private boolean searchDossier;
 	private boolean searchSaisie;
 	private boolean sansEmail;
+	private Long[] selections;
 	private AdherentListEmailBean sendEmail;
 	private AdherentAffecterBean affecter;
 	
 	public AdherentListForm() {
+		selections = new Long[0];
 		sendEmail = new AdherentListEmailBean();
 		affecter = new AdherentAffecterBean();
 	}
@@ -122,6 +124,14 @@ public class AdherentListForm implements Serializable {
 
 	public void setSearchPiscine(String pSearchPiscine) {
 		searchPiscine = pSearchPiscine;
+	}
+
+	public Long[] getSelections() {
+		return selections;
+	}
+
+	public void setSelections(Long[] pSelections) {
+		selections = pSelections;
 	}
 	
 }

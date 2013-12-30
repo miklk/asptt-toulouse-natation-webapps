@@ -244,12 +244,13 @@ public class TestEcoleAction extends HttpServlet {
 			SlotEntity creneauEntity = creneaux.get(0);
 			GroupEntity group = groupDao.get(creneauEntity.getGroup());
 			ServletOutputStream out = pResp.getOutputStream();
-			String contentType = "application/x-download";
+			String contentType = "application/octet-stream";
 			String fileName = "presence_"
-					+ StringUtils.replace(
+					+ StringUtils.split(StringUtils.replace(StringUtils.replace(StringUtils.replace(StringUtils.replace(
 							StringUtils.replace(group.getTitle(), " ", "_"),
-							"-", "_") + "_" + creneauEntity.getDayOfWeek()
+							"-", "_"),",", "_"), "(", "_"), ")", "_"), "_" ) [0] + "_" + creneauEntity.getDayOfWeek()
 					+ ".xls";
+			LOG.warning("Print " + fileName);
 			String contentDisposition = "attachment;filename=" + fileName;
 			pResp.setContentType(contentType);
 			pResp.setHeader("Content-Disposition", contentDisposition);
@@ -328,6 +329,8 @@ public class TestEcoleAction extends HttpServlet {
 				LOG.log(java.util.logging.Level.SEVERE,
 						"Erreur d'écriture de la fiche de présence du créneau "
 								+ creneauEntity.getId(), e);
+			} catch (Exception e) {
+				LOG.severe(e.getMessage());
 			}
 			out.flush();
 			out.close();

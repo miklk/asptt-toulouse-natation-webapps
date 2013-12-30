@@ -10,10 +10,10 @@ public class AdherentListEmailBean implements Serializable {
 	private static final long serialVersionUID = -4468044892482381684L;
 	private String sujet;
 	private String corps;
-	private String[] destinataires;
+	private boolean all;
 	
 	public AdherentListEmailBean() {
-		destinataires = new String[0];
+		all = false;
 	}
 
 	public String getSujet() {
@@ -32,11 +32,11 @@ public class AdherentListEmailBean implements Serializable {
 		corps = pCorps;
 	}
 
-	public String[] getDestinataires() {
-		return destinataires;
+	public boolean isAll() {
+		return all;
 	}
 
-	public void setDestinataires(String[] pDestinataires) {
-		destinataires = pDestinataires;
+	public void setAll(boolean pAll) {
+		all = pAll;
 	}
 }

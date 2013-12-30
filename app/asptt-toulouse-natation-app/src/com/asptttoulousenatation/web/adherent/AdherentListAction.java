@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -272,44 +273,69 @@ public class AdherentListAction extends HttpServlet {
 		try {
 			Properties props = new Properties();
 			Session session = Session.getDefaultInstance(props, null);
-			int recipents = 0;
-			
-			for (int i = 0; i < form.getSendEmail().getDestinataires().length; i += EMAIL_PAQUET) {
+			List<String> recipents = new ArrayList<String>();
+			List<String> destinataires = getAdresseEmail(form);
+			for (int i = 0; i < destinataires.size(); i += EMAIL_PAQUET) {
+				try {
+					Multipart mp = new MimeMultipart();
+					MimeBodyPart htmlPart = new MimeBodyPart();
+					htmlPart.setContent(form.getSendEmail().getCorps(),
+							"text/html");
+					mp.addBodyPart(htmlPart);
+					MimeMessage msg = new MimeMessage(session);
+					msg.setFrom(new InternetAddress(
+							"webmaster@asptt-toulouse-natation.com",
+							"ASPTT Toulouse Natation"));
+					Address[] replyTo = { new InternetAddress(
+							"contact@asptt-toulouse-natation.com",
+							"ASPTT Toulouse Natation") };
+					msg.setReplyTo(replyTo);
+					msg.addRecipient(Message.RecipientType.TO,
+							new InternetAddress(
+									"support@asptt-toulouse-natation.com"));
 
-				Multipart mp = new MimeMultipart();
-				MimeBodyPart htmlPart = new MimeBodyPart();
-				htmlPart.setContent(form.getSendEmail().getCorps(), "text/html");
-				mp.addBodyPart(htmlPart);
-				MimeMessage msg = new MimeMessage(session);
-				msg.setFrom(new InternetAddress(
-						"webmaster@asptt-toulouse-natation.com",
-						"ASPTT Toulouse Natation"));
-				Address[] replyTo = { new InternetAddress(
-						"contact@asptt-toulouse-natation.com",
-						"ASPTT Toulouse Natation") };
-				msg.setReplyTo(replyTo);
-				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-						"contact@asptt-toulouse-natation.com"));
-
-				int first = i;
-				int end = Math.min(first + EMAIL_PAQUET, form.getSendEmail()
-						.getDestinataires().length);
-				for (int j = first; j < end; j++) {
-					String destinataire = form.getSendEmail()
-							.getDestinataires()[j];
-					if (StringUtils.isNotBlank(destinataire)) {
-						LOG.warning("Send to " + destinataire);
-						msg.addRecipient(Message.RecipientType.BCC,
-								new InternetAddress(destinataire));
-						recipents++;
+					int first = i;
+					int end = Math.min(first + EMAIL_PAQUET,
+							destinataires.size());
+					try {
+						for (int j = first; j < end; j++) {
+							String destinataire = destinataires.get(j);
+							if (StringUtils.isNotBlank(destinataire)) {
+								LOG.warning("Send to " + destinataire);
+								msg.addRecipient(Message.RecipientType.BCC,
+										new InternetAddress(destinataire));
+								recipents.add(destinataire);
+							}
+						}
+						msg.setSubject(form.getSendEmail().getSujet(), "UTF-8");
+						msg.setContent(mp);
+						Transport.send(msg);
+					} catch (Exception e) {
+						LOG.severe(e.getMessage());
 					}
+				} catch (Exception e) {
+					LOG.severe(e.getMessage());
 				}
-				msg.setSubject(form.getSendEmail().getSujet(), "UTF-8");
-				msg.setContent(mp);
-				Transport.send(msg);
 			}
+			
+			Multipart mp = new MimeMultipart();
+			MimeBodyPart htmlPart = new MimeBodyPart();
+			StrBuilder rapport = new StrBuilder();
+			rapport.appendWithSeparators(recipents, "<br />");
+			htmlPart.setContent("E-mail envoyé à " + new Date() + "<br />" + rapport.toString(), "text/html");
+			mp.addBodyPart(htmlPart);
+			MimeMessage msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress(
+					"webmaster@asptt-toulouse-natation.com",
+					"ASPTT Toulouse Natation"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					"support@asptt-toulouse-natation.com"));
+			msg.setSubject("Rapport d'envoie d'e-mail", "UTF-8");
+			msg.setContent(mp);
+			Transport.send(msg);
+			
 			pResp.setContentType("text/html;charset=UTF-8");
-			pResp.getWriter().write(Integer.toString(recipents));
+			pResp.getWriter().write(Integer.toString(recipents.size()));
 		} catch (AddressException e) {
 			// ...
 		} catch (MessagingException e) {
@@ -326,8 +352,8 @@ public class AdherentListAction extends HttpServlet {
 
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
-
-		for (String destinataire : form.getSendEmail().getDestinataires()) {
+		List<String> destinataires = getAdresseEmail(form);
+		for (String destinataire : destinataires) {
 			try {
 				Multipart mp = new MimeMultipart();
 				MimeBodyPart htmlPart = new MimeBodyPart();
@@ -405,8 +431,8 @@ public class AdherentListAction extends HttpServlet {
 			throws ServletException, IOException {
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
-
-		for (String destinataire : form.getSendEmail().getDestinataires()) {
+		List<String> destinataires = getAdresseEmail(form);
+		for (String destinataire : destinataires) {
 			try {
 				Multipart mp = new MimeMultipart();
 				MimeBodyPart htmlPart = new MimeBodyPart();
@@ -504,8 +530,8 @@ public class AdherentListAction extends HttpServlet {
 					"contact@asptt-toulouse-natation.com",
 					"ASPTT Toulouse Natation")};
 			msg.setReplyTo(replyTo);
-
-			for (String destinataire : form.getSendEmail().getDestinataires()) {
+			List<String> destinataires = getAdresseEmail(form);
+			for (String destinataire : destinataires) {
 				msg.addRecipient(Message.RecipientType.BCC,
 						new InternetAddress(destinataire));
 			}
@@ -799,5 +825,29 @@ public class AdherentListAction extends HttpServlet {
 		out.print(results.toString());
 		out.flush();
 		out.close();
+	}
+	
+	private List<String> getAdresseEmail(AdherentListForm pForm) {
+		List<String> adresseEmail = new ArrayList<String>();
+		if (pForm.getSendEmail().isAll()) {
+			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteria.add(new CriterionDao<Boolean>(
+					InscriptionEntityFields.SAISIE, Boolean.TRUE, Operator.EQUAL));
+			List<InscriptionEntity> adherents = inscriptionDao.find(criteria);
+			for (InscriptionEntity adherent : adherents) {
+				if (StringUtils.isNotBlank(adherent.getEmail())) {
+					adresseEmail.add(adherent.getEmail());
+				}
+			}
+		} else {
+			for (Long id : pForm.getSelections()) {
+				InscriptionEntity adherent = inscriptionDao.get(id);
+				if (StringUtils.isNotBlank(adherent.getEmail())) {
+					adresseEmail.add(adherent.getEmail());
+				}
+			}
+		}
+		return adresseEmail;
 	}
 }
