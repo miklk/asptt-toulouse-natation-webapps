@@ -41,7 +41,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">LOGO</a>
+              <a class="navbar-brand" href="#"><img src="img/logo.png" style="width: 140px; height: 30px" /></a>
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
@@ -49,16 +49,34 @@
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Le Club<b class="caret"></b></a>
                   <ul class="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
+                    <li><a href="#">Historique</a></li>
+                    <li><a href="#">Vie du club</a></li>
+                    <li><a href="#">Piscines</a></li>
                     <li class="divider"></li>
-                    <li class="dropdown-header">Nav header</li>
-                    <li><a href="#">Separated link</a></li>
-                    <li><a href="#">One more separated link</a></li>
+                    <li class="dropdown-header">Organisation</li>
+                    <li><a href="#">Comité de section</a></li>
+                    <li><a href="#">Les officiels</a></li>
+                    <li><a href="#">Les entraineurs</a></li>
                   </ul>
                 </li>
-                <li><a href="#about">Nos activités</a></li>
+                <li class="dropdown">
+	            	<a href="#" class="dropdown-toggle" data-toggle="dropdown">Nos activités<b class="caret"></b></a>
+	                	<ul class="dropdown-menu">
+	                		<li><a href="#">Ecole de natation</a></li>
+	                		<li><a href="#">Loisirs</a></li>
+	                		<li><a href="#">Aquagym</a></li>
+	                		<li class="divider"></li>
+	                		<li class="dropdown-header">Compétition</li>
+	                		<li><a href="#">Poussins</a></li>
+	                		<li><a href="#">Benjamins</a></li>
+	                		<li><a href="#">Minimes</a></li>
+	                		<li><a href="#">Cadets/Juniors</a></li>
+	                		<li><a href="#">Universitaires - Séniors</a></li>
+	                		<li><a href="#">Masters</a></li>
+	                		<li><a href="#">Eau libre</a></li>
+	                	</ul>
+	                </li>
+               	</li>
                 <li><a href="#about">Compétitions</a></li>
                 <li><a href="#about">Santé</a></li>
                 <li><a href="#about">Boutique</a></li>
@@ -129,25 +147,31 @@
 
       <!-- Three columns of text below the carousel -->
       <div class="row">
-        <div class="col-lg-4">
-          <img class="img-circle" src="data:image/png;base64," data-src="holder.js/140x140" alt="Generic placeholder image">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.</p>
-          <p><a class="btn btn-default" href="#">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <img class="img-circle" src="data:image/png;base64," data-src="holder.js/140x140" alt="Generic placeholder image">
-          <h2>Heading</h2>
-          <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
-          <p><a class="btn btn-default" href="#">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-        <div class="col-lg-4">
-          <img class="img-circle" src="data:image/png;base64," data-src="holder.js/140x140" alt="Generic placeholder image">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#">View details &raquo;</a></p>
-        </div><!-- /.col-lg-4 -->
-      </div><!-- /.row -->
+        <div class="col-lg-3">
+          <img class="img-circle" src="img/competition.jpg" alt="Generic placeholder image">
+          <h2>Le Club</h2>
+          <p>L'ASPTT Grand Toulouse Natation c'est...</p>
+          <p><a class="btn btn-default" href="#">Plus d'informations &raquo;</a></p>
+        </div>
+        <div class="col-lg-3">
+          <img class="img-circle" src="img/competition.jpg" alt="Generic placeholder image">
+          <h2>Ecole de natation</h2>
+          <p>l'ENF</p>
+          <p><a class="btn btn-default" href="#">Plus d'informations &raquo;</a></p>
+        </div>
+        <div class="col-lg-3">
+          <img class="img-circle" src="img/competition.jpg" alt="Generic placeholder image">
+          <h2>Compétitions</h2>
+          <p>Résultats des compétitions</p>
+          <p><a class="btn btn-default" href="#">Plus d'informations &raquo;</a></p>
+        </div>
+        <div class="col-lg-3">
+          <img class="img-circle" src="img/competition.jpg"  alt="Generic placeholder image">
+          <h2>Boutique</h2>
+          <p>Habillez-vous aux couleurs de l'ASPTT Grand Toulouse Natation</p>
+          <p><a class="btn btn-default" href="#">Plus d'informations &raquo;</a></p>
+        </div>
+      </div>
 
 
       <!-- START THE FEATURETTES -->
@@ -195,8 +219,8 @@
 
       <!-- FOOTER -->
       <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2013 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+        <p class="pull-right"><a href="#">Haut de la page</a></p>
+        <p>&copy; 2013 ASPTT Grand Toulouse Natation</p>
       </footer>
 
     </div><!-- /.container -->
