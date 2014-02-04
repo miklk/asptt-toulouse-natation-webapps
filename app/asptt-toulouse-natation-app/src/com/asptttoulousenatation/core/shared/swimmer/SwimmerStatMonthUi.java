@@ -2,8 +2,13 @@ package com.asptttoulousenatation.core.shared.swimmer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+
+import com.asptttoulousenatation.web.adherent.AdherentListAction;
 
 public class SwimmerStatMonthUi implements ISwimmerStatUi {
+	private static final Logger LOG = Logger.getLogger(SwimmerStatMonthUi.class
+			.getName());
 
 	private String swimmer;
 	private int total;

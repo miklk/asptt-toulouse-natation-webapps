@@ -300,14 +300,40 @@ public class GetAllSwimmerStatActionHandler implements
 						}
 						calendar.setTimeInMillis(entity.getDay());
 						try {
-						((SwimmerStatWeekUi) lSwimmerStatUi).addDistance(calendar.get(Calendar.DAY_OF_WEEK) - 2, index, entity.getDistance());
+							int dayIndex = 0;
+							switch (calendar.get(Calendar.DAY_OF_WEEK)) {
+							case Calendar.MONDAY:
+								dayIndex = 0;
+								break;
+							case Calendar.TUESDAY:
+								dayIndex = 1;
+								break;
+							case Calendar.WEDNESDAY:
+								dayIndex = 2;
+								break;
+							case Calendar.THURSDAY:
+								dayIndex = 3;
+								break;
+							case Calendar.FRIDAY:
+								dayIndex = 4;
+								break;
+							case Calendar.SATURDAY:
+								dayIndex = 5;
+								break;
+							case Calendar.SUNDAY:
+								dayIndex = 6;
+								break;
+							default:
+								dayIndex = 0;
+							}
+						((SwimmerStatWeekUi) lSwimmerStatUi).addDistance(dayIndex, index, entity.getDistance());
 						} catch(Exception e) {
 							e.printStackTrace();
 							LOG.severe(entity.getId() + " " + entity.getDay() + " " + entity.getSwimmer());
 						}
  					} else if(SwimmerStatEnum.MONTH.equals(pAction.getPeriod())) {
 						calendar.setTimeInMillis(entity.getDay());
-						((SwimmerStatMonthUi) lSwimmerStatUi).addDistance(calendar.get(Calendar.WEEK_OF_MONTH), entity.getDistance());
+						((SwimmerStatMonthUi) lSwimmerStatUi).addDistance(calendar.get(Calendar.WEEK_OF_MONTH) - 1, entity.getDistance());
 					}else if(SwimmerStatEnum.YEAR.equals(pAction.getPeriod())) {
 								calendar.setTimeInMillis(entity.getDay());
 								((SwimmerStatYearUi) lSwimmerStatUi).addDistance(calendar.get(Calendar.MONTH), entity.getDistance());
