@@ -122,6 +122,12 @@ public class AdherentListAction extends HttpServlet {
 			fixPrincipal(pReq, pResp);
 		} else if("facture".equals(action)) {
 			facture(pReq, pResp);
+		} else if("profession".equals(action)) {
+			profession(pReq, pResp);
+		} else if("all".equals(action)) {
+			BeanUtilsBean2.getInstance().populate(form, pReq.getParameterMap());
+			form.setSaisie(true);
+			searchCsv(pReq, pResp, form);
 		}
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
@@ -225,6 +231,47 @@ public class AdherentListAction extends HttpServlet {
 			String json = gson.toJson(results);
 			pResp.setContentType("application/json;charset=UTF-8");
 			pResp.getWriter().write(json);
+		} else {
+			pResp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			pResp.setContentType("application/text;charset=UTF-8");
+			pResp.getWriter().write(builder.toString());
+		}
+	}
+	
+	private void searchCsv(HttpServletRequest pReq, HttpServletResponse pResp,
+			AdherentListForm form) throws ServletException, IOException {
+		StrBuilder builder = new StrBuilder();
+
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				5);
+		if(form.isSearchDossier()) {
+			criteria.add(new CriterionDao<Boolean>(
+					InscriptionEntityFields.COMPLET, form.isSearchDossier(),
+					Operator.EQUAL));
+		}
+		if(form.isSaisie()) {
+			criteria.add(new CriterionDao<Boolean>(
+					InscriptionEntityFields.SAISIE, form.isSaisie(),
+					Operator.EQUAL));
+		}
+		final List<InscriptionEntity> entities;
+			entities = inscriptionDao.find(criteria, new OrderDao(
+					InscriptionEntityFields.NOM, OrderOperator.ASC));
+		List<String> results = new ArrayList<String>();
+		for (InscriptionEntity entity : entities) {
+			try {
+				results.add(entity.getNom() + ";" + entity.getPrenom() + ";" + entity.getDatenaissance());
+			} catch (Exception e) {
+				builder.append("Erreur avec l'adhérent " + entity.getId()
+						+ " (" + e.getMessage() + ")");
+			}
+		}
+
+		if (builder.isEmpty()) {
+			StrBuilder res = new StrBuilder();
+			res.appendWithSeparators(results, "\n");
+			pResp.setContentType("application/text;charset=UTF-8");
+			pResp.getWriter().write(res.toString());
 		} else {
 			pResp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			pResp.setContentType("application/text;charset=UTF-8");
@@ -849,5 +896,26 @@ public class AdherentListAction extends HttpServlet {
 			}
 		}
 		return adresseEmail;
+	}
+	
+	protected void profession(HttpServletRequest pReq, HttpServletResponse pResp)
+			throws ServletException, IOException {
+		List<InscriptionEntity> adherents = inscriptionDao.getAll();
+		
+		StrBuilder results = new StrBuilder();
+		for(InscriptionEntity adherent: adherents) {
+			if(StringUtils.isNotBlank(adherent.getProfessionTextPere()) || StringUtils.isNotBlank(adherent.getProfessionTextMere())) {
+				results.append(adherent.getNom() + ";" + adherent.getPrenom()).append(";").append(adherent.getProfessionTextPere()).append(";").append(adherent.getProfessionTextMere()).appendNewLine();
+			}
+		}
+		ServletOutputStream out = pResp.getOutputStream();
+		String contentType = "application/text";
+		String contentDisposition = "attachment;filename=professions.txt;";
+		pResp.setContentType(contentType);
+		pResp.setHeader("Content-Disposition", contentDisposition);
+
+		out.print(results.toString());
+		out.flush();
+		out.close();
 	}
 }

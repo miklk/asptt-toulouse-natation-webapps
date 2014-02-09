@@ -13,6 +13,8 @@ public enum InscriptionEntityFields implements IEntityFields {
 	CRENEAUX(String.class),
 	COMPLET(Boolean.class),
 	FACTURE(String.class),
+	PROFESSION_PERE(String.class, "professionTextPere"),
+	PROFESSION_MERE(String.class, "professionTextMere"),
 	;
 	
 	private Class<? extends Object> clazz;
