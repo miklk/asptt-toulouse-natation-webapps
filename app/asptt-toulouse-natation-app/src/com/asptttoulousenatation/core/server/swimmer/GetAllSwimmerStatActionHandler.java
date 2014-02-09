@@ -62,6 +62,7 @@ public class GetAllSwimmerStatActionHandler implements
 		List<SwimmerEntity> lSwimmerEntities = swimmerDao
 				.find(lSwimmerCriteria);
 		List<Long> lSwimmers = new ArrayList<Long>(lSwimmerEntities.size());
+		//lSwimmers.add(lSwimmerEntities.get(0).getUser());
 		for (SwimmerEntity lSwimmerEntity : lSwimmerEntities) {
 			lSwimmers.add(lSwimmerEntity.getUser());
 		}
@@ -111,7 +112,7 @@ public class GetAllSwimmerStatActionHandler implements
 			Calendar lCalendar = GregorianCalendar.getInstance();
 			lCalendar.setFirstDayOfWeek(Calendar.MONDAY);
 			lCalendar.setTime(currentDate);
-			lCalendar.set(Calendar.HOUR, 0);
+			lCalendar.set(Calendar.HOUR_OF_DAY, 0);
 			lCalendar.set(Calendar.MINUTE, 0);
 			lCalendar.set(Calendar.SECOND, 0);
 			lCalendar.set(Calendar.MILLISECOND, 0);
@@ -145,7 +146,7 @@ public class GetAllSwimmerStatActionHandler implements
 			int endDayOfWeek = lCalendar
 					.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-			lCalendar.set(Calendar.HOUR, 0);
+			lCalendar.set(Calendar.HOUR_OF_DAY, 0);
 			lCalendar.set(Calendar.MINUTE, 0);
 			lCalendar.set(Calendar.SECOND, 0);
 			lCalendar.set(Calendar.MILLISECOND, 0);
@@ -176,7 +177,7 @@ public class GetAllSwimmerStatActionHandler implements
 			Calendar lCalendar = GregorianCalendar.getInstance();
 			lCalendar.setTime(currentDate);
 			
-			lCalendar.set(Calendar.HOUR, 0);
+			lCalendar.set(Calendar.HOUR_OF_DAY, 0);
 			lCalendar.set(Calendar.MINUTE, 0);
 			lCalendar.set(Calendar.SECOND, 0);
 			lCalendar.set(Calendar.MILLISECOND, 0);
@@ -300,7 +301,7 @@ public class GetAllSwimmerStatActionHandler implements
 						}
 						calendar.setTimeInMillis(entity.getDay());
 						try {
-							int dayIndex = 0;
+							final int dayIndex;
 							switch (calendar.get(Calendar.DAY_OF_WEEK)) {
 							case Calendar.MONDAY:
 								dayIndex = 0;
@@ -324,7 +325,8 @@ public class GetAllSwimmerStatActionHandler implements
 								dayIndex = 6;
 								break;
 							default:
-								dayIndex = 0;
+								dayIndex = 6;
+								LOG.severe("" + calendar.get(Calendar.DAY_OF_WEEK));
 							}
 						((SwimmerStatWeekUi) lSwimmerStatUi).addDistance(dayIndex, index, entity.getDistance());
 						} catch(Exception e) {
