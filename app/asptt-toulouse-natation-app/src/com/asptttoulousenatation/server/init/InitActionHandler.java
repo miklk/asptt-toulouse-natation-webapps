@@ -228,10 +228,12 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 					false));
 			applicationLoader.setEvents(getEvents());
 		}
+		
 
 		lInitResult.setArea(applicationLoader.getArea());
 		lInitResult.setActu(applicationLoader.getActu());
 		lInitResult.setEvents(applicationLoader.getEvents());
+		
 		Long endTime = System.currentTimeMillis();
 		LOG.info("Loading duration: " + (endTime - startTime) + " ms");
 		return lInitResult;

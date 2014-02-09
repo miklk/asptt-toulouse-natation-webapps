@@ -327,4 +327,10 @@ public interface ASPTT_ProtoCss extends CssResource {
 	
 	@ClassName("more-actu-button")
 	String moreActuButton();
+	
+	@ClassName("actu-special-title")
+	String actuSpecialTitle();
+	
+	@ClassName("actu-special")
+	String actuSpecial();
 }

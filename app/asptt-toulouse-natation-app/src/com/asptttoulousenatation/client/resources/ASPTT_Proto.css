@@ -700,3 +700,12 @@ border: 2px solid #7C858A;
 	background-color: #C4E5F3;
 	text-transform: uppercase;
 }
+
+.actu-special-title {
+	margin-left: 30%;
+	font-size: 1.1em;
+}
+
+.actu-special {
+	font-size: 0.8em;
+}
