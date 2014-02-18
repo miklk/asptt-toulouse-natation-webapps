@@ -65,7 +65,7 @@ public class AdherentListAction extends HttpServlet {
 	private static final Logger LOG = Logger.getLogger(AdherentListAction.class
 			.getName());
 	
-	private static final int EMAIL_PAQUET = 1;
+	private static final int EMAIL_PAQUET = 10;
 
 	private InscriptionDao inscriptionDao = new InscriptionDao();
 	private SlotDao slotDao = new SlotDao();
@@ -104,14 +104,8 @@ public class AdherentListAction extends HttpServlet {
 			affecter(pReq, pResp, form);
 		} else if ("fixEmail".equals(action)) {
 			fixEmail(pReq, pResp);
-		} else if ("sendConfirmationLeo".equals(action)) {
-			BeanUtilsBean2.getInstance().populate(form, pReq.getParameterMap());
-			sendConfirmationLeo(pReq, pResp, form);
 		} else if("supprimer".equals(action)) {
 			supprimer(pReq, pResp);
-		} else if ("sendExcuse".equals(action)) {
-			BeanUtilsBean2.getInstance().populate(form, pReq.getParameterMap());
-			sendExcuse(pReq, pResp, form);
 		} else if("loadAdherent".equals(action)) {
 			loadAdherent(pReq, pResp);
 		} else if("updateAdherent".equals(action)) {
@@ -376,8 +370,10 @@ public class AdherentListAction extends HttpServlet {
 					"webmaster@asptt-toulouse-natation.com",
 					"ASPTT Toulouse Natation"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					"contact@asptt-toulouse-natation.com"));
+			msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
 					"support@asptt-toulouse-natation.com"));
-			msg.setSubject("Rapport d'envoie d'e-mail", "UTF-8");
+			msg.setSubject("Rapport d'envoi d'e-mail", "UTF-8");
 			msg.setContent(mp);
 			Transport.send(msg);
 			
@@ -471,139 +467,6 @@ public class AdherentListAction extends HttpServlet {
 		pResp.setContentType("text/html;charset=UTF-8");
 		pResp.getWriter().write("ok");
 
-	}
-
-	protected void sendConfirmationLeo(HttpServletRequest pReq,
-			HttpServletResponse pResp, AdherentListForm form)
-			throws ServletException, IOException {
-		Properties props = new Properties();
-		Session session = Session.getDefaultInstance(props, null);
-		List<String> destinataires = getAdresseEmail(form);
-		for (String destinataire : destinataires) {
-			try {
-				Multipart mp = new MimeMultipart();
-				MimeBodyPart htmlPart = new MimeBodyPart();
-
-				MimeMessage msg = new MimeMessage(session);
-				msg.setFrom(new InternetAddress(
-						"webmaster@asptt-toulouse-natation.com",
-						"ASPTT Toulouse Natation"));
-				Address[] replyTo = {new InternetAddress(
-						"contact@asptt-toulouse-natation.com",
-						"ASPTT Toulouse Natation")};
-				msg.setReplyTo(replyTo);
-				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-						destinataire));
-
-				StringBuilder message = new StringBuilder(
-						"<p>Madame, Monsieur,</p><p>A ce jour nous n&#39;avons aucune information&nbsp;de la part de la Mairie au sujet de la r&eacute;ouverture de la piscine L&eacute;o Lagrange.</p><p>En effet cette r&eacute;ouverture devait avoir lieu cette semaine mais elle est repouss&eacute;e. En coulisse, par le biais du personnel travaillant sur site,&nbsp;nous avons eu vent du mardi 12 novembre pour une r&eacute;ouverture aux clubs.<br /><br />"
-						+ "Ainsi, les cours de substitution propos&eacute;s le mercredi soir et le samedi matin&nbsp;<strong>restent maintenus</strong>&nbsp;jusqu&#39;&agrave; l&#39;ouverture effective de L&eacute;o Lagrange.<br />"
-						+ "Pour ceux ne pouvant s&#39;y rendre, des cours de rattrapage vous seront propos&eacute;s lors des vacances d&#39;Hiver (F&eacute;vrier) ou de P&acirc;ques (Avril) 2014.<br />"
-						+ "Nous vous tenons inform&eacute; d&egrave;s que nous avons plus d&#39;information de la part de la mairie.<br />"
-						+ "&nbsp;</p>"
-						+ "<p>En esp&eacute;rant votre compr&eacute;hension,<br />"
-						+ "Le secr&eacute;tariat,<br />"
-						+ "<a href=\"http://www.asptt-toulouse-natation.com\">http://www.asptt-toulouse-natation.com</a>"
-					+ "</p>");
-
-				List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-						1);
-				criteria.add(new CriterionDao<String>(
-						InscriptionEntityFields.EMAIL, destinataire,
-						Operator.EQUAL));
-				List<InscriptionEntity> adherents = inscriptionDao
-						.find(criteria);
-				message.append("<dl>");
-				for (InscriptionEntity adherent : adherents) {
-					adherent.setComplet(true);
-					inscriptionDao.save(adherent);
-					GroupEntity group = groupDao.get(adherent
-							.getNouveauGroupe());
-					message.append("<dt>").append(adherent.getNom()).append(" ").append(adherent.getPrenom()).append(" ").append(group.getTitle())
-					.append("</dt>");
-					for (String creneau : AdherentListResultBeanTransformer
-							.getInstance().getCreneaux(adherent.getCreneaux())) {
-						message.append("<dd>").append(creneau).append("</dd>");
-					}
-				}
-				message.append("</dl>");
-				msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
-						"contact@asptt-toulouse-natation.com"));
-				message.append("<p>Si votre dossier n'est pas à jour, merci de bien vouloir le compléter dans les plus brefs délais, impérativement avant la première séance.</p>");
-				message.append("<p>Sportivement,<br />"
-						+ "Le secrétariat,<br />"
-						+ "ASPTT Grand Toulouse Natation<br />"
-						+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
-				htmlPart.setContent(message.toString(), "text/html");
-				mp.addBodyPart(htmlPart);
-
-				msg.setSubject("ASPTT Toulouse Natation - Confirmation",
-						"UTF-8");
-				msg.setContent(mp);
-				Transport.send(msg);
-			} catch (AddressException e) {
-				// ...
-			} catch (MessagingException e) {
-				// ...
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				LOG.severe("Erreur pour l'e-mail: " + destinataire + "("
-						+ e.getMessage() + ")");
-			}
-		}
-		pResp.setContentType("text/html;charset=UTF-8");
-		pResp.getWriter().write("ok");
-	}
-	
-	protected void sendExcuse(HttpServletRequest pReq,
-			HttpServletResponse pResp, AdherentListForm form)
-			throws ServletException, IOException {
-		Properties props = new Properties();
-		Session session = Session.getDefaultInstance(props, null);
-		try {
-			Multipart mp = new MimeMultipart();
-			MimeBodyPart htmlPart = new MimeBodyPart();
-
-			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress(
-					"webmaster@asptt-toulouse-natation.com",
-					"ASPTT Toulouse Natation"));
-
-			msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
-					"contact@asptt-toulouse-natation.com"));
-			Address[] replyTo = {new InternetAddress(
-					"contact@asptt-toulouse-natation.com",
-					"ASPTT Toulouse Natation")};
-			msg.setReplyTo(replyTo);
-			List<String> destinataires = getAdresseEmail(form);
-			for (String destinataire : destinataires) {
-				msg.addRecipient(Message.RecipientType.BCC,
-						new InternetAddress(destinataire));
-			}
-
-			StringBuilder message = new StringBuilder(
-					"Chers adhérents,<p>Suite à l’incendie survenu à la piscine Léo Lagrange et la ré-affection tardive des bassins par la Mairie de Toulouse, nous avons dû faire face à des difficultés lors des premières séances de natation.<br />Nous remercions les parents et nageurs qui nous ont aidé à gérer ces inconvénients.<br />Nous sommes désolés pour les désagréments occasionnés et nous mettons tout en œuvre pour améliorer la situation. Nous retrouverons un fonctionnement normal dès la réouverture du bassin Léo Lagrange, la date annoncée par la Mairie de Toulouse est la mi-novembre.</p>"
-							+ "<br />Nous vous informons que des créneaux d’entrainement sont encore disponibles. Vous pouvez les consulter sur notre site web et nous contacter par e-mail si vous souhaitez en bénéficier."
-							+ "<p>Sportivement,<br />Le Bureau de la section Natation</p>");
-
-			htmlPart.setContent(message.toString(), "text/html");
-			mp.addBodyPart(htmlPart);
-
-			msg.setSubject("Démarrage de la saison de natation", "UTF-8");
-			msg.setContent(mp);
-			Transport.send(msg);
-		} catch (AddressException e) {
-			// ...
-		} catch (MessagingException e) {
-			// ...
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		pResp.setContentType("text/html;charset=UTF-8");
-		pResp.getWriter().write("ok");
 	}
 
 	protected void fixCreneaux(HttpServletRequest pReq,
