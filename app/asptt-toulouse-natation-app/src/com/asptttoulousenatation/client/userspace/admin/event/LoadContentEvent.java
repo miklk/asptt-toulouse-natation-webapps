@@ -84,7 +84,6 @@ public class LoadContentEvent extends GwtEvent<LoadContentEventHandler> {
 		SUBSCRIPTION,
 		SUBSCRIPTION_ONLINE,
 		FORGET_PASSWORD,
-		BOTTOM,
 		SUB_CONTENT;
 		
 		public static LoadContentAreaEnum get(String pValue) {

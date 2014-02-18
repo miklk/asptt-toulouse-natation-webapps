@@ -88,8 +88,6 @@ public class MainMenuPanel extends Composite {
 						space += 6;
 						// Build menu
 						FlowPanel lSubMenu2 = new FlowPanel();
-						lSubMenu2.getElement().getStyle()
-								.setBackgroundColor("#FFFFFF");
 						for (final MenuUi lMenu : lArea.getMenuSet().values()) {
 							if (lMenu.isDisplay()) {
 								final Label lMenuLabel = new Label(

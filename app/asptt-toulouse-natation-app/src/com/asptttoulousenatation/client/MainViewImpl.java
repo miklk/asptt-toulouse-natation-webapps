@@ -29,7 +29,6 @@ public class MainViewImpl extends Composite implements MainView {
 
 	private InitResult initResult;
 	private DockPanel panel;
-	private MainBottomPanel bottomPanel;
 	private MainToolPanel toolPanel;
 	private MainContentPanel contentPanel;
 	private MainHeaderPanel headerPanel;
@@ -52,9 +51,6 @@ public class MainViewImpl extends Composite implements MainView {
 		headerPanel = new MainHeaderPanel(initResult, user, eventBus,
 				popupManager);
 		panel.add(headerPanel, DockPanel.NORTH);
-
-		bottomPanel = new MainBottomPanel(initResult, eventBus);
-		panel.add(bottomPanel, DockPanel.SOUTH);
 
 		menuPanel = new MainMenuPanel(initResult, user, eventBus);
 		panel.add(menuPanel, DockPanel.WEST);
@@ -89,7 +85,6 @@ public class MainViewImpl extends Composite implements MainView {
 		headerPanel.setPopupManager(pPopupManager);
 		toolPanel.setPopupManager(pPopupManager);
 		contentPanel.setPopupManager(pPopupManager);
-		bottomPanel.setPopupManager(pPopupManager);
 	}
 
 	public HasKeyPressHandlers getAuthenticationButton2() {
@@ -174,10 +169,6 @@ public class MainViewImpl extends Composite implements MainView {
 
 	public void loadInscriptionContent(byte[] pData, List<DocumentUi> pDocuments) {
 		headerPanel.loadInscriptionContent(pData, pDocuments);
-	}
-
-	public void loadBottomContent(byte[] pData) {
-		bottomPanel.loadBottomContent(pData);
 	}
 
 	public void loadForgetPasswordContent(byte[] pData) {

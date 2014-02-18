@@ -222,11 +222,6 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 																			.loadForgetPasswordContent(pResult
 																					.getData());
 																	break;
-																case BOTTOM:
-																	lMainView
-																			.loadBottomContent(pResult
-																					.getData());
-																	break;
 																case SUB_CONTENT:
 																	lMainView
 																			.loadSubContent(
