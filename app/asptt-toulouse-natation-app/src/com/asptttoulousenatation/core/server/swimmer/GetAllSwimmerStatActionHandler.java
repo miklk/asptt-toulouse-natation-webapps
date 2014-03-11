@@ -166,7 +166,25 @@ public class GetAllSwimmerStatActionHandler implements
 			break;
 		case YEAR: {
 			if (pAction.getPreviousNext() == null) {
-				currentDate = pAction.getBeginDate();
+				if(pAction.getBeginDate() == null) {
+					Calendar lCalendar = GregorianCalendar.getInstance();
+					lCalendar.setTime(new Date());
+					switch(lCalendar.get(Calendar.MONTH)) {
+					case Calendar.JANUARY:
+					case Calendar.FEBRUARY:
+					case Calendar.MARCH:
+					case Calendar.APRIL:
+					case Calendar.MAY:
+					case Calendar.JUNE:
+					case Calendar.JULY:
+					case Calendar.AUGUST:
+						lCalendar.add(Calendar.YEAR, -1);
+						break;
+					}
+					currentDate = lCalendar.getTime();
+				} else {
+					currentDate = pAction.getBeginDate();
+				}
 			} else {
 				Calendar lCalendar = GregorianCalendar.getInstance();
 				lCalendar.setTime(pAction.getBeginDate());

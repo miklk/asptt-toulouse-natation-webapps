@@ -46,6 +46,39 @@ public class SwimmerStatYearViewImpl extends Composite implements
 		};
 		cellTable.addColumn(swimmerColumn, "Nageur(euse)");
 
+		
+		TextColumn<SwimmerStatYearUi> distanceColumn9 = new TextColumn<SwimmerStatYearUi>() {
+
+			@Override
+			public String getValue(SwimmerStatYearUi pObject) {
+				return Integer.toString(pObject.getDistances().get(8));
+			}
+		};
+		cellTable.addColumn(distanceColumn9, "Septembre");
+		TextColumn<SwimmerStatYearUi> distanceColumn10 = new TextColumn<SwimmerStatYearUi>() {
+
+			@Override
+			public String getValue(SwimmerStatYearUi pObject) {
+				return Integer.toString(pObject.getDistances().get(9));
+			}
+		};
+		cellTable.addColumn(distanceColumn10, "Octobre");
+		TextColumn<SwimmerStatYearUi> distanceColumn11 = new TextColumn<SwimmerStatYearUi>() {
+
+			@Override
+			public String getValue(SwimmerStatYearUi pObject) {
+				return Integer.toString(pObject.getDistances().get(10));
+			}
+		};
+		cellTable.addColumn(distanceColumn11, "Novembre");
+		TextColumn<SwimmerStatYearUi> distanceColumn12 = new TextColumn<SwimmerStatYearUi>() {
+
+			@Override
+			public String getValue(SwimmerStatYearUi pObject) {
+				return Integer.toString(pObject.getDistances().get(11));
+			}
+		};
+		cellTable.addColumn(distanceColumn12, "Décembre");
 		TextColumn<SwimmerStatYearUi> distanceColumn1 = new TextColumn<SwimmerStatYearUi>() {
 
 			@Override
@@ -110,38 +143,6 @@ public class SwimmerStatYearViewImpl extends Composite implements
 			}
 		};
 		cellTable.addColumn(distanceColumn8, "Août");
-		TextColumn<SwimmerStatYearUi> distanceColumn9 = new TextColumn<SwimmerStatYearUi>() {
-
-			@Override
-			public String getValue(SwimmerStatYearUi pObject) {
-				return Integer.toString(pObject.getDistances().get(8));
-			}
-		};
-		cellTable.addColumn(distanceColumn9, "Septembre");
-		TextColumn<SwimmerStatYearUi> distanceColumn10 = new TextColumn<SwimmerStatYearUi>() {
-
-			@Override
-			public String getValue(SwimmerStatYearUi pObject) {
-				return Integer.toString(pObject.getDistances().get(9));
-			}
-		};
-		cellTable.addColumn(distanceColumn10, "Octobre");
-		TextColumn<SwimmerStatYearUi> distanceColumn11 = new TextColumn<SwimmerStatYearUi>() {
-
-			@Override
-			public String getValue(SwimmerStatYearUi pObject) {
-				return Integer.toString(pObject.getDistances().get(10));
-			}
-		};
-		cellTable.addColumn(distanceColumn11, "Novembre");
-		TextColumn<SwimmerStatYearUi> distanceColumn12 = new TextColumn<SwimmerStatYearUi>() {
-
-			@Override
-			public String getValue(SwimmerStatYearUi pObject) {
-				return Integer.toString(pObject.getDistances().get(11));
-			}
-		};
-		cellTable.addColumn(distanceColumn12, "Décembre");
 
 		TextColumn<SwimmerStatYearUi> totalColumn = new TextColumn<SwimmerStatYearUi>() {
 

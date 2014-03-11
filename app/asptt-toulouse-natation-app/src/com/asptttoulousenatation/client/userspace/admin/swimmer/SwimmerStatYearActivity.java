@@ -31,7 +31,7 @@ public class SwimmerStatYearActivity extends MyAbstractActivity<SwimmerStatPlace
 		final SimplePanel lPanel = new SimplePanel();
 		pPanel.setWidget(lPanel);
 		PopupManager.loading();
-		dispatchAsync.execute(new GetAllSwimmerStatAction(kind, new Date(),
+		dispatchAsync.execute(new GetAllSwimmerStatAction(kind, null,
 				null), new AsyncCallback<GetAllSwimmerStatResult<?>>() {
 
 			public void onFailure(Throwable pCaught) {
