@@ -43,11 +43,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#"><img src="img/logo.png" style="width: 140px; height: 30px" /></a>
+              
             </div>
-            <div class="navbar-collapse collapse">
+            <div class="navbar-collapse collapse"  style="margin: 0 auto;">
               <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Accueil</a></li>
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Le Club<b class="caret"></b></a>
                   <ul class="dropdown-menu">
@@ -77,6 +76,7 @@
                	</li>
                 <li><a href="#about">Compétitions</a></li>
                 <li><a href="#about">Santé</a></li>
+                <li><a class="navbar-brand" href="#"><img src="img/logo.png" style="width: 140px; height: 30px" /></a></li>
                 <li><a href="#about">Boutique</a></li>
                 <li><a href="#about">Partenaires</a></li>
                 <li><a href="#about">Inscriptions</a></li>
@@ -92,7 +92,7 @@
 
     <!-- Carousel
     ================================================== -->
-    <div id="myCarousel" class="carousel slide">
+    <div id="myCarousel" class="carousel slide" data-interval="5000" data-wrap="true" data-pause="none">
       <!-- Indicators -->
       <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -221,5 +221,6 @@ Michaël (via Rémi)</p>
     <script src="bootstrap/assets/js/jquery.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="bootstrap/assets/js/holder.js"></script>
+    <script>$('.carousel').carousel()</script>
   </body>
 </html>
