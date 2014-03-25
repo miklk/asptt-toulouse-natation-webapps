@@ -322,6 +322,9 @@ public interface ASPTT_ProtoCss extends CssResource {
 	@ClassName("actu-bloc-header")
 	String actuBlocHeader();
 	
+	@ClassName("actu-bloc-header-summary")
+	String actuBlocHeaderSummary();
+	
 	@ClassName("actu-bloc-content")
 	String actuBlocContent();
 	

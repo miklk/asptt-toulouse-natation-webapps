@@ -133,8 +133,10 @@ public class MainContentPanel extends Composite {
 			Label open = new Label("+");
 			open.getElement().getStyle().setMarginRight(5, Unit.PX);
 			headerPanel.add(open);
-			headerPanel.add(new HTML(
-					lActuUi.getSummary()));
+			HTML summaryPanel = new HTML(
+					lActuUi.getSummary());
+			summaryPanel.addStyleName(CSS.actuBlocHeaderSummary());
+			headerPanel.add(summaryPanel);
 			lActuDetail.setHeader(headerPanel);
 			VerticalPanel lContentPanel = new VerticalPanel();
 			lContentPanel.add(new HTML(lActuUi.getContent()));
