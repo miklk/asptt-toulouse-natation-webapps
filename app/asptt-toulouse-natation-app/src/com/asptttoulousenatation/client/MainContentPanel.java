@@ -29,7 +29,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -88,25 +87,6 @@ public class MainContentPanel extends Composite {
 		panel.add(breadcrumb);
 		panel.setCellHeight(breadcrumb, "10px");
 		
-		Label lInfoSupp = new Label("Ecole de natation - Il reste des places !");
-		lInfoSupp.setStyleName(CSS.actuSpecialTitle());
-		lInfoSupp.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent pEvent) {
-				PopupPanel lPopupPanel = new PopupPanel(true);
-				SimplePanel lPanel = new SimplePanel();
-				lPanel.setStyleName(CSS.actuSpecial());
-				lPanel.setWidget(new HTML("<p><span style=\"\"><span style=\"font-family:comic sans ms,cursive;\">Suite &agrave; un &eacute;tat des lieux de nos groupes de l&#39;Ecole de Natation, des Loisirs et de l&#39;Aquagym, veuillez trouver ci-joint d&eacute;taill&eacute;es, les s&eacute;ances o&ugrave; vous pourrez venir pratiquer votre discipline favorite dans les meilleures conditions :</span></span></p><p><span style=\"\"><span style=\"font-family:comic sans ms,cursive;\"><strong>1)</strong> <u><strong>Tritons (d&eacute;butants de 2009 et +)</strong></u> : Lundi de 19h &agrave; 19h45 sur Toulouse-Lautrec, Mercredi de 14h30 &agrave; 15h et de 16h &agrave; 16h45 sur Raymond Naves, &nbsp;Jeudi de 18h45 &agrave; 19h30 sur L&eacute;o Lagrange.</span></span></p><p><span style=\"\"><span style=\"font-family:comic sans ms,cursive;\"><strong>2) <u>Dauphins (d&eacute;brouill&eacute;s de 2008 et )&nbsp;</u></strong>: Mercredi de 19h45 &agrave; 20h30 sur Toulouse-Lautrec, Mercredi de 16h &agrave; 16h45 sur Raymond Naves, Samedi de 10h30 &agrave; 11h15 sur Alex Jany.</span></span></p><p><span style=\"\"><span style=\"font-family:comic sans ms,cursive;\"><strong>3) <u>Licornes </u>: </strong>Lundi de 19h45 &agrave; 20h30 sur Toulouse-Lautrec, Mercredi de 15h15 &agrave; 16h sur Raymond Naves, Jeudi de 18h45 &agrave; 19h30 sur L&eacute;o Lagrange, Vendredi de 18h &agrave; 19h ou de 19h &agrave; 20h sur L&eacute;o Lagrange, Vendredi de 19h55 &agrave; 20h45 sur Alex Jany, Samedi de 11h15 &agrave; 12h sur Alex Jany.</span></span></p><p><span style=\"\"><span style=\"font-family:comic sans ms,cursive;\"><strong>4) <u>Avenirs (confirm&eacute;s n&eacute;s en 2005, 2006) </u></strong>: Mercredi de 16h &agrave; 16h45 sur Raymond Naves, Mercredi de 19h &agrave; 19h45 sur Toulouse-Lautrec, Vendredi de 18h &agrave; 19h sur L&eacute;o Lagrange, Vendredi de 19h &agrave; 19h50 sur Alex Jany, Samedi de 09h &agrave; 09h45 sur Alex Jany.</span></span></p><p><span style=\"\"><span style=\"font-family:comic sans ms,cursive;\"><strong>5) <u>Marsouins (n&eacute;s en 2003 et 2004)</u></strong><u> </u>: Lundi &nbsp;et Mercredi de 19h &agrave; 19h45 sur Toulouse-Lautrec, Mercredi de 15h15 &agrave; 16h sur Raymond Naves, Jeudi de 18h45 &agrave; 19h30 sur L&eacute;o Lagrange, Vendredi de 19h &agrave; 20h sur L&eacute;o Lagrange, Samedi de 09h &agrave; 09h45 et de 11h15 &agrave; 12h sur Alex Jany.</span></span></p><p><span style=\"\"><span style=\"font-family:comic sans ms,cursive;\"><strong>6) <u>Cachalots (n&eacute;s en 2000, 2001 et 2002) </u></strong>: Mercredi de 14h30 &agrave; 15h15 sur Raymond Naves et Mercredi de 19h45 &agrave; 20h30 sur Toulouse-Lautrec.</span></span></p><p><span style=\"\"><span style=\"font-family:comic sans ms,cursive;\"><strong>7) <u>Loisirs Adultes (perfectionnement 1992 et +) </u></strong>: Mercredi de 19h &agrave; 19h45 et de 19h45 &agrave; 20h30 sur Toulouse-Lautrec, Vendredi de 19h55 &agrave; 20h45 sur Alex Jany.</span></span></p><p><span style=\"\"><span style=\"font-family:comic sans ms,cursive;\"><strong>8) <u>Adultes D&eacute;butants&nbsp;(apprentissage) </u></strong>: Vendredi de 19h55 &agrave; 20h45 sur Alex Jany.</span></span></p><p><span style=\"\"><span style=\"font-family:comic sans ms,cursive;\"><strong>9) <u>Aquagym </u></strong>: Mardi de 19h55 &agrave; 20h45 sur Alex Jany, Jeudi de 18h &agrave; 18h45 ou de 18h45 &agrave; 19h30 sur L&eacute;o Lagrange, Vendredi de 18h &agrave; 19h sur L&eacute;o Lagrange, Vendredi de 19h55 &agrave; 20h45 sur Alex Jany.</span></span></p><p><span style=\"\"><span style=\"font-family:comic sans ms,cursive;\">A noter qu&#39;en ce d&eacute;but de second trimestre de pratique, un prorata de la cotisation vous sera propos&eacute;, ce qui passe l&#39;inscription sur l&#39;Ecole de Nage &agrave; 193 euros (&agrave; la place de 250) et sur l&#39;Aquagym &agrave; 213 (au lieu de 280).</span></span></p><p><span style=\"\"><span style=\"font-family:comic sans ms,cursive;\">Si vous souhaitez passer &agrave; l&#39;acte, suivez le lien suivant (<a href=\"http://www.asptt-toulouse-natation.com/v2/inscription.html\">http://www.asptt-toulouse-natation.com/v2/inscription.html</a>).</span></span></p><p><span style=\"\"><span style=\"font-family:comic sans ms,cursive;\">N&#39;h&eacute;sitez pas &agrave; nous rejoindre dans les plus brefs d&eacute;lais !!!</span></span></p>"));
-				lPopupPanel.add(lPanel);
-				lPopupPanel.setSize("500px", "100%");
-				lPopupPanel.center();
-			}
-		});
-		panel.add(lInfoSupp);
-		panel.setCellHeight(lInfoSupp, "10px");
-		
-
 		subMenu = new HorizontalPanel();
 		panel.add(subMenu);
 		panel.setCellHeight(subMenu, "20px");
