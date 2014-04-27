@@ -6,7 +6,7 @@
 
 /*! normalize.css v3.0.0 | MIT License | git.io/normalize */
 html {
-  font-family: 'Open Sans', Tahoma, sans-serif;
+  font-family: 'Helvetica', Tahoma, sans-serif;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
 }
@@ -610,7 +610,7 @@ dd {
 @media (min-width: 768px) {
   .dl-horizontal dt {
     float: left;
-    width: 160px;
+    width: 180px;
     overflow: hidden;
     clear: left;
     text-align: right;
@@ -618,7 +618,8 @@ dd {
     white-space: nowrap;
   }
   .dl-horizontal dd {
-    margin-left: 180px;
+    margin-left: 200px;
+    margin-bottom: 20px;
   }
 }
 abbr[title],
@@ -3020,7 +3021,7 @@ input[type="button"].btn-block {
   margin: 2px 0 0;
   font-size: 14px;
   list-style: none;
-  background-color: rgba(221, 244, 252, 0.62);
+  background-color: rgba(221, 244, 252, 0.80);
   background-clip: padding-box;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, .15);
@@ -3461,7 +3462,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav > li > a {
   position: relative;
   display: block;
-  padding: 10px 15px;
+  padding: 5px 15px 5px 15px;
 }
 .nav > li > a:hover,
 .nav > li > a:focus {
@@ -3643,13 +3644,12 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar {
   position: relative;
-  min-height: 50px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
+  min-height: 30px;
+  margin-bottom: 15px;
+  margin-top: 20px;
 }
 @media (min-width: 768px) {
   .navbar {
-    border-radius: 4px;
   }
 }
 @media (min-width: 768px) {
@@ -3730,7 +3730,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-fixed-top {
-  top: 0;
+  top: 15px;
   border-width: 0 0 1px;
 }
 .navbar-fixed-bottom {
@@ -3788,8 +3788,6 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   margin: 7.5px -15px;
 }
 .navbar-nav > li > a {
-  padding-top: 10px;
-  padding-bottom: 10px;
   line-height: 20px;
 }
 @media (max-width: 767px) {
@@ -3817,14 +3815,12 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 @media (min-width: 768px) {
   .navbar-nav {
     float: left;
-    margin: 0;
+    margin: 0 0 0 8%;
   }
   .navbar-nav > li {
     float: left;
   }
   .navbar-nav > li > a {
-    padding-top: 15px;
-    padding-bottom: 15px;
   }
   .navbar-nav.navbar-right:last-child {
     margin-right: -15px;
@@ -3906,8 +3902,6 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar-nav > li > .dropdown-menu {
   margin-top: 0;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
 }
 .navbar-fixed-bottom .navbar-nav > li > .dropdown-menu {
   border-bottom-right-radius: 0;
@@ -3940,26 +3934,27 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-default {
-  background-color: #e9f8fc;
+  background-color: #9750D4;
   border-color: #e9f8fc;
 }
 .navbar-default .navbar-brand {
-  color: #777;
+  color: #F3F9FC;
 }
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
-  color: #5e5e5e;
+  color: #F3F9FC;
   background-color: transparent;
 }
 .navbar-default .navbar-text {
-  color: #023EA0;
+  color: #F3F9FC;
 }
 .navbar-default .navbar-nav > li > a {
-  color: #023EA0;
+  color: #F3F9FC;
+  font-size: 1.2em;
 }
 .navbar-default .navbar-nav > li > a:hover,
 .navbar-default .navbar-nav > li > a:focus {
-  color: #333;
+  color: #F3F9FC;
   background-color: transparent;
 }
 .navbar-default .navbar-nav > .active > a,
@@ -3979,10 +3974,10 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar-default .navbar-toggle:hover,
 .navbar-default .navbar-toggle:focus {
-  background-color: #ddf4fc;
+  background-color: transparent;
 }
 .navbar-default .navbar-toggle .icon-bar {
-  background-color: #ddf4fc;
+  background-color: transparent;
 }
 .navbar-default .navbar-collapse,
 .navbar-default .navbar-form {
@@ -3991,8 +3986,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-default .navbar-nav > .open > a,
 .navbar-default .navbar-nav > .open > a:hover,
 .navbar-default .navbar-nav > .open > a:focus {
-  color: #555;
-  background-color: #ddf4fc;
+  color: #FFF;
+  background-color: transparent;
 }
 @media (max-width: 767px) {
   .navbar-default .navbar-nav .open .dropdown-menu > li > a {
