@@ -10,8 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,12 +26,10 @@ import net.customware.gwt.dispatch.shared.DispatchException;
 import org.apache.commons.lang.StringUtils;
 
 import com.asptttoulousenatation.client.userspace.menu.MenuItems;
-import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.server.dao.ActuDao;
 import com.asptttoulousenatation.core.server.dao.competition.CompetitionDao;
 import com.asptttoulousenatation.core.server.dao.competition.CompetitionDayDao;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
-import com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionDayEntity;
 import com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.AreaEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.ContentEntityFields;
@@ -68,7 +64,6 @@ import com.asptttoulousenatation.server.userspace.admin.entity.CompetitionDayTra
 import com.asptttoulousenatation.server.userspace.admin.entity.CompetitionTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.MenuTransformer;
 import com.asptttoulousenatation.server.util.Utils;
-import com.asptttoulousenatation.shared.event.UiEvent;
 import com.asptttoulousenatation.shared.init.InitAction;
 import com.asptttoulousenatation.shared.init.InitResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
@@ -219,61 +214,12 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 			applicationLoader.setActu(lActu);
 		}
 
-		IsDataUpdateResult lEventUpdateResult = pContext
-				.execute(new IsDataUpdateAction(CompetitionEntity.class));
-		if (lEventUpdateResult.isDataUpdated()
-				|| applicationLoader.getEvents() == null) {
-			// Events "calendar"
-			pContext.execute(new SetDataUpdateAction(CompetitionEntity.class,
-					false));
-			applicationLoader.setEvents(getEvents());
-		}
-		
-
 		lInitResult.setArea(applicationLoader.getArea());
 		lInitResult.setActu(applicationLoader.getActu());
-		lInitResult.setEvents(applicationLoader.getEvents());
 		
 		Long endTime = System.currentTimeMillis();
 		LOG.info("Loading duration: " + (endTime - startTime) + " ms");
 		return lInitResult;
-	}
-
-	private Map<Date, List<UiEvent>> getEvents() {
-		final Map<Date, List<UiEvent>> lEvents = new HashMap<Date, List<UiEvent>>();
-		List<CompetitionEntity> lEntities = competitionDao.getAll();
-		for (CompetitionEntity lEntity : lEntities) {
-			for (Long lDay : lEntity.getDays()) {
-				CompetitionDayEntity lDayEntity = competitionDayDao.get(lDay);
-
-				UiEvent lEvent = competitionDayTransformer.toUiEvent(
-						lDayEntity, lEntity);
-				List<UiEvent> lEventList = lEvents.get(lEvent.getEventDate());
-				if (lEventList == null) {
-					lEventList = new ArrayList<UiEvent>();
-				}
-				lEventList.add(lEvent);
-				lEvents.put(lEvent.getEventDate(), lEventList);
-			}
-			if (CollectionUtils.isEmpty(lEntity.getDays())) {
-				List<UiEvent> lEventUis = competitionTransformer
-						.toUiEvent(lEntity);
-				for (UiEvent lEvent : lEventUis) {
-					List<UiEvent> lEventList;
-					Date lDate = new Date(Date.UTC(lEvent.getEventDate()
-							.getYear(), lEvent.getEventDate().getMonth(),
-							lEvent.getEventDate().getDate(), 0, 0, 0));
-					if (lEvents.containsKey(lDate)) {
-						lEventList = lEvents.get(lDate);
-					} else {
-						lEventList = new ArrayList<UiEvent>();
-					}
-					lEventList.add(lEvent);
-					lEvents.put(lDate, lEventList);
-				}
-			}
-		}
-		return lEvents;
 	}
 
 	public Class<InitAction> getActionType() {

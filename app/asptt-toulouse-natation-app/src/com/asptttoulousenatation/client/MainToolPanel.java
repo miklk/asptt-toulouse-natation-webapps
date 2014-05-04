@@ -3,22 +3,16 @@ package com.asptttoulousenatation.client;
 import static com.asptttoulousenatation.client.Asptt_toulouse_natation_app.CSS;
 import static com.asptttoulousenatation.client.resources.ASPTT_ProtoResources.IMAGES;
 
-import java.util.Date;
-import java.util.List;
-
 import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent;
 import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent.LoadContentAreaEnum;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.user.UserUi;
-import com.asptttoulousenatation.shared.event.UiEvent;
 import com.asptttoulousenatation.shared.init.InitResult;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -29,7 +23,6 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.datepicker.client.DatePicker;
 import com.google.web.bindery.event.shared.EventBus;
 
 public class MainToolPanel extends Composite {
@@ -92,48 +85,6 @@ public class MainToolPanel extends Composite {
 
 			@Override
 			public void run() {
-
-				final DatePicker lDatePicker = new DatePicker();
-				// Get event dates
-				lDatePicker.addStyleToDates(CSS.calendarEvt(), initResult
-						.getEvents().keySet());
-
-				lDatePicker
-						.addValueChangeHandler(new ValueChangeHandler<Date>() {
-							public void onValueChange(
-									ValueChangeEvent<Date> pEvent) {
-								Date lSearchDate = new Date(Date.UTC(pEvent
-										.getValue().getYear(), pEvent
-										.getValue().getMonth(), pEvent
-										.getValue().getDate(), 0, 0, 0));
-								List<UiEvent> lUiEvents = initResult
-										.getEvents().get(lSearchDate);
-								if (lUiEvents != null && !lUiEvents.isEmpty()) {
-									StringBuilder lMsg = new StringBuilder();
-									for (UiEvent lUiEvent : lUiEvents) {
-										lMsg.append(lUiEvent.getEventTitle())
-												.append("<br />");
-									}
-									popupManager.createPopup(true, true,
-											new HTML(lMsg.toString()));
-									popupManager.showRelativeTo(lDatePicker);
-								}
-							}
-						});
-				lDatePicker.setSize("100%", "100%");
-				HeaderPanel lEventPanel = new HeaderPanel("Evènement",
-						lDatePicker);
-				lEventPanel.getHeader().addClickHandler(new ClickHandler() {
-					public void onClick(ClickEvent pEvent) {
-						AreaUi eventArea = initResult.getArea("Compétitions");
-						MenuUi eventMenu = eventArea.getMenu("Calendrier");
-						eventBus.fireEvent(new LoadContentEvent(eventMenu, LoadContentAreaEnum.CONTENT, eventArea.getTitle(), eventMenu.getTitle()));
-					}
-				});
-				lEventPanel.setHeaderStyle(CSS.blocTitle());
-				lEventPanel.addStyleName(CSS.bloc());
-				panel.add(lEventPanel);
-
 				AlternateBanner_Part lAlternateBanner_Part = new AlternateBanner_Part();
 				HeaderPanel lPartnerPanel = new HeaderPanel("Partenaires",
 						lAlternateBanner_Part);
