@@ -2,8 +2,11 @@ package com.asptttoulousenatation.core.shared.document;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+@XmlRootElement
 public class DocumentUi implements IsSerializable {
 
 	private Long id;

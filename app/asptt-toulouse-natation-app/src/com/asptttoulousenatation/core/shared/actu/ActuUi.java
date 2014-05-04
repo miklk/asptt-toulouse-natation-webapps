@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.google.gwt.user.client.rpc.IsSerializable;
-
+@XmlRootElement
 public class ActuUi implements IsSerializable {
 	private Long id;
 	private String title;
