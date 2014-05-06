@@ -38,7 +38,8 @@
   </head>
 <!-- NAVBAR
 ================================================== -->
-  <body style="background-color: #e9f8fc;" >
+  <body style="background-color: #e9f8fc;" data-target="#scrollspy" data-spy="scroll" >
+  
   <nav class="navbar navbar-default" role="navigation" ng-controller="LoadingAppCtrl">
           <div class="container">
             <div class="navbar-collapse collapse">
@@ -63,11 +64,9 @@
     </div>
 
 	<div id="main-panel" class="container" style="margin-top: 3%">
-  <div ng-view>
-  	
-
-
-</div>
+	<div data-spy="affix" data-offset-top="120" id="affix">
+    </div>
+  		<div ng-view></div>
 
 		
 		
