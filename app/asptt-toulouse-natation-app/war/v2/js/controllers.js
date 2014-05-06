@@ -23,6 +23,9 @@ aspttNatTlsApp.config(['$routeProvider', function ($routeProvider) {
 			templateUrl: 'views/home.html',
 			controller: 'LoadingAppCtrl'
 		}).
+		when('/page/Partenaires', {
+			templateUrl: 'views/partenaires.html'
+		}).
 		when('/page/:pageId', {
 			templateUrl: 'views/page.html',
 			controller: 'PageCtrl'
