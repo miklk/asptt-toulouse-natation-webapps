@@ -1,4 +1,4 @@
-var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute', 'pagesControllers']);
+var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute', 'pagesControllers', 'ngSanitize']);
 aspttNatTlsApp.config(['$routeProvider', 
                        function($routeProvider) {
 	$routeProvider.

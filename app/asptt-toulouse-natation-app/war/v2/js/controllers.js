@@ -13,8 +13,11 @@ aspttNatTlsApp.controller('LoadingAppCtrl', ['$scope', 'LoadingApp', function($s
 	$scope.loadingApp = LoadingApp.get();
 }]);
 
-aspttNatTlsApp.controller('PageCtrl', ['$scope', 'PageService', '$routeParams', function($scope, PageService, $routeParams) {
-	$scope.pageId = PageService.get({pageId: $routeParams.pageId});
+aspttNatTlsApp.controller('PageCtrl', ['$scope', 'PageService', '$routeParams', '$sce', function($scope, PageService, $routeParams, $sce) {
+	PageService.get({pageId: $routeParams.pageId}, function(data) {
+		var pageUi = angular.fromJson(data);
+		$scope.pageHtml = $sce.trustAsHtml(pageUi.content);
+	});
 }]);
 
 aspttNatTlsApp.config(['$routeProvider', function ($routeProvider) {

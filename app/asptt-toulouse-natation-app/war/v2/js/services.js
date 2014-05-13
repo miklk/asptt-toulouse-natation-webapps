@@ -13,10 +13,9 @@ var pageServices = angular.module('pageServices', ['ngResource']);
 
 pageServices.factory('PageService', ['$resource', 
                                        function($resource) {
-	return $resource('/resources/page/:pageId',{},{
+	return $resource('/resources/pages/:pageId',{},{
         query:{
             method:'GET',
-            params: {pageId: "@pageId"},
-            isArray:true
+            isArray:false
         }});
 }]);
