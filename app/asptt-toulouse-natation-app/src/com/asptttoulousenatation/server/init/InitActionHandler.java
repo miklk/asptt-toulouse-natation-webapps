@@ -111,10 +111,10 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		LOG.info("Init action");
 		Long startTime = System.currentTimeMillis();
 
-		 createData();
-		 createUsers();
-		 createCompetition();
-		 createActu();
+		// createData();
+		// createUsers();
+		// createCompetition();
+		// createActu();
 		InitResult lInitResult = new InitResult();
 		lInitResult.setPhoto(getPicture());
 

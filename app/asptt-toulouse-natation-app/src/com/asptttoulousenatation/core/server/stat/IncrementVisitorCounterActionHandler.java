@@ -7,8 +7,6 @@ import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
 
-import org.apache.commons.collections.CollectionUtils;
-
 import com.asptttoulousenatation.core.server.dao.entity.stat.VisitorCounter;
 import com.asptttoulousenatation.core.server.dao.stat.VisitorCounterDao;
 import com.asptttoulousenatation.core.shared.stat.IncrementVisitorCounterAction;
@@ -28,7 +26,7 @@ public class IncrementVisitorCounterActionHandler
 			IncrementVisitorCounterAction visitorCounterAction, ExecutionContext executionContext)
 			throws DispatchException {
 		List<VisitorCounter> counters = dao.getAll();
-		if(CollectionUtils.isNotEmpty(counters)) {
+		if(!counters.isEmpty()) {
 			VisitorCounter counter = counters.get(0);
 			counter.setCounter(counter.getCounter() + 1);
 			dao.save(counter);
