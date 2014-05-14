@@ -23,7 +23,7 @@ import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.core.server.dao.ActuDao;
@@ -55,6 +55,7 @@ import com.asptttoulousenatation.core.shared.actu.GetAllActuResult;
 import com.asptttoulousenatation.core.shared.reference.IsDataUpdateAction;
 import com.asptttoulousenatation.core.shared.reference.IsDataUpdateResult;
 import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
+import com.asptttoulousenatation.core.shared.stat.IncrementVisitorCounterAction;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
 import com.asptttoulousenatation.server.ApplicationLoader;
@@ -110,10 +111,10 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		LOG.info("Init action");
 		Long startTime = System.currentTimeMillis();
 
-		// createData();
-		// createUsers();
-		// createCompetition();
-		// createActu();
+		 createData();
+		 createUsers();
+		 createCompetition();
+		 createActu();
 		InitResult lInitResult = new InitResult();
 		lInitResult.setPhoto(getPicture());
 
@@ -216,6 +217,10 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 
 		lInitResult.setArea(applicationLoader.getArea());
 		lInitResult.setActu(applicationLoader.getActu());
+		
+		
+		//Increment counter
+		pContext.execute(new IncrementVisitorCounterAction());
 		
 		Long endTime = System.currentTimeMillis();
 		LOG.info("Loading duration: " + (endTime - startTime) + " ms");
