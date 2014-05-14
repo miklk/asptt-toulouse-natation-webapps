@@ -50,7 +50,8 @@
                 	</a>
                 </li>
                 <li class="dropdown" ng-repeat="menu in loadingApp.menus">
-                 <a href="#/page/{{menu.title}}" class="dropdown-toggle" data-toggle="dropdown">{{menu.title}}<b class="caret" ng-show="menu.subMenu"></b></a>
+                		<a href="" class="dropdown-toggle" data-toggle="dropdown" ng-show="menu.hasSubMenu">{{menu.title}}<b class="caret"></b></a>
+                		<a href="#/page/{{menu.title}}" class="dropdown" ng-hide="menu.hasSubMenu">{{menu.title}}</a>
                   <ul class="dropdown-menu">
                     <li ng-repeat="menuSubMenu in menu.subMenu"><a href="#/page/{{menuSubMenu.title}}">{{menuSubMenu.title}}</a></li>
                   </ul>

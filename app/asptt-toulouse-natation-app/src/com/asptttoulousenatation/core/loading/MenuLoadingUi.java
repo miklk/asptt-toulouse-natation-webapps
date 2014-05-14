@@ -20,9 +20,12 @@ public class MenuLoadingUi implements Serializable {
 	
 	private List<MenuLoadingUi> subMenu;
 	
+	private boolean hasSubMenu;
+	
 	public MenuLoadingUi() {
 		title = StringUtils.EMPTY;
 		subMenu = new ArrayList<MenuLoadingUi>();
+		hasSubMenu = false;
 	}
 	
 	public MenuLoadingUi(String pTitle) {
@@ -44,9 +47,20 @@ public class MenuLoadingUi implements Serializable {
 
 	public void setSubMenu(List<MenuLoadingUi> pSubMenu) {
 		subMenu = pSubMenu;
+		hasSubMenu = !subMenu.isEmpty();
 	}
 	
 	public void addSubMenu(MenuLoadingUi pMenu) {
+		hasSubMenu = true;
 		subMenu.add(pMenu);
 	}
+
+	public boolean isHasSubMenu() {
+		return hasSubMenu;
+	}
+
+	public void setHasSubMenu(boolean pHasSubMenu) {
+		hasSubMenu = pHasSubMenu;
+	}
+	
 }
