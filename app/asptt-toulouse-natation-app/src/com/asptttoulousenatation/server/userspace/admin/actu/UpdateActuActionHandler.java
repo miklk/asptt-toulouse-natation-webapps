@@ -23,6 +23,7 @@ public class UpdateActuActionHandler implements
 		lActu.setSummary(pAction.getSummary());
 		lActu.setCreationDate(pAction.getCreationDate());
 		lActu.setContent(new Text(pAction.getContent()));
+		lActu.setImageUrl(pAction.getImageUrl());
 		lActuDao.save(lActu);
 		pContext.execute(new SetDataUpdateAction(ActuEntity.class, true));
 		return new UpdateActuResult();

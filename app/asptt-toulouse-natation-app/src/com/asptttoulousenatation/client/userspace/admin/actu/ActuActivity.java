@@ -58,7 +58,8 @@ public class ActuActivity extends MyAbstractActivity<ActuPlace> {
 																	.getValue(),
 																	lActuEditionView.getSummary().getValue(),
 															lActuEditionView
-																	.getContent()),
+																	.getContent(), lActuEditionView.getImageUrl().getValue()
+																	),
 													new AsyncCallback<UpdateActuResult>() {
 
 														public void onFailure(
@@ -106,7 +107,7 @@ public class ActuActivity extends MyAbstractActivity<ActuPlace> {
 					PublishActuAction lPublishActuAction = new PublishActuAction(
 							lActuView.getTitre().getValue(), lActuView.getSummary().getValue(), lActuView
 									.getContent(), lActuView.getCreationDate()
-									.getValue(), lActuView.getDocumentId());
+									.getValue(), lActuView.getDocumentId(), lActuView.getImageUrl().getValue());
 					dispatchAsync.execute(lPublishActuAction,
 							new AsyncCallback<PublishActionResult>() {
 

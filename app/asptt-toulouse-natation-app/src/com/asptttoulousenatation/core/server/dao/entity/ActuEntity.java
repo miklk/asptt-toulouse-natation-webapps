@@ -35,17 +35,21 @@ public class ActuEntity implements Entity {
 	@Persistent
 	private Date creationDate;
 	
+	@Persistent
+	private String imageUrl;
+	
 	public ActuEntity() {
 		
 	}
 
 	public ActuEntity(Long pId, String pTitle, String pSummary,
-			Text pContent, Date pCreationDate) {
+			Text pContent, Date pCreationDate, String pImageUrl) {
 		id = pId;
 		title = pTitle;
 		summary = pSummary;
 		content = pContent;
 		creationDate = pCreationDate;
+		imageUrl = pImageUrl;
 	}
 
 	public Long getId() {
@@ -86,5 +90,13 @@ public class ActuEntity implements Entity {
 
 	public void setCreationDate(Date pCreationDate) {
 		creationDate = pCreationDate;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String pImageUrl) {
+		imageUrl = pImageUrl;
 	}
 }

@@ -11,18 +11,20 @@ public class PublishActuAction implements Action<PublishActionResult> {
 	private String content;
 	private Date creationDate;
 	private Long documentId;
+	private String imageUrl;
 	
 	public PublishActuAction() {
 	}
 	
 	public PublishActuAction(String pTitle, String pSummary, String pContent,
-			Date pCreationDate, Long pDocumentId) {
+			Date pCreationDate, Long pDocumentId, String pImageUrl) {
 		super();
 		title = pTitle;
 		summary = pSummary;
 		content = pContent;
 		creationDate = pCreationDate;
 		documentId = pDocumentId;
+		imageUrl = pImageUrl;
 	}
 
 
@@ -59,5 +61,13 @@ public class PublishActuAction implements Action<PublishActionResult> {
 
 	public void setDocumentId(Long pDocumentId) {
 		documentId = pDocumentId;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String pImageUrl) {
+		imageUrl = pImageUrl;
 	}
 }

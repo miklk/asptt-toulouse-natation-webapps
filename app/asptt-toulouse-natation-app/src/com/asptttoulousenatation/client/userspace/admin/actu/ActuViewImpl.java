@@ -28,6 +28,7 @@ public class ActuViewImpl extends Composite implements ActuView {
 	private TextBox summary;
 	private DateBox date;
 	private CKEditor contentInput;
+	private TextBox imageUrl;
 
 	// Document edition
 	private HorizontalPanel documentPanel;
@@ -66,6 +67,13 @@ public class ActuViewImpl extends Composite implements ActuView {
 		date.setWidth("200px");
 		lPanel.setWidget(rowIndex, 0, createLabel("Date"));
 		lPanel.setWidget(rowIndex, 1, date);
+		rowIndex++;
+		
+		//Image url
+		imageUrl = new TextBox();
+		imageUrl.setWidth("300px");
+		lPanel.setWidget(rowIndex, 0, createLabel("URL de l'image de fond"));
+		lPanel.setWidget(rowIndex, 1, imageUrl);
 		rowIndex++;
 
 		// Contenu
@@ -142,5 +150,10 @@ public class ActuViewImpl extends Composite implements ActuView {
 	
 	public boolean isDocumentSet() {
 		return documentWidget.getDocumentTitle().getValue() != null && !documentWidget.getDocumentTitle().getValue().isEmpty() && documentWidget.getDocumentId() == null;
+	}
+
+	@Override
+	public HasValue<String> getImageUrl() {
+		return imageUrl;
 	}
 }

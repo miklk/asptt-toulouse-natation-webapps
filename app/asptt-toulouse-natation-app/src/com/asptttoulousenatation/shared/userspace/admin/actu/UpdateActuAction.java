@@ -11,18 +11,20 @@ public class UpdateActuAction implements Action<UpdateActuResult> {
 	private String summary;
 	private Date creationDate;
 	private String content;
+	private String imageUrl;
 	
 	public UpdateActuAction() {
 		
 	}
 	
 	public UpdateActuAction(Long pId, String pTitle,
-			Date pCreationDate, String pSummary, String pContent) {
+			Date pCreationDate, String pSummary, String pContent, String pImageUrl) {
 		id = pId;
 		title = pTitle;
 		creationDate = pCreationDate;
 		summary = pSummary;
 		content = pContent;
+		imageUrl = pImageUrl;
 	}
 	public Long getId() {
 		return id;
@@ -56,5 +58,13 @@ public class UpdateActuAction implements Action<UpdateActuResult> {
 	}
 	public void setContent(String pContent) {
 		content = pContent;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String pImageUrl) {
+		imageUrl = pImageUrl;
 	}
 }

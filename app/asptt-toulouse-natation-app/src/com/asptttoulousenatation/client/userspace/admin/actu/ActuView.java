@@ -16,4 +16,5 @@ public interface ActuView extends IsWidget {
 	public HasValue<Date> getCreationDate();
 	public Long getDocumentId();
 	public boolean isDocumentSet();
+	public HasValue<String> getImageUrl();
 }

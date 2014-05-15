@@ -44,6 +44,7 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 	private TextBox title;
 	private TextBox summary;
 	private DateBox date;
+	private TextBox imageUrl;
 	private CKEditor contentInput;
 	private Button updateButton;
 	private Button deleteButton;
@@ -180,6 +181,14 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 		lPanel.setWidget(rowIndex, 0, createLabel("Date"));
 		lPanel.setWidget(rowIndex, 1, date);
 		rowIndex++;
+		
+		//Image url
+		imageUrl = new TextBox();
+		imageUrl.setWidth("300px");
+		imageUrl.setValue(pActuUi.getImageUrl());
+		lPanel.setWidget(rowIndex, 0, createLabel("URL de l'image de fond"));
+		lPanel.setWidget(rowIndex, 1, imageUrl);
+		rowIndex++;
 
 		// Contenu
 		// Add the components to a panel
@@ -282,5 +291,10 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 
 	public HasClickHandlers getDeleteButton() {
 		return deleteButton;
+	}
+
+	@Override
+	public HasValue<String> getImageUrl() {
+		return imageUrl;
 	}
 }

@@ -12,7 +12,7 @@ public class ActuTransformer extends
 	public ActuUi toUi(ActuEntity pEntity) {
 		ActuUi lUi = new ActuUi(pEntity.getId(), pEntity.getTitle(),
 				pEntity.getSummary(), pEntity.getCreationDate(),
-				pEntity.getContent().getValue());
+				pEntity.getContent().getValue(), StringUtils.defaultString(pEntity.getImageUrl(), ""));
 		if(StringUtils.isBlank(pEntity.getSummary())) {
 			lUi.setSummary("Détail...");
 		}

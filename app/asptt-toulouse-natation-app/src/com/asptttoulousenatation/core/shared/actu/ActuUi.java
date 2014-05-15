@@ -15,6 +15,7 @@ public class ActuUi implements IsSerializable {
 	private String summary;
 	private Date creationDate;
 	private String content;
+	private String imageUrl;
 	
 	private List<DocumentUi> documentSet;
 
@@ -23,13 +24,14 @@ public class ActuUi implements IsSerializable {
 	}
 	
 	public ActuUi(Long pId,String pTitle, String pSummary, Date pCreationDate,
-			String pContent) {
+			String pContent, String pImageUrl) {
 		this();
 		id = pId;
 		title = pTitle;
 		summary = pSummary;
 		creationDate = pCreationDate;
 		content = pContent;
+		imageUrl = pImageUrl;
 	}
 
 	public Long getId() {
@@ -79,5 +81,12 @@ public class ActuUi implements IsSerializable {
 	public void setDocumentSet(List<DocumentUi> pDocumentSet) {
 		documentSet = pDocumentSet;
 	}
-	
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String pImageUrl) {
+		imageUrl = pImageUrl;
+	}
 }
