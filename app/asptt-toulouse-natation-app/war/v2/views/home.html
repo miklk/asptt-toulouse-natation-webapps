@@ -1,5 +1,3 @@
-
-		
 <div class="row">
 	<div class="col-md-1"></div>
 	<div class="col-md-10">
@@ -12,58 +10,21 @@
 	        <li data-target="#myCarousel" data-slide-to="1"></li>
 	        <li data-target="#myCarousel" data-slide-to="2"></li>
 	        <li data-target="#myCarousel" data-slide-to="3"></li>
-	        <li data-target="#myCarousel" data-slide-to="4"></li>
 	      </ol>
 	      <div class="carousel-inner">
-	        <div class="item active" style="height: 500px;">
-	          <img src="img/defilement/sitewebpaysage.jpg" class="img-responsive" alt="Compétition interne">
+	        <div class="item" ng-class="{active:$first}" style="height: 500px;" ng-repeat="actualite in loadingApp.actualites">
+	          <img src="{{actualite.imageUrl}}" class="img-responsive" alt="{{actualite.title}}">
 	          <div class="container">
 	            <div class="carousel-caption">
-	              <h1>Compétition interne - Mercredi 16 avril 2014.</h1>
-	              <p>Destinée à l'école de natation, la deuxième édition de cette compétition permettra aux enfants de jauger leur évolutions après 7 mois de pratique.</p>
-	              <p><a class="btn btn-large btn-primary" href="#">Formulaire d'inscription</a></p>
-	            </div>
-	          </div>
-	        </div>
-	        <div class="item" style="height: 500px;">
-	          <img src="img/defilement/sitewebportrait.jpg" class="img-responsive" alt="National 2">
-	          <div class="container">
-	            <div class="carousel-caption">
-	              <h1>Championnats de France Natation 2 - Toulouse</h1>
-	              <p>Le 21, 22 et 23 mars nos compétiteurs vont disputer les championnats de France National 2 et pour certains obtenir leur billets pour les Championnats de France Elite.</p>
-	              <p><a class="btn btn-large btn-primary" href="#">Suivez leurs performances</a></p>
-	            </div>
-	          </div>
-	        </div>
-	        <div class="item" style="height: 500px;">
-	          <img src="img/defilement/sitepaysage.jpg" alt="Natathlon">
-	          <div class="container">
-	            <div class="carousel-caption">
-	              <h1>Natathlon</h1>
-	              <p>Le 23 mars prochain débutera le Natathlon. Nos benjamins concourrons les différentes étapes de cette compétition et tenterons de représenter nos couleurs lors de la finale.</p>
-	              <p><a class="btn btn-large btn-primary" href="#">Plus d'information</a></p>
-	            </div>
-	          </div>
-	        </div>
-	        <div class="item" style="height: 500px;">
-	          <img src="img/defilement/fondinfosite.jpg" class="img-responsive" alt="Fond 1">
-	          <div class="container">
-	            <div class="carousel-caption">
-	              <h1>Test - Fond</h1>
-	            </div>
-	          </div>
-	        </div>
-	        <div class="item" style="height: 500px;">
-	          <img src="img/defilement/fondinfosite.jpg" class="img-responsive" alt="Fond 2">
-	          <div class="container">
-	            <div class="carousel-caption">
-	              <h1>Test - Fond</h1>
+	              <h1>{{actualite.title}}</h1>
+	              <p>{{actualite.summary}}</p>
+	              <p><a class="btn btn-large btn-primary" href="#">En savoir plus</a></p>
 	            </div>
 	          </div>
 	        </div>
 	      </div>
-	      <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-	      <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+	      <a class="left carousel-control" href="" data-target="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+	      <a class="right carousel-control" href="" data-target="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
 	    </div><!-- /.carousel -->
 		    </div>
 		    <div class="col-md-1"></div>
