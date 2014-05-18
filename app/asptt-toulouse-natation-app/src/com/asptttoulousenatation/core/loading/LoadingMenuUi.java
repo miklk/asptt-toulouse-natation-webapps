@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.lang3.StringUtils;
 
 @XmlRootElement
-public class MenuLoadingUi implements Serializable {
+public class LoadingMenuUi implements Serializable {
 
 	/**
 	 * 
@@ -18,17 +18,17 @@ public class MenuLoadingUi implements Serializable {
 
 	private String title;
 	
-	private List<MenuLoadingUi> subMenu;
+	private List<LoadingMenuUi> subMenu;
 	
 	private boolean hasSubMenu;
 	
-	public MenuLoadingUi() {
+	public LoadingMenuUi() {
 		title = StringUtils.EMPTY;
-		subMenu = new ArrayList<MenuLoadingUi>();
+		subMenu = new ArrayList<LoadingMenuUi>();
 		hasSubMenu = false;
 	}
 	
-	public MenuLoadingUi(String pTitle) {
+	public LoadingMenuUi(String pTitle) {
 		this();
 		title = pTitle;
 	}
@@ -41,16 +41,16 @@ public class MenuLoadingUi implements Serializable {
 		title = pTitle;
 	}
 
-	public List<MenuLoadingUi> getSubMenu() {
+	public List<LoadingMenuUi> getSubMenu() {
 		return subMenu;
 	}
 
-	public void setSubMenu(List<MenuLoadingUi> pSubMenu) {
+	public void setSubMenu(List<LoadingMenuUi> pSubMenu) {
 		subMenu = pSubMenu;
 		hasSubMenu = !subMenu.isEmpty();
 	}
 	
-	public void addSubMenu(MenuLoadingUi pMenu) {
+	public void addSubMenu(LoadingMenuUi pMenu) {
 		hasSubMenu = true;
 		subMenu.add(pMenu);
 	}

@@ -1,6 +1,15 @@
 <div class="row">
 	<div class="col-md-1"></div>
 	<div class="col-md-10">
+		<div id="actualites" style="display:none">
+			<div id="actualites-content" class="panel panel-info">
+				<div class="panel-heading">
+				<span style="font-weight: bold">{{actualiteTitle}}</span>
+					<span style="float:right" ng-click="hideActualite"><a href="#">&larr; Revenir aux actualités</a></span>
+				</div>
+				<div class="panel-body" ng-bind-html="actualiteHtml"></div>
+			</div>
+		</div>
 	    <!-- Carousel
 	    ================================================== -->
 	    <div id="myCarousel" class="carousel slide" data-interval="5000" data-wrap="true" data-pause="none">
@@ -18,7 +27,9 @@
 	            <div class="carousel-caption">
 	              <h1>{{actualite.title}}</h1>
 	              <p>{{actualite.summary}}</p>
-	              <p><a class="btn btn-large btn-primary" href="#">En savoir plus</a></p>
+	              <button type="button" class="btn btn-default" ng-click="showActualite(actualite)">
+	              	En savoir plus
+	              </button>
 	            </div>
 	          </div>
 	        </div>
@@ -26,82 +37,40 @@
 	      <a class="left carousel-control" href="" data-target="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
 	      <a class="right carousel-control" href="" data-target="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
 	    </div><!-- /.carousel -->
-		    </div>
-		    <div class="col-md-1"></div>
-		</div>
-		<div class="row">
+    </div>
+    <div class="col-md-1"></div>
+</div>
+<div class="row">
 			<div class="col-md-12">
 				<h2>Donnez le meilleur !</h2>
-	<dl class="dl-horizontal">
-		<dt>notre philosophie</dt>
-			<dd>depuis la découverte de l'eau jusqu'à une pratique sportive 
-universitaire de compétition, nous souhaitons permettre à chacun d’atteindre son 
-plus haut niveau de pratique de la natation.</dd>
-		<dt>notre préoccupation</dt>
-			<dd>le respect de l'individu. Notre conception de la natation 
-sportive inclut une attention constante au développement individuel du nageur, à sa 
-santé et à son parcours scolaire pour les plus jeunes.</dd>
-		<dt>notre force</dt>
-			<dd>la souplesse d’adaptation à tous les niveaux de pratique de notre 
-sport. Nous sommes animés par les exigences d'une pratique de la natation de haut 
-niveau, mais accordons à la pratique loisir la même attention en termes de qualité de 
-formation et d'accompagnement sportif.</dd>
-		<dt>notre exigence</dt>
-			<dd>votre plaisir de nager !</dd>
-		<dt>notre contrat</dt>
-			<dd>donner le meilleur de nous-même pour que vous 
-donniez le meilleur de vous-même !</dd>
-	</dl>
+			<dl class="dl-horizontal">
+				<dt>notre philosophie</dt>
+					<dd>depuis la découverte de l'eau jusqu'à une pratique sportive 
+		universitaire de compétition, nous souhaitons permettre à chacun d’atteindre son 
+		plus haut niveau de pratique de la natation.</dd>
+				<dt>notre préoccupation</dt>
+					<dd>le respect de l'individu. Notre conception de la natation 
+		sportive inclut une attention constante au développement individuel du nageur, à sa 
+		santé et à son parcours scolaire pour les plus jeunes.</dd>
+				<dt>notre force</dt>
+					<dd>la souplesse d’adaptation à tous les niveaux de pratique de notre 
+		sport. Nous sommes animés par les exigences d'une pratique de la natation de haut 
+		niveau, mais accordons à la pratique loisir la même attention en termes de qualité de 
+		formation et d'accompagnement sportif.</dd>
+				<dt>notre exigence</dt>
+					<dd>votre plaisir de nager !</dd>
+				<dt>notre contrat</dt>
+					<dd>donner le meilleur de nous-même pour que vous 
+		donniez le meilleur de vous-même !</dd>
+			</dl>
+		</div>
 </div>
-		</div>
-		<div class="row" style="margin-top: 3%">
-	<div class="col-md-2">
+<div class="row" style="margin-top: 3%" ng-controller="LoadingAlbumCtrl">
+	<div class="col-md-2" ng-repeat="album in albums.loadingAlbumUi">
 		<div class="thumbnail">
-			<img src="img/galerie/sitegpe.jpg" class="img-responsive" alt="Compétition interne">
+			<img src="{{album.couverture}}" class="img-responsive" alt="{{album.intitule}}" ng-click="getPhotos(album)">
 			<div class="caption">
-				<h6>Compétition interne du xxxx</h6>
-			</div>
-		</div>
-	</div>
-	<div class="col-md-2">
-		<div class="thumbnail">
-			<img src="img/galerie/sitewebmarius.jpg" class="img-responsive" alt="National 2">
-			<div class="caption">
-				<h6>Championnats National 2</h6>
-			</div>
-		</div>
-	</div>
-	<div class="col-md-2">
-		<div class="thumbnail">
-			<img src="img/galerie/sitewebcyrilpastailleavant.jpg" alt="Natathlon">
-			<div class="caption">
-				<h6>Natathlon 1</h6>
-			</div>
-		</div>
-	</div>
-	<div class="col-md-2">
-		<div class="thumbnail">
-			<img src="img/galerie/test.jpg" alt="Natathlon">
-			<div class="caption">
-				<h6>Natathlon 2</h6>
-				<!-- <a href="img/galerie/test.jpg" data-toggle="lightbox">Launch modal</a>-->
-			</div>
-		</div>
-	</div>
-	<div class="col-md-2">
-		<div class="thumbnail">
-			<img src="img/galerie/sitewebcyrilpastailleavant.jpg" alt="Natathlon">
-			<div class="caption">
-				<h6>Natathlon 1</h6>
-			</div>
-		</div>
-	</div>
-	<div class="col-md-2">
-		<div class="thumbnail">
-			<img src="img/galerie/test.jpg" alt="Natathlon">
-			<div class="caption">
-				<h6>Natathlon 2</h6>
-				<!-- <a href="img/galerie/test.jpg" data-toggle="lightbox">Launch modal</a>-->
+				<h6>{{album.intitule}}</h6>
 			</div>
 		</div>
 	</div>

@@ -1,11 +1,18 @@
 package com.asptttoulousenatation.core.loading;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Request;
@@ -30,6 +37,15 @@ import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
 import com.asptttoulousenatation.server.userspace.admin.entity.ActuTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.DocumentTransformer;
+import com.google.gdata.client.Query;
+import com.google.gdata.client.photos.PicasawebService;
+import com.google.gdata.data.Link;
+import com.google.gdata.data.photos.AlbumEntry;
+import com.google.gdata.data.photos.AlbumFeed;
+import com.google.gdata.data.photos.PhotoEntry;
+import com.google.gdata.data.photos.UserFeed;
+import com.google.gdata.util.AuthenticationException;
+import com.google.gdata.util.ServiceException;
 
 @Path("/loading")
 @Produces("application/json")
@@ -76,18 +92,18 @@ public class LoadingService {
 				OrderDao.OrderOperator.ASC);
 
 		for (AreaEntity lAreaEntity : lAreaEntities) {
-			MenuLoadingUi lMenuLoadingUi = new MenuLoadingUi(lAreaEntity.getTitle());
+			LoadingMenuUi lMenuLoadingUi = new LoadingMenuUi(lAreaEntity.getTitle());
 			// Get menu
 			lAreaCriterion.setValue(lAreaEntity.getId());
 			List<MenuEntity> lMenuEntities = menuDao
 					.find(lCriteria, lMenuOrder);
 			for (MenuEntity lMenuEntity : lMenuEntities) {
-				MenuLoadingUi  lMenuLoadingUi2 = new MenuLoadingUi(lMenuEntity.getTitle());
+				LoadingMenuUi  lMenuLoadingUi2 = new LoadingMenuUi(lMenuEntity.getTitle());
 				if (lMenuEntity.getParent() == null) {
 					// Retrieve sub menu
 					for (Long lSubMenuId : lMenuEntity.getSubMenu()) {
 						MenuEntity lSubMenu = menuDao.get(lSubMenuId);
-						lMenuLoadingUi2.addSubMenu(new MenuLoadingUi(lSubMenu.getTitle()));
+						lMenuLoadingUi2.addSubMenu(new LoadingMenuUi(lSubMenu.getTitle()));
 					}
 				}
 				lMenuLoadingUi.addSubMenu(lMenuLoadingUi2);;
@@ -116,8 +132,102 @@ public class LoadingService {
 			lUi.setDocumentSet(lDocumentUis);
 			result.addActualite(lUi);
 		}
+		
+		//Album Picasa
+		//getAlbums(result);
+		getAlbumsFake(result);
 		Long endTime = System.currentTimeMillis();
 		LOG.info("Loading duration: " + (endTime - startTime) + " ms");
 		return result;
+}
+	@Path("/albums")
+	@GET
+	public List<LoadingAlbumUi> getAlbums() {
+		List<LoadingAlbumUi> albums = new ArrayList<LoadingAlbumUi>(5);
+		try {
+			PicasawebService myService = new PicasawebService("asptt_test");
+			URL feedUrl = new URL(
+					"https://picasaweb.google.com/data/feed/api/user/113747450706652808889?kind=album");
+
+			Query myQuery = new Query(feedUrl);
+
+			UserFeed searchResultsFeed = myService.query(myQuery,
+					UserFeed.class);
+			int maxAlbum = 5;
+			ListIterator<AlbumEntry> lEntryIt = searchResultsFeed
+					.getAlbumEntries().listIterator();
+			Set<String> excludedAlbum = new HashSet<String>();
+			excludedAlbum.add("Profile Photos");
+			excludedAlbum.add("Scrapbook Photos");
+			while (lEntryIt.hasNext() && maxAlbum > 0) {
+				AlbumEntry adaptedEntry = lEntryIt.next();
+				AlbumEntry lAlbum = (AlbumEntry) adaptedEntry;
+				if (!excludedAlbum.contains(lAlbum.getTitle().getPlainText())) {
+					String feedHref = getLinkByRel(lAlbum.getLinks(),
+							Link.Rel.FEED);
+					AlbumFeed lAlbumEntries = myService.query(new Query(new URL(
+							feedHref)), AlbumFeed.class);
+					LoadingAlbumUi lAlbumUi = new LoadingAlbumUi(feedHref, lAlbum.getTitle().getPlainText(), lAlbumEntries.getPhotoEntries().get(0).getMediaContents().get(0).getUrl());
+					albums.add(lAlbumUi);
+					maxAlbum--;
+				}
+			}
+		} catch (AuthenticationException e) {
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return albums;
+	}
+	
+	@Path("/photos")
+	@GET
+	public List<LoadingPhotosUi> getPhotos(@PathParam("albumId") String pAlbumId) {
+		List<LoadingPhotosUi> photos = new ArrayList<LoadingPhotosUi>();
+		try {
+			PicasawebService myService = new PicasawebService("asptt_test");
+			AlbumFeed lAlbumEntries = myService.query(new Query(new URL(
+					pAlbumId)), AlbumFeed.class);
+					for(PhotoEntry photo: lAlbumEntries.getPhotoEntries()) {
+						photos.add(new LoadingPhotosUi(photo.getMediaContents().get(0).getUrl()));
+					}
+		} catch (AuthenticationException e) {
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return photos;
+	}
+	
+	private void getAlbumsFake(LoadingResult result) {
+		result.addAlbum(new LoadingAlbumUi("1", "Compétition interne", "img/galerie/sitegpe.jpg"));
+		result.addAlbum(new LoadingAlbumUi("2", "National 2", "img/galerie/sitewebmarius.jpg"));
+		result.addAlbum(new LoadingAlbumUi("3", "Natathlon", "img/galerie/sitewebcyrilpastailleavant.jpg"));
+	}
+	
+	/**
+	 * Helper function to get a link by a rel value.
+	 */
+	public String getLinkByRel(List<Link> links, String relValue) {
+		for (Link link : links) {
+			if (relValue.equals(link.getRel())) {
+				return link.getHref();
+			}
+		}
+		throw new IllegalArgumentException("Missing " + relValue + " link.");
 	}
 }

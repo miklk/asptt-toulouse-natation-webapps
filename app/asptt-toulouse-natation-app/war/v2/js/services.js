@@ -19,3 +19,25 @@ pageServices.factory('PageService', ['$resource',
             isArray:false
         }});
 }]);
+
+var loadingAlbumServices = angular.module('loadingAlbumServices', ['ngResource']);
+
+loadingAlbumServices.factory('LoadingAlbumService', ['$resource', 
+                                       function($resource) {
+	return $resource('/resources/loading/albums',{},{
+        query:{
+            method:'GET',
+            isArray:true
+        }});
+}]);
+
+var loadingPhotosServices = angular.module('loadingPhotosServices', ['ngResource']);
+
+loadingPhotosServices.factory('LoadingPhotosService', ['$resource', 
+                                       function($resource) {
+	return $resource('/resources/loading/photos?albumId=:albumId',{},{
+        query:{
+            method:'GET',
+            isArray:false
+        }});
+}]);
