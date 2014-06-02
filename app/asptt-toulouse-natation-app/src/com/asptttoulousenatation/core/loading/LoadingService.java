@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Request;
@@ -142,8 +141,8 @@ public class LoadingService {
 }
 	@Path("/albums")
 	@GET
-	public List<LoadingAlbumUi> getAlbums() {
-		List<LoadingAlbumUi> albums = new ArrayList<LoadingAlbumUi>(5);
+	public LoadingAlbumsUi getAlbums() {
+		LoadingAlbumsUi result = new LoadingAlbumsUi();
 		try {
 			PicasawebService myService = new PicasawebService("asptt_test");
 			URL feedUrl = new URL(
@@ -167,8 +166,11 @@ public class LoadingService {
 							Link.Rel.FEED);
 					AlbumFeed lAlbumEntries = myService.query(new Query(new URL(
 							feedHref)), AlbumFeed.class);
-					LoadingAlbumUi lAlbumUi = new LoadingAlbumUi(feedHref, lAlbum.getTitle().getPlainText(), lAlbumEntries.getPhotoEntries().get(0).getMediaContents().get(0).getUrl());
-					albums.add(lAlbumUi);
+					LoadingAlbumUi lAlbumUi = new LoadingAlbumUi(lAlbum.getGphotoId(), lAlbum.getTitle().getPlainText(), lAlbumEntries.getPhotoEntries().get(0).getMediaContents().get(0).getUrl());
+					for(PhotoEntry photo: lAlbumEntries.getPhotoEntries()) {
+						lAlbumUi.addPhotos(photo.getMediaContents().get(0).getUrl());
+					}
+					result.addAlbum(lAlbumUi);
 					maxAlbum--;
 				}
 			}
@@ -184,33 +186,7 @@ public class LoadingService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return albums;
-	}
-	
-	@Path("/photos")
-	@GET
-	public List<LoadingPhotosUi> getPhotos(@PathParam("albumId") String pAlbumId) {
-		List<LoadingPhotosUi> photos = new ArrayList<LoadingPhotosUi>();
-		try {
-			PicasawebService myService = new PicasawebService("asptt_test");
-			AlbumFeed lAlbumEntries = myService.query(new Query(new URL(
-					pAlbumId)), AlbumFeed.class);
-					for(PhotoEntry photo: lAlbumEntries.getPhotoEntries()) {
-						photos.add(new LoadingPhotosUi(photo.getMediaContents().get(0).getUrl()));
-					}
-		} catch (AuthenticationException e) {
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return photos;
+		return result;
 	}
 	
 	private void getAlbumsFake(LoadingResult result) {

@@ -18,9 +18,12 @@ public class ActuUi implements IsSerializable {
 	private String imageUrl;
 	
 	private List<DocumentUi> documentSet;
+	
+	private boolean hasDocument;
 
 	public ActuUi() {
 		documentSet = new ArrayList<DocumentUi>(0);
+		hasDocument = false;
 	}
 	
 	public ActuUi(Long pId,String pTitle, String pSummary, Date pCreationDate,
@@ -80,6 +83,7 @@ public class ActuUi implements IsSerializable {
 
 	public void setDocumentSet(List<DocumentUi> pDocumentSet) {
 		documentSet = pDocumentSet;
+		hasDocument = documentSet != null || !documentSet.isEmpty();
 	}
 
 	public String getImageUrl() {
@@ -88,5 +92,13 @@ public class ActuUi implements IsSerializable {
 
 	public void setImageUrl(String pImageUrl) {
 		imageUrl = pImageUrl;
+	}
+
+	public boolean isHasDocument() {
+		return hasDocument;
+	}
+
+	public void setHasDocument(boolean pHasDocument) {
+		hasDocument = pHasDocument;
 	}
 }

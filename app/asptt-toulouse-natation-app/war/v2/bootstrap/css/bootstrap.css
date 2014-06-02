@@ -3006,6 +3006,7 @@ input[type="button"].btn-block {
 .dropdown {
   position: relative;
 }
+
 .dropdown-toggle:focus {
   outline: 0;
 }
@@ -3021,7 +3022,7 @@ input[type="button"].btn-block {
   margin: 2px 0 0;
   font-size: 14px;
   list-style: none;
-  background-color: rgba(221, 244, 252, 0.80);
+  background-color: rgba(221, 244, 252, 1.0);
   background-clip: padding-box;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, .15);
@@ -3462,7 +3463,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav > li > a {
   position: relative;
   display: block;
-  padding: 5px 15px 5px 15px;
+  padding: 3px 15px 3px 15px;
 }
 .nav > li > a:hover,
 .nav > li > a:focus {
@@ -3644,9 +3645,9 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 }
 .navbar {
   position: relative;
-  min-height: 30px;
+  min-height: 26px;
   margin-bottom: 15px;
-  margin-top: 20px;
+  margin-top: 25px;
 }
 @media (min-width: 768px) {
   .navbar {

@@ -41,8 +41,9 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  min-width: 100%;
-  height: auto;
+  /*min-width: 100%;*/
+  /*height: auto;*/
+  min-height: 100%;
 }
 
 

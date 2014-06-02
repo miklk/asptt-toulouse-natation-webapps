@@ -8,6 +8,13 @@
 					<span style="float:right" ng-click="hideActualite"><a href="#">&larr; Revenir aux actualités</a></span>
 				</div>
 				<div class="panel-body" ng-bind-html="actualiteHtml"></div>
+				
+				<div class="list-group" ng-show="{{hasDocument}}">Documents associés
+					<ng-repeat="actuDocu in actuDocuments">
+						<a href="downloadDocument?documentId={{actuDocu.id}}&fileId={{actuDocu.data}}" title="{{actuDocu.title}}"
+							class="list-group-item">{{actuDocu.title}}</a>
+					</ng-repeat>
+				</div>
 			</div>
 		</div>
 	    <!-- Carousel
@@ -22,11 +29,10 @@
 	      </ol>
 	      <div class="carousel-inner">
 	        <div class="item" ng-class="{active:$first}" style="height: 500px;" ng-repeat="actualite in loadingApp.actualites">
-	          <img src="{{actualite.imageUrl}}" class="img-responsive" alt="{{actualite.title}}">
+	          <img src="{{actualite.imageUrl}}" class="img-responsive" alt="{{actualite.title}}" style="margin: auto">
 	          <div class="container">
 	            <div class="carousel-caption">
 	              <h1>{{actualite.title}}</h1>
-	              <p>{{actualite.summary}}</p>
 	              <button type="button" class="btn btn-default" ng-click="showActualite(actualite)">
 	              	En savoir plus
 	              </button>
@@ -42,7 +48,6 @@
 </div>
 <div class="row">
 			<div class="col-md-12">
-				<h2>Donnez le meilleur !</h2>
 			<dl class="dl-horizontal">
 				<dt>notre philosophie</dt>
 					<dd>depuis la découverte de l'eau jusqu'à une pratique sportive 
@@ -65,12 +70,18 @@
 			</dl>
 		</div>
 </div>
+<div id="diapo" class="row" style="display:none; margin: 0 auto">
+	<ul class="rslides" id="slider3">
+    </ul>
+	<ul id="slider3-pager">
+	</ul>
+</div>
 <div class="row" style="margin-top: 3%" ng-controller="LoadingAlbumCtrl">
-	<div class="col-md-2" ng-repeat="album in albums.loadingAlbumUi">
+	<div class="col-md-2" ng-repeat="album in albums.albums">
 		<div class="thumbnail">
-			<img src="{{album.couverture}}" class="img-responsive" alt="{{album.intitule}}" ng-click="getPhotos(album)">
+			<img src="{{album.couverture}}" class="img-responsive" alt="{{album.intitule}}" ng-click="getPhotos(album)" style="max-height: 90px">
 			<div class="caption">
-				<h6>{{album.intitule}}</h6>
+				<h6>{{album.shortIntitule}}</h6>
 			</div>
 		</div>
 	</div>

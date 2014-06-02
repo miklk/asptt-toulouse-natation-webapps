@@ -1,8 +1,12 @@
 package com.asptttoulousenatation.core.loading;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.apache.commons.lang3.StringUtils;
 
 @XmlRootElement
 public class LoadingAlbumUi implements Serializable {
@@ -15,9 +19,11 @@ public class LoadingAlbumUi implements Serializable {
 	private String albumId;
 	private String couverture;
 	private String intitule;
+	private String shortIntitule;
+	private List<String> photos;
 	
 	public LoadingAlbumUi() {
-		
+		photos = new ArrayList<String>();
 	}
 
 	public LoadingAlbumUi(String pAlbumId, String pIntitule, String pCouverture) {
@@ -25,6 +31,8 @@ public class LoadingAlbumUi implements Serializable {
 		albumId = pAlbumId;
 		couverture = pCouverture;
 		intitule = pIntitule;
+		shortIntitule = StringUtils.abbreviate(intitule, 30);
+		shortIntitule = StringUtils.rightPad(shortIntitule, 30, " ");
 	}
 
 	public String getAlbumId() {
@@ -51,4 +59,23 @@ public class LoadingAlbumUi implements Serializable {
 		intitule = pIntitule;
 	}
 	
+	public List<String> getPhotos() {
+		return photos;
+	}
+
+	public void setPhotos(List<String> pPhotos) {
+		photos = pPhotos;
+	}
+
+	public void addPhotos(String pPhoto) {
+		photos.add(pPhoto);
+	}
+
+	public String getShortIntitule() {
+		return shortIntitule;
+	}
+
+	public void setShortIntitule(String pShortIntitule) {
+		shortIntitule = pShortIntitule;
+	}
 }
