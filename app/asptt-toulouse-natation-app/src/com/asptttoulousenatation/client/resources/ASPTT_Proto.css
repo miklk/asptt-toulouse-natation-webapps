@@ -90,7 +90,7 @@ body {
 	-moz-border-radius: 15px;
 	border-radius: 15px;
 	font-size: 1.1em;
-	background-image: url(http://prototype.asptt-toulouse-natation.com/images/degrade_3.png);
+	background-image: url(http://asptt-toulouse-natation.com/images/degrade_3.png);
 	background-position: top left;
 	background-repeat: repeat-x;
 	width: 200px;
@@ -108,7 +108,7 @@ body {
 .menu-g-title {
 	color: #FFFFFF;
 	font-weight: bold;
-	background-image: url(http://prototype.asptt-toulouse-natation.com/images/degrade_3.png);
+	background-image: url(http://asptt-toulouse-natation.com/images/degrade_3.png);
 	background-position: top left;
 	background-repeat: repeat-x;
 	padding-left: 2%;
@@ -158,7 +158,7 @@ body {
 	border: 2px solid #7C858A;
 	-moz-border-radius: 15px;
 	border-radius: 15px;
-	background-image: url(http://prototype.asptt-toulouse-natation.com/images/degrade_3.png);
+	background-image: url(http://asptt-toulouse-natation.com/images/degrade_3.png);
 	background-position: top left;
 	background-repeat: repeat-x;
 	background: -moz-linear-gradient(left center, #0A577A 0%, #18A0DF 68%);
@@ -180,7 +180,7 @@ body {
 
 .bloc-content {
 	background-color: #FFFFFF;
-	background-image: url(http://prototype.asptt-toulouse-natation.com/images/water.jpg);
+	background-image: url(http://asptt-toulouse-natation.com/images/water.jpg);
 }
 .menu-b {
 	border: 1px solid #7C858A;
@@ -225,7 +225,7 @@ body {
 }
 
 .login-header {
-	background-image: url(http://prototype.asptt-toulouse-natation.com/images/degrade_3.png);
+	background-image: url(http://asptt-toulouse-natation.com/images/degrade_3.png);
 	background-position: top left;
 	background-repeat: repeat-x;
 	width: 100%;
@@ -342,7 +342,7 @@ body {
 	width: 1250px;
 	height: 20px;
 	background-color: #83C6F2;
-	background-image: url(http://prototype.asptt-toulouse-natation.com/images/water.jpg);
+	background-image: url(http://asptt-toulouse-natation.com/images/water.jpg);
 }
 .userspace-menu {
 	width: 100px;
@@ -533,7 +533,7 @@ body {
 .menu-sub-label {
 	color: #FFFFFF;
 	font-weight: bold;
-	background-image: url(http://prototype.asptt-toulouse-natation.com/images/degrade_3.png);
+	background-image: url(http://asptt-toulouse-natation.com/images/degrade_3.png);
 	background-position: top left;
 	background-repeat: repeat-x;
 	cursor: pointer;
@@ -672,7 +672,7 @@ body {
 border: 2px solid #7C858A;
 	-moz-border-radius: 15px;
 	border-radius: 15px;
-	background-image: url(http://prototype.asptt-toulouse-natation.com/images/degrade_3.png);
+	background-image: url(http://asptt-toulouse-natation.com/images/degrade_3.png);
 	background-position: top left;
 	background-repeat: repeat-x;
 	background: -moz-linear-gradient(left center, #0A577A 0%, #18A0DF 68%);
