@@ -1,4 +1,7 @@
 <web-app>
+
+
+
   <filter>
 		<filter-name>guiceFilter</filter-name>
 		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
@@ -8,6 +11,8 @@
 		<filter-name>guiceFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+
   <listener>
   	<listener-class>com.asptttoulousenatation.core.server.config.CoreGuiceServletConfig</listener-class>
   </listener>
@@ -60,16 +65,6 @@
   <servlet-mapping>
     <servlet-name>uploadServlet</servlet-name>
     <url-pattern>*.gupld</url-pattern>
-  </servlet-mapping>
-  
-  <servlet>
-    <servlet-name>importServlet</servlet-name>
-    <!-- This is the default servlet, it puts files in session -->
-    <servlet-class>com.asptttoulousenatation.core.server.ImportServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>importServlet</servlet-name>
-    <url-pattern>/v2/importServlet.do</url-pattern>
   </servlet-mapping>
   
   <servlet>
@@ -135,30 +130,6 @@
   </auth-constraint>
  </security-constraint>
  <servlet>
-        <servlet-name>GetActuAction</servlet-name>
-        <servlet-class>com.asptttoulousenatation.GetActuAction</servlet-class>
- </servlet>
- <servlet-mapping>
-  <servlet-name>GetActuAction</servlet-name>
-  <url-pattern>/v2/GetActuAction.do</url-pattern>
- </servlet-mapping>
- <servlet>
-        <servlet-name>GetStructureAction</servlet-name>
-        <servlet-class>com.asptttoulousenatation.GetStructureAction</servlet-class>
- </servlet>
- <servlet-mapping>
-  <servlet-name>GetStructureAction</servlet-name>
-  <url-pattern>/v2/GetStructureAction.do</url-pattern>
- </servlet-mapping>
- <servlet>
-        <servlet-name>GetContentAction</servlet-name>
-        <servlet-class>com.asptttoulousenatation.GetContentAction</servlet-class>
- </servlet>
- <servlet-mapping>
-  <servlet-name>GetContentAction</servlet-name>
-  <url-pattern>/v2/GetContentAction.do</url-pattern>
- </servlet-mapping>
- <servlet>
         <servlet-name>InscriptionAction</servlet-name>
         <servlet-class>com.asptttoulousenatation.InscriptionAction</servlet-class>
  </servlet>
@@ -218,8 +189,14 @@
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
             <param-value>com.asptttoulousenatation.core</param-value>
+            </init-param>
+            <init-param>
             <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
             <param-value>true</param-value>
+            </init-param>
+            <init-param>
+            <param-name>com.sun.jersey.config.feature.DisableWADL</param-name>
+    		<param-value>true</param-value>
         </init-param>
          <load-on-startup>1</load-on-startup>
     </servlet>
