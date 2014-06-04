@@ -33,6 +33,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
@@ -52,7 +53,6 @@ import com.asptttoulousenatation.server.Xlsx;
 import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.InscriptionTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
-import com.google.gson.Gson;
 
 public class InscriptionAction extends HttpServlet {
 
@@ -117,8 +117,8 @@ public class InscriptionAction extends HttpServlet {
 				return pO1.getDayOfWeek().compareTo(pO2.getDayOfWeek());
 			}
 		});
-		Gson gson = new Gson();
-		String json = gson.toJson(lUis);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(lUis);
 		pResp.setContentType("application/json;charset=UTF-8");
 		pResp.getWriter().write(json);
 	}
@@ -374,8 +374,8 @@ public class InscriptionAction extends HttpServlet {
 			// .write("Votre dossier a déjà été saisie, en cas de problème veuillez prendre contact par e-mail: webmaster@asptt-toulouse-natation.com");
 			// } else {
 			pReq.getSession().setAttribute("data", adherents);
-			Gson gson = new Gson();
-			String json = gson.toJson(adherents);
+			ObjectMapper mapper = new ObjectMapper();
+			String json = mapper.writeValueAsString(adherents);
 			pResp.setContentType("application/json;charset=UTF-8");
 			pResp.getWriter().write(json);
 			// }
@@ -402,8 +402,8 @@ public class InscriptionAction extends HttpServlet {
 		if (CollectionUtils.isNotEmpty(adherents)) {
 
 			pReq.getSession().setAttribute("data", adherents);
-			Gson gson = new Gson();
-			String json = gson.toJson(adherents);
+			ObjectMapper mapper = new ObjectMapper();
+			String json = mapper.writeValueAsString(adherents);
 			System.out.println(json);
 			pResp.setContentType("application/json;charset=UTF-8");
 			pResp.getWriter().write(json);
@@ -576,8 +576,8 @@ public class InscriptionAction extends HttpServlet {
 				}
 			}
 		});
-		Gson gson = new Gson();
-		String json = gson.toJson(lUis);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(lUis);
 		pResp.setContentType("application/json;charset=UTF-8");
 		pResp.getWriter().write(json);
 	}

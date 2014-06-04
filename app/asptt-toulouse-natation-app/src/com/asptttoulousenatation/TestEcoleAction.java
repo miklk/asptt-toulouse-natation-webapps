@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
@@ -36,7 +37,6 @@ import com.asptttoulousenatation.core.server.dao.search.OrderDao.OrderOperator;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
-import com.google.gson.Gson;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -197,8 +197,8 @@ public class TestEcoleAction extends HttpServlet {
 						.compareTo(pO2.getGroup().getTitle());
 			}
 		});
-		Gson gson = new Gson();
-		String json = gson.toJson(lUis);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(lUis);
 		pResp.setContentType("application/json;charset=UTF-8");
 		pResp.getWriter().write(json);
 	}

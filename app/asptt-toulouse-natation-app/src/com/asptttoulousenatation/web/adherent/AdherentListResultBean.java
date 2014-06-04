@@ -3,6 +3,9 @@ package com.asptttoulousenatation.web.adherent;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class AdherentListResultBean implements Serializable {
 
 	/**

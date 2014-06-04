@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
@@ -25,7 +26,6 @@ import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
-import com.google.gson.Gson;
 
 public class CreneauListAction extends HttpServlet {
 
@@ -63,8 +63,8 @@ public class CreneauListAction extends HttpServlet {
 	private void load(CreneauListForm form, HttpServletRequest pReq,
 			HttpServletResponse pResp) throws ServletException, IOException {
 		List<String> piscines = slotDao.getPiscines();
-		Gson gson = new Gson();
-		String json = gson.toJson(piscines);
+		ObjectMapper mapper = new ObjectMapper();
+		 String json = mapper.writeValueAsString(piscines);
 		pResp.setContentType("application/json;charset=UTF-8");
 		pResp.getWriter().write(json);
 	}
@@ -118,8 +118,8 @@ public class CreneauListAction extends HttpServlet {
 				}
 			});
 			
-			Gson gson = new Gson();
-			String json = gson.toJson(results);
+			ObjectMapper mapper = new ObjectMapper();
+			String json = mapper.writeValueAsString(results);
 			pResp.setContentType("application/json;charset=UTF-8");
 			pResp.getWriter().write(json);
 		}

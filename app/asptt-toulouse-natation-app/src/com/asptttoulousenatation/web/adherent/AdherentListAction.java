@@ -36,6 +36,7 @@ import org.apache.commons.beanutils.BeanUtilsBean2;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
@@ -53,7 +54,6 @@ import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
-import com.google.gson.Gson;
 
 public class AdherentListAction extends HttpServlet {
 
@@ -221,8 +221,8 @@ public class AdherentListAction extends HttpServlet {
 		}
 
 		if (builder.isEmpty()) {
-			Gson gson = new Gson();
-			String json = gson.toJson(results);
+			ObjectMapper mapper = new ObjectMapper();
+			String json = mapper.writeValueAsString(results);
 			pResp.setContentType("application/json;charset=UTF-8");
 			pResp.getWriter().write(json);
 		} else {
@@ -278,8 +278,8 @@ public class AdherentListAction extends HttpServlet {
 		GroupDao dao = new GroupDao();
 		List<GroupEntity> entities = dao.getAll();
 		List<GroupUi> lUis = new GroupTransformer().toUi(entities);
-		Gson gson = new Gson();
-		String json = gson.toJson(lUis);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(lUis);
 		pResp.setContentType("application/json;charset=UTF-8");
 		pResp.getWriter().write(json);
 	}
@@ -302,8 +302,8 @@ public class AdherentListAction extends HttpServlet {
 				return pO1.getDayOfWeek().compareTo(pO2.getDayOfWeek());
 			}
 		});
-		Gson gson = new Gson();
-		String json = gson.toJson(lUis);
+			 ObjectMapper mapper = new ObjectMapper();
+			 String json = mapper.writeValueAsString(lUis);
 		pResp.setContentType("application/json;charset=UTF-8");
 		pResp.getWriter().write(json);
 	}
@@ -642,9 +642,10 @@ public class AdherentListAction extends HttpServlet {
 	
 	protected void loadAdherent(HttpServletRequest pReq,
 			HttpServletResponse pResp) throws ServletException, IOException {
-		InscriptionEntity adherent = inscriptionDao.get(Long.valueOf(pReq.getParameter("selectedAdherent")));
-		Gson gson = new Gson();
-		String json = gson.toJson(adherent);
+		InscriptionEntity adherent = inscriptionDao.get(Long.valueOf(pReq
+				.getParameter("selectedAdherent")));
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(adherent);
 		pResp.setContentType("application/json;charset=UTF-8");
 		pResp.getWriter().write(json);
 	}
@@ -670,8 +671,8 @@ public class AdherentListAction extends HttpServlet {
 	protected void loadPiscines(HttpServletRequest pReq,
 			HttpServletResponse pResp) throws ServletException, IOException {
 		List<String> piscines = slotDao.getPiscines();
-		Gson gson = new Gson();
-		String json = gson.toJson(piscines);
+		ObjectMapper mapper = new ObjectMapper();
+		String json = mapper.writeValueAsString(piscines);
 		pResp.setContentType("application/json;charset=UTF-8");
 		pResp.getWriter().write(json);
 	}
