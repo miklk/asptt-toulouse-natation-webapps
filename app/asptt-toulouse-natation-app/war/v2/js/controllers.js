@@ -10,23 +10,25 @@ adherentsApp.controller('AdherentListCtrl', ['$scope', 'Adherent', function($sco
 
 var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','loadingAppServices', 'pageServices', 'loadingAlbumServices']);
 aspttNatTlsApp.controller('LoadingAppCtrl', ['$scope', 'LoadingApp', '$sce', function($scope, LoadingApp, $sce) {
-	$scope.loadingApp = LoadingApp.get();
-	$scope.showActualite = function(actualite) {
-    	$("#myCarousel").hide();
-    	$("#actualites").show();
-    	$scope.actualiteTitle = actualite.title;
-    	$scope.actualiteHtml = $sce.trustAsHtml(actualite.content);
-    	$scope.actuDocuments = actualite.documentSet;
-    	$scope.hasDocument = actualite.hasDocument;
-    };
-    $scope.hideActualite = function() {
-    	$("#myCarousel").show();
-    	$("#actualites").hide();
-    	$scope.actualiteTitle = "";
-    	$scope.actualiteHtml = "";
-    	$scope.actuDocuments = null;
-    	$scope.hasDocument = false;
-    };
+	LoadingApp.get({}, function(data) {
+		$scope.loadingApp = data;
+		$scope.showActualite = function(actualite) {
+	    	$("#myCarousel").hide();
+	    	$("#actualites").show();
+	    	$scope.actualiteTitle = actualite.title;
+	    	$scope.actualiteHtml = $sce.trustAsHtml(actualite.content);
+	    	$scope.actuDocuments = actualite.documentSet;
+	    	$scope.hasDocument = actualite.hasDocument;
+	    };
+	    $scope.hideActualite = function() {
+	    	$("#myCarousel").show();
+	    	$("#actualites").hide();
+	    	$scope.actualiteTitle = "";
+	    	$scope.actualiteHtml = "";
+	    	$scope.actuDocuments = null;
+	    	$scope.hasDocument = false;
+	    };		
+	});
 }]);
 
 aspttNatTlsApp.controller('PageCtrl', ['$scope', 'PageService', '$routeParams', '$sce', function($scope, PageService, $routeParams, $sce) {
