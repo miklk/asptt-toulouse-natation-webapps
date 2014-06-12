@@ -13,7 +13,7 @@ aspttNatTlsApp.controller('LoadingAppCtrl', ['$scope', 'LoadingApp', '$sce', fun
 	LoadingApp.get({}, function(data) {
 		$scope.loadingApp = data;
 		$scope.showActualite = function(actualite) {
-	    	$("#myCarousel").hide();
+	    	$("#carous_container").hide();
 	    	$("#actualites").show();
 	    	$scope.actualiteTitle = actualite.title;
 	    	$scope.actualiteHtml = $sce.trustAsHtml(actualite.content);
@@ -21,13 +21,14 @@ aspttNatTlsApp.controller('LoadingAppCtrl', ['$scope', 'LoadingApp', '$sce', fun
 	    	$scope.hasDocument = actualite.hasDocument;
 	    };
 	    $scope.hideActualite = function() {
-	    	$("#myCarousel").show();
+	    	$("#carous_container").show();
 	    	$("#actualites").hide();
 	    	$scope.actualiteTitle = "";
 	    	$scope.actualiteHtml = "";
 	    	$scope.actuDocuments = null;
 	    	$scope.hasDocument = false;
-	    };		
+	    	setTimeout("loadCarous()", 5000);
+	    };
 	});
 }]);
 

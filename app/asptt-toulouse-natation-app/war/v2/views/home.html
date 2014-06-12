@@ -17,39 +17,20 @@
 				</div>
 			</div>
 		</div>
-	    <!-- Carousel
-	    ================================================== -->
-	    <div id="myCarousel" class="carousel slide" data-interval="5000" data-wrap="true" data-pause="none">
-	      <!-- Indicators -->
-	      <ol class="carousel-indicators">
-	        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-	        <li data-target="#myCarousel" data-slide-to="1"></li>
-	        <li data-target="#myCarousel" data-slide-to="2"></li>
-	        <li data-target="#myCarousel" data-slide-to="3"></li>
-	        <li data-target="#myCarousel" data-slide-to="4"></li>
-	        <li data-target="#myCarousel" data-slide-to="5"></li>
-	        <li data-target="#myCarousel" data-slide-to="6"></li>
-	      </ol>
-	      <div class="carousel-inner">
-	        <div class="item" ng-class="{active:$first}" ng-repeat="actualite in loadingApp.actualites">
-	        	<img src="{{actualite.imageUrl}}" class="" alt="{{actualite.title}}">
-	          <div class="container">
-	            <div class="carousel-caption">
-	              <h1>{{actualite.title}}</h1>
-	              <button type="button" class="btn btn-default" ng-click="showActualite(actualite)">
-	              	En savoir plus
-	              </button>
-	            </div>
-	            </div>
-	          </div>
-	      </div>
-	      <a class="left carousel-control" href="" data-target="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-	      <a class="right carousel-control" href="" data-target="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-	      
-	      
-	    </div><!-- /.carousel -->
-	<ul class="rslides" id="carous">
-    </ul>
+
+        <div id="carous_container" class="callbacks_container">
+			<ul class="rslides" id="carous">
+				<li ng-repeat="actualite in loadingApp.actualites">
+					<img src="{{actualite.imageUrl}}" alt="{{actualite.title}}" />
+					<div class="caption2">
+		              <h1>{{actualite.title}}</h1>
+		              <button type="button" class="btn btn-default" ng-click="showActualite(actualite)">
+		              	En savoir plus
+		              </button>
+		            </div>
+				</li>
+			</ul>
+         </div>
     </div>
     <div class="col-md-2"></div>
 </div>
