@@ -122,6 +122,8 @@ public class AdherentListAction extends HttpServlet {
 			BeanUtilsBean2.getInstance().populate(form, pReq.getParameterMap());
 			form.setSaisie(true);
 			searchCsv(pReq, pResp, form);
+		} else if("setMotDePasse".equals(action)) {
+			setMotDePasse(pReq, pResp);
 		}
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
@@ -781,5 +783,16 @@ public class AdherentListAction extends HttpServlet {
 		out.print(results.toString());
 		out.flush();
 		out.close();
+	}
+	
+	protected void setMotDePasse(HttpServletRequest pReq, HttpServletResponse pResp)
+			throws ServletException, IOException {
+		List<InscriptionEntity> entities = inscriptionDao.getAll();
+		for(InscriptionEntity entity: entities) {
+			if(StringUtils.isNotBlank(entity.getMotdepasse())) {
+				entity.setMotdepasse("701");
+				inscriptionDao.save(entity);
+			}
+		}
 	}
 }

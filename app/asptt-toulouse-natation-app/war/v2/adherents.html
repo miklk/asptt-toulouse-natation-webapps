@@ -377,7 +377,7 @@
 					index++;
 					var row = $('<tr id="'+this.id+'"></tr>');
 					tbody.append(row);
-					row.append('<td><input type="checkbox" name="selections" value="' + this.id + '" />&nbsp;<button type="button" class="adherent-action-edit" onclick="openInfoPopup('+this.id+')" title="Voir/Editer les informations de l\'adhérent"></button>&nbsp;<button type="button" class="adherent-action-affecter" onclick="openAffecterPopup('+this.id+')" title="Changer de groupe/créneaux"></button><button type="button" class="adherent-action-supprimer" onclick="supprimer('+this.id+',\''+this.nom+'\',\''+this.prenom+'\')" title="Supprimer l\'adhérent"></button></td>').append("<td>" + index + "</td>").append("<td>" + this.nom + "</td><td>" + this.prenom + "</td><td>" + this.dateNaissance + "</td><td>"+this.email+"</td><td>" + this.groupe + "</td>");
+					row.append('<td><input type="checkbox" name="selections" value="' + this.id + '" />&nbsp;<button type="button" class="adherent-action-edit" onclick="openInfoPopup('+this.id+')" title="Voir/Editer les informations de l\'adhérent"></button>&nbsp;<button type="button" class="adherent-action-affecter" onclick="openAffecterPopup('+this.id+')" title="Changer de groupe/créneaux"></button><button type="button" class="adherent-action-supprimer" onclick="supprimer('+this.id+',\''+this.nom+'\',\''+this.prenom+'\')" title="Supprimer l\'adhérent"></button></td>').append("<td>" + index + "</td>").append("<td>" + this.nom + "</td><td>" + this.prenom + "</td><td>" + this.dateNaissance + "</td><td>"+this.email+"</td><td>" + this.motdepasse + "</td><td>" + this.groupe + "</td>");
 					var creneau = "";
 					$.each(this.creneaux, function() {
 						creneau = creneau + this + "<br />";
@@ -484,6 +484,7 @@
   			<th>Prénom</th>
   			<th>Date de naissance</th>
   			<th>E-mail</th>
+  			<th>Mot de passe</th>
   			<th>Groupe</th>
   			<th>Créneaux</th>
   		</tr>
