@@ -13,21 +13,24 @@ aspttNatTlsApp.controller('LoadingAppCtrl', ['$scope', 'LoadingApp', '$sce', fun
 	LoadingApp.get({}, function(data) {
 		$scope.loadingApp = data;
 		$scope.showActualite = function(actualite) {
-	    	$("#carous_container").hide();
 	    	$("#actualites").show();
 	    	$scope.actualiteTitle = actualite.title;
 	    	$scope.actualiteHtml = $sce.trustAsHtml(actualite.content);
 	    	$scope.actuDocuments = actualite.documentSet;
 	    	$scope.hasDocument = actualite.hasDocument;
+	    	$('html, body').animate({  
+	            scrollTop:$("#actualites").offset().top  
+	        }, 'slow');
 	    };
 	    $scope.hideActualite = function() {
-	    	$("#carous_container").show();
+	    	$('html, body').animate({  
+	            scrollTop:$("#carous_container").offset().top  
+	        }, 'slow');
 	    	$("#actualites").hide();
 	    	$scope.actualiteTitle = "";
 	    	$scope.actualiteHtml = "";
 	    	$scope.actuDocuments = null;
 	    	$scope.hasDocument = false;
-	    	setTimeout("loadCarous()", 5000);
 	    };
 	});
 }]);
@@ -44,8 +47,12 @@ aspttNatTlsApp.controller('LoadingAlbumCtrl', ['$scope', 'LoadingAlbumService', 
 	$scope.getPhotos = function(album) {
 		//Build slider
 		$("#diapo").fadeIn();
+		$('html, body').animate({  
+            scrollTop:$("#diapo").offset().top  
+        }, 'slow');
 		$("#slider3").empty();
 		$("#slider3-pager").empty();
+		$scope.albumTitle = album.intitule;
 		$.each(album.photos, function() {
 			var img = $("<img src=\"\" />");
 			$(img).attr("src", this);
@@ -68,6 +75,13 @@ aspttNatTlsApp.controller('LoadingAlbumCtrl', ['$scope', 'LoadingAlbumService', 
 	        maxwidth: 540,
 	        speed: 300
 	      });
+	};
+	$scope.hidePhotos = function() {
+		$('html, body').animate({  
+            scrollTop:$("#albums").offset().top  
+        }, 'slow');
+		$("#diapo").fadeOut();
+		$scope.albumTitle = "";
 	};
 }]);
 

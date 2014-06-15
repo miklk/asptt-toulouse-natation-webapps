@@ -1,11 +1,27 @@
 <div class="row">
 	<div class="col-md-2"></div>
 	<div class="col-md-8">
-		<div id="actualites" style="display:none">
+        <div id="carous_container" class="callbacks_container" >
+			<ul class="rslides" id="carous">
+				<li ng-repeat="actualite in loadingApp.actualites">
+					<img src="{{actualite.imageUrl}}" alt="{{actualite.title}}" style="max-height: 500px; width: auto"/>
+					<p class="caption">
+		              <span style="font-size: 2.0em;padding: 0 10px; cursor: pointer;" ng-click="showActualite(actualite)">{{actualite.title}}</span>
+		            </p>
+				</li>
+			</ul>
+         </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
+	<div id="actualites" style="display:none">
 			<div id="actualites-content" class="panel panel-info">
 				<div class="panel-heading">
 				<span style="font-weight: bold">{{actualiteTitle}}</span>
-					<span style="float:right" ng-click="hideActualite"><a href="#">&larr; Revenir aux actualités</a></span>
+					<button type="button" class="close" ng-click="hideActualite()">x</button>
 				</div>
 				<div class="panel-body" ng-bind-html="actualiteHtml"></div>
 				
@@ -17,22 +33,8 @@
 				</div>
 			</div>
 		</div>
-
-        <div id="carous_container" class="callbacks_container">
-			<ul class="rslides" id="carous">
-				<li ng-repeat="actualite in loadingApp.actualites">
-					<img src="{{actualite.imageUrl}}" alt="{{actualite.title}}" />
-					<div class="caption2">
-		              <h1>{{actualite.title}}</h1>
-		              <button type="button" class="btn btn-default" ng-click="showActualite(actualite)">
-		              	En savoir plus
-		              </button>
-		            </div>
-				</li>
-			</ul>
-         </div>
-    </div>
-    <div class="col-md-2"></div>
+	</div>
+		<div class="col-md-2"></div>
 </div>
 <div class="row">
 			<div class="col-md-12">
@@ -58,19 +60,33 @@
 			</dl>
 		</div>
 </div>
-<div id="diapo" class="row" style="display:none; margin: 0 auto">
-	<ul class="rslides" id="slider3">
-    </ul>
-	<ul id="slider3-pager">
-	</ul>
-</div>
-<div class="row" style="margin-top: 3%" ng-controller="LoadingAlbumCtrl">
-	<div class="col-md-2" ng-repeat="album in albums.albums">
-		<div class="thumbnail">
-			<img src="{{album.couverture}}" class="img-responsive" alt="{{album.intitule}}" ng-click="getPhotos(album)" style="max-height: 90px">
-			<div class="caption">
-				<h6>{{album.shortIntitule}}</h6>
+<div ng-controller="LoadingAlbumCtrl">
+	<div id="albums" class="row" style="margin-top: 3%" >
+		<div class="col-md-2" ng-repeat="album in albums.albums">
+			<div class="thumbnail">
+				<img src="{{album.couverture}}" class="img-responsive" alt="{{album.intitule}}" ng-click="getPhotos(album)" style="max-height: 90px">
+				<div class="caption">
+					<h6>{{album.shortIntitule}}</h6>
+				</div>
 			</div>
 		</div>
+	</div>
+	<div id="diapo" class="row" style="display:none;">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<div class="panel" style="max-width: 540px">
+				<div class="panel-heading">
+					<span style="font-weight: bold">{{albumTitle}}</span>
+					<button type="button" class="close" ng-click="hidePhotos()">x</button>
+				</div>
+				<div class="panel-body" style="padding: 0;">
+					<ul class="rslides" id="slider3">
+				    </ul>
+					<ul id="slider3-pager">
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-2"></div>
 	</div>
 </div>
