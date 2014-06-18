@@ -7,7 +7,6 @@ import com.asptttoulousenatation.core.server.AbstractDeleteActionHandler;
 import com.asptttoulousenatation.core.server.dao.DaoBase;
 import com.asptttoulousenatation.core.server.dao.competition.CompetitionDao;
 import com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionEntity;
-import com.asptttoulousenatation.core.server.dao.entity.structure.MenuEntity;
 import com.asptttoulousenatation.core.shared.competition.DeleteCompetitionAction;
 import com.asptttoulousenatation.core.shared.competition.DeleteCompetitionDayAction;
 import com.asptttoulousenatation.core.shared.competition.DeleteCompetitionResult;
@@ -21,7 +20,7 @@ public class DeleteCompetitionActionHandler extends
 	}
 
 	@Override
-	protected void doBeforeDelete(CompetitionEntity pEntity,
+	protected void doBeforeDelete(DeleteCompetitionAction pAction, CompetitionEntity pEntity,
 			ExecutionContext pContext) throws DispatchException {
 		//Delete all days
 		for(Long lDay: pEntity.getDays()) {

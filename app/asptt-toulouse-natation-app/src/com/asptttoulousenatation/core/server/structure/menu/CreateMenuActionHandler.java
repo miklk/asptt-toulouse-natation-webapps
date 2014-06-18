@@ -52,6 +52,8 @@ public class CreateMenuActionHandler implements
 		if(CollectionUtils.isEmpty(existenceTest)) {//doesn't exist
 			//Creation
 			MenuEntity lMenu = new MenuEntity(pAction.getMenuKey(), pAction.getTitle(), pAction.getArea(), false, true, pAction.getOrder(), null, pAction.getParent());
+			lMenu.setDivider(pAction.isDivider());
+			lMenu.setAlone(pAction.isAlone());
 			MenuEntity lMenuEntity = dao.save(lMenu);
 			ContentEntity lContentEntity = new ContentEntity(pAction.getSummary(),
 					new Blob(pAction.getContent().getBytes()),
@@ -59,7 +61,7 @@ public class CreateMenuActionHandler implements
 			contentDao.save(lContentEntity);
 			
 			//Update parent
-			if(pAction.getParent() != null) {
+			if(lMenu.getParent() != null) {
 				//Retrieve parent menu
 				MenuEntity lMenuParent = dao.get(pAction.getParent());
 				lMenuParent.getSubMenu().add(lMenuEntity.getId());

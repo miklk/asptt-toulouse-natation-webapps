@@ -21,7 +21,7 @@ public abstract class AbstractDeleteActionHandler<E extends Entity, A extends Ab
 		dao = createDao();
 		E lEntity = dao.get(pAction.getId());
 		if (lEntity != null) {
-			doBeforeDelete(lEntity, pContext);
+			doBeforeDelete(pAction, lEntity, pContext);
 			dao.delete(lEntity);
 			pContext.execute(new SetDataUpdateAction(lEntity.getClass(), true));
 		}
@@ -30,7 +30,7 @@ public abstract class AbstractDeleteActionHandler<E extends Entity, A extends Ab
 		return lResult;
 	}
 
-	protected abstract void doBeforeDelete(E pEntity, ExecutionContext pContext)
+	protected abstract void doBeforeDelete(A pAction, E pEntity, ExecutionContext pContext)
 			throws DispatchException;
 	
 	protected abstract void fillResult(A pAction, R pResult, ExecutionContext pContext) throws DispatchException;

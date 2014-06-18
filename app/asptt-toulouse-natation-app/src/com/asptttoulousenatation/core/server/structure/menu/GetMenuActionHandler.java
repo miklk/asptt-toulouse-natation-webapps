@@ -47,12 +47,13 @@ public class GetMenuActionHandler implements
 			// Content criteria
 			List<CriterionDao<? extends Object>> lMenuCriteria = new ArrayList<CriterionDao<? extends Object>>(
 					2);
-			
-			
-			//No documents
-			CriterionDao<String> lKindCriterion = new CriterionDao<String>(ContentEntityFields.KIND, ContentDataKindEnum.DOCUMENT.toString(), Operator.NOT_EQUAL);
+
+			// No documents
+			CriterionDao<String> lKindCriterion = new CriterionDao<String>(
+					ContentEntityFields.KIND,
+					ContentDataKindEnum.DOCUMENT.toString(), Operator.NOT_EQUAL);
 			lMenuCriteria.add(lKindCriterion);
-			
+
 			CriterionDao<Long> lContentCriterion = new CriterionDao<Long>();
 			lContentCriterion.setEntityField(ContentEntityFields.MENU);
 			lContentCriterion.setOperator(Operator.EQUAL);
@@ -78,14 +79,17 @@ public class GetMenuActionHandler implements
 		}
 
 		// Retrieve sub menu
-		List<MenuUi> lSubMenuUis = new ArrayList<MenuUi>(lMenuEntity
-				.getSubMenu().size());
-		for (Long lSubMenuId : lMenuEntity.getSubMenu()) {
-			GetMenuResult lGetMenuResult = pContext.execute(new GetMenuAction(
-					lSubMenuId, pAction.isAddContent()));
-			lSubMenuUis.add(lGetMenuResult.getMenu());
+		if (lMenuEntity.getSubMenu() != null) {
+			List<MenuUi> lSubMenuUis = new ArrayList<MenuUi>(lMenuEntity
+					.getSubMenu().size());
+			for (Long lSubMenuId : lMenuEntity.getSubMenu()) {
+				GetMenuResult lGetMenuResult = pContext
+						.execute(new GetMenuAction(lSubMenuId, pAction
+								.isAddContent()));
+				lSubMenuUis.add(lGetMenuResult.getMenu());
+			}
+			lMenu.setSubMenus(lSubMenuUis);
 		}
-		lMenu.setSubMenus(lSubMenuUis);
 		return new GetMenuResult(lMenu);
 	}
 

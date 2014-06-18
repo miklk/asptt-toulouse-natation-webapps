@@ -47,6 +47,12 @@ public class MenuEntity implements Entity {
 	@Persistent
 	private Long parent;
 	
+	@Persistent
+	private Boolean divider;
+	
+	@Persistent
+	private Boolean alone;
+	
 	public MenuEntity() {
 		subMenu = new HashSet<Long>();
 	}
@@ -62,6 +68,8 @@ public class MenuEntity implements Entity {
 		order = pOrder;
 		subMenu = pSubMenu;
 		parent = pParent;
+		divider = false;
+		alone = false;
 	}
 	
 	public Long getId() {
@@ -145,4 +153,25 @@ public class MenuEntity implements Entity {
 	public void setParent(Long pParent) {
 		parent = pParent;
 	}
+
+
+	public Boolean getDivider() {
+		return divider;
+	}
+
+
+	public void setDivider(Boolean pDivider) {
+		divider = pDivider;
+	}
+
+
+	public Boolean getAlone() {
+		return alone;
+	}
+
+
+	public void setAlone(Boolean pAlone) {
+		alone = pAlone;
+	}
+	
 }

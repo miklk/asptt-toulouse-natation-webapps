@@ -4,6 +4,7 @@ import com.asptttoulousenatation.core.shared.AbstractDeleteAction;
 
 public class DeleteMenuAction extends AbstractDeleteAction<DeleteMenuResult> {
 
+	private Long areaId;
 	public DeleteMenuAction() {
 		
 	}
@@ -11,4 +12,13 @@ public class DeleteMenuAction extends AbstractDeleteAction<DeleteMenuResult> {
 	public DeleteMenuAction(Long pId) {
 		super(pId);
 	}
+
+	public Long getAreaId() {
+		return areaId;
+	}
+
+	public void setAreaId(Long pAreaId) {
+		areaId = pAreaId;
+	}
+	
 }

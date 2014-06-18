@@ -9,6 +9,8 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 public interface AreaView extends IsWidget {
 	public HasValue<String> getMenuTitle();
 	public HasValue<String> getSummary();
+	public HasValue<Boolean> getMenuDivider();
+	public HasValue<Boolean> getMenuAlone();
 	public String getContent();
 	public HasClickHandlers getUpdateButton();
 	public HasClickHandlers getDeleteButton();
@@ -33,6 +35,8 @@ public interface AreaView extends IsWidget {
 	public HasValue<String> getMenuCreationTitle();
 	public HasValue<String> getMenuCreationSummary();
 	public String getMenuCreationContent();
+	public HasValue<Boolean> getMenuCreationDivider();
+	public HasValue<Boolean> getMenuCreationAlone();
 
 	public Long getParentMenuId();
 	

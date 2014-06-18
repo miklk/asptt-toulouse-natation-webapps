@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.asptttoulousenatation.core.server.dao.document.DocumentDao;
 import com.asptttoulousenatation.core.server.dao.entity.document.DocumentEntity;
 import com.asptttoulousenatation.core.server.dao.entity.structure.ContentEntity;

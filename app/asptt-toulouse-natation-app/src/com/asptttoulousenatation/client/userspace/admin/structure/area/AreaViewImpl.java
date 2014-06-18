@@ -23,6 +23,7 @@ import com.google.gwt.user.cellview.client.AbstractCellTree;
 import com.google.gwt.user.cellview.client.CellBrowser;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
@@ -53,6 +54,8 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 	private TextBox menuTitleInput;
 	private TextBox summaryInput;
+	private CheckBox dividerCheckBox;
+	private CheckBox aloneCheckBox;
 	private CKEditor contentInput;
 	private Button updateButton;
 	private Button deleteButton;
@@ -79,6 +82,8 @@ public class AreaViewImpl extends Composite implements AreaView {
 	private TextBox menuCreationTitleInput;
 	private TextBox menuCreationSummaryInput;
 	private CKEditor menuCreationContentInput;
+	private CheckBox menuCreationDividerCheckBox;
+	private CheckBox menuCreationAloneCheckBox;
 	private Button menuCreationButton;
 	private Button menuCreationCloseButton;
 	private ListBox menuCreationMenuKey;
@@ -184,6 +189,18 @@ public class AreaViewImpl extends Composite implements AreaView {
 		menuTitleInput.setValue(pMenuUi.getTitle());
 		lPanel.setWidget(lRowIndex, 0, createLabel("Titre de la page"));
 		lPanel.setWidget(lRowIndex, 1, menuTitleInput);
+		lRowIndex++;
+		
+		// Divider
+		dividerCheckBox = new CheckBox();
+		lPanel.setWidget(lRowIndex, 0, createLabel("Divider"));
+		lPanel.setWidget(lRowIndex, 1, dividerCheckBox);
+		lRowIndex++;
+					
+		// Alone
+		aloneCheckBox = new CheckBox();
+		lPanel.setWidget(lRowIndex, 0, createLabel("Sans contenu"));
+		lPanel.setWidget(lRowIndex, 1, aloneCheckBox);
 		lRowIndex++;
 
 		// Content edition
@@ -366,6 +383,18 @@ public class AreaViewImpl extends Composite implements AreaView {
 			lPanel.setWidget(lRowIndex, 0, createLabel("Intitulé de la page (et du sous-menu)"));
 			lPanel.setWidget(lRowIndex, 1, menuCreationTitleInput);
 			lRowIndex++;
+			
+			// Divider
+			menuCreationDividerCheckBox = new CheckBox();
+			lPanel.setWidget(lRowIndex, 0, createLabel("Divider"));
+			lPanel.setWidget(lRowIndex, 1, menuCreationDividerCheckBox);
+			lRowIndex++;
+						
+			// Alone
+			menuCreationAloneCheckBox = new CheckBox();
+			lPanel.setWidget(lRowIndex, 0, createLabel("Sans contenu"));
+			lPanel.setWidget(lRowIndex, 1, menuCreationAloneCheckBox);
+			lRowIndex++;
 
 			// Summary
 			menuCreationSummaryInput = new TextBox();
@@ -515,5 +544,25 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 	public void setPageSelectionAction(Handler pHandler) {
 		selectionModel.addSelectionChangeHandler(pHandler);
+	}
+
+	@Override
+	public HasValue<Boolean> getMenuDivider() {
+		return dividerCheckBox;
+	}
+
+	@Override
+	public HasValue<Boolean> getMenuAlone() {
+		return aloneCheckBox;
+	}
+
+	@Override
+	public HasValue<Boolean> getMenuCreationDivider() {
+		return menuCreationDividerCheckBox;
+	}
+
+	@Override
+	public HasValue<Boolean> getMenuCreationAlone() {
+		return menuCreationAloneCheckBox;
 	}
 }

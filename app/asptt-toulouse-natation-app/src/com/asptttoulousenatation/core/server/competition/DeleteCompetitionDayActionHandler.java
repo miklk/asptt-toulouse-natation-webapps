@@ -17,7 +17,7 @@ public class DeleteCompetitionDayActionHandler extends
 	}
 
 	@Override
-	protected void doBeforeDelete(CompetitionDayEntity pEntity,
+	protected void doBeforeDelete(DeleteCompetitionDayAction pAction, CompetitionDayEntity pEntity,
 			ExecutionContext pContext) throws DispatchException {
 		//Retrieve its competition to update it.
 		

@@ -18,7 +18,7 @@ public class DeleteSlotActionHandler extends
 	}
 
 	@Override
-	protected void doBeforeDelete(SlotEntity pEntity, ExecutionContext pContext)
+	protected void doBeforeDelete(DeleteSlotAction pAction, SlotEntity pEntity, ExecutionContext pContext)
 			throws DispatchException {
 	}
 

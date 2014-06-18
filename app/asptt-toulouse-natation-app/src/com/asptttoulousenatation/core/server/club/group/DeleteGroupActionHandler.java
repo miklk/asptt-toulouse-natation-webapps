@@ -28,7 +28,7 @@ public class DeleteGroupActionHandler extends
 	}
 
 	@Override
-	protected void doBeforeDelete(GroupEntity pEntity, ExecutionContext pContext)
+	protected void doBeforeDelete(DeleteGroupAction pAction, GroupEntity pEntity, ExecutionContext pContext)
 			throws DispatchException {
 		//Retrieve slots
 		List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(

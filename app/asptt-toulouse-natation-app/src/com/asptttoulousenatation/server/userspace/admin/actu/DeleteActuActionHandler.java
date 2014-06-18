@@ -19,7 +19,7 @@ public class DeleteActuActionHandler
 	}
 
 	@Override
-	protected void doBeforeDelete(ActuEntity pEntity, ExecutionContext pContext)
+	protected void doBeforeDelete(DeleteActuAction pAction, ActuEntity pEntity, ExecutionContext pContext)
 			throws DispatchException {
 	}
 

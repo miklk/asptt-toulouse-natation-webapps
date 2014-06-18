@@ -11,13 +11,15 @@ public class CreateMenuAction implements Action<CreateMenuResult> {
 	private short order;
 	private Long area;
 	private Long parent;
+	private boolean divider;
+	private boolean alone;
 	
 	public CreateMenuAction() {
 		
 	}
 
 	public CreateMenuAction(String pMenuKey, String pTitle, String pSummary, String pContent,
-			short pOrder, Long pArea, Long pParent) {
+			short pOrder, Long pArea, Long pParent, boolean pDivider, boolean pAlone) {
 		super();
 		menuKey = pMenuKey;
 		title = pTitle;
@@ -26,6 +28,8 @@ public class CreateMenuAction implements Action<CreateMenuResult> {
 		order = pOrder;
 		area = pArea;
 		parent = pParent;
+		divider = pDivider;
+		alone = pAlone;
 	}
 
 	public String getMenuKey() {
@@ -85,4 +89,21 @@ public class CreateMenuAction implements Action<CreateMenuResult> {
 	public void setParent(Long pParent) {
 		parent = pParent;
 	}
+
+	public boolean isDivider() {
+		return divider;
+	}
+
+	public void setDivider(boolean pDivider) {
+		divider = pDivider;
+	}
+
+	public boolean isAlone() {
+		return alone;
+	}
+
+	public void setAlone(boolean pAlone) {
+		alone = pAlone;
+	}
+	
 }

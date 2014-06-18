@@ -31,7 +31,7 @@ public class DeleteAreaActionHandler
 	}
 
 	@Override
-	protected void doBeforeDelete(AreaEntity pEntity, ExecutionContext pContext)
+	protected void doBeforeDelete(DeleteAreaAction pAction, AreaEntity pEntity, ExecutionContext pContext)
 			throws DispatchException {
 		List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);

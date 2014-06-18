@@ -20,6 +20,8 @@ public class UpdateMenuActionHandler implements
 		MenuEntity lMenu = dao.get(pAction.getMenu());
 		lMenu.setMenuKey(pAction.getMenuKey());
 		lMenu.setTitle(pAction.getTitle());
+		lMenu.setDivider(pAction.isDivider());
+		lMenu.setAlone(pAction.isAlone());
 		dao.save(lMenu);
 		//Update content
 		pContext.execute(new UpdateContentAction(pAction.getContentId(), pAction.getSummary(), pAction.getContent()));

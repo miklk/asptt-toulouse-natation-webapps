@@ -50,7 +50,8 @@ public class DeleteMenuActionHandler extends AbstractDeleteActionHandler<MenuEnt
 	}
 
 	@Override
-	protected void doBeforeDelete(MenuEntity pEntity, ExecutionContext pContext) throws DispatchException {
+	protected void doBeforeDelete(DeleteMenuAction pAction, MenuEntity pEntity, ExecutionContext pContext) throws DispatchException {
+		pAction.setAreaId(pEntity.getArea());
 		List<CriterionDao<? extends Object>> lContentCriteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		CriterionDao<Long> lContentCriterion = new CriterionDao<Long>();
@@ -73,12 +74,13 @@ public class DeleteMenuActionHandler extends AbstractDeleteActionHandler<MenuEnt
 			pContext.execute(new SetDataUpdateAction(MenuEntity.class, true));
 		}
 	}
+	
 
 	@Override
 	protected void fillResult(DeleteMenuAction pAction, DeleteMenuResult pResult,
 			ExecutionContext pContext) throws DispatchException {
 		//Retrieve area
-		AreaEntity lAreaEntity = areaDao.get(pAction.getId());
+		AreaEntity lAreaEntity = areaDao.get(pAction.getAreaId());
 		//Get menu
 		List<CriterionDao<? extends Object>> lMenuCriteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
