@@ -788,11 +788,19 @@ public class AdherentListAction extends HttpServlet {
 	protected void setMotDePasse(HttpServletRequest pReq, HttpServletResponse pResp)
 			throws ServletException, IOException {
 		List<InscriptionEntity> entities = inscriptionDao.getAll();
+		int count = 0;
 		for(InscriptionEntity entity: entities) {
 			if(StringUtils.isNotBlank(entity.getMotdepasse())) {
 				entity.setMotdepasse("701");
 				inscriptionDao.save(entity);
+				count++;
 			}
 		}
+		ServletOutputStream out = pResp.getOutputStream();
+		pResp.setContentType("text/html;charset=UTF-8");
+		pResp.getWriter().write("" + count);
+
+		out.flush();
+		out.close();
 	}
 }
