@@ -5,9 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
@@ -33,7 +37,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
@@ -44,6 +47,8 @@ import com.asptttoulousenatation.core.server.dao.entity.field.GroupEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
+import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
 import com.asptttoulousenatation.core.server.dao.inscription.InscriptionDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
@@ -53,6 +58,11 @@ import com.asptttoulousenatation.server.Xlsx;
 import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.InscriptionTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 
 public class InscriptionAction extends HttpServlet {
 
@@ -66,7 +76,9 @@ public class InscriptionAction extends HttpServlet {
 
 	private InscriptionTransformer inscriptionTransformer = new InscriptionTransformer();
 	private InscriptionDao inscriptionDao = new InscriptionDao();
+	private Inscription2Dao inscription2Dao = new Inscription2Dao();
 	private SlotDao slotDao = new SlotDao();
+	private GroupDao groupDao = new GroupDao();
 
 	@Override
 	protected void doGet(HttpServletRequest pReq, HttpServletResponse pResp)
@@ -96,6 +108,8 @@ public class InscriptionAction extends HttpServlet {
 			loadGroupes(pReq, pResp);
 		} else if ("nouveau".equals(action)) {
 			nouveau(pReq, pResp);
+		} else if("imprimerNew".equals(action)) {
+			imprimerNew(pReq, pResp);
 		}
 	}
 
@@ -580,5 +594,82 @@ public class InscriptionAction extends HttpServlet {
 		String json = mapper.writeValueAsString(lUis);
 		pResp.setContentType("application/json;charset=UTF-8");
 		pResp.getWriter().write(json);
+	}
+	
+	protected void imprimerNew(HttpServletRequest pReq, HttpServletResponse pResp)
+			throws ServletException, IOException {
+		Long numero = 0l;
+		try {
+			numero = Long.valueOf(pReq.getParameter("numero"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		InscriptionEntity2 adherent = inscription2Dao.get(numero);
+		InscriptionEntity2 parent = adherent;
+		if (adherent.getPrincipal() != null) {
+			parent = inscription2Dao.get(adherent.getPrincipal());
+		}
+		URL resource = getClass().getResource("/");
+		String path = resource.getPath();
+		path = path.replace("WEB-INF/classes/", "");
+    	PdfReader reader = new PdfReader(new FileInputStream(path + "doc/bulletin.pdf"));
+
+		
+    	ServletOutputStream out = pResp.getOutputStream();
+		try {
+			PdfStamper 	stamper = new PdfStamper(reader, out);
+    	AcroFields fields = stamper.getAcroFields();
+
+		fields.setField("untitled1", adherent.getNom());
+		fields.setField("untitled2", adherent.getPrenom());
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date dateNaissance = format.parse(adherent.getDatenaissance());
+		
+		SimpleDateFormat formatDD = new SimpleDateFormat("dd");
+		fields.setField("untitled3", formatDD.format(dateNaissance));
+		SimpleDateFormat formatMM = new SimpleDateFormat("MM");
+		fields.setField("untitled4", formatMM.format(dateNaissance));
+		SimpleDateFormat formatYYYY = new SimpleDateFormat("yyyy");
+		fields.setField("untitled5", formatYYYY.format(dateNaissance));
+		fields.setField("untitled6", parent.getProfession());
+		fields.setField("untitled7", parent.getAdresse());
+		fields.setField("untitled8", parent.getCodepostal());
+		fields.setField("untitled9", parent.getVille());
+		fields.setField("untitled10", parent.getTelephone());
+		fields.setField("untitled11", parent.getEmail());
+		fields.setField("untitled12", parent.getAccordNomPrenom());
+		fields.setField("untitled13", parent.getMineurParent());
+		fields.setField("untitled14", parent.getMineur());
+		
+		switch(adherent.getCivilite()) {
+		case "0":fields.setField("untitled15", "X");
+		break;
+		case "1": fields.setField("untitled16", "X");
+		break;
+		default:
+		}
+		
+		if(BooleanUtils.isTrue(adherent.getNouveau())) {
+			fields.setField("untitled17", "X");
+		} else {
+			fields.setField("untitled18", "X");
+		}
+		
+		GroupEntity group = groupDao.get(adherent.getNouveauGroupe());
+		if(BooleanUtils.isTrue(group.getLicenceFfn())) {
+			fields.setField("untitled19", "X");
+			fields.setField("untitled20", "X");
+		}
+        stamper.close();
+        reader.close();
+		} catch (DocumentException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		out.flush();
+		out.close();
 	}
 }

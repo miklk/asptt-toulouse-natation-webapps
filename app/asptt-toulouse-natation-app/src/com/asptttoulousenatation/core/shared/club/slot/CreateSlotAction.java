@@ -11,12 +11,13 @@ public class CreateSlotAction implements Action<CreateSlotResult> {
 	private String swimmingPool;
 	private String educateur;
 	private String placeDisponible;
+	private boolean second;
 	
 	public CreateSlotAction() {
 	}
 
 	public CreateSlotAction(String pDayOfWeek, int pBegin, int pEnd,
-			Long pGroup, String pSwimmingPool, String pEducateur, String pPlaceDisponible) {
+			Long pGroup, String pSwimmingPool, String pEducateur, String pPlaceDisponible, boolean pSecond) {
 		super();
 		dayOfWeek = pDayOfWeek;
 		begin = pBegin;
@@ -25,6 +26,7 @@ public class CreateSlotAction implements Action<CreateSlotResult> {
 		swimmingPool = pSwimmingPool;
 		educateur = pEducateur;
 		placeDisponible = pPlaceDisponible;
+		second = pSecond;
 	}
 
 	public String getDayOfWeek() {
@@ -81,5 +83,13 @@ public class CreateSlotAction implements Action<CreateSlotResult> {
 
 	public void setPlaceDisponible(String pPlaceDisponible) {
 		placeDisponible = pPlaceDisponible;
+	}
+
+	public boolean isSecond() {
+		return second;
+	}
+
+	public void setSecond(boolean pSecond) {
+		second = pSecond;
 	}
 }

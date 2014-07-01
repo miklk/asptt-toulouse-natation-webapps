@@ -26,6 +26,7 @@ public class CreateSlotActionHandler implements
 		lEntity.setSwimmingPool(pAction.getSwimmingPool());
 		lEntity.setEducateur(pAction.getEducateur());
 		lEntity.setGroup(pAction.getGroup());
+		lEntity.setSecond(pAction.isSecond());
 		if(StringUtils.isNumeric(pAction.getPlaceDisponible())) {
 			lEntity.setPlaceDisponible(Integer.valueOf(pAction.getPlaceDisponible()));
 		} else {

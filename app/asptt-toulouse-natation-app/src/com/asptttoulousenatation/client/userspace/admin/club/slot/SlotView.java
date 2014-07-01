@@ -13,6 +13,7 @@ public interface SlotView extends IsWidget {
 	public HasValue<String> getEducateur();
 	public Long getSlot();
 	public HasValue<String> getPlaceDisponible();
+	public HasValue<Boolean> getSecond();
 	
 	public HasClickHandlers getCreateButton();
 	public HasClickHandlers getUpdateButton();

@@ -16,6 +16,7 @@ public class SlotUi implements IsSerializable {
 	private String educateur;
 	private int placeDisponible;
 	private int placeRestante;
+	private boolean second;
 
 	public SlotUi() {
 
@@ -23,7 +24,7 @@ public class SlotUi implements IsSerializable {
 
 	public SlotUi(Long pId, String pDayOfWeek, int pBegin, String pBeginStr,
 			int pEnd, String pEndStr, GroupUi pGroup, String pSwimmingPool,
-			String pEducateur, int pPlaceDisponible, int pPlaceRestante) {
+			String pEducateur, int pPlaceDisponible, int pPlaceRestante, boolean pSecond) {
 		super();
 		id = pId;
 		dayOfWeek = pDayOfWeek;
@@ -36,6 +37,7 @@ public class SlotUi implements IsSerializable {
 		educateur = pEducateur;
 		placeDisponible = pPlaceDisponible;
 		placeRestante = pPlaceRestante;
+		second = pSecond;
 	}
 
 	public Long getId() {
@@ -125,4 +127,13 @@ public class SlotUi implements IsSerializable {
 	public void setPlaceRestante(int pPlaceRestante) {
 		placeRestante = pPlaceRestante;
 	}
+
+	public boolean isSecond() {
+		return second;
+	}
+
+	public void setSecond(boolean pSecond) {
+		second = pSecond;
+	}
+	
 }

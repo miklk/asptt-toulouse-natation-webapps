@@ -1,5 +1,7 @@
 package com.asptttoulousenatation.server.userspace.admin.entity;
 
+import org.apache.commons.lang3.BooleanUtils;
+
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.shared.club.group.GroupUi;
@@ -20,6 +22,7 @@ public class SlotTransformer extends
 		lUi.setEnd(pEntity.getEnd());
 		lUi.setSwimmingPool(pEntity.getSwimmingPool());
 		lUi.setEducateur(pEntity.getEducateur());
+		lUi.setSecond(BooleanUtils.toBoolean(pEntity.getSecond()));
 		int[] begin = DateUtils.getHour(pEntity.getBegin());
 		lUi.setBeginStr(begin[0] + ":" + DateUtils.formatMinutes(begin[1]));
 		int[] end = DateUtils.getHour(pEntity.getEnd());

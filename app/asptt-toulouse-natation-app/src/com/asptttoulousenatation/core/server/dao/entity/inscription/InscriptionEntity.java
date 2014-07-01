@@ -54,6 +54,9 @@ public class InscriptionEntity implements Entity {
 	private String telephoneMerePro;
 	@Persistent
 	private String email;
+	
+	@Persistent
+	private String emailsecondaire;
 	@Persistent
 	private String licenceFFN;
 	@Persistent
@@ -126,6 +129,8 @@ public class InscriptionEntity implements Entity {
 	private String motdepasse;
 	@Persistent
 	private Boolean complet;
+	@Persistent
+	private Boolean nouveau;
 	
 	public InscriptionEntity() {
 		
@@ -539,5 +544,20 @@ public class InscriptionEntity implements Entity {
 	public void setComplet(Boolean pComplet) {
 		complet = pComplet;
 	}
-	
+
+	public String getEmailsecondaire() {
+		return emailsecondaire;
+	}
+
+	public void setEmailsecondaire(String pEmailsecondaire) {
+		emailsecondaire = pEmailsecondaire;
+	}
+
+	public Boolean getNouveau() {
+		return nouveau;
+	}
+
+	public void setNouveau(Boolean pNouveau) {
+		nouveau = pNouveau;
+	}
 }

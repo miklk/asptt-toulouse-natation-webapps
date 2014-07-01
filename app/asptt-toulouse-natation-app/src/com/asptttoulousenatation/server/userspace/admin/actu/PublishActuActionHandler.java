@@ -1,5 +1,7 @@
 package com.asptttoulousenatation.server.userspace.admin.actu;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
@@ -24,7 +26,7 @@ public class PublishActuActionHandler implements
 	public PublishActionResult execute(PublishActuAction pAction,
 			ExecutionContext pContext) throws DispatchException {
 		ActuEntity lActuEntity = new ActuEntity(null, pAction.getTitle(),
-				pAction.getSummary(), new Text(pAction.getContent()), pAction.getCreationDate(), pAction.getImageUrl());
+				pAction.getSummary(), new Text(pAction.getContent()), pAction.getCreationDate(), StringUtils.defaultString(pAction.getImageUrl(), "img/actu_defaut.jpg"));
 		ActuDao lActuDao = new ActuDao();
 		ActuEntity createdActu = lActuDao.save(lActuEntity);
 		

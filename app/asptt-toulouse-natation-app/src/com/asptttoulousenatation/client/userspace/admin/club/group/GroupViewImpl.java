@@ -38,6 +38,11 @@ public class GroupViewImpl extends Composite implements GroupView {
 	private TextBox groupTitle;
 	private CheckBox groupLicenceFfn;
 	private CheckBox groupInscription;
+	private TextBox groupTarif;
+	private TextBox groupTarif2;
+	private TextBox groupTarif3;
+	private TextBox groupTarif4;
+	private CheckBox seanceUnique;
 
 	public GroupViewImpl(List<GroupUi> pGroups) {
 		data = pGroups;
@@ -77,6 +82,11 @@ public class GroupViewImpl extends Composite implements GroupView {
 		groupTitle.setValue(pGroupUi.getTitle());
 		groupLicenceFfn.setValue(pGroupUi.isLicenceFfn());
 		groupInscription.setValue(pGroupUi.isLicenceFfn());
+		groupTarif.setValue("" + pGroupUi.getTarif());
+		groupTarif2.setValue("" + pGroupUi.getTarif2());
+		groupTarif3.setValue("" + pGroupUi.getTarif3());
+		groupTarif4.setValue("" + pGroupUi.getTarif4());
+		seanceUnique.setValue(pGroupUi.isSeanceunique());
 		updateButton.setVisible(true);
 		deleteButton.setVisible(true);
 	}
@@ -103,6 +113,34 @@ public class GroupViewImpl extends Composite implements GroupView {
 		groupInscription = new CheckBox();
 		lPanel.setWidget(lRowIndex, 0, createLabel("Valable à l'inscription"));
 		lPanel.setWidget(lRowIndex, 1, groupInscription);
+		lRowIndex++;
+		
+		// Tarif
+		groupTarif = new TextBox();
+		lPanel.setWidget(lRowIndex, 0, createLabel("Tarif"));
+		lPanel.setWidget(lRowIndex, 1, groupTarif);
+		lRowIndex++;
+		
+		// Tarif
+		groupTarif2 = new TextBox();
+		lPanel.setWidget(lRowIndex, 0, createLabel("Tarif 2"));
+		lPanel.setWidget(lRowIndex, 1, groupTarif2);
+		lRowIndex++;
+		// Tarif
+		groupTarif3 = new TextBox();
+		lPanel.setWidget(lRowIndex, 0, createLabel("Tarif 3"));
+		lPanel.setWidget(lRowIndex, 1, groupTarif3);
+		lRowIndex++;
+		// Tarif
+		groupTarif4 = new TextBox();
+		lPanel.setWidget(lRowIndex, 0, createLabel("Tarif 4"));
+		lPanel.setWidget(lRowIndex, 1, groupTarif4);
+		lRowIndex++;
+		
+		// Séance unique
+		seanceUnique = new CheckBox();
+		lPanel.setWidget(lRowIndex, 0, createLabel("1 séance"));
+		lPanel.setWidget(lRowIndex, 1, seanceUnique);
 		lRowIndex++;
 
 		HorizontalPanel lButtonBar = new HorizontalPanel();
@@ -151,5 +189,30 @@ public class GroupViewImpl extends Composite implements GroupView {
 
 	public HasValue<Boolean> getGroupInscription() {
 		return groupInscription;
+	}
+
+	@Override
+	public HasValue<String> getGroupTarif() {
+		return groupTarif;
+	}
+
+	@Override
+	public HasValue<String> getGroupTarif2() {
+		return groupTarif2;
+	}
+
+	@Override
+	public HasValue<String> getGroupTarif3() {
+		return groupTarif3;
+	}
+
+	@Override
+	public HasValue<String> getGroupTarif4() {
+		return groupTarif4;
+	}
+
+	@Override
+	public HasValue<Boolean> getSeanceUnique() {
+		return seanceUnique;
 	}
 }

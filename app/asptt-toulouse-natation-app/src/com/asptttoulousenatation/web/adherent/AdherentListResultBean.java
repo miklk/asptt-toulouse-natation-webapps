@@ -20,6 +20,7 @@ public class AdherentListResultBean implements Serializable {
 	private Set<String> creneaux;
 	private String dossier;
 	private String email;
+	private String motdepasse;
 	
 	public AdherentListResultBean() {
 		
@@ -87,6 +88,14 @@ public class AdherentListResultBean implements Serializable {
 
 	public void setEmail(String pEmail) {
 		email = pEmail;
+	}
+
+	public String getMotdepasse() {
+		return motdepasse;
+	}
+
+	public void setMotdepasse(String pMotdepasse) {
+		motdepasse = pMotdepasse;
 	}
 	
 }

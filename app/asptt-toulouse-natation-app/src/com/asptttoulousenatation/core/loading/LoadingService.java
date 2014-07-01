@@ -86,26 +86,39 @@ public class LoadingService {
 		lAreaCriterion.setEntityField(MenuEntityFields.AREA);
 		lAreaCriterion.setOperator(Operator.EQUAL);
 		lCriteria.add(lAreaCriterion);
-		lCriteria.add(new CriterionDao<Boolean>(MenuEntityFields.DISPLAY, Boolean.TRUE, Operator.EQUAL));
+		lCriteria.add(new CriterionDao<Boolean>(MenuEntityFields.DISPLAY,
+				Boolean.TRUE, Operator.EQUAL));
 		OrderDao lMenuOrder = new OrderDao(MenuEntityFields.ORDER,
 				OrderDao.OrderOperator.ASC);
 
 		for (AreaEntity lAreaEntity : lAreaEntities) {
-			LoadingMenuUi lMenuLoadingUi = new LoadingMenuUi(lAreaEntity.getTitle());
+			LoadingMenuUi lMenuLoadingUi = new LoadingMenuUi(
+					lAreaEntity.getTitle());
 			// Get menu
 			lAreaCriterion.setValue(lAreaEntity.getId());
 			List<MenuEntity> lMenuEntities = menuDao
 					.find(lCriteria, lMenuOrder);
-			for (MenuEntity lMenuEntity : lMenuEntities) {
-				LoadingMenuUi  lMenuLoadingUi2 = new LoadingMenuUi(lMenuEntity.getTitle());
-				if (lMenuEntity.getParent() == null) {
-					// Retrieve sub menu
-					for (Long lSubMenuId : lMenuEntity.getSubMenu()) {
-						MenuEntity lSubMenu = menuDao.get(lSubMenuId);
-						lMenuLoadingUi2.addSubMenu(new LoadingMenuUi(lSubMenu.getTitle()));
-					}
+			if (lMenuEntities != null && lMenuEntities.size() == 1) {
+				MenuEntity firstMenuEntity = lMenuEntities.iterator().next();
+				if (firstMenuEntity.getParent() == null
+						&& firstMenuEntity.getAlone() != null
+						&& firstMenuEntity.getAlone()) {
+					lMenuLoadingUi.setHasSubMenu(false);
 				}
-				lMenuLoadingUi.addSubMenu(lMenuLoadingUi2);;
+			} else {
+				for (MenuEntity lMenuEntity : lMenuEntities) {
+					LoadingMenuUi lMenuLoadingUi2 = new LoadingMenuUi(
+							lMenuEntity.getTitle());
+					if (lMenuEntity.getParent() == null) {
+						// Retrieve sub menu
+						for (Long lSubMenuId : lMenuEntity.getSubMenu()) {
+							MenuEntity lSubMenu = menuDao.get(lSubMenuId);
+							lMenuLoadingUi2.addSubMenu(new LoadingMenuUi(
+									lSubMenu.getTitle()));
+						}
+					}
+					lMenuLoadingUi.addSubMenu(lMenuLoadingUi2);
+				}
 			}
 			result.addMenu(lMenuLoadingUi);
 		}
@@ -131,14 +144,15 @@ public class LoadingService {
 			lUi.setDocumentSet(lDocumentUis);
 			result.addActualite(lUi);
 		}
-		
-		//Album Picasa
-		//getAlbums(result);
+
+		// Album Picasa
+		// getAlbums(result);
 		getAlbumsFake(result);
 		Long endTime = System.currentTimeMillis();
 		LOG.info("Loading duration: " + (endTime - startTime) + " ms");
 		return result;
-}
+	}
+
 	@Path("/albums")
 	@GET
 	public LoadingAlbumsUi getAlbums() {
@@ -164,11 +178,16 @@ public class LoadingService {
 				if (!excludedAlbum.contains(lAlbum.getTitle().getPlainText())) {
 					String feedHref = getLinkByRel(lAlbum.getLinks(),
 							Link.Rel.FEED);
-					AlbumFeed lAlbumEntries = myService.query(new Query(new URL(
-							feedHref)), AlbumFeed.class);
-					LoadingAlbumUi lAlbumUi = new LoadingAlbumUi(lAlbum.getGphotoId(), lAlbum.getTitle().getPlainText(), lAlbumEntries.getPhotoEntries().get(0).getMediaContents().get(0).getUrl());
-					for(PhotoEntry photo: lAlbumEntries.getPhotoEntries()) {
-						lAlbumUi.addPhotos(photo.getMediaContents().get(0).getUrl());
+					AlbumFeed lAlbumEntries = myService.query(new Query(
+							new URL(feedHref)), AlbumFeed.class);
+					LoadingAlbumUi lAlbumUi = new LoadingAlbumUi(
+							lAlbum.getGphotoId(), lAlbum.getTitle()
+									.getPlainText(), lAlbumEntries
+									.getPhotoEntries().get(0)
+									.getMediaContents().get(0).getUrl());
+					for (PhotoEntry photo : lAlbumEntries.getPhotoEntries()) {
+						lAlbumUi.addPhotos(photo.getMediaContents().get(0)
+								.getUrl());
 					}
 					result.addAlbum(lAlbumUi);
 					maxAlbum--;
@@ -188,13 +207,16 @@ public class LoadingService {
 		}
 		return result;
 	}
-	
+
 	private void getAlbumsFake(LoadingResult result) {
-		result.addAlbum(new LoadingAlbumUi("1", "Compétition interne", "img/galerie/sitegpe.jpg"));
-		result.addAlbum(new LoadingAlbumUi("2", "National 2", "img/galerie/sitewebmarius.jpg"));
-		result.addAlbum(new LoadingAlbumUi("3", "Natathlon", "img/galerie/sitewebcyrilpastailleavant.jpg"));
+		result.addAlbum(new LoadingAlbumUi("1", "Compétition interne",
+				"img/galerie/sitegpe.jpg"));
+		result.addAlbum(new LoadingAlbumUi("2", "National 2",
+				"img/galerie/sitewebmarius.jpg"));
+		result.addAlbum(new LoadingAlbumUi("3", "Natathlon",
+				"img/galerie/sitewebcyrilpastailleavant.jpg"));
 	}
-	
+
 	/**
 	 * Helper function to get a link by a rel value.
 	 */
@@ -205,5 +227,33 @@ public class LoadingService {
 			}
 		}
 		throw new IllegalArgumentException("Missing " + relValue + " link.");
+	}
+
+	@Path("/actualites")
+	@GET
+	public LoadingResult getActualites() {
+		LoadingResult result = new LoadingResult();
+		// Actu
+		List<ActuEntity> lEntities = actuDao.getAll(0, 7);
+		ActuTransformer actuTransformer = new ActuTransformer();
+		DocumentTransformer documentTransformer = new DocumentTransformer();
+		for (ActuEntity entity : lEntities) {
+			ActuUi lUi = actuTransformer.toUi(entity);
+			// Get documents
+			List<CriterionDao<? extends Object>> lDocumentCriteria = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			CriterionDao<Long> lDocumentCriterion = new CriterionDao<Long>();
+			lDocumentCriterion.setEntityField(DocumentEntityFields.MENU);
+			lDocumentCriterion.setOperator(Operator.EQUAL);
+			lDocumentCriteria.add(lDocumentCriterion);
+			lDocumentCriterion.setValue(entity.getId());
+			List<DocumentEntity> lDocumentEntities = documentDao
+					.find(lDocumentCriteria);
+			List<DocumentUi> lDocumentUis = documentTransformer
+					.toUi(lDocumentEntities);
+			lUi.setDocumentSet(lDocumentUis);
+			result.addActualite(lUi);
+		}
+		return result;
 	}
 }

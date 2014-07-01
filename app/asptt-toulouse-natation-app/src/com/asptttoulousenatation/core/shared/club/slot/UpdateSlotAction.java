@@ -12,12 +12,13 @@ public class UpdateSlotAction implements Action<UpdateSlotResult> {
 	private String swimmingPool;
 	private String educateur;
 	private String placeDisponible;
+	private boolean second;
 	
 	public UpdateSlotAction() {
 	}
 
 	public UpdateSlotAction(Long pId, String pDayOfWeek, int pBegin, int pEnd,
-			Long pGroup, String pSwimmingPool, String pEducateur, String pPlaceDisponible) {
+			Long pGroup, String pSwimmingPool, String pEducateur, String pPlaceDisponible, boolean pSecond) {
 		super();
 		id = pId;
 		dayOfWeek = pDayOfWeek;
@@ -27,6 +28,7 @@ public class UpdateSlotAction implements Action<UpdateSlotResult> {
 		swimmingPool = pSwimmingPool;
 		educateur = pEducateur;
 		placeDisponible = pPlaceDisponible;
+		second = pSecond;
 	}
 
 	public Long getId() {
@@ -92,4 +94,13 @@ public class UpdateSlotAction implements Action<UpdateSlotResult> {
 	public void setPlaceDisponible(String pPlaceDisponible) {
 		placeDisponible = pPlaceDisponible;
 	}
+
+	public boolean isSecond() {
+		return second;
+	}
+
+	public void setSecond(boolean pSecond) {
+		second = pSecond;
+	}
+	
 }

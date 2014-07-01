@@ -28,6 +28,16 @@ public class GroupEntity implements Entity {
 	
 	@Persistent
 	private Boolean inscription;
+	@Persistent
+	private Integer tarif;
+	@Persistent
+	private Integer tarif2;
+	@Persistent
+	private Integer tarif3;
+	@Persistent
+	private Integer tarif4;
+	@Persistent
+	private Boolean seanceunique;
 	
 	public GroupEntity() {
 		
@@ -63,6 +73,50 @@ public class GroupEntity implements Entity {
 
 	public void setInscription(Boolean pInscription) {
 		inscription = pInscription;
+	}
+
+	public Integer getTarif() {
+		return tarif;
+	}
+
+	public void setTarif(Integer pTarif) {
+		tarif = pTarif;
+	}
+
+	public Integer getTarif2() {
+		return tarif2;
+	}
+
+	public void setTarif2(Integer pTarif2) {
+		tarif2 = pTarif2;
+	}
+
+	public Integer getTarif3() {
+		return tarif3;
+	}
+
+	public void setTarif3(Integer pTarif3) {
+		tarif3 = pTarif3;
+	}
+
+	public Integer getTarif4() {
+		return tarif4;
+	}
+
+	public void setTarif4(Integer pTarif4) {
+		tarif4 = pTarif4;
+	}
+	
+	public static int getTarif(Integer pTarif) {
+		return pTarif == null ? 0: pTarif;
+	}
+
+	public Boolean getSeanceunique() {
+		return seanceunique;
+	}
+
+	public void setSeanceunique(Boolean pSeanceunique) {
+		seanceunique = pSeanceunique;
 	}
 	
 }

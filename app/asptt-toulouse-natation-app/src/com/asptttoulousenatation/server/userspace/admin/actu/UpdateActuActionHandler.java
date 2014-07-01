@@ -1,5 +1,7 @@
 package com.asptttoulousenatation.server.userspace.admin.actu;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
@@ -23,7 +25,7 @@ public class UpdateActuActionHandler implements
 		lActu.setSummary(pAction.getSummary());
 		lActu.setCreationDate(pAction.getCreationDate());
 		lActu.setContent(new Text(pAction.getContent()));
-		lActu.setImageUrl(pAction.getImageUrl());
+		lActu.setImageUrl(StringUtils.defaultString(pAction.getImageUrl(), "img/actu_defaut.jpg"));
 		lActuDao.save(lActu);
 		pContext.execute(new SetDataUpdateAction(ActuEntity.class, true));
 		return new UpdateActuResult();

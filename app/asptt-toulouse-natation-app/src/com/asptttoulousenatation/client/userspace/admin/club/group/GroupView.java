@@ -13,4 +13,9 @@ public interface GroupView extends IsWidget {
 	public HasValue<Boolean> getGroupLicenceFfn();
 	public HasValue<Boolean> getGroupInscription();
 	public Long getGroupId();
+	public HasValue<String> getGroupTarif();
+	public HasValue<String> getGroupTarif2();
+	public HasValue<String> getGroupTarif3();
+	public HasValue<String> getGroupTarif4();
+	public HasValue<Boolean> getSeanceUnique();
 }

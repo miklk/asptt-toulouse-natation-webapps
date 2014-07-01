@@ -36,7 +36,6 @@ import org.apache.commons.beanutils.BeanUtilsBean2;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
@@ -45,6 +44,8 @@ import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
+import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
 import com.asptttoulousenatation.core.server.dao.inscription.InscriptionDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
@@ -54,6 +55,7 @@ import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AdherentListAction extends HttpServlet {
 
@@ -70,6 +72,10 @@ public class AdherentListAction extends HttpServlet {
 	private InscriptionDao inscriptionDao = new InscriptionDao();
 	private SlotDao slotDao = new SlotDao();
 	private GroupDao groupDao = new GroupDao();
+	private Inscription2Dao inscription2Dao = new Inscription2Dao();
+	
+	private static List<InscriptionEntity2> all;
+	private static int count = 0;
 
 	@Override
 	protected void doGet(HttpServletRequest pReq, HttpServletResponse pResp)
@@ -122,8 +128,12 @@ public class AdherentListAction extends HttpServlet {
 			BeanUtilsBean2.getInstance().populate(form, pReq.getParameterMap());
 			form.setSaisie(true);
 			searchCsv(pReq, pResp, form);
-		} else if("setMotDePasse".equals(action)) {
-			setMotDePasse(pReq, pResp);
+		} else if("sendMotDePasse".equals(action)) {
+			sendMotDePasse(pReq, pResp);
+		} else if("clearNew".equals(action)) {
+			clearNew(pReq, pResp);
+		} else if("initAd".equals(action)) {
+			initAd(pReq, pResp);
 		}
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
@@ -179,23 +189,23 @@ public class AdherentListAction extends HttpServlet {
 		}
 		
 		
-		final List<InscriptionEntity> entities;
+		final List<InscriptionEntity2> entities;
 		if (criteria.isEmpty())
 			if (!"-1".equals(form.getSearchPiscine())) {
-				entities = inscriptionDao.getAll();
+				entities = inscription2Dao.getAll();
 			} else {
 				entities = Collections.emptyList();
 			}
 		else {
-			entities = inscriptionDao.find(criteria, new OrderDao(
+			entities = inscription2Dao.find(criteria, new OrderDao(
 					InscriptionEntityFields.NOM, OrderOperator.ASC));
 		}
 		List<AdherentListResultBean> results = new ArrayList<AdherentListResultBean>();
-		for (InscriptionEntity entity : entities) {
+		for (InscriptionEntity2 entity : entities) {
 			try {
 				if (StringUtils.isBlank(form.getSearchCreneau()) || "-1".equals(form.getSearchCreneau())) {
 					AdherentListResultBean adherentUi = AdherentListResultBeanTransformer.getInstance()
-							.get(entity);
+							.get2(entity);
 					if(StringUtils.isNotBlank(form.getSearchPiscine()) &&  !"-1".equals(form.getSearchPiscine())) {
 						boolean trouve = false;
 						Iterator<String> it = adherentUi.getCreneaux().iterator();
@@ -210,11 +220,11 @@ public class AdherentListAction extends HttpServlet {
 					}
 				} else if("-2".equals(form.getSearchCreneau()) && StringUtils.isBlank(entity.getCreneaux())) {
 					results.add(AdherentListResultBeanTransformer.getInstance()
-							.get(entity));
+							.get2(entity));
 				} else if(StringUtils.contains(entity.getCreneaux(),
 						form.getSearchCreneau())) {
 					results.add(AdherentListResultBeanTransformer.getInstance()
-							.get(entity));
+							.get2(entity));
 				}
 			} catch (Exception e) {
 				builder.append("Erreur avec l'adhérent " + entity.getId()
@@ -785,22 +795,68 @@ public class AdherentListAction extends HttpServlet {
 		out.close();
 	}
 	
-	protected void setMotDePasse(HttpServletRequest pReq, HttpServletResponse pResp)
+	protected void initAd(HttpServletRequest pReq,
+			HttpServletResponse pResp)
 			throws ServletException, IOException {
-		List<InscriptionEntity> entities = inscriptionDao.getAll();
-		int count = 0;
-		for(InscriptionEntity entity: entities) {
-			if(StringUtils.isNotBlank(entity.getMotdepasse())) {
-				entity.setMotdepasse("701");
-				inscriptionDao.save(entity);
-				count++;
-			}
-		}
-		ServletOutputStream out = pResp.getOutputStream();
-		pResp.setContentType("text/html;charset=UTF-8");
-		pResp.getWriter().write("" + count);
+		all = inscription2Dao.getAll();
+	}
+	
+	protected void sendMotDePasse(HttpServletRequest pReq,
+			HttpServletResponse pResp)
+			throws ServletException, IOException {
 
-		out.flush();
-		out.close();
+		Properties props = new Properties();
+		Session session = Session.getDefaultInstance(props, null);
+		for (int i = count; i < (400 + count); i++) {
+			InscriptionEntity2 entity = all.get(i);
+			try {
+				
+				Multipart mp = new MimeMultipart();
+				MimeBodyPart htmlPart = new MimeBodyPart();
+
+				MimeMessage msg = new MimeMessage(session);
+				msg.setFrom(new InternetAddress(
+						"webmaster@asptt-toulouse-natation.com",
+						"ASPTT Toulouse Natation"));
+				StringBuilder message = new StringBuilder(
+						"Madame, Monsieur,<p>Les inscriptions pour la saison 2014-2015 débutent aujourd'hui. Par la même occasion nous mettons en ligne une nouvelle version de notre site web.<br />"
+								+ "La procédure d'inscription est sensiblement la même que l'an passé.<br />"
+								+ "Après l'enregistrement en ligne vous avez 15 jours pour nous faire parvenir votre ou vos réglements (l'encaissement débute au mois de novembre), passé ce délai votre créneau ne vous sera plus réservé.<br />"
+								+ "<p>Voici votre mot de passe: "+entity.getMotdepasse()+"</p>"
+								+ "<p><a href=\"http://www.asptt-toulouse-natation.com\">http://www.asptt-toulouse-natation.com</a></p>");
+				message.append("<p>Sportivement,<br />"
+						+ "Le secrétariat,<br />"
+						+ "ASPTT Grand Toulouse Natation<br />"
+						+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
+				htmlPart.setContent(message.toString(), "text/html");
+				mp.addBodyPart(htmlPart);
+
+				msg.addRecipient(Message.RecipientType.TO,
+						new InternetAddress(
+								entity.getEmail()));
+
+					msg.setSubject("ASPTT Toulouse Natation - Inscription",
+							"UTF-8");
+					msg.setContent(mp);
+					Transport.send(msg);
+				} catch (Exception e) {
+					LOG.severe(e.getMessage());
+				}
+			count++;
+		}
+		pResp.setContentType("text/html;charset=UTF-8");
+		pResp.getWriter().write("ok " + count);
+
+	}
+	
+	protected void clearNew(HttpServletRequest pReq,
+			HttpServletResponse pResp)
+			throws ServletException, IOException {
+		for (InscriptionEntity2 entity : all) {
+			entity.setSaisie(false);
+			inscription2Dao.save(entity);
+		}
+		pResp.setContentType("text/html;charset=UTF-8");
+		pResp.getWriter().write("ok");
 	}
 }

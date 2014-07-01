@@ -14,7 +14,7 @@
   <stylesheet src="Upload.css"/>
   
   
- <set-property name="user.agent" value="ie6,ie8,gecko1_8,safari,opera"/>
+ <set-property name="user.agent" value="ie8,gecko1_8,safari"/>
   <!-- Other module inherits                                      -->
 
   <!-- Specify the app entry point class.                         -->
@@ -36,4 +36,9 @@
       <when-type-is class="com.asptttoulousenatation.client.ApplicationLaunch" />
       <when-property-is name="user.agent" value="ie6" />    
   </replace-with>
+  
+  <add-linker name="xsiframe"/>
+<set-configuration-property name="devModeRedirectEnabled" value="true"/>
+
+<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
 </module>

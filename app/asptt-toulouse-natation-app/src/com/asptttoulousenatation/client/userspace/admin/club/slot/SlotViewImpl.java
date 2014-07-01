@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -50,6 +51,7 @@ public class SlotViewImpl extends Composite implements SlotView {
 	private TextBox swimmingPool;
 	private TextBox educateur;
 	private TextBox placeDisponible;
+	private CheckBox second;
 	
 	static {
 		dayOfWeekMap = new HashMap<String, Integer>(7);
@@ -113,6 +115,7 @@ public class SlotViewImpl extends Composite implements SlotView {
 		swimmingPool.setValue(pUi.getSwimmingPool());
 		educateur.setValue(pUi.getEducateur());
 		placeDisponible.setValue(Integer.toString(pUi.getPlaceDisponible()));
+		second.setValue(pUi.isSecond());
 		updateButton.setVisible(true);
 		deleteButton.setVisible(true);
 	}
@@ -178,6 +181,12 @@ public class SlotViewImpl extends Composite implements SlotView {
 		lPanel.setWidget(rowIndex, 1, placeDisponible);
 		rowIndex++;
 		
+		// Second séance
+		second = new CheckBox();
+		lPanel.setHTML(rowIndex, 0, "Seconde séance");
+		lPanel.setWidget(rowIndex, 1, second);
+		rowIndex++;
+		
 		HorizontalPanel lButtonBar = new HorizontalPanel();
 		lButtonBar.setStyleName(CSS.buttonBar());
 		lButtonBar.add(updateButton);
@@ -240,5 +249,10 @@ public class SlotViewImpl extends Composite implements SlotView {
 	@Override
 	public HasValue<String> getPlaceDisponible() {
 		return placeDisponible;
+	}
+
+	@Override
+	public HasValue<Boolean> getSecond() {
+		return second;
 	}
 }

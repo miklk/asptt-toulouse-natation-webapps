@@ -21,6 +21,11 @@ public class CreateGroupActionHandler implements
 		lEntity.setTitle(pAction.getTitle());
 		lEntity.setLicenceFfn(pAction.isLicenceFfn());
 		lEntity.setInscription(pAction.isInscription());
+		lEntity.setTarif(pAction.getTarif());
+		lEntity.setTarif2(pAction.getTarif2());
+		lEntity.setTarif3(pAction.getTarif3());
+		lEntity.setTarif4(pAction.getTarif4());
+		lEntity.setSeanceunique(pAction.isSeanceunique());
 		dao.save(lEntity);
 		return new CreateGroupResult();
 	}

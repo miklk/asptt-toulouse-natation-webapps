@@ -56,7 +56,11 @@ public abstract class DaoBase<E extends Entity> {
 		try {
 			lAll = lPersistenceManager.getExtent(pClass);
 			for (E lE : lAll) {
-				lAllList.add(lE);
+				try {
+				lAllList.add(lPersistenceManager.detachCopy(lE));
+				} catch(Exception e) {
+					e.printStackTrace();
+				}
 			}
 		} finally {
 			lPersistenceManager.close();

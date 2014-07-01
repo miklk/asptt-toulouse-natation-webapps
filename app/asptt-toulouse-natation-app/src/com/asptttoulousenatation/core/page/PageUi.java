@@ -12,9 +12,10 @@ public class PageUi implements Serializable {
 	 */
 	private static final long serialVersionUID = -7248929381942539859L;
 	private String content;
+	private boolean hasSubContent;
 	
 	public PageUi() {
-		
+		hasSubContent = false;
 	}
 
 	public PageUi(String pContent) {
@@ -29,4 +30,13 @@ public class PageUi implements Serializable {
 	public void setContent(String pContent) {
 		content = pContent;
 	}
+
+	public boolean isHasSubContent() {
+		return hasSubContent;
+	}
+
+	public void setHasSubContent(boolean pHasSubContent) {
+		hasSubContent = pHasSubContent;
+	}
+	
 }

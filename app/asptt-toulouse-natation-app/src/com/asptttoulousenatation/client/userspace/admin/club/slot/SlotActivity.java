@@ -50,7 +50,7 @@ public class SlotActivity extends MyAbstractActivity<SlotPlace> {
 														.getValue(), lView
 														.getEducateur()
 														.getValue(),
-														lView.getPlaceDisponible().getValue());
+														lView.getPlaceDisponible().getValue(), lView.getSecond().getValue());
 										dispatchAsync
 												.execute(
 														lAction,
@@ -84,7 +84,7 @@ public class SlotActivity extends MyAbstractActivity<SlotPlace> {
 														.getValue(), lView
 														.getEducateur()
 														.getValue(),
-														lView.getPlaceDisponible().getValue());
+														lView.getPlaceDisponible().getValue(), lView.getSecond().getValue());
 										dispatchAsync
 												.execute(
 														lAction,

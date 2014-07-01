@@ -5,8 +5,10 @@
 			<ul class="rslides" id="carous">
 				<li ng-repeat="actualite in loadingApp.actualites">
 					<img src="{{actualite.imageUrl}}" alt="{{actualite.title}}" style="max-height: 500px; width: auto"/>
-					<p class="caption">
-		              <span style="font-size: 2.0em;padding: 0 10px; cursor: pointer;" ng-click="showActualite(actualite)">{{actualite.title}}</span>
+					<p class="caption" ng-click="showActualite(actualite)">
+		              <span style="font-size: 2.0em;padding: 0px 10px; cursor: pointer;">{{actualite.title}}</span>
+		              <br />
+		              <button type="button" class="btn btn-default btn-sm actu-more-btn">En savoir plus</button>
 		            </p>
 				</li>
 			</ul>
