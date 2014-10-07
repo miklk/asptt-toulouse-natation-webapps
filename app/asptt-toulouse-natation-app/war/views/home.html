@@ -1,0 +1,110 @@
+<link rel="stylesheet" href="css/bootstrap-social.css" />
+<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
+        <div id="carous_container" class="callbacks_container" >
+			<ul class="rslides" id="carous">
+				<li ng-repeat="actualite in loadingApp.actualites">
+					<img src="{{actualite.imageUrl}}" alt="{{actualite.title}}" style="max-height: 500px; width: auto"/>
+					<p class="caption" ng-click="showActualite(actualite)">
+		              <span style="font-size: 2.0em;padding: 0px 10px; cursor: pointer;">{{actualite.title}}</span>
+		              <br />
+		              <button type="button" class="btn btn-default btn-sm actu-more-btn">En savoir plus</button>
+		            </p>
+				</li>
+			</ul>
+         </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<div class="row">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
+	<div id="actualites" style="display:none">
+			<div id="actualites-content" class="panel panel-info">
+				<div class="panel-heading">
+					<h4>{{actualiteTitle}}
+					<button type="button" class="close" ng-click="hideActualite()">x</button>
+					</h4>
+				</div>
+				<div class="panel-body" ng-bind-html="actualiteHtml"></div>
+				
+				<div ng-show="actuHasDocument">
+					<h4>Documents associés <span class="badge">{{actuNbDocuments}}</span></h4>
+						<div class="list-group">
+							<a href="downloadDocument?documentId={{document.id}}&fileId={{document.data}}"  class="list-group-item" ng-repeat="document in actuDocuments">
+								<h4 class="list-group-item-heading">{{document.title}}</h4>
+								<p class="list-group-item-text">{{document.summary}}</p>
+							</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<div class="col-md-2"></div>
+</div>
+<div class="row">
+			<div class="col-md-12">
+			<dl class="dl-horizontal">
+				<dt>notre philosophie</dt>
+					<dd>depuis la découverte de l'eau jusqu'à une pratique sportive 
+		universitaire de compétition, nous souhaitons permettre à chacun d’atteindre son 
+		plus haut niveau de pratique de la natation.</dd>
+				<dt>notre préoccupation</dt>
+					<dd>le respect de l'individu. Notre conception de la natation 
+		sportive inclut une attention constante au développement individuel du nageur, à sa 
+		santé et à son parcours scolaire pour les plus jeunes.</dd>
+				<dt>notre force</dt>
+					<dd>la souplesse d’adaptation à tous les niveaux de pratique de notre 
+		sport. Nous sommes animés par les exigences d'une pratique de la natation de haut 
+		niveau, mais accordons à la pratique loisir la même attention en termes de qualité de 
+		formation et d'accompagnement sportif.</dd>
+				<dt>notre exigence</dt>
+					<dd>votre plaisir de nager !</dd>
+				<dt>notre contrat</dt>
+					<dd>donner le meilleur de nous-même pour que vous 
+		donniez le meilleur de vous-même !</dd>
+			</dl>
+		</div>
+</div>
+<div ng-controller="LoadingAlbumCtrl">
+	<div id="albums" class="row" style="margin-top: 3%" >
+		<div class="col-md-2" ng-repeat="album in albums.albums">
+			<div class="thumbnail diapo">
+				<img src="{{album.couverture}}" class="img-responsive" alt="{{album.intitule}}" ng-click="getPhotos(album)" style="max-height: 90px">
+				<div class="caption">
+					<h6>{{album.intitule}}</h6>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="diapo" class="row" style="display:none;">
+		<div class="col-md-2"></div>
+		<div class="col-md-8">
+			<div class="panel" style="max-width: 540px">
+				<div class="panel-heading">
+					<span style="font-weight: bold">{{albumTitle}}</span>
+					<button type="button" class="close" ng-click="hidePhotos()">x</button>
+				</div>
+				<div class="panel-body" style="padding: 0;">
+					<ul class="rslides" id="slider3">
+				    </ul>
+					<ul id="slider3-pager">
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-2">
+		</div>
+	</div>
+	
+	<div class="row">
+		<a href="https://plus.google.com/113747450706652808889" target="_blank" class="btn btn-social-icon btn-google-plus" rel="publisher">
+			<i class="fa fa-google-plus"></i>
+		</a>
+	</div>
+</div>
+<script>
+   loadCarous();
+ </script>

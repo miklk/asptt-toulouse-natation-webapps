@@ -1,0 +1,477 @@
+<link rel="stylesheet" href="css/inscription2.css" />
+<div class="row" ng-controller="InscriptionCtrl">
+    <div class="board">
+         <div class="board-inner">
+         	<ul class="nav nav-tabs" id="myTab">
+         		<div class="liner"></div>
+	          <li class="active">
+		          <a href="#home" data-toggle="tab" title="Accueil" target="_self">
+		           <span class="round-tabs one">
+		                   <i class="glyphicon glyphicon-home"></i>
+		           </span> 
+		       	   </a>
+		       	</li>
+		       	<li>
+		       	<a href="#dossiers" data-toggle="tab" title="Dossiers à inscrire" target="_self">
+		          <span class="round-tabs two">
+		              <i class="glyphicon glyphicon-list-alt"></i>
+		          </span> 
+				</a>
+		      </li>
+		       <li>
+		       	<a href="#activite" data-toggle="tab" title="Activité" target="_self">
+		          <span class="round-tabs two">
+		              <i class="glyphicon glyphicon-shopping-cart"></i>
+		          </span> 
+				</a>
+		      </li>
+	      	  <li>
+		      	  <a href="#nageur" data-toggle="tab" title="Informations du nageur(euse)" target="_self">
+			          <span class="round-tabs three">
+			               <i class="glyphicon glyphicon-user"></i>
+			          </span>
+		          </a>
+	          </li>
+	
+	          <li id="info-contact">
+	          	<a href="#info" data-toggle="tab" title="Informations de contact" target="_self">
+	              <span class="round-tabs four">
+	                   <i class="glyphicon glyphicon-user"></i>
+	              </span> 
+	          	</a>
+	          </li>
+	
+	          <li>
+	          	<a href="#cotisation" data-toggle="tab" title="Cotisation" target="_self">
+	              <span class="round-tabs five">
+	                   <i class="glyphicon glyphicon-usd"></i>
+	              </span> </a>
+	          </li>
+          </ul>
+         </div>
+
+         <div id="tab-content" class="tab-content">
+           <div class="tab-pane fade in active" id="home">
+
+               <h3 class="head text-center">Inscription pour la saison sportive 2014-2015</h3>
+               <h4>Informations importantes</h4>
+               <p>Il est nécessaire, avant toute chose, de consulter et de prendre connaissance des documents joints au préalable à l’inscription en ligne (tarifs, planning récapitulatif….).</p>
+  	<ul>
+  		<!-- <li><a href="doc/lettre_presidente_2013_2014.pdf">Lettre de rentrée 2013-2014</a></li>-->
+  		<li><a href="doc/Planning_bassin_2014_2015.pdf" target="_blank">Planning horaire</a></li>
+  		<li><a href="doc/Ecole_de_Natation_Loisirs_2014-2015.pdf" target="_blank">Tarifs - Ecole de natation, Loisirs</a></li>
+  		<li><a href="doc/Tarifs_Aquagym_2014-2015.pdf" target="_blank">Tarifs - Aquagym</a></li>
+  		<li><a href="doc/Tarifs_Competition_2014-2015.pdf" target="_blank">Tarifs - Compétition</a></li>
+  		<li><a href="doc/Modalites_de_fonctionnement_2014-2015.pdf" target="_blank">Modalités de fonctionnement</a></li>
+  		<li><a href="doc/Note_dinformation_2014-2015.pdf" target="_blank">Note d'information</a></li>
+  		<li><a href="doc/Reglement_interieur_natation_2014-2015.pdf" target="_blank">Règlement Intérieur</a></li>
+  	</ul>
+  	
+  	 <div class="panel panel-default">
+  		<div class="panel-heading">
+  			<h4>Première inscription au club</h4>
+  		</div>
+  		<div class="panel-body">
+  			<form role="form">
+	  			<div class="form-group">
+		  			<label for="nouveau_email">Pour obtenir un code d'accès, veuillez saisir votre adresse e-mail</label>
+		  			<input type="email" class="form-control" id="nouveau_email" ng-model="formData.nouveau" />
+		  		</div>
+	  			<button type="submit" class="btn btn-default btn-block" value="submit" ng-click="nouveauCode()">Valider</button>
+  			</form>
+  		</div>
+  	</div>
+  	<div class="panel panel-default">
+  		<div class="panel-heading">
+  		<h4>Je m'identifie avec mon adresse e-mail et mon code d'accès</h4>
+  		</div>
+  		<div class="panel-body">
+  		
+			<form role="form">
+				<div class="form-group">
+					<label for="find_email">Adresse e-mail</label>
+					<input type="email" class="form-control" id="find_email" placeholder="Entrer e-mail" ng-model="formData.email" size="50" />
+					<label for="find_email_motdepasse">Mot de passe</label>
+					<input type="password" class="form-control" id="find_email_motdepasse" placeholder="Mot de passe" ng-model="formData.mdp" />
+				</div>
+				<div>
+				<button type="submit" class="btn btn-default btn-block" value="submit" ng-click="authenticate()">S'inscrire</button>
+				</div>
+				
+			</form>  		
+  		</div>
+  	</div>
+  	<div class="panel panel-default">
+  		<div class="panel-heading">
+  		<h4>J'ai oublié mon mot de passe</h4>
+  		</div>
+  		<div class="panel-body">
+			<form role="form">
+				<div class="form-group">
+					<label for="find_email">Adresse e-mail</label>
+					<input type="email" class="form-control" id="find_email" placeholder="Entrer e-mail" ng-model="formData.email" size="50" />
+				</div>
+				<button type="submit" class="btn btn-default btn-block" value="submit" ng-click="oublie()">J'ai oublié mon mot de passe</button>
+				
+				<p style="margin-top: 20px">En cas de problème, n'hésitez pas à contacter le webmaster à l'adresse suivante: <a href="mailto:webmaster@asptt-toulouse-natation.com" >webmaster@asptt-toulouse-natation.com</a></p>
+			</form>  		
+  		</div>
+  	</div>
+          </div>
+          
+    <div class="tab-pane fade" id="dossiers">
+	    <p>Vous aviez {{dossiersCount}} dossier(s) d'inscription lors de la saison dernière.</p>
+	    <ol>
+	    	<li ng-repeat="dossier in dossiers" ng-hide="dossier.supprimer">
+	    		<span>{{dossier.dossier.prenom}}&nbsp;{{dossier.dossier.nom}} <button type="button" class="btn btn-primary btn-xs btn-success" ng-click="loadDossier($index)" ng-hide="dossier.dossier.nouveau">Ré-inscrire</button>
+		    		<button type="button" class="btn btn-xs btn-success" ng-click="loadDossier($index)" ng-show="dossier.dossier.nouveau">Modifier</button>
+	  				<button type="button" class="btn btn-xs btn-danger" ng-click="deleteDossier($index)">Supprimer le dossier</button>
+  				</span>
+  				<span ng-class="{'glyphicon glyphicon-ok': dossier.creneauSelected}"></span>
+  				<span class="glyphicon glyphicon-exclamation-sign" ng-show="!dossier.creneauSelected">Vous devez sélectionner un créneau</span>
+  			</li>
+	    </ol>
+	    <button type="button" class="btn btn-default btn-info btn-block" ng-click="ajouterEnfant()">Ajouter un membre de la famille</button>
+	    <div style="text-align: center">OU</div>
+	    <button type="submit" class="btn btn-default btn-block" ng-click="validateDossiers()" ng-disabled="dossiersValide(dossiers)">Valider les dossiers</button>
+    </div>
+    <div class="tab-pane fade" id="activite">
+        <form role="form">
+        
+		  <div class="form-group">
+	    <label class="sr-only" for="activite_pratique">Activité</label>
+	    	<p ng-hide="dossiers[currentDossier].dossier.nouveau">Votre groupe actuel: {{dossiers[currentDossier].groupe.title}}</p>
+		    <select class="form-control" id="activite_pratique" placeholder="Activité" ng-show="dossiers[currentDossier].dossier.nouveau" ng-change="loadSlots()" ng-model="dossiers[currentDossier].groupe"
+		    	ng-options="groupe.title for groupe in groupes.groups track by groupe.id">
+		    	<option value="">Choisir un groupe</option>
+		    </select>
+		  </div>
+		  <p class="bg-info" style="padding: 5px" ng-show="dossiers[currentDossier].groupe.description">{{dossiers[currentDossier].groupe.description}}</p>
+		  <div class="form-group">
+		  	<table class="table">
+		  	 <thead>
+		  	 	<tr>
+		  	 		<th>Piscines</th>
+		  	 		<th>Lundi</th>
+		  	 		<th>Mardi</th>
+		  	 		<th>Mercredi</th>
+		  	 		<th>Jeudi</th>
+		  	 		<th>Vendredi</th>
+		  	 		<th>Samedi</th>
+		  	 	</tr>
+		  	 </thead>
+		  	 <tbody>
+		  	 	<tr ng-repeat="slot in dossiers[currentDossier].creneaux.slots">
+		  	 		<td>{{slot.piscine}}</td>
+		  	 		<td>
+		  	 			<div class="checkbox" ng-repeat="lundi in slot.lundi">
+						  <label>
+						    <input type="checkbox" name="creneaux" ng-model="lundi.selected" ng-disabled="(hideSeconde && lundi.second) || (unique && !lundi.second) || lundi.complet" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, lundi)">
+						    {{lundi.beginStr}}-{{lundi.endStr}} ({{lundi.placeDisponible - lundi.placeRestante}}/{{lundi.placeDisponible}}) <span ng-show="lundi.second">Seconde séance.</span><span ng-show="lundi.complet">&nbsp;Complet</span><br >
+						  </label>
+						</div>
+					</td>
+		  	 		<td>
+		  	 			<div class="checkbox" ng-repeat="mardi in slot.mardi">
+						  <label>
+						    <input type="checkbox" name="creneaux" ng-model="mardi.selected" ng-disabled="(hideSeconde && mardi.second) || (unique && !mardi.second) || mardi.complet" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, mardi)">
+						    {{mardi.beginStr}}-{{mardi.endStr}} ({{mardi.placeDisponible - mardi.placeRestante}}/{{mardi.placeDisponible}}) <span ng-show="mardi.second">Seconde séance.</span><span ng-show="mardi.complet">&nbsp;Complet</span><br >
+						  </label>
+						</div>
+					</td>
+		  	 		<td>
+		  	 			<div class="checkbox" ng-repeat="mercredi in slot.mercredi">
+						  <label>
+						    <input type="checkbox" name="creneaux" ng-model="mercredi.selected" ng-disabled="(hideSeconde && mercredi.second) || (unique && !mercredi.second) || mercredi.complet" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, mercredi)">
+						    {{mercredi.beginStr}}-{{mercredi.endStr}} ({{mercredi.placeDisponible - mercredi.placeRestante}}/{{mercredi.placeDisponible}}) <span ng-show="mercredi.second">Seconde séance.</span><span ng-show="mercredi.complet">&nbsp;Complet</span><br >
+						  </label>
+						</div>
+		  	 		</td>
+		  	 		<td>
+		  	 			<div class="checkbox" ng-repeat="jeudi in slot.jeudi">
+						  <label>
+						    <input type="checkbox" name="creneaux" ng-model="jeudi.selected" ng-disabled="(hideSeconde && jeudi.second) || (unique && !jeudi.second) || jeudi.complet"  ng-change="toggleCreneau(dossiers[currentDossier].creneaux, jeudi)">
+						    {{jeudi.beginStr}}-{{jeudi.endStr}} ({{jeudi.placeDisponible - jeudi.placeRestante}}/{{jeudi.placeDisponible}}) <span ng-show="jeudi.second">Seconde séance.</span><span ng-show="jeudi.complet">&nbsp;Complet</span><br >
+						  </label>
+						</div>
+		  	 		</td>	
+		  	 		<td>
+		  	 			<div class="checkbox" ng-repeat="vendredi in slot.vendredi">
+						  <label>
+						    <input type="checkbox" name="creneaux" ng-model="vendredi.selected" ng-disabled="(hideSeconde && vendredi.second) || (unique && !vendredi.second) || vendredi.complet" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, vendredi)">
+						    {{vendredi.beginStr}}-{{vendredi.endStr}} ({{vendredi.placeDisponible - vendredi.placeRestante}}/{{vendredi.placeDisponible}}) <span ng-show="vendredi.second">Seconde séance.</span><span ng-show="vendredi.complet">&nbsp;Complet</span><br >
+						  </label>
+						</div>
+		  	 		</td>
+		  	 		<td>
+		  	 			<div class="checkbox" ng-repeat="samedi in slot.samedi">
+						  <label>
+						    <input type="checkbox" name="creneaux" ng-model="samedi.selected" ng-disabled="(hideSeconde && samedi.second) || (unique && !samedi.second) || samedi.complet" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, samedi)">
+						    {{samedi.beginStr}}-{{samedi.endStr}} ({{samedi.placeDisponible - samedi.placeRestante}}/{{samedi.placeDisponible}}) <span ng-show="samedi.second">Seconde séance.</span><span ng-show="samedi.complet">&nbsp;Complet</span><br >
+						  </label>
+						</div>
+		  	 		</td>
+		  	 	</tr>
+		  	 </tbody>
+		  	</table>
+		  	<button type="button" class="btn btn-link" ng-click="resetSlot()">Recommencer la sélection</button>
+		  </div>
+		  <button type="submit" class="btn btn-default btn-lg btn-block" ng-click="validateActivite(currentDossier)">Valider et passer à l'étape suivante</button>
+		</form>
+        
+    </div>
+          <div class="tab-pane fade" id="nageur">
+       		<form role="form" class="form-horizontal">
+          			<fieldset>
+          				<legend>Information du nageur(euse)</legend>
+          					<div class="form-group">
+		          				<label for="nom" class="col-md-2 control-label">Nom</label>
+		          				<div class="col-md-10">
+		          					<input type="text" class="form-control" id="nom" placeholder="nom" size="100" ng-model="dossiers[currentDossier].dossier.nom" />
+		          				</div>
+		          			</div>
+		          			<div class="form-group">
+		          				<label for="prenom" class="col-md-2 control-label">Prénom</label>
+		          				<div class="col-md-10">
+		          					<input type="text" class="form-control" id="prenom" placeholder="prenom" size="100" ng-model="dossiers[currentDossier].dossier.prenom" />
+		          				</div>
+	          				</div>
+	          				<div class="form-group">
+		          				<label for="sexe" class="col-md-2 control-label">Sexe</label>
+		          				<label class="radio-inline">
+	          						<input type="radio" name="civilite" id="monsieur" value="0" ng-model="dossiers[currentDossier].dossier.civilite" />
+	          						M
+	          					</label>
+	          					<label class="radio-inline">
+	          						<input type="radio" name="civilite" id="madame" value="1" ng-model="dossiers[currentDossier].dossier.civilite" />
+	          						F
+	          					</label>
+	          				</div>
+	          				<div class="form-group row">
+		          				<label for=dateNaissance class="col-md-2 control-label">Date de naissance</label>
+		          				<div class="col-md-2">
+		          					<input type="text" id="dateNaissance" class="form-control" placeholder="JJ" ng-model="dossiers[currentDossier].jour" />
+		          				</div>
+		          				<div class="col-md-2">
+		          					<input type="text" class="form-control" placeholder="MM" ng-model="dossiers[currentDossier].mois" />
+		          				</div>
+		          				<div class="col-md-2">
+		          					<input type="text" class="form-control" placeholder="AAAA" ng-model="dossiers[currentDossier].annee" />
+		          				</div>
+	          				</div>
+          			</fieldset>
+          			
+          			<fieldset>
+	  				<legend>Equipement - mensuration (Taille Arena)</legend>
+	  					<div class="form-group">
+	  						<label for="maillot" class="col-md-2 control-label">Maillot de bain</label>
+	  						<div class="col-md-10">
+	  							<input type="text" class="form-control" id="maillot" placeholder="Maillot de bain" size="5" ng-model="dossiers[currentDossier].dossier.maillot" />
+  							</div>
+	  					</div>
+	  					<div class="form-group">
+	  						<label for="tshirt" class="col-md-2 control-label">T-Shirt</label>
+	  						<div class="col-md-10">
+	  							<select id="tshirt" class="form-control" ng-model="dossiers[currentDossier].dossier.tshirt" />
+			  						<option>XS</option>
+			  						<option>S</option>
+			  						<option>M</option>
+			  						<option>L</option>
+			  						<option>XL</option>
+			  					</select>
+	  						</div>
+	  					</div>
+	  					<div class="form-group">
+	  						<label for="shortPantalon" class="col-md-2 control-label">Short</label>
+	  						<div class="col-md-10">
+	  							<select id="shortPantalon" class="form-control" ng-model="dossiers[currentDossier].dossier.shortPantalon" />
+		  							<option>XS</option>
+			  						<option>S</option>
+			  						<option>M</option>
+			  						<option>L</option>
+			  						<option>XL</option>
+		  						</select>
+	  						</div>
+	  					</div>
+	  			</fieldset>
+	  			
+  		<fieldset>
+  			<legend>Renseignements confidentiels</legend>
+  			<div class="form-group">
+  				<label class="radio-inline">
+  					<input type="radio" id="scolaire" name="profession" value="scolaire" ng-model="dossiers[currentDossier].dossier.profession" />Scolaire
+  				</label>
+  				<label class="radio-inline">
+  					<input type="radio" id="etudiant" name="profession" value="etudiant" ng-model="dossiers[currentDossier].dossier.profession" />Etudiant
+  				</label>
+  				<label class="radio-inline">
+  					<input type="radio" id="salarie" name="profession" value="salarie" ng-model="dossiers[currentDossier].dossier.profession" />Salarié
+  				</label>
+  				<label class="radio-inline">
+  					<input type="radio" id="retraite" name="profession" value="retraite" ng-model="dossiers[currentDossier].dossier.profession" />Retraité
+  				</label>
+  				<label class="radio-inline">
+  					<input type="radio" id="demandeur" name="profession" value="demandeur" ng-model="dossiers[currentDossier].dossier.profession" />Demandeur d'emploi
+  				</label>
+  			</div>
+  		</fieldset>
+  		<fieldset>
+  			<legend>Autorisation parentale pour les mineurs</legend>
+  			<div class="form-group">
+  				<label for="mineurParent">Je, soussigné</label><input type="text" class="form-control" id="mineurParent" placeholder="Nom/Prénom des parents" size="50" ng-model="dossiers[currentDossier].dossier.mineurParent" /><label for="mineur">représentant légal de</label><input type="text" class="form-control" id="mineur" placeholder="Nom/ Prénom de l'enfant" size="50" ng-model="dossiers[currentDossier].dossier.mineur" />
+  			</div>
+  		</fieldset>
+	  			<button type="submit" class="btn btn-default btn-lg btn-block" ng-click="validateNageur(dossiers[currentDossier])">Valider et passer à l'étape suivante</button>
+          	</form>
+          </div>
+          <div class="tab-pane fade" id="info">
+          	<form role="form" class="form-horizontal">
+          	<fieldset>
+  			<legend>Adresse postale</legend>
+  				<div class="form-group">
+  					<label for="adresse" class="col-md-2 control-label">Adresse complète</label>
+  					<div class="col-md-10">
+  						<input type="text" class="form-control" id="adresse" placeholder="Adresse postale" size="100" ng-model="principal.dossier.adresse" />
+  					</div>
+  				</div>
+  				<div class="form-group">
+  					<label for="codePostal" class="col-md-2 control-label">Code postal</label>
+  					<div class="col-md-10">
+  						<input type="text" class="form-control" id="codePostal" placeholder="Code postal" size="10" ng-model="principal.dossier.codepostal" />
+  					</div>
+  				</div>
+  				<div class="form-group">
+  					<label for="ville" class="col-md-2 control-label">Ville</label>
+  					<div class="col-md-10">
+  						<input type="text" class="form-control" id="ville" placeholder="Ville" size="50" ng-model="principal.dossier.ville" />
+  					</div>
+  				</div>
+  			</fieldset>
+  		
+	  		<fieldset>
+	  			<legend>Contact</legend>
+	  			<div class="form-group">
+	  				<label for="telephone" class="col-md-2 control-label">Numéro de téléphone principal</label>
+	  				<div class="col-md-10">
+	  					<input type="tel" class="form-control" id="telephone" placeholder="Téléphone" size="15" ng-model="principal.dossier.telephone" />
+	  				</div>
+	  			</div>
+	  			<div class="form-group">
+					<label for="telephonePere" class="col-md-2 control-label">Numéro de téléphone père</label>
+					<div class="col-md-4">
+						<input type="tel" class="form-control" id="telephonePere" placeholder="Téléphone père" size="15" ng-model="principal.dossier.telephonePere" />
+					</div>
+					<label for="telephonePerePro" class="col-md-2 control-label">Professionel</label>
+					<div class="col-md-4">
+						<input type="tel" class="form-control" id="telephonePerePro" placeholder="Téléphone pro du père" size="15" ng-model="principal.dossier.telephonePerePro" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="telephoneMere" class="col-md-2 control-label">Numéro de téléphone mère</label>
+					<div class="col-md-4">
+						<input type="tel" class="form-control" id="telephoneMere" placeholder="Téléphone de la mère" size="15" ng-model="principal.dossier.telephoneMere" />
+					</div>
+					<label for="telephoneMerePro" class="col-md-2 control-label">Professionel</label>
+					<div class="col-md-4">
+						<input type="tel" class="form-control" id="telephoneMerePro" placeholder="Téléphone Pro de la mère" size="15" ng-model="principal.dossier.telephoneMerePro" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="email" class="col-md-2 control-label">Adresse e-mail (usuelle pour toutes les communications)</label>
+					<div class="col-md-10">
+						<input type="email" class="form-control" id="email" placeholder="E-mail" size="50" ng-model="principal.dossier.email" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="email2" class="col-md-2 control-label">Adresse e-mail secondaire</label>
+					<div class="col-md-10">
+						<input type="email" class="form-control" id="email2" placeholder="E-mail secondaire" size="50" ng-model="principal.dossier.emailsecondaire" />
+					</div>
+				</div>
+	  		</fieldset>
+  		
+  		<fieldset>
+  			<legend>Renseignements confidentiels</legend>
+  			<div class="form-group">
+  				<label for="professionPere" class="col-md-2 control-label">Profession du père</label>
+  				<div class="col-md-4">
+  					<input type="text" class="form-control" id="professionPere" placeholder="Profession du père" ng-model="principal.dossier.professionTextPere" />
+  				</div>
+  				<label for="professionMere" class="col-md-2 control-label">Profession de la mère</label>
+  				<div class="col-md-4">
+  					<input type="text" class="form-control" id="professionMere" placeholder="Profession de la mère" ng-model="principal.dossier.professionTextMere" />
+  				</div>
+  			</div>
+  		</fieldset>
+  		
+  		<fieldset>
+  			<legend>Accord de licence</legend>
+  			<div class="form-group">
+  			
+  				<label for="accordNomPrenom">Je, soussigné</label><input type="text" class="form-control" id="accordNomPrenom" placeholder="Nom et prénom" size="50" ng-model="principal.dossier.accordNomPrenom" /> reconnais avoir pris connaissance de la notice d’assurance FS ASPTT:
+	  			<ul>
+	  				<li>de la notice d'assurance m'informant du résumé des garanties incluses dans le contrat d'assurance et adhérer au contrat national proposé par la FSASPTT (notice aussi disponible sur le site <a href="http://asptt.com/la-federation/licence-federation-sportive-asptt/" target="_blank">www.asptt.com, rubrique "Licence"</a>)</li>
+	  				<li>des statuts et règlement intérieur (disponible au Secrétariat de l'Association)</li>
+	  			</ul>
+  			</div>
+  		</fieldset>
+  		
+  		<fieldset>
+  			<legend>Personne à contacter en cas d'accident</legend>
+  			<div class="form-group">
+  				<label for="accidentNom1" class="col-md-1 control-label">Nom</label>
+  				<div class="col-md-3">
+  					<input type="text" class="form-control" id="accidentNom1" placeholder="Nom" size="50" ng-model="principal.dossier.accidentNom1" />
+  				</div>
+  				<label for="accidentPrenom1" class="col-md-1 control-label">Prénom</label>
+  				<div class="col-md-3">
+  					<input type="text" class="form-control" id="accidentPrenom1" placeholder="Prénom" size="50" ng-model="principal.dossier.accidentPrenom1" />
+  				</div>
+  				<label for="accidentTelephone1" class="col-md-1 control-label">Téléphone</label>
+  				<div class="col-md-3">
+  					<input type="text" class="form-control" id="accidentTelephone1" placeholder="Téléphone" ng-model="principal.dossier.accidentTelephone1" />
+  				</div>
+  			</div>
+  			<div class="form-group">
+  				<label for="accidentNom2" class="col-md-1 control-label">Nom</label>
+  				<div class="col-md-3">
+  					<input type="text" class="form-control" id="accidentNom2" placeholder="Nom" size="50" ng-model="principal.dossier.accidentNom2" />
+  				</div>
+  				<label for="accidentPrenom2" class="col-md-1 control-label">Prénom</label>
+  				<div class="col-md-3">
+  					<input type="text" class="form-control" id="accidentPrenom2" placeholder="Prénom" size="50" ng-model="principal.dossier.accidentPrenom2" />
+  				</div>
+  				<label for="accidentTelephone2" class="col-md-1 control-label">Téléphone</label>
+  				<div class="col-md-3">
+  					<input type="text" class="form-control" id="accidentTelephone2" placeholder="Téléphone" ng-model="principal.dossier.accidentTelephone2" />
+  				</div>
+  			</div>
+  		</fieldset>
+  		<button type="submit" class="btn btn-default btn-lg btn-block" ng-click="validateInfo()">Valider et passer à l'étape suivante</button>
+	  		</form>
+          </div>
+          
+          <div class="tab-pane fade" id="cotisation">
+          	<h3>Votre inscription est enregistrée</h3>
+          	Vous avez {{dossiersCount}} bulletins d'adhésions.
+          	La montant de votre cotisation est de {{price}} euros: {{priceDetail}}
+          	<form role="form">
+          		<div class="checkbox">
+	          		<label>
+	          			<input type="checkbox" name="facture" ng-model="dossiers.principal.dossier.facture" ng-true-value="true" ng-false-value="false" />Je souhaite avoir une facture suite à mon paiement
+	          		</label>
+          		</div>
+          		<p>Vous pouvez télécharger votre dossier d'inscription.</p>Celui-ci devra nous être retourné <span style=\"color : #FF0000\">signé</span> accompagné du ou des certificats médicaux ainsi que du paiement à l'adresse suivante:<br />ASPTT Grand Toulouse Natation<br />54 rue des Sept Troubadours<br />Bureau 215<br />31000 Toulouse.
+          		<ol class="list-group" style="margin-top: 5%">
+          			<li ng-repeat="link in links" class="list-group-item">
+          				<a href="{{link}}" >Télécharger le dossier n°{{$index + 1}}</a>
+          			</li>
+          		</ol>
+          		<button type="submit" class="btn btn-default btn-lg btn-block" ng-click="validateInscription(dossiers[currentDossier])">Je valide mon inscription</button>
+          	</form>
+		  </div>
+<div class="clearfix"></div>
+</div>
+
+</div>
+</div>
