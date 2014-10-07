@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -42,7 +43,10 @@ public class GroupViewImpl extends Composite implements GroupView {
 	private TextBox groupTarif2;
 	private TextBox groupTarif3;
 	private TextBox groupTarif4;
+	private TextBox groupTarifWeight;
 	private CheckBox seanceUnique;
+	private CheckBox nouveau;
+	private TextArea description;
 
 	public GroupViewImpl(List<GroupUi> pGroups) {
 		data = pGroups;
@@ -86,7 +90,10 @@ public class GroupViewImpl extends Composite implements GroupView {
 		groupTarif2.setValue("" + pGroupUi.getTarif2());
 		groupTarif3.setValue("" + pGroupUi.getTarif3());
 		groupTarif4.setValue("" + pGroupUi.getTarif4());
+		groupTarifWeight.setValue("" + pGroupUi.getTarifWeight());
 		seanceUnique.setValue(pGroupUi.isSeanceunique());
+		nouveau.setValue(pGroupUi.isNouveau());
+		description.setValue(pGroupUi.getDescription());
 		updateButton.setVisible(true);
 		deleteButton.setVisible(true);
 	}
@@ -137,12 +144,30 @@ public class GroupViewImpl extends Composite implements GroupView {
 		lPanel.setWidget(lRowIndex, 1, groupTarif4);
 		lRowIndex++;
 		
+		// Tarif weight
+		groupTarifWeight = new TextBox();
+		lPanel.setWidget(lRowIndex, 0, createLabel("Priorité du tarif"));
+		lPanel.setWidget(lRowIndex, 1, groupTarifWeight);
+		lRowIndex++;
+		
 		// Séance unique
 		seanceUnique = new CheckBox();
 		lPanel.setWidget(lRowIndex, 0, createLabel("1 séance"));
 		lPanel.setWidget(lRowIndex, 1, seanceUnique);
 		lRowIndex++;
+		
+		// Nouveau
+		nouveau = new CheckBox();
+		lPanel.setWidget(lRowIndex, 0, createLabel("Nouveau"));
+		lPanel.setWidget(lRowIndex, 1, nouveau);
+		lRowIndex++;
 
+		// Nouveau
+		description = new TextArea();
+		lPanel.setWidget(lRowIndex, 0, createLabel("Description"));
+		lPanel.setWidget(lRowIndex, 1, description);
+		lRowIndex++;
+		
 		HorizontalPanel lButtonBar = new HorizontalPanel();
 		lButtonBar.setStyleName(CSS.buttonBar());
 		lButtonBar.add(updateButton);
@@ -214,5 +239,20 @@ public class GroupViewImpl extends Composite implements GroupView {
 	@Override
 	public HasValue<Boolean> getSeanceUnique() {
 		return seanceUnique;
+	}
+
+	@Override
+	public HasValue<String> getGroupTarifWeight() {
+		return groupTarifWeight;
+	}
+
+	@Override
+	public HasValue<Boolean> getNouveau() {
+		return nouveau;
+	}
+
+	@Override
+	public HasValue<String> getDescription() {
+		return description;
 	}
 }

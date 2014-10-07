@@ -17,5 +17,8 @@ public interface GroupView extends IsWidget {
 	public HasValue<String> getGroupTarif2();
 	public HasValue<String> getGroupTarif3();
 	public HasValue<String> getGroupTarif4();
+	public HasValue<String> getGroupTarifWeight();
 	public HasValue<Boolean> getSeanceUnique();
+	public HasValue<Boolean> getNouveau();
+	public HasValue<String> getDescription();
 }

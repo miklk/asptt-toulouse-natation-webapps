@@ -101,10 +101,6 @@ public class EditorToolbar extends CKConfig {
 		lToolbarLine3.add(CKConfig.TOOLBAR_OPTIONS.Format);
 		lToolbarLine3.addBlockSeparator();
 		
-		//Font
-		lToolbarLine3.add(CKConfig.TOOLBAR_OPTIONS.Font);
-		lToolbarLine3.addBlockSeparator();
-		
 		//Size
 		lToolbarLine3.add(CKConfig.TOOLBAR_OPTIONS.FontSize);
 		lToolbarLine3.addBlockSeparator();

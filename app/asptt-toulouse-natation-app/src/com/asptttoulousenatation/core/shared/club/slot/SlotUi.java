@@ -17,15 +17,17 @@ public class SlotUi implements IsSerializable {
 	private int placeDisponible;
 	private int placeRestante;
 	private boolean second;
+	private boolean selected = false;
+	private boolean complet;
 
 	public SlotUi() {
-
+		complet = false;
 	}
 
 	public SlotUi(Long pId, String pDayOfWeek, int pBegin, String pBeginStr,
 			int pEnd, String pEndStr, GroupUi pGroup, String pSwimmingPool,
 			String pEducateur, int pPlaceDisponible, int pPlaceRestante, boolean pSecond) {
-		super();
+		this();
 		id = pId;
 		dayOfWeek = pDayOfWeek;
 		begin = pBegin;
@@ -134,6 +136,22 @@ public class SlotUi implements IsSerializable {
 
 	public void setSecond(boolean pSecond) {
 		second = pSecond;
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean pSelected) {
+		selected = pSelected;
+	}
+
+	public boolean isComplet() {
+		return complet;
+	}
+
+	public void setComplet(boolean pComplet) {
+		complet = pComplet;
 	}
 	
 }

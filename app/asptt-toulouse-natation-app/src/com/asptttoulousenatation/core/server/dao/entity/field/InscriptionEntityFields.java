@@ -1,5 +1,7 @@
 package com.asptttoulousenatation.core.server.dao.entity.field;
 
+import java.util.Date;
+
 
 public enum InscriptionEntityFields implements IEntityFields {
 	EMAIL(String.class),
@@ -15,6 +17,10 @@ public enum InscriptionEntityFields implements IEntityFields {
 	FACTURE(String.class),
 	PROFESSION_PERE(String.class, "professionTextPere"),
 	PROFESSION_MERE(String.class, "professionTextMere"),
+	INSCRIPTIONDT(Date.class, "inscriptiondt"),
+	NOUVEAU(Boolean.class, "nouveau"),
+	CERTIFICAT(Boolean.class, "certificat"),
+	PAIEMENT(Boolean.class, "paiement")
 	;
 	
 	private Class<? extends Object> clazz;

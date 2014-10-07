@@ -8,7 +8,7 @@ public class CreateMenuAction implements Action<CreateMenuResult> {
 	private String title;
 	private String summary;
 	private String content;
-	private short order;
+	private int order;
 	private Long area;
 	private Long parent;
 	private boolean divider;
@@ -19,7 +19,7 @@ public class CreateMenuAction implements Action<CreateMenuResult> {
 	}
 
 	public CreateMenuAction(String pMenuKey, String pTitle, String pSummary, String pContent,
-			short pOrder, Long pArea, Long pParent, boolean pDivider, boolean pAlone) {
+			int pOrder, Long pArea, Long pParent, boolean pDivider, boolean pAlone) {
 		super();
 		menuKey = pMenuKey;
 		title = pTitle;
@@ -64,11 +64,11 @@ public class CreateMenuAction implements Action<CreateMenuResult> {
 		content = pContent;
 	}
 
-	public short getOrder() {
+	public int getOrder() {
 		return order;
 	}
 
-	public void setOrder(short pOrder) {
+	public void setOrder(int pOrder) {
 		order = pOrder;
 	}
 

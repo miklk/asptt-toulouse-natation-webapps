@@ -4,7 +4,7 @@ public enum SlotEntityFields implements IEntityFields {
 
 	ID(Long.class),
 	GROUP(Long.class),
-	DAYOFWEEK(String.class),
+	DAYOFWEEK(String.class, "dayOfWeek"),
 	SWIMMINGPOOL(String.class, "swimmingPool"),
 	;
 	

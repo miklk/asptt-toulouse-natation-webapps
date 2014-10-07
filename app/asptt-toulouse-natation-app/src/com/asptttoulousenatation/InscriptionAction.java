@@ -2,7 +2,6 @@ package com.asptttoulousenatation;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -54,7 +53,6 @@ import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
-import com.asptttoulousenatation.server.Xlsx;
 import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.InscriptionTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
@@ -100,10 +98,6 @@ public class InscriptionAction extends HttpServlet {
 			findEmail(pReq, pResp);
 		} else if ("findNomPrenom".equals(action)) {
 			findNomPrenom(pReq, pResp);
-		} else if ("imprimer".equals(action)) {
-			imprimer(pReq, pResp);
-		} else if ("imprimerAdherent".equals(action)) {
-			imprimerAdherent(pReq, pResp);
 		} else if ("loadGroupes".equals(action)) {
 			loadGroupes(pReq, pResp);
 		} else if ("nouveau".equals(action)) {
@@ -495,81 +489,6 @@ public class InscriptionAction extends HttpServlet {
 		return adherent;
 	}
 
-	protected void imprimer(HttpServletRequest pReq, HttpServletResponse pResp)
-			throws ServletException, IOException {
-		Integer numero = 0;
-		try {
-			numero = Integer.valueOf(pReq.getParameter("numero"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		List<Long> inscriptionIds = (List<Long>) pReq.getSession()
-				.getAttribute("inscriptionIds");
-		final Long principalId;
-		if (inscriptionIds != null && numero >= inscriptionIds.size()) {
-			if ((numero - 1) >= inscriptionIds.size()) {
-				principalId = inscriptionIds.get(0);
-			} else {
-				principalId = inscriptionIds.get((numero - 1));
-			}
-		} else {
-			principalId = inscriptionIds.get(numero);
-		}
-
-		InscriptionEntity adherent = inscriptionDao.get(principalId);
-		InscriptionEntity parent = adherent;
-		if (adherent.getPrincipal() != null) {
-			parent = inscriptionDao.get(adherent.getPrincipal());
-		}
-		ServletOutputStream out = pResp.getOutputStream();
-		String contentType = "application/excel";
-		String contentDisposition = "attachment;filename=dossierInscription_asptt_natation.xls;";
-		pResp.setContentType(contentType);
-		pResp.setHeader("Content-Disposition", contentDisposition);
-
-		InputStream adhesion = new FileInputStream(getServletContext()
-				.getRealPath(
-						"v2" + System.getProperty("file.separator") + "doc"
-								+ System.getProperty("file.separator")
-								+ "adhesion.xls"));
-		Xlsx.getXlsx(adhesion, out, parent, adherent);
-
-		out.flush();
-		out.close();
-	}
-
-	protected void imprimerAdherent(HttpServletRequest pReq,
-			HttpServletResponse pResp) throws ServletException, IOException {
-		Long principalId = 0l;
-		try {
-			principalId = Long.valueOf(pReq.getParameter("adherentId"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		InscriptionEntity adherent = inscriptionDao.get(principalId);
-		InscriptionEntity parent = adherent;
-		if (adherent.getPrincipal() != null) {
-			parent = inscriptionDao.get(adherent.getPrincipal());
-		}
-		ServletOutputStream out = pResp.getOutputStream();
-		String contentType = "application/excel";
-		String contentDisposition = "attachment;filename=dossierInscription_asptt_natation.xls;";
-		pResp.setContentType(contentType);
-		pResp.setHeader("Content-Disposition", contentDisposition);
-
-		InputStream adhesion = new FileInputStream(getServletContext()
-				.getRealPath(
-						"v2" + System.getProperty("file.separator") + "doc"
-								+ System.getProperty("file.separator")
-								+ "adhesion.xls"));
-		Xlsx.getXlsx(adhesion, out, parent, adherent);
-
-		out.flush();
-		out.close();
-	}
-
 	protected void loadGroupes(HttpServletRequest pReq,
 			HttpServletResponse pResp) throws ServletException, IOException {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
@@ -616,6 +535,11 @@ public class InscriptionAction extends HttpServlet {
 
 		
     	ServletOutputStream out = pResp.getOutputStream();
+    	String contentType = "application/pdf";
+		String contentDisposition = "attachment;filename=dossierInscription_asptt_natation.pdf;";
+		pResp.setContentType(contentType);
+		pResp.setHeader("Content-Disposition", contentDisposition);
+
 		try {
 			PdfStamper 	stamper = new PdfStamper(reader, out);
     	AcroFields fields = stamper.getAcroFields();
@@ -623,14 +547,20 @@ public class InscriptionAction extends HttpServlet {
 		fields.setField("untitled1", adherent.getNom());
 		fields.setField("untitled2", adherent.getPrenom());
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		Date dateNaissance = format.parse(adherent.getDatenaissance());
+			try {
+				Date dateNaissance = format.parse(adherent.getDatenaissance());
+				SimpleDateFormat formatDD = new SimpleDateFormat("dd");
+				fields.setField("untitled3", formatDD.format(dateNaissance));
+				SimpleDateFormat formatMM = new SimpleDateFormat("MM");
+				fields.setField("untitled4", formatMM.format(dateNaissance));
+				SimpleDateFormat formatYYYY = new SimpleDateFormat("yyyy");
+				fields.setField("untitled5", formatYYYY.format(dateNaissance));
+			} catch (ParseException e) {
+				LOG.severe("Adherent " + adherent.getNom() + " "
+						+ e.getMessage());
+			}
 		
-		SimpleDateFormat formatDD = new SimpleDateFormat("dd");
-		fields.setField("untitled3", formatDD.format(dateNaissance));
-		SimpleDateFormat formatMM = new SimpleDateFormat("MM");
-		fields.setField("untitled4", formatMM.format(dateNaissance));
-		SimpleDateFormat formatYYYY = new SimpleDateFormat("yyyy");
-		fields.setField("untitled5", formatYYYY.format(dateNaissance));
+		
 		fields.setField("untitled6", parent.getProfession());
 		fields.setField("untitled7", parent.getAdresse());
 		fields.setField("untitled8", parent.getCodepostal());
@@ -638,16 +568,20 @@ public class InscriptionAction extends HttpServlet {
 		fields.setField("untitled10", parent.getTelephone());
 		fields.setField("untitled11", parent.getEmail());
 		fields.setField("untitled12", parent.getAccordNomPrenom());
-		fields.setField("untitled13", parent.getMineurParent());
-		fields.setField("untitled14", parent.getMineur());
+		fields.setField("untitled13", adherent.getMineurParent());
+		fields.setField("untitled14", adherent.getMineur());
 		
-		switch(adherent.getCivilite()) {
-		case "0":fields.setField("untitled15", "X");
-		break;
-		case "1": fields.setField("untitled16", "X");
-		break;
-		default:
-		}
+			if (StringUtils.isNotBlank(adherent.getCivilite())) {
+				switch (adherent.getCivilite()) {
+				case "0":
+					fields.setField("untitled15", "X");
+					break;
+				case "1":
+					fields.setField("untitled16", "X");
+					break;
+				default:
+				}
+			}
 		
 		if(BooleanUtils.isTrue(adherent.getNouveau())) {
 			fields.setField("untitled17", "X");
@@ -665,9 +599,6 @@ public class InscriptionAction extends HttpServlet {
 		} catch (DocumentException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		out.flush();
 		out.close();

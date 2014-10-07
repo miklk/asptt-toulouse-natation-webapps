@@ -13,8 +13,10 @@ public class UserTransformer extends
 	public UserUi toUi(UserEntity pEntity) {
 		UserUi lUi = new UserUi(pEntity.getId(), pEntity.getEmailaddress(),
 				pEntity.isValidated(), new HashSet<String>(
-						pEntity.getProfiles()), null, new HashSet<Long>(
-						pEntity.getSlots()), null);
+						pEntity.getProfiles()), null, null, null);
+		if (pEntity.getSlots() != null) {
+			lUi.setSlots(new HashSet<Long>(pEntity.getSlots()));
+		}
 		return lUi;
 	}
 }

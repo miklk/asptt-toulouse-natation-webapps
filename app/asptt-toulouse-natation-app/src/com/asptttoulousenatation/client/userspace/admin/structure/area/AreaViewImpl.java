@@ -54,6 +54,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 	private TextBox menuTitleInput;
 	private TextBox summaryInput;
+	private TextBox orderInput;
 	private CheckBox dividerCheckBox;
 	private CheckBox aloneCheckBox;
 	private CKEditor contentInput;
@@ -81,6 +82,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 
 	private TextBox menuCreationTitleInput;
 	private TextBox menuCreationSummaryInput;
+	private TextBox menuCreationOrderInput;
 	private CKEditor menuCreationContentInput;
 	private CheckBox menuCreationDividerCheckBox;
 	private CheckBox menuCreationAloneCheckBox;
@@ -191,14 +193,24 @@ public class AreaViewImpl extends Composite implements AreaView {
 		lPanel.setWidget(lRowIndex, 1, menuTitleInput);
 		lRowIndex++;
 		
+		// Order
+		orderInput = new TextBox();
+		orderInput.setWidth("50px");
+		orderInput.setValue(Integer.toString(pMenuUi.getOrder()));
+		lPanel.setWidget(lRowIndex, 0, createLabel("Ordre"));
+		lPanel.setWidget(lRowIndex, 1, orderInput);
+		lRowIndex++;
+		
 		// Divider
 		dividerCheckBox = new CheckBox();
+		dividerCheckBox.setValue(pMenuUi.isDivider());
 		lPanel.setWidget(lRowIndex, 0, createLabel("Divider"));
 		lPanel.setWidget(lRowIndex, 1, dividerCheckBox);
 		lRowIndex++;
 					
 		// Alone
 		aloneCheckBox = new CheckBox();
+		aloneCheckBox.setValue(pMenuUi.isAlone());
 		lPanel.setWidget(lRowIndex, 0, createLabel("Sans contenu"));
 		lPanel.setWidget(lRowIndex, 1, aloneCheckBox);
 		lRowIndex++;
@@ -384,6 +396,13 @@ public class AreaViewImpl extends Composite implements AreaView {
 			lPanel.setWidget(lRowIndex, 1, menuCreationTitleInput);
 			lRowIndex++;
 			
+			// Order
+			menuCreationOrderInput = new TextBox();
+			menuCreationOrderInput.setWidth("50px");
+			lPanel.setWidget(lRowIndex, 0, createLabel("Ordre"));
+			lPanel.setWidget(lRowIndex, 1, menuCreationOrderInput);
+			lRowIndex++;
+			
 			// Divider
 			menuCreationDividerCheckBox = new CheckBox();
 			lPanel.setWidget(lRowIndex, 0, createLabel("Divider"));
@@ -564,5 +583,15 @@ public class AreaViewImpl extends Composite implements AreaView {
 	@Override
 	public HasValue<Boolean> getMenuCreationAlone() {
 		return menuCreationAloneCheckBox;
+	}
+
+	@Override
+	public HasValue<String> getMenuCreationOrder() {
+		return menuCreationOrderInput;
+	}
+
+	@Override
+	public HasValue<String> getMenuOrder() {
+		return orderInput;
 	}
 }

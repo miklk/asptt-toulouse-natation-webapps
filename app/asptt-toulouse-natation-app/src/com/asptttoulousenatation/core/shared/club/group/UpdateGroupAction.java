@@ -13,12 +13,15 @@ public class UpdateGroupAction implements Action<UpdateGroupResult> {
 	private int tarif3;
 	private int tarif4;
 	private boolean seanceunique;
+	private int tarifWeight;
+	private boolean nouveau;
+	private String description;
 	
 	public UpdateGroupAction() {
 	}
 	
 
-	public UpdateGroupAction(Long pId, String pTitle, boolean pLicenceFfn, boolean pInscription, int pTarif, int pTarif2, int pTarif3, int pTarif4, boolean pSeanceunique) {
+	public UpdateGroupAction(Long pId, String pTitle, boolean pLicenceFfn, boolean pInscription, int pTarif, int pTarif2, int pTarif3, int pTarif4, boolean pSeanceunique, int pTarifWeight, boolean pNouveau, String pDescription) {
 		super();
 		id = pId;
 		title = pTitle;
@@ -29,6 +32,9 @@ public class UpdateGroupAction implements Action<UpdateGroupResult> {
 		tarif3 = pTarif3;
 		tarif4 = pTarif4;
 		seanceunique = pSeanceunique;
+		tarifWeight = pTarifWeight;
+		nouveau = pNouveau;
+		description = pDescription;
 	}
 
 	public Long getId() {
@@ -115,5 +121,35 @@ public class UpdateGroupAction implements Action<UpdateGroupResult> {
 
 	public void setSeanceunique(boolean pSeanceunique) {
 		seanceunique = pSeanceunique;
+	}
+
+
+	public int getTarifWeight() {
+		return tarifWeight;
+	}
+
+
+	public void setTarifWeight(int pTarifWeight) {
+		tarifWeight = pTarifWeight;
+	}
+
+
+	public boolean isNouveau() {
+		return nouveau;
+	}
+
+
+	public void setNouveau(boolean pNouveau) {
+		nouveau = pNouveau;
+	}
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+	public void setDescription(String pDescription) {
+		description = pDescription;
 	}
 }

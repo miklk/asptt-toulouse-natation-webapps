@@ -26,6 +26,7 @@ public class UpdateActuActionHandler implements
 		lActu.setCreationDate(pAction.getCreationDate());
 		lActu.setContent(new Text(pAction.getContent()));
 		lActu.setImageUrl(StringUtils.defaultString(pAction.getImageUrl(), "img/actu_defaut.jpg"));
+		lActu.setCompetition(pAction.isCompetition());
 		lActuDao.save(lActu);
 		pContext.execute(new SetDataUpdateAction(ActuEntity.class, true));
 		return new UpdateActuResult();

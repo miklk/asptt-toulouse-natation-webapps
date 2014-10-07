@@ -23,6 +23,7 @@ import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.client.userspace.menu.MenuItems;
@@ -49,13 +50,9 @@ import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
 import com.asptttoulousenatation.core.server.dao.swimmer.SwimmerDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
-import com.asptttoulousenatation.core.shared.actu.ActuUi;
-import com.asptttoulousenatation.core.shared.actu.GetAllActuAction;
-import com.asptttoulousenatation.core.shared.actu.GetAllActuResult;
 import com.asptttoulousenatation.core.shared.reference.IsDataUpdateAction;
 import com.asptttoulousenatation.core.shared.reference.IsDataUpdateResult;
 import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
-import com.asptttoulousenatation.core.shared.stat.IncrementVisitorCounterAction;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
 import com.asptttoulousenatation.server.ApplicationLoader;
@@ -111,12 +108,11 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		LOG.info("Init action");
 		Long startTime = System.currentTimeMillis();
 
-		// createData();
+		//createData();
 		// createUsers();
 		// createCompetition();
 		// createActu();
 		InitResult lInitResult = new InitResult();
-		lInitResult.setPhoto(getPicture());
 
 		IsDataUpdateResult lAreaUpdateResult = pContext
 				.execute(new IsDataUpdateAction(AreaEntity.class));
@@ -166,12 +162,14 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				for (MenuEntity lMenuEntity : lMenuEntities) {
 					if (lMenuEntity.getParent() == null) {
 						// Retrieve sub menu
-						List<MenuUi> lSubMenuUis = new ArrayList<MenuUi>(
+						List<MenuUi> lSubMenuUis = new ArrayList<MenuUi>();
+						if(CollectionUtils.isNotEmpty(lMenuEntity.getSubMenu())) {
+						lSubMenuUis = new ArrayList<MenuUi>(
 								lMenuEntity.getSubMenu().size());
 						for (Long lSubMenuId : lMenuEntity.getSubMenu()) {
 							MenuEntity lSubMenu = menuDao.get(lSubMenuId);
 							lSubMenuUis.add(menuTransformer.toUi(lSubMenu));
-						}
+						}}
 						MenuUi lMenu = menuTransformer.toUi(lMenuEntity);
 						Collections.sort(lSubMenuUis, new Comparator<MenuUi>() {
 
@@ -205,23 +203,8 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				.execute(new IsDataUpdateAction(ActuEntity.class));
 		if (lActuUpdateResult.isDataUpdated()
 				|| applicationLoader.getActu() == null) {
-			// Actu
-			GetAllActuResult actuResult = pContext.execute(new GetAllActuAction(0, 7));
-			List<ActuUi> lActu = actuResult.getResult();
-			lInitResult.setActuStart(actuResult.getLimitStart());
-			lInitResult.setActuEnd(actuResult.getLimitEnd());
-			LOG.info("retrieving actu #" + lActu.size());
-			pContext.execute(new SetDataUpdateAction(ActuEntity.class, false));
-			applicationLoader.setActu(lActu);
 		}
 
-		lInitResult.setArea(applicationLoader.getArea());
-		lInitResult.setActu(applicationLoader.getActu());
-		
-		
-		//Increment counter
-		pContext.execute(new IncrementVisitorCounterAction());
-		
 		Long endTime = System.currentTimeMillis();
 		LOG.info("Loading duration: " + (endTime - startTime) + " ms");
 		return lInitResult;
@@ -242,109 +225,86 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 
 		AreaDao lAreaDao = new AreaDao();
 
-		AreaEntity lAreaEntity = new AreaEntity(null, "Club",
+		AreaEntity lAreaEntity = new AreaEntity(null, "Le Club",
 				ProfileEnum.PUBLIC, (short) 1);
 		AreaEntity lAreaEntity2 = lAreaDao.save(lAreaEntity);
 
 		// Historique
 		createMenu(MenuItems.VIDE.toString(), "Historique du club",
 				lAreaEntity2.getId(), "contenu de l'historique du club",
-				"contenu de l'historique", false, true, 1);
-		createMenu(MenuItems.VIDE.toString(), "Organisation du club",
-				lAreaEntity2.getId(), "contenu de l'organisation du club",
-				"contenu de l'organisation du club", false, true, 2);
-		createMenu(MenuItems.VIDE.toString(), "Lieux d'entrainements",
-				lAreaEntity2.getId(), "contenu de Lieux d'entrainements",
-				"contenu de Lieux d'entrainements", false, true, 3);
-		createMenu(MenuItems.VIDE.toString(), "Officiels",
-				lAreaEntity2.getId(), "contenu de officiels",
-				"contenu de officiels", false, true, 4);
+				"contenu de l'historique", false, true, 1, false, false);
 		createMenu(MenuItems.VIDE.toString(), "Vie du club",
 				lAreaEntity2.getId(), "contenu de vie du club",
-				"contenu de la vie du club", false, true, 5);
+				"contenu de l'organisation du club", false, true, 2, false, false);
+		createMenu(MenuItems.VIDE.toString(), "Piscine",
+				lAreaEntity2.getId(), "contenu de Piscine",
+				"contenu de Lieux d'entrainements", false, true, 3, false, false);
+		createMenu(MenuItems.VIDE.toString(), "Organisation",
+				lAreaEntity2.getId(), "contenu de officiels",
+				"contenu de officiels", false, true, 4, true, true);
+		createMenu(MenuItems.VIDE.toString(), "Comité de section",
+				lAreaEntity2.getId(), "contenu de comité de section",
+				"contenu de la vie du club", false, true, 5, false, false);
+		createMenu(MenuItems.VIDE.toString(), "Les officiels",
+				lAreaEntity2.getId(), "contenu de les officiels",
+				"contenu de la vie du club", false, true, 5, false, false);
+		createMenu(MenuItems.VIDE.toString(), "Les entraineurs",
+				lAreaEntity2.getId(), "contenu de les entraineurs",
+				"contenu de la vie du club", false, true, 5, false, false);
+		createMenu(MenuItems.VIDE.toString(), "Les éducateurs",
+				lAreaEntity2.getId(), "contenu de les éducateurs",
+				"contenu de la vie du club", false, true, 5, false, false);
 
-		lAreaEntity = new AreaEntity(null, "Groupes", ProfileEnum.PUBLIC,
+		lAreaEntity = new AreaEntity(null, "Nos activités", ProfileEnum.PUBLIC,
 				(short) 2);
 		AreaEntity lAreaGroupes = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.VIDE.toString(), "Ecole de natation",
 				lAreaGroupes.getId(), "contenu de Ecole de natation",
-				"contenu de Ecole de natation", false, true, 1);
-		createMenu(MenuItems.VIDE.toString(), "Loisirs adultes",
+				"contenu de Ecole de natation", false, true, 1, false, false);
+		createMenu(MenuItems.VIDE.toString(), "Loisirs",
 				lAreaGroupes.getId(), "contenu de Loisirs",
-				"contenu de Loisirs", false, true, 2);
+				"contenu de Loisirs", false, true, 2, false, false);
 		createMenu(MenuItems.VIDE.toString(), "Aquagym", lAreaGroupes.getId(),
-				"contenu de Aquagym", "contenu de Aquagym", false, true, 3);
-		createMenu(MenuItems.VIDE.toString(), "Perfectionnement",
-				lAreaGroupes.getId(), "contenu de Perfectionnement",
-				"contenu de perfrectionnement", false, true, 4);
-		createMenu(MenuItems.VIDE.toString(), "Compétitions",
-				lAreaGroupes.getId(), "contenu de Compétitions",
-				"contenu de Compétitions", false, true, 5);
-		createMenu(MenuItems.VIDE.toString(), "Masters", lAreaGroupes.getId(),
-				"contenu de Masters", "contenu de Masters", false, true, 6);
-		createMenu(MenuItems.VIDE.toString(), "Eau libre",
-				lAreaGroupes.getId(), "contenu de Eau libre",
-				"contenu de Eau libre", false, true, 7);
-
-		createMenu(MenuItems.VIDE.toString(), "Centre de formation",
-				lAreaGroupes.getId(), "contenu de Centre de formation",
-				"contenu de Centre de formation", false, true, 6);
-
+				"contenu de Aquagym", "contenu de Aquagym", false, true, 3, false, false);
+		createMenu(MenuItems.VIDE.toString(), "Compétition",
+				lAreaGroupes.getId(), "contenu de Compétition",
+				"contenu de perfrectionnement", false, true, 4, false, false);
+		
 		lAreaEntity = new AreaEntity(null, "Compétitions", ProfileEnum.PUBLIC,
 				(short) 3);
 		AreaEntity lAreaCompetition = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.VIDE.toString(), "Calendrier",
-				lAreaCompetition.getId(), "contenu de Calendrier",
-				"contenu de Calendrier", false, true, 1);
+		createMenu(MenuItems.VIDE.toString(), "Actualités",
+				lAreaCompetition.getId(), "contenu de Actualités",
+				"contenu de Calendrier", false, true, 1, false, false);
 		createMenu(MenuItems.VIDE.toString(), "Résultats",
 				lAreaCompetition.getId(), "contenu de Résultats",
-				"contenu de Résultats", false, true, 2);
+				"contenu de Résultats", false, true, 2, false, false);
 		createMenu(MenuItems.VIDE.toString(), "Records du club",
 				lAreaCompetition.getId(), "contenu de Records du club",
-				"contenu de Records du club", false, true, 3);
-		createMenu(MenuItems.VIDE.toString(), "Ranking",
-				lAreaCompetition.getId(), "contenu de Ranking",
-				"contenu de Ranking", false, true, 4);
+				"contenu de Records du club", false, true, 3, false, false);
+		
 
-		lAreaEntity = new AreaEntity(null, "Boutique", ProfileEnum.PUBLIC,
+		lAreaEntity = new AreaEntity(null, "Santé", ProfileEnum.PUBLIC,
 				(short) 4);
-		AreaEntity lAreaBoutique = lAreaDao.save(lAreaEntity);
-		createMenu(
-				MenuItems.VIDE.toString(),
-				"Informations",
-				lAreaBoutique.getId(),
-				"contenu de Informations sur la boutique",
-				"Partenariat avec la boutique arena de blagnac 10% de remise en caisse sur tout le magasin<br />et sur présentation d’un justificatif d’appartenance à l’ASPTT toulouse.",
-				false, true, 1);
+		lAreaDao.save(lAreaEntity);
+		
+		lAreaEntity = new AreaEntity(null, "Boutique", ProfileEnum.PUBLIC,
+				(short) 5);
+		lAreaDao.save(lAreaEntity);
+		
 
 		lAreaEntity = new AreaEntity(null, "Inscription", ProfileEnum.PUBLIC,
-				(short) 5);
-		AreaEntity lAreaInscription = lAreaDao.save(lAreaEntity);
-		createMenu(
-				MenuItems.VIDE.toString(),
-				"Informations",
-				lAreaInscription.getId(),
-				"contenu de Informations sur l'inscription",
-				"Pour vous inscrire, veuillez télécharger le dossier ci-joint. Ce dossier doit être complété et renvoyé à l'association.",
-				false, true, 1);
-		createMenu(
-				MenuItems.VIDE.toString(),
-				"MotDePasse",
-				lAreaInscription.getId(),
-				"contenu de MotDePasse sur l'inscription",
-				"L'espace privé n'est accessible qu'aux licenciés du club. Vous recevez votre mot de passe par e-mail une fois que votre inscription est validé par nos soins.<br />Si toute fois, vous avez oublié votre mot de passe, nous vous invitons à entrer votre adresse e-mail dans le champ suivant afin d'en recevoir un nouveau.",
-				false, false, 2);
+				(short) 6);
+		lAreaDao.save(lAreaEntity);
+		
+		lAreaEntity = new AreaEntity(null, "Partenaires", ProfileEnum.PUBLIC,
+				(short) 7);
+		lAreaDao.save(lAreaEntity);
 
 		lAreaEntity = new AreaEntity(null, "Contact", ProfileEnum.PUBLIC,
-				(short) 6);
-		AreaEntity lAreaContact = lAreaDao.save(lAreaEntity);
-		createMenu(
-				MenuItems.VIDE.toString(),
-				"Contact",
-				lAreaContact.getId(),
-				"Contacter le secrétariat",
-				"ASPTT Toulouse Natation 4 rue des Sept Troubadours 2ème étage - Bureau 215  31000 Toulouse Tel : 05.61.62.68.45 Fax : 05.61.14.86.09",
-				false, false, 1);
+				(short) 8);
+		lAreaDao.save(lAreaEntity);
+		
 
 		// Admin
 		lAreaEntity = new AreaEntity(null, "Actualités", ProfileEnum.ADMIN,
@@ -352,20 +312,20 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		AreaEntity lAreaAdmActu = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.NEWS_PUBLICATION.toString(), "Publier",
 				lAreaAdmActu.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
-				true, true, 1);
+				true, true, 1, false, false);
 		createMenu(MenuItems.NEWS_EDITION.toString(), "Modification",
 				lAreaAdmActu.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
-				true, true, 2);
+				true, true, 2, false, false);
 
 		lAreaEntity = new AreaEntity(null, "Utilisateur", ProfileEnum.ADMIN,
 				false, (short) 5);
 		AreaEntity lAreaAdmUser = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.USER_CREATION.toString(), "Création",
 				lAreaAdmUser.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
-				true, true, 1);
+				true, true, 1, false, false);
 		createMenu(MenuItems.USER_EDITION.toString(), "Modification",
 				lAreaAdmUser.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
-				true, true, 2);
+				true, true, 2, false, false);
 
 		// Organisation du club
 		lAreaEntity = new AreaEntity(null, "Organisation du club",
@@ -373,10 +333,10 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		AreaEntity lAreaClub = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.CLUB_GROUP_EDITION.toString(), "Groupes",
 				lAreaClub.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
-				false, 1);
+				false, 1, false, false);
 		createMenu(MenuItems.CLUB_SLOT_EDITION.toString(), "Créneaux",
 				lAreaClub.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
-				false, 2);
+				false, 2, false, false);
 
 		// Officiels
 		lAreaEntity = new AreaEntity(null, "Officier", ProfileEnum.OFFICIEL,
@@ -384,10 +344,10 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		AreaEntity lAreaOfficier = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.OFFICIEL_VIEW.toString(),
 				"Consulter le calendrier", lAreaOfficier.getId(),
-				StringUtils.EMPTY, StringUtils.EMPTY, true, true, 1);
+				StringUtils.EMPTY, StringUtils.EMPTY, true, true, 1, false, false);
 		createMenu(MenuItems.OFFICIEL_SUBSCRIPTION.toString(), "Inscription",
 				lAreaOfficier.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
-				true, true, 2);
+				true, true, 2, false, false);
 
 		// Compétition
 		lAreaEntity = new AreaEntity(null, "Compétitions saison",
@@ -395,7 +355,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		AreaEntity lAreaCompetitionSaison = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.COMPETITION_EDITION.toString(), "Modification",
 				lAreaCompetitionSaison.getId(), StringUtils.EMPTY,
-				StringUtils.EMPTY, true, true, 1);
+				StringUtils.EMPTY, true, true, 1, false, false);
 
 		lAreaEntity = new AreaEntity(null, "Structure du site",
 				ProfileEnum.ADMIN, (short) 2);
@@ -407,16 +367,16 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		AreaEntity lAreaStat = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.SWIMMER_STAT_DAY.toString(), "Par jour",
 				lAreaStat.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
-				false, 1);
+				false, 1, false, false);
 		createMenu(MenuItems.SWIMMER_STAT_WEEK.toString(), "Par semaine",
 				lAreaStat.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
-				false, 2);
+				false, 2, false, false);
 		createMenu(MenuItems.SWIMMER_STAT_MONTH.toString(), "Par mois",
 				lAreaStat.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
-				false, 3);
+				false, 3, false, false);
 		createMenu(MenuItems.SWIMMER_STAT_YEAR.toString(), "Par année",
 				lAreaStat.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
-				false, 4);
+				false, 4, false, false);
 
 		// Profil
 		lAreaEntity = new AreaEntity(null, "Mon profil", ProfileEnum.NAGEUR,
@@ -424,7 +384,7 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		AreaEntity lAreaProfil = lAreaDao.save(lAreaEntity);
 		createMenu(MenuItems.PROFILE_PASSWORD.toString(),
 				"Changer de mot de passe", lAreaProfil.getId(),
-				StringUtils.EMPTY, StringUtils.EMPTY, true, false, 1);
+				StringUtils.EMPTY, StringUtils.EMPTY, true, false, 1, false, false);
 
 		createUserAdmin();
 		createUserRoot();
@@ -433,9 +393,11 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 
 	private void createMenu(String pMenuKey, String pTitle, Long pArea,
 			String pSummary, String pContent, boolean pShortcut,
-			boolean pDisplay, int pOrder) {
+			boolean pDisplay, int pOrder, boolean pDivider, boolean pAlone) {
 		MenuEntity lMenuHisto = new MenuEntity(pMenuKey, pTitle, pArea,
 				pShortcut, pDisplay, pOrder, null, null);
+		lMenuHisto.setDivider(pDivider);
+		lMenuHisto.setAlone(pAlone);
 		MenuEntity lMenuHisto2 = menuDao.save(lMenuHisto);
 		ContentEntity lHistoContentEntity = new ContentEntity(pSummary,
 				new Blob((HTMLUtils.escapeHTML(pContent)).getBytes()),

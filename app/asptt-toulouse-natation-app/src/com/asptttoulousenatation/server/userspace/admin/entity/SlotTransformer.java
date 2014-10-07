@@ -1,6 +1,10 @@
 package com.asptttoulousenatation.server.userspace.admin.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
@@ -12,6 +16,15 @@ public class SlotTransformer extends
 		AbstractEntityTransformer<SlotUi, SlotEntity> {
 
 	private GroupTransformer groupTransformer = new GroupTransformer();
+	
+	private static SlotTransformer INSTANCE;
+	
+	public static SlotTransformer getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new SlotTransformer();
+		}
+		return INSTANCE;
+	}
 	
 	@Override
 	public SlotUi toUi(SlotEntity pEntity) {
@@ -34,6 +47,44 @@ public class SlotTransformer extends
 		if(pEntity.getPlaceRestante() != null) {
 			lUi.setPlaceRestante(pEntity.getPlaceRestante());
 		}
+		lUi.setComplet(lUi.getPlaceRestante() <= 0);
+		return lUi;
+	}
+	
+	public List<SlotUi> toUi(List<SlotEntity> pEntities, String selectedCreneaux) {
+		List<SlotUi> uis = new ArrayList<SlotUi>();
+		if(StringUtils.isNotBlank(selectedCreneaux)) {
+			for(SlotEntity entity: pEntities) {
+				uis.add(toUi(entity, selectedCreneaux));
+			}
+		} else {
+			uis = toUi(pEntities);
+		}
+		return uis;
+	}
+	
+	public SlotUi toUi(SlotEntity pEntity, String selectedCreneaux) {
+		SlotUi lUi = new SlotUi();
+		lUi.setId(pEntity.getId());
+		lUi.setDayOfWeek(pEntity.getDayOfWeek());
+		lUi.setBegin(pEntity.getBegin());
+		lUi.setEnd(pEntity.getEnd());
+		lUi.setSwimmingPool(pEntity.getSwimmingPool());
+		lUi.setEducateur(pEntity.getEducateur());
+		lUi.setSecond(BooleanUtils.toBoolean(pEntity.getSecond()));
+		int[] begin = DateUtils.getHour(pEntity.getBegin());
+		lUi.setBeginStr(begin[0] + ":" + DateUtils.formatMinutes(begin[1]));
+		int[] end = DateUtils.getHour(pEntity.getEnd());
+		lUi.setEndStr(end[0] + ":" + DateUtils.formatMinutes(end[1]));
+		
+		if(pEntity.getPlaceDisponible() != null) {
+			lUi.setPlaceDisponible(pEntity.getPlaceDisponible());
+		}
+		if(pEntity.getPlaceRestante() != null) {
+			lUi.setPlaceRestante(pEntity.getPlaceRestante());
+		}
+		lUi.setSelected(selectedCreneaux.contains(pEntity.getId().toString()));
+		lUi.setComplet(lUi.getPlaceRestante() <= 0);
 		return lUi;
 	}
 	

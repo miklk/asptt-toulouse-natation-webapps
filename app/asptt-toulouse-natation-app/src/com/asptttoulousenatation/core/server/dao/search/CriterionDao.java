@@ -49,7 +49,7 @@ public class CriterionDao<T extends Object> {
 		StringBuilder lBuilder = new StringBuilder();
 		lBuilder.append("this.").append(entityField.getFieldName());
 		lBuilder.append(" ").append(operator).append(" ");
-		if (!Operator.NULL.equals(operator)) {
+		if (!Operator.NULL.equals(operator) && !Operator.NOT_NULL.equals(operator)) {
 			if (entityField.getEntityClass().equals(String.class)) {
 				lBuilder.append("\"").append(value).append("\"");
 			} else if (entityField.getEntityClass().equals(Date.class)) {

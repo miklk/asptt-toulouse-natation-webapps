@@ -31,7 +31,6 @@ public interface MainView extends IsWidget {
 	public void updateBreadcrumb(final String pMenuName);
 	public void loadContent(final byte[] pData, List<DocumentUi> pDocuments);
 	public void loadToolContent(final byte[] pData);
-	public void loadInscriptionContent(final byte[] pData, List<DocumentUi> pDocuments);
 	public void loadForgetPasswordContent(final byte[] pData);
 	public void setSelectedMenu(MenuUi pMenu);
 	public void loadSubContent(final byte[] pData, List<DocumentUi> pDocuments, String pSubMenuName);

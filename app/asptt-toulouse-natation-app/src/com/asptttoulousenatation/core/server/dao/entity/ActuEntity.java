@@ -38,18 +38,22 @@ public class ActuEntity implements Entity {
 	@Persistent
 	private String imageUrl;
 	
+	@Persistent
+	private Boolean competition;
+	
 	public ActuEntity() {
 		
 	}
 
 	public ActuEntity(Long pId, String pTitle, String pSummary,
-			Text pContent, Date pCreationDate, String pImageUrl) {
+			Text pContent, Date pCreationDate, String pImageUrl, Boolean pCompetition) {
 		id = pId;
 		title = pTitle;
 		summary = pSummary;
 		content = pContent;
 		creationDate = pCreationDate;
 		imageUrl = pImageUrl;
+		competition = pCompetition;
 	}
 
 	public Long getId() {
@@ -99,4 +103,13 @@ public class ActuEntity implements Entity {
 	public void setImageUrl(String pImageUrl) {
 		imageUrl = pImageUrl;
 	}
+
+	public Boolean getCompetition() {
+		return competition;
+	}
+
+	public void setCompetition(Boolean pCompetition) {
+		competition = pCompetition;
+	}
+	
 }

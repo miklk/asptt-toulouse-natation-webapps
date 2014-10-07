@@ -1,6 +1,8 @@
 package com.asptttoulousenatation.client.userspace.admin.structure.menu.ui;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.asptttoulousenatation.client.util.CollectionUtils;
@@ -23,7 +25,14 @@ public class MenuTreeViewModel implements TreeViewModel {
 	public MenuTreeViewModel(SelectionModel<MenuUi> pSelectionModel, List<MenuUi> pMenuList) {
 		super();
 		selectionModel = pSelectionModel;
-		
+		Collections.sort(pMenuList, new Comparator<MenuUi>() {
+
+			@Override
+			public int compare(MenuUi pO1, MenuUi pO2) {
+				return pO1.getOrder() > pO2.getOrder() ? -1: 1;
+			}
+			
+		});
 		menuProvider = new ListDataProvider<MenuUi>(pMenuList);
 	}
 

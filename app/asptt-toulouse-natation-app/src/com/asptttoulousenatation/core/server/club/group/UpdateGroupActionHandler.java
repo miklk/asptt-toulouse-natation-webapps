@@ -26,6 +26,9 @@ public class UpdateGroupActionHandler implements
 		lEntity.setTarif3(pAction.getTarif3());
 		lEntity.setTarif4(pAction.getTarif4());
 		lEntity.setSeanceunique(pAction.isSeanceunique());
+		lEntity.setTarifWeight(pAction.getTarifWeight());
+		lEntity.setNouveau(pAction.isNouveau());
+		lEntity.setDescription(pAction.getDescription());
 		dao.save(lEntity);
 		return new UpdateGroupResult();
 	}

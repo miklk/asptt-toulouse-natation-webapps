@@ -91,52 +91,8 @@ public class MainContentPanel extends Composite {
 		panel.add(subMenu);
 		panel.setCellHeight(subMenu, "20px");
 		
-		// TODO Actu
-		panel.add(content);
-		actuPanel = new FlowPanel();
-		actuPanel.setStyleName(CSS.actuBloc());
-		content.setWidget(actuPanel);
-		buildActuPanel();
 	}
 
-	private void buildActuPanel() {
-		moreActuEnd = initResult.getActuEnd();
-		Label lblALaUne = new Label("A la une");
-		lblALaUne.setStyleName(CSS.blocTitle());
-		actuPanel.add(lblALaUne);
-		DateTimeFormat lDateTimeFormat = DateTimeFormat
-				.getFormat("dd MMMM yyyy");
-		for (ActuUi lActuUi : initResult.getActu()) {
-			DisclosurePanel lActuDetail = new DisclosurePanel();
-			lActuDetail.setOpen(true);
-			HorizontalPanel headerPanel = new HorizontalPanel();
-			Label open = new Label("+");
-			open.getElement().getStyle().setMarginRight(5, Unit.PX);
-			headerPanel.add(open);
-			HTML summaryPanel = new HTML(
-					lActuUi.getSummary());
-			summaryPanel.addStyleName(CSS.actuBlocHeaderSummary());
-			headerPanel.add(summaryPanel);
-			lActuDetail.setHeader(headerPanel);
-			VerticalPanel lContentPanel = new VerticalPanel();
-			lContentPanel.add(new HTML(lActuUi.getContent()));
-			lContentPanel.add(getActuDocumentPanel(lActuUi.getDocumentSet()));
-			lActuDetail.add(lContentPanel);
-			lActuDetail.getContent().getElement().getStyle()
-					.clearBackgroundColor();
-			HeaderPanel lHeaderPanel = new HeaderPanel(
-					lDateTimeFormat.format(lActuUi.getCreationDate()) + " - "
-							+ lActuUi.getTitle(), lActuDetail);
-			lHeaderPanel.setHeaderStyle(CSS.actuBlocHeader());
-			lHeaderPanel.setContentStyle(CSS.actuBlocContent());	
-			lHeaderPanel.isOdd();
-			actuPanel.add(lHeaderPanel);
-		}
-		moreActuButton = new Button("Plus anciennes");
-		moreActuButton.setStyleName(CSS.moreActuButton());
-		actuPanel.add(moreActuButton);
-	}
-	
 	public void updateBreadcrumb(final String pAreaName, final String pMenuName) {
 		breadcrumb.update(pAreaName, pMenuName);
 	}

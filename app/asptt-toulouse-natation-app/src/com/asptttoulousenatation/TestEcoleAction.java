@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -27,8 +29,8 @@ import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
-import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity;
-import com.asptttoulousenatation.core.server.dao.inscription.InscriptionDao;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
+import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.search.OrderDao;
@@ -45,8 +47,6 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 public class TestEcoleAction extends HttpServlet {
@@ -59,7 +59,7 @@ public class TestEcoleAction extends HttpServlet {
 	private static final Logger LOG = Logger.getLogger(TestEcoleAction.class
 			.getName());
 
-	private InscriptionDao inscriptionDao = new InscriptionDao();
+	private Inscription2Dao inscriptionDao = new Inscription2Dao();
 	private SlotDao slotDao = new SlotDao();
 	private GroupDao groupDao = new GroupDao();
 
@@ -71,10 +71,10 @@ public class TestEcoleAction extends HttpServlet {
 			loadCreneaux(pReq, pResp);
 		} else if ("export".equals(action)) {
 			export(pReq, pResp);
-		} else if ("test".equals(action)) {
-			test(pReq, pResp);
 		} else if ("presence".equals(action)) {
 			presence(pReq, pResp);
+		} else if ("jours".equals(action)) {
+			jours(pReq, pResp);
 		}
 	}
 
@@ -150,10 +150,10 @@ public class TestEcoleAction extends HttpServlet {
 				cell = new PdfPCell(new Paragraph("Ligne d'eau"));
 				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(cell);
-				List<InscriptionEntity> entities = inscriptionDao.getAll();
+				List<InscriptionEntity2> entities = inscriptionDao.getAll();
 				int counter = 1;
 				Font content = FontFactory.getFont(FontFactory.HELVETICA, 9);
-				for (InscriptionEntity entity : entities) {
+				for (InscriptionEntity2 entity : entities) {
 					if (StringUtils.contains(entity.getCreneaux(), creneau)) {
 						table.addCell(new Paragraph(Integer.toString(counter),
 								content));
@@ -185,10 +185,14 @@ public class TestEcoleAction extends HttpServlet {
 		List<SlotEntity> entities = slotDao.getAll();
 		List<SlotUi> lUis = new ArrayList<SlotUi>();
 		for (SlotEntity entity : entities) {
-			SlotUi ui = new SlotTransformer().toUi(entity);
-			lUis.add(ui);
-			GroupEntity group = groupDao.get(entity.getGroup());
-			ui.setGroup(new GroupTransformer().toUi(group));
+			if (entity.getGroup() == null || entity.getGroup() < 1) {
+				LOG.severe("Groupe non valide pour " + entity.getId());
+			} else {
+				SlotUi ui = new SlotTransformer().toUi(entity);
+				lUis.add(ui);
+				GroupEntity group = groupDao.get(entity.getGroup());
+				ui.setGroup(new GroupTransformer().toUi(group));
+			}
 		}
 		Collections.sort(lUis, new Comparator<SlotUi>() {
 
@@ -201,34 +205,6 @@ public class TestEcoleAction extends HttpServlet {
 		String json = mapper.writeValueAsString(lUis);
 		pResp.setContentType("application/json;charset=UTF-8");
 		pResp.getWriter().write(json);
-	}
-
-	protected void test(HttpServletRequest pReq, HttpServletResponse pResp)
-			throws ServletException, IOException {
-		InputStream template = new FileInputStream(getServletContext()
-				.getRealPath(
-						"v2" + System.getProperty("file.separator") + "doc"
-								+ System.getProperty("file.separator")
-								+ "templace_test.pdf"));
-
-		PdfReader reader = new PdfReader(template);
-		ServletOutputStream out = pResp.getOutputStream();
-		String contentType = "application/pdf";
-		String contentDisposition = "attachment;filename=test.pdf;";
-		pResp.setContentType(contentType);
-		pResp.setHeader("Content-Disposition", contentDisposition);
-		try {
-			PdfStamper stamper = new PdfStamper(reader, out);
-			stamper.getAcroFields().setField("nom_prenom", "YAHOUUUUUU");
-			stamper.close();
-			reader.close();
-			out.flush();
-			out.close();
-		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 
 	protected void presence(HttpServletRequest pReq, HttpServletResponse pResp)
@@ -246,10 +222,12 @@ public class TestEcoleAction extends HttpServlet {
 			ServletOutputStream out = pResp.getOutputStream();
 			String contentType = "application/octet-stream";
 			String fileName = "presence_"
-					+ StringUtils.split(StringUtils.replace(StringUtils.replace(StringUtils.replace(StringUtils.replace(
-							StringUtils.replace(group.getTitle(), " ", "_"),
-							"-", "_"),",", "_"), "(", "_"), ")", "_"), "_" ) [0] + "_" + creneauEntity.getDayOfWeek()
-					+ ".xls";
+					+ StringUtils.split(StringUtils.replace(StringUtils
+							.replace(StringUtils.replace(StringUtils.replace(
+									StringUtils.replace(group.getTitle(), " ",
+											"_"), "-", "_"), ",", "_"), "(",
+									"_"), ")", "_"), "_")[0] + "_"
+					+ creneauEntity.getDayOfWeek() + ".xls";
 			LOG.warning("Print " + fileName);
 			String contentDisposition = "attachment;filename=" + fileName;
 			pResp.setContentType(contentType);
@@ -257,7 +235,7 @@ public class TestEcoleAction extends HttpServlet {
 
 			InputStream fichier = new FileInputStream(getServletContext()
 					.getRealPath(
-							"v2" + System.getProperty("file.separator") + "doc"
+							System.getProperty("file.separator") + "doc"
 									+ System.getProperty("file.separator")
 									+ "presence_template.xls"));
 			try {
@@ -285,20 +263,31 @@ public class TestEcoleAction extends HttpServlet {
 						Operator.EQUAL));
 				int row = 13;
 				int count = 0;
-				List<InscriptionEntity> adherents = inscriptionDao
-						.find(criteria, new OrderDao(InscriptionEntityFields.NOM, OrderOperator.ASC));
-				for (InscriptionEntity adherent : adherents) {
+				List<InscriptionEntity2> adherents = inscriptionDao.find(
+						criteria, new OrderDao(InscriptionEntityFields.NOM,
+								OrderOperator.ASC));
+				for (InscriptionEntity2 adherent : adherents) {
 					HSSFRow sheetRow = sheet.getRow(row);
 					if (sheetRow != null) {
 						if (StringUtils.isNotBlank(adherent.getCreneaux())
 								&& adherent.getCreneaux().contains(creneau)) {
 							try {
-
-								sheet.getRow(row)
-										.getCell(1)
-										.setCellValue(
-												adherent.getNom() + " "
-														+ adherent.getPrenom());
+								StringBuilder nomPrenom = new StringBuilder();
+								nomPrenom.append(adherent.getNom()).append(" ")
+										.append(adherent.getPrenom());
+								if (BooleanUtils.isFalse(adherent
+										.getCertificat())) {
+									nomPrenom.append(" (1)");
+								}
+								if (BooleanUtils
+										.isFalse(adherent.getPaiement())) {
+									nomPrenom.append(" (2)");
+								}
+								if (BooleanUtils.isFalse(adherent.getComplet())) {
+									nomPrenom.append(" (3)");
+								}
+								sheet.getRow(row).getCell(1)
+										.setCellValue(nomPrenom.toString());
 
 								String anneeNaissance;
 								if (StringUtils.isNotBlank(adherent
@@ -315,7 +304,8 @@ public class TestEcoleAction extends HttpServlet {
 								sheet.getRow(row).getCell(2)
 										.setCellValue(anneeNaissance);
 							} catch (Exception e) {
-								LOG.severe("Adherent " + adherent.getId() + " " + e.getMessage());
+								LOG.severe("Adherent " + adherent.getId() + " "
+										+ e.getMessage());
 							}
 							row++;
 							count++;
@@ -329,6 +319,191 @@ public class TestEcoleAction extends HttpServlet {
 				LOG.log(java.util.logging.Level.SEVERE,
 						"Erreur d'écriture de la fiche de présence du créneau "
 								+ creneauEntity.getId(), e);
+			} catch (Exception e) {
+				LOG.severe(e.getMessage());
+			}
+			out.flush();
+			out.close();
+		}
+	}
+
+	protected void jours(HttpServletRequest pReq, HttpServletResponse pResp)
+			throws ServletException, IOException {
+		// Créneau
+		String jour = pReq.getParameter("selectedJour");
+		String piscine = pReq.getParameter("selectedPiscine");
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<String>(SlotEntityFields.DAYOFWEEK, jour,
+				Operator.EQUAL));
+		List<SlotEntity> creneaux = slotDao.find(criteria);
+		if (CollectionUtils.isNotEmpty(creneaux)) {
+			String fileName = "presence_" + jour + ".xls";
+			LOG.warning("Print " + fileName);
+			ServletOutputStream out = pResp.getOutputStream();
+			String contentType = "application/octet-stream";
+			String contentDisposition = "attachment;filename=" + fileName;
+			pResp.setContentType(contentType);
+			pResp.setHeader("Content-Disposition", contentDisposition);
+
+			InputStream fichier = new FileInputStream(getServletContext()
+					.getRealPath(
+							System.getProperty("file.separator") + "doc"
+									+ System.getProperty("file.separator")
+									+ "presence_template2.xls"));
+			try {
+				HSSFWorkbook workbook = new HSSFWorkbook(fichier);
+				HSSFSheet sheet = workbook.getSheetAt(0);
+				sheet.getPrintSetup().setLandscape(false);
+				List<InscriptionEntity2> adherentsSelected = new ArrayList<InscriptionEntity2>();
+				for (SlotEntity creneauEntity : creneaux) {
+					GroupEntity group = groupDao.get(creneauEntity.getGroup());
+					if (BooleanUtils.isFalse(group.getLicenceFfn())) {
+						// Adherent
+						criteria = new ArrayList<CriterionDao<? extends Object>>(
+								1);
+						criteria.add(new CriterionDao<Long>(
+								InscriptionEntityFields.NOUVEAUGROUPE, group
+										.getId(), Operator.EQUAL));
+
+						List<InscriptionEntity2> adherents = inscriptionDao
+								.find(criteria, new OrderDao(
+										InscriptionEntityFields.NOM,
+										OrderOperator.ASC));
+						try {
+							for (InscriptionEntity2 adherent : adherents) {
+								if (StringUtils.isNotBlank(adherent
+										.getCreneaux())
+										&& adherent.getCreneaux().contains(
+												Long.toString(creneauEntity
+														.getId()))
+										&& StringUtils.isNotBlank(creneauEntity
+												.getSwimmingPool())
+										&& StringUtils
+												.containsIgnoreCase(
+														creneauEntity
+																.getSwimmingPool(),
+														piscine)) {
+									adherentsSelected.add(adherent);
+								}
+							}
+						} catch (Exception e) {
+							LOG.severe("Erreur récupération des adhérents du groupe "
+									+ group.getTitle() + " " + e.getMessage());
+						}
+					}
+				}
+				int row = 2;
+				HSSFRow sheetRow = sheet.getRow(0);
+				sheetRow.getCell(0).setCellValue(jour + " " + piscine);
+				Collections.sort(adherentsSelected,
+						new Comparator<InscriptionEntity2>() {
+
+							@Override
+							public int compare(InscriptionEntity2 pO1,
+									InscriptionEntity2 pO2) {
+								if (pO1 == pO2) {
+									return 0;
+								} else if (pO1 == null) {
+									return -1;
+								} else if (pO2 == null) {
+									return 1;
+								} else {
+									final int nom;
+									if (pO1.getNom() == pO2.getNom()) {
+										nom = 0;
+									} else if (pO1.getNom() == null) {
+										nom = -1;
+									} else if (pO2.getNom() == null) {
+										nom = 1;
+									} else {
+										nom = pO1.getNom().compareTo(
+												pO2.getNom());
+									}
+
+									if (nom == 0) {
+										if (pO1.getPrenom() == pO2.getPrenom()) {
+											return 0;
+										} else if (pO1.getPrenom() == null) {
+											return -1;
+										} else if (pO2.getPrenom() == null) {
+											return 1;
+										} else {
+											return pO1.getPrenom().compareTo(
+													pO2.getPrenom());
+										}
+									} else {
+										return nom;
+									}
+								}
+							}
+						});
+				for (InscriptionEntity2 adherent : adherentsSelected) {
+					sheetRow = sheet.createRow(row);
+					if (sheetRow != null) {
+						try {
+							GroupEntity groupEntity = groupDao.get(adherent
+									.getNouveauGroupe());
+							List<CriterionDao<? extends Object>> criteriaCreneau = new ArrayList<CriterionDao<? extends Object>>(
+									2);
+							criteriaCreneau.add(new CriterionDao<String>(
+									SlotEntityFields.DAYOFWEEK, jour,
+									Operator.EQUAL));
+							criteriaCreneau.add(new CriterionDao<Long>(
+									SlotEntityFields.GROUP,
+									groupEntity.getId(), Operator.EQUAL));
+							List<SlotEntity> creneauxEntities = slotDao
+									.find(criteriaCreneau);
+							sheetRow.createCell(0)
+									.setCellValue(
+											StringUtils.defaultString(adherent
+													.getNom()));
+							sheetRow.getCell(0).getCellStyle().setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(0).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(0).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(0).getCellStyle().setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.createCell(1).setCellValue(
+									StringUtils.defaultString(adherent
+											.getPrenom()));
+							sheetRow.getCell(1).getCellStyle().setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(1).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(1).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(1).getCellStyle().setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.createCell(2).setCellValue(
+									StringUtils.defaultString(adherent
+											.getDatenaissance()));
+							sheetRow.getCell(2).getCellStyle().setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(2).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(2).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(2).getCellStyle().setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.createCell(3).setCellValue(
+									StringUtils.defaultString(groupEntity
+											.getTitle()));
+							sheetRow.getCell(3).getCellStyle().setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(3).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(3).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(3).getCellStyle().setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.createCell(4).setCellValue(
+									StringUtils.defaultString(creneauxEntities
+											.get(0).getEducateur()));
+							sheetRow.getCell(4).getCellStyle().setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(4).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(4).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(4).getCellStyle().setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
+						} catch (Exception e) {
+							LOG.severe("Adherent " + adherent.getId() + " "
+									+ e.getMessage());
+						}
+						row++;
+					} else {
+						LOG.warning("Row null " + row);
+					}
+				}
+				workbook.write(out);
+			} catch (IOException e) {
+				LOG.log(java.util.logging.Level.SEVERE,
+						"Erreur d'écriture de la fiche de présence du créneau",
+						e);
 			} catch (Exception e) {
 				LOG.severe(e.getMessage());
 			}

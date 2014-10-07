@@ -11,6 +11,7 @@ public interface AreaView extends IsWidget {
 	public HasValue<String> getSummary();
 	public HasValue<Boolean> getMenuDivider();
 	public HasValue<Boolean> getMenuAlone();
+	public HasValue<String> getMenuOrder();
 	public String getContent();
 	public HasClickHandlers getUpdateButton();
 	public HasClickHandlers getDeleteButton();
@@ -37,6 +38,7 @@ public interface AreaView extends IsWidget {
 	public String getMenuCreationContent();
 	public HasValue<Boolean> getMenuCreationDivider();
 	public HasValue<Boolean> getMenuCreationAlone();
+	public HasValue<String> getMenuCreationOrder();
 
 	public Long getParentMenuId();
 	

@@ -58,7 +58,8 @@ public class ActuActivity extends MyAbstractActivity<ActuPlace> {
 																	.getValue(),
 																	lActuEditionView.getSummary().getValue(),
 															lActuEditionView
-																	.getContent(), lActuEditionView.getImageUrl().getValue()
+																	.getContent(), lActuEditionView.getImageUrl().getValue(),
+																	lActuEditionView.getCompetition().getValue()
 																	),
 													new AsyncCallback<UpdateActuResult>() {
 
@@ -107,7 +108,8 @@ public class ActuActivity extends MyAbstractActivity<ActuPlace> {
 					PublishActuAction lPublishActuAction = new PublishActuAction(
 							lActuView.getTitre().getValue(), lActuView.getSummary().getValue(), lActuView
 									.getContent(), lActuView.getCreationDate()
-									.getValue(), lActuView.getDocumentId(), lActuView.getImageUrl().getValue());
+									.getValue(), lActuView.getDocumentId(), lActuView.getImageUrl().getValue(),
+									lActuView.getCompetition().getValue());
 					dispatchAsync.execute(lPublishActuAction,
 							new AsyncCallback<PublishActionResult>() {
 

@@ -5,40 +5,30 @@ import static com.asptttoulousenatation.client.resources.ASPTT_ProtoResources.IM
 
 import java.util.List;
 
-import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent;
-import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent.LoadContentAreaEnum;
 import com.asptttoulousenatation.core.client.ui.InputPanel;
 import com.asptttoulousenatation.core.client.ui.PopupValidateAction;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
-import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitResult;
-import com.asptttoulousenatation.shared.userspace.admin.structure.area.AreaUi;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.dom.client.HasKeyPressHandlers;
-import com.google.web.bindery.event.shared.EventBus;
-import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.ButtonBase;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.PushButton;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.web.bindery.event.shared.EventBus;
 
 public class MainHeaderPanel extends Composite {
 
@@ -80,10 +70,6 @@ public class MainHeaderPanel extends Composite {
 		panel.add(image);
 		panel.setCellWidth(image, "320px");
 
-		AlternateBanner alternateBanner = new AlternateBanner(initResult.getPhoto());
-		alternateBanner.setStyleName(CSS.headerPhoto());
-		panel.add(alternateBanner);
-		panel.setCellWidth(alternateBanner, "610px");
 		VerticalPanel lRightPanel = new VerticalPanel();
 		HorizontalPanel layoutPanel_2 = new HorizontalPanel();
 		lRightPanel.add(layoutPanel_2);
@@ -106,21 +92,6 @@ public class MainHeaderPanel extends Composite {
 		lInscriptionLabels.add(lInscriptionSub);
 		layoutPanel_2.add(lInscriptionLabels);
 
-		nlnlblInscription.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent pEvent) {
-				if (inscriptionData == null) {
-					AreaUi lAreaUi = initResult.getArea("Inscription");
-					if (lAreaUi != null) {
-						MenuUi lMenu = lAreaUi.getMenuSet().values().iterator().next();
-						eventBus.fireEvent(new LoadContentEvent(lMenu,
-								LoadContentAreaEnum.get(lMenu.getMenuKey()), lAreaUi.getTitle(), lMenu.getTitle()));
-					}
-				} else {
-					buildInscriptionPopup();
-				}
-			}
-		});
-
 		FlowPanel lConnexionLabels = new FlowPanel();
 		lConnexionLabels.setStyleName(CSS.headerLoginInscriptionPanel());
 		// TODO Disconnect
@@ -135,15 +106,6 @@ public class MainHeaderPanel extends Composite {
 		Image lLogoOmnisport = new Image(IMAGES.logoOmnisportHaut());
 		lLogoOmnisport.setStyleName(CSS.headerLoginOmnisport());
 		lRightPanel.add(lLogoOmnisport);
-	}
-
-	private void loadContent(final String pAreaTitle, final String pMenuTitle) {
-		AreaUi lAreaUi = initResult.getArea(pAreaTitle);
-		if (lAreaUi != null) {
-			MenuUi lMenu = lAreaUi.getMenu(pMenuTitle);
-			eventBus.fireEvent(new LoadContentEvent(lMenu, pAreaTitle, pMenuTitle));
-		}
-
 	}
 
 	private void buildConnexionPanel(FlowPanel pConnexionLabels) {
@@ -178,25 +140,6 @@ public class MainHeaderPanel extends Composite {
 				lPanel.add(lPasswordInput);
 				authenticationButton.addStyleName(CSS.loginButton());
 				lPanel.add(authenticationButton);
-
-				Label lPasswordForget = new Label(
-						"J'ai oublié mon mot de passe");
-				lPasswordForget.addClickHandler(new ClickHandler() {
-					public void onClick(ClickEvent pEvent) {
-						if (forgetPasswordData == null) {
-							AreaUi lAreaUi = initResult.getArea("Connexion");
-							if (lAreaUi != null) {
-								MenuUi lMenu = lAreaUi.getMenu("MotDePasse");
-								eventBus.fireEvent(new LoadContentEvent(lMenu,
-										LoadContentAreaEnum.FORGET_PASSWORD, lAreaUi.getTitle(), lMenu.getTitle()));
-							}
-						} else {
-							buildForgetPasswordPopup();
-						}
-					}
-				});
-				lPasswordForget.addStyleName(CSS.loginForgetLabel());
-				lPanel.add(lPasswordForget);
 
 				popupManager.createValidatePopup(true, true, lPanel);
 				popupManager.getPopupValidate().setValidateButton(
@@ -257,154 +200,6 @@ public class MainHeaderPanel extends Composite {
 		popupManager = pPopupManager;
 	}
 
-	public void loadInscriptionContent(final byte[] pData, List<DocumentUi> pDocuments) {
-		inscriptionData = new HTML(new String(pData));
-		inscriptionDocuments = pDocuments;
-		buildInscriptionPopup();
-	}
-
-	private void buildInscriptionPopup() {
-		FlowPanel lFlowPanel = new FlowPanel();
-		HorizontalPanel lHeader = new HorizontalPanel();
-		lHeader.addStyleName(CSS.loginHeader());
-		Label lTitle = new Label("Inscription");
-		lTitle.addStyleName(CSS.loginTitle());
-		lHeader.add(lTitle);
-		Image lClose = new Image(IMAGES.close());
-		lClose.addStyleName(CSS.loginClose());
-		lClose.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent pEvent) {
-				popupManager.hide();
-			}
-		});
-		lHeader.add(lClose);
-		lHeader.setCellHorizontalAlignment(lTitle,
-				HasHorizontalAlignment.ALIGN_LEFT);
-		lHeader.setCellHorizontalAlignment(lClose,
-				HasHorizontalAlignment.ALIGN_RIGHT);
-		lClose.getElement().getStyle().setMarginLeft(50, Unit.PX);
-		lFlowPanel.add(lHeader);
-		
-		//Online
-		DisclosurePanel lOnlinePanel = new DisclosurePanel("Inscription en ligne");
-		lFlowPanel.add(lOnlinePanel);
-		
-		
-		FlowPanel lIdPanel = new FlowPanel();
-		lIdPanel.addStyleName(CSS.loginContent());
-		lIdPanel.add(inscriptionData);
-		VerticalPanel lVerticalPanel = new VerticalPanel();
-		lVerticalPanel.getElement().getStyle().setMarginTop(10, Unit.PX);
-		lIdPanel.add(lVerticalPanel);
-		lVerticalPanel.add(new Label("Informations utiles:"));
-		HorizontalPanel lHorizontalPanel = new HorizontalPanel();
-		lHorizontalPanel.getElement().getStyle().setMarginLeft(30, Unit.PX);
-		lHorizontalPanel.setSpacing(10);
-		lVerticalPanel.add(lHorizontalPanel);
-		Anchor lEcole = new Anchor("Ecole de natation");
-		lEcole.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent pEvent) {
-				loadContent("Groupes", "Ecole de natation");
-			}
-		});
-		lHorizontalPanel.add(lEcole);
-		lEcole = new Anchor("Loisirs adultes");
-		lEcole.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent pEvent) {
-				loadContent("Groupes", "Loisirs adultes");
-			}
-		});
-		lHorizontalPanel.add(lEcole);
-		
-		lEcole = new Anchor("Aquagym");
-		lEcole.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent pEvent) {
-				loadContent("Groupes", "Aquagym");
-			}
-		});
-		lHorizontalPanel.add(lEcole);
-		
-		lEcole = new Anchor("Perfectionnement");
-		lEcole.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent pEvent) {
-				loadContent("Groupes", "Perfectionnement");
-			}
-		});
-		lHorizontalPanel.add(lEcole);
-
-		lEcole = new Anchor("Compétitions");
-		lEcole.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent pEvent) {
-				loadContent("Groupes", "Compétitions");
-			}
-		});
-		lHorizontalPanel.add(lEcole);
-		
-		lEcole = new Anchor("Masters");
-		lEcole.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent pEvent) {
-				loadContent("Groupes", "Masters");
-			}
-		});
-		lHorizontalPanel.add(lEcole);
-
-		lEcole = new Anchor("Eau libre");
-		lEcole.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent pEvent) {
-				loadContent("Groupes", "Eau libre");
-			}
-		});
-		lHorizontalPanel.add(lEcole);
-
-		lEcole = new Anchor("Centre de formation");
-		lEcole.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent pEvent) {
-				loadContent("Groupes", "Centre de formation");
-			}
-		});
-		lHorizontalPanel.add(lEcole);
-
-		Anchor lLieux = new Anchor("Lieux d'entrainements");
-		lLieux.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent pEvent) {
-				loadContent("Club", "Lieux d'entrainements");
-			}
-		});
-		lHorizontalPanel.add(lLieux);
-
-		lIdPanel.add(lHorizontalPanel);
-		DisclosurePanel lIdPanelWrapper = new DisclosurePanel("Inscription papier");
-		lIdPanelWrapper.setContent(lIdPanel);
-		lFlowPanel.add(lIdPanelWrapper);
-
-		lFlowPanel.add(getDocumentPanel(inscriptionDocuments));
-		popupManager.createPopup(true, true, lFlowPanel);
-		popupManager.center();
-	}
-	
-	private Panel getDocumentPanel(List<DocumentUi> pDocuments) {
-		Grid lPanel = new Grid(2, 1);
-		lPanel.setStyleName(CSS.areaDocumentList());
-		// Header
-		Label lTitle = new Label("Documents à télécharger");
-		lTitle.setStyleName(CSS.areaDocumentListTitle());
-		lPanel.setWidget(0, 0, lTitle);
-
-		// Documents
-		FlowPanel lDocumentPanel = new FlowPanel();
-		for (DocumentUi lDocument : pDocuments) {
-			Anchor lAnchor = new Anchor(lDocument.getTitle());
-			lAnchor.setTitle(lDocument.getSummary());
-			lAnchor.setHref(GWT.getHostPageBaseURL()
-					+ "downloadDocument?documentId=" + lDocument.getId()
-					+ "&fileId=" + lDocument.getData());
-			lAnchor.addStyleName(CSS.areaDocumentItem());
-			lDocumentPanel.add(lAnchor);
-		}
-		lPanel.setWidget(1, 0, lDocumentPanel);
-		return lPanel;
-	}
-	
 	public void loadForgetPasswordContent(final byte[] pData) {
 		forgetPasswordData = new HTML(new String(pData));
 		buildForgetPasswordPopup();

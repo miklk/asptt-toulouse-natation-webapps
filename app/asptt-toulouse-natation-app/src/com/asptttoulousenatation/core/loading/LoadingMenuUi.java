@@ -22,15 +22,26 @@ public class LoadingMenuUi implements Serializable {
 	
 	private boolean hasSubMenu;
 	
+	private boolean divider;
+	private boolean alone;
+	
 	public LoadingMenuUi() {
 		title = StringUtils.EMPTY;
 		subMenu = new ArrayList<LoadingMenuUi>();
 		hasSubMenu = false;
+		divider = false;
+		alone = false;
+	}
+	
+	public LoadingMenuUi(String pTitle, boolean pDivider, boolean pAlone) {
+		this();
+		title = pTitle;
+		divider = pDivider;
+		alone = pAlone;
 	}
 	
 	public LoadingMenuUi(String pTitle) {
-		this();
-		title = pTitle;
+		this(pTitle, false, false);
 	}
 
 	public String getTitle() {
@@ -62,5 +73,20 @@ public class LoadingMenuUi implements Serializable {
 	public void setHasSubMenu(boolean pHasSubMenu) {
 		hasSubMenu = pHasSubMenu;
 	}
-	
+
+	public boolean isDivider() {
+		return divider;
+	}
+
+	public void setDivider(boolean pDivider) {
+		divider = pDivider;
+	}
+
+	public boolean isAlone() {
+		return alone;
+	}
+
+	public void setAlone(boolean pAlone) {
+		alone = pAlone;
+	}
 }

@@ -3,7 +3,8 @@ package com.asptttoulousenatation.core.server.dao.entity.field;
 public enum AreaEntityFields implements IEntityFields {
 	TITLE(String.class),
 	PROFILE(String.class),
-	ORDER(Short.class);
+	ORDER(Short.class),
+	COMPETITION(Boolean.class);
 	
 	private Class<? extends Object> clazz;
 	

@@ -18,6 +18,7 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellList.Style;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
@@ -45,6 +46,7 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 	private TextBox summary;
 	private DateBox date;
 	private TextBox imageUrl;
+	private CheckBox competition;
 	private CKEditor contentInput;
 	private Button updateButton;
 	private Button deleteButton;
@@ -189,6 +191,13 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 		lPanel.setWidget(rowIndex, 0, createLabel("URL de l'image de fond"));
 		lPanel.setWidget(rowIndex, 1, imageUrl);
 		rowIndex++;
+		
+		//Compétition
+		competition = new CheckBox();
+		competition.setValue(pActuUi.isCompetition());
+		lPanel.setWidget(rowIndex, 0, createLabel("Actu compétition ?"));
+		lPanel.setWidget(rowIndex, 1, competition);
+		rowIndex++;
 
 		// Contenu
 		// Add the components to a panel
@@ -296,5 +305,10 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 	@Override
 	public HasValue<String> getImageUrl() {
 		return imageUrl;
+	}
+
+	@Override
+	public HasValue<Boolean> getCompetition() {
+		return competition;
 	}
 }

@@ -18,14 +18,17 @@ public class GroupUi implements IsSerializable {
 	private int tarif2;
 	private int tarif3;
 	private int tarif4;
+	private int tarifWeight;
 	private boolean seanceunique;
+	private boolean nouveau;
+	private String description;
 	
 	public GroupUi() {
 		super();
 		slots = new ArrayList<SlotUi>(0);
 	}
 	
-	public GroupUi(Long pId, String pTitle, boolean pLicenceFfn, boolean pInscription, int pTarif, int pTarif2, int pTarif3, int pTarif4, boolean pSeanceunique) {
+	public GroupUi(Long pId, String pTitle, boolean pLicenceFfn, boolean pInscription, int pTarif, int pTarif2, int pTarif3, int pTarif4, boolean pSeanceunique, int pTarifWeight, boolean pNouveau, String pDescription) {
 		super();
 		id = pId;
 		title = pTitle;
@@ -35,7 +38,10 @@ public class GroupUi implements IsSerializable {
 		tarif2 = pTarif2;
 		tarif3 = pTarif3;
 		tarif4 = pTarif4;
+		tarifWeight = pTarifWeight;
 		seanceunique = pSeanceunique;
+		nouveau = pNouveau;
+		description = pDescription;
 	}
 
 	public Long getId() {
@@ -121,6 +127,30 @@ public class GroupUi implements IsSerializable {
 
 	public void setSeanceunique(boolean pSeanceunique) {
 		seanceunique = pSeanceunique;
+	}
+
+	public int getTarifWeight() {
+		return tarifWeight;
+	}
+
+	public void setTarifWeight(int pTarifWeight) {
+		tarifWeight = pTarifWeight;
+	}
+
+	public boolean isNouveau() {
+		return nouveau;
+	}
+
+	public void setNouveau(boolean pNouveau) {
+		nouveau = pNouveau;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String pDescription) {
+		description = pDescription;
 	}
 	
 }

@@ -1,11 +1,14 @@
 package com.asptttoulousenatation.web.adherent;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
@@ -14,6 +17,7 @@ import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
+import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
 
 public class AdherentListResultBeanTransformer implements Serializable {
 
@@ -21,6 +25,9 @@ public class AdherentListResultBeanTransformer implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 9206273383357950266L;
+	
+	private static final Logger LOG = Logger.getLogger(AdherentListResultBeanTransformer.class
+			.getName());
 
 	private static AdherentListResultBeanTransformer INSTANCE;
 
@@ -42,11 +49,13 @@ public class AdherentListResultBeanTransformer implements Serializable {
 		bean.setDateNaissance(entity.getDatenaissance());
 
 		bean.setGroupe(getGroupe(entity.getNouveauGroupe()));
-		bean.setCreneaux(getCreneaux(entity.getCreneaux()));
+			bean.setCreneaux(getCreneaux(entity.getCreneaux()));
 		bean.setEmail(entity.getEmail());
 		bean.setMotdepasse(entity.getMotdepasse());
 		return bean;
 	}
+	
+	private Inscription2Dao inscription2Dao = new Inscription2Dao();
 	
 	public AdherentListResultBean get2(InscriptionEntity2 entity) {
 		AdherentListResultBean bean = new AdherentListResultBean();
@@ -56,9 +65,30 @@ public class AdherentListResultBeanTransformer implements Serializable {
 		bean.setDateNaissance(entity.getDatenaissance());
 
 		bean.setGroupe(getGroupe(entity.getNouveauGroupe()));
-		bean.setCreneaux(getCreneaux(entity.getCreneaux()));
+		try {
+			bean.setCreneaux(getCreneaux(entity.getCreneaux()));
+		} catch(Exception e) {
+			LOG.severe("Erreur de créneaux sur l'adhérent " + entity.getNom());
+		}
 		bean.setEmail(entity.getEmail());
 		bean.setMotdepasse(entity.getMotdepasse());
+		if(entity.getInscriptiondt() != null) {
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			bean.setInscriptionDt(format.format(entity.getInscriptiondt()));
+		} else {
+			bean.setInscriptionDt("Pas inscrit");
+		}
+		if(entity.getPrincipal() != null) {
+			try {
+			InscriptionEntity2 principal = inscription2Dao.get(entity.getPrincipal());
+			bean.setEmailPrincipal(principal.getEmail());
+			} catch(Exception e) {
+				LOG.severe("Erreur principal: " + e.getMessage());
+			}
+		}
+		bean.setCertificat(BooleanUtils.toBoolean(entity.getCertificat()));
+		bean.setPaiement(BooleanUtils.toBoolean(entity.getPaiement()));
+		bean.setComplet(BooleanUtils.toBoolean(entity.getComplet()));
 		return bean;
 	}
 
@@ -106,6 +136,7 @@ public class AdherentListResultBeanTransformer implements Serializable {
 					if (StringUtils.isNumeric(creneauId)) {
 						SlotEntity slotEntity = slotDao.get(Long
 								.valueOf(creneauId));
+						
 						String creneauStr = slotEntity.getDayOfWeek()
 								+ " "
 								+ (slotEntity.getBegin() / 60)

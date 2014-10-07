@@ -33,5 +33,73 @@
         <property name="prenom" direction="asc"/>
         <property name="nom" direction="asc"/>
     </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity2" ancestor="false" source="manual">
+        <property name="nouveau" direction="asc"/>
+        <property name="inscriptiondt" direction="asc"/>
+    </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity2" ancestor="false" source="manual">
+        <property name="complet" direction="asc"/>
+        <property name="inscriptiondt" direction="asc"/>
+    </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity2" ancestor="false" source="manual">
+        <property name="nouveauGroupe" direction="asc"/>
+        <property name="inscriptiondt" direction="asc"/>
+    </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity2" ancestor="false" source="manual">
+        <property name="saisie" direction="asc"/>
+        <property name="motdepasse" direction="asc"/>
+    </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity2" ancestor="false" source="manual">
+        <property name="nouveauGroupe" direction="asc"/>
+        <property name="nom" direction="asc"/>
+    </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity2" ancestor="false" source="manual">
+        <property name="prenom" direction="asc"/>
+        <property name="nom" direction="asc"/>
+    </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity2" ancestor="false" source="manual">
+        <property name="nouveauGroupe" direction="asc"/>
+        <property name="saisie" direction="asc"/>
+        <property name="nom" direction="asc"/>
+    </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity2" ancestor="false" source="manual">
+        <property name="complet" direction="asc"/>
+        <property name="nouveauGroupe" direction="asc"/>
+        <property name="nom" direction="asc"/>
+    </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity2" ancestor="false" source="manual">
+        <property name="nom" direction="asc"/>
+        <property name="inscriptiondt" direction="asc"/>
+    </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity2" ancestor="false" source="manual">
+        <property name="prenom" direction="asc"/>
+        <property name="inscriptiondt" direction="asc"/>
+    </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity2" ancestor="false" source="manual">
+        <property name="email" direction="asc"/>
+        <property name="inscriptiondt" direction="asc"/>
+    </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity2" ancestor="false" source="manual">
+        <property name="certificat" direction="asc"/>
+        <property name="paiement" direction="asc"/>
+        <property name="complet" direction="asc"/>
+    </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity2" ancestor="false" source="manual">
+        <property name="saisie" direction="asc"/>
+        <property name="inscriptiondt" direction="asc"/>
+    </datastore-index>
 
 </datastore-indexes>

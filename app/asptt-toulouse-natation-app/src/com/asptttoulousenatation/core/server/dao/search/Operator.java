@@ -12,7 +12,8 @@ public enum Operator implements Serializable {
 	LESS_EQ("<="),
 	AND("&&"),
 	OR("||"),
-	NULL("== null");
+	NULL("== null"),
+	NOT_NULL("!= null");
 	
 	private String value;
 	

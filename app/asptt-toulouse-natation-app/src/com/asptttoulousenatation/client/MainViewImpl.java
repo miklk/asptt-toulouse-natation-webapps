@@ -167,10 +167,6 @@ public class MainViewImpl extends Composite implements MainView {
 		toolPanel.loadToolContent(pData);
 	}
 
-	public void loadInscriptionContent(byte[] pData, List<DocumentUi> pDocuments) {
-		headerPanel.loadInscriptionContent(pData, pDocuments);
-	}
-
 	public void loadForgetPasswordContent(byte[] pData) {
 		headerPanel.loadForgetPasswordContent(pData);
 	}

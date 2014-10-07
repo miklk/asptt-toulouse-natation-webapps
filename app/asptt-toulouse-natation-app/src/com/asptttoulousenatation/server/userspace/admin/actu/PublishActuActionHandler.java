@@ -26,7 +26,7 @@ public class PublishActuActionHandler implements
 	public PublishActionResult execute(PublishActuAction pAction,
 			ExecutionContext pContext) throws DispatchException {
 		ActuEntity lActuEntity = new ActuEntity(null, pAction.getTitle(),
-				pAction.getSummary(), new Text(pAction.getContent()), pAction.getCreationDate(), StringUtils.defaultString(pAction.getImageUrl(), "img/actu_defaut.jpg"));
+				pAction.getSummary(), new Text(pAction.getContent()), pAction.getCreationDate(), StringUtils.defaultString(pAction.getImageUrl(), "img/actu_defaut.jpg"), pAction.isCompetition());
 		ActuDao lActuDao = new ActuDao();
 		ActuEntity createdActu = lActuDao.save(lActuEntity);
 		

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.jdo.Extent;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+import javax.jdo.Transaction;
 
 import com.asptttoulousenatation.core.server.dao.entity.Entity;
 import com.asptttoulousenatation.core.server.dao.search.CriteriaUtils;
@@ -108,6 +109,23 @@ public abstract class DaoBase<E extends Entity> {
 		PersistenceManager lPersistenceManager = PMF.getPersistenceManager();
 		try {
 			lPersistenceManager.deletePersistent(pEntity);
+		} finally {
+			lPersistenceManager.close();
+		}
+	}
+	
+	public void delete(Long pId) {
+		PersistenceManager lPersistenceManager = PMF.getPersistenceManager();
+		Transaction tx = lPersistenceManager.currentTransaction();
+		try {
+			tx.begin();
+			E entity = (E) lPersistenceManager.getObjectById(getEntityClass(), pId);
+			lPersistenceManager.makeTransactional(entity);
+			lPersistenceManager.deletePersistent(entity);
+			tx.commit();
+		} catch (Exception e) {
+			tx.rollback();
+			throw new RuntimeException(e);
 		} finally {
 			lPersistenceManager.close();
 		}

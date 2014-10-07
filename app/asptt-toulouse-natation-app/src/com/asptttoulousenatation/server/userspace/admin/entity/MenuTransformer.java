@@ -1,5 +1,7 @@
 package com.asptttoulousenatation.server.userspace.admin.entity;
 
+import org.apache.commons.lang3.BooleanUtils;
+
 import com.asptttoulousenatation.core.server.dao.entity.structure.MenuEntity;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 
@@ -16,6 +18,8 @@ public class MenuTransformer extends
 		lUi.setShortcut(pEntity.isShortcut());
 		lUi.setDisplay(pEntity.isDisplay());
 		lUi.setOrder(pEntity.getOrder());
+		lUi.setDivider(BooleanUtils.toBoolean(pEntity.getDivider()));
+		lUi.setAlone(BooleanUtils.toBoolean(pEntity.getAlone()));
 		return lUi;
 	}
 

@@ -10,6 +10,7 @@ import com.axeiya.gwtckeditor.client.CKEditor;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
@@ -29,6 +30,7 @@ public class ActuViewImpl extends Composite implements ActuView {
 	private DateBox date;
 	private CKEditor contentInput;
 	private TextBox imageUrl;
+	private CheckBox competition;
 
 	// Document edition
 	private HorizontalPanel documentPanel;
@@ -74,6 +76,12 @@ public class ActuViewImpl extends Composite implements ActuView {
 		imageUrl.setWidth("300px");
 		lPanel.setWidget(rowIndex, 0, createLabel("URL de l'image de fond"));
 		lPanel.setWidget(rowIndex, 1, imageUrl);
+		rowIndex++;
+		
+		//Compétition
+		competition = new CheckBox();
+		lPanel.setWidget(rowIndex, 0, createLabel("Actu compétition ?"));
+		lPanel.setWidget(rowIndex, 1, competition);
 		rowIndex++;
 
 		// Contenu
@@ -155,5 +163,10 @@ public class ActuViewImpl extends Composite implements ActuView {
 	@Override
 	public HasValue<String> getImageUrl() {
 		return imageUrl;
+	}
+
+	@Override
+	public HasValue<Boolean> getCompetition() {
+		return competition;
 	}
 }

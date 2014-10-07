@@ -32,10 +32,6 @@
   <replace-with class="com.asptttoulousenatation.client.ApplicationLaunch">
       <when-type-is class="com.asptttoulousenatation.client.ApplicationLaunch" />    
   </replace-with>
-  <replace-with class="com.asptttoulousenatation.client.ApplicationLaunchIE7">
-      <when-type-is class="com.asptttoulousenatation.client.ApplicationLaunch" />
-      <when-property-is name="user.agent" value="ie6" />    
-  </replace-with>
   
   <add-linker name="xsiframe"/>
 <set-configuration-property name="devModeRedirectEnabled" value="true"/>

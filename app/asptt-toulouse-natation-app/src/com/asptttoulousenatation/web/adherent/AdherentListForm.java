@@ -9,13 +9,16 @@ public class AdherentListForm implements Serializable {
 	 */
 	private static final long serialVersionUID = 1388609378452601726L;
 	private String searchNom;
+	private String searchNomMinus;
 	private String searchPrenom;
+	private String searchEmail;
 	private Long searchGroupe;
 	private String searchCreneau;
 	private String searchPiscine;
 	private boolean searchDossier;
 	private boolean searchSaisie;
-	private boolean sansEmail;
+	private boolean searchPaiement;
+	private boolean searchCertificat;
 	private Long[] selections;
 	private AdherentListEmailBean sendEmail;
 	private AdherentAffecterBean affecter;
@@ -110,14 +113,6 @@ public class AdherentListForm implements Serializable {
 		searchSaisie = pSaisie;
 	}
 
-	public boolean isSansEmail() {
-		return sansEmail;
-	}
-
-	public void setSansEmail(boolean pSansEmail) {
-		sansEmail = pSansEmail;
-	}
-
 	public String getSearchPiscine() {
 		return searchPiscine;
 	}
@@ -133,5 +128,37 @@ public class AdherentListForm implements Serializable {
 	public void setSelections(Long[] pSelections) {
 		selections = pSelections;
 	}
-	
+
+	public String getSearchEmail() {
+		return searchEmail;
+	}
+
+	public void setSearchEmail(String pSearchEmail) {
+		searchEmail = pSearchEmail;
+	}
+
+	public String getSearchNomMinus() {
+		return searchNomMinus;
+	}
+
+	public void setSearchNomMinus(String pSearchNomMinus) {
+		searchNomMinus = pSearchNomMinus;
+	}
+
+	public boolean isSearchPaiement() {
+		return searchPaiement;
+	}
+
+	public void setSearchPaiement(boolean pSearchPaiement) {
+		searchPaiement = pSearchPaiement;
+	}
+
+	public boolean isSearchCertificat() {
+		return searchCertificat;
+	}
+
+	public void setSearchCertificat(boolean pSearchCertificat) {
+		searchCertificat = pSearchCertificat;
+	}
+
 }

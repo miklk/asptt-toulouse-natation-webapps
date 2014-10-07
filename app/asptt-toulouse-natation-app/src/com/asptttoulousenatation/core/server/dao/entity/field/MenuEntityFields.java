@@ -5,7 +5,8 @@ public enum MenuEntityFields implements IEntityFields {
 	AREA(Long.class),
 	TITLE(String.class),
 	DISPLAY(Boolean.class),
-	ORDER(Integer.class);
+	ORDER(Integer.class),
+	PARENT(Long.class);
 	
 	private Class<? extends Object> clazz;
 	

@@ -12,7 +12,6 @@ import com.asptttoulousenatation.core.server.club.slot.CreateSlotActionHandler;
 import com.asptttoulousenatation.core.server.club.slot.DeleteSlotActionHandler;
 import com.asptttoulousenatation.core.server.club.slot.GetAllSlotActionHandler;
 import com.asptttoulousenatation.core.server.club.slot.UpdateSlotActionHandler;
-import com.asptttoulousenatation.core.server.club.subscription.GetPriceActionHandler;
 import com.asptttoulousenatation.core.server.competition.CreateCompetitionActionHandler;
 import com.asptttoulousenatation.core.server.competition.DeleteCompetitionActionHandler;
 import com.asptttoulousenatation.core.server.competition.DeleteCompetitionDayActionHandler;
@@ -22,7 +21,6 @@ import com.asptttoulousenatation.core.server.competition.UpdateCompetitionAction
 import com.asptttoulousenatation.core.server.document.DeleteDocumentActionHandler;
 import com.asptttoulousenatation.core.server.document.GetDocumentActionHandler;
 import com.asptttoulousenatation.core.server.document.UpdateDocumentActionHandler;
-import com.asptttoulousenatation.core.server.payment.PaymentActionHandler;
 import com.asptttoulousenatation.core.server.reference.IsDataUpdateActionHandler;
 import com.asptttoulousenatation.core.server.reference.SetDataUpdateActionHandler;
 import com.asptttoulousenatation.core.server.stat.IncrementVisitorCounterActionHandler;
@@ -52,7 +50,6 @@ import com.asptttoulousenatation.core.shared.club.slot.CreateSlotAction;
 import com.asptttoulousenatation.core.shared.club.slot.DeleteSlotAction;
 import com.asptttoulousenatation.core.shared.club.slot.GetAllSlotAction;
 import com.asptttoulousenatation.core.shared.club.slot.UpdateSlotAction;
-import com.asptttoulousenatation.core.shared.club.subscription.GetPriceAction;
 import com.asptttoulousenatation.core.shared.competition.CreateCompetitionAction;
 import com.asptttoulousenatation.core.shared.competition.DeleteCompetitionAction;
 import com.asptttoulousenatation.core.shared.competition.DeleteCompetitionDayAction;
@@ -62,7 +59,6 @@ import com.asptttoulousenatation.core.shared.competition.UpdateCompetitionAction
 import com.asptttoulousenatation.core.shared.document.DeleteDocumentAction;
 import com.asptttoulousenatation.core.shared.document.GetDocumentAction;
 import com.asptttoulousenatation.core.shared.document.UpdateDocumentAction;
-import com.asptttoulousenatation.core.shared.payment.PaymentAction;
 import com.asptttoulousenatation.core.shared.reference.IsDataUpdateAction;
 import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
 import com.asptttoulousenatation.core.shared.stat.IncrementVisitorCounterAction;
@@ -176,9 +172,6 @@ public class CoreModule extends ActionHandlerModule {
 		bindHandler(UpdateMenuAction.class, UpdateMenuActionHandler.class);
 		bindHandler(DeleteMenuAction.class, DeleteMenuActionHandler.class);
 		bindHandler(GetMenuAction.class, GetMenuActionHandler.class);
-		
-		bindHandler(PaymentAction.class, PaymentActionHandler.class);
-		bindHandler(GetPriceAction.class, GetPriceActionHandler.class);
 		
 		//Swimmer stat
 		bindHandler(UpdateSwimmerStatAction.class, UpdateSwimmerStatActionHandler.class);

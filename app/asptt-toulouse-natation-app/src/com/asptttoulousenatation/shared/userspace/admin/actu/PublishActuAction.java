@@ -12,12 +12,13 @@ public class PublishActuAction implements Action<PublishActionResult> {
 	private Date creationDate;
 	private Long documentId;
 	private String imageUrl;
+	private boolean competition;
 	
 	public PublishActuAction() {
 	}
 	
 	public PublishActuAction(String pTitle, String pSummary, String pContent,
-			Date pCreationDate, Long pDocumentId, String pImageUrl) {
+			Date pCreationDate, Long pDocumentId, String pImageUrl, boolean pCompetition) {
 		super();
 		title = pTitle;
 		summary = pSummary;
@@ -25,6 +26,7 @@ public class PublishActuAction implements Action<PublishActionResult> {
 		creationDate = pCreationDate;
 		documentId = pDocumentId;
 		imageUrl = pImageUrl;
+		competition = pCompetition;
 	}
 
 
@@ -69,5 +71,13 @@ public class PublishActuAction implements Action<PublishActionResult> {
 
 	public void setImageUrl(String pImageUrl) {
 		imageUrl = pImageUrl;
+	}
+
+	public boolean isCompetition() {
+		return competition;
+	}
+
+	public void setCompetition(boolean pCompetition) {
+		competition = pCompetition;
 	}
 }

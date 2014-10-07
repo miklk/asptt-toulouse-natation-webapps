@@ -406,6 +406,7 @@ public class GetAllSwimmerStatActionHandler implements
 				return pO1.getSwimmer().compareTo(pO2.getSwimmer());
 			}
 		});
+		LOG.severe("Date passée: " + pAction.getBeginDate() + " date retournée: " + currentDayText);
 		return new GetAllSwimmerStatResult<ISwimmerStatUi>(currentDate,
 				currentDayText, lResults);
 	}

@@ -4,6 +4,7 @@ public enum GroupEntityFields implements IEntityFields {
 
 	TITLE(String.class),
 	INSCRIPTION(Boolean.class),
+	NOUVEAU(Boolean.class),
 	;
 	
 	private Class<? extends Object> clazz;

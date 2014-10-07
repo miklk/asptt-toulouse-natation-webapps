@@ -3,12 +3,12 @@ package com.asptttoulousenatation.web.creneau;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,9 +30,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CreneauListAction extends HttpServlet {
 
 	private static final long serialVersionUID = -4912389865312123661L;
+	
+	private static final Logger LOG = Logger.getLogger(CreneauListAction.class
+			.getName());
+	
 	private GroupDao groupDao = new GroupDao();
 	private SlotDao slotDao = new SlotDao();
-	private String[] jours = new String[] {"Dimanche", "Samedi", "Vendredi", "Jeudi", "Mercredi", "Mardi", "Lundi"};
+	private static Map<String, Integer> JOURS;
+	
+	static {
+		JOURS = new HashMap<String, Integer>();
+		JOURS.put("Lundi", 0);
+		JOURS.put("Mardi", 1);
+		JOURS.put("Mercredi", 2);
+		JOURS.put("Jeudi", 3);
+		JOURS.put("Vendredi", 4);
+		JOURS.put("Samedi", 5);
+		JOURS.put("Dimanche", 6);
+	}
 	
 	@Override
 	protected void doPost(HttpServletRequest pReq, HttpServletResponse pResp)
@@ -95,15 +110,22 @@ public class CreneauListAction extends HttpServlet {
 			for (SlotEntity entity : entities) {
 				String cle = entity.getDayOfWeek();
 				final CreneauListResultBean creneau = resultsMap.get(cle);
-				// Load group
-				GroupEntity group = groupDao.get(entity.getGroup());
 				int effectif = 0;
 				if(entity.getPlaceDisponible() != null) {
 					effectif = entity.getPlaceDisponible()
 							- entity.getPlaceRestante();
 				}
-				
-				creneau.addCreneau(entity.getBegin(), group.getTitle(), effectif, entity.getDayOfWeek(), entity);
+				// Load group
+				final String groupTitle;
+				if (entity.getGroup() == null || entity.getGroup() <= 0l) {
+					groupTitle = "";
+					LOG.severe("Erreur sur le groupe de créneaux " + entity.getId());
+				} else {
+					GroupEntity group = groupDao.get(entity.getGroup());
+					groupTitle = StringUtils
+							.defaultString(group.getTitle(), "");
+				}
+				creneau.addCreneau(entity.getBegin(), groupTitle, effectif, entity.getDayOfWeek(), entity);
 			}
 			//Tri sur les jours
 			List<CreneauListResultBean> results = new ArrayList<CreneauListResultBean>(resultsMap.values());
@@ -112,8 +134,8 @@ public class CreneauListAction extends HttpServlet {
 				@Override
 				public int compare(CreneauListResultBean pO1,
 						CreneauListResultBean pO2) {
-					Integer o1 = Arrays.binarySearch(jours, pO1.getJour());
-					Integer o2 = Arrays.binarySearch(jours, pO2.getJour());
+					Integer o1 = JOURS.get(pO1.getJour());
+					Integer o2 = JOURS.get(pO2.getJour());
 					return o1.compareTo(o2);
 				}
 			});

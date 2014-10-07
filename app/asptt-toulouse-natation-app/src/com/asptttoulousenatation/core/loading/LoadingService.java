@@ -17,6 +17,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
+
 import com.asptttoulousenatation.core.server.dao.ActuDao;
 import com.asptttoulousenatation.core.server.dao.document.DocumentDao;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
@@ -107,14 +110,17 @@ public class LoadingService {
 				}
 			} else {
 				for (MenuEntity lMenuEntity : lMenuEntities) {
+					//si divider créer une menu divider
 					LoadingMenuUi lMenuLoadingUi2 = new LoadingMenuUi(
-							lMenuEntity.getTitle());
+							lMenuEntity.getTitle(), BooleanUtils.toBoolean(lMenuEntity.getDivider()), BooleanUtils.toBoolean(lMenuEntity.getAlone()));
 					if (lMenuEntity.getParent() == null) {
 						// Retrieve sub menu
-						for (Long lSubMenuId : lMenuEntity.getSubMenu()) {
-							MenuEntity lSubMenu = menuDao.get(lSubMenuId);
-							lMenuLoadingUi2.addSubMenu(new LoadingMenuUi(
-									lSubMenu.getTitle()));
+						if(CollectionUtils.isNotEmpty(lMenuEntity.getSubMenu())) {
+							for (Long lSubMenuId : lMenuEntity.getSubMenu()) {
+								MenuEntity lSubMenu = menuDao.get(lSubMenuId);
+								lMenuLoadingUi2.addSubMenu(new LoadingMenuUi(
+										lSubMenu.getTitle(), BooleanUtils.toBoolean(lSubMenu.getDivider()), BooleanUtils.toBoolean(lSubMenu.getAlone())));
+							}
 						}
 					}
 					lMenuLoadingUi.addSubMenu(lMenuLoadingUi2);
@@ -132,11 +138,7 @@ public class LoadingService {
 			// Get documents
 			List<CriterionDao<? extends Object>> lDocumentCriteria = new ArrayList<CriterionDao<? extends Object>>(
 					1);
-			CriterionDao<Long> lDocumentCriterion = new CriterionDao<Long>();
-			lDocumentCriterion.setEntityField(DocumentEntityFields.MENU);
-			lDocumentCriterion.setOperator(Operator.EQUAL);
-			lDocumentCriteria.add(lDocumentCriterion);
-			lDocumentCriterion.setValue(entity.getId());
+			lDocumentCriteria.add(new CriterionDao<Long>(DocumentEntityFields.MENU, entity.getId(), Operator.EQUAL));
 			List<DocumentEntity> lDocumentEntities = documentDao
 					.find(lDocumentCriteria);
 			List<DocumentUi> lDocumentUis = documentTransformer

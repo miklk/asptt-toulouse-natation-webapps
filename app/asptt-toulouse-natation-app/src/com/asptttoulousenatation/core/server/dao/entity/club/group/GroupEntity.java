@@ -37,7 +37,15 @@ public class GroupEntity implements Entity {
 	@Persistent
 	private Integer tarif4;
 	@Persistent
+	private Integer tarifWeight;
+	@Persistent
 	private Boolean seanceunique;
+	
+	@Persistent
+	private Boolean nouveau;
+	
+	@Persistent
+	private String description;
 	
 	public GroupEntity() {
 		
@@ -117,6 +125,30 @@ public class GroupEntity implements Entity {
 
 	public void setSeanceunique(Boolean pSeanceunique) {
 		seanceunique = pSeanceunique;
+	}
+
+	public Integer getTarifWeight() {
+		return tarifWeight;
+	}
+
+	public void setTarifWeight(Integer pTarifWeight) {
+		tarifWeight = pTarifWeight;
+	}
+
+	public Boolean getNouveau() {
+		return nouveau;
+	}
+
+	public void setNouveau(Boolean pNouveau) {
+		nouveau = pNouveau;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String pDescription) {
+		description = pDescription;
 	}
 	
 }

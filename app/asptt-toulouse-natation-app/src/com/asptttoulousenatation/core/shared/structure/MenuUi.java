@@ -34,6 +34,10 @@ public class MenuUi implements IsSerializable {
 	
 	private int order;
 	
+	private boolean divider;
+	
+	private boolean alone;
+	
 	public MenuUi() {
 		id = 0l;
 		documentSet = new ArrayList<DocumentUi>(0);
@@ -146,6 +150,22 @@ public class MenuUi implements IsSerializable {
 
 	public void setOrder(int pOrder) {
 		order = pOrder;
+	}
+
+	public boolean isDivider() {
+		return divider;
+	}
+
+	public void setDivider(boolean pDivider) {
+		divider = pDivider;
+	}
+
+	public boolean isAlone() {
+		return alone;
+	}
+
+	public void setAlone(boolean pAlone) {
+		alone = pAlone;
 	}
 	
 }

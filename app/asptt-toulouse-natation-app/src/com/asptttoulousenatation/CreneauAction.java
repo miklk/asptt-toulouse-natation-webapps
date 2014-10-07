@@ -14,8 +14,8 @@ import org.apache.commons.lang3.text.StrBuilder;
 
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
-import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity;
-import com.asptttoulousenatation.core.server.dao.inscription.InscriptionDao;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
+import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
 
 public class CreneauAction extends HttpServlet {
 
@@ -27,7 +27,7 @@ public class CreneauAction extends HttpServlet {
 	private static final Logger LOG = Logger.getLogger(CreneauAction.class
 			.getName());
 
-	private InscriptionDao inscriptionDao = new InscriptionDao();
+	private Inscription2Dao inscriptionDao = new Inscription2Dao();
 	private SlotDao slotDao = new SlotDao();
 
 	@Override
@@ -41,8 +41,8 @@ public class CreneauAction extends HttpServlet {
 			throws ServletException, IOException {
 		int creneauMisAJour = 0;
 		StrBuilder builder = new StrBuilder();
-		List<InscriptionEntity> entities = inscriptionDao.getAll();
-		for (InscriptionEntity entity : entities) {
+		List<InscriptionEntity2> entities = inscriptionDao.getAll();
+		for (InscriptionEntity2 entity : entities) {
 			try {
 			if (StringUtils.isNotBlank(entity.getCreneaux())) {
 				String[] creneaux = entity.getCreneaux().split(";");

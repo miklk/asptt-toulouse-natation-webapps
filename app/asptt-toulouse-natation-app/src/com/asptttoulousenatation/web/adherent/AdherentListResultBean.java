@@ -1,6 +1,7 @@
 package com.asptttoulousenatation.web.adherent;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -21,9 +22,14 @@ public class AdherentListResultBean implements Serializable {
 	private String dossier;
 	private String email;
 	private String motdepasse;
+	private String inscriptionDt;
+	private String emailPrincipal;
+	private boolean certificat;
+	private boolean paiement;
+	private boolean complet;
 	
 	public AdherentListResultBean() {
-		
+		creneaux = Collections.emptySet();
 	}
 
 	public Long getId() {
@@ -97,5 +103,44 @@ public class AdherentListResultBean implements Serializable {
 	public void setMotdepasse(String pMotdepasse) {
 		motdepasse = pMotdepasse;
 	}
-	
+
+	public String getInscriptionDt() {
+		return inscriptionDt;
+	}
+
+	public void setInscriptionDt(String pInscriptionDt) {
+		inscriptionDt = pInscriptionDt;
+	}
+
+	public String getEmailPrincipal() {
+		return emailPrincipal;
+	}
+
+	public void setEmailPrincipal(String pEmailPrincipal) {
+		emailPrincipal = pEmailPrincipal;
+	}
+
+	public boolean isCertificat() {
+		return certificat;
+	}
+
+	public void setCertificat(boolean pCertificat) {
+		certificat = pCertificat;
+	}
+
+	public boolean isPaiement() {
+		return paiement;
+	}
+
+	public void setPaiement(boolean pPaiement) {
+		paiement = pPaiement;
+	}
+
+	public boolean isComplet() {
+		return complet;
+	}
+
+	public void setComplet(boolean pComplet) {
+		complet = pComplet;
+	}
 }

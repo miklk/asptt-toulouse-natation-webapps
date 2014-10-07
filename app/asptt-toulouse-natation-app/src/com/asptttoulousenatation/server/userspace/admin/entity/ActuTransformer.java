@@ -1,5 +1,6 @@
 package com.asptttoulousenatation.server.userspace.admin.entity;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
@@ -12,7 +13,7 @@ public class ActuTransformer extends
 	public ActuUi toUi(ActuEntity pEntity) {
 		ActuUi lUi = new ActuUi(pEntity.getId(), pEntity.getTitle(),
 				pEntity.getSummary(), pEntity.getCreationDate(),
-				pEntity.getContent().getValue(), StringUtils.defaultString(pEntity.getImageUrl(), "img/actu_defaut.jpg"));
+				pEntity.getContent().getValue(), StringUtils.defaultString(pEntity.getImageUrl(), "img/actu_defaut.jpg"), BooleanUtils.toBoolean(pEntity.getCompetition()));
 		if(StringUtils.isBlank(pEntity.getSummary())) {
 			lUi.setSummary("Détail...");
 		}
