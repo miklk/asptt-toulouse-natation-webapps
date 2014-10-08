@@ -337,8 +337,8 @@ aspttNatTlsApp.controller('InscriptionCtrl', ['$http', '$scope', 'InscriptionSer
 aspttNatTlsApp.controller('AuthenticationCtrl', ['$scope', '$location', 'AuthenticationService', '$sce', function($scope, $location, AuthenticationService, $sce) {
 	$scope.authenticate = function(provider) {
 	 	AuthenticationService.get({openIdService: provider}, function(data) {
-	 		console.log(data.providerUrl);
-			$location.path(data.providerUrl);
+	 		console.log(provider + " " + data.providerUrl);
+	 		window.location.href = data.providerUrl;
 		});
 	};
 }]);
