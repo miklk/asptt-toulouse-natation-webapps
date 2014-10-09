@@ -357,6 +357,9 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 			templateUrl: 'views/login.html',
 			controller: 'AuthenticationCtrl'
 		}).
+		when('/page/no-rights', {
+			templateUrl: 'views/no-rights.html'
+		}).
 		when('/page/user-index', {
 			templateUrl: 'views/user-index.html'
 		}).
