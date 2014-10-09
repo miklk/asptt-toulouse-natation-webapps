@@ -360,6 +360,9 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 		when('/page/no-rights', {
 			templateUrl: 'views/no-rights.html'
 		}).
+		when('/page/unknow-user', {
+			templateUrl: 'views/unknow-user.html'
+		}).
 		when('/page/user-index', {
 			templateUrl: 'views/user-index.html'
 		}).

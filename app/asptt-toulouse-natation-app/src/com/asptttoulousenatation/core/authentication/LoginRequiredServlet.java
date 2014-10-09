@@ -47,14 +47,13 @@ public class LoginRequiredServlet extends HttpServlet {
 			if(CollectionUtils.isNotEmpty(userEntities)) {
 				UserEntity authenticateUser = userEntities.get(0);
 				LOG.severe(authenticateUser.getEmailaddress());
-				if(authenticateUser.getProfiles().contains(ProfileEnum.ADMIN.name())) {
-				LOG.severe("Admin");
+				if(!authenticateUser.getProfiles().contains(ProfileEnum.ADMIN.name())) {
+					pResp.sendRedirect("/#/page/no-rights");
 				} else {
-					pResp.sendRedirect("/#/page/no-rights");	
+					LOG.severe("Admin");
 				}
 			} else {
-				LOG.severe("N'existe pas");
-				pResp.sendRedirect("/#/page/no-rights");
+				pResp.sendRedirect("/#/page/unknow-user");
 			}
 		} else {
 			pResp.sendRedirect("/#/page/login");
