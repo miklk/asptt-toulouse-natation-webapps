@@ -178,6 +178,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <url-pattern>/_ah/login_required</url-pattern>
     </servlet-mapping>
     
+    <servlet>
+        <servlet-name>AuthorizationServlet</servlet-name>
+        <servlet-class>com.asptttoulousenatation.core.authentication.AuthorizationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthorizationServlet</servlet-name>
+        <url-pattern>/authorization.do</url-pattern>
+    </servlet-mapping>
+    
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>admin</web-resource-name>

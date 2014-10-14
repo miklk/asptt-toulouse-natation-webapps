@@ -28,7 +28,7 @@ public class AuthenticationService {
 		UserService userService = UserServiceFactory.getUserService();
 		String authenticationUrl = "";
 		switch(pOpenIdService) {
-		case "google": authenticationUrl = userService.createLoginURL("/#/page/user-index", null, "https://www.google.com/accounts/o8/id", new HashSet<String>());
+		case "google": authenticationUrl = userService.createLoginURL("/authorization.do", null, "https://www.google.com/accounts/o8/id", new HashSet<String>());
 		break;
 		default:
 			userService.createLogoutURL("/#/page/logout");
