@@ -11,6 +11,8 @@ public class AdherentListEmailBean implements Serializable {
 	private String sujet;
 	private String corps;
 	private boolean all;
+	private boolean allEnf;
+	private boolean allCompetition;
 	
 	public AdherentListEmailBean() {
 		all = false;
@@ -39,4 +41,21 @@ public class AdherentListEmailBean implements Serializable {
 	public void setAll(boolean pAll) {
 		all = pAll;
 	}
+
+	public boolean isAllEnf() {
+		return allEnf;
+	}
+
+	public void setAllEnf(boolean pAllEnf) {
+		allEnf = pAllEnf;
+	}
+
+	public boolean isAllCompetition() {
+		return allCompetition;
+	}
+
+	public void setAllCompetition(boolean pAllCompetition) {
+		allCompetition = pAllCompetition;
+	}
+	
 }

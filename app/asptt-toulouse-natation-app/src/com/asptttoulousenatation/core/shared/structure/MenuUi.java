@@ -38,13 +38,15 @@ public class MenuUi implements IsSerializable {
 	
 	private boolean alone;
 	
+	private String identifier;
+	
 	public MenuUi() {
 		id = 0l;
 		documentSet = new ArrayList<DocumentUi>(0);
 	}
 
 	public MenuUi(String pMenuKey, String pTitle, List<MenuEditionUI> pSubMenu, Long pParentId,
-			boolean pRoot, boolean pShortcut, boolean pDisplay) {
+			boolean pRoot, boolean pShortcut, boolean pDisplay, String pIdentifier) {
 		this();
 		menuKey = pMenuKey;
 		title = pTitle;
@@ -53,6 +55,7 @@ public class MenuUi implements IsSerializable {
 		root = pRoot;
 		shortcut = pShortcut;
 		display = pDisplay;
+		identifier = pIdentifier;
 	}
 	
 
@@ -166,6 +169,14 @@ public class MenuUi implements IsSerializable {
 
 	public void setAlone(boolean pAlone) {
 		alone = pAlone;
+	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String pIdentifier) {
+		identifier = pIdentifier;
 	}
 	
 }

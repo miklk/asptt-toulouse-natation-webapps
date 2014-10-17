@@ -8,10 +8,12 @@ adherentsApp.controller('AdherentListCtrl', ['$scope', 'Adherent', function($sco
 }]);
 
 
-var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','loadingAppServices', 'pageServices', 'loadingAlbumServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'inscriptionNouveauServices', 'removeAdherentServices', 'authenticationServices']);
+var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','loadingAppServices', 'pageServices', 'loadingAlbumServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'inscriptionNouveauServices', 'removeAdherentServices', 'authenticationServices', 'actualiteServices']);
 aspttNatTlsApp.controller('LoadingAppCtrl', ['$scope', 'LoadingApp', '$sce', function($scope, LoadingApp, $sce) {
 	LoadingApp.get({}, function(data) {
 		$scope.loadingApp = data;
+		setTimeout("loadCarous()", 100);
+    	setTimeout("loadAffix()", 100);
 		$scope.showActualite = function(actualite) {
 	    	$("#actualites").show();
 	    	$scope.actualiteTitle = actualite.title;
@@ -60,6 +62,29 @@ aspttNatTlsApp.controller('PageCtrl', ['$scope', 'PageService', '$routeParams', 
 		};
 	});
 }]);
+
+aspttNatTlsApp.controller('ActualiteCtrl', ['$scope', 'ActualiteService', 'PageService', '$routeParams', '$sce', function($scope, ActualiteService, PageService,  $routeParams, $sce) {
+	PageService.get({pageId: 'competitions-actualites'}, function(data) {
+		var pageUi = angular.fromJson(data);
+		$scope.pageHtml = $sce.trustAsHtml(pageUi.content);
+		var documentSize = pageUi.documents.length;
+		$scope.hasDocument = documentSize > 0;
+		$scope.nbDocuments = documentSize;
+		$scope.documents = pageUi.documents;
+		$scope.displayPdf = function() {
+			$scope.pdfUrl = $sce.trustAsResourceUrl("http://docs.google.com/viewer?url=http%3A%2F%2F1-dot-asptt-toulouse-natation.appspot.com%2FdownloadDocument%3FdocumentId%3D5241851221114880%26fileId%3D4961648628465664");
+			$("#pdf-viewer").show();
+			$('html, body').animate({  
+	            scrollTop:$("#pdf-viewer").offset().top  
+	        }, 'slow');	
+		};
+	});
+	$scope.actualites = ActualiteService.get({competition: 'true'});
+	$scope.actualiteContent = function(value) {
+		return $sce.trustAsHtml(value);
+	};
+}]);
+
 
 aspttNatTlsApp.controller('LoadingAlbumCtrl', ['$scope', 'LoadingAlbumService', function($scope, LoadingAlbumService) {
 	$scope.albums = LoadingAlbumService.get();
@@ -352,6 +377,10 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 		when('/page/Inscription', {
 			templateUrl: 'views/inscription.html',
 			controller: 'PageCtrl'
+		}).
+		when('/page/competitions-actualites', {
+			templateUrl: 'views/competitions-actualites.html',
+			controller: 'ActualiteCtrl'
 		}).
 		when('/page/login', {
 			templateUrl: 'views/login.html',

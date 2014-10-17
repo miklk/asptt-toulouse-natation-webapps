@@ -10,12 +10,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.server.dao.ActuDao;
 import com.asptttoulousenatation.core.server.dao.document.DocumentDao;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
 import com.asptttoulousenatation.core.server.dao.entity.document.DocumentEntity;
-import com.asptttoulousenatation.core.server.dao.entity.field.AreaEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.field.ActuEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DocumentEntityFields;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
@@ -42,9 +43,11 @@ public class ActualiteService {
 		
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
-		criteria.add(new CriterionDao<Boolean>(
-				AreaEntityFields.COMPETITION, BooleanUtils.toBoolean(pCompetition),
-				Operator.EQUAL));
+		if (StringUtils.isNotBlank(pCompetition)) {
+			criteria.add(new CriterionDao<Boolean>(
+					ActuEntityFields.COMPETITION, BooleanUtils
+							.toBoolean(pCompetition), Operator.EQUAL));
+		}
 		List<ActuEntity> lEntities = dao.find(criteria, 0, maxNumber);
 		ActuTransformer actuTransformer = new ActuTransformer();
 		DocumentTransformer documentTransformer = new DocumentTransformer();

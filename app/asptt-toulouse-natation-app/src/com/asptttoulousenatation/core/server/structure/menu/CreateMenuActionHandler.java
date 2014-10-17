@@ -54,6 +54,7 @@ public class CreateMenuActionHandler implements
 			MenuEntity lMenu = new MenuEntity(pAction.getMenuKey(), pAction.getTitle(), pAction.getArea(), false, true, pAction.getOrder(), null, pAction.getParent());
 			lMenu.setDivider(pAction.isDivider());
 			lMenu.setAlone(pAction.isAlone());
+			lMenu.setIdentifier(pAction.getIdentifier());
 			MenuEntity lMenuEntity = dao.save(lMenu);
 			ContentEntity lContentEntity = new ContentEntity(pAction.getSummary(),
 					new Blob(pAction.getContent().getBytes()),

@@ -105,3 +105,14 @@ authenticationServices.factory('AuthenticationService', ['$resource',
           method:'GET'
       }});
 }]);
+
+var actualiteServices = angular.module('actualiteServices', ['ngResource']);
+
+actualiteServices.factory('ActualiteService', ['$resource', 
+                                       function($resource) {
+	return $resource('/resources/actualites/list/1',{},{
+        query:{
+            method:'GET',
+            isArray:false
+        }});
+}]);

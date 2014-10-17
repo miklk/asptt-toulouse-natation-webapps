@@ -23,6 +23,7 @@ public class UpdateMenuActionHandler implements
 		lMenu.setDivider(pAction.isDivider());
 		lMenu.setAlone(pAction.isAlone());
 		lMenu.setOrder(pAction.getOrder());
+		lMenu.setIdentifier(pAction.getIdentifier());
 		dao.save(lMenu);
 		//Update content
 		pContext.execute(new UpdateContentAction(pAction.getContentId(), pAction.getSummary(), pAction.getContent()));

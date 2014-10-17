@@ -13,13 +13,14 @@ public class CreateMenuAction implements Action<CreateMenuResult> {
 	private Long parent;
 	private boolean divider;
 	private boolean alone;
+	private String identifier;
 	
 	public CreateMenuAction() {
 		
 	}
 
 	public CreateMenuAction(String pMenuKey, String pTitle, String pSummary, String pContent,
-			int pOrder, Long pArea, Long pParent, boolean pDivider, boolean pAlone) {
+			int pOrder, Long pArea, Long pParent, boolean pDivider, boolean pAlone, String pIdentifier) {
 		super();
 		menuKey = pMenuKey;
 		title = pTitle;
@@ -30,6 +31,7 @@ public class CreateMenuAction implements Action<CreateMenuResult> {
 		parent = pParent;
 		divider = pDivider;
 		alone = pAlone;
+		identifier = pIdentifier;
 	}
 
 	public String getMenuKey() {
@@ -104,6 +106,14 @@ public class CreateMenuAction implements Action<CreateMenuResult> {
 
 	public void setAlone(boolean pAlone) {
 		alone = pAlone;
+	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String pIdentifier) {
+		identifier = pIdentifier;
 	}
 	
 }

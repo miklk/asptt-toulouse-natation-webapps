@@ -24,6 +24,7 @@ public class LoadingMenuUi implements Serializable {
 	
 	private boolean divider;
 	private boolean alone;
+	private String identifier;
 	
 	public LoadingMenuUi() {
 		title = StringUtils.EMPTY;
@@ -31,17 +32,23 @@ public class LoadingMenuUi implements Serializable {
 		hasSubMenu = false;
 		divider = false;
 		alone = false;
+		identifier = StringUtils.EMPTY;
 	}
 	
-	public LoadingMenuUi(String pTitle, boolean pDivider, boolean pAlone) {
+	public LoadingMenuUi(String pTitle, boolean pDivider, boolean pAlone, String pIdentifier) {
 		this();
 		title = pTitle;
 		divider = pDivider;
 		alone = pAlone;
+		if(StringUtils.isBlank(pIdentifier)) {
+			identifier = pTitle;
+		} else {
+			identifier = pIdentifier;
+		}
 	}
 	
 	public LoadingMenuUi(String pTitle) {
-		this(pTitle, false, false);
+		this(pTitle, false, false, pTitle);
 	}
 
 	public String getTitle() {
@@ -88,5 +95,13 @@ public class LoadingMenuUi implements Serializable {
 
 	public void setAlone(boolean pAlone) {
 		alone = pAlone;
+	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String pIdentifier) {
+		identifier = pIdentifier;
 	}
 }

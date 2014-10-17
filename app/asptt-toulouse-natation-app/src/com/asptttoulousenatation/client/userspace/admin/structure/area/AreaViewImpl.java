@@ -60,6 +60,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 	private CKEditor contentInput;
 	private Button updateButton;
 	private Button deleteButton;
+	private TextBox identifierInput;
 
 	// Document edition
 	private HorizontalPanel documentPanel;
@@ -89,6 +90,7 @@ public class AreaViewImpl extends Composite implements AreaView {
 	private Button menuCreationButton;
 	private Button menuCreationCloseButton;
 	private ListBox menuCreationMenuKey;
+	private TextBox menuCreationIdentifierInput;
 	
 	private PopupPanel menuCreationPopup;
 	
@@ -230,6 +232,14 @@ public class AreaViewImpl extends Composite implements AreaView {
 		summaryInput.setValue(lContentUI.getSummary());
 		lPanel.setWidget(lRowIndex, 0, createLabel("Résumé"));
 		lPanel.setWidget(lRowIndex, 1, summaryInput);
+		lRowIndex++;
+		
+		// Identifier
+		identifierInput = new TextBox();
+		identifierInput.setWidth("300px");
+		identifierInput.setValue(pMenuUi.getIdentifier());
+		lPanel.setWidget(lRowIndex, 0, createLabel("Identifier"));
+		lPanel.setWidget(lRowIndex, 1, identifierInput);
 		lRowIndex++;
 
 		// Content
@@ -421,6 +431,13 @@ public class AreaViewImpl extends Composite implements AreaView {
 			lPanel.setWidget(lRowIndex, 0, createLabel("Résumé"));
 			lPanel.setWidget(lRowIndex, 1, menuCreationSummaryInput);
 			lRowIndex++;
+			
+			// Identifier
+			menuCreationIdentifierInput = new TextBox();
+			menuCreationIdentifierInput.setWidth("300px");
+			lPanel.setWidget(lRowIndex, 0, createLabel("Identifier"));
+			lPanel.setWidget(lRowIndex, 1, menuCreationIdentifierInput);
+			lRowIndex++;
 
 			// Content
 			menuCreationContentInput = new CKEditor(new EditorToolbar());
@@ -593,5 +610,15 @@ public class AreaViewImpl extends Composite implements AreaView {
 	@Override
 	public HasValue<String> getMenuOrder() {
 		return orderInput;
+	}
+
+	@Override
+	public HasValue<String> getIdentifier() {
+		return identifierInput;
+	}
+
+	@Override
+	public HasValue<String> getMenuCreationIdentifier() {
+		return menuCreationIdentifierInput;
 	}
 }

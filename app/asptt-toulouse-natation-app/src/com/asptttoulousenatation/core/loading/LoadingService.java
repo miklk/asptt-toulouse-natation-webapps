@@ -103,6 +103,7 @@ public class LoadingService {
 					.find(lCriteria, lMenuOrder);
 			if (lMenuEntities != null && lMenuEntities.size() == 1) {
 				MenuEntity firstMenuEntity = lMenuEntities.iterator().next();
+				lMenuLoadingUi.setIdentifier(firstMenuEntity.getIdentifier());
 				if (firstMenuEntity.getParent() == null
 						&& firstMenuEntity.getAlone() != null
 						&& firstMenuEntity.getAlone()) {
@@ -112,14 +113,23 @@ public class LoadingService {
 				for (MenuEntity lMenuEntity : lMenuEntities) {
 					//si divider créer une menu divider
 					LoadingMenuUi lMenuLoadingUi2 = new LoadingMenuUi(
-							lMenuEntity.getTitle(), BooleanUtils.toBoolean(lMenuEntity.getDivider()), BooleanUtils.toBoolean(lMenuEntity.getAlone()));
+							lMenuEntity.getTitle(),
+							BooleanUtils.toBoolean(lMenuEntity.getDivider()),
+							BooleanUtils.toBoolean(lMenuEntity.getAlone()),
+							lMenuEntity.getIdentifier());
 					if (lMenuEntity.getParent() == null) {
 						// Retrieve sub menu
-						if(CollectionUtils.isNotEmpty(lMenuEntity.getSubMenu())) {
+						if (CollectionUtils
+								.isNotEmpty(lMenuEntity.getSubMenu())) {
 							for (Long lSubMenuId : lMenuEntity.getSubMenu()) {
 								MenuEntity lSubMenu = menuDao.get(lSubMenuId);
 								lMenuLoadingUi2.addSubMenu(new LoadingMenuUi(
-										lSubMenu.getTitle(), BooleanUtils.toBoolean(lSubMenu.getDivider()), BooleanUtils.toBoolean(lSubMenu.getAlone())));
+										lSubMenu.getTitle(), BooleanUtils
+												.toBoolean(lSubMenu
+														.getDivider()),
+										BooleanUtils.toBoolean(lSubMenu
+												.getAlone()), lSubMenu
+												.getIdentifier()));
 							}
 						}
 					}

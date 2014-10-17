@@ -40,6 +40,7 @@
 	
     <link rel="stylesheet/less" href="bootstrap/less/bootstrap.less">
 	<script src="bootstrap/assets/js/less.js"></script> -->
+	
   </head>
 <!-- NAVBAR
 ================================================== -->
@@ -50,15 +51,15 @@
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
               	<li style="margin-right: 40px">
-                	<a href="http://www.asptt-toulouse-natation.com">
-                		<img src="img/logoclub.png" style="position: absolute; left: -174px;top:-26px;max-height: 80px" />
+                	<a href="/" style="outline: none; -moz-outline-style: none">
+                		<img src="img/logoclub.png" style="position: absolute; left: -174px;top:-26px;max-height: 80px;" />
                 	</a>
                 </li>
                 <li class="dropdown" ng-repeat="menu in loadingApp.menus">
-                		<a href="" class="dropdown-toggle" data-toggle="dropdown" ng-if="menu.hasSubMenu">{{menu.title}}<b class="caret"></b></a>
-                		<a href="#/page/{{menu.title}}" class="dropdown" ng-if="!menu.hasSubMenu" style="border:none">{{menu.title}}</a>
+                		<a href="" class="dropdown-toggle" data-toggle="dropdown" ng-if="menu.hasSubMenu" style="outline: none; -moz-outline-style: none">{{menu.title}}<b class="caret"></b></a>
+                		<a ng-href="#/page/{{menu.identifier}}" class="dropdown" ng-if="!menu.hasSubMenu" style="outline: none; -moz-outline-style: none">{{menu.title}}</a>
                   <ul class="dropdown-menu">
-                    <li ng-repeat="menuSubMenu in menu.subMenu" ng-class="{'divider': menuSubMenu.divider, 'dropdown-header': menuSubMenu.alone}"><a href="#/page/{{menuSubMenu.title}}" ng-hide="menuSubMenu.divider || menuSubMenu.alone">{{menuSubMenu.title}}</a><span ng-show="menuSubMenu.alone">{{menuSubMenu.title}}</span></li>
+                    <li ng-repeat="menuSubMenu in menu.subMenu" ng-class="{'divider': menuSubMenu.divider, 'dropdown-header': menuSubMenu.alone}"><a ng-href="#/page/{{menuSubMenu.identifier}}" ng-hide="menuSubMenu.divider || menuSubMenu.alone">{{menuSubMenu.title}}</a><span ng-show="menuSubMenu.alone">{{menuSubMenu.title}}</span></li>
                   </ul>
                 </li>
               </ul>
@@ -76,6 +77,7 @@
 		<!-- FOOTER -->
       <footer>
         <img id="scroll-top" src="img/top.png" onclick="scrollToTop()" />
+        <small><a href="/#/mentions">Mentions légales</a></small>
       </footer>
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -88,7 +90,7 @@
     <script>
     $( document ).ready(function() {
     	setTimeout("loadCarous()", 2000);
-    	setTimeout("loadAffix()", 2000);	
+    	setTimeout("loadAffix()", 1000);	
     	
     });
     
@@ -158,10 +160,14 @@
     	});
     });
         
-        function scrollToTop() {
+        function asptt_scrollTo(anchor) {
         	$('html, body').animate({  
-                scrollTop:$("#body_top").offset().top  
+                scrollTop:$("#" + anchor).offset().top  
             }, 'slow');
+        }
+        
+        function scrollToTop() {
+        	asptt_scrollTo("body_top");
         }
     </script>
     

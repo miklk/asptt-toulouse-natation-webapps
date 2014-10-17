@@ -53,6 +53,9 @@ public class MenuEntity implements Entity {
 	@Persistent
 	private Boolean alone;
 	
+	@Persistent
+	private String identifier;
+	
 	public MenuEntity() {
 		subMenu = new HashSet<Long>();
 	}
@@ -173,5 +176,13 @@ public class MenuEntity implements Entity {
 	public void setAlone(Boolean pAlone) {
 		alone = pAlone;
 	}
-	
+
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String pIdentifier) {
+		identifier = pIdentifier;
+	}
 }

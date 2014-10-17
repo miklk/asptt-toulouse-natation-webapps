@@ -43,7 +43,7 @@ public class PageResource {
 		List<CriterionDao<? extends Object>> lMenuCriteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		CriterionDao<String> lMenuCriterion = new CriterionDao<String>(
-				MenuEntityFields.TITLE, menuTitle, Operator.EQUAL);
+				MenuEntityFields.IDENTIFIER, menuTitle, Operator.EQUAL);
 		lMenuCriteria.add(lMenuCriterion);
 		List<MenuEntity> menus = menuDao.find(lMenuCriteria);
 		if (!menus.isEmpty()) {

@@ -101,5 +101,9 @@
         <property name="saisie" direction="asc"/>
         <property name="inscriptiondt" direction="asc"/>
     </datastore-index>
-
+	
+	<datastore-index kind="ActuEntity" ancestor="false" source="manual">
+        <property name="competition" direction="asc"/>
+        <property name="creationDate" direction="desc"/>
+    </datastore-index>
 </datastore-indexes>

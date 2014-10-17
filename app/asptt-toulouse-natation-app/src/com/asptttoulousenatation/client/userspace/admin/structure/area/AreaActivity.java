@@ -57,7 +57,7 @@ public class AreaActivity extends MyAbstractActivity<AreaPlace> {
 		
 		lAreaView.getUpdateButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
-				dispatchAsync.execute(new UpdateMenuAction(lAreaView.getMenuId(), lAreaView.getMenuCreationMenuKey(), lAreaView.getMenuTitle().getValue(), lAreaView.getContentId(), lAreaView.getSummary().getValue(), lAreaView.getContent().getBytes(), lAreaView.getMenuDivider().getValue(), lAreaView.getMenuAlone().getValue(), Integer.valueOf(lAreaView.getMenuOrder().getValue())), new AsyncCallback<UpdateMenuResult>() {
+				dispatchAsync.execute(new UpdateMenuAction(lAreaView.getMenuId(), lAreaView.getMenuCreationMenuKey(), lAreaView.getMenuTitle().getValue(), lAreaView.getContentId(), lAreaView.getSummary().getValue(), lAreaView.getContent().getBytes(), lAreaView.getMenuDivider().getValue(), lAreaView.getMenuAlone().getValue(), Integer.valueOf(lAreaView.getMenuOrder().getValue()), lAreaView.getIdentifier().getValue()), new AsyncCallback<UpdateMenuResult>() {
 
 					public void onFailure(Throwable pCaught) {
 						Window.alert("Erreur " + pCaught.getMessage());
@@ -115,7 +115,7 @@ public class AreaActivity extends MyAbstractActivity<AreaPlace> {
 		});
 		lAreaView.getMenuCreationButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {
-				dispatchAsync.execute(new CreateMenuAction(lAreaView.getMenuCreationMenuKey(), lAreaView.getMenuCreationTitle().getValue(), lAreaView.getMenuCreationSummary().getValue(), lAreaView.getMenuCreationContent(), Integer.valueOf(lAreaView.getMenuCreationOrder().getValue()), area.getId(), lAreaView.getParentMenuId(), lAreaView.getMenuCreationDivider().getValue(), lAreaView.getMenuCreationAlone().getValue()), new AsyncCallback<CreateMenuResult>() {
+				dispatchAsync.execute(new CreateMenuAction(lAreaView.getMenuCreationMenuKey(), lAreaView.getMenuCreationTitle().getValue(), lAreaView.getMenuCreationSummary().getValue(), lAreaView.getMenuCreationContent(), Integer.valueOf(lAreaView.getMenuCreationOrder().getValue()), area.getId(), lAreaView.getParentMenuId(), lAreaView.getMenuCreationDivider().getValue(), lAreaView.getMenuCreationAlone().getValue(), lAreaView.getMenuCreationIdentifier().getValue()), new AsyncCallback<CreateMenuResult>() {
 					public void onFailure(Throwable pCaught) {
 						Window.alert("Erreur: " + pCaught.getMessage());
 					}

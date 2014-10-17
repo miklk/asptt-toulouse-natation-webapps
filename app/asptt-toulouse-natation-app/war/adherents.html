@@ -433,7 +433,10 @@
   <div id="sendEmailPopup" title="Envoyer un e-mail">
   	<div>
   		<form id="formSendEmail" method="post" action=""  enctype="multipart/form-data">
-  			<p><label for="all">A destination de tous les adhérents</label><input type="checkbox" id="all" name="sendEmail.all" /></p>
+  			<p><label for="all">A destination de tous les adhérents</label><input type="checkbox" id="all" name="sendEmail.all" />
+  			<label for="allEnf">A destination de tous l'ENF</label><input type="checkbox" id="allEnf" name="sendEmail.allEnf" />
+  			<label for="allCompetition">A destination de tous les compétiteurs</label><input type="checkbox" id="allCompetition" name="sendEmail.allCompetition" />
+  			</p>
   			<p><label for="sujet">Sujet</label><input type="text" id="sujet" name="sendEmail.sujet" size="50" ></p>
 	  		<p><label for="corps">Corps</label><textarea id="corps" name="sendEmail.corps">Corps du message</textarea>
 	  		</p>

@@ -5,7 +5,7 @@
         <div id="carous_container" class="callbacks_container" >
 			<ul class="rslides" id="carous">
 				<li ng-repeat="actualite in loadingApp.actualites">
-					<img src="{{actualite.imageUrl}}" alt="{{actualite.title}}" style="max-height: 500px; width: auto"/>
+					<img ng-src="{{actualite.imageUrl}}" alt="{{actualite.title}}" style="max-height: 500px; width: auto"/>
 					<p class="caption" ng-click="showActualite(actualite)">
 		              <span style="font-size: 2.0em;padding: 0px 10px; cursor: pointer;">{{actualite.title}}</span>
 		              <br />
@@ -71,7 +71,7 @@
 	<div id="albums" class="row" style="margin-top: 3%" >
 		<div class="col-md-2" ng-repeat="album in albums.albums">
 			<div class="thumbnail diapo">
-				<img src="{{album.couverture}}" class="img-responsive" alt="{{album.intitule}}" ng-click="getPhotos(album)" style="max-height: 90px">
+				<img ng-src="{{album.couverture}}" class="img-responsive" alt="{{album.intitule}}" ng-click="getPhotos(album)" style="max-height: 90px">
 				<div class="caption">
 					<h6>{{album.intitule}}</h6>
 				</div>
@@ -105,6 +105,3 @@
 		</a>
 	</div>
 </div>
-<script>
-   loadCarous();
- </script>

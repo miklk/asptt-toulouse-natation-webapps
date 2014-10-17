@@ -13,13 +13,14 @@ public class UpdateMenuAction implements Action<UpdateMenuResult> {
 	private boolean divider;
 	private boolean alone;
 	private int order;
+	private String identifier;
 	
 	public UpdateMenuAction() {
 		
 	}
 
 	public UpdateMenuAction(Long pMenu, String pMenuKey, String pTitle, Long pContentId,
-			String pSummary, byte[] pContent, boolean pDivider, boolean pAlone, int pOrder) {
+			String pSummary, byte[] pContent, boolean pDivider, boolean pAlone, int pOrder, String pIdentifier) {
 		super();
 		menu = pMenu;
 		menuKey = pMenuKey;
@@ -30,6 +31,7 @@ public class UpdateMenuAction implements Action<UpdateMenuResult> {
 		divider = pDivider;
 		alone = pAlone;
 		order = pOrder;
+		identifier = pIdentifier;
 	}
 
 	public Long getMenu() {
@@ -103,5 +105,12 @@ public class UpdateMenuAction implements Action<UpdateMenuResult> {
 	public void setOrder(int pOrder) {
 		order = pOrder;
 	}
-	
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String pIdentifier) {
+		identifier = pIdentifier;
+	}
 }
