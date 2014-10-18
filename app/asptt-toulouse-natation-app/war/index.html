@@ -10,8 +10,8 @@
     <title>Club ASPTT Grand Toulouse Natation</title>
     
     <!-- Bootstrap core CSS -->
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     
     <link href="index.css" rel="stylesheet">
     
@@ -46,18 +46,18 @@
 ================================================== -->
   <body style="background-color: #e9f8fc;" data-target="#scrollspy" data-spy="scroll" id="body_top" >
   
-  <nav class="navbar navbar-default" role="navigation" ng-controller="LoadingAppCtrl">
+  <nav class="navbar navbar-default" role="navigation" ng-controller="LoadingAppCtrl" style="margin-top: 25px; min-height: 26px">
           <div class="container">
             <div class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
+              <ul class="nav navbar-nav" style="margin: 0 0 0 8%">
               	<li style="margin-right: 40px">
-                	<a href="/" style="outline: none; -moz-outline-style: none">
+                	<a href="/" style="outline: none; -moz-outline-style: none; padding: 3px 15px 3px 15px; font-size: 1.2em">
                 		<img src="img/logoclub.png" style="position: absolute; left: -174px;top:-26px;max-height: 80px;" />
                 	</a>
                 </li>
                 <li class="dropdown" ng-repeat="menu in loadingApp.menus">
-                		<a href="" class="dropdown-toggle" data-toggle="dropdown" ng-if="menu.hasSubMenu" style="outline: none; -moz-outline-style: none">{{menu.title}}<b class="caret"></b></a>
-                		<a ng-href="#/page/{{menu.identifier}}" class="dropdown" ng-if="!menu.hasSubMenu" style="outline: none; -moz-outline-style: none">{{menu.title}}</a>
+                		<a href="" class="dropdown-toggle" data-toggle="dropdown" ng-if="menu.hasSubMenu" style="outline: none; -moz-outline-style: none; padding: 3px 15px 3px 15px; font-size: 1.2em">{{menu.title}}<b class="caret"></b></a>
+                		<a ng-href="#/page/{{menu.identifier}}" class="dropdown" ng-if="!menu.hasSubMenu" style="outline: none; -moz-outline-style: none; padding: 3px 15px 3px 15px; font-size: 1.2em">{{menu.title}}</a>
                   <ul class="dropdown-menu">
                     <li ng-repeat="menuSubMenu in menu.subMenu" ng-class="{'divider': menuSubMenu.divider, 'dropdown-header': menuSubMenu.alone}"><a ng-href="#/page/{{menuSubMenu.identifier}}" ng-hide="menuSubMenu.divider || menuSubMenu.alone">{{menuSubMenu.title}}</a><span ng-show="menuSubMenu.alone">{{menuSubMenu.title}}</span></li>
                   </ul>
@@ -83,7 +83,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="bootstrap/assets/js/jquery.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="bootstrap/assets/js/holder.js"></script>
     <script type="text/javascript" src="js/responsivesslides/responsiveslides.min.js"></script>
     <script type="text/javascript" src="js/jquery.parallax-1.1.3.js"></script>
