@@ -144,3 +144,22 @@ background: linear-gradient(to right, #1e5799 0%,#7db9e8 100%);
   /* Set the fixed height of the footer here */
   height: 30px;
 }
+
+.logo {
+	display: none;
+}
+.logo-text {
+	display: block;
+}
+@media (min-width: 768px) {
+	.logo {
+		position: absolute;
+		left: -3px;
+		top:-26px;
+		max-height: 80px;
+		display: block;
+	}
+	.logo-text {
+		display: none;
+	}
+}
