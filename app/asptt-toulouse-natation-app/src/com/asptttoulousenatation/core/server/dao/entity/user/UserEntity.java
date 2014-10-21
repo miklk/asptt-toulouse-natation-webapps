@@ -41,6 +41,8 @@ public class UserEntity implements Entity {
 	@Persistent
 	private Long userData;
 	
+	private UserAuthenticationTypeEnum authentication;
+	
 	public UserEntity() {
 		
 	}
@@ -120,4 +122,13 @@ public class UserEntity implements Entity {
 		}
 		slots.add(pSlot);
 	}
+
+	public UserAuthenticationTypeEnum getAuthentication() {
+		return authentication;
+	}
+
+	public void setAuthentication(UserAuthenticationTypeEnum pAuthentication) {
+		authentication = pAuthentication;
+	}
+	
 }

@@ -1,0 +1,61 @@
+<div class="container" ng-controller="UserController">
+	<form role="form" class="form-horizontal" name="userForm" ng-submit="creer(userForm.$valid)" novalidate>
+		<div class="form-group">
+			<div class="col-md-10 text-center" ng-class="{'bg-success' : userCreateResult.success, 'bg-danger': !userCreateResult.success}" ng-show="userForm.$submitted">
+				<span ng-show="userCreateResult.success"><strong>L'utilisateur {{email}} a été créé avec succès</strong></span>
+				<span ng-show="userCreateResult.exists"><strong>L'utilisateur {{email}} existe déjà</strong></span>
+				<span ng-show="!userCreateResult.exists && !userCreateResult.success"><strong>L'utilisateur {{email}} n'a pas pu être créer (erreur inconnue)</strong></span>
+			</div>
+		</div>
+		<div class="form-group" ng-class="{'has-error has-feedback' : userForm.email.$invalid && !userForm.email.$pristine , 'has-success has-feedback':  !userForm.email.$invalid && !userForm.email.$pristine}">
+			<label for="email" class="col-md-2 control-label">E-mail</label>
+			<div class="col-md-8">
+				<input type="email" class="form-control" id="email" 
+					placeholder="E-mail" ng-model="userCreateAction.email" 
+					name="email" required />
+				<span ng-class="{ 'glyphicon glyphicon-remove form-control-feedback' : userForm.email.$invalid && !userForm.email.$pristine , 'glyphicon glyphicon-ok form-control-feedback': !userForm.email.$invalid && !userForm.email.$pristine }"></span>
+			</div>
+			<div class="col-md-2" ng-show="userForm.email.$dirty && userForm.email.$invalid">
+		      <span ng-show="userForm.email.$error.required">E-mail obligatoire.</span>
+		      <span ng-show="userForm.email.$error.email">L'e-mail n'est pas valide.</span>
+		    </div>
+		</div>
+		<div class="form-group" ng-class="{ 'has-error' : userForm.nom.$invalid && !userForm.nom.$pristine }">
+			<label for="nom" class="col-md-2 control-label">Nom</label>
+			<div class="col-md-8">
+				<input type="text" class="form-control" id="nom" placeholder="Nom" ng-model="userCreateAction.nom" name="nom" required />
+			</div>
+			<div class="col-md-2" ng-show="userForm.nom.$dirty && userForm.nom.$invalid">
+		      <span ng-show="userForm.nom.$error.required">Nom obligatoire.</span>
+		    </div>
+		</div>
+		<div class="form-group" ng-class="{ 'has-error' : userForm.prenom.$invalid && !userForm.prenom.$pristine }">
+			<label for="prenom" class="col-md-2 control-label">Prénom</label>
+			<div class="col-md-8">
+				<input type="text" class="form-control" id="prenom" placeholder="Prénom" ng-model="userCreateAction.prenom" name="prenom" required />
+			</div>
+			<div class="col-md-2" ng-show="userForm.prenom.$dirty && userForm.prenom.$invalid">
+		      <span ng-show="userForm.prenom.$error.required">Prénom obligatoire.</span>
+		    </div>
+		</div>
+		<div class="form-group" ng-class="{ 'has-error' : userForm.profiles.$invalid && !userForm.profiles.$pristine }">
+			<label for="profile" class="col-md-2 control-label">Droits d'accès</label>
+			<div class="col-md-8">
+				<select multiple class="form-control" ng-model="userCreateAction.profiles" name="profiles" required>
+				  <option>ADMIN</option>
+				  <option>ACTUALITES</option>
+				  <option>NAGEUR</option>
+				  <option>OFFICIEL</option>
+				</select>
+			</div>
+			<div class="col-md-2" ng-show="userForm.profiles.$dirty && userForm.profiles.$invalid">
+		      <span ng-show="userForm.profiles.$error.required">Droits d'accès obligatoires.</span>
+		    </div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-offset-2 col-md-10">
+				<button type="submit" class="btn btn-default btn-lg btn-block" ng-disabled="userForm.$invalid">Créer</button>
+			</div>
+		</div>
+	</form>
+</div>

@@ -1,9 +1,8 @@
 /**
  * 
  */
-var adherentsApp = angular.module('adherentsApp', ['ngRoute', 'adherentsServices', 'adherentServices', 'groupeServices', 'slotServices']);
-
-adherentsApp.controller('AdherentListCtrl', ['$scope', '$location', 'AdherentsService', function($scope, $location, AdherentsService) {
+var adherentController = angular.module('AdherentListCtrl', ['ngRoute', 'adherentsServices', 'adherentServices', 'groupeServices', 'slotServices']);
+adherentController.controller('AdherentListCtrl', ['$scope', '$location', 'AdherentsService', function($scope, $location, AdherentsService) {
 	$scope.formData = {
 			search: ""
 	};
@@ -19,7 +18,7 @@ adherentsApp.controller('AdherentListCtrl', ['$scope', '$location', 'AdherentsSe
 	}
 }]);
 
-adherentsApp.controller('AdherentCtrl', ['$scope', 'AdherentService', 'GroupeService', 'SlotService', '$routeParams', '$sce', function($scope, AdherentService, GroupeService, SlotService, $routeParams, $sce) {
+adherentController.controller('AdherentCtrl', ['$scope', 'AdherentService', 'GroupeService', 'SlotService', '$routeParams', '$sce', function($scope, AdherentService, GroupeService, SlotService, $routeParams, $sce) {
 	AdherentService.get({adherent: $routeParams.adherentId}, function (data) {
 		$scope.adherent = data;
 		$scope.loadGroupe = function() {
@@ -63,38 +62,4 @@ adherentsApp.controller('AdherentCtrl', ['$scope', 'AdherentService', 'GroupeSer
 	        }, 'slow');
 		}
 	});
-}]);
-
-adherentsApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
-	$routeProvider.
-		when('/', {
-			templateUrl: 'views/adherents.html',
-			controller: 'AdherentListCtrl'
-		}).
-		when('/adherents', {
-			templateUrl: 'views/adherents.html',
-			controller: 'AdherentListCtrl'
-		}).
-		when('/adherents/:adherentId', {
-			templateUrl: 'views/adherent.html',
-			controller: 'AdherentCtrl'
-		}).
-		when('/adherents/edit/:adherentId', {
-			templateUrl: 'views/adherent-edit.html',
-			controller: 'AdherentCtrl'
-		}).
-		when('/en-jours', {
-			templateUrl: 'views/en-jours.html'
-		}).
-		when('/error', {
-			templateUrl: 'views/error.html'
-		}).
-		otherwise({
-			redirectTo: '/error'
-		});
-	$sceDelegateProvider.resourceUrlWhitelist([
-       'self',
-       'http://docs.google.com/viewer?url=*'
-     ]);
-
 }]);

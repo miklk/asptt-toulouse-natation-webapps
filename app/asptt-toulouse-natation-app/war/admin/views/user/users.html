@@ -1,0 +1,42 @@
+<div class="container" ng-controller="UserController">
+	<form role="form">
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-7">
+				<input type="text" class="form-control" placeholder="Nom + prénom + e-mail" ng-model="formData.search" />
+			</div>
+			<div class="col-md-1">
+				<button type="submit" class="btn btn-default" ng-click="search()">Rechercher</button>
+			</div>
+			<div class="col-md-2"></div>
+		</div>
+	</form>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>E-mail</th>
+				<th>Nom</th>
+				<th>Prénom</th>
+				<th>Droits d'accès</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="user in userFindResult.users" ng-click="loadUser(user.id)">
+				<td>{{$index + 1}}</td>
+				<td>{{user.emailAddress}}</td>
+				<td>{{user.userData.firstName}}</td>
+				<td>{{user.userData.lastName}}</td>
+				<td>
+					<span ng-repeat="profile in user.profiles">{{profile}}<br /></span>
+				</td>
+				<td>
+					<button type="button" class="btn btn-danger btn-xs" ng-click="remove(user.id, $index)">
+						<span class="glyphicon glyphicon-trash"></span>
+					</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
