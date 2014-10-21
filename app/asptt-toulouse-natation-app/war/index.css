@@ -163,3 +163,38 @@ background: linear-gradient(to right, #1e5799 0%,#7db9e8 100%);
 		display: none;
 	}
 }
+
+@media (min-width: 979px) {
+  #sidebar.affix-top {
+    position: static;
+  	margin-top:25px;
+  	width:150px;
+  	visibility: hidden;
+  }
+  
+  #sidebar.affix {
+    position: fixed;
+    top:25px;
+    width:150px;
+    visibility: visible;
+  }
+  
+  #scroll-top.affix-top {
+    position: static;
+  	margin-top:25px;
+  	visibility: hidden;
+  	right: 5px;
+  	cursor: pointer;
+  }
+  
+  #scroll-top.affix {
+    position: fixed;
+    bottom:25px;
+    right: 5px;
+    visibility: visible;
+  }
+}
+
+.affix,.affix-top {
+   position:static;
+}
