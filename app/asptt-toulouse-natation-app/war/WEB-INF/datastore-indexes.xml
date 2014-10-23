@@ -106,4 +106,9 @@
         <property name="competition" direction="asc"/>
         <property name="creationDate" direction="desc"/>
     </datastore-index>
+    
+    <datastore-index kind="InscriptionEntity2" ancestor="false" source="manual">
+        <property name="complet" direction="asc"/>
+        <property name="nom" direction="asc"/>
+    </datastore-index>
 </datastore-indexes>

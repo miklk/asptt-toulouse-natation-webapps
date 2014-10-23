@@ -202,6 +202,27 @@ public class AdherentListAction extends HttpServlet {
 					InscriptionEntityFields.PAIEMENT, form.isSearchPaiement(),
 					Operator.EQUAL));
 		}
+		if (form.isSearchNonDossier()) {
+			criteria.add(new CriterionDao<Boolean>(
+					InscriptionEntityFields.COMPLET, Boolean.FALSE,
+					Operator.EQUAL));
+		}
+		if (form.isSearchNonSaisie()) {
+			criteria.add(new CriterionDao<Boolean>(
+					InscriptionEntityFields.SAISIE, Boolean.FALSE,
+					Operator.EQUAL));
+		}
+		
+		if (form.isSearchNonCertificat()) {
+			criteria.add(new CriterionDao<Boolean>(
+					InscriptionEntityFields.CERTIFICAT, Boolean.FALSE,
+					Operator.EQUAL));
+		}
+		if (form.isSearchNonPaiement()) {
+			criteria.add(new CriterionDao<Boolean>(
+					InscriptionEntityFields.PAIEMENT, Boolean.FALSE,
+					Operator.EQUAL));
+		}
 
 		final List<InscriptionEntity2> entities;
 		if (criteria.isEmpty())

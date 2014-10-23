@@ -19,6 +19,10 @@ public class AdherentListForm implements Serializable {
 	private boolean searchSaisie;
 	private boolean searchPaiement;
 	private boolean searchCertificat;
+	private boolean searchNonDossier;
+	private boolean searchNonSaisie;
+	private boolean searchNonPaiement;
+	private boolean searchNonCertificat;
 	private Long[] selections;
 	private AdherentListEmailBean sendEmail;
 	private AdherentAffecterBean affecter;
@@ -27,6 +31,10 @@ public class AdherentListForm implements Serializable {
 		selections = new Long[0];
 		sendEmail = new AdherentListEmailBean();
 		affecter = new AdherentAffecterBean();
+		searchNonDossier = false;
+		searchNonSaisie = false;
+		searchNonPaiement = false;
+		searchNonCertificat = false;
 	}
 
 	public String getSearchNom() {
@@ -159,6 +167,38 @@ public class AdherentListForm implements Serializable {
 
 	public void setSearchCertificat(boolean pSearchCertificat) {
 		searchCertificat = pSearchCertificat;
+	}
+
+	public boolean isSearchNonDossier() {
+		return searchNonDossier;
+	}
+
+	public void setSearchNonDossier(boolean pSearchNonDossier) {
+		searchNonDossier = pSearchNonDossier;
+	}
+
+	public boolean isSearchNonSaisie() {
+		return searchNonSaisie;
+	}
+
+	public void setSearchNonSaisie(boolean pSearchNonSaisie) {
+		searchNonSaisie = pSearchNonSaisie;
+	}
+
+	public boolean isSearchNonPaiement() {
+		return searchNonPaiement;
+	}
+
+	public void setSearchNonPaiement(boolean pSearchNonPaiement) {
+		searchNonPaiement = pSearchNonPaiement;
+	}
+
+	public boolean isSearchNonCertificat() {
+		return searchNonCertificat;
+	}
+
+	public void setSearchNonCertificat(boolean pSearchNonCertificat) {
+		searchNonCertificat = pSearchNonCertificat;
 	}
 
 }
