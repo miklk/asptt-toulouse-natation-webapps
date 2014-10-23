@@ -13,7 +13,6 @@ aspttNatTlsApp.controller('LoadingAppCtrl', ['$scope', 'LoadingApp', '$sce', fun
 	LoadingApp.get({}, function(data) {
 		$scope.loadingApp = data;
 		setTimeout("loadCarous()", 100);
-    	setTimeout("loadAffix()", 100);
 		$scope.showActualite = function(actualite) {
 	    	$("#actualites").show();
 	    	$scope.actualiteTitle = actualite.title;

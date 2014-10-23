@@ -185,6 +185,7 @@ background: linear-gradient(to right, #1e5799 0%,#7db9e8 100%);
   	visibility: hidden;
   	right: 5px;
   	cursor: pointer;
+  	visibility: visible;
   }
   
   #scroll-top.affix {
