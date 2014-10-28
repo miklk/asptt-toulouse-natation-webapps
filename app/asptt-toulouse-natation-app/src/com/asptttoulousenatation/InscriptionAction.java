@@ -536,7 +536,7 @@ public class InscriptionAction extends HttpServlet {
 		
     	ServletOutputStream out = pResp.getOutputStream();
     	String contentType = "application/pdf";
-		String contentDisposition = "attachment;filename=dossierInscription_asptt_natation.pdf;";
+		String contentDisposition = "attachment;filename=inscription_asptt_natation.pdf;";
 		pResp.setContentType(contentType);
 		pResp.setHeader("Content-Disposition", contentDisposition);
 
@@ -594,6 +594,12 @@ public class InscriptionAction extends HttpServlet {
 			fields.setField("untitled19", "X");
 			fields.setField("untitled20", "X");
 		}
+		
+		fields.setField("accidentNom1", StringUtils.defaultString(parent.getAccidentNom1()) + " " + StringUtils.defaultString(parent.getAccidentPrenom1()));
+		fields.setField("accidentTel1", parent.getAccidentTelephone1());
+		fields.setField("accidentNom2", StringUtils.defaultString(parent.getAccidentNom2()) + " " + StringUtils.defaultString(parent.getAccidentPrenom2()));
+		fields.setField("accidentTel2", parent.getAccidentTelephone2());
+		
         stamper.close();
         reader.close();
 		} catch (DocumentException e1) {
