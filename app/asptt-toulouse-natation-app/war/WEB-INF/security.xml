@@ -13,7 +13,7 @@
 
     <beans:bean id="gaeEntryPoint" class="com.asptttoulousenatation.core.security.GoogleAccountsAuthenticationEntryPoint" />
     
-<beans:bean id="gaeFilter" class="samples.gae.security.GaeAuthenticationFilter">
+<beans:bean id="gaeFilter" class="com.asptttoulousenatation.core.security.GaeAuthenticationFilter">
         <beans:property name="authenticationManager" ref="authenticationManager"/>
     </beans:bean>
 
@@ -21,9 +21,9 @@
         <authentication-provider ref="gaeAuthenticationProvider"/>
     </authentication-manager>
 
-    <beans:bean id="gaeAuthenticationProvider" class="samples.gae.security.GoogleAccountsAuthenticationProvider">
+    <beans:bean id="gaeAuthenticationProvider" class="com.asptttoulousenatation.core.security.GoogleAccountsAuthenticationProvider">
         <beans:property name="userRegistry" ref="userRegistry" />
     </beans:bean>
 
-    <beans:bean id="userRegistry" class="samples.gae.users.GaeDatastoreUserRegistry" />
+    <beans:bean id="userRegistry" class="com.asptttoulousenatation.core.security.GaeDatastoreUserRegistry" />
 </beans:beans>

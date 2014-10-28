@@ -1,0 +1,12 @@
+var loginServices = angular.module('loginServices', ['ngResource']);
+loginServices.factory('LoginService', ['$resource', 
+                                     function($resource) {
+	return {
+		openId: $resource('/resources/authentication/:openIdService',{},{
+			query:{method:'GET'}
+		}),
+		login: $resource('/resources/authentication/login',{},{
+			query:{method:'GET'}
+		})
+	};
+}]);

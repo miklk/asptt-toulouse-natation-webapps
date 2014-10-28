@@ -24,8 +24,7 @@ userController.controller('UserController', ['$scope', '$location', 'UserService
 		});
 	}
 	
-	$scope.creer = function(isValid) {
-		console.log(isValid);
+	$scope.creer = function() {
 		UserService.create.query({userCreateAction: $scope.userCreateAction}, function (data) {
 			$scope.userCreateResult = data;
 			$scope.email = $scope.userCreation.email;

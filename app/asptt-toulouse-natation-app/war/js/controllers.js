@@ -8,7 +8,7 @@ adherentsApp.controller('AdherentListCtrl', ['$scope', 'Adherent', function($sco
 }]);
 
 
-var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','loadingAppServices', 'pageServices', 'loadingAlbumServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'inscriptionNouveauServices', 'removeAdherentServices', 'authenticationServices', 'actualiteServices']);
+var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','loadingAppServices', 'pageServices', 'loadingAlbumServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'inscriptionNouveauServices', 'removeAdherentServices', 'authenticationServices', 'actualiteServices', 'LoginController']);
 aspttNatTlsApp.controller('LoadingAppCtrl', ['$scope', 'LoadingApp', '$sce', function($scope, LoadingApp, $sce) {
 	LoadingApp.get({}, function(data) {
 		$scope.loadingApp = data;
