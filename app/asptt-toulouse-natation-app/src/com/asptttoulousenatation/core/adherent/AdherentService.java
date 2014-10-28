@@ -33,7 +33,6 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
 
@@ -45,7 +44,6 @@ import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
-import com.asptttoulousenatation.web.adherent.AdherentListAction;
 
 @Path("/adherents")
 @Produces("application/json")
