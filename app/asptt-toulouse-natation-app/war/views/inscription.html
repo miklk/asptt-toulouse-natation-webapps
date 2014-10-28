@@ -67,7 +67,11 @@
   		<li><a href="doc/Reglement_interieur_natation_2014-2015.pdf" target="_blank">Règlement Intérieur</a></li>
   	</ul>
   	
-  	 <div class="panel panel-default">
+  	<div class="panel panel-default">
+  		<div class="panel-heading">Les inscriptions sont fermées pour le moment. Vous pourrez néanmoins nous rejoindre à partir du 1er janvier 2015.</div>
+  	</div>
+  	
+  	 <div class="panel panel-default" style="display: none">
   		<div class="panel-heading">
   			<h4>Première inscription au club</h4>
   		</div>
@@ -81,12 +85,11 @@
   			</form>
   		</div>
   	</div>
-  	<div class="panel panel-default">
+  	<div class="panel panel-default" style="display: none">
   		<div class="panel-heading">
   		<h4>Je m'identifie avec mon adresse e-mail et mon code d'accès</h4>
   		</div>
   		<div class="panel-body">
-  		
 			<form role="form">
 				<div class="form-group">
 					<label for="find_email">Adresse e-mail</label>
@@ -95,13 +98,12 @@
 					<input type="password" class="form-control" id="find_email_motdepasse" placeholder="Mot de passe" ng-model="formData.mdp" />
 				</div>
 				<div>
-				<button type="submit" class="btn btn-default btn-block" value="submit" ng-click="authenticate()">S'inscrire</button>
+					<button type="submit" class="btn btn-default btn-block" value="submit" ng-click="authenticate()">S'inscrire</button>
 				</div>
-				
 			</form>  		
   		</div>
   	</div>
-  	<div class="panel panel-default">
+  	<div class="panel panel-default" style="display: none">
   		<div class="panel-heading">
   		<h4>J'ai oublié mon mot de passe</h4>
   		</div>
