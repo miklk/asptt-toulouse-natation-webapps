@@ -1148,8 +1148,7 @@ public class AdherentListAction extends HttpServlet {
 								message = new StringBuilder(
 										"Madame, Monsieur,<p>Nous avons bien réceptionné votre dossier.<br />Cependant le paiment n'est pas complet, il manque "
 												+ montant
-												+ " euros.<br />Merci de nous le faire parvenir"
-												+ " avant le 15 septembre 2014.");
+												+ " euros.<br />Merci de nous le faire parvenir au plus vite.");
 								msg.setSubject(
 										"ASPTT Toulouse Natation - Cotisation",
 										"UTF-8");
