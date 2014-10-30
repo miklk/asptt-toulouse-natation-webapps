@@ -1147,7 +1147,7 @@ public class AdherentListAction extends HttpServlet {
 								String montant = pReq.getParameter("montant");
 								message = new StringBuilder(
 										"Madame, Monsieur,<p>Nous avons bien réceptionné votre dossier.<br />Cependant le paiment n'est pas complet, il manque "
-												+ montant
+												+ StringUtils.defaultString(montant, "0")
 												+ " euros.<br />Merci de nous le faire parvenir au plus vite.");
 								msg.setSubject(
 										"ASPTT Toulouse Natation - Cotisation",
