@@ -37,9 +37,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-context-3.2.8.RELEASE.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-core-3.2.8.RELEASE.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-expression-3.2.8.RELEASE.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-security-core-3.2.5.RELEASE.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-security-web-3.2.5.RELEASE.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-web-3.2.8.RELEASE.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-security-core-3.2.5.RELEASE.jar" sourcepath="/Users/mikl/.m2/repository/org/springframework/security/spring-security-core/3.2.5.RELEASE/spring-security-core-3.2.5.RELEASE-sources.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-security-web-3.2.5.RELEASE.jar" sourcepath="/Users/mikl/.m2/repository/org/springframework/security/spring-security-web/3.2.5.RELEASE/spring-security-web-3.2.5.RELEASE-sources.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-web-3.2.8.RELEASE.jar" sourcepath="/Users/mikl/.m2/repository/org/springframework/spring-web/3.2.8.RELEASE/spring-web-3.2.8.RELEASE-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/gwt-dispatch-1.2.0.jar">
 		<attributes>

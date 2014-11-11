@@ -1,6 +1,7 @@
 package com.asptttoulousenatation.core.security;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -25,6 +26,8 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 public class GaeAuthenticationFilter extends GenericFilterBean {
 	
+	private static final Logger LOG = Logger.getLogger(GaeAuthenticationFilter.class.getSimpleName());
+	
 	private static final String REGISTRATION_URL = "/views/login.html";
 	  private AuthenticationDetailsSource ads = new WebAuthenticationDetailsSource();
 	  private AuthenticationManager authenticationManager;
@@ -34,6 +37,7 @@ public class GaeAuthenticationFilter extends GenericFilterBean {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
+		LOG.severe("filter");
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 	    if (authentication == null) {
@@ -49,11 +53,6 @@ public class GaeAuthenticationFilter extends GenericFilterBean {
 	          authentication = authenticationManager.authenticate(token);
 	          // Setup the security context
 	          SecurityContextHolder.getContext().setAuthentication(authentication);
-	          // Send new users to the registration page.
-	          if (authentication.getAuthorities().contains(AppRole.NEW_USER)) {
-	            ((HttpServletResponse) response).sendRedirect(REGISTRATION_URL);
-	              return;
-	          }
 	        } catch (AuthenticationException e) {
 	         // Authentication information was rejected by the authentication manager
 	          failureHandler.onAuthenticationFailure((HttpServletRequest)request, (HttpServletResponse)response, e);
@@ -61,9 +60,7 @@ public class GaeAuthenticationFilter extends GenericFilterBean {
 	        }
 	      }
 	    }
-
 	    chain.doFilter(request, response);
-
 	}
 
 

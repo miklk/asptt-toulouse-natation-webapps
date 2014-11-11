@@ -6,9 +6,12 @@
 	http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
+<beans:bean id="authenticationListener" class="com.asptttoulousenatation.core.security.AuthenticationListener"/>
+
+
     <http use-expressions="true" entry-point-ref="gaeEntryPoint">
-        <intercept-url pattern="/" access="permitAll" />
-        <intercept-url pattern="/**" access="hasRole('USER')" />
+        <intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
+        <custom-filter position="PRE_AUTH_FILTER" ref="gaeFilter" />
     </http>
 
     <beans:bean id="gaeEntryPoint" class="com.asptttoulousenatation.core.security.GoogleAccountsAuthenticationEntryPoint" />
@@ -21,9 +24,6 @@
         <authentication-provider ref="gaeAuthenticationProvider"/>
     </authentication-manager>
 
-    <beans:bean id="gaeAuthenticationProvider" class="com.asptttoulousenatation.core.security.GoogleAccountsAuthenticationProvider">
-        <beans:property name="userRegistry" ref="userRegistry" />
-    </beans:bean>
+    <beans:bean id="gaeAuthenticationProvider" class="com.asptttoulousenatation.core.security.GoogleAccountsAuthenticationProvider" />
 
-    <beans:bean id="userRegistry" class="com.asptttoulousenatation.core.security.GaeDatastoreUserRegistry" />
 </beans:beans>

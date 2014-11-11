@@ -98,11 +98,9 @@ public class InscritsAction extends HttpServlet {
 					GroupEntity group = groupDao.get(entity.getNouveauGroupe());
 					results.add(group.getTitle());
 				}
-
-				if (StringUtils.isNotBlank(entity.getCreneaux())) {
-					String[] creneaux = entity.getCreneaux().split(";");
-					results.add(Integer.toString(creneaux.length));
-				}
+				results.add(BooleanUtils.toString(entity.getCertificat(), "Oui", "Non", "Non"));
+				results.add(BooleanUtils.toString(entity.getPaiement(), "Oui", "Non", "Non"));
+				
 				StrBuilder resultAsString = new StrBuilder();
 				resultAsString.appendWithSeparators(results, ";");
 				builder.append(resultAsString.toString()).appendNewLine();

@@ -51,6 +51,7 @@ public class AuthorizationServlet extends HttpServlet {
 					pResp.sendRedirect("/#/page/no-rights");
 				} else {
 					LOG.severe("Admin");
+					pResp.sendRedirect("/admin");
 				}
 			} else {
 				pResp.sendRedirect("/#/page/unknow-user");
