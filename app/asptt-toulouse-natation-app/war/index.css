@@ -179,11 +179,16 @@ background: linear-gradient(to right, #1e5799 0%,#7db9e8 100%);
     visibility: visible;
   }
   
+  #scroll-top {
+  	position: absolute;
+  	right: 10px;
+  }
+  
   #scroll-top.affix-top {
-    position: static;
+    position: absolute;
   	margin-top:25px;
   	visibility: hidden;
-  	right: 5px;
+  	right: 10px;
   	cursor: pointer;
   	visibility: visible;
   }
@@ -191,11 +196,15 @@ background: linear-gradient(to right, #1e5799 0%,#7db9e8 100%);
   #scroll-top.affix {
     position: fixed;
     bottom:25px;
-    right: 5px;
+    right: 10px;
     visibility: visible;
   }
 }
 
 .affix,.affix-top {
    position:static;
+}
+
+.mention {
+	bottom: 25px;
 }
