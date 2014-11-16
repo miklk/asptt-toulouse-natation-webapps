@@ -1,0 +1,383 @@
+{
+	"success": 1,
+	"result": [
+		{
+			"id": "1",
+			"title": "1ère Médailles du TOAC",
+			"lieu": "Toulouse (Léo Lagrange)",
+			"groupe": "Poussins, Benjamins",
+			"class": "event-commun",
+			"start": "1417251600000",
+			"end":   "1417284000000"
+		},
+		{
+			"id": "2",
+			"title": "Team Cup - Muret",
+			"lieu": "Muret",
+			"groupe": "Poussins",
+			"class": "event-poussins",
+			"start": "1421571600000",
+			"end":   "1421604000000"
+		},
+		{
+			"id": "3",
+			"title": "2ème Médailles du TOAC",
+			"lieu": "Toulouse (Léo Lagrange)",
+			"groupe": "Poussins, Benjamins",
+			"class": "event-commun",
+			"start": "1422694800000",
+			"end":   "1422727200000"
+		},
+		{
+			"id": "4",
+			"title": "Natathlon 1",
+			"lieu": "Colomiers",
+			"groupe": "Poussins, Benjamins",
+			"class": "event-commun",
+			"start": "1425200400000",
+			"end":   "1425232800000"
+		},
+		{
+			"id": "5",
+			"title": "Natathlon 2",
+			"lieu": "Alex Jany",
+			"groupe": "Poussins, Benjamins",
+			"class": "event-commun",
+			"start": "1427014800000",
+			"end":   "1427047200000"
+		},
+		{
+			"id": "6",
+			"title": "Finale du TOAC",
+			"lieu": "Toulouse (Léo Lagrange)",
+			"groupe": "Poussins, Benjamins",
+			"class": "event-commun",
+			"start": "1428742800000",
+			"end":   "1428775200000"
+		},
+		{
+			"id": "7",
+			"title": "Natathlon 3",
+			"lieu": "Portet sur Garonne",
+			"groupe": "Poussins, Benjamins",
+			"class": "event-commun",
+			"start": "1431248400000",
+			"end":   "1431280800000"
+		},
+		{
+			"id": "8",
+			"title": "Natathlon 4",
+			"lieu": "Alex Jany",
+			"groupe": "Poussins, Benjamins",
+			"class": "event-commun",
+			"start": "1433062800000",
+			"end":   "1433095200000"
+		},
+		{
+			"id": "9",
+			"title": "Grand Prix du Conseil Général",
+			"lieu": "Toulouse (Léo Lagrange)",
+			"groupe": "Poussins, Benjamins",
+			"class": "event-commun",
+			"start": "1434272400000",
+			"end":   "1434304800000"
+		},
+		{
+			"id": "10",
+			"title": "Interclub Benjamins",
+			"lieu": "Balma",
+			"groupe": "Benjamins",
+			"class": "event-benjamins",
+			"start": "1413709200000",
+			"end":   "1413741600000"
+		},
+		{
+			"id": "11",
+			"title": "Interclub Toutes Catégories",
+			"lieu": "Colomiers",
+			"groupe": "Benjamins, Minimes, Cadets, Juniors, Séniors, Masters",
+			"class": "event-commun",
+			"start": "1415437200000",
+			"end":   "1415556000000"
+		},
+		{
+			"id": "12",
+			"title": "Interclub Benjamins/Minimes",
+			"lieu": "Balma",
+			"groupe": "Benjamins, Minimes",
+			"class": "event-commun",
+			"start": "1422176400000",
+			"end":   "1422208800000"
+		},
+		{
+			"id": "13",
+			"title": "Finale Régionale Natathlon",
+			"lieu": "Cahors",
+			"groupe": "Benjamins",
+			"class": "event-benjamins",
+			"start": "1435395600000",
+			"end":   "1435428000000"
+		},
+		{
+			"id": "14",
+			"title": "Finale Interrégionale du Natathlon",
+			"lieu": "Tarbes",
+			"groupe": "Benjamins",
+			"class": "event-benjamins",
+			"start": "1436000400000",
+			"end":   "1436119200000"
+		},
+		{
+			"id": "15",
+			"title": "Finale Nationale du Natathlon",
+			"lieu": "Béthune",
+			"groupe": "Benjamins",
+			"class": "event-benjamins",
+			"start": "1436000400000",
+			"end":   "1436119200000"
+		},
+		{
+			"id": "16",
+			"title": "Meeting 25m",
+			"lieu": "Castres",
+			"groupe": "Minimes, Cadets, Juniors, Séniors",
+			"class": "event-commun",
+			"start": "1413018000000",
+			"end":   "1413136800000"
+		},
+		{
+			"id": "17",
+			"title": "Championnats départemental 25m",
+			"lieu": "Portet sur Garonne",
+			"groupe": "Minimes, Cadets, Juniors, Séniors",
+			"class": "event-commun",
+			"start": "1416646800000",
+			"end":   "1416679200000"
+		},
+		{
+			"id": "18",
+			"title": "Championnats régional 25m",
+			"lieu": "Montauban",
+			"groupe": "Minimes, Cadets, Juniors, Séniors",
+			"class": "event-commun",
+			"start": "1417942800000",
+			"end":   "1418061600000"
+		},
+		{
+			"id": "19",
+			"title": "Championnats interrégional 25m",
+			"lieu": "Saint Yrieux sur Charente",
+			"groupe": "Minimes, Cadets, Juniors, Séniors",
+			"class": "event-commun",
+			"start": "1418979600000",
+			"end":   "1419184800000"
+		},
+		{
+			"id": "20",
+			"title": "Meeting départemental 50m",
+			"lieu": "Toulouse (Léo Lagrange)",
+			"groupe": "Minimes, Cadets, Juniors, Séniors",
+			"class": "event-commun",
+			"start": "1422781200000",
+			"end":   "1422813600000"
+		},
+		{
+			"id": "21",
+			"title": "Meeting national 50m",
+			"lieu": "Toulouse (Léo Lagrange)",
+			"groupe": "Minimes, Cadets, Juniors, Séniors",
+			"class": "event-commun",
+			"start": "1425632400000",
+			"end":   "1425837600000"
+		},
+		{
+			"id": "22",
+			"title": "Nationale 2 Hiver 50m",
+			"lieu": "Agen",
+			"groupe": "Minimes, Cadets, Juniors, Séniors",
+			"class": "event-commun",
+			"start": "1426842000000",
+			"end":   "1427047200000"
+		},
+		{
+			"id": "23",
+			"title": "Championnats de France Elite 50m",
+			"lieu": "Limoges",
+			"groupe": "Minimes, Cadets, Juniors, Séniors",
+			"class": "event-commun",
+			"start": "1427878800000",
+			"end":   "1428256800000"
+		},
+		{
+			"id": "24",
+			"title": "Meeting départemental 50m",
+			"lieu": "Toulouse (Léo Lagrange)",
+			"groupe": "Minimes, Cadets, Juniors, Séniors",
+			"class": "event-commun",
+			"start": "1428829200000",
+			"end":   "1428861600000"
+		},
+		{
+			"id": "25",
+			"title": "25° Nautiques de Tarbes",
+			"lieu": "Tarbes",
+			"groupe": "Minimes, Cadets, Juniors, Séniors",
+			"class": "event-commun",
+			"start": "1431766800000",
+			"end":   "1431885600000"
+		},
+		{
+			"id": "26",
+			"title": "Championnats régional été 50m",
+			"lieu": "Tarbes",
+			"groupe": "Minimes, Cadets, Juniors, Séniors",
+			"class": "event-commun",
+			"start": "1434186000000",
+			"end":   "1434304800000"
+		},
+		{
+			"id": "27",
+			"title": "Meeting 50m",
+			"lieu": "Graulhet",
+			"groupe": "Minimes, Cadets, Juniors, Séniors",
+			"class": "event-commun",
+			"start": "1434790800000",
+			"end":   "1434909600000"
+		},
+		{
+			"id": "28",
+			"title": "Championnats départemental été 50m",
+			"lieu": "Toulouse (Léo Lagrange), Juniors, Séniors",
+			"groupe": "Minimes, Cadets",
+			"class": "event-commun",
+			"start": "1435395600000",
+			"end":   "1435514400000"
+		},
+		{
+			"id": "29",
+			"title": "Nationale 2 été 50m",
+			"lieu": "Millau",
+			"groupe": "Minimes, Cadets, Juniors, Séniors",
+			"class": "event-commun",
+			"start": "1436605200000",
+			"end":   "1436724000000"
+		},
+		{
+			"id": "30",
+			"title": "Championnats de France Minimes 50m",
+			"lieu": "Agen",
+			"groupe": "Minimes",
+			"class": "event-minimes",
+			"start": "1437588000000",
+			"end":   "1437933600000"
+		},
+		{
+			"id": "31",
+			"title": "7° Meeting de la ville et du CAA",
+			"lieu": "Agen",
+			"groupe": "Juniors, Séniors",
+			"class": "event-juniors",
+			"start": "1423299600000",
+			"end":   "1423418400000"
+		},
+		{
+			"id": "32",
+			"title": "Mare Nostrum",
+			"lieu": "Canet en Roussillon",
+			"groupe": "Juniors, Séniors",
+			"class": "event-juniors",
+			"start": "1433581200000",
+			"end":   "1433700000000"
+		},
+		{
+			"id": "33",
+			"title": "Championnats de France 16 ans et plus",
+			"lieu": "Montauban",
+			"groupe": "Juniors, Séniors",
+			"class": "event-juniors",
+			"start": "1438160400000",
+			"end":   "1438538400000"
+		},
+		{
+			"id": "34",
+			"title": "Championnats départemental des maîtres 25m",
+			"lieu": "Nakache",
+			"groupe": "Masters",
+			"class": "event-masters",
+			"start": "1416042000000",
+			"end":   "1416074400000"
+		},
+		{
+			"id": "35",
+			"title": "Interclubs régionaux des maîtres",
+			"lieu": "Albi",
+			"groupe": "Masters",
+			"class": "event-masters",
+			"start": "1417338000000",
+			"end":   "1417370400000"
+		},
+		{
+			"id": "36",
+			"title": "Championnats régional des maîtres 25m",
+			"lieu": "Villefranche de Rouergue",
+			"groupe": "Masters",
+			"class": "event-masters",
+			"start": "1421571600000",
+			"end":   "1421604000000"
+		},
+		{
+			"id": "37",
+			"title": "Interclubs nationaux des maîtres",
+			"lieu": "Montluçon",
+			"groupe": "Masters",
+			"class": "event-masters",
+			"start": "1422090000000",
+			"end":   "1422208800000"
+		},
+		{
+			"id": "38",
+			"title": "Championnats départementale des maîtres",
+			"lieu": "Portet sur Garonne",
+			"groupe": "Masters",
+			"class": "event-masters",
+			"start": "1423990800000",
+			"end":   "1424023200000"
+		},
+		{
+			"id": "39",
+			"title": "Championnats régionale des maîtres",
+			"lieu": "Muret",
+			"groupe": "Masters",
+			"class": "event-masters",
+			"start": "1425200400000",
+			"end":   "1425232800000"
+		},
+		{
+			"id": "40",
+			"title": "Championnats de France hiver des maîtres 25m",
+			"lieu": "Rennes",
+			"groupe": "Masters",
+			"class": "event-masters",
+			"start": "1427360400000",
+			"end":   "1427652000000"
+		},
+		{
+			"id": "41",
+			"title": "5ème Meeting national des maîtres",
+			"lieu": "Toulouse (Léo Lagrange)",
+			"groupe": "Masters",
+			"class": "event-masters",
+			"start": "1433581200000",
+			"end":   "1433613600000"
+		},
+		{
+			"id": "42",
+			"title": "Championnats de France été des maîtres 50m",
+			"lieu": "Dijon",
+			"groupe": "Masters",
+			"class": "event-masters",
+			"start": "1435222800000",
+			"end":   "1435514400000"
+		}
+	]
+}
