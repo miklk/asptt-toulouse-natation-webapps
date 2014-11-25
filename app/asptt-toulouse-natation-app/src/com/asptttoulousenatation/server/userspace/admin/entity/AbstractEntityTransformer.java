@@ -3,9 +3,9 @@ package com.asptttoulousenatation.server.userspace.admin.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.asptttoulousenatation.core.server.dao.entity.Entity;
+import com.asptttoulousenatation.core.server.dao.entity.IEntity;
 
-public abstract class AbstractEntityTransformer<U extends Object, E extends Entity> {
+public abstract class AbstractEntityTransformer<U extends Object, E extends IEntity> {
 	
 	public abstract U toUi(E pEntity);
 	

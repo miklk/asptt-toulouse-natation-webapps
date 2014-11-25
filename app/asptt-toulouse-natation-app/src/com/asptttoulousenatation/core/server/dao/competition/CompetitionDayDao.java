@@ -9,4 +9,14 @@ public class CompetitionDayDao extends DaoBase<CompetitionDayEntity> {
 	public Class<CompetitionDayEntity> getEntityClass() {
 		return CompetitionDayEntity.class;
 	}
+
+	@Override
+	public String getAlias() {
+		return "competitionDay";
+	}
+	
+	@Override
+	public Object getKey(CompetitionDayEntity pEntity) {
+		return pEntity.getId();
+	}
 }

@@ -1,5 +1,7 @@
 package com.asptttoulousenatation.server.userspace.admin.entity;
 
+import java.util.Date;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -12,8 +14,11 @@ public class ActuTransformer extends
 	@Override
 	public ActuUi toUi(ActuEntity pEntity) {
 		ActuUi lUi = new ActuUi(pEntity.getId(), pEntity.getTitle(),
-				pEntity.getSummary(), pEntity.getCreationDate(),
-				pEntity.getContent().getValue(), StringUtils.defaultString(pEntity.getImageUrl(), "img/actu_defaut.jpg"), BooleanUtils.toBoolean(pEntity.getCompetition()));
+				pEntity.getSummary(), new Date(pEntity.getCreationDate().getTime()),
+				pEntity.getContent().getValue(), StringUtils.defaultString(pEntity.getImageUrl(), "img/actu_defaut.jpg"), BooleanUtils.toBoolean(pEntity.getCompetition()), pEntity.getExpiration());
+		if(pEntity.getExpiration() != null) {
+			lUi.setExpiration(new Date(pEntity.getExpiration().getTime()));
+		}
 		if(StringUtils.isBlank(pEntity.getSummary())) {
 			lUi.setSummary("Détail...");
 		}

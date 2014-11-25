@@ -10,4 +10,14 @@ public class InscriptionNouveauDao extends DaoBase<InscriptionNouveauEntity> {
 		return InscriptionNouveauEntity.class;
 	}
 
+	@Override
+	public String getAlias() {
+		return "inscriptionNouveau";
+	}
+	
+	@Override
+	public Object getKey(InscriptionNouveauEntity pEntity) {
+		return pEntity.getId();
+	}
+
 }

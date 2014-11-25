@@ -1,27 +1,27 @@
 package com.asptttoulousenatation.core.server.dao.entity.inscription;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.NotPersistent;
-import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.asptttoulousenatation.core.server.dao.entity.Entity;
+import com.asptttoulousenatation.core.server.dao.entity.IEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
+@Entity
 @XmlRootElement
-public class InscriptionEntity implements Entity {
+public class InscriptionEntity implements IEntity {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3207564448323062425L;
 	
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Persistent

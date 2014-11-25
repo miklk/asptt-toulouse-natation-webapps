@@ -68,7 +68,7 @@ public class AdherentListResultBeanTransformer implements Serializable {
 		try {
 			bean.setCreneaux(getCreneaux(entity.getCreneaux()));
 		} catch(Exception e) {
-			LOG.severe("Erreur de créneaux sur l'adhérent " + entity.getNom());
+			LOG.severe("Erreur de créneaux sur l'adhérent " + entity.getId());
 		}
 		bean.setEmail(entity.getEmail());
 		bean.setMotdepasse(entity.getMotdepasse());

@@ -2,51 +2,46 @@ package com.asptttoulousenatation.core.server.dao.entity;
 
 import java.util.Date;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 import com.google.appengine.api.datastore.Text;
 
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
-public class ActuEntity implements Entity {
+@Entity
+public class ActuEntity implements IEntity {
 	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6950881769888984570L;
+	private static final long serialVersionUID = 3L;
 
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Persistent
 	private String title;
 	
-	@Persistent
 	private String summary;
 	
-	@Persistent
 	private Text content;
 	
-	@Persistent
 	private Date creationDate;
 	
-	@Persistent
 	private String imageUrl;
 	
-	@Persistent
 	private Boolean competition;
+	
+	private Date expiration;
 	
 	public ActuEntity() {
 		
 	}
 
 	public ActuEntity(Long pId, String pTitle, String pSummary,
-			Text pContent, Date pCreationDate, String pImageUrl, Boolean pCompetition) {
+			Text pContent, Date pCreationDate, String pImageUrl, Boolean pCompetition, Date pExpiration) {
 		id = pId;
 		title = pTitle;
 		summary = pSummary;
@@ -54,6 +49,7 @@ public class ActuEntity implements Entity {
 		creationDate = pCreationDate;
 		imageUrl = pImageUrl;
 		competition = pCompetition;
+		expiration = pExpiration;
 	}
 
 	public Long getId() {
@@ -110,6 +106,14 @@ public class ActuEntity implements Entity {
 
 	public void setCompetition(Boolean pCompetition) {
 		competition = pCompetition;
+	}
+
+	public Date getExpiration() {
+		return expiration;
+	}
+
+	public void setExpiration(Date pExpiration) {
+		expiration = pExpiration;
 	}
 	
 }

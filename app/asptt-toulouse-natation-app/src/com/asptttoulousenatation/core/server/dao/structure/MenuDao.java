@@ -10,4 +10,14 @@ public class MenuDao extends DaoBase<MenuEntity> {
 		return MenuEntity.class;
 	}
 
+	@Override
+	public String getAlias() {
+		return "menu";
+	}
+	
+	@Override
+	public Object getKey(MenuEntity pEntity) {
+		return pEntity.getId();
+	}
+
 }

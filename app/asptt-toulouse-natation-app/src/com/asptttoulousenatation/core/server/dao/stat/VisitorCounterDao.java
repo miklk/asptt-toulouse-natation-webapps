@@ -10,4 +10,14 @@ public class VisitorCounterDao extends DaoBase<VisitorCounter> {
 		return VisitorCounter.class;
 	}
 
+	@Override
+	public String getAlias() {
+		return "visitorCounter";
+	}
+	
+	@Override
+	public Object getKey(VisitorCounter pEntity) {
+		return pEntity.getId();
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.asptttoulousenatation.core.actualite;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -48,6 +49,8 @@ public class ActualiteService {
 					ActuEntityFields.COMPETITION, BooleanUtils
 							.toBoolean(pCompetition), Operator.EQUAL));
 		}
+		criteria.add(new CriterionDao<Date>(
+				ActuEntityFields.EXPIRATION, new Date(), Operator.GREATER_EQ));
 		List<ActuEntity> lEntities = dao.find(criteria, 0, maxNumber);
 		ActuTransformer actuTransformer = new ActuTransformer();
 		DocumentTransformer documentTransformer = new DocumentTransformer();

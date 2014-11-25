@@ -9,4 +9,13 @@ public class AreaDao extends DaoBase<AreaEntity> {
 	public Class<AreaEntity> getEntityClass() {
 		return AreaEntity.class;
 	}
+
+	@Override
+	public String getAlias() {
+		return "area";
+	}
+	@Override
+	public Object getKey(AreaEntity pEntity) {
+		return pEntity.getId();
+	}
 }

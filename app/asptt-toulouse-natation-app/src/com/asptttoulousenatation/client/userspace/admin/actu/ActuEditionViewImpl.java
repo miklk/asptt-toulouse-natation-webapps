@@ -45,6 +45,7 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 	private TextBox title;
 	private TextBox summary;
 	private DateBox date;
+	private DateBox expiration;
 	private TextBox imageUrl;
 	private CheckBox competition;
 	private CKEditor contentInput;
@@ -184,6 +185,16 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 		lPanel.setWidget(rowIndex, 1, date);
 		rowIndex++;
 		
+		// Expiration
+		expiration = new DateBox();
+		expiration.setFormat(new DateBox.DefaultFormat(DateTimeFormat
+				.getFormat("dd MMMM yyyy HH:mm:ss")));
+		expiration.setWidth("200px");
+		expiration.setValue(pActuUi.getExpiration());
+		lPanel.setWidget(rowIndex, 0, createLabel("Date expiration"));
+		lPanel.setWidget(rowIndex, 1, expiration);
+		rowIndex++;
+		
 		//Image url
 		imageUrl = new TextBox();
 		imageUrl.setWidth("300px");
@@ -310,5 +321,10 @@ public class ActuEditionViewImpl extends Composite implements ActuEditionView {
 	@Override
 	public HasValue<Boolean> getCompetition() {
 		return competition;
+	}
+
+	@Override
+	public HasValue<Date> getExpirationDate() {
+		return expiration;
 	}
 }

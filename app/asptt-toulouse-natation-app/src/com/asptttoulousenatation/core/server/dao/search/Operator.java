@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 public enum Operator implements Serializable {
 
-	EQUAL("=="),
-	NOT_EQUAL("!="),
+	EQUAL("="),
+	NOT_EQUAL("<>"),
 	GREATER(">"),
 	GREATER_EQ(">="),
 	LESS("<"),
 	LESS_EQ("<="),
-	AND("&&"),
-	OR("||"),
-	NULL("== null"),
-	NOT_NULL("!= null");
+	AND("AND"),
+	OR("OR"),
+	NULL("is null"),
+	NOT_NULL("is not null");
 	
 	private String value;
 	

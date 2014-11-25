@@ -17,6 +17,7 @@ public class ActuUi implements IsSerializable {
 	private String content;
 	private String imageUrl;
 	private boolean competition;
+	private Date expiration;
 	
 	private List<DocumentUi> documentSet;
 	
@@ -28,7 +29,7 @@ public class ActuUi implements IsSerializable {
 	}
 	
 	public ActuUi(Long pId,String pTitle, String pSummary, Date pCreationDate,
-			String pContent, String pImageUrl, boolean pCompetition) {
+			String pContent, String pImageUrl, boolean pCompetition, Date pExpiration) {
 		this();
 		id = pId;
 		title = pTitle;
@@ -37,6 +38,7 @@ public class ActuUi implements IsSerializable {
 		content = pContent;
 		imageUrl = pImageUrl;
 		competition = pCompetition;
+		expiration = pExpiration;
 	}
 
 	public Long getId() {
@@ -110,5 +112,13 @@ public class ActuUi implements IsSerializable {
 
 	public void setCompetition(boolean pCompetition) {
 		competition = pCompetition;
+	}
+
+	public Date getExpiration() {
+		return expiration;
+	}
+
+	public void setExpiration(Date pExpiration) {
+		expiration = pExpiration;
 	}
 }

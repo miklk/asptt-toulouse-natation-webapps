@@ -9,4 +9,14 @@ public class UserDataDao extends DaoBase<UserDataEntity> {
 	public Class<UserDataEntity> getEntityClass() {
 		return UserDataEntity.class;
 	}
+
+	@Override
+	public String getAlias() {
+		return "userData";
+	}
+	
+	@Override
+	public Object getKey(UserDataEntity pEntity) {
+		return pEntity.getId();
+	}
 }

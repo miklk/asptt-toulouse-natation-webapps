@@ -3,24 +3,24 @@ package com.asptttoulousenatation.core.server.dao.entity.competition;
 import java.util.Date;
 import java.util.Set;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-import com.asptttoulousenatation.core.server.dao.entity.Entity;
+import com.asptttoulousenatation.core.server.dao.entity.IEntity;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
-public class CompetitionEntity implements Entity {
+@Entity
+public class CompetitionEntity implements IEntity {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 9157147920816352745L;
 
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Persistent

@@ -10,4 +10,14 @@ public class GroupDao extends DaoBase<GroupEntity> {
 		return GroupEntity.class;
 	}
 
+	@Override
+	public String getAlias() {
+		return "group";
+	}
+	
+	@Override
+	public Object getKey(GroupEntity pEntity) {
+		return pEntity.getId();
+	}
+
 }

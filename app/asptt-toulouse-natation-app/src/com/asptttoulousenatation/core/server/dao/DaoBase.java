@@ -1,22 +1,25 @@
 package com.asptttoulousenatation.core.server.dao;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-import javax.jdo.Extent;
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
-import javax.jdo.Transaction;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
 
-import com.asptttoulousenatation.core.server.dao.entity.Entity;
+import com.asptttoulousenatation.core.server.dao.entity.IEntity;
 import com.asptttoulousenatation.core.server.dao.search.CriteriaUtils;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.search.OrderDao;
-import com.asptttoulousenatation.core.server.service.PMF;
+import com.asptttoulousenatation.core.server.service.EMF;
 import com.google.appengine.api.datastore.Key;
 
-public abstract class DaoBase<E extends Entity> {
+public abstract class DaoBase<E extends IEntity> {
+
+	private static final Logger LOG = Logger.getLogger(DaoBase.class
+			.getSimpleName());
 
 	/**
 	 * Create the entity into the DB.
@@ -28,13 +31,35 @@ public abstract class DaoBase<E extends Entity> {
 	 * @return The created entity.
 	 */
 	public E save(E pEntity) {
-		PersistenceManager lPersistenceManager = PMF.getPersistenceManager();
-
+		EntityManager em = EMF.get().createEntityManager();
 		E lResult = null;
+		EntityTransaction tx = em.getTransaction();
 		try {
-			lResult = (E) lPersistenceManager.makePersistent(pEntity);
+			//Try to find existing
+			Object key = getKey(pEntity);
+			final E existingEntity;
+			if(key != null) {
+				existingEntity = em.find(getEntityClass(), getKey(pEntity));
+			} else {
+				existingEntity = null;
+			}
+			tx.begin();
+			if(existingEntity != null) {
+				lResult = em.merge(pEntity);
+				
+			} else {	
+				em.persist(pEntity);
+				lResult = pEntity;
+			}
+			tx.commit();
+			
+		} catch (Exception e) {
+			LOG.severe(e.getMessage());
+			if(tx.isActive()) {
+				tx.rollback();
+			}
 		} finally {
-			lPersistenceManager.close();
+			em.close();
 		}
 
 		return lResult;
@@ -50,21 +75,15 @@ public abstract class DaoBase<E extends Entity> {
 	 * @return Entities
 	 */
 	private List<E> getAll(Class<E> pClass) {
-		PersistenceManager lPersistenceManager = PMF.getPersistenceManager();
-
-		Extent<E> lAll = null;
-		List<E> lAllList = new LinkedList<E>();
+		EntityManager em = EMF.get().createEntityManager();
+		List<E> lAllList = new ArrayList<E>();
 		try {
-			lAll = lPersistenceManager.getExtent(pClass);
-			for (E lE : lAll) {
-				try {
-				lAllList.add(lPersistenceManager.detachCopy(lE));
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
+			TypedQuery<E> query = em.createQuery("SELECT " + getAlias()
+					+ " FROM " + pClass.getSimpleName() + " " + getAlias(),
+					pClass);
+			lAllList = query.getResultList();
 		} finally {
-			lPersistenceManager.close();
+			em.close();
 		}
 
 		return lAllList;
@@ -83,12 +102,11 @@ public abstract class DaoBase<E extends Entity> {
 	 */
 	private E get(Class<E> pClass, Object pId) {
 		E lResult = null;
-		PersistenceManager lPersistenceManager = PMF.getPersistenceManager();
+		EntityManager em = EMF.get().createEntityManager();
 		try {
-			E lRes = (E) lPersistenceManager.getObjectById(pClass, pId);
-			lResult = lPersistenceManager.detachCopy(lRes);
+			lResult = (E) em.find(pClass, pId);
 		} finally {
-			lPersistenceManager.close();
+			em.close();
 		}
 		return lResult;
 	}
@@ -96,7 +114,7 @@ public abstract class DaoBase<E extends Entity> {
 	public E get(Long pId) {
 		return get(getEntityClass(), pId);
 	}
-	
+
 	public E get(Key pId) {
 		return get(getEntityClass(), pId);
 	}
@@ -106,51 +124,58 @@ public abstract class DaoBase<E extends Entity> {
 	}
 
 	public void delete(E pEntity) {
-		PersistenceManager lPersistenceManager = PMF.getPersistenceManager();
-		try {
-			lPersistenceManager.deletePersistent(pEntity);
-		} finally {
-			lPersistenceManager.close();
-		}
-	}
-	
-	public void delete(Long pId) {
-		PersistenceManager lPersistenceManager = PMF.getPersistenceManager();
-		Transaction tx = lPersistenceManager.currentTransaction();
+		EntityManager em = EMF.get().createEntityManager();
+		EntityTransaction tx = em.getTransaction();
 		try {
 			tx.begin();
-			E entity = (E) lPersistenceManager.getObjectById(getEntityClass(), pId);
-			lPersistenceManager.makeTransactional(entity);
-			lPersistenceManager.deletePersistent(entity);
+			em.remove(pEntity);
+			tx.commit();
+		} finally {
+			em.close();
+		}
+	}
+
+	public void delete(Long pId) {
+		EntityManager em = EMF.get().createEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		try {
+			E entity = (E) em.find(getEntityClass(), pId);
+			tx.begin();
+			em.remove(entity);
 			tx.commit();
 		} catch (Exception e) {
 			tx.rollback();
 			throw new RuntimeException(e);
 		} finally {
-			lPersistenceManager.close();
+			em.close();
 		}
 	}
 
 	private List<E> find(Class<E> pClass,
-			List<CriterionDao<? extends Object>> pCriteria, Operator pOperator, OrderDao pOrder) {
-		final PersistenceManager lPersistenceManager = PMF
-				.getPersistenceManager();
-		String lQueryAsString = "SELECT FROM " + pClass.getName() + " WHERE "
-				+ CriteriaUtils.getWhereClause(pCriteria, pOperator);
-		final Query lQuery = lPersistenceManager.newQuery(lQueryAsString);
-		if(pOrder != null) {
-			lQuery.setOrdering(pOrder.getField().toString().toLowerCase() + " " + pOrder.getOperator().toString());
+			List<CriterionDao<? extends Object>> pCriteria, Operator pOperator,
+			OrderDao pOrder) {
+		final EntityManager em = EMF.get().createEntityManager();
+		String lQueryAsString = "SELECT "
+				+ getAlias()
+				+ " FROM "
+				+ pClass.getSimpleName()
+				+ " "
+				+ getAlias()
+				+ " WHERE "
+				+ CriteriaUtils
+						.getWhereClause(pCriteria, pOperator, getAlias());
+		if (pOrder != null) {
+			lQueryAsString += " ORDER BY "
+					+ pOrder.getField().toString().toLowerCase() + " "
+					+ pOrder.getOperator().toString();
 		}
+		final TypedQuery<E> lQuery = em.createQuery(lQueryAsString, pClass);
 		final List<E> lResult;
 		try {
-			lResult = (List<E>) lPersistenceManager
-					.detachCopyAll((List<E>) lQuery.execute());
+			lResult = lQuery.getResultList();
 
 		} finally {
-			lQuery.closeAll();
-			if (!lPersistenceManager.isClosed()) {
-				lPersistenceManager.close();
-			}
+			em.close();
 		}
 		return lResult;
 	}
@@ -163,10 +188,15 @@ public abstract class DaoBase<E extends Entity> {
 	public List<E> find(List<CriterionDao<? extends Object>> pCriteria) {
 		return find(getEntityClass(), pCriteria, Operator.AND, null);
 	}
-	
-	public List<E> find(List<CriterionDao<? extends Object>> pCriteria, OrderDao pOrder) {
+
+	public List<E> find(List<CriterionDao<? extends Object>> pCriteria,
+			OrderDao pOrder) {
 		return find(getEntityClass(), pCriteria, Operator.AND, pOrder);
 	}
 
 	public abstract Class<E> getEntityClass();
+
+	public abstract String getAlias();
+	
+	public abstract Object getKey(E pEntity);
 }

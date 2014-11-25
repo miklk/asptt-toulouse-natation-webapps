@@ -2,121 +2,120 @@ package com.asptttoulousenatation.core.server.dao.entity.inscription;
 
 import java.util.Date;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.asptttoulousenatation.core.server.dao.entity.Entity;
+import com.asptttoulousenatation.core.server.dao.entity.IEntity;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
+@Entity
 @XmlRootElement
-public class InscriptionEntity2 implements Entity {
+public class InscriptionEntity2 implements IEntity {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3207564448323062425L;
 	
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Persistent
+	
 	private String civilite;
-	@Persistent
+	
 	private String nom;
-	@Persistent
+	
 	private String prenom;
-	@Persistent
+	
 	private String datenaissance;
-	@Persistent
+	
 	private String adresse;
-	@Persistent
+	
 	private String codepostal;
-	@Persistent
+	
 	private String ville;
-	@Persistent
+	
 	private String telephone;
-	@Persistent
+	
 	private String telephonePere;
-	@Persistent
+	
 	private String telephonePerePro;
-	@Persistent
+	
 	private String telephoneMere;
-	@Persistent
+	
 	private String telephoneMerePro;
-	@Persistent
+	
 	private String email;
 	
-	@Persistent
+	
 	private String emailsecondaire;
-	@Persistent
+	
 	private String licenceFFN;
-	@Persistent
+	
 	private String competition;
-	@Persistent
+	
 	private String maillot;
-	@Persistent
+	
 	private String tshirt;
-	@Persistent
+	
 	private String shortPantalon;
-	@Persistent
+	
 	private String profession;
-	@Persistent
+	
 	private String professionTextPere;
-	@Persistent
+	
 	private String professionTextMere;
-	@Persistent
+	
 	private String accordNomPrenom;
-	@Persistent
+	
 	private String mineurParent;
-	@Persistent
+	
 	private String mineur;
-	@Persistent
+	
 	private String accidentNom1;
-	@Persistent
+	
 	private String accidentPrenom1;
-	@Persistent
+	
 	private String accidentTelephone1;
-	@Persistent
+	
 	private String accidentNom2;
-	@Persistent
+	
 	private String accidentPrenom2;
-	@Persistent
+	
 	private String accidentTelephone2;
-	@Persistent
+	
 	private String typeLicence;
-	@Persistent
+	
 	private String creneaux;
-	@Persistent
+	
 	private Long principal;
-	@Persistent
+	
 	private Long groupe;
-	@Persistent
+	
 	private Long nouveauGroupe;
-	@Persistent
+	
 	private String facture;
-	@Persistent
+	
 	private Boolean saisie;
 	
-	@Persistent
+	
 	private String motdepasse;
-	@Persistent
+	
 	private Boolean complet;
-	@Persistent
+	
 	private Boolean nouveau;
-	@Persistent
+	
 	private Date inscriptiondt;
 	
-	@Persistent
+	
 	private Boolean certificat;
-	@Persistent
+	
 	private Boolean paiement;
 	
-	@Persistent
+	
 	private Integer tarif;
 	
 	public InscriptionEntity2() {

@@ -1,23 +1,23 @@
 package com.asptttoulousenatation.core.server.dao.entity.club.group;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-import com.asptttoulousenatation.core.server.dao.entity.Entity;
+import com.asptttoulousenatation.core.server.dao.entity.IEntity;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
-public class SlotEntity implements Entity {
+@Entity
+public class SlotEntity implements IEntity {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -9049127194178804074L;
 
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Persistent

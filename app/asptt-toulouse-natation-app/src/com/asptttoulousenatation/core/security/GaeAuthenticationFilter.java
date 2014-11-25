@@ -17,6 +17,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.filter.GenericFilterBean;
@@ -28,8 +29,7 @@ public class GaeAuthenticationFilter extends GenericFilterBean {
 	
 	private static final Logger LOG = Logger.getLogger(GaeAuthenticationFilter.class.getSimpleName());
 	
-	private static final String REGISTRATION_URL = "/views/login.html";
-	  private AuthenticationDetailsSource ads = new WebAuthenticationDetailsSource();
+	  private AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> ads = new WebAuthenticationDetailsSource();
 	  private AuthenticationManager authenticationManager;
 	  private AuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
 
@@ -37,7 +37,6 @@ public class GaeAuthenticationFilter extends GenericFilterBean {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		LOG.severe("filter");
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 	    if (authentication == null) {
@@ -47,7 +46,7 @@ public class GaeAuthenticationFilter extends GenericFilterBean {
 	      if (googleUser != null) {
 	        // User has returned after authenticating through GAE. Need to authenticate to Spring Security.
 	        PreAuthenticatedAuthenticationToken token = new PreAuthenticatedAuthenticationToken(googleUser, null);
-	        token.setDetails(ads.buildDetails(request));
+	        token.setDetails(ads.buildDetails((HttpServletRequest) request));
 
 	        try {
 	          authentication = authenticationManager.authenticate(token);

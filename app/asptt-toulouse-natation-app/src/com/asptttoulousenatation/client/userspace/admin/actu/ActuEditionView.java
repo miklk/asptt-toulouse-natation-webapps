@@ -15,6 +15,7 @@ public interface ActuEditionView extends IsWidget {
 	public HasValue<String> getImageUrl();
 	public HasValue<Date> getCreationDate();
 	public HasValue<Boolean> getCompetition();
+	public HasValue<Date> getExpirationDate();
 	public HasClickHandlers getUpdateButton();
 	public HasClickHandlers getDeleteButton();
 }

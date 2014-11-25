@@ -6,12 +6,12 @@ import net.customware.gwt.dispatch.shared.DispatchException;
 
 import com.asptttoulousenatation.core.server.dao.DaoBase;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
-import com.asptttoulousenatation.core.server.dao.entity.Entity;
+import com.asptttoulousenatation.core.server.dao.entity.IEntity;
 import com.asptttoulousenatation.core.shared.AbstractDeleteAction;
 import com.asptttoulousenatation.core.shared.AbstractDeleteResult;
 import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
 
-public abstract class AbstractDeleteActionHandler<E extends Entity, A extends AbstractDeleteAction<R>, R extends AbstractDeleteResult>
+public abstract class AbstractDeleteActionHandler<E extends IEntity, A extends AbstractDeleteAction<R>, R extends AbstractDeleteResult>
 		implements ActionHandler<A, R> {
 
 	protected DaoBase<E> dao;

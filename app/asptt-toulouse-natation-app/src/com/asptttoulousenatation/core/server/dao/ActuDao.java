@@ -2,8 +2,8 @@ package com.asptttoulousenatation.core.server.dao;
 
 import java.util.List;
 
-import javax.jdo.PersistenceManager;
-import javax.jdo.Query;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
 
@@ -11,7 +11,7 @@ import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
 import com.asptttoulousenatation.core.server.dao.search.CriteriaUtils;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
-import com.asptttoulousenatation.core.server.service.PMF;
+import com.asptttoulousenatation.core.server.service.EMF;
 
 public class ActuDao extends DaoBase<ActuEntity> {
 
@@ -19,51 +19,58 @@ public class ActuDao extends DaoBase<ActuEntity> {
 	public Class<ActuEntity> getEntityClass() {
 		return ActuEntity.class;
 	}
-	
-	public List<ActuEntity> find(List<CriterionDao<? extends Object>> pCriteria, long limitStart, long limitEnd) {
-		final PersistenceManager lPersistenceManager = PMF
-				.getPersistenceManager();
-		String lQueryAsString = "SELECT FROM " + getEntityClass().getName();
+
+	public List<ActuEntity> find(
+			List<CriterionDao<? extends Object>> pCriteria, int limitStart,
+			int limitEnd) {
+		final EntityManager em = EMF.get().createEntityManager();
+		String lQueryAsString = "SELECT " + getAlias() + " FROM "
+				+ getEntityClass().getName() + " " + getAlias();
 		if (CollectionUtils.isNotEmpty(pCriteria)) {
 			lQueryAsString += " WHERE "
-					+ CriteriaUtils.getWhereClause(pCriteria, Operator.AND);
+					+ CriteriaUtils.getWhereClause(pCriteria, Operator.AND,
+							getAlias());
 		}
-		final Query lQuery = lPersistenceManager.newQuery(lQueryAsString);
-		lQuery.setOrdering("creationDate DESC");
-		lQuery.setRange(limitStart, limitEnd);
+		lQueryAsString += " " + getAlias() + ".creationDate DESC";
+		final Query lQuery = em.createQuery(lQueryAsString);
+		lQuery.setFirstResult(limitStart);
+		lQuery.setMaxResults(limitEnd);
 		final List<ActuEntity> lResult;
 		try {
-			lResult = (List<ActuEntity>) lPersistenceManager
-					.detachCopyAll((List<ActuEntity>) lQuery.execute());
+			lResult = (List<ActuEntity>) lQuery.getResultList();
 		} finally {
-			lQuery.closeAll();
-			if (!lPersistenceManager.isClosed()) {
-				lPersistenceManager.close();
-			}
+			em.close();
 		}
 		return lResult;
 	}
-	
-	public List<ActuEntity> getAll(long limitStart, long limitEnd) {
-		PersistenceManager lPersistenceManager = PMF.getPersistenceManager();
-		Query lQuery = lPersistenceManager.newQuery(ActuEntity.class);
-		lQuery.setOrdering("creationDate DESC");
-		lQuery.setRange(limitStart, limitEnd);
+
+	public List<ActuEntity> getAll(int limitStart, int limitEnd) {
+		final EntityManager em = EMF.get().createEntityManager();
+		Query lQuery = em.createQuery("SELECT " + getAlias() + " FROM "
+				+ ActuEntity.class.getSimpleName() + " " + getAlias() + " ORDER BY " + getAlias() + ".creationDate DESC");
+		lQuery.setFirstResult(limitStart);
+		lQuery.setMaxResults(limitEnd);
 		final List<ActuEntity> lResult;
 		try {
-			lResult = (List<ActuEntity>) lPersistenceManager
-					.detachCopyAll((List<ActuEntity>) lQuery.execute());
+			lResult = (List<ActuEntity>) lQuery.getResultList();
 
 		} finally {
-			lQuery.closeAll();
-			if (!lPersistenceManager.isClosed()) {
-				lPersistenceManager.close();
-			}
+			em.close();
 		}
 		return lResult;
 	}
-	
+
 	public List<ActuEntity> getAll() {
 		return getAll(0, 100);
+	}
+
+	@Override
+	public String getAlias() {
+		return "actu";
+	}
+
+	@Override
+	public Object getKey(ActuEntity pEntity) {
+		return pEntity.getId();
 	}
 }

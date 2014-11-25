@@ -1,7 +1,11 @@
 package com.asptttoulousenatation.core.server.dao.entity.field;
 
+import com.google.gdata.data.dublincore.Date;
+
 public enum ActuEntityFields implements IEntityFields {
-	COMPETITION(Boolean.class);
+	COMPETITION(Boolean.class),
+	EXPIRATION(Date.class),
+	;
 	
 	private Class<? extends Object> clazz;
 	

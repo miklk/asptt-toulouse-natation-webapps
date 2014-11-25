@@ -13,13 +13,14 @@ public class UpdateActuAction implements Action<UpdateActuResult> {
 	private String content;
 	private String imageUrl;
 	private boolean competition;
+	private Date expiration;
 	
 	public UpdateActuAction() {
 		
 	}
 	
 	public UpdateActuAction(Long pId, String pTitle,
-			Date pCreationDate, String pSummary, String pContent, String pImageUrl, boolean pCompetition) {
+			Date pCreationDate, String pSummary, String pContent, String pImageUrl, boolean pCompetition, Date pExpiration) {
 		id = pId;
 		title = pTitle;
 		creationDate = pCreationDate;
@@ -27,6 +28,7 @@ public class UpdateActuAction implements Action<UpdateActuResult> {
 		content = pContent;
 		imageUrl = pImageUrl;
 		competition = pCompetition;
+		expiration = pExpiration;
 	}
 	public Long getId() {
 		return id;
@@ -76,6 +78,14 @@ public class UpdateActuAction implements Action<UpdateActuResult> {
 
 	public void setCompetition(boolean pCompetition) {
 		competition = pCompetition;
+	}
+
+	public Date getExpiration() {
+		return expiration;
+	}
+
+	public void setExpiration(Date pExpiration) {
+		expiration = pExpiration;
 	}
 	
 }

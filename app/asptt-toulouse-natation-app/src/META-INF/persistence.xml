@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+        http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
+
+    <persistence-unit name="transactions-optional">
+        <provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
+        
+        <class>com.asptttoulousenatation.core.server.dao.entity.ActuEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.structure.AreaEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.structure.ContentEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.structure.MenuEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionDayEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.document.DocumentEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionNouveauEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.reference.DataUpdateEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.stat.VisitorCounter</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.swimmer.SwimmerEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.swimmer.SwimmerStatEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.user.Slot</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.user.UserEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.user.UserDataEntity</class>
+        
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+        
+        <properties>
+            <property name="datanucleus.NontransactionalRead" value="true"/>
+            <property name="datanucleus.NontransactionalWrite" value="true"/>
+            <property name="datanucleus.ConnectionURL" value="appengine"/>
+            <property name="datanucleus.singletonEMFForName" value="true"/>
+            <property name="datanucleus.Optimistic" value="true" />
+        </properties>
+
+    </persistence-unit>
+
+</persistence>

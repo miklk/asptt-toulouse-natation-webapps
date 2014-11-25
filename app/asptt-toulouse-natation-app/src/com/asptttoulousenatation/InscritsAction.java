@@ -76,6 +76,10 @@ public class InscritsAction extends HttpServlet {
 			getAll(pReq, pResp);
 		} else if("updateAll".equals(action)) {
 			updateAll(pReq, pResp);
+		} else if("profession".equals(action)) {
+			profession(pReq, pResp);
+		} else if("listingArena".equals(action)) {
+			listingArena(pReq, pResp);
 		}
 	}
 
@@ -531,5 +535,75 @@ public class InscritsAction extends HttpServlet {
 			entity.setTarif(entry.getValue());
 			inscriptionDao.save(entity);
 		}
+	}
+	
+	private void profession(HttpServletRequest pReq, HttpServletResponse pResp)
+			throws ServletException, IOException {
+		StrBuilder builder = new StrBuilder();
+
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Object>(
+				InscriptionEntityFields.INSCRIPTIONDT, null, Operator.NOT_NULL));
+		List<InscriptionEntity2> entities = inscriptionDao.find(criteria);
+		for (InscriptionEntity2 entity : entities) {
+			try {
+				List<String> results = new ArrayList<String>();
+				results.add(entity.getNom());
+				results.add(entity.getPrenom());
+				results.add(entity.getEmail());
+
+				final GroupEntity group;
+				if (entity.getNouveauGroupe() != null) {
+					group = groupDao.get(entity.getNouveauGroupe());
+					results.add(group.getTitle());
+				} else {
+					group = null;
+					results.add("SANS GROUPE");
+				}
+				results.add(entity.getProfession());
+				results.add(entity.getProfessionTextPere());
+				results.add(entity.getProfessionTextMere());
+				results.add(entity.getTelephone());
+
+				StrBuilder resultAsString = new StrBuilder();
+				resultAsString.appendWithSeparators(results, ";");
+				builder.append(resultAsString.toString()).appendNewLine();
+			} catch (Exception e) {
+				builder.append("Erreur avec l'adhérent " + entity.getId()
+						+ " (" + e.getMessage() + ")");
+			}
+		}
+		pResp.setContentType("text/plain;charset=UTF-8");
+		pResp.getOutputStream().print(
+				entities.size() + "\n" + builder.toString());
+	}
+	
+	private void listingArena(HttpServletRequest pReq, HttpServletResponse pResp)
+			throws ServletException, IOException {
+		StrBuilder builder = new StrBuilder();
+
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Object>(
+				InscriptionEntityFields.INSCRIPTIONDT, null, Operator.NOT_NULL));
+		List<InscriptionEntity2> entities = inscriptionDao.find(criteria);
+		for (InscriptionEntity2 entity : entities) {
+			try {
+				List<String> results = new ArrayList<String>();
+				results.add(entity.getNom());
+				results.add(entity.getPrenom());
+
+				StrBuilder resultAsString = new StrBuilder();
+				resultAsString.appendWithSeparators(results, ";");
+				builder.append(resultAsString.toString()).appendNewLine();
+			} catch (Exception e) {
+				builder.append("Erreur avec l'adhérent " + entity.getId()
+						+ " (" + e.getMessage() + ")");
+			}
+		}
+		pResp.setContentType("text/plain;charset=UTF-8");
+		pResp.getOutputStream().print(
+				entities.size() + "\n" + builder.toString());
 	}
 }

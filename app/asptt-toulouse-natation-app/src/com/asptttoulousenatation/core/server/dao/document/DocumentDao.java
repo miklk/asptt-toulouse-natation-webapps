@@ -9,4 +9,14 @@ public class DocumentDao extends DaoBase<DocumentEntity> {
 	public Class<DocumentEntity> getEntityClass() {
 		return DocumentEntity.class;
 	}
+
+	@Override
+	public String getAlias() {
+		return "document";
+	}
+	
+	@Override
+	public Object getKey(DocumentEntity pEntity) {
+		return pEntity.getId();
+	}
 }

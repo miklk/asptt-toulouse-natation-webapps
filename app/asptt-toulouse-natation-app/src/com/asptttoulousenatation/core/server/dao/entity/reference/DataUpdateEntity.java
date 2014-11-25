@@ -1,29 +1,26 @@
 package com.asptttoulousenatation.core.server.dao.entity.reference;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
-import javax.jdo.annotations.IdentityType;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Persistent;
-import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-import com.asptttoulousenatation.core.server.dao.entity.Entity;
+import com.asptttoulousenatation.core.server.dao.entity.IEntity;
 
-@PersistenceCapable(identityType = IdentityType.APPLICATION, detachable="true")
-public class DataUpdateEntity implements Entity {
+@Entity
+public class DataUpdateEntity implements IEntity {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3182065752809718677L;
 
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Persistent
 	private String kind;
 	
-	@Persistent
 	private Boolean updated;
 	
 	public DataUpdateEntity() {

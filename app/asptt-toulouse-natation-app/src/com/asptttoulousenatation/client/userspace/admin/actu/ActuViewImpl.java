@@ -28,6 +28,7 @@ public class ActuViewImpl extends Composite implements ActuView {
 	private TextBox title;
 	private TextBox summary;
 	private DateBox date;
+	private DateBox expiration;
 	private CKEditor contentInput;
 	private TextBox imageUrl;
 	private CheckBox competition;
@@ -69,6 +70,16 @@ public class ActuViewImpl extends Composite implements ActuView {
 		date.setWidth("200px");
 		lPanel.setWidget(rowIndex, 0, createLabel("Date"));
 		lPanel.setWidget(rowIndex, 1, date);
+		rowIndex++;
+		
+		// Date
+		expiration = new DateBox();
+		expiration.setFormat(new DateBox.DefaultFormat(DateTimeFormat
+				.getFormat("dd MMMM yyyy HH:mm:ss")));
+		expiration.setValue(new Date());
+		expiration.setWidth("200px");
+		lPanel.setWidget(rowIndex, 0, createLabel("Date expiration"));
+		lPanel.setWidget(rowIndex, 1, expiration);
 		rowIndex++;
 		
 		//Image url
@@ -168,5 +179,10 @@ public class ActuViewImpl extends Composite implements ActuView {
 	@Override
 	public HasValue<Boolean> getCompetition() {
 		return competition;
+	}
+
+	@Override
+	public HasValue<Date> getExpirationDate() {
+		return expiration;
 	}
 }

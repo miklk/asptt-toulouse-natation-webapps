@@ -10,4 +10,14 @@ public class SwimmerStatDao extends DaoBase<SwimmerStatEntity> {
 		return SwimmerStatEntity.class;
 	}
 
+	@Override
+	public String getAlias() {
+		return "swimmerStat";
+	}
+	
+	@Override
+	public Object getKey(SwimmerStatEntity pEntity) {
+		return pEntity.getId();
+	}
+
 }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
@@ -111,7 +112,7 @@ public class LoadingService {
 				}
 			} else {
 				for (MenuEntity lMenuEntity : lMenuEntities) {
-					//si divider créer une menu divider
+					// si divider créer une menu divider
 					LoadingMenuUi lMenuLoadingUi2 = new LoadingMenuUi(
 							lMenuEntity.getTitle(),
 							BooleanUtils.toBoolean(lMenuEntity.getDivider()),
@@ -143,18 +144,24 @@ public class LoadingService {
 		List<ActuEntity> lEntities = actuDao.getAll(0, 7);
 		ActuTransformer actuTransformer = new ActuTransformer();
 		DocumentTransformer documentTransformer = new DocumentTransformer();
+		Date now = new Date();
 		for (ActuEntity entity : lEntities) {
-			ActuUi lUi = actuTransformer.toUi(entity);
-			// Get documents
-			List<CriterionDao<? extends Object>> lDocumentCriteria = new ArrayList<CriterionDao<? extends Object>>(
-					1);
-			lDocumentCriteria.add(new CriterionDao<Long>(DocumentEntityFields.MENU, entity.getId(), Operator.EQUAL));
-			List<DocumentEntity> lDocumentEntities = documentDao
-					.find(lDocumentCriteria);
-			List<DocumentUi> lDocumentUis = documentTransformer
-					.toUi(lDocumentEntities);
-			lUi.setDocumentSet(lDocumentUis);
-			result.addActualite(lUi);
+			if (entity.getExpiration() == null
+					|| (entity.getExpiration().compareTo(now) < 0)) {
+				ActuUi lUi = actuTransformer.toUi(entity);
+				// Get documents
+				List<CriterionDao<? extends Object>> lDocumentCriteria = new ArrayList<CriterionDao<? extends Object>>(
+						1);
+				lDocumentCriteria.add(new CriterionDao<Long>(
+						DocumentEntityFields.MENU, entity.getId(),
+						Operator.EQUAL));
+				List<DocumentEntity> lDocumentEntities = documentDao
+						.find(lDocumentCriteria);
+				List<DocumentUi> lDocumentUis = documentTransformer
+						.toUi(lDocumentEntities);
+				lUi.setDocumentSet(lDocumentUis);
+				result.addActualite(lUi);
+			}
 		}
 
 		// Album Picasa

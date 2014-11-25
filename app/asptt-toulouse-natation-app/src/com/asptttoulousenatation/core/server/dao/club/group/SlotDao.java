@@ -21,4 +21,14 @@ public class SlotDao extends DaoBase<SlotEntity> {
 		}
 		return new ArrayList<String>(piscines);
 	}
+
+	@Override
+	public String getAlias() {
+		return "slot";
+	}
+	
+	@Override
+	public Object getKey(SlotEntity pEntity) {
+		return pEntity.getId();
+	}
 }

@@ -9,4 +9,14 @@ public class ContentDao extends DaoBase<ContentEntity> {
 	public Class<ContentEntity> getEntityClass() {
 		return ContentEntity.class;
 	}
+
+	@Override
+	public String getAlias() {
+		return "content";
+	}
+	
+	@Override
+	public Object getKey(ContentEntity pEntity) {
+		return pEntity.getId();
+	}
 }

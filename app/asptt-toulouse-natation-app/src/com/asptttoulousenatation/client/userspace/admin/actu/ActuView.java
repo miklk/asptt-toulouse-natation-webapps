@@ -15,6 +15,7 @@ public interface ActuView extends IsWidget {
 	public String getContent();
 	public HasValue<Date> getCreationDate();
 	public HasValue<Boolean> getCompetition();
+	public HasValue<Date> getExpirationDate();
 	public Long getDocumentId();
 	public boolean isDocumentSet();
 	public HasValue<String> getImageUrl();
