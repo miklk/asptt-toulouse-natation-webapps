@@ -127,9 +127,24 @@ public abstract class DaoBase<E extends IEntity> {
 		EntityManager em = EMF.get().createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		try {
+			//Try to find existing
+			Object key = getKey(pEntity);
+			final E existingEntity;
+			if(key != null) {
+				existingEntity = em.find(getEntityClass(), getKey(pEntity));
+			} else {
+				existingEntity = null;
+			}
 			tx.begin();
-			em.remove(pEntity);
+			if(existingEntity != null) {
+				em.remove(existingEntity);
+			}
 			tx.commit();
+		} catch(Exception e) {
+			LOG.severe(e.getMessage());
+			if(tx.isActive()) {
+				tx.rollback();
+			}
 		} finally {
 			em.close();
 		}
