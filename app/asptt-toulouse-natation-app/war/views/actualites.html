@@ -1,0 +1,81 @@
+<style type="text/css">
+    /* Custom Styles */
+    ul.nav-tabs{
+        width: 140px;
+        margin-top: 20px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+    }
+    ul.nav-tabs li{
+        margin: 0;
+        border-top: 1px solid #ddd;
+    }
+    ul.nav-tabs li:first-child{
+        border-top: none;
+    }
+    ul.nav-tabs li a{
+        margin: 0;
+        padding: 8px 16px;
+        border-radius: 0;
+    }
+    ul.nav-tabs li.active a, ul.nav-tabs li.active a:hover{
+        color: #fff;
+        background: #0088cc;
+        border: 1px solid #0088cc;
+    }
+    ul.nav-tabs li:first-child a{
+        border-radius: 4px 4px 0 0;
+    }
+    ul.nav-tabs li:last-child a{
+        border-radius: 0 0 4px 4px;
+    }
+    ul.nav-tabs.affix{
+        top: 30px; /* Set the top position of pinned element */
+    }
+</style>
+
+<div class="row">
+<div ng-bind-html="pageHtml"></div>
+</div>
+<div class="row" ng-controller="ActualiteCtrl">
+	<div data-spy="scroll" data-target="#myScrollspy">
+		<div class="col-md-2" id="myScrollspy">
+            <ul class="nav nav-tabs nav-stacked" data-spy="affix" data-offset-top="125">
+                <li><a href="" onclick="asptt_scrollTo('document')">Documents annexes</a></li>
+                <li><a href="" onclick="asptt_scrollTo('body_top')">Haut de page</a></li>
+            </ul>
+        </div>
+	
+		<div class="col-md-10">
+			<div class="panel panel-default" ng-repeat="actualite in actualites.actualites">
+				<div class="panel-body">
+					<div class="col-md-3">
+						<img ng-src="{{actualite.imageUrl}}" style="max-width:200px" />
+					</div>
+					<div class="col-md-9">
+						<p>{{actualite.creationDate | date:"dd/MM/yyyy 'à' HH:mm"}}</p>
+						<h4>{{actualite.title}}</h4>
+						<p ng-bind-html="actualiteContent(actualite.content)"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row" id="document">
+	<div class="panel panel-info" ng-show="hasDocument">
+		<div class="panel-heading"><h5>Documents annexes <span class="badge">{{nbDocuments}}</span></h5></div>
+		<div class="panel-body">
+			<div class="list-group">
+				<a href="http://docs.google.com/viewer?embedded=true&url=http%3A%2F%2Fwww.asptt-toulouse-natation.com%2FdownloadDocument%3FdocumentId%3D{{document.id}}%26fileId%3D{{document.data}}" target="_blank"  class="list-group-item" ng-repeat="document in documents">
+					<h5 class="list-group-item-heading">{{document.title}}</h5>
+					<p class="list-group-item-text">{{document.summary}}</p>
+				</a>
+				<div id="pdf-viewer" style="display:none">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
