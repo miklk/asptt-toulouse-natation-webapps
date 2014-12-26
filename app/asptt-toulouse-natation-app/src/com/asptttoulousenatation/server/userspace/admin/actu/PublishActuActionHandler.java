@@ -1,10 +1,12 @@
 package com.asptttoulousenatation.server.userspace.admin.actu;
 
-import org.apache.commons.lang3.StringUtils;
-
 import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
+
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import com.asptttoulousenatation.core.server.dao.ActuDao;
 import com.asptttoulousenatation.core.server.dao.document.DocumentDao;
@@ -16,6 +18,10 @@ import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
 import com.asptttoulousenatation.shared.userspace.admin.actu.PublishActionResult;
 import com.asptttoulousenatation.shared.userspace.admin.actu.PublishActuAction;
 import com.google.appengine.api.datastore.Text;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.Parameter;
+import com.restfb.types.FacebookType;
 
 public class PublishActuActionHandler implements
 		ActionHandler<PublishActuAction, PublishActionResult> {
@@ -41,6 +47,13 @@ public class PublishActuActionHandler implements
 			contentDao.save(contentEntity);
 		}
 		pContext.execute(new SetDataUpdateAction(ActuEntity.class, true));
+		
+		Document document = Jsoup.parse(pAction.getContent());
+		String facebookText = document.text();
+		FacebookClient facebookClient = new DefaultFacebookClient("CAAKgVklrgZCoBAOngDFrI5X24JXMRFjyKMzCXRoZAz26KT7XHaenWxU5MLtkZCbu9vk09UNYkwZB6YivEUftisnO7i7FYDcgPo7VnW0fELT9gRNwucy3wtkG9ms0Cq4KaCxqIJ70Sj1QSJ9pdg17YVcRtaSoV52YbhzPlVNAfVGnDcuKyW5c");
+		FacebookType publishMessageResponse =
+				facebookClient.publish("710079642422594/feed", FacebookType.class,
+				    Parameter.with("message", facebookText));
 		return new PublishActionResult();
 	}
 

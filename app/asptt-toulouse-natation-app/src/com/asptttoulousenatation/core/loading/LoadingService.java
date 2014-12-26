@@ -147,7 +147,7 @@ public class LoadingService {
 		Date now = new Date();
 		for (ActuEntity entity : lEntities) {
 			if (entity.getExpiration() == null
-					|| (entity.getExpiration().compareTo(now) < 0)) {
+					|| (entity.getExpiration().compareTo(now) >= 0)) {
 				ActuUi lUi = actuTransformer.toUi(entity);
 				// Get documents
 				List<CriterionDao<? extends Object>> lDocumentCriteria = new ArrayList<CriterionDao<? extends Object>>(
@@ -164,9 +164,6 @@ public class LoadingService {
 			}
 		}
 
-		// Album Picasa
-		// getAlbums(result);
-		getAlbumsFake(result);
 		Long endTime = System.currentTimeMillis();
 		LOG.info("Loading duration: " + (endTime - startTime) + " ms");
 		return result;
@@ -225,15 +222,6 @@ public class LoadingService {
 			e.printStackTrace();
 		}
 		return result;
-	}
-
-	private void getAlbumsFake(LoadingResult result) {
-		result.addAlbum(new LoadingAlbumUi("1", "Compétition interne",
-				"img/galerie/sitegpe.jpg"));
-		result.addAlbum(new LoadingAlbumUi("2", "National 2",
-				"img/galerie/sitewebmarius.jpg"));
-		result.addAlbum(new LoadingAlbumUi("3", "Natathlon",
-				"img/galerie/sitewebcyrilpastailleavant.jpg"));
 	}
 
 	/**

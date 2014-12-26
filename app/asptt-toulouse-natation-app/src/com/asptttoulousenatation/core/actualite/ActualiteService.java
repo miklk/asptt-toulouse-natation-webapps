@@ -49,8 +49,6 @@ public class ActualiteService {
 					ActuEntityFields.COMPETITION, BooleanUtils
 							.toBoolean(pCompetition), Operator.EQUAL));
 		}
-		criteria.add(new CriterionDao<Date>(
-				ActuEntityFields.EXPIRATION, new Date(), Operator.GREATER_EQ));
 		List<ActuEntity> lEntities = dao.find(criteria, 0, maxNumber);
 		ActuTransformer actuTransformer = new ActuTransformer();
 		DocumentTransformer documentTransformer = new DocumentTransformer();

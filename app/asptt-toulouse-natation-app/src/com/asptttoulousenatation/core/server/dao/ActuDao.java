@@ -31,7 +31,7 @@ public class ActuDao extends DaoBase<ActuEntity> {
 					+ CriteriaUtils.getWhereClause(pCriteria, Operator.AND,
 							getAlias());
 		}
-		lQueryAsString += " " + getAlias() + ".creationDate DESC";
+		lQueryAsString += " ORDER BY " + getAlias() + ".creationDate DESC";
 		final Query lQuery = em.createQuery(lQueryAsString);
 		lQuery.setFirstResult(limitStart);
 		lQuery.setMaxResults(limitEnd);
