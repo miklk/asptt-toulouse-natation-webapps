@@ -4,7 +4,7 @@
 			<div class="col-md-10 text-center" ng-class="{'bg-success' : userCreateResult.success, 'bg-danger': !userCreateResult.success}" ng-show="userForm.$submitted">
 				<span ng-show="userCreateResult.success"><strong>L'utilisateur {{email}} a été créé avec succès</strong></span>
 				<span ng-show="userCreateResult.exists"><strong>L'utilisateur {{email}} existe déjà</strong></span>
-				<span ng-show="!userCreateResult.exists && !userCreateResult.success"><strong>L'utilisateur {{email}} n'a pas pu être créer (erreur inconnue)</strong></span>
+				<span ng-show="!userCreateResult.exists && !userCreateResult.success"><strong>L'utilisateur {{email}} n'a pas pu être créé (erreur inconnue)</strong></span>
 			</div>
 		</div>
 		<div class="form-group" ng-class="{'has-error has-feedback' : userForm.email.$invalid && !userForm.email.$pristine , 'has-success has-feedback':  !userForm.email.$invalid && !userForm.email.$pristine}">
