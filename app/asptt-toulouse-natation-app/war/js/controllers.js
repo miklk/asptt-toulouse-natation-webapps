@@ -62,7 +62,7 @@ aspttNatTlsApp.controller('PageCtrl', ['$scope', 'PageService', '$routeParams', 
 	});
 }]);
 
-aspttNatTlsApp.controller('ActualiteCtrl', ['$scope', 'ActualiteService', 'PageService', '$routeParams', '$sce', function($scope, ActualiteService, PageService,  $routeParams, $sce) {
+aspttNatTlsApp.controller('CompetitionActualiteCtrl', ['$scope', 'ActualiteService', 'PageService', '$routeParams', '$sce', function($scope, ActualiteService, PageService,  $routeParams, $sce) {
 	PageService.get({pageId: 'competitions-actualites'}, function(data) {
 		var pageUi = angular.fromJson(data);
 		$scope.pageHtml = $sce.trustAsHtml(pageUi.content);
@@ -79,6 +79,28 @@ aspttNatTlsApp.controller('ActualiteCtrl', ['$scope', 'ActualiteService', 'PageS
 		};
 	});
 	$scope.actualites = ActualiteService.get({competition: 'true'});
+	$scope.actualiteContent = function(value) {
+		return $sce.trustAsHtml(value);
+	};
+}]);
+
+aspttNatTlsApp.controller('ActualiteCtrl', ['$scope', 'ActualiteService', 'PageService', '$routeParams', '$sce', function($scope, ActualiteService, PageService,  $routeParams, $sce) {
+	PageService.get({pageId: 'actualites'}, function(data) {
+		var pageUi = angular.fromJson(data);
+		$scope.pageHtml = $sce.trustAsHtml(pageUi.content);
+		var documentSize = pageUi.documents.length;
+		$scope.hasDocument = documentSize > 0;
+		$scope.nbDocuments = documentSize;
+		$scope.documents = pageUi.documents;
+		$scope.displayPdf = function() {
+			$scope.pdfUrl = $sce.trustAsResourceUrl("http://docs.google.com/viewer?url=http%3A%2F%2F1-dot-asptt-toulouse-natation.appspot.com%2FdownloadDocument%3FdocumentId%3D5241851221114880%26fileId%3D4961648628465664");
+			$("#pdf-viewer").show();
+			$('html, body').animate({  
+	            scrollTop:$("#pdf-viewer").offset().top  
+	        }, 'slow');	
+		};
+	});
+	$scope.actualites = ActualiteService.get({competition: 'false'});
 	$scope.actualiteContent = function(value) {
 		return $sce.trustAsHtml(value);
 	};
@@ -437,9 +459,13 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 			templateUrl: 'views/inscription.html',
 			controller: 'PageCtrl'
 		}).
+		when('/page/actualites', {
+			templateUrl: 'views/actualites.html',
+			controller: 'ActualiteCtrl'
+		}).
 		when('/page/competitions-actualites', {
 			templateUrl: 'views/competitions-actualites.html',
-			controller: 'ActualiteCtrl'
+			controller: 'CompetitionActualiteCtrl'
 		}).
 		when('/page/login', {
 			templateUrl: 'views/login.html',
