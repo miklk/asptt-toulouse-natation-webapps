@@ -83,7 +83,7 @@ public class AdherentListResultBeanTransformer implements Serializable {
 			InscriptionEntity2 principal = inscription2Dao.get(entity.getPrincipal());
 			bean.setEmailPrincipal(principal.getEmail());
 			} catch(Exception e) {
-				LOG.severe("Erreur principal: " + e.getMessage());
+				LOG.severe("Erreur principal (" + entity.getPrincipal() + "): " + e.getMessage());
 			}
 		}
 		bean.setCertificat(BooleanUtils.toBoolean(entity.getCertificat()));
