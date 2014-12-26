@@ -1,7 +1,7 @@
 /**
  * 
  */
-var adminApp = angular.module('adminApp', ['ngRoute', 'adherentsServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'UserController', 'AdherentListCtrl']);
+var adminApp = angular.module('adminApp', ['ngRoute', 'adherentsServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'UserController', 'AdherentListCtrl', 'DocumentController', 'LibelleController']);
 
 adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
 	$routeProvider.
@@ -31,6 +31,18 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 		when('/users/creer', {
 			templateUrl: 'views/user/user-creer.html',
 			controller: 'UserController'
+		}).
+		when('/documents', {
+			templateUrl: 'views/document/documents.html',
+			controller: 'DocumentListController'
+		}).
+		when('/documents/:documentId', {
+			templateUrl: 'views/document/document.html',
+			controller: 'DocumentController'
+		}).
+		when('/libelles', {
+			templateUrl: 'views/document/libelle/libelles.html',
+			controller: 'LibelleController'
 		}).
 		when('/error', {
 			templateUrl: 'views/error.html'

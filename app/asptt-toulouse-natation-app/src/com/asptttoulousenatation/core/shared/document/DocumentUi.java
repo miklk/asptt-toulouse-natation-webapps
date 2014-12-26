@@ -1,9 +1,11 @@
 package com.asptttoulousenatation.core.shared.document;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.asptttoulousenatation.core.shared.document.libelle.LibelleUi;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 @XmlRootElement
@@ -22,6 +24,8 @@ public class DocumentUi implements IsSerializable {
 	private Date creationDate;
 
 	private Long data;
+	
+	private List<LibelleUi> libelles;
 
 	public DocumentUi() {
 
@@ -94,4 +98,13 @@ public class DocumentUi implements IsSerializable {
 	public void setData(Long pData) {
 		data = pData;
 	}
+
+	public List<LibelleUi> getLibelles() {
+		return libelles;
+	}
+
+	public void setLibelles(List<LibelleUi> pLibelles) {
+		libelles = pLibelles;
+	}
+	
 }
