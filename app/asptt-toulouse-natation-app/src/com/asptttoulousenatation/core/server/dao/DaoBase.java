@@ -181,7 +181,7 @@ public abstract class DaoBase<E extends IEntity> {
 						.getWhereClause(pCriteria, pOperator, getAlias());
 		if (pOrder != null) {
 			lQueryAsString += " ORDER BY "
-					+ pOrder.getField().toString().toLowerCase() + " "
+					+ pOrder.getField().getFieldName() + " "
 					+ pOrder.getOperator().toString();
 		}
 		final TypedQuery<E> lQuery = em.createQuery(lQueryAsString, pClass);
