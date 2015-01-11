@@ -37,35 +37,46 @@ public class LibelleService {
 	private LibelleDao dao = new LibelleDao();
 
 	@GET
-	public LibelleListResult find() {
+	public LibelleListResult find(@QueryParam("type") String pType) {
 		LibelleListResult result = new LibelleListResult();
-		Map<String, LibelleUi> libellesMap = LibelleTransformer.getInstance()
-				.get(dao.getAll());
-		Collection<LibelleUi> libellesColl = new ArrayList<>(
-				libellesMap.values());
-		CollectionUtils.filter(libellesColl, new Predicate() {
-			@Override
-			public boolean evaluate(Object pArg0) {
-				LibelleUi ui = (LibelleUi) pArg0;
-				return !ui.isHasAncestor();
+		List<LibelleEntity> entities = dao.getAll();
+		if ("plat".equals(pType)) {
+			List<String> libelles = new ArrayList<>(entities.size());
+			for (LibelleEntity entity : entities) {
+				libelles.add(entity.getIntitule());
 			}
-		});
-		List<LibelleUi> libelles = new ArrayList<>(libellesColl);
-		Collections.sort(libelles, new Comparator<LibelleUi>() {
+			Collections.sort(libelles);
+			result.setWholeLibelles(libelles);
+		} else {
+			Map<String, LibelleUi> libellesMap = LibelleTransformer
+					.getInstance().get(entities);
+			Collection<LibelleUi> libellesColl = new ArrayList<>(
+					libellesMap.values());
+			CollectionUtils.filter(libellesColl, new Predicate() {
+				@Override
+				public boolean evaluate(Object pArg0) {
+					LibelleUi ui = (LibelleUi) pArg0;
+					return !ui.isHasAncestor();
+				}
+			});
+			List<LibelleUi> libelles = new ArrayList<>(libellesColl);
+			Collections.sort(libelles, new Comparator<LibelleUi>() {
 
-			@Override
-			public int compare(LibelleUi pO1, LibelleUi pO2) {
-				return pO1.getWholeIntitule().compareTo(pO2.getWholeIntitule());
+				@Override
+				public int compare(LibelleUi pO1, LibelleUi pO2) {
+					return pO1.getWholeIntitule().compareTo(
+							pO2.getWholeIntitule());
+				}
+			});
+
+			result.setLibelles(libelles);
+			List<String> wholeLibelles = new ArrayList<>();
+			for (LibelleUi libelle : libellesMap.values()) {
+				wholeLibelles.add(libelle.getWholeIntitule());
 			}
-		});
-
-		result.setLibelles(libelles);
-		List<String> wholeLibelles = new ArrayList<>();
-		for (LibelleUi libelle : libellesMap.values()) {
-			wholeLibelles.add(libelle.getWholeIntitule());
+			Collections.sort(wholeLibelles);
+			result.setWholeLibelles(wholeLibelles);
 		}
-		Collections.sort(wholeLibelles);
-		result.setWholeLibelles(wholeLibelles);
 		return result;
 	}
 

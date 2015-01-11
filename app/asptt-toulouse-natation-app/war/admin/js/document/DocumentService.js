@@ -3,20 +3,17 @@ var documentServices = angular.module('documentServices', ['ngResource']);
 documentServices.factory('DocumentService', ['$resource', 
                                        function($resource) {
 	return {
-		documents: $resource('/resources/documents/list',{},{
+		list: $resource('/resources/documents',{},{
 			query:{method:'GET', isArray: false,params: {}}
 		}),
-		document: $resource('/resources/documents/:document', {document: '@documentId'},{
-  			'get': {method: 'GET', isArray: false}
-  		})
+		create: $resource('/resources/documents/',{},{
+			query:{method:'POST', params: {intitule: '@intitule', parent: '@parent'}}
+		}),
+		update: $resource('/resources/documents/:documentId',{},{
+			query:{method:'PUT', params: {}}
+		}),
+		remove: $resource('/resources/documents/:documentId',{},{
+			query:{method:'DELETE', params: {}}
+		})
 	};
-}]);
-
-documentServices.factory('LibelleGroupeService', ['$resource', 
-                                             function($resource) {
-      	return {
-      		groupes: $resource('/resources/libellegroupes/list',{},{
-      			query:{method:'GET', isArray: false,params: {}}
-      		})
-      	};
 }]);

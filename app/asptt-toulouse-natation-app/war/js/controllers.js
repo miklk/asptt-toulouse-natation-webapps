@@ -8,7 +8,7 @@ adherentsApp.controller('AdherentListCtrl', ['$scope', 'Adherent', function($sco
 }]);
 
 
-var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','loadingAppServices', 'pageServices', 'loadingAlbumServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'inscriptionNouveauServices', 'removeAdherentServices', 'authenticationServices', 'actualiteServices', 'LoginController']);
+var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','loadingAppServices', 'pageServices', 'loadingAlbumServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'inscriptionNouveauServices', 'removeAdherentServices', 'authenticationServices', 'actualiteServices', 'LoginController', 'DocumentController']);
 aspttNatTlsApp.controller('LoadingAppCtrl', ['$scope', 'LoadingApp', '$sce', function($scope, LoadingApp, $sce) {
 	LoadingApp.get({}, function(data) {
 		$scope.loadingApp = data;
@@ -466,6 +466,10 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 		when('/page/competitions-actualites', {
 			templateUrl: 'views/competitions-actualites.html',
 			controller: 'CompetitionActualiteCtrl'
+		}).
+		when('/page/documents', {
+			templateUrl: 'views/documents.html',
+			controller: 'DocumentController'
 		}).
 		when('/page/login', {
 			templateUrl: 'views/login.html',

@@ -1,11 +1,11 @@
 package com.asptttoulousenatation.core.shared.document;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.asptttoulousenatation.core.shared.document.libelle.LibelleUi;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 @XmlRootElement
@@ -25,7 +25,7 @@ public class DocumentUi implements IsSerializable {
 
 	private Long data;
 	
-	private List<LibelleUi> libelles;
+	private Set<String> libelles;
 
 	public DocumentUi() {
 
@@ -41,6 +41,13 @@ public class DocumentUi implements IsSerializable {
 		fileName = pFileName;
 		creationDate = pCreationDate;
 		data = pData;
+	}
+	
+	public void addLibelle(String pLibelle) {
+		if(libelles == null) {
+			libelles = new HashSet<>();
+		}
+		libelles.add(pLibelle);
 	}
 
 	public Long getId() {
@@ -99,11 +106,11 @@ public class DocumentUi implements IsSerializable {
 		data = pData;
 	}
 
-	public List<LibelleUi> getLibelles() {
+	public Set<String> getLibelles() {
 		return libelles;
 	}
 
-	public void setLibelles(List<LibelleUi> pLibelles) {
+	public void setLibelles(Set<String> pLibelles) {
 		libelles = pLibelles;
 	}
 	

@@ -38,7 +38,8 @@ public class DownloadServlet extends HttpServlet {
 			LOG.info("Document:" + lFileId);
 			DocumentEntity lDocument = documentDao.get(Long
 					.valueOf(lDocumentId));
-			ContentEntity lContent = dao.get(Long.valueOf(lFileId));
+			
+			ContentEntity lContent = dao.get(lDocument.getDataId());
 
 			// Build response
 			response.setContentType(lDocument.getMimeType());
