@@ -155,6 +155,15 @@ public class DocumentService {
 	@DELETE
 	@Path("{documentId}")
 	public void remove(@PathParam("documentId") Long documentId) {
+		List<CriterionDao<? extends Object>> criteriaJ = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteriaJ.add(new CriterionDao<Long>(
+				DocumentLibelleJEntityFields.DOCUMENT, documentId, Operator.EQUAL));
+		List<DocumentLibelleJEntity> joins = documentLibelleJDao
+				.find(criteriaJ);
+		for(DocumentLibelleJEntity join: joins) {
+			documentLibelleJDao.delete(join);
+		}
 		documentDao.delete(documentId);
 	}
 
