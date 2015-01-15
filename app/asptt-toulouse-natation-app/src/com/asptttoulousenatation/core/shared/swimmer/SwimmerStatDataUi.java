@@ -7,6 +7,7 @@ public class SwimmerStatDataUi implements IsSerializable {
 	private DayTimeEnum dayTime;
 	private int distance;
 	private String comment;
+	private boolean presence;
 
 	public SwimmerStatDataUi() {
 	}
@@ -42,4 +43,13 @@ public class SwimmerStatDataUi implements IsSerializable {
 	public void setComment(String pComment) {
 		comment = pComment;
 	}
+
+	public boolean isPresence() {
+		return presence;
+	}
+
+	public void setPresence(boolean pPresence) {
+		presence = pPresence;
+	}
+	
 }

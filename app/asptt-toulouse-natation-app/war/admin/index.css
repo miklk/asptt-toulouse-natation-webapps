@@ -198,3 +198,6 @@ background: linear-gradient(to right, #1e5799 0%,#7db9e8 100%);
    position:static;
 }
 
+.row-selected {
+	background-color: #d6f2f9;
+}

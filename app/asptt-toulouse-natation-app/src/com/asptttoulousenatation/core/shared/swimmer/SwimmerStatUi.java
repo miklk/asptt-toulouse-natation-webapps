@@ -1,12 +1,17 @@
 package com.asptttoulousenatation.core.shared.swimmer;
 
+import javax.xml.bind.annotation.XmlRootElement;
 
 
-public class SwimmerStatUi implements ISwimmerStatUi {
+@XmlRootElement
+public class SwimmerStatUi {
 
 	private Long id;
-	private Long user;
-	private String swimmer;
+	private Long adherent;
+	private String nom;
+	private String prenom;
+	private Long day;
+	private boolean selected;
 	
 	private SwimmerStatDataUi morning;
 	private SwimmerStatDataUi midday;
@@ -16,7 +21,11 @@ public class SwimmerStatUi implements ISwimmerStatUi {
 	private String comment;
 	
 	public SwimmerStatUi() {
-		
+		morning = new SwimmerStatDataUi();
+		midday = new SwimmerStatDataUi();
+		night = new SwimmerStatDataUi();
+		bodybuilding = new SwimmerStatDataUi();
+		selected = false;
 	}
 	
 
@@ -29,22 +38,33 @@ public class SwimmerStatUi implements ISwimmerStatUi {
 		id = pId;
 	}
 
-	public String getSwimmer() {
-		return swimmer;
-	}
-
-	public void setSwimmer(String pSwimmer) {
-		swimmer = pSwimmer;
-	}
-	
-
-	public Long getUser() {
-		return user;
+	public Long getAdherent() {
+		return adherent;
 	}
 
 
-	public void setUser(Long pUser) {
-		user = pUser;
+	public void setAdherent(Long pAdherent) {
+		adherent = pAdherent;
+	}
+
+
+	public String getNom() {
+		return nom;
+	}
+
+
+	public void setNom(String pNom) {
+		nom = pNom;
+	}
+
+
+	public String getPrenom() {
+		return prenom;
+	}
+
+
+	public void setPrenom(String pPrenom) {
+		prenom = pPrenom;
 	}
 
 
@@ -95,5 +115,21 @@ public class SwimmerStatUi implements ISwimmerStatUi {
 
 	public void setComment(String pComment) {
 		comment = pComment;
+	}
+
+	public Long getDay() {
+		return day;
+	}
+
+	public void setDay(Long pDay) {
+		day = pDay;
+	}
+
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean pSelected) {
+		selected = pSelected;
 	}
 }

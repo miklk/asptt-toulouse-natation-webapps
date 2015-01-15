@@ -1,0 +1,28 @@
+<div class="container" style="margin-top: 2%;font-size: 0.8em">
+	<div class="col-md-3">
+		<div ng-repeat="(libelle, documents) in results" style="margin-bottom: 2%">
+			<button type="button" class="btn btn-primary btn-sm" ng-click="scrollToTop($index)">{{libelle}}</button>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="row" ng-repeat="(libelle, documents) in results" id="{{$index}}">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h4>{{libelle}} <span class="badge">{{documents.length}}</span></h4>
+				</div>
+				<div class="panel-body">
+					<div class="list-group">
+						<a href="http://docs.google.com/viewer?embedded=true&url=http%3A%2F%2Fwww.asptt-toulouse-natation.com%2FdownloadDocument%3FdocumentId%3D{{document.id}}%26fileId%3D{{document.data}}" target="_blank" class="list-group-item" ng-repeat="document in documents">
+							<h5 class="list-group-item-heading">{{document.title}}</h5>
+							<p class="list-group-item-text">
+								<span class="text-muted" ng-show="!document.summary"><small>Sans description</small></span>
+								{{document.summary}}
+							</p>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

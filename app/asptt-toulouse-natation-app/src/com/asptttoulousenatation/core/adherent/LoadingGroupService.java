@@ -61,4 +61,21 @@ public class LoadingGroupService {
 		result.setGroups(lUis);
 		return result;
 	}
+	
+	@Path("/all")
+	@GET
+	public LoadingGroupesUi getGroupes() {
+		List<GroupEntity> lEntities = dao.getAll();
+		List<GroupUi> lUis = new GroupTransformer().toUi(lEntities);
+		Collections.sort(lUis, new Comparator<GroupUi>() {
+
+			public int compare(GroupUi pO1, GroupUi pO2) {
+				return pO1.getTitle().compareTo(pO2.getTitle());
+			}
+		});
+		
+		LoadingGroupesUi result = new LoadingGroupesUi();
+		result.setGroups(lUis);
+		return result;
+	}
 }

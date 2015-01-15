@@ -285,7 +285,7 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 					SwimmerStatDataUi lStatDataUi = lSwimmerStat.getMorning();
 					lUpdateD.setId(lStatDataUi.getId());
 				}
-				lUpdateD.setUser(lSwimmerStat.getUser());
+				lUpdateD.setUser(0l);//lSwimmerStat.getUser());
 				lUpdateD.setDay(pDay);
 				lUpdateD.setDayTime(DayTimeEnum.MATIN);
 				String lDistance = lWidget.getMorning().getValue();
@@ -307,7 +307,7 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 					SwimmerStatDataUi lStatDataUi = lSwimmerStat.getMidday();
 					lUpdateD.setId(lStatDataUi.getId());
 				}
-				lUpdateD.setUser(lSwimmerStat.getUser());
+				lUpdateD.setUser(0l);//lSwimmerStat.getUser());
 				lUpdateD.setDay(pDay);
 				lUpdateD.setDayTime(DayTimeEnum.MIDI);
 				String lDistance = lWidget.getMidday().getValue();
@@ -327,7 +327,7 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 					SwimmerStatDataUi lStatDataUi = lSwimmerStat.getNight();
 					lUpdateD.setId(lStatDataUi.getId());
 				}
-				lUpdateD.setUser(lSwimmerStat.getUser());
+				lUpdateD.setUser(0l);//lSwimmerStat.getUser());
 				lUpdateD.setDay(pDay);
 				lUpdateD.setDayTime(DayTimeEnum.SOIR);
 				String lDistance = lWidget.getNight().getValue();
@@ -348,7 +348,7 @@ public class SwimmerStatActivity extends MyAbstractActivity<SwimmerStatPlace> {
 					SwimmerStatDataUi lStatDataUi = lSwimmerStat.getBodybuilding();
 					lUpdateD.setId(lStatDataUi.getId());
 				}
-				lUpdateD.setUser(lSwimmerStat.getUser());
+				lUpdateD.setUser(0l);//lSwimmerStat.getUser());
 				lUpdateD.setDay(pDay);
 				lUpdateD.setDayTime(DayTimeEnum.MUSCU);
 				lUpdateD.setDistance(Integer.valueOf(lWidget.getBodybuilding()

@@ -238,7 +238,7 @@ public class GetAllSwimmerStatActionHandler implements
 						Operator.GREATER_EQ));
 				lCriteria.add(new CriterionDao<Long>(
 						SwimmerStatEntityFields.DAY, endDay, Operator.LESS_EQ));
-				lSwimmerStatUi = new SwimmerStatUi();
+				lSwimmerStatUi = null;//new SwimmerStatUi();
 
 				break;
 			case WEEK:

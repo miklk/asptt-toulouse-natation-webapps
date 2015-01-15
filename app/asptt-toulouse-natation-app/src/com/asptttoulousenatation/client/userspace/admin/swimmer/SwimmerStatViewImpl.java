@@ -63,7 +63,7 @@ public class SwimmerStatViewImpl extends Composite implements SwimmerStatView {
 		TextColumn<SwimmerStatUi> swimmerColumn = new TextColumn<SwimmerStatUi>() {
 			@Override
 			public String getValue(SwimmerStatUi pObject) {
-				return pObject.getSwimmer();
+				return "";//pObject.getSwimmer();
 			}
 		};
 		cellTable.addColumn(swimmerColumn, "Nageur(euse)");

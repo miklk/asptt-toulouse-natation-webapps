@@ -467,8 +467,8 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 			templateUrl: 'views/competitions-actualites.html',
 			controller: 'CompetitionActualiteCtrl'
 		}).
-		when('/page/documents', {
-			templateUrl: 'views/documents.html',
+		when('/page/coin-du-nageur', {
+			templateUrl: 'views/coin-du-nageur.html',
 			controller: 'DocumentController'
 		}).
 		when('/page/login', {
