@@ -1,4 +1,7 @@
 <div class="container" ng-controller="UserController">
+	<div class="row">
+		<h1 class="page-header">Créer un utilisateur</h1>
+	</div>
 	<form role="form" class="form-horizontal" name="userForm" ng-submit="creer()" novalidate>
 		<div class="form-group">
 			<div class="col-md-10 text-center" ng-class="{'bg-success' : userCreateResult.success, 'bg-danger': !userCreateResult.success}" ng-show="userForm.$submitted">

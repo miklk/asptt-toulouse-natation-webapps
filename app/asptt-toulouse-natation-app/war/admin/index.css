@@ -35,6 +35,10 @@ body {
 	background-color: rgba(221, 244, 252, 1.0);
 }
 
+.page-header {
+	border-bottom: 1px solid #eee;
+}
+
 #container {
 	border-top: 1px solid #7ACEF4;
 }
@@ -194,6 +198,3 @@ background: linear-gradient(to right, #1e5799 0%,#7db9e8 100%);
    position:static;
 }
 
-.mention {
-	bottom: 25px;
-}

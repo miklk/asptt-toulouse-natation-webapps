@@ -22,7 +22,7 @@ adherentController.controller('AdherentCtrl', ['$scope', 'AdherentService', 'Gro
 	AdherentService.get({adherent: $routeParams.adherentId}, function (data) {
 		$scope.adherent = data;
 		$scope.loadGroupe = function() {
-			GroupeService.get({nouveau: false}, function (data) {
+			GroupeService.list.query({nouveau: false}, function (data) {
 				$scope.groupes = data;
 				$("#panel-adherent").toggleClass("col-md-11", false);
 				$("#panel-adherent").toggleClass("col-md-6", true);

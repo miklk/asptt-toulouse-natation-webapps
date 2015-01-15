@@ -1,13 +1,16 @@
 /**
  * 
  */
-var adminApp = angular.module('adminApp', ['ngRoute', 'adherentsServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'UserController', 'AdherentListCtrl', 'DocumentController', 'LibelleController']);
+var adminApp = angular.module('adminApp', ['ngRoute', 'adherentsServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'UserController', 'AdherentListCtrl', 'DocumentController', 'LibelleController', 'SuiviNageurController']);
 
 adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
 	$routeProvider.
 		when('/', {
 			templateUrl: 'views/adherents.html',
 			controller: 'AdherentListCtrl'
+		}).
+		when('/home', {
+			templateUrl: 'views/index.html'
 		}).
 		when('/adherents', {
 			templateUrl: 'views/adherents.html',
@@ -33,16 +36,13 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 			controller: 'UserController'
 		}).
 		when('/documents', {
-			templateUrl: 'views/document/documents.html',
-			controller: 'DocumentListController'
-		}).
-		when('/documents/:documentId', {
-			templateUrl: 'views/document/document.html',
-			controller: 'DocumentController'
+			templateUrl: 'views/document/documents.html'
 		}).
 		when('/libelles', {
-			templateUrl: 'views/document/libelle/libelles.html',
-			controller: 'LibelleController'
+			templateUrl: 'views/document/libelle/libelles.html'
+		}).
+		when('/suiviNageur', {
+			templateUrl: 'views/suivi/suiviNageur.html'
 		}).
 		when('/error', {
 			templateUrl: 'views/error.html'
