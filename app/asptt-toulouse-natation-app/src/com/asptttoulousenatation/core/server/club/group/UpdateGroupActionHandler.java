@@ -29,6 +29,7 @@ public class UpdateGroupActionHandler implements
 		lEntity.setTarifWeight(pAction.getTarifWeight());
 		lEntity.setNouveau(pAction.isNouveau());
 		lEntity.setDescription(pAction.getDescription());
+		lEntity.setEnf(pAction.isEnf());
 		dao.save(lEntity);
 		return new UpdateGroupResult();
 	}

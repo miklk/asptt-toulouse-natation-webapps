@@ -47,6 +47,7 @@ public class GroupViewImpl extends Composite implements GroupView {
 	private CheckBox seanceUnique;
 	private CheckBox nouveau;
 	private TextArea description;
+	private CheckBox enf;
 
 	public GroupViewImpl(List<GroupUi> pGroups) {
 		data = pGroups;
@@ -94,6 +95,7 @@ public class GroupViewImpl extends Composite implements GroupView {
 		seanceUnique.setValue(pGroupUi.isSeanceunique());
 		nouveau.setValue(pGroupUi.isNouveau());
 		description.setValue(pGroupUi.getDescription());
+		enf.setValue(pGroupUi.isEnf());
 		updateButton.setVisible(true);
 		deleteButton.setVisible(true);
 	}
@@ -160,6 +162,12 @@ public class GroupViewImpl extends Composite implements GroupView {
 		nouveau = new CheckBox();
 		lPanel.setWidget(lRowIndex, 0, createLabel("Nouveau"));
 		lPanel.setWidget(lRowIndex, 1, nouveau);
+		lRowIndex++;
+		
+		// ENF
+		enf = new CheckBox();
+		lPanel.setWidget(lRowIndex, 0, createLabel("ENF ?"));
+		lPanel.setWidget(lRowIndex, 1, enf);
 		lRowIndex++;
 
 		// Nouveau
@@ -254,5 +262,10 @@ public class GroupViewImpl extends Composite implements GroupView {
 	@Override
 	public HasValue<String> getDescription() {
 		return description;
+	}
+
+	@Override
+	public HasValue<Boolean> getGroupEnf() {
+		return enf;
 	}
 }

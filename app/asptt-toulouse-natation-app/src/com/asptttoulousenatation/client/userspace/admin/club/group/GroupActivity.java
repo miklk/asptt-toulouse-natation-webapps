@@ -56,7 +56,7 @@ public class GroupActivity extends MyAbstractActivity<GroupPlace> {
 				lGroupView.getUpdateButton().addClickHandler(new ClickHandler() {
 					public void onClick(ClickEvent event) {
 						dispatchAsync.execute(new UpdateGroupAction(lGroupView.getGroupId(), lGroupView.getGroupTitle().getValue(), lGroupView.getGroupLicenceFfn().getValue(), lGroupView.getGroupInscription().getValue(), new Integer(lGroupView.getGroupTarif().getValue()), new Integer(lGroupView.getGroupTarif2().getValue()), new Integer(lGroupView.getGroupTarif3().getValue()), new Integer(lGroupView.getGroupTarif4().getValue()), lGroupView.getSeanceUnique().getValue(),
-								new Integer(lGroupView.getGroupTarifWeight().getValue()), lGroupView.getNouveau().getValue(), lGroupView.getDescription().getValue()), new AsyncCallback<UpdateGroupResult>() {
+								new Integer(lGroupView.getGroupTarifWeight().getValue()), lGroupView.getNouveau().getValue(), lGroupView.getDescription().getValue(), lGroupView.getGroupEnf().getValue()), new AsyncCallback<UpdateGroupResult>() {
 
 							public void onFailure(Throwable pCaught) {
 								Window.alert("Erreur " + pCaught.getMessage());

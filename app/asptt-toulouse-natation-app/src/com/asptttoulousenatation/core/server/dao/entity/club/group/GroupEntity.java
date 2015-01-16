@@ -47,6 +47,8 @@ public class GroupEntity implements IEntity {
 	@Persistent
 	private String description;
 	
+	private Boolean enf;
+	
 	public GroupEntity() {
 		
 	}
@@ -150,5 +152,12 @@ public class GroupEntity implements IEntity {
 	public void setDescription(String pDescription) {
 		description = pDescription;
 	}
-	
+
+	public Boolean getEnf() {
+		return enf;
+	}
+
+	public void setEnf(Boolean pEnf) {
+		enf = pEnf;
+	}
 }

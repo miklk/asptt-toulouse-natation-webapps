@@ -21,4 +21,5 @@ public interface GroupView extends IsWidget {
 	public HasValue<Boolean> getSeanceUnique();
 	public HasValue<Boolean> getNouveau();
 	public HasValue<String> getDescription();
+	public HasValue<Boolean> getGroupEnf();
 }

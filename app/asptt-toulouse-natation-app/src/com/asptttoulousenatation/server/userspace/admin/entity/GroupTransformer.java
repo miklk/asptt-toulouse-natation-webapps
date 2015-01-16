@@ -27,7 +27,7 @@ public class GroupTransformer extends
 		GroupUi lUi = new GroupUi(pEntity.getId(), pEntity.getTitle(),
 				BooleanUtils.toBoolean(pEntity.getLicenceFfn()),
 				BooleanUtils.toBoolean(pEntity.getInscription()), tarif,
-				tarif2, tarif3, tarif4, BooleanUtils.toBoolean(pEntity.getSeanceunique()), tarifWeight, BooleanUtils.toBoolean(pEntity.getNouveau()), pEntity.getDescription());
+				tarif2, tarif3, tarif4, BooleanUtils.toBoolean(pEntity.getSeanceunique()), tarifWeight, BooleanUtils.toBoolean(pEntity.getNouveau()), pEntity.getDescription(), BooleanUtils.toBoolean(pEntity.getEnf()));
 		return lUi;
 	}
 

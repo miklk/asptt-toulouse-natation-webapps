@@ -16,12 +16,13 @@ public class UpdateGroupAction implements Action<UpdateGroupResult> {
 	private int tarifWeight;
 	private boolean nouveau;
 	private String description;
+	private boolean enf;
 	
 	public UpdateGroupAction() {
 	}
 	
 
-	public UpdateGroupAction(Long pId, String pTitle, boolean pLicenceFfn, boolean pInscription, int pTarif, int pTarif2, int pTarif3, int pTarif4, boolean pSeanceunique, int pTarifWeight, boolean pNouveau, String pDescription) {
+	public UpdateGroupAction(Long pId, String pTitle, boolean pLicenceFfn, boolean pInscription, int pTarif, int pTarif2, int pTarif3, int pTarif4, boolean pSeanceunique, int pTarifWeight, boolean pNouveau, String pDescription, boolean pEnf) {
 		super();
 		id = pId;
 		title = pTitle;
@@ -35,6 +36,7 @@ public class UpdateGroupAction implements Action<UpdateGroupResult> {
 		tarifWeight = pTarifWeight;
 		nouveau = pNouveau;
 		description = pDescription;
+		enf = pEnf;
 	}
 
 	public Long getId() {
@@ -148,8 +150,15 @@ public class UpdateGroupAction implements Action<UpdateGroupResult> {
 		return description;
 	}
 
-
 	public void setDescription(String pDescription) {
 		description = pDescription;
+	}
+
+	public boolean isEnf() {
+		return enf;
+	}
+
+	public void setEnf(boolean pEnf) {
+		enf = pEnf;
 	}
 }
