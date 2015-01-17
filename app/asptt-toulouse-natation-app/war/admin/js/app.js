@@ -41,8 +41,11 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 		when('/libelles', {
 			templateUrl: 'views/document/libelle/libelles.html'
 		}).
-		when('/suiviNageur', {
-			templateUrl: 'views/suivi/suiviNageur.html'
+		when('/suivi-nageur-day', {
+			templateUrl: 'views/suivi/suivi-nageur-day.html'
+		}).
+		when('/suivi-nageur-week', {
+			templateUrl: 'views/suivi/suivi-nageur-week.html'
 		}).
 		when('/error', {
 			templateUrl: 'views/error.html'

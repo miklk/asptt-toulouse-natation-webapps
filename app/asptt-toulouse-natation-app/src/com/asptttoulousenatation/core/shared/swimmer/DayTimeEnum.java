@@ -5,5 +5,7 @@ public enum DayTimeEnum {
 	MATIN,
 	MIDI,
 	SOIR,
-	MUSCU;
+	MUSCU,
+	COMMENT,
+	PRESENCE;
 }

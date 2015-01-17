@@ -14,11 +14,6 @@ import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEventHandler;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaActivity;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaPlace;
-import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatActivity;
-import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatMonthActivity;
-import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatPlace;
-import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatWeekActivity;
-import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatYearActivity;
 import com.asptttoulousenatation.client.userspace.admin.user.UserActivity;
 import com.asptttoulousenatation.client.userspace.admin.user.UserPlace;
 import com.asptttoulousenatation.client.userspace.admin.user.password.ChangePasswordActivity;
@@ -32,7 +27,6 @@ import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.client.userspace.menu.MenuPlace;
 import com.asptttoulousenatation.client.userspace.officiel.OfficielSubscriptionActivity;
 import com.asptttoulousenatation.client.userspace.officiel.OfficielSubscriptionPlace;
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatEnum;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitUserSpaceAction;
@@ -186,50 +180,6 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 											OfficielSubscriptionActivity lOfficielSubscriptionActivity = new OfficielSubscriptionActivity(new OfficielSubscriptionPlace(), clientFactory);
 											lOfficielSubscriptionActivity.setUser(user);
 											lOfficielSubscriptionActivity.start(lAdminView.getContentPanel(), lEventBus);
-											break;
-										case SWIMMER_STAT_DAY:
-											SwimmerStatActivity lSwimmerStatActivityDay = new SwimmerStatActivity(
-													new SwimmerStatPlace(),
-													clientFactory);
-											lSwimmerStatActivityDay
-													.setKind(SwimmerStatEnum.DAY);
-											lSwimmerStatActivityDay.start(
-													lAdminView
-															.getContentPanel(),
-													lEventBus);
-											break;
-										case SWIMMER_STAT_WEEK:
-											SwimmerStatWeekActivity lSwimmerStatActivityWeek = new SwimmerStatWeekActivity(
-													new SwimmerStatPlace(),
-													clientFactory);
-											lSwimmerStatActivityWeek
-													.setKind(SwimmerStatEnum.WEEK);
-											lSwimmerStatActivityWeek.start(
-													lAdminView
-															.getContentPanel(),
-													lEventBus);
-											break;
-										case SWIMMER_STAT_MONTH:
-											SwimmerStatMonthActivity lSwimmerStatActivityMonth = new SwimmerStatMonthActivity(
-													new SwimmerStatPlace(),
-													clientFactory);
-											lSwimmerStatActivityMonth
-													.setKind(SwimmerStatEnum.MONTH);
-											lSwimmerStatActivityMonth.start(
-													lAdminView
-															.getContentPanel(),
-													lEventBus);
-											break;
-										case SWIMMER_STAT_YEAR:
-											SwimmerStatYearActivity lSwimmerStatActivityYear = new SwimmerStatYearActivity(
-													new SwimmerStatPlace(),
-													clientFactory);
-											lSwimmerStatActivityYear
-													.setKind(SwimmerStatEnum.YEAR);
-											lSwimmerStatActivityYear.start(
-													lAdminView
-															.getContentPanel(),
-													lEventBus);
 											break;
 										case PROFILE_PASSWORD:
 											ChangePasswordActivity lActivity = new ChangePasswordActivity(new ChangePasswordPlace(), clientFactory);

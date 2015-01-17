@@ -17,6 +17,7 @@ public class SwimmerStatUi {
 	private SwimmerStatDataUi midday;
 	private SwimmerStatDataUi night;
 	private SwimmerStatDataUi bodybuilding;
+	private SwimmerStatDataUi presence;
 	
 	private String comment;
 	
@@ -25,6 +26,7 @@ public class SwimmerStatUi {
 		midday = new SwimmerStatDataUi();
 		night = new SwimmerStatDataUi();
 		bodybuilding = new SwimmerStatDataUi();
+		presence = new SwimmerStatDataUi();
 		selected = false;
 	}
 	
@@ -132,4 +134,15 @@ public class SwimmerStatUi {
 	public void setSelected(boolean pSelected) {
 		selected = pSelected;
 	}
+
+
+	public SwimmerStatDataUi getPresence() {
+		return presence;
+	}
+
+
+	public void setPresence(SwimmerStatDataUi pPresence) {
+		presence = pPresence;
+	}
+	
 }

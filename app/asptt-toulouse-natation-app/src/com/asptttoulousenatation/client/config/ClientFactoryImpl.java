@@ -18,16 +18,6 @@ import com.asptttoulousenatation.client.userspace.admin.competition.CompetitionV
 import com.asptttoulousenatation.client.userspace.admin.competition.CompetitionViewImpl;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaView;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaViewImpl;
-import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatComputeView;
-import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatComputeViewImpl;
-import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatMonthView;
-import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatMonthViewImpl;
-import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatView;
-import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatViewImpl;
-import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatWeekView;
-import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatWeekViewImpl;
-import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatYearView;
-import com.asptttoulousenatation.client.userspace.admin.swimmer.SwimmerStatYearViewImpl;
 import com.asptttoulousenatation.client.userspace.admin.user.UserCreationView;
 import com.asptttoulousenatation.client.userspace.admin.user.UserCreationViewImpl;
 import com.asptttoulousenatation.client.userspace.admin.user.UserEditionView;
@@ -47,11 +37,6 @@ import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.core.shared.competition.CompetitionUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatComputeUi;
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatMonthUi;
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatUi;
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatWeekUi;
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatYearUi;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitResult;
 import com.asptttoulousenatation.shared.init.InitUserSpaceResult;
@@ -140,35 +125,11 @@ public class ClientFactoryImpl implements ClientFactory {
 		return new CompetitionCalendarViewImpl(pUser, pCompetition);
 	}
 
-	public SwimmerStatView getSwimmerStatView(List<SwimmerStatUi> pSwimmerStats) {
-		return new SwimmerStatViewImpl(pSwimmerStats);
-	}
-
-	public SwimmerStatComputeView getSwimmerStatComputeView(
-			List<SwimmerStatComputeUi> pSwimmerStats) {
-		return new SwimmerStatComputeViewImpl(pSwimmerStats);
-	}
-	
-	public SwimmerStatWeekView getSwimmerStatWeekView(
-			List<SwimmerStatWeekUi> pSwimmerStats) {
-		return new SwimmerStatWeekViewImpl(pSwimmerStats);
-	}
-
 	public ChangePasswordView getChangePasswordView() {
 		return new ChangePasswordViewImpl();
 	}
 
 	public OfficielSubscriptionView getOfficielSubscriptionView() {
 		return new OfficielSubscriptionViewImpl();
-	}
-
-	public SwimmerStatMonthView getSwimmerStatMonthView(
-			List<SwimmerStatMonthUi> pSwimmerStats) {
-		return new SwimmerStatMonthViewImpl(pSwimmerStats);
-	}
-
-	public SwimmerStatYearView getSwimmerStatYearView(
-			List<SwimmerStatYearUi> pSwimmerStats) {
-		return new SwimmerStatYearViewImpl(pSwimmerStats);
 	}
 }

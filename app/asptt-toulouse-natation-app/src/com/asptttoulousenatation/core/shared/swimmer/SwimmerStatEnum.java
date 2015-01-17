@@ -6,12 +6,4 @@ public enum SwimmerStatEnum {
 	WEEK,
 	MONTH,
 	YEAR;
-	
-	public enum SwimmerStatDayTime {
-		MATIN,
-		MIDI,
-		SOIR,
-		MUSCU,
-		COMMENT;
-	}
 }

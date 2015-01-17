@@ -3,8 +3,8 @@ package com.asptttoulousenatation.core.swimmer;
 import java.io.Serializable;
 import java.util.Map;
 
+import com.asptttoulousenatation.core.shared.swimmer.DayTimeEnum;
 import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatUi;
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatEnum.SwimmerStatDayTime;
 
 public class SwimmerStatUpdateAllAction implements Serializable {
 	
@@ -13,9 +13,10 @@ public class SwimmerStatUpdateAllAction implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Map<Long, SwimmerStatUi> swimmers;
-	private SwimmerStatDayTime dayTime;
+	private DayTimeEnum dayTime;
 	private Long day;
 	private int valeur;
+	private boolean presence;
 	
 	public SwimmerStatUpdateAllAction() {
 		
@@ -29,11 +30,11 @@ public class SwimmerStatUpdateAllAction implements Serializable {
 		swimmers = pSwimmers;
 	}
 
-	public SwimmerStatDayTime getDayTime() {
+	public DayTimeEnum getDayTime() {
 		return dayTime;
 	}
 
-	public void setDayTime(SwimmerStatDayTime pDayTime) {
+	public void setDayTime(DayTimeEnum pDayTime) {
 		dayTime = pDayTime;
 	}
 
@@ -52,4 +53,13 @@ public class SwimmerStatUpdateAllAction implements Serializable {
 	public void setValeur(int pValeur) {
 		valeur = pValeur;
 	}
+
+	public boolean isPresence() {
+		return presence;
+	}
+
+	public void setPresence(boolean pPresence) {
+		presence = pPresence;
+	}
+	
 }

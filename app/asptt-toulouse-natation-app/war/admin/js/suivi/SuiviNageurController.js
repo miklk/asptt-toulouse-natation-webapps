@@ -3,7 +3,7 @@
  */
 var suiviNageurController = angular.module('SuiviNageurController', ['ngRoute', 'suiviNageurServices', 'groupeServices']);
 
-suiviNageurController.controller('SuiviNageurController', ['$scope', '$location', 'SuiviNageurService', 'GroupeService', function($scope, $location, SuiviNageurService, GroupeService) {
+suiviNageurController.controller('SuiviNageurController', ['$scope', '$location', '$filter', 'SuiviNageurService', 'GroupeService', function($scope, $location, $filter, SuiviNageurService, GroupeService) {
 	$scope.groupe = "";
 	$scope.day = new Date();
 	$scope.groupes = GroupeService.all.query({});
@@ -11,10 +11,16 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 	                                     dayTime:'',
 	                                     day: '',
 	                                     valeur: '',
+	                                     presence: '',
 	                                     swimmers: null};
 	
 	$scope.loadSuivi = function() {
-		SuiviNageurService.list.query({groupe: $scope.groupe.id, day: $scope.day.getTime()}, function(data) {
+		SuiviNageurService.days.query({groupe: $scope.groupe.id, day: $scope.day.getTime()}, function(data) {
+			if($scope.groupe.enf) {
+				$scope.swimmerStatUpdateAllAction.dayTime = 'PRESENCE';
+			} else {
+				$scope.swimmerStatUpdateAllAction.dayTime = 'MATIN';
+			}
 			$scope.nageurs = data.swimmers;
 		});
 	};
@@ -44,6 +50,8 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 				break;
 				case 'SOIR': nageur.night.distance = $scope.swimmerStatUpdateAllAction.valeur;
 				break;
+				case 'PRESENCE': nageur.presence.presence = $scope.swimmerStatUpdateAllAction.presence;
+				break;
 				default://
 				}
 			}
@@ -53,5 +61,11 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 		SuiviNageurService.updateAll.query({}, $scope.swimmerStatUpdateAllAction, function(data) {
 			console.log(data);
 		});
-	}
+	};
+	
+	$scope.loadWeeks = function() {
+		SuiviNageurService.weeks.query({groupe: $scope.groupe.id, week: $filter('date')($scope.day,'yyyy-Www')}, function(data) {
+			$scope.nageurs = data.nageurs;
+		});
+	};
 }]);

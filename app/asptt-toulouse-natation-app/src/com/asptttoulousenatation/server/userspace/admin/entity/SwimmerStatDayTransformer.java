@@ -42,6 +42,8 @@ public class SwimmerStatDayTransformer extends AbstractEntityTransformer<Swimmer
 		case MUSCU:
 			dayStat.setBodybuilding(stat);
 			break;
+		case PRESENCE: dayStat.setPresence(stat);
+		break;
 		default:// Do nothing
 		}
 	}
