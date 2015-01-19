@@ -1,36 +1,38 @@
 package com.asptttoulousenatation.core.shared.swimmer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
-import com.asptttoulousenatation.web.adherent.AdherentListAction;
+public class SwimmerStatMonthUi implements Serializable {
 
-public class SwimmerStatMonthUi implements ISwimmerStatUi {
-	private static final Logger LOG = Logger.getLogger(SwimmerStatMonthUi.class
-			.getName());
-
-	private String swimmer;
-	private int total;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4222671616427336055L;
+	private String nom;
+	private String prenom;
+	private int totalDistance;
+	private int totalPresence;
 	private List<Integer> distances;
+	private List<Integer> presences;
 
 	public SwimmerStatMonthUi() {
-		distances = new ArrayList<Integer>(6);
-		for (int i = 0; i < 6; i++) {
+		distances = new ArrayList<>(5);
+		presences = new ArrayList<>(5);
+		for (int i = 0; i < 5; i++) {
 			distances.add(0);
+			presences.add(0);
 		}
 	}
 
-	public void addDistance(int week, int pDistance) {
-		distances.set(week, distances.get(week) + pDistance);
+	public void addDistance(int month, int pDistance) {
+		distances.set(month, distances.get(month) + pDistance);
 	}
-
-	public String getSwimmer() {
-		return swimmer;
-	}
-
-	public void setSwimmer(String pSwimmer) {
-		swimmer = pSwimmer;
+	
+	public void addPresence(int month, int pPresence) {
+		presences.set(month, presences.get(month) + pPresence);
 	}
 
 	public List<Integer> getDistances() {
@@ -41,28 +43,65 @@ public class SwimmerStatMonthUi implements ISwimmerStatUi {
 		distances = pDistances;
 	}
 
-	public Long getUser() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void setUser(Long pUser) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public int getTotal() {
-		if (total == 0) {
+	public void computeTotalDistance() {
+		if (totalDistance == 0) {
 			int lTotal = 0;
 			for (Integer distance : distances) {
 				lTotal += distance;
 			}
-			total = lTotal;
+			totalDistance = lTotal;
 		}
-		return total;
+	}
+	
+	public void computeTotalPresence() {
+		if (totalPresence == 0) {
+			int lTotal = 0;
+			for (Integer presence: presences) {
+				if(presence > 0) {
+					lTotal++;
+				}
+			}
+			totalPresence = lTotal;
+		}
+	}
+	
+	public String getNom() {
+		return nom;
 	}
 
-	public void setTotal(int pTotal) {
-		total = pTotal;
+	public void setNom(String pNom) {
+		nom = pNom;
+	}
+
+	public String getPrenom() {
+		return prenom;
+	}
+
+	public void setPrenom(String pPrenom) {
+		prenom = pPrenom;
+	}
+	
+	public int getTotalDistance() {
+		return totalDistance;
+	}
+
+	public void setTotalDistance(int pTotalDistance) {
+		totalDistance = pTotalDistance;
+	}
+
+	public int getTotalPresence() {
+		return totalPresence;
+	}
+
+	public void setTotalPresence(int pTotalPresence) {
+		totalPresence = pTotalPresence;
+	}
+
+	public List<Integer> getPresences() {
+		return presences;
+	}
+
+	public void setPresences(List<Integer> pPresences) {
+		presences = pPresences;
 	}
 }

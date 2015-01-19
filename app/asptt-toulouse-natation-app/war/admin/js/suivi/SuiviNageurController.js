@@ -13,16 +13,19 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 	                                     valeur: '',
 	                                     presence: '',
 	                                     swimmers: null};
-	
-	$scope.loadSuivi = function() {
+	function load() {
 		SuiviNageurService.days.query({groupe: $scope.groupe.id, day: $scope.day.getTime()}, function(data) {
 			if($scope.groupe.enf) {
 				$scope.swimmerStatUpdateAllAction.dayTime = 'PRESENCE';
 			} else {
 				$scope.swimmerStatUpdateAllAction.dayTime = 'MATIN';
 			}
-			$scope.nageurs = data.swimmers;
+			$scope.nageurs = $filter('orderBy') (data.swimmers, ['+nom', '+prenom']);
 		});
+	}
+	
+	$scope.loadSuivi = function() {
+		load();
 	};
 	
 	$scope.updateSuivi = function(nageur, stat, dayTime) {
@@ -32,6 +35,7 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 				stat: stat};
 		SuiviNageurService.update.query({nageur: nageur}, $scope.swimmerStatUpdateAction, function(data) {
 			console.log(data);
+			load();
 		});
 	};
 	
@@ -60,12 +64,32 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 		$scope.swimmerStatUpdateAllAction.swimmers = $scope.nageurs;
 		SuiviNageurService.updateAll.query({}, $scope.swimmerStatUpdateAllAction, function(data) {
 			console.log(data);
+			load();
 		});
 	};
 	
 	$scope.loadWeeks = function() {
 		SuiviNageurService.weeks.query({groupe: $scope.groupe.id, week: $filter('date')($scope.day,'yyyy-Www')}, function(data) {
-			$scope.nageurs = data.nageurs;
+			$scope.nageurs = $scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
+			$scope.beginDt = data.begin;
+			$scope.endDt = data.end;
+		});
+	};
+	
+	$scope.loadMonths = function() {
+		SuiviNageurService.months.query({groupe: $scope.groupe.id, month: $filter('date')($scope.day,'yyyy-MM')}, function(data) {
+			$scope.nageurs = $scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
+			$scope.beginDt = data.begin;
+			$scope.endDt = data.end;
+			$scope.weeks = data.weeks;
+		});
+	};
+	
+	$scope.loadYears = function() {
+		SuiviNageurService.years.query({groupe: $scope.groupe.id, year: $filter('date')($scope.day,'yyyy')}, function(data) {
+			$scope.nageurs = $scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
+			$scope.beginDt = data.begin;
+			$scope.endDt = data.end;
 		});
 	};
 }]);

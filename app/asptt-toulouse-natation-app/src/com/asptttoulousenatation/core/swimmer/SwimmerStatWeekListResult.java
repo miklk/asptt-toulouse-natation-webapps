@@ -13,6 +13,8 @@ public class SwimmerStatWeekListResult implements Serializable {
 	 */
 	private static final long serialVersionUID = 3183819300935138934L;
 	private List<SwimmerStatWeekUi> nageurs;
+	private Long begin;
+	private Long end;
 	
 	public SwimmerStatWeekListResult() {
 		nageurs = new ArrayList<>();
@@ -28,5 +30,21 @@ public class SwimmerStatWeekListResult implements Serializable {
 
 	public void setNageurs(List<SwimmerStatWeekUi> pNageurs) {
 		nageurs = pNageurs;
-	}	
+	}
+
+	public Long getBegin() {
+		return begin;
+	}
+
+	public void setBegin(Long pBegin) {
+		begin = pBegin;
+	}
+
+	public Long getEnd() {
+		return end;
+	}
+
+	public void setEnd(Long pEnd) {
+		end = pEnd;
+	}
 }

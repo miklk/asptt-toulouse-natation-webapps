@@ -9,6 +9,12 @@ suiviNageurServices.factory('SuiviNageurService', ['$resource',
 		weeks: $resource('/resources/swimmerStats/weeks/:groupe',{},{
 			query:{method:'GET', isArray: false,params: {week: '@week'}}
 		}),
+		months: $resource('/resources/swimmerStats/months/:groupe',{},{
+			query:{method:'GET', isArray: false,params: {month: '@month'}}
+		}),
+		years: $resource('/resources/swimmerStats/years/:groupe',{},{
+			query:{method:'GET', isArray: false,params: {year: '@year'}}
+		}),
 		update: $resource('/resources/swimmerStats/:nageur',{nageur:'@nageur'},{
 			query:{method:'PUT', params: {}}
 		}),

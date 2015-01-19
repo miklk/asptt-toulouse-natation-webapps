@@ -26,7 +26,7 @@ input[type="number"] {
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th>Nageur(se)</th>
+					<th ng-click="order('name', false)">Nageur(se)</th>
 					<th>Matin</th>
 					<th>Midi</th>
 					<th>Soir</th>
@@ -34,7 +34,7 @@ input[type="number"] {
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="nageur in nageurs | orderBy:['+nageur.nom', '+nageur.prenom']" ng-click="setSelected(nageur)" ng-class="{'row-selected': nageur.selected}">
+				<tr ng-repeat="nageur in nageurs" ng-click="setSelected(nageur)" ng-class="{'row-selected': nageur.selected}">
 					<td>{{nageur.nom}} {{nageur.prenom}}</td>
 					<td><input type="number" ng-model="nageur.morning.distance" min="0" ng-change="updateSuivi(nageur.adherent, nageur, 'MATIN')" /></td>
 					<td><input type="number" ng-model="nageur.midday.distance" min="0" ng-change="updateSuivi(nageur.adherent, nageur, 'MIDI')" /></td>

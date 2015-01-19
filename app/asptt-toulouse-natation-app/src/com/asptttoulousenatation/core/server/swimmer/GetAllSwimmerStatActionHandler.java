@@ -255,7 +255,7 @@ public class GetAllSwimmerStatActionHandler implements
 						Operator.GREATER_EQ));
 				lCriteria.add(new CriterionDao<Long>(
 						SwimmerStatEntityFields.DAY, endDay, Operator.LESS_EQ));
-				lSwimmerStatUi = new SwimmerStatMonthUi();
+				lSwimmerStatUi = null;//new SwimmerStatMonthUi();
 				break;
 			case YEAR:
 				lCriteria.add(new CriterionDao<Long>(
@@ -263,7 +263,7 @@ public class GetAllSwimmerStatActionHandler implements
 						Operator.GREATER_EQ));
 				lCriteria.add(new CriterionDao<Long>(
 						SwimmerStatEntityFields.DAY, endDay, Operator.LESS_EQ));
-				lSwimmerStatUi = new SwimmerStatYearUi();
+				lSwimmerStatUi = null;//new SwimmerStatYearUi();
 				break;
 			default:// Do nothing
 				lSwimmerStatUi = null;
@@ -356,7 +356,7 @@ public class GetAllSwimmerStatActionHandler implements
 						((SwimmerStatMonthUi) lSwimmerStatUi).addDistance(calendar.get(Calendar.WEEK_OF_MONTH) - 1, entity.getDistance());
 					}else if(SwimmerStatEnum.YEAR.equals(pAction.getPeriod())) {
 								calendar.setTimeInMillis(entity.getDay());
-								((SwimmerStatYearUi) lSwimmerStatUi).addDistance(calendar.get(Calendar.MONTH), entity.getDistance());
+								//*((SwimmerStatYearUi) lSwimmerStatUi).addDistance(calendar.get(Calendar.MONTH), entity.getDistance());
 				}else {
 						distance += entity.getDistance();
 					}

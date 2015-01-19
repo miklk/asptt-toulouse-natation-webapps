@@ -1,8 +1,8 @@
 package com.asptttoulousenatation.core.swimmer;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatUi;
 
@@ -12,22 +12,21 @@ public class SwimmerStatListResult implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Map<Long, SwimmerStatUi> swimmers;
+	private List<SwimmerStatUi> swimmers;
 	
 	public SwimmerStatListResult() {
-		swimmers = new HashMap<>();
+		swimmers = new ArrayList<>();
 	}
 	
-	public void addStat(Long swimmer, SwimmerStatUi stat) {
-			swimmers.put(swimmer, stat);
+	public void addStat(SwimmerStatUi stat) {
+			swimmers.add(stat);
 	}
 
-	public Map<Long, SwimmerStatUi> getSwimmers() {
+	public List<SwimmerStatUi> getSwimmers() {
 		return swimmers;
 	}
 
-	public void setSwimmers(Map<Long, SwimmerStatUi> pSwimmers) {
+	public void setSwimmers(List<SwimmerStatUi> pSwimmers) {
 		swimmers = pSwimmers;
 	}
-
 }

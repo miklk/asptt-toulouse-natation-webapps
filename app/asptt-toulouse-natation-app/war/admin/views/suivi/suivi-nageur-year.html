@@ -1,0 +1,105 @@
+<div style="margin-left: 2%" ng-controller="SuiviNageurController">
+	<div class="row">
+		<h1 class="page-header">Suivi du nageur <small>par année</small></h1>
+	</div>
+	
+	<div class="row">
+		<form class="form-inline">
+			<div class="form-group">
+				 <select class="form-control" ng-model="groupe"
+				    	ng-options="groupe.title for groupe in groupes.groups track by groupe.id" ng-change="loadYears()">
+			    	<option value="">Choisir un groupe</option>
+		  	    </select>
+			</div>
+			<div class="form-group">
+				<input type="month" ng-model="day" class="form-control" />
+			</div>
+			<button type="submit" class="btn btn-primary" ng-click="loadYears()">Afficher</button>
+		</form>
+	</div>
+	
+	<div class="row" ng-show="beginDt">
+		<h5>{{beginDt | date: 'shortDate'}} - {{endDt | date: 'shortDate'}}</h5>
+	</div>
+	
+	<div class="row" ng-hide="groupe.enf">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Nageur(se)</th>
+					<th>Septembre</th>
+					<th>Octobre</th>
+					<th>Novembre</th>
+					<th>Décembre</th>
+					<th>Janvier</th>
+					<th>Février</th>
+					<th>Mars</th>
+					<th>Avril</th>
+					<th>Mai</th>
+					<th>Juin</th>
+					<th>Juillet</th>
+					<th>Août</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="nageur in nageurs | orderBy:['+nageur.nom', '+nageur.prenom']">
+					<td>{{nageur.nom}} {{nageur.prenom}}</td>
+					<td><span ng-show="nageur.distances[8] > 0">{{nageur.distances[8]}} ({{nageur.presences[8]}})</span></td>
+					<td><span ng-show="nageur.distances[9] > 0">{{nageur.distances[9]}} ({{nageur.presences[9]}})</span></td>
+					<td><span ng-show="nageur.distances[10] > 0">{{nageur.distances[10]}} ({{nageur.presences[10]}})</span></td>
+					<td><span ng-show="nageur.distances[11] > 0">{{nageur.distances[11]}} ({{nageur.presences[11]}})</span></td>
+					<td><span ng-show="nageur.distances[0] > 0">{{nageur.distances[0]}} ({{nageur.presences[0]}})</span></td>
+					<td><span ng-show="nageur.distances[1] > 0">{{nageur.distances[1]}} ({{nageur.presences[1]}})</span></td>
+					<td><span ng-show="nageur.distances[2] > 0">{{nageur.distances[2]}} ({{nageur.presences[2]}})</span></td>
+					<td><span ng-show="nageur.distances[3] > 0">{{nageur.distances[3]}} ({{nageur.presences[3]}})</span></td>
+					<td><span ng-show="nageur.distances[4] > 0">{{nageur.distances[4]}} ({{nageur.presences[4]}})</span></td>
+					<td><span ng-show="nageur.distances[5] > 0">{{nageur.distances[5]}} ({{nageur.presences[5]}})</span></td>
+					<td><span ng-show="nageur.distances[6] > 0">{{nageur.distances[6]}} ({{nageur.presences[6]}})</span></td>
+					<td><span ng-show="nageur.distances[7] > 0">{{nageur.distances[7]}} ({{nageur.presences[7]}})</span></td>
+					<td>{{nageur.totalDistance}}&nbsp;<span class="badge">{{nageur.totalPresence}}</span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row" ng-show="groupe.enf">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Nageur(se)</th>
+					<th>Septembre</th>
+					<th>Octobre</th>
+					<th>Novembre</th>
+					<th>Décembre</th>
+					<th>Janvier</th>
+					<th>Février</th>
+					<th>Mars</th>
+					<th>Avril</th>
+					<th>Mai</th>
+					<th>Juin</th>
+					<th>Juillet</th>
+					<th>Août</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="nageur in nageurs | orderBy:['+nageur.nom', '+nageur.prenom']">
+					<td>{{nageur.nom}} {{nageur.prenom}}</td>
+					<td>{{nageur.presences[8]}}</td>
+					<td>{{nageur.presences[9]}}</td>
+					<td>{{nageur.presences[10]}}</td>
+					<td>{{nageur.presences[11]}}</td>
+					<td>{{nageur.presences[0]}}</td>
+					<td>{{nageur.presences[1]}}</td>
+					<td>{{nageur.presences[2]}}</td>
+					<td>{{nageur.presences[3]}}</td>
+					<td>{{nageur.presences[4]}}</td>
+					<td>{{nageur.presences[5]}}</td>
+					<td>{{nageur.presences[6]}}</td>
+					<td>{{nageur.presences[7]}}</td>
+					<td>{{nageur.totalPresence}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

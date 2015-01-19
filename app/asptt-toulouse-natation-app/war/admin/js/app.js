@@ -47,6 +47,12 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 		when('/suivi-nageur-week', {
 			templateUrl: 'views/suivi/suivi-nageur-week.html'
 		}).
+		when('/suivi-nageur-month', {
+			templateUrl: 'views/suivi/suivi-nageur-month.html'
+		}).
+		when('/suivi-nageur-year', {
+			templateUrl: 'views/suivi/suivi-nageur-year.html'
+		}).
 		when('/error', {
 			templateUrl: 'views/error.html'
 		}).
