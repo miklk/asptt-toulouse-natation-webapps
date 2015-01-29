@@ -4,7 +4,7 @@
 var suiviNageurController = angular.module('SuiviNageurController', ['ngRoute', 'suiviNageurServices', 'groupeServices']);
 
 suiviNageurController.controller('SuiviNageurController', ['$scope', '$location', '$filter', 'SuiviNageurService', 'GroupeService', function($scope, $location, $filter, SuiviNageurService, GroupeService) {
-	$scope.groupe = "";
+	$scope.groupesSelected;
 	$scope.day = new Date();
 	$scope.groupes = GroupeService.all.query({});
 	$scope.swimmerStatUpdateAllAction = {
@@ -14,8 +14,17 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 	                                     presence: '',
 	                                     swimmers: null};
 	function load() {
-		SuiviNageurService.days.query({groupe: $scope.groupe.id, day: $scope.day.getTime()}, function(data) {
-			if($scope.groupe.enf) {
+		var groupes = [];
+		angular.forEach($scope.groupesSelected, function(groupe) {
+			groupes.push(groupe.id);
+		});
+		SuiviNageurService.days.query({groupes: groupes, day: $scope.day.getTime()}, function(data) {
+			var enf = true;
+			angular.forEach($scope.groupesSelected, function(groupe) {
+				enf = enf && groupe.enf;
+			});
+			$scope.enf = enf;
+			if(enf) {
 				$scope.swimmerStatUpdateAllAction.dayTime = 'PRESENCE';
 			} else {
 				$scope.swimmerStatUpdateAllAction.dayTime = 'MATIN';
@@ -69,27 +78,54 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 	};
 	
 	$scope.loadWeeks = function() {
-		SuiviNageurService.weeks.query({groupe: $scope.groupe.id, week: $filter('date')($scope.day,'yyyy-Www')}, function(data) {
+		var groupes = [];
+		angular.forEach($scope.groupesSelected, function(groupe) {
+			groupes.push(groupe.id);
+		});
+		SuiviNageurService.weeks.query({groupes: groupes,  week: $filter('date')($scope.day,'yyyy-Www')}, function(data) {
 			$scope.nageurs = $scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
 			$scope.beginDt = data.begin;
 			$scope.endDt = data.end;
+			var enf = true;
+			angular.forEach($scope.groupesSelected, function(groupe) {
+				enf = enf && groupe.enf;
+			});
+			$scope.enf = enf;
 		});
 	};
 	
 	$scope.loadMonths = function() {
-		SuiviNageurService.months.query({groupe: $scope.groupe.id, month: $filter('date')($scope.day,'yyyy-MM')}, function(data) {
+		var groupes = [];
+		angular.forEach($scope.groupesSelected, function(groupe) {
+			groupes.push(groupe.id);
+		});
+		SuiviNageurService.months.query({groupes: groupes,  month: $filter('date')($scope.day,'yyyy-MM')}, function(data) {
 			$scope.nageurs = $scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
 			$scope.beginDt = data.begin;
 			$scope.endDt = data.end;
 			$scope.weeks = data.weeks;
+			var enf = true;
+			angular.forEach($scope.groupesSelected, function(groupe) {
+				enf = enf && groupe.enf;
+			});
+			$scope.enf = enf;
 		});
 	};
 	
 	$scope.loadYears = function() {
-		SuiviNageurService.years.query({groupe: $scope.groupe.id, year: $filter('date')($scope.day,'yyyy')}, function(data) {
+		var groupes = [];
+		angular.forEach($scope.groupesSelected, function(groupe) {
+			groupes.push(groupe.id);
+		});
+		SuiviNageurService.years.query({groupes: groupes, year: $filter('date')($scope.day,'yyyy')}, function(data) {
 			$scope.nageurs = $scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
 			$scope.beginDt = data.begin;
 			$scope.endDt = data.end;
+			var enf = true;
+			angular.forEach($scope.groupesSelected, function(groupe) {
+				enf = enf && groupe.enf;
+			});
+			$scope.enf = enf;
 		});
 	};
 }]);

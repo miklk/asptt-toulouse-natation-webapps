@@ -3,9 +3,6 @@ package com.asptttoulousenatation.core.swimmer;
 import java.io.Serializable;
 import java.util.Map;
 
-import com.asptttoulousenatation.core.shared.swimmer.DayTimeEnum;
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatUi;
-
 public class SwimmerStatUpdateAllAction implements Serializable {
 	
 	/**

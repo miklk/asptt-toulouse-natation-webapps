@@ -61,10 +61,6 @@ public class MenuActivity extends MyAbstractActivity<MenuPlace> {
 		addAction(lEventBus, lMenuView, MenuItems.COMPETITION_EDITION);
 		addAction(lEventBus, lMenuView, MenuItems.OFFICIEL_VIEW);
 		addAction(lEventBus, lMenuView, MenuItems.OFFICIEL_SUBSCRIPTION);
-		addAction(lEventBus, lMenuView, MenuItems.SWIMMER_STAT_DAY);
-		addAction(lEventBus, lMenuView, MenuItems.SWIMMER_STAT_WEEK);
-		addAction(lEventBus, lMenuView, MenuItems.SWIMMER_STAT_MONTH);
-		addAction(lEventBus, lMenuView, MenuItems.SWIMMER_STAT_YEAR);
 		addAction(lEventBus, lMenuView, MenuItems.PROFILE_PASSWORD);
 
 		lMenuView.getCreateAreaButton().addClickHandler(new ClickHandler() {

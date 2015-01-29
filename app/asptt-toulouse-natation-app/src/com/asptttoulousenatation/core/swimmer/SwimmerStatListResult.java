@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatUi;
-
 public class SwimmerStatListResult implements Serializable {
 
 	/**

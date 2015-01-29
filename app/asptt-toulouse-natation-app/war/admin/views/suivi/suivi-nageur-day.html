@@ -11,8 +11,8 @@ input[type="number"] {
 	<div class="row">
 		<form class="form-inline">
 			<div class="form-group">
-				 <select class="form-control" ng-model="groupe"
-				    	ng-options="groupe.title for groupe in groupes.groups track by groupe.id" ng-change="loadSuivi()">
+				 <select class="form-control" ng-model="groupesSelected"
+				    	ng-options="groupe.title for groupe in groupes.groups track by groupe.id" ng-change="loadSuivi()" multiple size="10">
 			    	<option value="">Choisir un groupe</option>
 		  	    </select>
 			</div>
@@ -22,7 +22,7 @@ input[type="number"] {
 			<button type="submit" class="btn btn-primary" ng-click="loadSuivi()">Afficher</button>
 		</form>
 	</div>
-	<div class="row" ng-hide="groupe.enf">
+	<div class="row" ng-hide="enf">
 		<table class="table table-hover">
 			<thead>
 				<tr>
@@ -36,15 +36,15 @@ input[type="number"] {
 			<tbody>
 				<tr ng-repeat="nageur in nageurs" ng-click="setSelected(nageur)" ng-class="{'row-selected': nageur.selected}">
 					<td>{{nageur.nom}} {{nageur.prenom}}</td>
-					<td><input type="number" ng-model="nageur.morning.distance" min="0" ng-change="updateSuivi(nageur.adherent, nageur, 'MATIN')" /></td>
-					<td><input type="number" ng-model="nageur.midday.distance" min="0" ng-change="updateSuivi(nageur.adherent, nageur, 'MIDI')" /></td>
-					<td><input type="number" ng-model="nageur.night.distance" min="0" ng-change="updateSuivi(nageur.adherent, nageur, 'SOIR')" /></td>
+					<td><input type="number" ng-model="nageur.morning.distance" min="0" step="1" ng-blur="updateSuivi(nageur.adherent, nageur, 'MATIN')" /></td>
+					<td><input type="number" ng-model="nageur.midday.distance" min="0" step="1" ng-blur="updateSuivi(nageur.adherent, nageur, 'MIDI')" /></td>
+					<td><input type="number" ng-model="nageur.night.distance" min="0" step="1" ng-blur="updateSuivi(nageur.adherent, nageur, 'SOIR')" /></td>
 					<td><input type="checkbox" ng-model="nageur.bodybuilding.presence" ng-change="updateSuivi(nageur.adherent, nageur, 'MUSCU')" /></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
-	<div class="row" ng-show="groupe.enf">
+	<div class="row" ng-show="enf">
 		<table class="table table-hover">
 			<thead>
 				<tr>
@@ -60,7 +60,7 @@ input[type="number"] {
 			</tbody>
 		</table>
 	</div>
-	<div class="row" ng-hide="groupe.enf">
+	<div class="row" ng-hide="enf">
 		<h5>Recopier la valeur pour tous les nageurs sélectionnés</h5>	
 		<form class="form-inline">
 			<div class="form-group">
@@ -76,7 +76,7 @@ input[type="number"] {
 			<button type="button" class="btn btn-primary btn-sm" ng-click="updateSelected()">Valider</button>
 		</form>
 	</div>
-	<div class="row" ng-show="groupe.enf">
+	<div class="row" ng-show="enf">
 		<h5>Cocher la présence pour tous les nageurs sélectionnés</h5>	
 		<form class="form-inline">
 			<div class="form-group">

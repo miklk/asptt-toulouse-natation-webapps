@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatUi;
-
 @XmlRootElement
 public class SwimmerStatUpdateAction implements Serializable {
 

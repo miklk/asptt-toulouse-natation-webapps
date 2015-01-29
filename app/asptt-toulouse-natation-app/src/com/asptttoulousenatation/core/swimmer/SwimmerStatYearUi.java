@@ -1,16 +1,15 @@
-package com.asptttoulousenatation.core.shared.swimmer;
+package com.asptttoulousenatation.core.swimmer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SwimmerStatMonthUi implements Serializable {
+public class SwimmerStatYearUi implements Serializable {
 
-	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4222671616427336055L;
+	private static final long serialVersionUID = -8097882747203552428L;
 	private String nom;
 	private String prenom;
 	private int totalDistance;
@@ -18,10 +17,10 @@ public class SwimmerStatMonthUi implements Serializable {
 	private List<Integer> distances;
 	private List<Integer> presences;
 
-	public SwimmerStatMonthUi() {
-		distances = new ArrayList<>(5);
-		presences = new ArrayList<>(5);
-		for (int i = 0; i < 5; i++) {
+	public SwimmerStatYearUi() {
+		distances = new ArrayList<>(12);
+		presences = new ArrayList<>(12);
+		for (int i = 0; i < 12; i++) {
 			distances.add(0);
 			presences.add(0);
 		}
@@ -30,17 +29,9 @@ public class SwimmerStatMonthUi implements Serializable {
 	public void addDistance(int month, int pDistance) {
 		distances.set(month, distances.get(month) + pDistance);
 	}
-	
+
 	public void addPresence(int month, int pPresence) {
 		presences.set(month, presences.get(month) + pPresence);
-	}
-
-	public List<Integer> getDistances() {
-		return distances;
-	}
-
-	public void setDistances(List<Integer> pDistances) {
-		distances = pDistances;
 	}
 
 	public void computeTotalDistance() {
@@ -52,19 +43,17 @@ public class SwimmerStatMonthUi implements Serializable {
 			totalDistance = lTotal;
 		}
 	}
-	
+
 	public void computeTotalPresence() {
 		if (totalPresence == 0) {
 			int lTotal = 0;
-			for (Integer presence: presences) {
-				if(presence > 0) {
-					lTotal++;
-				}
+			for (Integer presence : presences) {
+				lTotal += presence;
 			}
 			totalPresence = lTotal;
 		}
 	}
-	
+
 	public String getNom() {
 		return nom;
 	}
@@ -80,7 +69,7 @@ public class SwimmerStatMonthUi implements Serializable {
 	public void setPrenom(String pPrenom) {
 		prenom = pPrenom;
 	}
-	
+
 	public int getTotalDistance() {
 		return totalDistance;
 	}
@@ -95,6 +84,14 @@ public class SwimmerStatMonthUi implements Serializable {
 
 	public void setTotalPresence(int pTotalPresence) {
 		totalPresence = pTotalPresence;
+	}
+
+	public List<Integer> getDistances() {
+		return distances;
+	}
+
+	public void setDistances(List<Integer> pDistances) {
+		distances = pDistances;
 	}
 
 	public List<Integer> getPresences() {

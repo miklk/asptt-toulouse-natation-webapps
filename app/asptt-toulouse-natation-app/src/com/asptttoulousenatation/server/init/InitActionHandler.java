@@ -361,23 +361,6 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 				ProfileEnum.ADMIN, (short) 2);
 		lAreaDao.save(lAreaEntity);
 
-		// Swimmer stat
-		lAreaEntity = new AreaEntity(null, "Suivi des nageurs",
-				ProfileEnum.ADMIN, false, (short) 5);
-		AreaEntity lAreaStat = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.SWIMMER_STAT_DAY.toString(), "Par jour",
-				lAreaStat.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
-				false, 1, false, false);
-		createMenu(MenuItems.SWIMMER_STAT_WEEK.toString(), "Par semaine",
-				lAreaStat.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
-				false, 2, false, false);
-		createMenu(MenuItems.SWIMMER_STAT_MONTH.toString(), "Par mois",
-				lAreaStat.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
-				false, 3, false, false);
-		createMenu(MenuItems.SWIMMER_STAT_YEAR.toString(), "Par année",
-				lAreaStat.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
-				false, 4, false, false);
-
 		// Profil
 		lAreaEntity = new AreaEntity(null, "Mon profil", ProfileEnum.NAGEUR,
 				false, (short) 5);

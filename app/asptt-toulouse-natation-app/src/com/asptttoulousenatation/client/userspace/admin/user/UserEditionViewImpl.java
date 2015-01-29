@@ -345,9 +345,6 @@ public class UserEditionViewImpl extends Composite implements
 			boolean lSelected = pUi.getSlots().contains(lSlot.getId());
 			slotSelectionModel.setSelected(lSlot, lSelected);
 		}
-		if(pUi.getSwimmer() != null) {
-			swimmerStat.setValue(pUi.getSwimmer().isStat());
-		}
 	}
 	
 	public Long getUser() {

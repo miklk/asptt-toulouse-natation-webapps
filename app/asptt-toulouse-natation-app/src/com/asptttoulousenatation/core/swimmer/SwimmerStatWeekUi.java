@@ -1,4 +1,4 @@
-package com.asptttoulousenatation.core.shared.swimmer;
+package com.asptttoulousenatation.core.swimmer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,22 +10,22 @@ public class SwimmerStatWeekUi {
 	private int totalDistance;
 	private int totalPresence;
 	private List<Integer[]> distances;
-	private Boolean[] presences;
+	private Integer[] presences;
 
 	public SwimmerStatWeekUi() {
 		distances = new ArrayList<Integer[]>(7);
-		presences = new Boolean[] {Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE , Boolean.FALSE};
-		for (int i = 0; i < 6; i++) {
-			distances.add(new Integer[] { 0, 0, 0, 0});
+		presences = new Integer[] { 0, 0, 0, 0, 0, 0, 0 };
+		for (int i = 0; i < 7; i++) {
+			distances.add(new Integer[] { 0, 0, 0, 0 });
 		}
 	}
 
 	public void addDistance(int day, int index, int pDistance) {
 		distances.get(day)[index] = pDistance;
 	}
-	
+
 	public void addPresence(int day, Boolean pPresence) {
-		presences[day] = pPresence;
+		presences[day] = presences[day] + (pPresence ? 1 : 0);
 	}
 
 	public List<Integer[]> getDistances() {
@@ -47,19 +47,17 @@ public class SwimmerStatWeekUi {
 			totalDistance = lTotal;
 		}
 	}
-	
+
 	public void computeTotalPresence() {
 		if (totalPresence == 0) {
 			int lTotal = 0;
-			for (Boolean presence: presences) {
-				if(presence) {
-					lTotal++;
-				}
+			for (Integer presence : presences) {
+				lTotal += presence;
 			}
 			totalPresence = lTotal;
 		}
 	}
-	
+
 	public String getNom() {
 		return nom;
 	}
@@ -75,12 +73,12 @@ public class SwimmerStatWeekUi {
 	public void setPrenom(String pPrenom) {
 		prenom = pPrenom;
 	}
-	
-	public Boolean[] getPresences() {
+
+	public Integer[] getPresences() {
 		return presences;
 	}
 
-	public void setPresences(Boolean[] pPresences) {
+	public void setPresences(Integer[] pPresences) {
 		presences = pPresences;
 	}
 
@@ -99,5 +97,5 @@ public class SwimmerStatWeekUi {
 	public void setTotalPresence(int pTotalPresence) {
 		totalPresence = pTotalPresence;
 	}
-	
+
 }

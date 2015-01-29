@@ -4,9 +4,9 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.server.dao.entity.swimmer.SwimmerStatEntity;
-import com.asptttoulousenatation.core.shared.swimmer.DayTimeEnum;
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatDataUi;
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatUi;
+import com.asptttoulousenatation.core.swimmer.DayTimeEnum;
+import com.asptttoulousenatation.core.swimmer.SwimmerStatDataUi;
+import com.asptttoulousenatation.core.swimmer.SwimmerStatUi;
 
 public class SwimmerStatDayTransformer extends AbstractEntityTransformer<SwimmerStatUi, SwimmerStatEntity> {
 

@@ -1,10 +1,7 @@
 package com.asptttoulousenatation.core.swimmer;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -19,6 +16,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
+
 import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SwimmerStatEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
@@ -26,13 +30,9 @@ import com.asptttoulousenatation.core.server.dao.entity.swimmer.SwimmerStatEntit
 import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
+import com.asptttoulousenatation.core.server.dao.search.OrderDao;
+import com.asptttoulousenatation.core.server.dao.search.OrderDao.OrderOperator;
 import com.asptttoulousenatation.core.server.dao.swimmer.SwimmerStatDao;
-import com.asptttoulousenatation.core.shared.swimmer.DayTimeEnum;
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatDataUi;
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatMonthUi;
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatUi;
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatWeekUi;
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatYearUi;
 import com.asptttoulousenatation.server.userspace.admin.entity.SwimmerStatDayTransformer;
 import com.asptttoulousenatation.web.creneau.CoupleValue;
 
@@ -44,27 +44,24 @@ public class SwimmerStatService {
 	private SwimmerStatDao dao = new SwimmerStatDao();
 	private SwimmerStatDayTransformer dayTransformer = new SwimmerStatDayTransformer();
 
-	@Path("/days/{groupe}")
+	@Path("/days")
 	@GET
-	public SwimmerStatListResult getDays(@PathParam("groupe") Long groupe,
+	public SwimmerStatListResult getDays(@QueryParam("groupes") Set<Long> groupes,
 			@QueryParam("day") Long day) {
 		SwimmerStatListResult result = new SwimmerStatListResult();
 
 		// Set to midnight
-		Calendar lCalendar = GregorianCalendar.getInstance();
-		lCalendar.setTimeInMillis(day);
-		lCalendar.set(Calendar.HOUR_OF_DAY, 0);
-		lCalendar.set(Calendar.MINUTE, 0);
-		lCalendar.set(Calendar.SECOND, 0);
-		lCalendar.set(Calendar.MILLISECOND, 0);
-		Long dayToMindnight = lCalendar.getTimeInMillis();
+		LocalDate dayAsDate = new LocalDate(day);
+		Long dayToMindnight = dayAsDate.toDateTimeAtStartOfDay().getMillis();
 
 		// Recuperer les nageur du groupe
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
+				groupes.size());
+		for(Long groupe: groupes) {
 		criteria.add(new CriterionDao<Long>(
 				InscriptionEntityFields.NOUVEAUGROUPE, groupe, Operator.EQUAL));
-		List<InscriptionEntity2> entities = inscriptionDao.find(criteria);
+		}
+		List<InscriptionEntity2> entities = inscriptionDao.find(criteria, Operator.OR, new OrderDao(InscriptionEntityFields.NOM, OrderOperator.ASC));
 
 		for (InscriptionEntity2 nageur : entities) {
 			// Recuperer la stat du jour du nageur
@@ -136,13 +133,8 @@ public class SwimmerStatService {
 		entity.setPresence(statData.isPresence() || statData.getDistance() > 0);
 		entity.setComment(statData.getComment());
 
-		Calendar lCalendar = GregorianCalendar.getInstance();
-		lCalendar.setTimeInMillis(day);
-		lCalendar.set(Calendar.HOUR_OF_DAY, 0);
-		lCalendar.set(Calendar.MINUTE, 0);
-		lCalendar.set(Calendar.SECOND, 0);
-		lCalendar.set(Calendar.MILLISECOND, 0);
-		entity.setDay(lCalendar.getTimeInMillis());
+		LocalDate dayAsDate = new LocalDate(day);
+		entity.setDay(dayAsDate.toDateTimeAtStartOfDay().getMillis());
 
 		dao.save(entity);
 	}
@@ -159,33 +151,27 @@ public class SwimmerStatService {
 		return result;
 	}
 
-	@Path("/weeks/{groupe}")
+	@Path("/weeks")
 	@GET
-	public SwimmerStatWeekListResult getWeeks(@PathParam("groupe") Long groupe,
+	public SwimmerStatWeekListResult getWeeks(@QueryParam("groupes") Set<Long> groupes,
 			@QueryParam("week") String week) {
 		SwimmerStatWeekListResult result = new SwimmerStatWeekListResult();
 
-		SimpleDateFormat formatter = new SimpleDateFormat("YYYY-'W'ww");
-		Date weekDate = null;
-		try {
-			weekDate = formatter.parse(week);
-			Calendar lCalendar = GregorianCalendar.getInstance();
-			lCalendar.setTime(weekDate);
-			lCalendar.setFirstDayOfWeek(Calendar.MONDAY);
-			lCalendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-			Long dayBeginToMindnight = lCalendar.getTimeInMillis();
+		 DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-'W'ww");
+			LocalDate weekAsDate = formatter.parseLocalDate(week);
+			Long dayBeginToMindnight = weekAsDate.withDayOfWeek(DateTimeConstants.MONDAY).toDateTimeAtStartOfDay().getMillis();
 
 			// Get end of week to midnight
-			lCalendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-			Long dayEndToMindnight = lCalendar.getTimeInMillis();
+			Long dayEndToMindnight = weekAsDate.withDayOfWeek(DateTimeConstants.SUNDAY).toDateTimeAtStartOfDay().getMillis();
 
 			// Recuperer les nageur du groupe
 			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-					1);
+					groupes.size());
+			for(Long groupe: groupes) {
 			criteria.add(new CriterionDao<Long>(
-					InscriptionEntityFields.NOUVEAUGROUPE, groupe,
-					Operator.EQUAL));
-			List<InscriptionEntity2> entities = inscriptionDao.find(criteria);
+					InscriptionEntityFields.NOUVEAUGROUPE, groupe, Operator.EQUAL));
+			}
+			List<InscriptionEntity2> entities = inscriptionDao.find(criteria, Operator.OR, new OrderDao(InscriptionEntityFields.NOM, OrderOperator.ASC));
 
 			for (InscriptionEntity2 nageur : entities) {
 				// Recuperer la stat du jour du nageur
@@ -218,41 +204,39 @@ public class SwimmerStatService {
 						break;
 					default://
 					}
-					Calendar calendar = GregorianCalendar.getInstance();
-					calendar.setTimeInMillis(swimmerStat.getDay());
-					int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-					switch (dayOfWeek) {
-					case Calendar.MONDAY: {
+					LocalDate localDate = new LocalDate(swimmerStat.getDay());
+					switch (localDate.getDayOfWeek()) {
+					case DateTimeConstants.MONDAY: {
 						dayStat.addDistance(0, index, swimmerStat.getDistance());
 						dayStat.addPresence(0, swimmerStat.getPresence());
 					}
 						break;
-					case Calendar.TUESDAY: {
+					case DateTimeConstants.TUESDAY: {
 						dayStat.addDistance(1, index, swimmerStat.getDistance());
 						dayStat.addPresence(1, swimmerStat.getPresence());
 					}
 						break;
-					case Calendar.WEDNESDAY: {
+					case DateTimeConstants.WEDNESDAY: {
 						dayStat.addDistance(2, index, swimmerStat.getDistance());
 						dayStat.addPresence(2, swimmerStat.getPresence());
 					}
 						break;
-					case Calendar.THURSDAY: {
+					case DateTimeConstants.THURSDAY: {
 						dayStat.addDistance(3, index, swimmerStat.getDistance());
 						dayStat.addPresence(3, swimmerStat.getPresence());
 					}
 						break;
-					case Calendar.FRIDAY: {
+					case DateTimeConstants.FRIDAY: {
 						dayStat.addDistance(4, index, swimmerStat.getDistance());
 						dayStat.addPresence(4, swimmerStat.getPresence());
 					}
 						break;
-					case Calendar.SATURDAY: {
+					case DateTimeConstants.SATURDAY: {
 						dayStat.addDistance(5, index, swimmerStat.getDistance());
 						dayStat.addPresence(5, swimmerStat.getPresence());
 					}
 						break;
-					case Calendar.SUNDAY: {
+					case DateTimeConstants.SUNDAY: {
 						dayStat.addDistance(6, index, swimmerStat.getDistance());
 						dayStat.addPresence(6, swimmerStat.getPresence());
 					}
@@ -266,41 +250,28 @@ public class SwimmerStatService {
 			}
 			result.setBegin(dayBeginToMindnight);
 			result.setEnd(dayEndToMindnight);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		return result;
 	}
 
-	@Path("/months/{groupe}")
+	@Path("/months")
 	@GET
 	public SwimmerStatMonthListResult getMonths(
-			@PathParam("groupe") Long groupe, @QueryParam("month") String month) {
+			@QueryParam("groupes") Set<Long> groupes, @QueryParam("month") String month) {
 		SwimmerStatMonthListResult result = new SwimmerStatMonthListResult();
 
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
-		Date monthDate = null;
-		try {
-			monthDate = formatter.parse(month);
-			Long dayBeginToMindnight = monthDate.getTime();
-
+			LocalDate longDate = ISODateTimeFormat.yearMonth().parseLocalDate(month);
+			Long dayBeginToMindnight = longDate.toDateTimeAtStartOfDay().getMillis();
 			// Get end of week to midnight
-			Calendar lCalendar = GregorianCalendar.getInstance();
-			lCalendar.setTime(monthDate);
-			int endDayOfWeek = lCalendar
-					.getActualMaximum(Calendar.DAY_OF_MONTH);
-			lCalendar.set(Calendar.DAY_OF_MONTH, endDayOfWeek);
-			Long dayEndToMindnight = lCalendar.getTimeInMillis();
+			Long dayEndToMindnight = longDate.dayOfMonth().withMaximumValue().toDateTimeAtStartOfDay().hourOfDay().withMaximumValue().getMillis();
 
 			// Recuperer les nageur du groupe
 			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-					1);
+					groupes.size());
+			for(Long groupe: groupes) {
 			criteria.add(new CriterionDao<Long>(
-					InscriptionEntityFields.NOUVEAUGROUPE, groupe,
-					Operator.EQUAL));
-			List<InscriptionEntity2> entities = inscriptionDao.find(criteria);
+					InscriptionEntityFields.NOUVEAUGROUPE, groupe, Operator.EQUAL));
+			}
+			List<InscriptionEntity2> entities = inscriptionDao.find(criteria, Operator.OR, new OrderDao(InscriptionEntityFields.NOM, OrderOperator.ASC));
 
 			Set<Integer> weeks = new LinkedHashSet<>(); 
 			for (InscriptionEntity2 nageur : entities) {
@@ -335,59 +306,37 @@ public class SwimmerStatService {
 				result.addNageur(dayStat);
 			}
 			//Set weeks
-			Calendar calendarBegin = GregorianCalendar.getInstance();
-			calendarBegin.setTime(monthDate);
-			calendarBegin.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-			
-			Calendar calendarEnd = GregorianCalendar.getInstance();
-			calendarEnd.setTime(monthDate);
-			calendarEnd.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 			for(Integer week: weeks) {
-				calendarBegin.set(Calendar.WEEK_OF_MONTH, week);
-				calendarEnd.set(Calendar.WEEK_OF_MONTH, week);
-				result.addWeek(week -1, new CoupleValue<Long, Long>(calendarBegin.getTimeInMillis(), calendarEnd.getTimeInMillis()));
+				Calendar calendar = GregorianCalendar.getInstance();
+				calendar.set(Calendar.WEEK_OF_MONTH, week);
+				LocalDate weekDate = new LocalDate(calendar);
+				result.addWeek(week -1, new CoupleValue<Long, Long>(weekDate.dayOfWeek().withMinimumValue().toDateTimeAtStartOfDay().getMillis(), weekDate.dayOfWeek().withMaximumValue().toDateTimeAtStartOfDay().getMillis()));
 			}
 			
 			result.setBegin(dayBeginToMindnight);
 			result.setEnd(dayEndToMindnight);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		return result;
 	}
 
-	@Path("/years/{groupe}")
+	@Path("/years")
 	@GET
-	public SwimmerStatYearListResult getYears(@PathParam("groupe") Long groupe,
+	public SwimmerStatYearListResult getYears(@QueryParam("groupes") Set<Long> groupes,
 			@QueryParam("year") String year) {
 		SwimmerStatYearListResult result = new SwimmerStatYearListResult();
 
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy");
-		Date yearDate = null;
-		try {
-			yearDate = formatter.parse(year);
-			Calendar calendar = GregorianCalendar.getInstance();
-			calendar.setTime(yearDate);
-			calendar.set(Calendar.MONTH, Calendar.SEPTEMBER);
-			calendar.add(Calendar.YEAR, -1);
-			Long dayBeginToMindnight = calendar.getTimeInMillis();
-
+			DateTime yearDate = ISODateTimeFormat.year().parseDateTime(year);
+			Long dayBeginToMindnight = yearDate.withMonthOfYear(DateTimeConstants.SEPTEMBER).minusYears(1).getMillis();
 			// Get end of week to midnight
-			Calendar lCalendar = GregorianCalendar.getInstance();
-			lCalendar.setTime(yearDate);
-			lCalendar.set(Calendar.MONTH, Calendar.AUGUST);
-			lCalendar.set(Calendar.DAY_OF_MONTH, 31);
-			Long dayEndToMindnight = lCalendar.getTimeInMillis();
+			Long dayEndToMindnight = yearDate.withMonthOfYear(DateTimeConstants.AUGUST).dayOfMonth().withMaximumValue().getMillis();
 
 			// Recuperer les nageur du groupe
 			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-					1);
+					groupes.size());
+			for(Long groupe: groupes) {
 			criteria.add(new CriterionDao<Long>(
-					InscriptionEntityFields.NOUVEAUGROUPE, groupe,
-					Operator.EQUAL));
-			List<InscriptionEntity2> entities = inscriptionDao.find(criteria);
+					InscriptionEntityFields.NOUVEAUGROUPE, groupe, Operator.EQUAL));
+			}
+			List<InscriptionEntity2> entities = inscriptionDao.find(criteria, Operator.OR, new OrderDao(InscriptionEntityFields.NOM, OrderOperator.ASC));
 
 			for (InscriptionEntity2 nageur : entities) {
 				// Recuperer la stat du jour du nageur
@@ -407,77 +356,75 @@ public class SwimmerStatService {
 				dayStat.setNom(nageur.getNom());
 				dayStat.setPrenom(nageur.getPrenom());
 				for (SwimmerStatEntity swimmerStat : statEntities) {
-					calendar = GregorianCalendar.getInstance();
-					calendar.setTimeInMillis(swimmerStat.getDay());
-					int monthOfYear = calendar.get(Calendar.MONTH);
-					switch (monthOfYear) {
-					case Calendar.JANUARY: {
+					LocalDate localDate = new LocalDate(swimmerStat.getDay());
+					switch (localDate.getMonthOfYear()) {
+					case DateTimeConstants.JANUARY: {
 						dayStat.addDistance(0, swimmerStat.getDistance());
 						dayStat.addPresence(0, swimmerStat.getPresence() ? 1
 								: 0);
 					}
 						break;
-					case Calendar.FEBRUARY: {
+					case DateTimeConstants.FEBRUARY: {
 						dayStat.addDistance(1, swimmerStat.getDistance());
 						dayStat.addPresence(1, swimmerStat.getPresence() ? 1
 								: 0);
 					}
 						break;
-					case Calendar.MARCH: {
+					case DateTimeConstants.MARCH: {
 						dayStat.addDistance(2, swimmerStat.getDistance());
 						dayStat.addPresence(2, swimmerStat.getPresence() ? 1
 								: 0);
 					}
 						break;
-					case Calendar.APRIL: {
+					case DateTimeConstants.APRIL: {
 						dayStat.addDistance(3, swimmerStat.getDistance());
 						dayStat.addPresence(3, swimmerStat.getPresence() ? 1
 								: 0);
 					}
 						break;
-					case Calendar.MAY: {
+					case DateTimeConstants.MAY: {
 						dayStat.addDistance(4, swimmerStat.getDistance());
 						dayStat.addPresence(4, swimmerStat.getPresence() ? 1
 								: 0);
 					}
 						break;
-					case Calendar.JUNE: {
+					case DateTimeConstants.JUNE: {
 						dayStat.addDistance(5, swimmerStat.getDistance());
 						dayStat.addPresence(5, swimmerStat.getPresence() ? 1
 								: 0);
 					}
 						break;
-					case Calendar.JULY: {
+					case DateTimeConstants.JULY: {
 						dayStat.addDistance(6, swimmerStat.getDistance());
 						dayStat.addPresence(6, swimmerStat.getPresence() ? 1
 								: 0);
 					}
 						break;
-					case Calendar.AUGUST: {
+					case DateTimeConstants.AUGUST: {
 						dayStat.addDistance(7, swimmerStat.getDistance());
 						dayStat.addPresence(7, swimmerStat.getPresence() ? 1
 								: 0);
 					}
 						break;
-					case Calendar.SEPTEMBER: {
+					case DateTimeConstants.SEPTEMBER: {
 						dayStat.addDistance(8, swimmerStat.getDistance());
 						dayStat.addPresence(8, swimmerStat.getPresence() ? 1
 								: 0);
 					}
 						break;
-					case Calendar.OCTOBER: {
+					case DateTimeConstants.OCTOBER: {
 						dayStat.addDistance(9, swimmerStat.getDistance());
 						dayStat.addPresence(9, swimmerStat.getPresence() ? 1
 								: 0);
 					}
 						break;
-					case Calendar.NOVEMBER: {
+					case DateTimeConstants.NOVEMBER: {
 						dayStat.addDistance(10, swimmerStat.getDistance());
 						dayStat.addPresence(10, swimmerStat.getPresence() ? 1
 								: 0);
 					}
 						break;
-					case Calendar.DECEMBER: {
+					case DateTimeConstants.DECEMBER: {
 						dayStat.addDistance(11, swimmerStat.getDistance());
 						dayStat.addPresence(11, swimmerStat.getPresence() ? 1
 								: 0);
@@ -492,11 +439,6 @@ public class SwimmerStatService {
 			}
 			result.setBegin(dayBeginToMindnight);
 			result.setEnd(dayEndToMindnight);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		return result;
 	}
 }

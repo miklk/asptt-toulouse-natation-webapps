@@ -21,10 +21,6 @@ public enum MenuItems {
 	VIDE("Pas de valeur"),
 	REFRESH_ADMIN,
 	SUBSCRIPTION_ONLINE("Inscription en ligne"),
-	SWIMMER_STAT_DAY,
-	SWIMMER_STAT_WEEK,
-	SWIMMER_STAT_MONTH,
-	SWIMMER_STAT_YEAR,
 	PROFILE_PASSWORD,
 	;
 	

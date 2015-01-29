@@ -31,9 +31,6 @@ import com.asptttoulousenatation.core.server.structure.menu.CreateMenuActionHand
 import com.asptttoulousenatation.core.server.structure.menu.DeleteMenuActionHandler;
 import com.asptttoulousenatation.core.server.structure.menu.GetMenuActionHandler;
 import com.asptttoulousenatation.core.server.structure.menu.UpdateMenuActionHandler;
-import com.asptttoulousenatation.core.server.swimmer.GetAllSwimmerStatActionHandler;
-import com.asptttoulousenatation.core.server.swimmer.GetSwimmerActionHandler;
-import com.asptttoulousenatation.core.server.swimmer.UpdateSwimmerStatActionHandler;
 import com.asptttoulousenatation.core.server.user.AuthenticationActionHandler;
 import com.asptttoulousenatation.core.server.user.ChangePasswordActionHandler;
 import com.asptttoulousenatation.core.server.user.IsAuthenticatedActionHandler;
@@ -70,9 +67,6 @@ import com.asptttoulousenatation.core.shared.structure.menu.CreateMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.DeleteMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.GetMenuAction;
 import com.asptttoulousenatation.core.shared.structure.menu.UpdateMenuAction;
-import com.asptttoulousenatation.core.shared.swimmer.GetAllSwimmerStatAction;
-import com.asptttoulousenatation.core.shared.swimmer.GetSwimmerAction;
-import com.asptttoulousenatation.core.shared.swimmer.UpdateSwimmerStatAction;
 import com.asptttoulousenatation.core.shared.user.AuthenticationAction;
 import com.asptttoulousenatation.core.shared.user.ChangePasswordAction;
 import com.asptttoulousenatation.core.shared.user.IsAuthenticatedAction;
@@ -172,11 +166,6 @@ public class CoreModule extends ActionHandlerModule {
 		bindHandler(UpdateMenuAction.class, UpdateMenuActionHandler.class);
 		bindHandler(DeleteMenuAction.class, DeleteMenuActionHandler.class);
 		bindHandler(GetMenuAction.class, GetMenuActionHandler.class);
-		
-		//Swimmer stat
-		bindHandler(UpdateSwimmerStatAction.class, UpdateSwimmerStatActionHandler.class);
-		bindHandler(GetAllSwimmerStatAction.class, GetAllSwimmerStatActionHandler.class);
-		bindHandler(GetSwimmerAction.class, GetSwimmerActionHandler.class);
 		
 		//Data update
 		bindHandler(SetDataUpdateAction.class, SetDataUpdateActionHandler.class);

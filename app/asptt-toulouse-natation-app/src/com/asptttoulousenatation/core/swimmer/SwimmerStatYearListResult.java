@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerStatYearUi;
-
 @XmlRootElement
 public class SwimmerStatYearListResult implements Serializable {
 

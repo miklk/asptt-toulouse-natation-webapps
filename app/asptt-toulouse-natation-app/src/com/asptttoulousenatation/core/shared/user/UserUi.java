@@ -2,7 +2,6 @@ package com.asptttoulousenatation.core.shared.user;
 
 import java.util.Set;
 
-import com.asptttoulousenatation.core.shared.swimmer.SwimmerUi;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class UserUi implements IsSerializable {
@@ -14,13 +13,11 @@ public class UserUi implements IsSerializable {
 	private UserDataUi userData;
 	private Set<Long> slots;
 	
-	private SwimmerUi swimmer;
-	
 	public UserUi() {
 	}
 
 	public UserUi(Long pId, String pEmailAddress, boolean pValidated,
-			Set<String> pProfiles, UserDataUi pUserData, Set<Long> pSlots, SwimmerUi pSwimmer) {
+			Set<String> pProfiles, UserDataUi pUserData, Set<Long> pSlots) {
 		super();
 		id = pId;
 		emailAddress = pEmailAddress;
@@ -28,7 +25,6 @@ public class UserUi implements IsSerializable {
 		profiles = pProfiles;
 		userData = pUserData;
 		slots = pSlots;
-		swimmer = pSwimmer;
 	}
 
 	public Long getId() {
@@ -77,13 +73,5 @@ public class UserUi implements IsSerializable {
 
 	public void setSlots(Set<Long> pSlots) {
 		slots = pSlots;
-	}
-
-	public SwimmerUi getSwimmer() {
-		return swimmer;
-	}
-
-	public void setSwimmer(SwimmerUi pSwimmer) {
-		swimmer = pSwimmer;
 	}
 }

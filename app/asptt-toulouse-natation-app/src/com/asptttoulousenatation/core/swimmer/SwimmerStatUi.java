@@ -1,4 +1,4 @@
-package com.asptttoulousenatation.core.shared.swimmer;
+package com.asptttoulousenatation.core.swimmer;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

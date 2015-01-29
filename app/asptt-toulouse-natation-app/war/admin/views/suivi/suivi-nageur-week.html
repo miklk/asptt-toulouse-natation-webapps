@@ -6,8 +6,8 @@
 	<div class="row">
 		<form class="form-inline">
 			<div class="form-group">
-				 <select class="form-control" ng-model="groupe"
-				    	ng-options="groupe.title for groupe in groupes.groups track by groupe.id" ng-change="loadWeeks()">
+				 <select class="form-control" ng-model="groupesSelected"
+				    	ng-options="groupe.title for groupe in groupes.groups track by groupe.id" ng-change="loadWeeks()" multiple size="10">
 			    	<option value="">Choisir un groupe</option>
 		  	    </select>
 			</div>
@@ -22,7 +22,7 @@
 		<h5>{{beginDt | date: 'shortDate'}} - {{endDt | date: 'shortDate'}}</h5>
 	</div>
 	
-	<div class="row" ng-hide="groupe.enf">
+	<div class="row" ng-hide="enf">
 		<table class="table table-hover">
 			<thead>
 				<tr>
@@ -52,7 +52,7 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="row" ng-show="groupe.enf">
+	<div class="row" ng-show="enf">
 		<table class="table table-hover">
 			<thead>
 				<tr>

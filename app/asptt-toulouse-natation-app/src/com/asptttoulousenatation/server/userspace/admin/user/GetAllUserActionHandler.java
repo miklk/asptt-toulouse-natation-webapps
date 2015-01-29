@@ -7,19 +7,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
-
 import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
 
-import com.asptttoulousenatation.client.util.CollectionUtils;
-import com.asptttoulousenatation.core.server.dao.entity.field.SwimmerEntityFields;
-import com.asptttoulousenatation.core.server.dao.entity.swimmer.SwimmerEntity;
+import org.apache.commons.lang3.StringUtils;
+
 import com.asptttoulousenatation.core.server.dao.entity.user.UserDataEntity;
 import com.asptttoulousenatation.core.server.dao.entity.user.UserEntity;
-import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
-import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.swimmer.SwimmerDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
@@ -28,7 +23,6 @@ import com.asptttoulousenatation.core.server.entity.UserTransformer;
 import com.asptttoulousenatation.core.shared.club.slot.GetAllSlotAction;
 import com.asptttoulousenatation.core.shared.club.slot.GetAllSlotResult;
 import com.asptttoulousenatation.core.shared.user.UserUi;
-import com.asptttoulousenatation.server.userspace.admin.entity.SwimmerTransformer;
 import com.asptttoulousenatation.shared.userspace.admin.user.GetAllUserAction;
 import com.asptttoulousenatation.shared.userspace.admin.user.GetAllUserResult;
 
@@ -40,7 +34,6 @@ public class GetAllUserActionHandler implements
 	private SwimmerDao swimmerDao = new SwimmerDao();
 	private UserTransformer transformer = new UserTransformer();
 	private UserDataTransformer userDataTransformer = new UserDataTransformer();
-	private SwimmerTransformer swimmerTransformer = new SwimmerTransformer();
 	
 	public GetAllUserResult execute(GetAllUserAction pAction,
 			ExecutionContext pContext) throws DispatchException {
@@ -51,16 +44,6 @@ public class GetAllUserActionHandler implements
 			UserUi lUserUi = transformer.toUi(lUserEntity);
 			UserDataEntity lUserDataEntity = userDataDao.get(lUserEntity.getUserData());
 			lUserUi.setUserData(userDataTransformer.toUi(lUserDataEntity));
-			
-			//Swimmer
-			List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(1);
-			lCriteria.add(new CriterionDao<Object>(SwimmerEntityFields.USER,
-					lUserEntity.getId(), Operator.EQUAL));
-			List<SwimmerEntity> swimmerEntities = swimmerDao.find(lCriteria);
-			if(CollectionUtils.isNotEmpty(swimmerEntities)) {
-				SwimmerEntity swimmerEntity = swimmerEntities.get(0);
-				lUserUi.setSwimmer(swimmerTransformer.toUi(swimmerEntity));
-			}
 			lUsers.add(lUserUi);
 		}
 		Collections.sort(lUsers, new Comparator<UserUi>() {
