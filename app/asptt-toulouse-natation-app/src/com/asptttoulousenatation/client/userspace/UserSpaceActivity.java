@@ -8,25 +8,15 @@ import com.asptttoulousenatation.client.userspace.admin.club.group.GroupActivity
 import com.asptttoulousenatation.client.userspace.admin.club.group.GroupPlace;
 import com.asptttoulousenatation.client.userspace.admin.club.slot.SlotActivity;
 import com.asptttoulousenatation.client.userspace.admin.club.slot.SlotPlace;
-import com.asptttoulousenatation.client.userspace.admin.competition.CompetitionActivity;
-import com.asptttoulousenatation.client.userspace.admin.competition.CompetitionPlace;
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent;
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEventHandler;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaActivity;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaPlace;
-import com.asptttoulousenatation.client.userspace.admin.user.UserActivity;
-import com.asptttoulousenatation.client.userspace.admin.user.UserPlace;
-import com.asptttoulousenatation.client.userspace.admin.user.password.ChangePasswordActivity;
-import com.asptttoulousenatation.client.userspace.admin.user.password.ChangePasswordPlace;
-import com.asptttoulousenatation.client.userspace.calendar.CompetitionCalendarActivity;
-import com.asptttoulousenatation.client.userspace.calendar.CompetitionCalendarPlace;
 import com.asptttoulousenatation.client.userspace.home.HomeActivity;
 import com.asptttoulousenatation.client.userspace.home.HomePlace;
 import com.asptttoulousenatation.client.userspace.menu.MenuActivity;
 import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.client.userspace.menu.MenuPlace;
-import com.asptttoulousenatation.client.userspace.officiel.OfficielSubscriptionActivity;
-import com.asptttoulousenatation.client.userspace.officiel.OfficielSubscriptionPlace;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitUserSpaceAction;
@@ -123,23 +113,6 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 													.getContentPanel(),
 													lEventBus);
 											break;
-										case USER_CREATION:
-											UserActivity lUserActivity = new UserActivity(
-													new UserPlace(),
-													clientFactory, false);
-											lUserActivity.start(lAdminView
-													.getContentPanel(),
-													lEventBus);
-											break;
-										case USER_EDITION:
-											UserActivity lUserEditionActivity = new UserActivity(
-													new UserPlace(),
-													clientFactory, true);
-											lUserEditionActivity.start(
-													lAdminView
-															.getContentPanel(),
-													lEventBus);
-											break;
 										case CLUB_GROUP_EDITION:
 											GroupActivity lGroupActivity = new GroupActivity(
 													new GroupPlace(),
@@ -155,36 +128,6 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 											lSlotActivity.start(lAdminView
 													.getContentPanel(),
 													lEventBus);
-											break;
-										case COMPETITION_EDITION:
-											CompetitionActivity lCompetitionActivity = new CompetitionActivity(
-													new CompetitionPlace(),
-													clientFactory);
-											lCompetitionActivity.start(
-													lAdminView
-															.getContentPanel(),
-													lEventBus);
-											break;
-										case OFFICIEL_VIEW:
-											CompetitionCalendarActivity lCompetitionCalendarActivity = new CompetitionCalendarActivity(
-													new CompetitionCalendarPlace(),
-													clientFactory);
-											lCompetitionCalendarActivity
-													.setUser(user);
-											lCompetitionCalendarActivity.start(
-													lAdminView
-															.getContentPanel(),
-													lEventBus);
-											break;
-										case OFFICIEL_SUBSCRIPTION:
-											OfficielSubscriptionActivity lOfficielSubscriptionActivity = new OfficielSubscriptionActivity(new OfficielSubscriptionPlace(), clientFactory);
-											lOfficielSubscriptionActivity.setUser(user);
-											lOfficielSubscriptionActivity.start(lAdminView.getContentPanel(), lEventBus);
-											break;
-										case PROFILE_PASSWORD:
-											ChangePasswordActivity lActivity = new ChangePasswordActivity(new ChangePasswordPlace(), clientFactory);
-											lActivity.setUser(user);
-											lActivity.start(lAdminView.getContentPanel(), lEventBus);
 											break;
 										case VIDE:
 											lAdminView.getContentPanel()

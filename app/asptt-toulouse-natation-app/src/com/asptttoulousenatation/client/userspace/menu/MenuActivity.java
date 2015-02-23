@@ -54,14 +54,8 @@ public class MenuActivity extends MyAbstractActivity<MenuPlace> {
 				});
 			}
 		}
-		addAction(lEventBus, lMenuView, MenuItems.USER_CREATION);
-		addAction(lEventBus, lMenuView, MenuItems.USER_EDITION);
 		addAction(lEventBus, lMenuView, MenuItems.CLUB_GROUP_EDITION);
 		addAction(lEventBus, lMenuView, MenuItems.CLUB_SLOT_EDITION);
-		addAction(lEventBus, lMenuView, MenuItems.COMPETITION_EDITION);
-		addAction(lEventBus, lMenuView, MenuItems.OFFICIEL_VIEW);
-		addAction(lEventBus, lMenuView, MenuItems.OFFICIEL_SUBSCRIPTION);
-		addAction(lEventBus, lMenuView, MenuItems.PROFILE_PASSWORD);
 
 		lMenuView.getCreateAreaButton().addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent pEvent) {

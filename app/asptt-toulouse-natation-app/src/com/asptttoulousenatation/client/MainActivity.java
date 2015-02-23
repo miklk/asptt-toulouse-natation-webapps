@@ -196,10 +196,6 @@ public class MainActivity extends MyAbstractActivity<MainPlace> {
 																			.setSelectedMenu(pEvent
 																					.getMenu());
 																	lMainView
-																			.updateBreadcrumb(
-																					pEvent.getAreaTitle(),
-																					pEvent.getMenuTitle());
-																	lMainView
 																			.loadContent(
 																					pResult.getData(),
 																					pResult.getDocuments());

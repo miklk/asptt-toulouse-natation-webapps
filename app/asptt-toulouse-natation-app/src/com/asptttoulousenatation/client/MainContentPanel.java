@@ -6,12 +6,10 @@ import java.util.List;
 
 import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent;
 import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent.LoadContentAreaEnum;
-import com.asptttoulousenatation.client.util.Breadcrumb;
 import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
-import com.asptttoulousenatation.shared.init.InitResult;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.dom.client.Style.Unit;
@@ -39,9 +37,7 @@ public class MainContentPanel extends Composite {
 	private VerticalPanel panel;
 	private SimplePanel content;
 	private FlowPanel actuPanel;
-	private Breadcrumb breadcrumb;
 
-	private InitResult initResult;
 	private PopupManager popupManager;
 	private MenuUi selectedMenu;
 	private EventBus eventBus;
@@ -50,8 +46,7 @@ public class MainContentPanel extends Composite {
 	private Button moreActuButton;
 	private long moreActuEnd;
 
-	public MainContentPanel(InitResult pInitResult, EventBus pEventBus) {
-		initResult = pInitResult;
+	public MainContentPanel(EventBus pEventBus) {
 		eventBus = pEventBus;
 		panel = new VerticalPanel();
 		initWidget(panel);
@@ -70,22 +65,9 @@ public class MainContentPanel extends Composite {
 			public void onClick(ClickEvent pEvent) {
 				subMenu.clear();
 				content.setWidget(actuPanel);
-				breadcrumb.update("", "");
 			}
 		});
 		lTitlePanel.add(lblAspttGrandToulouse);
-		
-		breadcrumb = new Breadcrumb();
-		breadcrumb.setStyleName(CSS.tetiere());
-		breadcrumb.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent pEvent) {
-				subMenu.clear();
-				content.setWidget(actuPanel);
-				breadcrumb.update("", "");
-			}
-		});
-		panel.add(breadcrumb);
-		panel.setCellHeight(breadcrumb, "10px");
 		
 		subMenu = new HorizontalPanel();
 		panel.add(subMenu);
@@ -93,14 +75,6 @@ public class MainContentPanel extends Composite {
 		
 	}
 
-	public void updateBreadcrumb(final String pAreaName, final String pMenuName) {
-		breadcrumb.update(pAreaName, pMenuName);
-	}
-	
-	public void updateBreadcrumb(final String pMenuName) {
-		breadcrumb.update(pMenuName);
-	}
-	
 	private void buildSubMenu() {
 		subMenu.clear();
 		subMenu.removeStyleName(CSS.menuSub());
@@ -199,7 +173,6 @@ public class MainContentPanel extends Composite {
 	}
 	
 	public void loadSubContent(final byte[] pData, List<DocumentUi> pDocuments, String pSubMenuName) {
-		breadcrumb.update(pSubMenuName);
 		loadContent(pData, pDocuments);
 	}
 	

@@ -58,7 +58,7 @@ public class MainViewImpl extends Composite implements MainView {
 		// TODO center
 		HorizontalPanel layoutPanel_1 = new HorizontalPanel();
 		panel.add(layoutPanel_1, DockPanel.CENTER);
-		contentPanel = new MainContentPanel(initResult, eventBus);
+		contentPanel = new MainContentPanel(eventBus);
 
 		layoutPanel_1.add(contentPanel);
 
@@ -149,14 +149,6 @@ public class MainViewImpl extends Composite implements MainView {
 
 	public HasValue<String> getEmailAddressForget() {
 		return headerPanel.getEmailAddressForget();
-	}
-
-	public void updateBreadcrumb(final String pAreaName, final String pMenuName) {
-		contentPanel.updateBreadcrumb(pAreaName, pMenuName);
-	}
-
-	public void updateBreadcrumb(final String pMenuName) {
-		contentPanel.updateBreadcrumb(pMenuName);
 	}
 
 	public void loadContent(byte[] pData, List<DocumentUi> pDocuments) {

@@ -29,7 +29,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.core.server.dao.ActuDao;
 import com.asptttoulousenatation.core.server.dao.competition.CompetitionDao;
-import com.asptttoulousenatation.core.server.dao.competition.CompetitionDayDao;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
 import com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.AreaEntityFields;
@@ -56,10 +55,7 @@ import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
 import com.asptttoulousenatation.server.ApplicationLoader;
-import com.asptttoulousenatation.server.userspace.admin.entity.ActuTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.AreaTransformer;
-import com.asptttoulousenatation.server.userspace.admin.entity.CompetitionDayTransformer;
-import com.asptttoulousenatation.server.userspace.admin.entity.CompetitionTransformer;
 import com.asptttoulousenatation.server.userspace.admin.entity.MenuTransformer;
 import com.asptttoulousenatation.server.util.Utils;
 import com.asptttoulousenatation.shared.init.InitAction;
@@ -89,13 +85,6 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 	private MenuTransformer menuTransformer = new MenuTransformer();
 
 	private ActuDao actuDao = new ActuDao();
-	private ActuTransformer actuTransformer = new ActuTransformer();
-
-	private CompetitionDao competitionDao = new CompetitionDao();
-	private CompetitionDayDao competitionDayDao = new CompetitionDayDao();
-
-	private CompetitionTransformer competitionTransformer = new CompetitionTransformer();
-	private CompetitionDayTransformer competitionDayTransformer = new CompetitionDayTransformer();
 
 	private ApplicationLoader applicationLoader = ApplicationLoader
 			.getInstance();
@@ -319,13 +308,6 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 
 		lAreaEntity = new AreaEntity(null, "Utilisateur", ProfileEnum.ADMIN,
 				false, (short) 5);
-		AreaEntity lAreaAdmUser = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.USER_CREATION.toString(), "Création",
-				lAreaAdmUser.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
-				true, true, 1, false, false);
-		createMenu(MenuItems.USER_EDITION.toString(), "Modification",
-				lAreaAdmUser.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
-				true, true, 2, false, false);
 
 		// Organisation du club
 		lAreaEntity = new AreaEntity(null, "Organisation du club",
@@ -341,33 +323,10 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		// Officiels
 		lAreaEntity = new AreaEntity(null, "Officier", ProfileEnum.OFFICIEL,
 				false, (short) 6);
-		AreaEntity lAreaOfficier = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.OFFICIEL_VIEW.toString(),
-				"Consulter le calendrier", lAreaOfficier.getId(),
-				StringUtils.EMPTY, StringUtils.EMPTY, true, true, 1, false, false);
-		createMenu(MenuItems.OFFICIEL_SUBSCRIPTION.toString(), "Inscription",
-				lAreaOfficier.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
-				true, true, 2, false, false);
-
-		// Compétition
-		lAreaEntity = new AreaEntity(null, "Compétitions saison",
-				ProfileEnum.ADMIN, true, (short) 4);
-		AreaEntity lAreaCompetitionSaison = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.COMPETITION_EDITION.toString(), "Modification",
-				lAreaCompetitionSaison.getId(), StringUtils.EMPTY,
-				StringUtils.EMPTY, true, true, 1, false, false);
 
 		lAreaEntity = new AreaEntity(null, "Structure du site",
 				ProfileEnum.ADMIN, (short) 2);
 		lAreaDao.save(lAreaEntity);
-
-		// Profil
-		lAreaEntity = new AreaEntity(null, "Mon profil", ProfileEnum.NAGEUR,
-				false, (short) 5);
-		AreaEntity lAreaProfil = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.PROFILE_PASSWORD.toString(),
-				"Changer de mot de passe", lAreaProfil.getId(),
-				StringUtils.EMPTY, StringUtils.EMPTY, true, false, 1, false, false);
 
 		createUserAdmin();
 		createUserRoot();
