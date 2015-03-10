@@ -17,6 +17,7 @@
 			<button type="submit" class="btn btn-primary" ng-click="loadMonths()">Afficher</button>
 		</form>
 	</div>
+<div ng-show="nageurs">
 	<div class="row" ng-show="beginDt">
 		<h5>{{beginDt | date: 'MMMM yyyy'}}</h5>
 	</div>
@@ -56,4 +57,5 @@
 			</tbody>
 		</table>
 	</div>
+</div>
 </div>

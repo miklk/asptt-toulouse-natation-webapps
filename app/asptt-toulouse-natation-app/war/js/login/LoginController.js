@@ -10,10 +10,10 @@ loginController.controller('LoginController', ['$scope', '$location', 'LoginServ
 		});
 	};
 	$scope.login = function() {
-		console.log($scope.email);
 	 	LoginService.login.query({email: $scope.email, password: $scope.password}, function(data) {
 	 		console.log(data);
 	 		$scope.loginResult = data;
+	 		window.location.href = "admin/#/home";
 		});
 	};
 }]);

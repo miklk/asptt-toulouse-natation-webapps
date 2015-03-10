@@ -83,7 +83,7 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 			groupes.push(groupe.id);
 		});
 		SuiviNageurService.weeks.query({groupes: groupes,  week: $filter('date')($scope.day,'yyyy-Www')}, function(data) {
-			$scope.nageurs = $scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
+			$scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
 			$scope.beginDt = data.begin;
 			$scope.endDt = data.end;
 			var enf = true;
@@ -100,7 +100,7 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 			groupes.push(groupe.id);
 		});
 		SuiviNageurService.months.query({groupes: groupes,  month: $filter('date')($scope.day,'yyyy-MM')}, function(data) {
-			$scope.nageurs = $scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
+			$scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
 			$scope.beginDt = data.begin;
 			$scope.endDt = data.end;
 			$scope.weeks = data.weeks;
@@ -118,7 +118,7 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 			groupes.push(groupe.id);
 		});
 		SuiviNageurService.years.query({groupes: groupes, year: $filter('date')($scope.day,'yyyy')}, function(data) {
-			$scope.nageurs = $scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
+			$scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
 			$scope.beginDt = data.begin;
 			$scope.endDt = data.end;
 			var enf = true;

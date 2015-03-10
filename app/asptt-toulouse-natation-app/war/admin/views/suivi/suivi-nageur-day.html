@@ -22,6 +22,7 @@ input[type="number"] {
 			<button type="submit" class="btn btn-primary" ng-click="loadSuivi()">Afficher</button>
 		</form>
 	</div>
+<div ng-show="nageurs">
 	<div class="row" ng-hide="enf">
 		<table class="table table-hover">
 			<thead>
@@ -36,9 +37,9 @@ input[type="number"] {
 			<tbody>
 				<tr ng-repeat="nageur in nageurs" ng-click="setSelected(nageur)" ng-class="{'row-selected': nageur.selected}">
 					<td>{{nageur.nom}} {{nageur.prenom}}</td>
-					<td><input type="number" ng-model="nageur.morning.distance" min="0" step="1" ng-blur="updateSuivi(nageur.adherent, nageur, 'MATIN')" /></td>
-					<td><input type="number" ng-model="nageur.midday.distance" min="0" step="1" ng-blur="updateSuivi(nageur.adherent, nageur, 'MIDI')" /></td>
-					<td><input type="number" ng-model="nageur.night.distance" min="0" step="1" ng-blur="updateSuivi(nageur.adherent, nageur, 'SOIR')" /></td>
+					<td><input type="text" ng-model="nageur.morning.distance" size="5" maxlength="5" ng-blur="updateSuivi(nageur.adherent, nageur, 'MATIN')" /></td>
+					<td><input type="text" ng-model="nageur.midday.distance" size="5" maxlength="5" ng-blur="updateSuivi(nageur.adherent, nageur, 'MIDI')" /></td>
+					<td><input type="text" ng-model="nageur.night.distance" size="5" maxlength="5" ng-blur="updateSuivi(nageur.adherent, nageur, 'SOIR')" /></td>
 					<td><input type="checkbox" ng-model="nageur.bodybuilding.presence" ng-change="updateSuivi(nageur.adherent, nageur, 'MUSCU')" /></td>
 				</tr>
 			</tbody>
@@ -90,4 +91,5 @@ input[type="number"] {
 			<button type="button" class="btn btn-primary btn-sm" ng-click="updateSelected()">Valider</button>
 		</form>
 	</div>
+</div>
 </div>

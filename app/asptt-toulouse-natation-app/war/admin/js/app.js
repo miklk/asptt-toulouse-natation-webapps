@@ -1,7 +1,7 @@
 /**
  * 
  */
-var adminApp = angular.module('adminApp', ['ngRoute', 'adherentsServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'UserController', 'AdherentListCtrl', 'DocumentController', 'LibelleController', 'SuiviNageurController']);
+var adminApp = angular.module('adminApp', ['ngRoute', 'adherentsServices','adherentsStatServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'UserController', 'AdherentListCtrl', 'AdherentEmailCtrl', 'AdherentsStatCtrl', 'DocumentController', 'LibelleController', 'SuiviNageurController']);
 
 adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
 	$routeProvider.
@@ -13,16 +13,24 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 			templateUrl: 'views/index.html'
 		}).
 		when('/adherents', {
-			templateUrl: 'views/adherents.html',
+			templateUrl: 'views/adherent/adherents.html',
 			controller: 'AdherentListCtrl'
 		}).
 		when('/adherents/:adherentId', {
-			templateUrl: 'views/adherent.html',
+			templateUrl: 'views/adherent/adherent.html',
 			controller: 'AdherentCtrl'
 		}).
 		when('/adherents/edit/:adherentId', {
-			templateUrl: 'views/adherent-edit.html',
+			templateUrl: 'views/adherent/adherent-edit.html',
 			controller: 'AdherentCtrl'
+		}).
+		when('/adherents-stat', {
+			templateUrl: 'views/adherent/adherents-stat.html',
+			controller: 'AdherentListCtrl'
+		}).
+		when('/adherent-email', {
+			templateUrl: 'views/adherent/adherent-email.html',
+			controller: 'AdherentEmailCtrl'
 		}).
 		when('/en-jours', {
 			templateUrl: 'views/en-jours.html'

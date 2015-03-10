@@ -1,0 +1,83 @@
+<div class="container-fluid" ng-controller="AdherentListCtrl">
+	<div class="row">
+		<h1 class="page-header">Adhérents</h1>
+	</div>
+	<form role="form" class="form-horizontal">
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Nom OU prénom OU e-mail" ng-model="formData.search" />
+			</div>
+			<button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#criteres" aria-expanded="false" aria-controls="criteres">Critères supplémentaires</button>
+	</form>
+	<div class="collapse" id="criteres" style="margin-top:1%"> 
+	<form class="form-inline">
+		<div class="form-group">
+			<select class="form-control" ng-model="formData.groupes"
+		    	ng-options="groupe.id as groupe.title for groupe in groupes" ng-change="loadCreneau()" multiple>
+		    	<option value="">Choisir un groupe</option>
+	  	    </select>
+  	    </div>
+  	    <div class="form-group">
+	  	    <select class="form-control" ng-model="formData.creneaux"
+		    	ng-options="creneau.id as creneau.label for creneau in creneaux" multiple>
+		    	<option value="">Choisir un créneau</option>
+	  	    </select>
+  	    </div>
+	</form>
+	<form style="margin-top: 1%;">
+		<div class="form-group">
+	    		<select class="form-control" ng-model="formData.piscines"
+	    		ng-options="piscine.creneaux as piscine.intitule for piscine in piscines" multiple>
+	    		<option value="">Choisir une piscine</option>
+  	    	</select>
+    	</div>
+	</form>
+	</div>
+	<div style="margin-top: 1%">
+		<button type="submit" class="btn btn-primary btn-sm btn-block" ng-click="search()">Rechercher</button>
+	</div>
+	
+<div ng-show="adherents">
+	<div class="row">
+		<div class="col-md-2">
+			<h5><span class="badge">{{adherents.length}}</span> résultat(s)</h5>
+		</div>
+	</div>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Nom</th>
+				<th>Prénom</th>
+				<th>Date de naissance</th>
+				<th>Groupe</th>
+				<th>Créneaux</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="adherent in adherents" ng-click="loadAdherent(adherent.id)">
+				<td>{{adherent.nom}}</td>
+				<td>{{adherent.prenom}}</td>
+				<td>{{adherent.dateDeNaissance}}</td>
+				<td>{{adherent.groupe}}</td>
+				<td>
+					<span ng-repeat="creneau in adherent.creneaux">{{creneau}}<br /></span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<button type="button" class="btn btn-primary btn-sm btn-block" ng-click="writeEmail = true" ng-show="!writeEmail">Envoyer un e-mail</button>
+	<div class="panel panel-info" ng-show="writeEmail">
+				<div class="panel-heading">
+					<h4>Envoyer un e-mail
+					<button type="button" class="close" ng-click="writeEmail = false">x</button>
+					</h4>
+				</div>
+				<div class="panel-body">
+					<div text-angular="text-angular" ng-model="htmlcontent"></div>
+				</div>
+				<div class="pael-footer">
+					<button type="button" class="btn btn-primary btn-sm btn-block" ng-click="sendEmail()" >Envoyer le message</button>
+				</div>
+	</div>
+</div>
+</div>

@@ -19,13 +19,10 @@ public class SwimmerStatMonthListResult implements Serializable {
 	public SwimmerStatMonthListResult() {
 		nageurs = new ArrayList<>();
 		weeks = new ArrayList<CoupleValue<Long,Long>>();
-		for(int i = 0; i < 5; i++) {
-			weeks.add(new CoupleValue<>(0l, 0l));
-		}
 	}
 	
-	public void addWeek(int week, CoupleValue<Long, Long> pWeek) {
-		weeks.set(week, pWeek);
+	public void addWeek(CoupleValue<Long, Long> pWeek) {
+		weeks.add(pWeek);
 	}
 	
 	public void addNageur(SwimmerStatMonthUi pNageur) {

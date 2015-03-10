@@ -2,9 +2,12 @@ package com.asptttoulousenatation.core.swimmer;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
-import java.util.LinkedHashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.ws.rs.Consumes;
@@ -55,14 +58,7 @@ public class SwimmerStatService {
 		Long dayToMindnight = dayAsDate.toDateTimeAtStartOfDay().getMillis();
 
 		// Recuperer les nageur du groupe
-		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-				groupes.size());
-		for(Long groupe: groupes) {
-		criteria.add(new CriterionDao<Long>(
-				InscriptionEntityFields.NOUVEAUGROUPE, groupe, Operator.EQUAL));
-		}
-		List<InscriptionEntity2> entities = inscriptionDao.find(criteria, Operator.OR, new OrderDao(InscriptionEntityFields.NOM, OrderOperator.ASC));
-
+		List<InscriptionEntity2> entities = getNageurs(groupes);
 		for (InscriptionEntity2 nageur : entities) {
 			// Recuperer la stat du jour du nageur
 			List<CriterionDao<? extends Object>> statCriteria = new ArrayList<CriterionDao<? extends Object>>(
@@ -84,6 +80,24 @@ public class SwimmerStatService {
 			result.addStat(dayStat);
 		}
 		return result;
+	}
+
+	private List<InscriptionEntity2> getNageurs(Set<Long> groupes) {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				groupes.size());
+		for(Long groupe: groupes) {
+		criteria.add(new CriterionDao<Long>(
+				InscriptionEntityFields.NOUVEAUGROUPE, groupe, Operator.EQUAL));
+		}
+		List<InscriptionEntity2> entities = new ArrayList<>(inscriptionDao.find(criteria, Operator.OR, new OrderDao(InscriptionEntityFields.NOM, OrderOperator.ASC)));
+		Collections.sort(entities, new Comparator<InscriptionEntity2>() {
+
+			@Override
+			public int compare(InscriptionEntity2 pO1, InscriptionEntity2 pO2) {
+				return pO1.getNom().compareTo(pO2.getNom());
+			}
+		});
+		return entities;
 	}
 
 	@PUT
@@ -165,13 +179,7 @@ public class SwimmerStatService {
 			Long dayEndToMindnight = weekAsDate.withDayOfWeek(DateTimeConstants.SUNDAY).toDateTimeAtStartOfDay().getMillis();
 
 			// Recuperer les nageur du groupe
-			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-					groupes.size());
-			for(Long groupe: groupes) {
-			criteria.add(new CriterionDao<Long>(
-					InscriptionEntityFields.NOUVEAUGROUPE, groupe, Operator.EQUAL));
-			}
-			List<InscriptionEntity2> entities = inscriptionDao.find(criteria, Operator.OR, new OrderDao(InscriptionEntityFields.NOM, OrderOperator.ASC));
+			List<InscriptionEntity2> entities = getNageurs(groupes);
 
 			for (InscriptionEntity2 nageur : entities) {
 				// Recuperer la stat du jour du nageur
@@ -250,6 +258,13 @@ public class SwimmerStatService {
 			}
 			result.setBegin(dayBeginToMindnight);
 			result.setEnd(dayEndToMindnight);
+			Collections.sort(result.getNageurs(), new Comparator<SwimmerStatWeekUi>() {
+
+				@Override
+				public int compare(SwimmerStatWeekUi pO1, SwimmerStatWeekUi pO2) {
+					return pO1.getNom().compareTo(pO2.getNom());
+				}
+			});
 		return result;
 	}
 
@@ -265,15 +280,8 @@ public class SwimmerStatService {
 			Long dayEndToMindnight = longDate.dayOfMonth().withMaximumValue().toDateTimeAtStartOfDay().hourOfDay().withMaximumValue().getMillis();
 
 			// Recuperer les nageur du groupe
-			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-					groupes.size());
-			for(Long groupe: groupes) {
-			criteria.add(new CriterionDao<Long>(
-					InscriptionEntityFields.NOUVEAUGROUPE, groupe, Operator.EQUAL));
-			}
-			List<InscriptionEntity2> entities = inscriptionDao.find(criteria, Operator.OR, new OrderDao(InscriptionEntityFields.NOM, OrderOperator.ASC));
-
-			Set<Integer> weeks = new LinkedHashSet<>(); 
+			List<InscriptionEntity2> entities = getNageurs(groupes);
+			Map<Integer, LocalDate> weeks = new LinkedHashMap<>(); 
 			for (InscriptionEntity2 nageur : entities) {
 				// Recuperer la stat du jour du nageur
 				List<CriterionDao<? extends Object>> statCriteria = new ArrayList<CriterionDao<? extends Object>>(
@@ -295,7 +303,7 @@ public class SwimmerStatService {
 					Calendar calendar = GregorianCalendar.getInstance();
 					calendar.setTimeInMillis(swimmerStat.getDay());
 					int weekOfMonth = calendar.get(Calendar.WEEK_OF_MONTH);
-					weeks.add(weekOfMonth);
+					weeks.put(weekOfMonth, new LocalDate(swimmerStat.getDay()));
 					dayStat.addDistance(weekOfMonth - 1,
 							swimmerStat.getDistance());
 					dayStat.addPresence(weekOfMonth - 1,
@@ -305,12 +313,21 @@ public class SwimmerStatService {
 				dayStat.computeTotalPresence();
 				result.addNageur(dayStat);
 			}
+			Collections.sort(result.getNageurs(), new Comparator<SwimmerStatMonthUi>() {
+
+				@Override
+				public int compare(SwimmerStatMonthUi pO1, SwimmerStatMonthUi pO2) {
+					return pO1.getNom().compareTo(pO2.getNom());
+				}
+			});
+			
 			//Set weeks
-			for(Integer week: weeks) {
-				Calendar calendar = GregorianCalendar.getInstance();
-				calendar.set(Calendar.WEEK_OF_MONTH, week);
-				LocalDate weekDate = new LocalDate(calendar);
-				result.addWeek(week -1, new CoupleValue<Long, Long>(weekDate.dayOfWeek().withMinimumValue().toDateTimeAtStartOfDay().getMillis(), weekDate.dayOfWeek().withMaximumValue().toDateTimeAtStartOfDay().getMillis()));
+			List<LocalDate> weeksList = new ArrayList<>(weeks.values()); 
+			Collections.sort(weeksList);
+			for(LocalDate week: weeksList) {
+				long firstDay = week.dayOfWeek().withMinimumValue().toDateTimeAtStartOfDay().getMillis();
+				long lastDay = week.dayOfWeek().withMaximumValue().toDateTimeAtStartOfDay().getMillis();
+				result.addWeek(new CoupleValue<Long, Long>(firstDay, lastDay));
 			}
 			
 			result.setBegin(dayBeginToMindnight);
@@ -330,13 +347,7 @@ public class SwimmerStatService {
 			Long dayEndToMindnight = yearDate.withMonthOfYear(DateTimeConstants.AUGUST).dayOfMonth().withMaximumValue().getMillis();
 
 			// Recuperer les nageur du groupe
-			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-					groupes.size());
-			for(Long groupe: groupes) {
-			criteria.add(new CriterionDao<Long>(
-					InscriptionEntityFields.NOUVEAUGROUPE, groupe, Operator.EQUAL));
-			}
-			List<InscriptionEntity2> entities = inscriptionDao.find(criteria, Operator.OR, new OrderDao(InscriptionEntityFields.NOM, OrderOperator.ASC));
+			List<InscriptionEntity2> entities = getNageurs(groupes);
 
 			for (InscriptionEntity2 nageur : entities) {
 				// Recuperer la stat du jour du nageur
@@ -439,6 +450,13 @@ public class SwimmerStatService {
 			}
 			result.setBegin(dayBeginToMindnight);
 			result.setEnd(dayEndToMindnight);
+			Collections.sort(result.getNageurs(), new Comparator<SwimmerStatYearUi>() {
+
+				@Override
+				public int compare(SwimmerStatYearUi pO1, SwimmerStatYearUi pO2) {
+					return pO1.getNom().compareTo(pO2.getNom());
+				}
+			});
 		return result;
 	}
 }

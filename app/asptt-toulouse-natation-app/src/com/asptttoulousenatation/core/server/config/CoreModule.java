@@ -12,12 +12,6 @@ import com.asptttoulousenatation.core.server.club.slot.CreateSlotActionHandler;
 import com.asptttoulousenatation.core.server.club.slot.DeleteSlotActionHandler;
 import com.asptttoulousenatation.core.server.club.slot.GetAllSlotActionHandler;
 import com.asptttoulousenatation.core.server.club.slot.UpdateSlotActionHandler;
-import com.asptttoulousenatation.core.server.competition.CreateCompetitionActionHandler;
-import com.asptttoulousenatation.core.server.competition.DeleteCompetitionActionHandler;
-import com.asptttoulousenatation.core.server.competition.DeleteCompetitionDayActionHandler;
-import com.asptttoulousenatation.core.server.competition.GetAllCompetitionActionHandler;
-import com.asptttoulousenatation.core.server.competition.OfficielDayActionHandler;
-import com.asptttoulousenatation.core.server.competition.UpdateCompetitionActionHandler;
 import com.asptttoulousenatation.core.server.document.DeleteDocumentActionHandler;
 import com.asptttoulousenatation.core.server.document.GetDocumentActionHandler;
 import com.asptttoulousenatation.core.server.document.UpdateDocumentActionHandler;
@@ -47,12 +41,6 @@ import com.asptttoulousenatation.core.shared.club.slot.CreateSlotAction;
 import com.asptttoulousenatation.core.shared.club.slot.DeleteSlotAction;
 import com.asptttoulousenatation.core.shared.club.slot.GetAllSlotAction;
 import com.asptttoulousenatation.core.shared.club.slot.UpdateSlotAction;
-import com.asptttoulousenatation.core.shared.competition.CreateCompetitionAction;
-import com.asptttoulousenatation.core.shared.competition.DeleteCompetitionAction;
-import com.asptttoulousenatation.core.shared.competition.DeleteCompetitionDayAction;
-import com.asptttoulousenatation.core.shared.competition.GetAllCompetitionAction;
-import com.asptttoulousenatation.core.shared.competition.OfficielDayAction;
-import com.asptttoulousenatation.core.shared.competition.UpdateCompetitionAction;
 import com.asptttoulousenatation.core.shared.document.DeleteDocumentAction;
 import com.asptttoulousenatation.core.shared.document.GetDocumentAction;
 import com.asptttoulousenatation.core.shared.document.UpdateDocumentAction;
@@ -82,10 +70,6 @@ import com.asptttoulousenatation.server.userspace.admin.actu.UpdateActuActionHan
 import com.asptttoulousenatation.server.userspace.admin.structure.GetAreaActionHandler;
 import com.asptttoulousenatation.server.userspace.admin.structure.content.CreateContentActionHandler;
 import com.asptttoulousenatation.server.userspace.admin.structure.content.UpdateContentActionHandler;
-import com.asptttoulousenatation.server.userspace.admin.user.CreateUserActionHandler;
-import com.asptttoulousenatation.server.userspace.admin.user.DeleteUserActionHandler;
-import com.asptttoulousenatation.server.userspace.admin.user.GetAllUserActionHandler;
-import com.asptttoulousenatation.server.userspace.admin.user.UpdateUserActionHandler;
 import com.asptttoulousenatation.shared.init.InitAction;
 import com.asptttoulousenatation.shared.init.InitUserSpaceAction;
 import com.asptttoulousenatation.shared.userspace.admin.actu.PublishActuAction;
@@ -93,10 +77,6 @@ import com.asptttoulousenatation.shared.userspace.admin.actu.UpdateActuAction;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.GetAreaAction;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.CreateContentAction;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.UpdateContentAction;
-import com.asptttoulousenatation.shared.userspace.admin.user.CreateUserAction;
-import com.asptttoulousenatation.shared.userspace.admin.user.DeleteUserAction;
-import com.asptttoulousenatation.shared.userspace.admin.user.GetAllUserAction;
-import com.asptttoulousenatation.shared.userspace.admin.user.UpdateUserAction;
 
 public class CoreModule extends ActionHandlerModule {
 	
@@ -113,11 +93,6 @@ public class CoreModule extends ActionHandlerModule {
 		
 		bindHandler(CreateContentAction.class, CreateContentActionHandler.class);
 		bindHandler(UpdateContentAction.class, UpdateContentActionHandler.class);
-		
-		bindHandler(GetAllUserAction.class, GetAllUserActionHandler.class);
-		bindHandler(CreateUserAction.class, CreateUserActionHandler.class);
-		bindHandler(UpdateUserAction.class, UpdateUserActionHandler.class);
-		bindHandler(DeleteUserAction.class, DeleteUserActionHandler.class);
 		
 		bindHandler(AuthenticationAction.class, AuthenticationActionHandler.class);
 		bindHandler(IsAuthenticatedAction.class, IsAuthenticatedActionHandler.class);
@@ -141,14 +116,6 @@ public class CoreModule extends ActionHandlerModule {
 		bindHandler(DeleteSlotAction.class, DeleteSlotActionHandler.class);
 		
 		bindHandler(GetGroupSlotAction.class, GetGroupSlotActionHandler.class);
-		
-		//Competition
-		bindHandler(CreateCompetitionAction.class, CreateCompetitionActionHandler.class);
-		bindHandler(UpdateCompetitionAction.class, UpdateCompetitionActionHandler.class);
-		bindHandler(GetAllCompetitionAction.class, GetAllCompetitionActionHandler.class);
-		bindHandler(OfficielDayAction.class, OfficielDayActionHandler.class);
-		bindHandler(DeleteCompetitionAction.class, DeleteCompetitionActionHandler.class);
-		bindHandler(DeleteCompetitionDayAction.class, DeleteCompetitionDayActionHandler.class);
 		
 		bindHandler(LoadContentAction.class, LoadContentActionHandler.class);
 		

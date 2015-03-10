@@ -1,6 +1,7 @@
 package com.asptttoulousenatation.core.adherent;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -78,6 +79,28 @@ public class AdherentBeanTransformer implements Serializable {
 						SlotEntity slotEntity = slotDao.get(Long
 								.valueOf(creneauId));
 						results.add(SlotTransformer.getInstance().toUi(slotEntity));
+					}
+				}
+			}
+		}
+		return results;
+	}
+	
+	public Set<Long> getCreneauIds(String creneaux) {
+		Set<Long> results = new HashSet<Long>();
+		if (StringUtils.isNotBlank(creneaux)) {
+			String[] creneauSplit = creneaux.split(";");
+			for (String creneau : creneauSplit) {
+				if (StringUtils.isNotBlank(creneau)) {
+					final String creneauId;
+					if (StringUtils.contains(creneau, "_")) {
+						creneauId = creneau.split("_")[1];
+					} else {
+						creneauId = creneau;
+					}
+					if (StringUtils.isNumeric(creneauId)) {
+						results.add(Long
+								.valueOf(creneauId));
 					}
 				}
 			}
