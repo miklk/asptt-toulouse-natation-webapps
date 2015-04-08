@@ -1,8 +1,10 @@
 package com.asptttoulousenatation.core.adherent;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -104,6 +106,14 @@ public class AdherentBeanTransformer implements Serializable {
 					}
 				}
 			}
+		}
+		return results;
+	}
+	
+	public List<AdherentBean> get(List<InscriptionEntity2> entities) {
+		List<AdherentBean> results = new ArrayList<AdherentBean>(entities.size());
+		for(InscriptionEntity2 entity: entities) {
+			results.add(get(entity));
 		}
 		return results;
 	}

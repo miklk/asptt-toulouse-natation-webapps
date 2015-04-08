@@ -3,38 +3,19 @@
  */
 var adherentStatController = angular.module('AdherentsStatCtrl', ['ngRoute', 'textAngular', 'adherentsStatServices', 'adherentsServices', 'adherentServices', 'groupeServices', 'slotServices', 'piscineServices']);
 adherentStatController.controller('AdherentsStatCtrl', ['$scope', '$location', 'AdherentsStatService', 'AdherentsService', 'GroupeService', 'SlotService', 'PiscineService', function($scope, $location, AdherentsStatService, AdherentsService, GroupeService, SlotService, PiscineService) {
-	$scope.htmlcontent = "<p>Toto</p>";
-	$scope.writeEmail = false;
-	$scope.formData = {
-			search: "",
-			groupes: null,
-			creneaux: null,
-			piscines: null
-	};
-
-	GroupeService.all.query({}, function(data) {
-		$scope.groupes = data.groups;
+	AdherentsStatService.sexeAge.query({}, function(data) {
+		console.log(data);
+		$scope.nbAdherents = data.nbAdherents;
+		//console.log(data.sexeAgeStat);
+		sexeAge("#sexe-age", data.sexeAges);
+		localisations("#localisations", data.localisations);
+		localisations("#localisations-toulouse", data.localisationsToulouse);
+		professions("#professions", data.professions);
+		ages("#ages", data.ageArray);
 	});
-	PiscineService.list.query({}, function(data) {
-		$scope.piscines = data.piscines;
+	AdherentsStatService.familles.query({}, function(data) {
+		$scope.nbFamilles = data.nbFamilles;
+		familles("#familles", data.piscineArray);
+		famillesGroupe("#familles-groupes", data.groupeArray);
 	});
-	$scope.loadCreneau = function() {
-		SlotService.get({groupe: $scope.formData.groupes[0]}, function(data) {
-			$scope.creneaux = data.creneaux;
-			angular.forEach($scope.creneaux, function(creneau) {
-				creneau.label = creneau.dayOfWeek + ' - ' + creneau.swimmingPool + ' - ' + creneau.beginStr + '-' + creneau.endStr; 
-			});
-		});
-	};
-	
-	$scope.search = function() {
-		AdherentsStatService.get({q: $scope.formData.search, groupes:$scope.formData.groupes, creneaux:$scope.formData.creneaux, piscines:$scope.formData.piscines}, function (data) {
-			$scope.adherents = data.adherents;
-		});
-	};
-	
-	$scope.loadAdherent = function(id) {
-		console.log("#/adherents/" + id);
-		$location.path("/adherents/" + id);
-	};
 }]);

@@ -35,27 +35,27 @@ public abstract class DaoBase<E extends IEntity> {
 		E lResult = null;
 		EntityTransaction tx = em.getTransaction();
 		try {
-			//Try to find existing
+			// Try to find existing
 			Object key = getKey(pEntity);
 			final E existingEntity;
-			if(key != null) {
+			if (key != null) {
 				existingEntity = em.find(getEntityClass(), getKey(pEntity));
 			} else {
 				existingEntity = null;
 			}
 			tx.begin();
-			if(existingEntity != null) {
+			if (existingEntity != null) {
 				lResult = em.merge(pEntity);
-				
-			} else {	
+
+			} else {
 				em.persist(pEntity);
 				lResult = pEntity;
 			}
 			tx.commit();
-			
+
 		} catch (Exception e) {
 			LOG.severe(e.getMessage());
-			if(tx.isActive()) {
+			if (tx.isActive()) {
 				tx.rollback();
 			}
 		} finally {
@@ -102,11 +102,15 @@ public abstract class DaoBase<E extends IEntity> {
 	 */
 	private E get(Class<E> pClass, Object pId) {
 		E lResult = null;
-		EntityManager em = EMF.get().createEntityManager();
-		try {
-			lResult = (E) em.find(pClass, pId);
-		} finally {
-			em.close();
+		if (pId != null) {
+			EntityManager em = EMF.get().createEntityManager();
+			try {
+				lResult = (E) em.find(pClass, pId);
+			} finally {
+				em.close();
+			}
+		} else {
+			LOG.severe(pClass + " retrieving object is null");
 		}
 		return lResult;
 	}
@@ -127,22 +131,22 @@ public abstract class DaoBase<E extends IEntity> {
 		EntityManager em = EMF.get().createEntityManager();
 		EntityTransaction tx = em.getTransaction();
 		try {
-			//Try to find existing
+			// Try to find existing
 			Object key = getKey(pEntity);
 			final E existingEntity;
-			if(key != null) {
+			if (key != null) {
 				existingEntity = em.find(getEntityClass(), getKey(pEntity));
 			} else {
 				existingEntity = null;
 			}
 			tx.begin();
-			if(existingEntity != null) {
+			if (existingEntity != null) {
 				em.remove(existingEntity);
 			}
 			tx.commit();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			LOG.severe(e.getMessage());
-			if(tx.isActive()) {
+			if (tx.isActive()) {
 				tx.rollback();
 			}
 		} finally {
@@ -180,9 +184,8 @@ public abstract class DaoBase<E extends IEntity> {
 				+ CriteriaUtils
 						.getWhereClause(pCriteria, pOperator, getAlias());
 		if (pOrder != null) {
-			lQueryAsString += " ORDER BY "
-					+ pOrder.getField().getFieldName() + " "
-					+ pOrder.getOperator().toString();
+			lQueryAsString += " ORDER BY " + pOrder.getField().getFieldName()
+					+ " " + pOrder.getOperator().toString();
 		}
 		final TypedQuery<E> lQuery = em.createQuery(lQueryAsString, pClass);
 		final List<E> lResult;
@@ -212,6 +215,6 @@ public abstract class DaoBase<E extends IEntity> {
 	public abstract Class<E> getEntityClass();
 
 	public abstract String getAlias();
-	
+
 	public abstract Object getKey(E pEntity);
 }
