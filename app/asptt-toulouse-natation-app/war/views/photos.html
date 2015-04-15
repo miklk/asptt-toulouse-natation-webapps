@@ -1,0 +1,13 @@
+<h4>Retrouvez toutes les photos sur notre page <a href="https://plus.google.com/+asptttoulousenatation" target="_blank" class="btn btn-social-icon btn-google-plus" rel="publisher">
+			<i class="fa fa-google-plus"></i>
+		</a></h4>
+<div style="margin-top: 2%">
+		<div class="row" style="margin-bottom: 1%" ng-repeat="albumList in photos">
+			<div class="col-md-3 text-center" ng-repeat="album in albumList">
+				<a href="https://plus.google.com/photos/113747450706652808889/albums/{{album.albumId}}" target="_blank">
+				<img src="{{album.couverture}}" style="width:auto; height:100px;"/><br />
+				<small>{{album.intitule}}</small></a>
+			</div>
+			<hr />
+		</div>
+</div>

@@ -8,7 +8,6 @@ adherentsApp.controller('AdherentListCtrl', ['$scope', 'Adherent', function($sco
 }]);
 
 
-var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','loadingAppServices', 'pageServices', 'loadingAlbumServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'inscriptionNouveauServices', 'removeAdherentServices', 'authenticationServices', 'actualiteServices', 'LoginController', 'DocumentController']);
 aspttNatTlsApp.controller('LoadingAppCtrl', ['$scope', 'LoadingApp', '$sce', function($scope, LoadingApp, $sce) {
 	LoadingApp.get({}, function(data) {
 		$scope.loadingApp = data;
@@ -44,8 +43,12 @@ aspttNatTlsApp.controller('LoadingAppCtrl', ['$scope', 'LoadingApp', '$sce', fun
 	};
 }]);
 
-aspttNatTlsApp.controller('PageCtrl', ['$scope', 'PageService', '$routeParams', '$sce', function($scope, PageService, $routeParams, $sce) {
-	PageService.get({pageId: $routeParams.pageId}, function(data) {
+aspttNatTlsApp.controller('PageCtrl', ['$scope', 'pageId', 'PageService', '$routeParams', '$sce', function($scope, pageId, PageService, $routeParams, $sce) {
+	var pageIdentifier = pageId;
+	if(pageId == null) {
+		pageIdentifier = $routeParams.pageId;
+	}
+	PageService.get({pageId: pageIdentifier}, function(data) {
 		var pageUi = angular.fromJson(data);
 		$scope.pageHtml = $sce.trustAsHtml(pageUi.content);
 		var documentSize = pageUi.documents.length;
@@ -446,70 +449,4 @@ aspttNatTlsApp.controller('CalendrierCtrl', ['$scope', '$location', '$sce', func
 	    		//e.stopPropagation();
 	    	});
 	});
-}]);
-
-
-aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
-	$routeProvider.
-		when('/', {
-			templateUrl: 'views/home.html',
-			controller: 'LoadingAppCtrl'
-		}).
-		when('/page/Inscription', {
-			templateUrl: 'views/inscription.html',
-			controller: 'PageCtrl'
-		}).
-		when('/page/actualites', {
-			templateUrl: 'views/actualites.html',
-			controller: 'ActualiteCtrl'
-		}).
-		when('/page/competitions-actualites', {
-			templateUrl: 'views/competitions-actualites.html',
-			controller: 'CompetitionActualiteCtrl'
-		}).
-		when('/page/coin-du-nageur', {
-			templateUrl: 'views/coin-du-nageur.html',
-			controller: 'DocumentController'
-		}).
-		when('/page/login', {
-			templateUrl: 'views/login.html',
-			controller: 'AuthenticationCtrl'
-		}).
-		when('/page/no-rights', {
-			templateUrl: 'views/no-rights.html'
-		}).
-		when('/page/unknow-user', {
-			templateUrl: 'views/unknow-user.html'
-		}).
-		when('/page/user-index', {
-			templateUrl: 'views/user-index.html'
-		}).
-		when('/page/logout', {
-			templateUrl: 'views/logout.html'
-		}).
-		when('/page/calendriers', {
-			templateUrl: 'views/calendrier.html',
-			controller: 'CalendrierCtrl'
-		}).
-		when('/page/:pageId', {
-			templateUrl: 'views/page.html',
-			controller: 'PageCtrl'
-		}).
-		when('/partenaires', {
-			templateUrl: 'views/partenaires.html'
-		}).
-		when('/mentions', {
-			templateUrl: 'views/mentions-legales.html'
-		}).
-		when('/error', {
-			templateUrl: 'views/error.html'
-		}).
-		otherwise({
-			redirectTo: '/error'
-		});
-	$sceDelegateProvider.resourceUrlWhitelist([
-       'self',
-       'http://docs.google.com/viewer?url=*'
-     ]);
-
 }]);
