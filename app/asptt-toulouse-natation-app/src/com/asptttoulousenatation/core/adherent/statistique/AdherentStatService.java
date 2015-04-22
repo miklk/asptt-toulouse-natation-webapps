@@ -13,6 +13,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
@@ -31,7 +32,6 @@ public class AdherentStatService {
 			.getLogger(AdherentStatService.class.getName());
 
 	private Inscription2Dao dao = new Inscription2Dao();
-	
 
 	@Path("/sexe-age")
 	@GET
@@ -47,69 +47,82 @@ public class AdherentStatService {
 		SexeAgeStatBean femme = new SexeAgeStatBean();
 		femme.setSexe("Femme");
 		result.addSexeAgeStat(femme);
-		
+
 		Map<String, LocalisationStatBean> localisations = new HashMap<>();
 		Map<String, ProfessionStatBean> professions = new HashMap<>();
 
 		for (InscriptionEntity2 adherent : adherents) {
-			if (StringUtils.isNotBlank(adherent.getCivilite())) {
-				switch (adherent.getCivilite()) {
-				case "0":
-					setAge(adherent, homme, currentMajeur);
-					break;
-				case "1":
-				case "2":
-					setAge(adherent, femme, currentMajeur);
-					break;
-				default:
-					LOG.severe("Mauvaise civilité: " + adherent.getCivilite());
-				}
-			} else {
-				LOG.severe("Pas de civilité pour " + adherent.getId());
-			}
-			
-			//Localisation
-			String codepostal = adherent.getCodepostal();
-			if(StringUtils.isNotBlank(codepostal) && StringUtils.isNumeric(codepostal) && codepostal.length() == 5) {
-				final LocalisationStatBean localisationStatBean;
-				if(localisations.containsKey(codepostal)) {
-					localisationStatBean = localisations.get(codepostal);
+			if (adherent.getInscriptiondt() != null) {
+				if (StringUtils.isNotBlank(adherent.getCivilite())) {
+					switch (adherent.getCivilite()) {
+					case "0":
+						setAge(adherent, homme, currentMajeur);
+						break;
+					case "1":
+					case "2":
+						setAge(adherent, femme, currentMajeur);
+						break;
+					default:
+						LOG.severe("Mauvaise civilité: "
+								+ adherent.getCivilite());
+					}
 				} else {
-					localisationStatBean = new LocalisationStatBean();
-					localisationStatBean.setCodepostal(codepostal);
-					localisations.put(codepostal, localisationStatBean);
+					LOG.severe("Pas de civilité pour " + adherent.getId());
 				}
-				localisationStatBean.add();
-			}
-			
-			//Profession
-			countProfession(professions, adherent.getProfession());
-			countProfession(professions, adherent.getProfessionTextPere());
-			countProfession(professions, adherent.getProfessionTextMere());
-			
-			//Age
-			String anneeNaissance = getAnneeNaissance(adherent);
-			if (StringUtils.isNumeric(anneeNaissance)) {
-				result.addAge(Integer.valueOf(anneeNaissance));
+
+				// Localisation
+				String codepostal = adherent.getCodepostal();
+				if (StringUtils.isNotBlank(codepostal)
+						&& StringUtils.isNumeric(codepostal)
+						&& codepostal.length() == 5) {
+					final LocalisationStatBean localisationStatBean;
+					if (localisations.containsKey(codepostal)) {
+						localisationStatBean = localisations.get(codepostal);
+					} else {
+						localisationStatBean = new LocalisationStatBean();
+						localisationStatBean.setCodepostal(codepostal);
+						localisations.put(codepostal, localisationStatBean);
+					}
+					localisationStatBean.add();
+				}
+
+				// Profession
+				countProfession(professions, adherent, null);
+				countProfession(professions, adherent, true);
+				countProfession(professions, adherent, false);
+
+				// Age
+				String anneeNaissance = getAnneeNaissance(adherent);
+				if (StringUtils.isNumeric(anneeNaissance)) {
+					result.addAge(Integer.valueOf(anneeNaissance));
+				}
+				
+				if(BooleanUtils.isTrue(adherent.getComplet())) {
+					result.addComplet();
+				}
+				if(BooleanUtils.isTrue(adherent.getNouveau())) {
+					result.addNouveau();
+				} else {
+					result.addRenouvellement();
+				}
 			}
 		}
 		result.computeLocalisationToulouse(localisations);
 		result.computeAges();
-		result.getLocalisations().addAll(localisations.values());
 		result.getProfessions().addAll(professions.values());
 		return result;
 	}
 
-	private void countProfession(Map<String, ProfessionStatBean> professions,
-			String profession) {
-		if(StringUtils.isNotBlank(profession)) {
+	private void countProfession(Map<String, ProfessionStatBean> professions, InscriptionEntity2 pAdherent, Boolean type) {
+		String csp = AdherentSexeAgeResult.getCsp(pAdherent, type);
+		if (StringUtils.isNotBlank(csp)) {
 			final ProfessionStatBean professionStatBean;
-			if(professions.containsKey(profession.toLowerCase())) {
-				professionStatBean = professions.get(profession.toLowerCase());
+			if (professions.containsKey(csp)) {
+				professionStatBean = professions.get(csp);
 			} else {
 				professionStatBean = new ProfessionStatBean();
-				professionStatBean.setProfession(profession.toLowerCase());
-				professions.put(profession.toLowerCase(), professionStatBean);
+				professionStatBean.setProfession(csp);
+				professions.put(csp, professionStatBean);
 			}
 			professionStatBean.add();
 		}
@@ -176,7 +189,7 @@ public class AdherentStatService {
 
 		return result;
 	}
-	
+
 	@Path("/annees")
 	@GET
 	public Collection<String> getAnnees() {

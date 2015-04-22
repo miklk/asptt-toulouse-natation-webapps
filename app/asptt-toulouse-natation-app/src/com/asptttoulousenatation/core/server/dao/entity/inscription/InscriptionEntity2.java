@@ -118,6 +118,8 @@ public class InscriptionEntity2 implements IEntity {
 	
 	private Integer tarif;
 	
+	private String csp;
+	
 	public InscriptionEntity2() {
 		
 	}
@@ -491,6 +493,15 @@ public class InscriptionEntity2 implements IEntity {
 	public void setTarif(Integer pTarif) {
 		tarif = pTarif;
 	}
+	
+
+	public String getCsp() {
+		return csp;
+	}
+
+	public void setCsp(String pCsp) {
+		csp = pCsp;
+	}
 
 	public void copy(InscriptionEntity2 pEntity) {
 		pEntity.setAccidentNom1(accidentNom1);
@@ -514,6 +525,7 @@ public class InscriptionEntity2 implements IEntity {
 		pEntity.setTelephonePere(telephonePere);
 		pEntity.setTelephonePerePro(telephonePerePro);
 		pEntity.setVille(ville);
+		pEntity.setCsp(csp);
 	}
 	
 }

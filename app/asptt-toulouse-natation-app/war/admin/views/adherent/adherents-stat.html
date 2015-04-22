@@ -57,12 +57,16 @@ rect:hover {  fill:blue; }
 }
 
 </style>
-<div class="container-fluid" ng-controller="AdherentsStatCtrl">
+<div class="container-fluid" ng-controller="AdherentsStatCtrl" ng-hide="isLoading">
 	<div class="row">
 		<h1 class="page-header">Statistiques adhérents</h1>
 	</div>
 
 <h3><span class="badge">{{nbAdherents}}</span> adhérents</h3>
+<h4>Inscriptions</h4>
+<h5>Dossiers complets: {{nbComplet}} ({{pourcentageComplet}}%)</h5>
+<h5>Dossiers nouvelles adhésions: {{nbNouveau}}  ({{pourcentageNouveau}}%)</h5>
+<h5>Dossiers renouvellement: {{nbRenouvellement}}  ({{pourcentageRenouvellement}}%)</h5>
 <h4>Répartition par sexe et âge (mineur/majeur)</h4>
 <div id="sexe-age">
 </div>
@@ -80,9 +84,6 @@ rect:hover {  fill:blue; }
 
 <h4>Répartition par localisation (Toulouse et autres)</h4>
 <div id="localisations-toulouse"></div>
-
-<h4>Répartition par localisation (code postal)</h4>
-<div id="localisations"></div>
 
 <h4>Répartition par professions</h4>
 <div id="professions"></div>
