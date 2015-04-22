@@ -1,4 +1,4 @@
-var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','loadingAppServices', 'pageServices', 'loadingAlbumServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'inscriptionNouveauServices', 'removeAdherentServices', 'authenticationServices', 'actualiteServices', 'LoginController', 'DocumentController', 'mediaServices', 'MediaCtrl']);
+var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','angular-spinkit', 'loadingAppServices', 'pageServices', 'loadingAlbumServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'inscriptionNouveauServices', 'removeAdherentServices', 'authenticationServices', 'actualiteServices', 'LoginController', 'DocumentController', 'mediaServices', 'MediaCtrl']);
 aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
 	$routeProvider.
 		when('/', {
@@ -49,7 +49,8 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 		}).
 		when('/page/photos', {
 			templateUrl: 'views/photos.html',
-			controller: 'MediaCtrl'
+			controller: 'MediaCtrl',
+			resolve: {albums: function() {return null;}}
 		}).
 		when('/page/:pageId', {
 			templateUrl: 'views/page.html',
@@ -74,3 +75,46 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
      ]);
 
 }]);
+
+
+aspttNatTlsApp.directive('ngLoadingIndicator', function($rootScope) {
+	return {
+		restrict : 'E',
+		template: '<rotating-plane-spinner ng-show="isLoading"></rotating-plane-spinner>',
+		link: function(scope, elem, attrs) {
+			$rootScope.isLoading = true;
+		      scope.isRouteLoading = false;
+
+		      $rootScope.$on('$routeChangeStart', function() {
+		        scope.isRouteLoading = true;
+		        $rootScope.isLoading = false;
+		      });
+		      $rootScope.$on('$routeChangeSuccess', function() {
+		        scope.isRouteLoading = false;
+		        $rootScope.isLoading = false;
+		      });
+		    }
+	}
+});	
+aspttNatTlsApp.directive('routeLoadingIndicator', function($rootScope) {
+	  return {
+	    restrict: 'E',
+	    template: "<div ng-show='isRouteLoading' class='loading-indicator'>" +
+	    "<div class='loading-indicator-body'>" +
+	    "<h3 class='loading-title'>Loading...</h3>" +
+	    "<div class='spinner'><rotating-plane-spinner></rotating-plane-spinner></div>" +
+	    "</div>" +
+	    "</div>",
+	    replace: true,
+	    link: function(scope, elem, attrs) {
+	      scope.isRouteLoading = false;
+
+	      $rootScope.$on('$routeChangeStart', function() {
+	        scope.isRouteLoading = true;
+	      });
+	      $rootScope.$on('$routeChangeSuccess', function() {
+	        scope.isRouteLoading = false;
+	      });
+	    }
+	  };
+	});

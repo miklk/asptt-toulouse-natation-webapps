@@ -35,6 +35,9 @@
 	<link rel="stylesheet" href="js/responsivesslides/responsiveslides.css" />
 	<link rel="stylesheet" href="css/bootstrap-social.css" />
 	
+	<link rel="stylesheet" href="js/angular-spinkit-master/build/angular-spinkit.min.css">
+	<script src="js/angular-spinkit-master/build/angular-spinkit.min.js"></script>
+	
     <!-- Bootstrap core CSS -->
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -86,6 +89,7 @@
     	
 	<div id="main-panel" class="container" style="margin-top: 1%">
 		<div data-spy="affix" data-offset-top="120" id="affix">
+		<ng-loading-indicator></ng-loading-indicator>
 		<div ng-view></div>
     </div>
   		

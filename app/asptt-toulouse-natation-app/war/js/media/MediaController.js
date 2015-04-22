@@ -2,7 +2,8 @@
  * 
  */
 var mediaController = angular.module('MediaCtrl', ['ngRoute', 'mediaServices']);
-mediaController.controller('MediaCtrl', ['$scope', 'MediaService', function($scope, MediaService) {
+mediaController.controller('MediaCtrl', ['$rootScope', '$scope', 'MediaService', function($rootScope, $scope, MediaService) {
+	$rootScope.isLoading = true;
 	MediaService.photos.query({}, function(data) {
 		var maxPerLine = 4;
 		$scope.photos = new Array();
@@ -18,5 +19,6 @@ mediaController.controller('MediaCtrl', ['$scope', 'MediaService', function($sco
 		$scope.nblignes = nbLignes;
 		console.log($scope.nblignes);
 		console.log($scope.photos);
+		$rootScope.isLoading = false;
 	});
 }]);

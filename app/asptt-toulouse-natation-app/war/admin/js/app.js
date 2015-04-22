@@ -1,7 +1,7 @@
 /**
  * 
  */
-var adminApp = angular.module('adminApp', ['ngRoute', 'adherentsServices','adherentsStatServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'UserController', 'AdherentListCtrl', 'AdherentEmailCtrl', 'AdherentsStatCtrl', 'DocumentController', 'LibelleController', 'SuiviNageurController']);
+var adminApp = angular.module('adminApp', ['ngRoute', 'angular-spinkit', 'adherentsServices','adherentsStatServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'UserController', 'AdherentListCtrl', 'AdherentEmailCtrl', 'AdherentsStatCtrl', 'DocumentController', 'LibelleController', 'SuiviNageurController']);
 
 adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
 	$routeProvider.
@@ -73,3 +73,23 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
      ]);
 
 }]);
+
+adminApp.directive('ngLoadingIndicator', function($rootScope) {
+	return {
+		restrict : 'E',
+		template: '<rotating-plane-spinner ng-show="isLoading"></rotating-plane-spinner>',
+		link: function(scope, elem, attrs) {
+			$rootScope.isLoading = true;
+		      scope.isRouteLoading = false;
+
+		      $rootScope.$on('$routeChangeStart', function() {
+		        scope.isRouteLoading = true;
+		        $rootScope.isLoading = false;
+		      });
+		      $rootScope.$on('$routeChangeSuccess', function() {
+		        scope.isRouteLoading = false;
+		        $rootScope.isLoading = false;
+		      });
+		    }
+	}
+});	
