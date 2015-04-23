@@ -576,7 +576,7 @@ public class AdherentService {
 			}
 		};
 			break;
-		case "competitieur": {
+		case "competiteur": {
 			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 					1);
 			criteria.add(new CriterionDao<Boolean>(GroupEntityFields.ENF,
