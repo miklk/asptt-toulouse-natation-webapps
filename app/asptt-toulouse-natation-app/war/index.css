@@ -137,14 +137,6 @@ background: linear-gradient(to right, #1e5799 0%,#7db9e8 100%);
 	border: none;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 30px;
-}
-
 .logo {
 	display: none;
 }
@@ -205,6 +197,46 @@ background: linear-gradient(to right, #1e5799 0%,#7db9e8 100%);
    position:static;
 }
 
-.mention {
-	bottom: 25px;
+.footer {
+	background: #cdeff8;
+	border-top: 5px solid #9750D4;
+	line-height: 24px;
+	padding: 40px 0 20px;
+	margin: auto;
+	background: url('img/fond_footer.jpg') no-repeat;
+	 background-size: 1300px auto;
+}
+
+.footer-partenaires {
+	margin: 2% 0 0 10%;
+	
+}
+.footer-titles {
+	 margin-left:10%;
+	 border-top: 1px solid #9750D4;
+}
+
+.footer-links-title {
+	font-size: 15px;
+}
+
+.footer-links-content {
+	margin: 0;
+	padding: 0;
+}
+
+.footer-links-content li {
+	list-style: none;
+	font-size: 14px;
+}
+
+.footer-links-content-link {
+	text-decoration: none;
+	color: rgba(0,0,0,.8);
+}
+
+.footer-address {
+	color: rgba(0,0,0,.8);
+	font-size: 12px;
+	margin-left: 5px;
 }
