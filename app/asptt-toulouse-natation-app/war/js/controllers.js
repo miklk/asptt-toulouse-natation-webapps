@@ -160,6 +160,10 @@ aspttNatTlsApp.controller('InscriptionCtrl', ['$http', '$scope', 'InscriptionSer
 			nouveau: ""
 	};
 	
+	$(function () {
+		  $('[data-toggle="tooltip"]').tooltip()
+		});
+	
 	$scope.subscribe = function() {
 		InscriptionNouveauService.put({email: $scope.formData.nouveau});
 		alert("A l'ouverture des inscriptions, vous serez informé par e-mail. Bonne vacances !");
