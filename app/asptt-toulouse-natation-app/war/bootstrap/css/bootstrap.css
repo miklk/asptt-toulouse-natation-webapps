@@ -5,8 +5,8 @@
  */
 
 /*!
- * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=b1201c3d33495f3ad874)
- * Config saved to config.json and https://gist.github.com/b1201c3d33495f3ad874
+ * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=ab91d8028e6058ccea57)
+ * Config saved to config.json and https://gist.github.com/ab91d8028e6058ccea57
  */
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
 html {
@@ -5539,16 +5539,16 @@ a.list-group-item-danger.active:focus {
   border-color: #dddddd;
 }
 .panel-default > .panel-heading {
-  color: #333333;
-  background-color: #f5f5f5;
+  color: #ffffff;
+  background-color: #9750d4;
   border-color: #dddddd;
 }
 .panel-default > .panel-heading + .panel-collapse > .panel-body {
   border-top-color: #dddddd;
 }
 .panel-default > .panel-heading .badge {
-  color: #f5f5f5;
-  background-color: #333333;
+  color: #9750d4;
+  background-color: #ffffff;
 }
 .panel-default > .panel-footer + .panel-collapse > .panel-body {
   border-bottom-color: #dddddd;
