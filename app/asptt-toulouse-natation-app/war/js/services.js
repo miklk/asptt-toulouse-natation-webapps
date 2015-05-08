@@ -20,17 +20,6 @@ pageServices.factory('PageService', ['$resource',
         }});
 }]);
 
-var loadingAlbumServices = angular.module('loadingAlbumServices', ['ngResource']);
-
-loadingAlbumServices.factory('LoadingAlbumService', ['$resource', 
-                                       function($resource) {
-	return $resource('/resources/loading/albums',{},{
-        query:{
-            method:'GET',
-            isArray:true
-        }});
-}]);
-
 var actualiteServices = angular.module('actualiteServices', ['ngResource']);
 
 actualiteServices.factory('ActualiteService', ['$resource', 

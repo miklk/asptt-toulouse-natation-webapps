@@ -110,49 +110,6 @@ aspttNatTlsApp.controller('ActualiteCtrl', ['$scope', 'ActualiteService', 'PageS
 }]);
 
 
-aspttNatTlsApp.controller('LoadingAlbumCtrl', ['$scope', 'LoadingAlbumService', function($scope, LoadingAlbumService) {
-	$scope.albums = LoadingAlbumService.get();
-	$scope.getPhotos = function(album) {
-		//Build slider
-		$("#diapo").fadeIn();
-		$('html, body').animate({  
-            scrollTop:$("#diapo").offset().top  
-        }, 'slow');
-		$("#slider3").empty();
-		$("#slider3-pager").empty();
-		$scope.albumTitle = album.intitule;
-		$.each(album.photos, function() {
-			var img = $("<img src=\"\" />");
-			$(img).attr("src", this);
-			var liElt = $("<li></li>");
-			liElt.append(img);
-			$("#slider3").append(liElt);
-			
-			var imgThumbl = $("<img src=\"\" />");
-			$(imgThumbl).attr("src", this);
-			$(imgThumbl).css("max-width", "50px");
-			
-			var aThumbl = $("<a href=\"#\"></a>");
-			aThumbl.append(imgThumbl);
-			var liThumbl = $("<li></li>");
-			liThumbl.append(aThumbl);
-			$("#slider3-pager").append(liThumbl);
-		});
-		$("#slider3").responsiveSlides({
-	        manualControls: '#slider3-pager',
-	        maxwidth: 540,
-	        speed: 300
-	      });
-	};
-	$scope.hidePhotos = function() {
-		$('html, body').animate({  
-            scrollTop:$("#albums").offset().top  
-        }, 'slow');
-		$("#diapo").fadeOut();
-		$scope.albumTitle = "";
-	};
-}]);
-
 aspttNatTlsApp.controller('AuthenticationCtrl', ['$scope', '$location', 'AuthenticationService', '$sce', function($scope, $location, AuthenticationService, $sce) {
 	$scope.authenticate = function(provider) {
 	 	AuthenticationService.get({openIdService: provider}, function(data) {
