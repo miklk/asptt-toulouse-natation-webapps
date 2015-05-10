@@ -1,4 +1,4 @@
-var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','angular-spinkit', 'loadingAppServices', 'pageServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'inscriptionNouveauServices', 'removeAdherentServices', 'authenticationServices', 'actualiteServices', 'LoginController', 'DocumentController', 'mediaServices', 'MediaCtrl', 'InscriptionController']);
+var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','angular-spinkit', 'loadingAppServices', 'pageServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'inscriptionNouveauServices', 'removeAdherentServices', 'authenticationServices', 'actualiteServices', 'LoginController', 'DocumentController', 'DocumentationController', 'mediaServices', 'MediaCtrl', 'InscriptionController']);
 aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
 	$routeProvider.
 		when('/', {
@@ -21,6 +21,10 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 		when('/page/coin-du-nageur', {
 			templateUrl: 'views/coin-du-nageur.html',
 			controller: 'DocumentController'
+		}).
+		when('/page/documentation', {
+			templateUrl: 'views/documentation.html',
+			controller: 'DocumentationController'
 		}).
 		when('/page/section-sportive', {
 			templateUrl: 'views/section-sportive.html',
