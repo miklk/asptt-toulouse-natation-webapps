@@ -2,7 +2,11 @@ package com.asptttoulousenatation.core.adherent;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 
@@ -32,6 +36,22 @@ public class LoadingSlotUi implements Serializable {
 	public LoadingSlotUi(String pPiscine) {
 		this();
 		piscine = pPiscine;
+	}
+	
+	public void sort() {
+		Comparator<SlotUi> sortByBeginHour = new Comparator<SlotUi>() {
+			
+			@Override
+			public int compare(SlotUi o1, SlotUi o2) {
+				return (new CompareToBuilder()).append(o1.getBegin(), o2.getBegin()).toComparison();
+			}
+		};
+		Collections.sort(lundi, sortByBeginHour);
+		Collections.sort(mardi, sortByBeginHour);
+		Collections.sort(mercredi, sortByBeginHour);
+		Collections.sort(jeudi, sortByBeginHour);
+		Collections.sort(vendredi, sortByBeginHour);
+		Collections.sort(samedi, sortByBeginHour);
 	}
 	
 	public String getPiscine() {

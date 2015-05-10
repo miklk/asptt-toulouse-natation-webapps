@@ -17,7 +17,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
-import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
@@ -39,7 +38,6 @@ public class LoadingSlotService {
 	private Request request;
 
 	private SlotDao dao = new SlotDao();
-	private GroupDao groupDao = new GroupDao();
 
 	@GET
 	@Path("{groupe}")
@@ -112,6 +110,7 @@ public class LoadingSlotService {
 				}
 			}
 		}
+		result.sort();
 		return result;
 	}
 }

@@ -22,6 +22,12 @@ public class LoadingSlotsUi implements Serializable {
 		slots.add(pSlots);
 	}
 	
+	public void sort() {
+		for(LoadingSlotUi loadingSlotUi: slots) {
+			loadingSlotUi.sort();
+		}
+	}
+	
 	public List<LoadingSlotUi> getSlots() {
 		return slots;
 	}
