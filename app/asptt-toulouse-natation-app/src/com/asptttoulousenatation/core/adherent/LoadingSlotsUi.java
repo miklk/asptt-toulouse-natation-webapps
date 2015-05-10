@@ -2,6 +2,8 @@ package com.asptttoulousenatation.core.adherent;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class LoadingSlotsUi implements Serializable {
@@ -23,6 +25,13 @@ public class LoadingSlotsUi implements Serializable {
 	}
 	
 	public void sort() {
+		Collections.sort(slots, new Comparator<LoadingSlotUi>() {
+
+			@Override
+			public int compare(LoadingSlotUi o1, LoadingSlotUi o2) {
+				return o1.getPiscine().compareTo(o2.getPiscine());
+			}
+		});
 		for(LoadingSlotUi loadingSlotUi: slots) {
 			loadingSlotUi.sort();
 		}
