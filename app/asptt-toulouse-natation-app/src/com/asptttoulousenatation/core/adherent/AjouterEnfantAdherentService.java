@@ -17,6 +17,8 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
@@ -113,12 +115,7 @@ public class AjouterEnfantAdherentService {
 			adherent = dossier.getDossier();
 			// Set date naissance
 			if (StringUtils.isNotBlank(dossier.getDossier().getDatenaissance())) {
-				dossier.setJour(dossier.getDossier().getDatenaissance()
-						.substring(8, 10));
-				dossier.setMois(dossier.getDossier().getDatenaissance()
-						.substring(5, 7));
-				dossier.setAnnee(dossier.getDossier().getDatenaissance()
-						.substring(0, 4));
+				dossier.getDossier().setNaissance(LocalDate.parse(dossier.getDossier().getDatenaissance(), DateTimeFormat.forPattern("yyyy-MM-dd")).toDate());
 			}
 
 			// Get nouveau groupe et vérifie si on peut changer
@@ -138,9 +135,6 @@ public class AjouterEnfantAdherentService {
 	private void buildDossier(InscriptionDossierUi pDossier) {
 		pDossier.getDossier().setSaisie(true);
 		pDossier.getDossier().setInscriptiondt(new Date());
-		pDossier.getDossier().setDatenaissance(
-				pDossier.getAnnee() + "-" + pDossier.getMois() + "-"
-						+ pDossier.getJour());
 		if (pDossier.getGroupe() != null) {
 			pDossier.getDossier()
 					.setNouveauGroupe(pDossier.getGroupe().getId());

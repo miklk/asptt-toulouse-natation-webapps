@@ -15,6 +15,8 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
@@ -71,9 +73,7 @@ public class InscriptionService {
 		pDossier.getDossier().setCertificat(false);
 		pDossier.getDossier().setPaiement(false);
 		pDossier.getDossier().setInscriptiondt(new Date());
-		pDossier.getDossier().setDatenaissance(
-				pDossier.getAnnee() + "-" + pDossier.getMois() + "-"
-						+ pDossier.getJour());
+		
 		if (pDossier.getGroupe() != null) {
 			pDossier.getDossier()
 					.setNouveauGroupe(pDossier.getGroupe().getId());

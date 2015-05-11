@@ -67,12 +67,9 @@ public class AuthenticateAdherentResource {
 
 			// Build UI dossier
 			// Set date naissance
-			transformeDateNaissance(dossiers.getPrincipal());
 			for (InscriptionDossierUi dossier : dossiers.getDossiers()) {
 				adherent = dossier.getDossier();
-				// Set date naissance
-				transformeDateNaissance(dossier);
-
+				
 				// Get nouveau groupe et vérifie si on peut changer
 				if (adherent.getNouveauGroupe() != null) {
 					try {
@@ -91,13 +88,5 @@ public class AuthenticateAdherentResource {
 			}
 		}
 		return dossiers;
-	}
-
-	private void transformeDateNaissance(InscriptionDossierUi dossier) {
-		if (StringUtils.isNotBlank(dossier.getDossier().getDatenaissance())) {
-			dossier.setJour(StringUtils.defaultString(StringUtils.substring(dossier.getDossier().getDatenaissance(), 8, 10)));
-			dossier.setMois(StringUtils.defaultString(StringUtils.substring(dossier.getDossier().getDatenaissance(), 5, 7)));
-			dossier.setAnnee(StringUtils.defaultString(StringUtils.substring(dossier.getDossier().getDatenaissance(), 0, 4)));
-		}
 	}
 }

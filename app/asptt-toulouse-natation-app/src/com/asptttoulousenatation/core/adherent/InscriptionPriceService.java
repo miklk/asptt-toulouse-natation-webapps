@@ -19,6 +19,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
@@ -123,9 +125,8 @@ public class InscriptionPriceService {
 	}
 
 	private void buildDossier(InscriptionDossierUi pDossier) {
-		pDossier.getDossier().setDatenaissance(
-				pDossier.getAnnee() + "-" + pDossier.getMois() + "-"
-						+ pDossier.getJour());
+		
+		pDossier.getDossier().setNaissance(LocalDate.parse(pDossier.getDossier().getDatenaissance(), DateTimeFormat.forPattern("yyyy-MM-dd")).toDate());
 		
 		if (pDossier.getGroupe() != null) {
 			pDossier.getDossier()
@@ -187,15 +188,6 @@ public class InscriptionPriceService {
 		// Build UI dossier
 		for (InscriptionDossierUi dossier : dossiers.getDossiers()) {
 			adherent = dossier.getDossier();
-			// Set date naissance
-			if (StringUtils.isNotBlank(dossier.getDossier().getDatenaissance())) {
-				dossier.setJour(dossier.getDossier().getDatenaissance()
-						.substring(8, 10));
-				dossier.setMois(dossier.getDossier().getDatenaissance()
-						.substring(5, 7));
-				dossier.setAnnee(dossier.getDossier().getDatenaissance()
-						.substring(0, 4));
-			}
 
 			// Get nouveau groupe et vérifie si on peut changer
 			if (adherent.getNouveauGroupe() != null) {

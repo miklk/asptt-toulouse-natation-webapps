@@ -3,12 +3,22 @@
  */
 var inscriptionController = angular.module('InscriptionController', ['inscriptionServices', 'inscriptionNouveauServices', 'removeAdherentServices']);
 
-inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', 'InscriptionService', 'SlotService', 'GroupeService', 'InscriptionNouveauService', 'RemoveAdherentService', '$routeParams', '$sce', function($http, $scope, InscriptionService, SlotService, GroupeService, InscriptionNouveauService, RemoveAdherentService, $routeParams, $sce) {
+inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter', 'InscriptionService', 'SlotService', 'GroupeService', 'InscriptionNouveauService', 'RemoveAdherentService', '$routeParams', '$sce', function($http, $scope, $filter, InscriptionService, SlotService, GroupeService, InscriptionNouveauService, RemoveAdherentService, $routeParams, $sce) {
 	$scope.formData = {
 			email: "",
 			mdp: "",
 			nouveau: ""
 	};
+	
+	var datepickerInput = $('.input-group.date').datepicker({
+		format: "dd/mm/yyyy",
+		language: "fr"
+	});
+	datepickerInput.on("changeDate", function(e) {
+		$scope.dossiers[$scope.currentDossier].dossier.datenaissance = $filter('date') (e.date, "yyyy-MM-dd");
+		$scope.dossiers[$scope.currentDossier].dossier.naissance = e.date.getTime();
+		datepickerInput.datepicker('hide');
+	});
 	
 	$(function () {
 		  $('[data-toggle="tooltip"]').tooltip()
@@ -189,6 +199,11 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', 'Inscrip
 							}
 						});
 					});
+					
+					var naissance = $scope.dossiers[$scope.currentDossier].dossier.naissance;
+					if(naissance != null) {
+						datepickerInput.datepicker('setDate', new Date(naissance));
+					}
 					$('#myTab a[href="#nageur"]').tab('show');
 				};
 				$scope.validateNageur = function(dossier) {

@@ -18,18 +18,12 @@ public class InscriptionDossierUi implements Serializable {
 	private boolean choix;
 	private GroupUi groupe;
 	private LoadingSlotsUi creneaux;
-	private String jour;
-	private String mois;
-	private String annee;
 	private boolean creneauSelected;
 	private boolean supprimer;
 	
 	
 	public InscriptionDossierUi() {
 		choix = false;
-		jour = "";
-		mois = "";
-		annee = "";
 	}
 	
 	public InscriptionDossierUi(InscriptionEntity2 pAdherent) {
@@ -67,30 +61,6 @@ public class InscriptionDossierUi implements Serializable {
 
 	public void setCreneaux(LoadingSlotsUi pCreneaux) {
 		creneaux = pCreneaux;
-	}
-
-	public String getJour() {
-		return jour;
-	}
-
-	public void setJour(String pJour) {
-		jour = pJour;
-	}
-
-	public String getMois() {
-		return mois;
-	}
-
-	public void setMois(String pMois) {
-		mois = pMois;
-	}
-
-	public String getAnnee() {
-		return annee;
-	}
-
-	public void setAnnee(String pAnnee) {
-		annee = pAnnee;
 	}
 
 	public boolean isCreneauSelected() {

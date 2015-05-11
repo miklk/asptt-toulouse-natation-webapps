@@ -247,14 +247,10 @@
 	          				</div>
 	          				<div class="form-group row">
 		          				<label for=dateNaissance class="col-md-2 control-label">Date de naissance</label>
-		          				<div class="col-md-2">
-		          					<input type="text" id="dateNaissance" class="form-control" placeholder="JJ" ng-model="dossiers[currentDossier].jour" />
-		          				</div>
-		          				<div class="col-md-2">
-		          					<input type="text" class="form-control" placeholder="MM" ng-model="dossiers[currentDossier].mois" />
-		          				</div>
-		          				<div class="col-md-2">
-		          					<input type="text" class="form-control" placeholder="AAAA" ng-model="dossiers[currentDossier].annee" />
+		          				<div class="col-md-6">
+		          					<div class="input-group date">
+	  									<input id="datenaissance-field" type="text" class="form-control" /><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+									</div>
 		          				</div>
 	          				</div>
           			</fieldset>

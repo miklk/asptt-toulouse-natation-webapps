@@ -32,6 +32,8 @@ public class InscriptionEntity2 implements IEntity {
 	
 	private String datenaissance;
 	
+	private Date naissance;
+	
 	private String adresse;
 	
 	private String codepostal;
@@ -502,6 +504,16 @@ public class InscriptionEntity2 implements IEntity {
 	public void setCsp(String pCsp) {
 		csp = pCsp;
 	}
+	
+
+	public Date getNaissance() {
+		return naissance;
+	}
+
+	public void setNaissance(Date naissance) {
+		this.naissance = naissance;
+	}
+	
 
 	public void copy(InscriptionEntity2 pEntity) {
 		pEntity.setAccidentNom1(accidentNom1);
