@@ -2,12 +2,16 @@ package com.asptttoulousenatation.core.adherent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
@@ -19,6 +23,8 @@ import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 
 public class AuthenticateAdherentResource {
+	
+	private static final Logger LOG = Logger.getLogger(AuthenticateAdherentResource.class.getName());
 
 	private Inscription2Dao dao = new Inscription2Dao();
 	private GroupDao groupDao = new GroupDao();
@@ -69,6 +75,14 @@ public class AuthenticateAdherentResource {
 			// Set date naissance
 			for (InscriptionDossierUi dossier : dossiers.getDossiers()) {
 				adherent = dossier.getDossier();
+				
+				if(adherent.getNaissance() == null && StringUtils.isNotBlank(adherent.getDatenaissance())) {
+					try {
+						adherent.setNaissance(LocalDate.parse(adherent.getDatenaissance(), DateTimeFormat.forPattern("yyyy-MM-dd")).toDate());
+					} catch(IllegalArgumentException e) {
+						LOG.log(Level.WARNING, "Date de naissance invalide", e);
+					}
+				}
 				
 				// Get nouveau groupe et vérifie si on peut changer
 				if (adherent.getNouveauGroupe() != null) {
