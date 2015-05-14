@@ -266,7 +266,7 @@
 	  					<div class="form-group">
 	  						<label for="tshirt" class="col-md-2 control-label">T-Shirt</label>
 	  						<div class="col-md-10">
-	  							<select id="tshirt" class="form-control" ng-model="dossiers[currentDossier].dossier.tshirt" />
+	  							<select id="tshirt" class="form-control" ng-model="dossiers[currentDossier].dossier.tshirt">
 			  						<option>XS</option>
 			  						<option>S</option>
 			  						<option>M</option>
@@ -278,7 +278,7 @@
 	  					<div class="form-group">
 	  						<label for="shortPantalon" class="col-md-2 control-label">Short</label>
 	  						<div class="col-md-10">
-	  							<select id="shortPantalon" class="form-control" ng-model="dossiers[currentDossier].dossier.shortPantalon" />
+	  							<select id="shortPantalon" class="form-control" ng-model="dossiers[currentDossier].dossier.shortPantalon">
 		  							<option>XS</option>
 			  						<option>S</option>
 			  						<option>M</option>
@@ -291,22 +291,16 @@
 	  			
   		<fieldset>
   			<legend>Activité</legend>
-  			<div class="form-group">
-  				<label class="radio-inline">
-  					<input type="radio" id="scolaire" name="profession" value="scolaire" ng-model="dossiers[currentDossier].dossier.profession" />Scolaire
-  				</label>
-  				<label class="radio-inline">
-  					<input type="radio" id="etudiant" name="profession" value="etudiant" ng-model="dossiers[currentDossier].dossier.profession" />Etudiant
-  				</label>
-  				<label class="radio-inline">
-  					<input type="radio" id="salarie" name="profession" value="salarie" ng-model="dossiers[currentDossier].dossier.profession" />Salarié
-  				</label>
-  				<label class="radio-inline">
-  					<input type="radio" id="retraite" name="profession" value="retraite" ng-model="dossiers[currentDossier].dossier.profession" />Retraité
-  				</label>
-  				<label class="radio-inline">
-  					<input type="radio" id="demandeur" name="profession" value="demandeur" ng-model="dossiers[currentDossier].dossier.profession" />Demandeur d'emploi
-  				</label>
+  			<div class="form-inline">
+  				<div class="col-md-6 form-group">
+  					<select class="form-control" ng-model="dossiers[currentDossier].dossier.csp" ng-options="csp for csp in csp">
+  						<option value="">Sélectionnez votre activité</option>
+  					</select>
+  				</div>
+  				<div class="col-md-6 form-group">
+  					<label for="input-profession">Précisez</label>
+  					<input id="input-profession" type="text" class="form-control" size="30" ng-model="dossiers[currentDossier].dossier.profession" />
+  				</div>
   			</div>
   		</fieldset>
   		<fieldset>

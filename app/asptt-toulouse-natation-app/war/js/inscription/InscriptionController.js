@@ -10,6 +10,8 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 			nouveau: ""
 	};
 	
+	$scope.csp = ['Scolaire', 'Agriculteurs exploitants', 'Artisans, commerçants et chefs d\'entreprise', 'Cadres et professions intellectuelles supérieures','Professions Intermédiaires', 'Employés', 'Ouvriers', 'Retraités', 'Sans activité professionnelle'];
+	
 	var datepickerInput = $('.input-group.date').datepicker({
 		format: "dd/mm/yyyy",
 		language: "fr"
