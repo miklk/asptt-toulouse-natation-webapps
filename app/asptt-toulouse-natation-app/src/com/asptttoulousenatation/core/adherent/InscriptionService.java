@@ -1,5 +1,11 @@
 package com.asptttoulousenatation.core.adherent;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -7,24 +13,41 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 
+import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
+import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
+import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
 import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
+import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
+import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
+import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.appengine.api.datastore.Blob;
 
-@Path("/inscrire")
+@Path("/inscription")
 @Consumes("application/json")
 public class InscriptionService {
 	
@@ -38,7 +61,121 @@ public class InscriptionService {
 
 	private Inscription2Dao dao = new Inscription2Dao();
 	private SlotDao slotDao = new SlotDao();
+	private GroupDao groupDao = new GroupDao();
+	private GroupTransformer groupTransformer = new GroupTransformer();
+	
+	@Path("/price")
+	@POST
+	public InscriptionPriceServiceResult price(InscriptionDossiersUi pDossiers) {
+		InscriptionDossierUi principal = pDossiers.getPrincipal();
+		buildDossier(principal);
+		dao.save(principal.getDossier());
 
+		int dossierCount = 0;
+		List<InscriptionDossierUi> dossiers = new ArrayList<InscriptionDossierUi>(
+				CollectionUtils.select(pDossiers.getDossiers(),
+						new Predicate() {
+
+							@Override
+							public boolean evaluate(Object pArg0) {
+								return !((InscriptionDossierUi) pArg0)
+										.isSupprimer();
+							}
+						}));
+		Collections.sort(dossiers, new Comparator<InscriptionDossierUi>() {
+
+			@Override
+			public int compare(InscriptionDossierUi pO1,
+					InscriptionDossierUi pO2) {
+				return pO1.getGroupe().getTarifWeight() >= pO2.getGroupe()
+						.getTarifWeight() ? 1 : -1;
+			}
+		});
+		
+		InscriptionPriceServiceResult result = new InscriptionPriceServiceResult();
+		Set<String> prices = new HashSet<String>();
+		for (InscriptionDossierUi dossier : dossiers) {
+			dossierCount++;
+			// Recherche du tarif
+			GroupEntity group = groupDao.get(dossier.getGroupe().getId());
+			int tarif = 0; 
+			switch (dossierCount) {
+			case 1:
+				tarif = GroupEntity.getTarif(group.getTarif());
+				break;
+			case 2:
+				tarif = GroupEntity.getTarif(group.getTarif2());
+				break;
+			case 3:
+				tarif = GroupEntity.getTarif(group.getTarif3());
+				break;
+			case 4:
+				tarif = GroupEntity.getTarif(group.getTarif4());
+				break;
+			default:
+				tarif = GroupEntity.getTarif(group.getTarif4());
+			}
+			pDossiers.addPrice(tarif);
+			prices.add(tarif + " ("+group.getTitle()+")");
+
+			// Enregistrement du dossier
+			if (dossier.getDossier().getPrincipal() != null) {
+				dossier.getDossier().setPrincipal(
+						principal.getDossier().getId());
+
+				buildDossier(dossier);
+				dao.save(dossier.getDossier());
+			} else {//C'est le principal
+				// Copier les données du principal dans ce dossier
+				buildDossier(dossier);
+				principal.getDossier().copy(dossier.getDossier());
+				dao.save(dossier.getDossier());
+			}
+		}
+		StrBuilder pricesStr = new StrBuilder();
+		result.setPrice(pricesStr.appendWithSeparators(prices, " + ").toString());
+
+		//Reload dossiers
+		int price = pDossiers.getPrice();
+		result.setDossiers(getDossiers(principal.getDossier()));
+		result.getDossiers().setPrice(price);
+		
+		return result;
+	}
+	
+	private InscriptionDossiersUi getDossiers(InscriptionEntity2 pPrincipal) {
+		InscriptionDossiersUi dossiers = new InscriptionDossiersUi();
+		InscriptionEntity2 adherent = dao.get(pPrincipal.getId());
+		dossiers.setPrincipal(new InscriptionDossierUi(adherent));
+		dossiers.addDossier(new InscriptionDossierUi(adherent));
+
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Long>(InscriptionEntityFields.PRINCIPAL,
+				adherent.getId(), Operator.EQUAL));
+		List<InscriptionEntity2> entities = dao.find(criteria);
+
+		dossiers.addDossier(entities);
+
+		// Build UI dossier
+		for (InscriptionDossierUi dossier : dossiers.getDossiers()) {
+			adherent = dossier.getDossier();
+
+			// Get nouveau groupe et vérifie si on peut changer
+			if (adherent.getNouveauGroupe() != null) {
+				GroupEntity group = groupDao.get(adherent.getNouveauGroupe());
+				dossier.setChoix(group.getInscription());
+				dossier.setGroupe(groupTransformer.toUi(group));
+			} else {
+				dossier.setChoix(true);
+			}
+			dossier.setCreneauSelected(StringUtils.isNotBlank(adherent
+					.getCreneaux()));
+		}
+		return dossiers;
+	}
+
+	@Path("/inscrire")
 	@POST
 	public String inscrire(InscriptionDossiersUi pDossiers) {
 		InscriptionDossierUi principal = pDossiers.getPrincipal();
@@ -187,5 +324,27 @@ public class InscriptionService {
 			adherent.setMineurParent(StringUtils.EMPTY);
 		}
 		
+	}
+	
+	@POST
+	@Path("/uploadCertificatMedial")
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public void uploadCertificatMedical(
+			@DefaultValue("true") @FormDataParam("enabled") boolean enabled,
+			@FormDataParam("action") String pAction,
+			@FormDataParam("file") InputStream pFileInput,
+			@FormDataParam("file") FormDataContentDisposition pFileDisposition,
+			@FormDataParam("file") FormDataBodyPart pBodyPart)
+			throws IOException {
+
+		String unscape = URLDecoder.decode(pAction, "UTF-8");
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+		UploadCertificatParameters parameters = mapper.readValue(unscape,
+				UploadCertificatParameters.class);
+
+		InscriptionEntity2 adherent = dao.get(parameters.getDossier());
+		adherent.setCertificatmedical(new Blob(IOUtils.toByteArray(pFileInput)));
+		dao.save(adherent);
 	}
 }

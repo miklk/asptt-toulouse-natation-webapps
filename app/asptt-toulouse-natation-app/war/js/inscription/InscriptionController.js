@@ -218,7 +218,7 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 				};
 				$scope.validateInfo = function() {
 					data.dossiers = $scope.dossiers;
-					var responsePromise = $http.post("/resources/price", data, {});
+					var responsePromise = $http.post("/resources/inscription/price", data, {});
 				    responsePromise.success(function(dataFromServer, status, headers, config) {
 				    	data = dataFromServer.dossiers;
 				    	$scope.dossiers = dataFromServer.dossiers.dossiers;
@@ -234,7 +234,7 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 				};
 				$scope.validateInscription = function(dossier) {
 					data.dossiers = $scope.dossiers;
-					var responsePromise = $http.post("/resources/inscrire", data, {});
+					var responsePromise = $http.post("/resources/inscription/inscrire", data, {});
 				    responsePromise.success(function(dataFromServer, status, headers, config) {
 				    	$scope.links = dataFromServer.split(";");
 				       });

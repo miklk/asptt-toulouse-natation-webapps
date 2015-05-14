@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.asptttoulousenatation.core.server.dao.entity.IEntity;
+import com.google.appengine.api.datastore.Blob;
 
 @Entity
 @XmlRootElement
@@ -121,6 +122,8 @@ public class InscriptionEntity2 implements IEntity {
 	private Integer tarif;
 	
 	private String csp;
+	
+	private Blob certificatmedical;
 	
 	public InscriptionEntity2() {
 		
@@ -514,6 +517,15 @@ public class InscriptionEntity2 implements IEntity {
 		this.naissance = naissance;
 	}
 	
+	
+
+	public Blob getCertificatmedical() {
+		return certificatmedical;
+	}
+
+	public void setCertificatmedical(Blob certificatmedical) {
+		this.certificatmedical = certificatmedical;
+	}
 
 	public void copy(InscriptionEntity2 pEntity) {
 		pEntity.setAccidentNom1(accidentNom1);
