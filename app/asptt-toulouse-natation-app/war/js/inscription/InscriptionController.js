@@ -205,6 +205,8 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 					var naissance = $scope.dossiers[$scope.currentDossier].dossier.naissance;
 					if(naissance != null) {
 						datepickerInput.datepicker('setDate', new Date(naissance));
+					} else {
+						datepickerInput.datepicker('setDate', new Date());
 					}
 					$('#myTab a[href="#nageur"]').tab('show');
 				};

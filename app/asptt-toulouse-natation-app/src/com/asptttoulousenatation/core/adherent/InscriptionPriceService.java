@@ -126,8 +126,6 @@ public class InscriptionPriceService {
 
 	private void buildDossier(InscriptionDossierUi pDossier) {
 		
-		pDossier.getDossier().setNaissance(LocalDate.parse(pDossier.getDossier().getDatenaissance(), DateTimeFormat.forPattern("yyyy-MM-dd")).toDate());
-		
 		if (pDossier.getGroupe() != null) {
 			pDossier.getDossier()
 					.setNouveauGroupe(pDossier.getGroupe().getId());

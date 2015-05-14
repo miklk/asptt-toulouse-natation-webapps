@@ -16,7 +16,7 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
+import org.joda.time.Years;
 
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
@@ -73,6 +73,8 @@ public class InscriptionService {
 		pDossier.getDossier().setCertificat(false);
 		pDossier.getDossier().setPaiement(false);
 		pDossier.getDossier().setInscriptiondt(new Date());
+		
+		buildMineur(pDossier.getDossier());
 		
 		if (pDossier.getGroupe() != null) {
 			pDossier.getDossier()
@@ -170,5 +172,20 @@ public class InscriptionService {
 		adherent.setShortPantalon(StringUtils.upperCase(pPrincipal.getShortPantalon()));
 		adherent.setTshirt(StringUtils.upperCase(pPrincipal.getTshirt()));
 		adherent.setVille(StringUtils.upperCase(pPrincipal.getVille()));
+	}
+	
+	private void buildMineur(InscriptionEntity2 adherent) {
+		//Determine si l'adherent est mineur ou majeur
+		LocalDate adherentAge = new LocalDate(adherent.getNaissance());
+		int year = Years.yearsBetween(adherentAge, LocalDate.now()).getYears();
+		if(year < 18) {
+			adherent.setMineur(adherent.getNom() + " " + adherent.getPrenom());
+			//TODO parent 1 / parent 2
+			//adherent.setMineurParent(adherent.get);
+		} else {
+			adherent.setMineur(StringUtils.EMPTY);
+			adherent.setMineurParent(StringUtils.EMPTY);
+		}
+		
 	}
 }
