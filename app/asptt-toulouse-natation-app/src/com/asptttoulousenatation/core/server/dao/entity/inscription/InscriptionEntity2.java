@@ -43,6 +43,8 @@ public class InscriptionEntity2 implements IEntity {
 	
 	private String telephone;
 	
+	private String telephoneSecondaire;
+	
 	private String telephonePere;
 	
 	private String telephonePerePro;
@@ -69,6 +71,11 @@ public class InscriptionEntity2 implements IEntity {
 	private String profession;
 	
 	private String professionTextPere;
+	
+	private String cspParent1;
+	private String professionParent1;
+	private String cspParent2;
+	private String professionParent2;
 	
 	private String professionTextMere;
 	
@@ -124,6 +131,12 @@ public class InscriptionEntity2 implements IEntity {
 	private String csp;
 	
 	private Blob certificatmedical;
+	
+	private String parent1Nom;
+	private String parent1Prenom;
+	private String parent2Nom;
+	private String parent2Prenom;
+	
 	
 	public InscriptionEntity2() {
 		
@@ -519,12 +532,84 @@ public class InscriptionEntity2 implements IEntity {
 	
 	
 
+	public String getTelephoneSecondaire() {
+		return telephoneSecondaire;
+	}
+
+	public void setTelephoneSecondaire(String telephoneSecondaire) {
+		this.telephoneSecondaire = telephoneSecondaire;
+	}
+
 	public Blob getCertificatmedical() {
 		return certificatmedical;
 	}
 
 	public void setCertificatmedical(Blob certificatmedical) {
 		this.certificatmedical = certificatmedical;
+	}
+
+	public String getParent1Nom() {
+		return parent1Nom;
+	}
+
+	public void setParent1Nom(String parent1Nom) {
+		this.parent1Nom = parent1Nom;
+	}
+
+	public String getParent1Prenom() {
+		return parent1Prenom;
+	}
+
+	public void setParent1Prenom(String parent1Prenom) {
+		this.parent1Prenom = parent1Prenom;
+	}
+
+	public String getParent2Nom() {
+		return parent2Nom;
+	}
+
+	public void setParent2Nom(String parent2Nom) {
+		this.parent2Nom = parent2Nom;
+	}
+
+	public String getParent2Prenom() {
+		return parent2Prenom;
+	}
+
+	public void setParent2Prenom(String parent2Prenom) {
+		this.parent2Prenom = parent2Prenom;
+	}
+
+	public String getCspParent1() {
+		return cspParent1;
+	}
+
+	public void setCspParent1(String cspParent1) {
+		this.cspParent1 = cspParent1;
+	}
+
+	public String getProfessionParent1() {
+		return professionParent1;
+	}
+
+	public void setProfessionParent1(String professionParent1) {
+		this.professionParent1 = professionParent1;
+	}
+
+	public String getCspParent2() {
+		return cspParent2;
+	}
+
+	public void setCspParent2(String cspParent2) {
+		this.cspParent2 = cspParent2;
+	}
+
+	public String getProfessionParent2() {
+		return professionParent2;
+	}
+
+	public void setProfessionParent2(String professionParent2) {
+		this.professionParent2 = professionParent2;
 	}
 
 	public void copy(InscriptionEntity2 pEntity) {

@@ -62,6 +62,12 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 				$scope.dossiersCount = data.dossiers.length;
 				$scope.dossiers = data.dossiers;
 				$scope.principal = data.principal;
+				
+				//Determine si les informations accordNomPrenom et accidentNom1 et accidentNom2 sont remplis (sauvé en base)
+				$scope.accordNotFilled = !$scope.principal.dossier.accordNomPrenom;
+				$scope.accidentNom1NotFilled = !$scope.principal.dossier.accidentNom1;
+				$scope.accidentNom2NotFilled = !$scope.principal.dossier.accidentNom2;
+				
 				$scope.deleteDossier = function(index) {
 					$scope.dossiers[index].supprimer = true;
 					RemoveAdherentService.remove({adherentId: $scope.dossiers[index].dossier.id}, function() {
@@ -208,8 +214,61 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 					} else {
 						datepickerInput.datepicker('setDate', new Date());
 					}
+					
 					$('#myTab a[href="#nageur"]').tab('show');
 				};
+				$scope.hasMineur = function() {
+					var gotMineur = false;
+					$scope.dossiers.each(function() {
+						adherentAge = new Date(this.dossier.naissance);
+						var annee = (new Date()).getFullYear() - adherentAge.getFullYear();
+						if(annee < 18) {
+							gotMineur = true;
+						}
+					});
+					return gotMineur;
+				};
+				
+				$scope.isUniqueMajeur = function() {
+					var result = false;
+					if($scope.dossiers.length == 1) {
+						adherentAge = new Date($scope.dossiers[0].dossier.naissance);
+						var annee = (new Date()).getFullYear() - adherentAge.getFullYear();
+						result = annee >= 18;
+						if(result) {
+							if($scope.accordNotFilled) {
+								$scope.principal.dossier.accordNomPrenom = $scope.dossiers[0].dossier.nom + " " + $scope.dossiers[0].dossier.prenom;
+							}
+						}
+					} else {
+						if($scope.hasMineur) {
+							if($scope.accordNotFilled && $scope.principal.dossier.parent1Nom != null) {
+								$scope.principal.dossier.accordNomPrenom = $scope.principal.dossier.parent1Nom + " " + $scope.principal.dossier.parent1Prenom;
+							}
+							result = true;
+						} else {
+							result = false;
+						}
+					}
+					return result;
+				};
+				
+				$scope.fillAccident = function() {
+					if($scope.hasMineur) {
+						if($scope.accidentNom1NotFilled && $scope.principal.dossier.parent1Nom != null) {
+							$scope.principal.dossier.accidentNom1 = $scope.principal.dossier.parent1Nom;
+							$scope.principal.dossier.accidentPrenom1 = $scope.principal.dossier.parent1Prenom;
+							$scope.principal.dossier.accidentTelephone1 = $scope.principal.dossier.telephone;
+						}
+						if($scope.accidentNom2NotFilled && $scope.principal.dossier.parent2Nom != null) {
+							$scope.principal.dossier.accidentNom2 = $scope.principal.dossier.parent2Nom;
+							$scope.principal.dossier.accidentPrenom2 = $scope.principal.dossier.parent2Prenom;
+							$scope.principal.dossier.accidentTelephone2 = $scope.principal.dossier.telephoneSecondaire;
+						}
+					}
+					return true;
+				};
+				
 				$scope.validateNageur = function(dossier) {
 					$('#myTab a[href="#dossiers"]').tab('show');
 				};

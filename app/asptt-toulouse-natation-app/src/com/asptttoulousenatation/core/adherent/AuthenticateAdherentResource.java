@@ -72,10 +72,9 @@ public class AuthenticateAdherentResource {
 			dossiers.addDossier(entities);
 
 			// Build UI dossier
-			// Set date naissance
 			for (InscriptionDossierUi dossier : dossiers.getDossiers()) {
 				adherent = dossier.getDossier();
-				
+				// Set date naissance				
 				if(adherent.getNaissance() == null && StringUtils.isNotBlank(adherent.getDatenaissance())) {
 					try {
 						adherent.setNaissance(LocalDate.parse(adherent.getDatenaissance(), DateTimeFormat.forPattern("yyyy-MM-dd")).toDate());
@@ -83,6 +82,28 @@ public class AuthenticateAdherentResource {
 						LOG.log(Level.WARNING, "Date de naissance invalide", e);
 					}
 				}
+				
+				//Telephone secondaire
+				if(StringUtils.isBlank(adherent.getTelephoneSecondaire())) {
+					adherent.setTelephoneSecondaire(adherent.getTelephoneMere());
+				}
+				
+				//E-mail
+				if(StringUtils.isBlank(adherent.getEmail())) {
+					adherent.setEmail(dossiers.getPrincipal().getDossier().getEmail());
+				}
+				if(!StringUtils.equals(adherent.getEmail(), dossiers.getPrincipal().getDossier().getEmail()) && StringUtils.isBlank(adherent.getEmailsecondaire())) {
+					adherent.setEmailsecondaire(dossiers.getPrincipal().getDossier().getEmail());
+				}
+				
+				//Profession parents
+				if(StringUtils.isBlank(adherent.getProfessionTextPere())) {
+					adherent.setProfessionParent1(adherent.getProfessionTextPere());
+				}
+				if(StringUtils.isBlank(adherent.getProfessionTextMere())) {
+					adherent.setProfessionParent2(adherent.getProfessionTextMere());
+				}
+					
 				
 				// Get nouveau groupe et vérifie si on peut changer
 				if (adherent.getNouveauGroupe() != null) {

@@ -309,6 +309,29 @@
           </div>
           <div class="tab-pane fade" id="info">
           	<form role="form" class="form-horizontal">
+	          	<fieldset ng-show="hasMineur">
+		          	<legend>Parents</legend>
+		          		<div class="form-group">
+	  						<label for="parent1Nom" class="col-md-2 control-label">Nom</label>
+	  						<div class="col-md-4">
+	  							<input type="text" class="form-control" id="parent1Nom" placeholder="Nom" size="50" ng-model="principal.dossier.parent1Nom" />
+	  						</div>
+	  						<label for="parent1Prenom" class="col-md-2 control-label">Prenom</label>
+	  						<div class="col-md-4">
+	  							<input type="text" class="form-control" id="parent1Prenom" placeholder="Prenom" size="50" ng-model="principal.dossier.parent1Prenom" />
+	  						</div>
+	  					</div>
+		          		<div class="form-group">
+	  						<label for="parent2Nom" class="col-md-2 control-label">Nom</label>
+	  						<div class="col-md-4">
+	  							<input type="text" class="form-control" id="parent2Nom" placeholder="Nom" size="50" ng-model="principal.dossier.parent2Nom" />
+	  						</div>
+		  					<label for="parent2Prenom" class="col-md-2 control-label">Prenom</label>
+		  					<div class="col-md-4">
+	  							<input type="text" class="form-control" id="parent2Prenom" placeholder="Prenom" size="50" ng-model="principal.dossier.parent2Prenom" />
+	  						</div>
+	  					</div>
+	          	</fieldset>
           	<fieldset>
   			<legend>Adresse postale</legend>
   				<div class="form-group">
@@ -335,28 +358,12 @@
 	  			<legend>Contact</legend>
 	  			<div class="form-group">
 	  				<label for="telephone" class="col-md-2 control-label">Numéro de téléphone principal</label>
-	  				<div class="col-md-10">
+	  				<div class="col-md-4">
 	  					<input type="tel" class="form-control" id="telephone" placeholder="Téléphone" size="15" ng-model="principal.dossier.telephone" />
 	  				</div>
-	  			</div>
-	  			<div class="form-group">
-					<label for="telephonePere" class="col-md-2 control-label">Numéro de téléphone père</label>
+					<label for="telephoneSecondaire" class="col-md-2 control-label">Numéro de téléphone secondaire</label>
 					<div class="col-md-4">
-						<input type="tel" class="form-control" id="telephonePere" placeholder="Téléphone père" size="15" ng-model="principal.dossier.telephonePere" />
-					</div>
-					<label for="telephonePerePro" class="col-md-2 control-label">Professionel</label>
-					<div class="col-md-4">
-						<input type="tel" class="form-control" id="telephonePerePro" placeholder="Téléphone pro du père" size="15" ng-model="principal.dossier.telephonePerePro" />
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="telephoneMere" class="col-md-2 control-label">Numéro de téléphone mère</label>
-					<div class="col-md-4">
-						<input type="tel" class="form-control" id="telephoneMere" placeholder="Téléphone de la mère" size="15" ng-model="principal.dossier.telephoneMere" />
-					</div>
-					<label for="telephoneMerePro" class="col-md-2 control-label">Professionel</label>
-					<div class="col-md-4">
-						<input type="tel" class="form-control" id="telephoneMerePro" placeholder="Téléphone Pro de la mère" size="15" ng-model="principal.dossier.telephoneMerePro" />
+						<input type="tel" class="form-control" id="telephoneSecondaire" placeholder="Téléphone secondaire" size="15" ng-model="principal.dossier.telephoneSecondaire" />
 					</div>
 				</div>
 				<div class="form-group">
@@ -373,21 +380,35 @@
 				</div>
 	  		</fieldset>
   		
-  		<fieldset>
-  			<legend>Renseignements confidentiels</legend>
-  			<div class="form-group">
-  				<label for="professionPere" class="col-md-2 control-label">Profession du père</label>
-  				<div class="col-md-4">
-  					<input type="text" class="form-control" id="professionPere" placeholder="Profession du père" ng-model="principal.dossier.professionTextPere" />
+  			<fieldset ng-show="hasMineur">
+	  			<legend>Profession des parents</legend>
+  				<div class="form-group">
+  					<label class="col-md-2 control-label" for="select-profession-parent1">Profession</label>
+  					<div class="col-md-4">
+	  					<select id="select-profession-parent1" class="form-control" ng-model="principal.dossier.cspParent1" ng-options="csp for csp in csp">
+	  						<option value="">Sélectionnez votre activité</option>
+	  					</select>
+  					</div>
+  					<label class="col-md-2 control-label" for="input-profession-parent1">Précisez</label>
+  					<div class="col-md-4">
+  						<input id="input-profession-parent1" type="text" class="form-control" size="30" ng-model="principal.dossier.professionParent1" />
+  					</div>
   				</div>
-  				<label for="professionMere" class="col-md-2 control-label">Profession de la mère</label>
-  				<div class="col-md-4">
-  					<input type="text" class="form-control" id="professionMere" placeholder="Profession de la mère" ng-model="principal.dossier.professionTextMere" />
+  				<div class="form-group">
+  					<label class="col-md-2 control-label" for="select-profession-parent2">Profession</label>
+  					<div class="col-md-4">
+	  					<select id="select-profession-parent2" class="form-control" ng-model="principal.dossier.cspParent2" ng-options="csp for csp in csp">
+	  						<option value="">Sélectionnez votre activité</option>
+	  					</select>
+  					</div>
+  					<label class="col-md-2 control-label" for="input-profession-parent2">Précisez</label>
+  					<div class="col-md-4">
+  						<input id="input-profession-parent2" type="text" class="form-control" size="30" ng-model="principal.dossier.professionParent2" />
+  					</div>
   				</div>
-  			</div>
-  		</fieldset>
+	  		</fieldset>
   		
-  		<fieldset>
+  		<fieldset ng-show="isUniqueMajeur()">
   			<legend>Accord de licence</legend>
   			<div class="form-group">
   			
@@ -399,7 +420,7 @@
   			</div>
   		</fieldset>
   		
-  		<fieldset>
+  		<fieldset ng-show="fillAccident()">
   			<legend>Personne à contacter en cas d'accident</legend>
   			<div class="form-group">
   				<label for="accidentNom1" class="col-md-1 control-label">Nom</label>
