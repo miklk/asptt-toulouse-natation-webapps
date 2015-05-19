@@ -456,23 +456,41 @@
           </div>
           
           <div class="tab-pane fade" id="cotisation">
-          	<h3>Votre inscription est enregistrée</h3>
-          	Vous avez {{dossiersCount}} bulletins d'adhésions.
-          	La montant de votre cotisation est de {{price}} euros: {{priceDetail}}
-          	<form role="form">
-          		<div class="checkbox">
+          	<h3>Votre inscription est pré-enregistrée.</h3>
+          	<p class="lead">
+          	Votre inscription ainsi que vos réservations de créneaux de cours sont effectives pour une période de 15 jours (soit jusqu'au {{validite | date:'dd/MM/yyyy HH:mm'}}).<br />
+          	Nous validerons définitivement votre dossier dès réception du paiement.<br />
+          En l'absence de paiement de la cotisation au bout de 15 jours votre dossier d'inscription sera effacé afin de laisser la place à d'autres adhérents.</p>
+          	
+          	<form role="form" enctype="multipart/form-data" ng-submit="validateInscription()">
+          	<h3>Montant de votre cotisation</h3>
+          	         	La montant de votre cotisation est de {{price}} euros: {{priceDetail}}
+          	         	<div class="checkbox">
 	          		<label>
 	          			<input type="checkbox" name="facture" ng-model="dossiers.principal.dossier.facture" ng-true-value="true" ng-false-value="false" />Je souhaite avoir une facture suite à mon paiement
 	          		</label>
           		</div>
-          		<p>Vous pouvez télécharger votre dossier d'inscription.</p>Celui-ci devra nous être retourné <span style=\"color : #FF0000\">signé</span> accompagné du ou des certificats médicaux ainsi que du paiement à l'adresse suivante:<br />ASPTT Grand Toulouse Natation<br />54 rue des Sept Troubadours<br />Bureau 215<br />31000 Toulouse.
+          		<h5>Moyens de paiement</h5>
+          		<ul>
+          			<li>chèque (encaissement décembre)</li>
+          			<li>3 chèques (décembre, février, avril)</li>
+          			<li>chèque-vacances</li>
+          		</ul>
+          	<h3>Certificats médicaux</h3>
+          	<p>Vous pouvez nous transmettre le(s) certificat(s) médicaux par vois électronique.</p>
+          	<ul>
+          		<li ng-repeat="dossier in dossiers">{{dossier.dossier.nom}} {{dossier.dossier.prenom}} <input type="file" id="file_{{dossier.dossier.id}}" name="file_{{dossier.dossier.id}}" accept="image/*,.pdf"/></li>
+          	</ul>
+          	<button type="submit" class="btn btn-default btn-lg btn-block">Je finalise ma pré-inscription</button>
+          	</form>
+          	<div ng-show="links">
+          	Vous devrez nous retourner votre dossier d'inscription <span style=\"color : #FF0000\">signé</span> accompagné du ou des certificats médicaux (ou par e-mail) ainsi que du paiement par chèque à l'adresse suivante:<br />ASPTT Grand Toulouse Natation<br />54 rue des Sept Troubadours<br />Bureau 215<br />31000 Toulouse.
           		<ol class="list-group" style="margin-top: 5%">
           			<li ng-repeat="link in links" class="list-group-item">
           				<a href="{{link}}" >Télécharger le dossier n°{{$index + 1}}</a>
           			</li>
           		</ol>
-          		<button type="submit" class="btn btn-default btn-lg btn-block" ng-click="validateInscription(dossiers[currentDossier])">Je valide mon inscription</button>
-          	</form>
+          	</div>
 		  </div>
 <div class="clearfix"></div>
 </div>

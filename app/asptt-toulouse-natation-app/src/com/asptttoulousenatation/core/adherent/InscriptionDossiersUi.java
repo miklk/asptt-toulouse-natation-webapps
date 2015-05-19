@@ -3,7 +3,9 @@ package com.asptttoulousenatation.core.adherent;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -20,11 +22,13 @@ public class InscriptionDossiersUi implements Serializable {
 	private InscriptionDossierUi principal;
 	private boolean inconnu;
 	private int price;
+	private Map<String, String> certificats;
 	
 	public InscriptionDossiersUi() {
 		dossiers = new ArrayList<InscriptionDossierUi>(5);
 		inconnu = true;
 		price = 0;
+		
 	}
 	
 	public void addDossier(InscriptionDossierUi pAdherent) {
@@ -35,6 +39,20 @@ public class InscriptionDossiersUi implements Serializable {
 		for(InscriptionEntity2 adherent: pAdherents) {
 			dossiers.add(new InscriptionDossierUi(adherent));
 		}
+	}
+	
+	public InscriptionDossierUi getDossier(Long id) {
+		boolean trouve = false;
+		Iterator<InscriptionDossierUi> it = dossiers.iterator();
+		InscriptionDossierUi dossier = null;
+		while(!trouve && it.hasNext()) {
+			dossier = it.next();
+			if(dossier.getDossier().getId().equals(id)) {
+				trouve = true;
+			}
+		}
+		//On peut se tromper de dossier s'il n'est pas présent (dans ce cas c'est le dernier de la liste mais cela ne devrait pas se produire
+		return dossier;
 	}
 	
 	public void addPrice(int pPrice) {
@@ -71,6 +89,14 @@ public class InscriptionDossiersUi implements Serializable {
 
 	public void setPrice(int pPrice) {
 		price = pPrice;
+	}
+
+	public Map<String, String> getCertificats() {
+		return certificats;
+	}
+
+	public void setCertificats(Map<String, String> certificats) {
+		this.certificats = certificats;
 	}
 	
 }

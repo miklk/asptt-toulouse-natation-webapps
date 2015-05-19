@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
@@ -22,12 +23,12 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
@@ -48,7 +49,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.datastore.Blob;
 
 @Path("/inscription")
-@Consumes("application/json")
 public class InscriptionService {
 	
 	private static final Logger LOG = Logger.getLogger(InscriptionService.class
@@ -66,6 +66,7 @@ public class InscriptionService {
 	
 	@Path("/price")
 	@POST
+	@Consumes("application/json")
 	public InscriptionPriceServiceResult price(InscriptionDossiersUi pDossiers) {
 		InscriptionDossierUi principal = pDossiers.getPrincipal();
 		buildDossier(principal);
@@ -175,18 +176,42 @@ public class InscriptionService {
 		return dossiers;
 	}
 
-	@Path("/inscrire")
+	@Path("inscrire")
 	@POST
-	public String inscrire(InscriptionDossiersUi pDossiers) {
-		InscriptionDossierUi principal = pDossiers.getPrincipal();
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public String inscrire(@DefaultValue("true") @FormDataParam("enabled") boolean enabled, @FormDataParam("file") List<FormDataBodyPart> certificats, @FormDataParam("action") String pAction) {
+		String result = "";
+		try {
+		String unscape = URLDecoder.decode(pAction, "UTF-8");
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+		InscriptionDossiersUi dossiers = mapper.readValue(unscape,
+				InscriptionDossiersUi.class);
+		InscriptionDossierUi principal = dossiers.getPrincipal();
 		if(principal.getDossier().getNouveauGroupe() == null) {
 			LOG.severe("Pas de groupe pour " + principal.getDossier().getEmail());
 		}
 		buildDossier(principal);
 		dao.save(principal.getDossier());
 		
+		//Add certificats
+		if(MapUtils.isNotEmpty(dossiers.getCertificats())) {
+			for(FormDataBodyPart certificatPart: certificats) {
+				try {
+					Blob certificat = new Blob(
+							IOUtils.toByteArray(certificatPart.getValueAs(InputStream.class)));
+					String fileName = certificatPart.getContentDisposition().getFileName();
+					Long dossierId = Long.valueOf(dossiers.getCertificats().get(fileName).split("_")[1]);
+					dossiers.getDossier(dossierId).getDossier().setCertificatmedical(certificat);
+				} catch (IOException e) {
+					LOG.log(Level.SEVERE, "Récupération des certificats", e);
+				}
+				
+			}
+		}
+		
 		Set<String> links = new HashSet<String>();
-		for (InscriptionDossierUi dossier : pDossiers.getDossiers()) {
+		for (InscriptionDossierUi dossier : dossiers.getDossiers()) {
 			if(!dossier.isSupprimer()) {
 				buildDossier(dossier);
 				if(dossier.getDossier().getPrincipal() == null) {
@@ -201,8 +226,11 @@ public class InscriptionService {
 
 		StrBuilder linksAsString = new StrBuilder();
 		linksAsString.appendWithSeparators(links, ";");
-		return linksAsString.toString();
-
+		result = linksAsString.toString();
+		}catch(IOException e) {
+			LOG.log(Level.SEVERE, "Error parsing JSON dossiers", e);
+		}
+		return result;
 	}
 
 	private void buildDossier(InscriptionDossierUi pDossier) {
@@ -324,27 +352,5 @@ public class InscriptionService {
 			adherent.setMineurParent(StringUtils.EMPTY);
 		}
 		
-	}
-	
-	@POST
-	@Path("/uploadCertificatMedial")
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public void uploadCertificatMedical(
-			@DefaultValue("true") @FormDataParam("enabled") boolean enabled,
-			@FormDataParam("action") String pAction,
-			@FormDataParam("file") InputStream pFileInput,
-			@FormDataParam("file") FormDataContentDisposition pFileDisposition,
-			@FormDataParam("file") FormDataBodyPart pBodyPart)
-			throws IOException {
-
-		String unscape = URLDecoder.decode(pAction, "UTF-8");
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
-		UploadCertificatParameters parameters = mapper.readValue(unscape,
-				UploadCertificatParameters.class);
-
-		InscriptionEntity2 adherent = dao.get(parameters.getDossier());
-		adherent.setCertificatmedical(new Blob(IOUtils.toByteArray(pFileInput)));
-		dao.save(adherent);
 	}
 }

@@ -285,28 +285,47 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 				    	$scope.dossiersCount = dataFromServer.dossiers.dossiers.length;
 						$scope.principal = dataFromServer.dossiers.principal;
 						$scope.priceDetail = dataFromServer.price;
+						var dateInscription = new Date();
+				        dateInscription.setDate(dateInscription.getDate() + 15);
+				        $scope.validite = dateInscription;
+				        $('#myTab a[href="#cotisation"]').tab('show');
 				       });
 				        responsePromise.error(function(data, status, headers, config) {
 				          alert("Erreur");
 				       });
-					$('#myTab a[href="#cotisation"]').tab('show');
 				};
 				$scope.validateInscription = function(dossier) {
+					var formData = new FormData();
+					var adherentCertificat = new Object();
+					//Récuperer les certificats
+					$("input[type=file]").each(function() {
+						console.log(this.files[0])
+						file = this.files[0];
+						if(file != null) {
+							adherentCertificat[file.name] = this.name;
+							formData.append("file", file);
+						}
+					});
+					console.log(adherentCertificat);
 					data.dossiers = $scope.dossiers;
-					var responsePromise = $http.post("/resources/inscription/inscrire", data, {});
+					data.certificats = adherentCertificat;
+					formData.append("action", angular.toJson(data));
+					var responsePromise = $http.post("/resources/inscription/inscrire", formData, {
+			            transformRequest: angular.identity,
+			            headers: {'Content-Type': undefined}
+			        });
 				    responsePromise.success(function(dataFromServer, status, headers, config) {
 				    	$scope.links = dataFromServer.split(";");
+				    	var responsePromise = $http.post("/adherentList.do?action=sendConfirmationNew&numero=" + data.principal.dossier.id, null, {});
+					    responsePromise.success(function(dataFromServer, status, headers, config) {
+					    	
+					       });
+					        responsePromise.error(function(data, status, headers, config) {
+					          
+					       });
 				       });
 				        responsePromise.error(function(data, status, headers, config) {
 				          alert("Il n'y a pas le bulletin.");
-				       });
-				        
-			        var responsePromise = $http.post("/adherentList.do?action=sendConfirmationNew&numero=" + data.principal.dossier.id, null, {});
-				    responsePromise.success(function(dataFromServer, status, headers, config) {
-				    	
-				       });
-				        responsePromise.error(function(data, status, headers, config) {
-				          
 				       });
 				};
 			}
