@@ -316,6 +316,7 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 			        });
 				    responsePromise.success(function(dataFromServer, status, headers, config) {
 				    	$scope.links = dataFromServer.split(";");
+				    	$("#validation-popup").modal();
 				    	var responsePromise = $http.post("/adherentList.do?action=sendConfirmationNew&numero=" + data.principal.dossier.id, null, {});
 					    responsePromise.success(function(dataFromServer, status, headers, config) {
 					    	

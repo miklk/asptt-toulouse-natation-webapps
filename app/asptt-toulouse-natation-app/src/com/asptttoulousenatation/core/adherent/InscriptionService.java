@@ -179,8 +179,8 @@ public class InscriptionService {
 	@Path("inscrire")
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public String inscrire(@DefaultValue("true") @FormDataParam("enabled") boolean enabled, @FormDataParam("file") List<FormDataBodyPart> certificats, @FormDataParam("action") String pAction) {
-		String result = "";
+	public InscriptionDossiersUi inscrire(@DefaultValue("true") @FormDataParam("enabled") boolean enabled, @FormDataParam("file") List<FormDataBodyPart> certificats, @FormDataParam("action") String pAction) {
+		InscriptionDossiersUi result = null;
 		try {
 		String unscape = URLDecoder.decode(pAction, "UTF-8");
 		ObjectMapper mapper = new ObjectMapper();
@@ -223,13 +223,12 @@ public class InscriptionService {
 						+ dossier.getDossier().getId().toString());
 			}
 		}
-
-		StrBuilder linksAsString = new StrBuilder();
-		linksAsString.appendWithSeparators(links, ";");
-		result = linksAsString.toString();
+		result = dossiers;
 		}catch(IOException e) {
 			LOG.log(Level.SEVERE, "Error parsing JSON dossiers", e);
 		}
+		
+		
 		return result;
 	}
 
