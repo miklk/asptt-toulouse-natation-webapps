@@ -6,7 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.server.dao.entity.IEntity;
 import com.google.appengine.api.datastore.Blob;
@@ -635,6 +639,39 @@ public class InscriptionEntity2 implements IEntity {
 		pEntity.setTelephonePerePro(telephonePerePro);
 		pEntity.setVille(ville);
 		pEntity.setCsp(csp);
+	}
+	
+	@PrePersist
+	@PreUpdate
+	public void toUpperCase() {
+		accidentNom1 = StringUtils.upperCase(accidentNom1);
+		accidentNom2 = StringUtils.upperCase(accidentNom2);
+		accidentPrenom1 = StringUtils.upperCase(accidentPrenom1);
+		accidentPrenom2 = StringUtils.upperCase(accidentPrenom2);
+		accidentTelephone1 = StringUtils.upperCase(accidentTelephone1);
+		accidentTelephone2 = StringUtils.upperCase(accidentTelephone2);
+		civilite = StringUtils.upperCase(civilite);
+		nom = StringUtils.upperCase(nom);
+		prenom = StringUtils.upperCase(prenom);
+		adresse = StringUtils.upperCase(adresse);
+		codepostal = StringUtils.upperCase(codepostal);
+		ville = StringUtils.upperCase(ville);
+		telephone = StringUtils.upperCase(telephone);
+		telephoneSecondaire = StringUtils.upperCase(telephoneSecondaire);
+		emailsecondaire = StringUtils.upperCase(emailsecondaire);
+		profession = StringUtils.upperCase(profession);
+		csp = StringUtils.upperCase(csp);
+		professionParent1 = StringUtils.upperCase(professionParent1);
+		cspParent1 = StringUtils.upperCase(cspParent1);
+		professionParent2 = StringUtils.upperCase(professionParent2);
+		cspParent2 = StringUtils.upperCase(cspParent2);
+		accordNomPrenom = StringUtils.upperCase(accordNomPrenom);
+		mineur = StringUtils.upperCase(mineur);
+		mineurParent = StringUtils.upperCase(mineurParent);
+		parent1Nom = StringUtils.upperCase(parent1Nom);
+		parent1Prenom = StringUtils.upperCase(parent1Prenom);
+		parent2Nom = StringUtils.upperCase(parent2Nom);
+		parent2Prenom = StringUtils.upperCase(parent2Prenom);
 	}
 	
 }

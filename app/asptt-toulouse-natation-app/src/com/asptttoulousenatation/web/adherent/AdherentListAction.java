@@ -933,6 +933,7 @@ public class AdherentListAction extends HttpServlet {
 							.getInstance().getCreneaux(adherent.getCreneaux())) {
 						message.append("<dd>").append(creneau).append("</dd>");
 					}
+					message.append("<dd>").append("<a href=\"v2/InscriptionAction.do?action=imprimerNew&numero="+adherent.getId()+"\">Télécharger le dossier</a>").append("</dd>");
 				}
 				message.append("</dl>");
 				
