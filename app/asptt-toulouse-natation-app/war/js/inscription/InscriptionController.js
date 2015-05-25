@@ -19,6 +19,7 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 	datepickerInput.on("changeDate", function(e) {
 		$scope.dossiers[$scope.currentDossier].dossier.datenaissance = $filter('date') (e.date, "yyyy-MM-dd");
 		$scope.dossiers[$scope.currentDossier].dossier.naissance = e.date.getTime();
+		$scope.dossiers[$scope.currentDossier].dossier.naissanceAsString = $filter('date') (e.date, "dd/MM/yyyy");
 		datepickerInput.datepicker('hide');
 	});
 	
