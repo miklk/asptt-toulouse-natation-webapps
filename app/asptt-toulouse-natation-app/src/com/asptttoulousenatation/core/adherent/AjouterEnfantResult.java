@@ -2,7 +2,7 @@ package com.asptttoulousenatation.core.adherent;
 
 import java.io.Serializable;
 
-public class AjouterEnfantAdherentServiceResult implements Serializable {
+public class AjouterEnfantResult implements Serializable {
 
 	/**
 	 * 
@@ -11,7 +11,7 @@ public class AjouterEnfantAdherentServiceResult implements Serializable {
 	private InscriptionDossiersUi dossiers;
 	private Integer currentIndex;
 	
-	public AjouterEnfantAdherentServiceResult() {
+	public AjouterEnfantResult() {
 		
 	}
 

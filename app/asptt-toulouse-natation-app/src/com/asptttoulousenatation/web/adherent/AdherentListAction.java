@@ -127,8 +127,6 @@ public class AdherentListAction extends HttpServlet {
 				searchCsv(pReq, pResp, form);
 			} else if ("forgetEmail".equals(action)) {
 				forgetEmail(pReq, pResp);
-			} else if("sendConfirmationNew".equals(action)) {
-				sendConfirmationNew(pReq, pResp);
 			} else if("export".equals(action)) {
 				export(pReq, pResp);
 			} else if("sendOuverture".equals(action)) {
@@ -867,102 +865,6 @@ public class AdherentListAction extends HttpServlet {
 		}
 	}
 	
-	protected void sendConfirmationNew(HttpServletRequest pReq,
-			HttpServletResponse pResp)
-			throws ServletException, IOException {
-
-		Properties props = new Properties();
-		Session session = Session.getDefaultInstance(props, null);
-		
-		Long numero = 0l;
-		try {
-			numero = Long.valueOf(pReq.getParameter("numero"));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		InscriptionEntity2 principal = inscription2Dao.get(numero);
-		
-		
-			try {
-				Multipart mp = new MimeMultipart();
-				MimeBodyPart htmlPart = new MimeBodyPart();
-
-				MimeMessage msg = new MimeMessage(session);
-				msg.setFrom(new InternetAddress(
-						"webmaster@asptt-toulouse-natation.com",
-						"ASPTT Toulouse Natation"));
-				Address[] replyTo = {new InternetAddress(
-						"contact@asptt-toulouse-natation.com",
-						"ASPTT Toulouse Natation")};
-				msg.setReplyTo(replyTo);
-				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-						principal.getEmail()));
-				msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
-						"contact@asptt-toulouse-natation.com"));
-				if(StringUtils.isNotBlank(principal.getEmailsecondaire())) {
-				msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
-						principal.getEmailsecondaire()));
-				}
-
-				StringBuilder message = new StringBuilder(
-						"Madame, Monsieur,<p>Nous avons le plaisir de vous confirmer la sélection de vos créneaux pour la nouvelle saison sportive 2014-2015.<br />"
-								+ "Nous attendons votre dossier, certificat médicale ainsi que votre réglement afin de finaliser ainsi votre inscription. <br />"
-								+ "Vous recevrez un e-mail de confirmation dès que votre inscription sera finalisée.<br />"
-								+ "Voici les créneaux que vous avez sélectionné: <br />");
-
-				List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-						1);
-				criteria.add(new CriterionDao<Long>(
-						InscriptionEntityFields.PRINCIPAL, principal.getId(),
-						Operator.EQUAL));
-				List<InscriptionEntity2> adherents = inscription2Dao
-						.find(criteria);
-				message.append("<dl>");
-				adherents.add(principal);
-				for (InscriptionEntity2 adherent : adherents) {
-					try {
-					GroupEntity group = groupDao.get(adherent
-							.getNouveauGroupe());
-					
-					message.append("<dt>").append(adherent.getNom()).append(" ").append(adherent.getPrenom()).append(" ").append(group.getTitle())
-							.append("</dt>");
-					}catch(Exception e) {
-						LOG.severe("Erreur du groupe (adherent " + adherent.getEmail() + "): " + adherent.getNouveauGroupe() + " ");
-					}
-					for (String creneau : AdherentListResultBeanTransformer
-							.getInstance().getCreneaux(adherent.getCreneaux())) {
-						message.append("<dd>").append(creneau).append("</dd>");
-					}
-					message.append("<dd>").append("<a href=\"v2/InscriptionAction.do?action=imprimerNew&numero="+adherent.getId()+"\">Télécharger le dossier</a>").append("</dd>");
-				}
-				message.append("</dl>");
-				
-				message.append("<p>Sportivement,<br />"
-						+ "Le secrétariat,<br />"
-						+ "ASPTT Grand Toulouse Natation<br />"
-						+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
-				htmlPart.setContent(message.toString(), "text/html");
-				mp.addBodyPart(htmlPart);
-
-				msg.setSubject("ASPTT Toulouse Natation - Confirmation",
-						"UTF-8");
-				msg.setContent(mp);
-				Transport.send(msg);
-			} catch (AddressException e) {
-				// ...
-			} catch (MessagingException e) {
-				// ...
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				LOG.severe("Erreur pour l'e-mail: " + principal.getEmail() + "("
-						+ e.getMessage() + ")");
-			}
-		pResp.setContentType("text/html;charset=UTF-8");
-		pResp.getWriter().write("ok");
-
-	}
 	
 	protected void export(HttpServletRequest pReq, HttpServletResponse pResp) throws ServletException, IOException {
 		StrBuilder builder = new StrBuilder();

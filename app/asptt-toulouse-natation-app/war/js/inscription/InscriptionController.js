@@ -1,25 +1,24 @@
 /**
  * 
  */
-var inscriptionController = angular.module('InscriptionController', ['inscriptionServices', 'inscriptionNouveauServices', 'removeAdherentServices']);
+var inscriptionController = angular.module('InscriptionController', ['inscriptionServices']);
 
-inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter', 'InscriptionService', 'SlotService', 'GroupeService', 'InscriptionNouveauService', 'RemoveAdherentService', '$routeParams', '$sce', function($http, $scope, $filter, InscriptionService, SlotService, GroupeService, InscriptionNouveauService, RemoveAdherentService, $routeParams, $sce) {
+inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter', 'InscriptionService', 'SlotService', 'GroupeService', '$routeParams', '$sce', function($http, $scope, $filter, InscriptionService, SlotService, GroupeService, $routeParams, $sce) {
 	$scope.formData = {
 			email: "",
 			mdp: "",
 			nouveau: ""
 	};
 	
-	$scope.csp = ['Scolaire', 'Agriculteurs exploitants', 'Artisans, commerçants et chefs d\'entreprise', 'Cadres et professions intellectuelles supérieures','Professions Intermédiaires', 'Employés', 'Ouvriers', 'Retraités', 'Sans activité professionnelle'];
+	$scope.cspList = ['Scolaire', 'Agriculteurs exploitants', 'Artisans, commerçants et chefs d\'entreprise', 'Cadres et professions intellectuelles supérieures','Professions Intermédiaires', 'Employés', 'Ouvriers', 'Retraités', 'Sans activité professionnelle'];
 	
 	var datepickerInput = $('.input-group.date').datepicker({
 		format: "dd/mm/yyyy",
 		language: "fr"
 	});
 	datepickerInput.on("changeDate", function(e) {
-		$scope.dossiers[$scope.currentDossier].dossier.datenaissance = $filter('date') (e.date, "yyyy-MM-dd");
 		$scope.dossiers[$scope.currentDossier].dossier.naissance = e.date.getTime();
-		$scope.dossiers[$scope.currentDossier].dossier.naissanceAsString = $filter('date') (e.date, "dd/MM/yyyy");
+		$scope.dossiers[$scope.currentDossier].naissanceAsString = $filter('date') (e.date, "dd/MM/yyyy");
 		datepickerInput.datepicker('hide');
 	});
 	
@@ -28,12 +27,12 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 		});
 	
 	$scope.subscribe = function() {
-		InscriptionNouveauService.put({email: $scope.formData.nouveau});
+		InscriptionService.preNouveau.query({email: $scope.formData.nouveau});
 		alert("A l'ouverture des inscriptions, vous serez informé par e-mail. Bonne vacances !");
 	};
 	
 	$scope.nouveauCode = function() {
-		InscriptionNouveauService.get({email: $scope.formData.nouveau}, function(data) {
+		InscriptionService.nouveau.query({email: $scope.formData.nouveau}, function(data) {
 			if(data.exist) {
 				alert("L'adresse e-mail "
 							+ $scope.formData.nouveau
@@ -46,42 +45,32 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 
 	// process the form
 	$scope.oublie = function() {
-		 var responsePromise = $http.get("/adherentList.do?action=forgetEmail&email=" + $scope.formData.email);
-	       responsePromise.success(function(dataFromServer, status, headers, config) {
-	    	  alert("Vous allez recevoir votre mot de passe par e-mail");
-	       });
-	        responsePromise.error(function(data, status, headers, config) {
-	          alert("Erreur");
-	       });
+		console.log($scope.formData.email);
+		InscriptionService.forget.query({email: $scope.formData.email}, function(data) {
+			console.log(data);
+			if(data.found) {
+				alert("Vous allez recevoir votre mot de passe par e-mail");
+			} else {
+				alert("L'adresse e-mail " + $scope.formData.email + " n'est pas connue");
+			}
+		});
 	};
 	$scope.authenticate = function() {
-		InscriptionService.get({email: $scope.formData.email, mdp: $scope.formData.mdp}, function (data) {
+		InscriptionService.authenticate.query({email: $scope.formData.email, mdp: $scope.formData.mdp}, function (data) {
 			if(data.inconnu) {
 				alert("Vous n'êtes pas dans nos listing. Peut être qu'ils ne sont pas à jour. webmaster@asptt-toulouse-natation.com");
 			} else {
 				$scope.links = null;
-				$scope.dossiersCount = data.dossiers.length;
-				$scope.dossiers = data.dossiers;
-				$scope.principal = data.principal;
+				$scope.dossiersCount = data.nageurs.length;
+				$scope.dossiers = data.nageurs;
+				$scope.principal = data.dossier;
 				
 				//Determine si les informations accordNomPrenom et accidentNom1 et accidentNom2 sont remplis (sauvé en base)
-				$scope.accordNotFilled = !$scope.principal.dossier.accordNomPrenom;
-				$scope.accidentNom1NotFilled = !$scope.principal.dossier.accidentNom1;
-				$scope.accidentNom2NotFilled = !$scope.principal.dossier.accidentNom2;
+				$scope.accordNotFilled = !$scope.principal.accordNomPrenom || ($scope.principal.accordNomPrenom.indexOf("NULL") > -1);
+				$scope.accidentNom1NotFilled = !$scope.principal.accidentNom1;
+				$scope.accidentNom2NotFilled = !$scope.principal.accidentNom2;
 				
-				$scope.deleteDossier = function(index) {
-					$scope.dossiers[index].supprimer = true;
-					RemoveAdherentService.remove({adherentId: $scope.dossiers[index].dossier.id}, function() {
-						InscriptionService.get({email: $scope.formData.email, mdp: $scope.formData.mdp}, function (data) {
-							$scope.dossiersCount = data.dossiers.length;
-							$scope.dossiers = data.dossiers;
-							$scope.principal = data.principal;
-						});
-					});
-					
-				};
-				
-				if(data.principal.dossier.nouveau) {
+				if($scope.dossiersCount == 1) {
 					var index = 0;
 					$scope.hideSeconde = true;
 					$scope.unique = false;
@@ -96,6 +85,34 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 				} else {
 					$('#myTab a[href="#dossiers"]').tab('show');
 				}
+				
+				$scope.ajouterEnfant = function() {
+					 var responsePromise = $http.post("/resources/inscription/ajouter-enfant", data, {});
+				       responsePromise.success(function(dataFromServer, status, headers, config) {
+				    	  data = dataFromServer.dossiers;
+				    	  $scope.dossiersCount = dataFromServer.dossiers.nageurs.length;
+						  $scope.dossiers = dataFromServer.dossiers.nageurs;
+				          $scope.currentDossier = dataFromServer.currentIndex;
+				          $scope.slots = null;
+				          $scope.groupes = GroupeService.get({nouveau: true});
+				          $('#myTab a[href="#activite"]').tab('show');
+				       });
+				        responsePromise.error(function(data, status, headers, config) {
+				          alert("Erreur");
+				       });
+				};
+				
+				$scope.deleteDossier = function(index) {
+					$scope.dossiers[index].supprimer = true;
+					InscriptionService.remove.query({dossier: $scope.dossiers[index].dossier.id}, function() {
+						InscriptionService.authenticate.query({email: $scope.formData.email, mdp: $scope.formData.mdp}, function (data) {
+							$scope.dossiersCount = data.nageurs.length;
+							$scope.dossiers = data.nageurs;
+							$scope.principal = data.dossier;
+						});
+					});
+				};
+				
 				$scope.loadDossier = function(index) {
 					$scope.hideSeconde = true;
 					$scope.unique = false;
@@ -149,21 +166,6 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 							this.selected = false;
 						});
 					});
-				};
-				$scope.ajouterEnfant = function() {
-					 var responsePromise = $http.post("/resources/ajouterEnfant", data, {});
-				       responsePromise.success(function(dataFromServer, status, headers, config) {
-				    	  data = dataFromServer.dossiers;
-				    	  $scope.dossiersCount = dataFromServer.dossiers.dossiers.length;
-						  $scope.dossiers = dataFromServer.dossiers.dossiers;
-				          $scope.currentDossier = dataFromServer.currentIndex;
-				          $scope.slots = null;
-				          $scope.groupes = GroupeService.get({nouveau: true});
-				          $('#myTab a[href="#activite"]').tab('show');
-				       });
-				        responsePromise.error(function(data, status, headers, config) {
-				          alert("Erreur");
-				       });
 				};
 				$scope.dossiersValide = function(dossiers) {
 					var areValide = true;
@@ -220,8 +222,8 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 				};
 				$scope.hasMineur = function() {
 					var gotMineur = false;
-					$scope.dossiers.each(function() {
-						adherentAge = new Date(this.dossier.naissance);
+					angular.forEach($scope.dossiers, function(nageur) {
+						adherentAge = new Date(nageur.dossier.naissance);
 						var annee = (new Date()).getFullYear() - adherentAge.getFullYear();
 						if(annee < 18) {
 							gotMineur = true;
@@ -238,13 +240,13 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 						result = annee >= 18;
 						if(result) {
 							if($scope.accordNotFilled) {
-								$scope.principal.dossier.accordNomPrenom = $scope.dossiers[0].dossier.nom + " " + $scope.dossiers[0].dossier.prenom;
+								$scope.principal.accordNomPrenom = $scope.dossiers[0].dossier.nom + " " + $scope.dossiers[0].dossier.prenom;
 							}
 						}
 					} else {
 						if($scope.hasMineur) {
-							if($scope.accordNotFilled && $scope.principal.dossier.parent1Nom != null) {
-								$scope.principal.dossier.accordNomPrenom = $scope.principal.dossier.parent1Nom + " " + $scope.principal.dossier.parent1Prenom;
+							if($scope.accordNotFilled && $scope.principal.parent1Nom != null) {
+								$scope.principal.accordNomPrenom = $scope.principal.parent1Nom + " " + $scope.principal.parent1Prenom;
 							}
 							result = true;
 						} else {
@@ -255,37 +257,63 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 				};
 				
 				$scope.fillAccident = function() {
-					if($scope.hasMineur) {
-						if($scope.accidentNom1NotFilled && $scope.principal.dossier.parent1Nom != null) {
-							$scope.principal.dossier.accidentNom1 = $scope.principal.dossier.parent1Nom;
-							$scope.principal.dossier.accidentPrenom1 = $scope.principal.dossier.parent1Prenom;
-							$scope.principal.dossier.accidentTelephone1 = $scope.principal.dossier.telephone;
+					if($scope.hasMineur()) {
+						if($scope.accidentNom1NotFilled && $scope.principal.parent1Nom != null) {
+							$scope.principal.accidentNom1 = $scope.principal.parent1Nom;
+							$scope.principal.accidentPrenom1 = $scope.principal.parent1Prenom;
+							$scope.principal.accidentTelephone1 = $scope.principal.telephone;
 						}
-						if($scope.accidentNom2NotFilled && $scope.principal.dossier.parent2Nom != null) {
-							$scope.principal.dossier.accidentNom2 = $scope.principal.dossier.parent2Nom;
-							$scope.principal.dossier.accidentPrenom2 = $scope.principal.dossier.parent2Prenom;
-							$scope.principal.dossier.accidentTelephone2 = $scope.principal.dossier.telephoneSecondaire;
+						if($scope.accidentNom2NotFilled && $scope.principal.parent2Nom != null) {
+							$scope.principal.accidentNom2 = $scope.principal.parent2Nom;
+							$scope.principal.accidentPrenom2 = $scope.principal.parent2Prenom;
+							$scope.principal.accidentTelephone2 = $scope.principal.telephoneSecondaire;
 						}
 					}
 					return true;
 				};
 				
 				$scope.validateNageur = function(dossier) {
+					$http.post("/resources/inscription/update", data, {})
+				    	.success(function(dataFromServer, status, headers, config) {
+				    		data = dataFromServer;
+					    	$scope.dossiers = dataFromServer.nageurs;
+					    	$scope.dossiersCount = dataFromServer.nageurs.length;
+				       })
+				        .error(function(dataFromServer, status, headers, config) {
+				          alert("Erreur lors de sauvegarde du dossier.");
+				       });
 					$('#myTab a[href="#dossiers"]').tab('show');
 				};
 				$scope.validateDossiers = function() {
 					$('#myTab a[href="#info"]').tab('show');
 				};
+				
+				$scope.isNotDossierValid = function() {
+					var notValid = false;
+					if($scope.hasMineur()) {
+						notValid = !$scope.formDossier.$valid;
+					} else {
+						//adresse, code postal, ville, telephone, email, accordNomPrenom
+						notValid = !$scope.formDossier.adresse.$valid 
+							|| !$scope.formDossier.codePostal.$valid
+							|| !$scope.formDossier.ville.$valid
+							|| !$scope.formDossier.telephone.$valid
+							|| !$scope.formDossier.email.$valid
+							|| !$scope.formDossier.accordNomPrenom.$valid;
+					}
+					return notValid;
+				};
+				
 				$scope.validateInfo = function() {
-					data.dossiers = $scope.dossiers;
-					var responsePromise = $http.post("/resources/inscription/price", data, {});
+					var dataToServer = new Object();
+					dataToServer.nageurs = $scope.dossiers;
+					dataToServer.dossier = $scope.principal;
+					var responsePromise = $http.post("/resources/inscription/price", dataToServer, {});
 				    responsePromise.success(function(dataFromServer, status, headers, config) {
-				    	data = dataFromServer.dossiers;
-				    	$scope.dossiers = dataFromServer.dossiers.dossiers;
-				    	$scope.price = dataFromServer.dossiers.price;
-				    	$scope.dossiersCount = dataFromServer.dossiers.dossiers.length;
-						$scope.principal = dataFromServer.dossiers.principal;
-						$scope.priceDetail = dataFromServer.price;
+				    	$scope.dossiers = dataFromServer.nageurs;
+				    	$scope.price = dataFromServer.price;
+				    	$scope.dossiersCount = dataFromServer.nageurs.length;
+						$scope.principal = dataFromServer.dossier;
 						var dateInscription = new Date();
 				        dateInscription.setDate(dateInscription.getDate() + 15);
 				        $scope.validite = dateInscription;
@@ -300,33 +328,28 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 					var adherentCertificat = new Object();
 					//Récuperer les certificats
 					$("input[type=file]").each(function() {
-						console.log(this.files[0])
 						file = this.files[0];
 						if(file != null) {
 							adherentCertificat[file.name] = this.name;
 							formData.append("file", file);
 						}
 					});
-					console.log(adherentCertificat);
-					data.dossiers = $scope.dossiers;
-					data.certificats = adherentCertificat;
-					formData.append("action", angular.toJson(data));
+					var dataToServeur = new Object();
+					dataToServeur.nageurs = $scope.dossiers;
+					dataToServeur.dossier = $scope.principal;
+					dataToServeur.certificats = adherentCertificat;
+					formData.append("action", angular.toJson(dataToServeur));
 					var responsePromise = $http.post("/resources/inscription/inscrire", formData, {
 			            transformRequest: angular.identity,
 			            headers: {'Content-Type': undefined}
-			        });
-				    responsePromise.success(function(dataFromServer, status, headers, config) {
-				    	$scope.links = dataFromServer.split(";");
+			        })
+				    .success(function(dataFromServer, status, headers, config) {
+				    	$scope.dossiers = dataFromServer.nageurs;
+				    	$scope.dossiersCount = dataFromServer.nageurs.length;
+						$scope.principal = dataFromServer.dossier;
 				    	$("#validation-popup").modal();
-				    	var responsePromise = $http.post("/adherentList.do?action=sendConfirmationNew&numero=" + data.principal.dossier.id, null, {});
-					    responsePromise.success(function(dataFromServer, status, headers, config) {
-					    	
-					       });
-					        responsePromise.error(function(data, status, headers, config) {
-					          
-					       });
-				       });
-				        responsePromise.error(function(data, status, headers, config) {
+				       })
+				        .error(function(data, status, headers, config) {
 				          alert("Il n'y a pas le bulletin.");
 				       });
 				};

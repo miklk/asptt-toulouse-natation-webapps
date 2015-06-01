@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+	<cron>
+	<url>/resources/inscription/expire</url>
+	<description>Expiration des dossiers</description>
+	<schedule>every day 04:00</schedule>
+	</cron>
+</cronentries>

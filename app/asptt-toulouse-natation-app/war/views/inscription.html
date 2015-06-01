@@ -252,7 +252,7 @@
 		          				<label for=dateNaissance class="col-md-2 control-label">Date de naissance</label>
 		          				<div class="col-md-6">
 		          					<div class="input-group date">
-	  									<input id="datenaissance-field" name="datenaissance" ng-model="dossiers[currentDossier].dossier.naissanceAsString" type="text" class="form-control" required /><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+	  									<input id="datenaissance-field" name="datenaissance" ng-model="dossiers[currentDossier].naissanceAsString" type="text" class="form-control" required /><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 									</div>
 		          				</div>
 		          				<div ng-messages="formNageur.datenaissance.$error" ng-messages-include="views/inscription-errors.html"></div>
@@ -297,13 +297,14 @@
   			<legend>Activité</legend>
   			<div class="form-inline" ng-class="{'has-error':formNageur.csp.$error.required || formNageur.profession.$error.required}">
   				<div class="col-md-6 form-group">
-  					<select class="form-control" name="csp" ng-model="dossiers[currentDossier].dossier.csp" ng-options="csp for csp in csp" required>
+  					<select class="form-control" name="csp" ng-model="dossiers[currentDossier].dossier.csp" ng-options="cspValue as cspValue for cspValue in cspList" required>
   						<option value="">Sélectionnez votre activité</option>
   					</select>
   				</div>
   				<div class="col-md-6 form-group">
   					<label for="input-profession">Précisez</label>
-  					<input id="input-profession" name="profession" type="text" class="form-control" size="30" ng-model="dossiers[currentDossier].dossier.profession" required />
+  					<input id="input-profession" name="profession
+  					" type="text" class="form-control" size="30" ng-model="dossiers[currentDossier].dossier.profession" required />
   				</div>
   			</div>
   		</fieldset>
@@ -315,16 +316,16 @@
           </div>
           <div class="tab-pane fade" id="info">
           	<form role="form" name="formDossier" class="form-horizontal" ng-submit="validateInfo()" novalidate>
-	          	<fieldset ng-show="hasMineur">
+	          	<fieldset ng-show="hasMineur()">
 		          	<legend>Parents</legend>
 		          		<div class="form-group" ng-class="{'has-error':formDossier.parent1Nom.$error.required || formDossier.parent1Prenom.$error.required}">
 	  						<label for="parent1Nom" class="col-md-2 control-label">Nom</label>
 	  						<div class="col-md-4">
-	  							<input type="text" class="form-control" id="parent1Nom" name="parent1Nom" placeholder="Nom" size="50" ng-model="principal.dossier.parent1Nom" required />
+	  							<input type="text" class="form-control" id="parent1Nom" name="parent1Nom" placeholder="Nom" size="50" ng-model="principal.parent1Nom" required />
 	  						</div>
 	  						<label for="parent1Prenom" class="col-md-2 control-label">Prenom</label>
 	  						<div class="col-md-4">
-	  							<input type="text" class="form-control" id="parent1Prenom" name="parent1Prenom" placeholder="Prenom" size="50" ng-model="principal.dossier.parent1Prenom" required />
+	  							<input type="text" class="form-control" id="parent1Prenom" name="parent1Prenom" placeholder="Prenom" size="50" ng-model="principal.parent1Prenom" required />
 	  						</div>
 	  					</div>
 	  					<div ng-messages="formDossier.parent1Nom.$error || formDossier.parent1Prenom.$error" ng-messages-include="views/inscription-errors.html"></div>
@@ -332,11 +333,11 @@
 		          		<div class="form-group">
 	  						<label for="parent2Nom" class="col-md-2 control-label">Nom</label>
 	  						<div class="col-md-4">
-	  							<input type="text" class="form-control" id="parent2Nom" name="parent2Nom" placeholder="Nom" size="50" ng-model="principal.dossier.parent2Nom" />
+	  							<input type="text" class="form-control" id="parent2Nom" name="parent2Nom" placeholder="Nom" size="50" ng-model="principal.parent2Nom" />
 	  						</div>
 		  					<label for="parent2Prenom" class="col-md-2 control-label">Prenom</label>
 		  					<div class="col-md-4">
-	  							<input type="text" class="form-control" id="parent2Prenom" name="parent2Prenom" placeholder="Prenom" size="50" ng-model="principal.dossier.parent2Prenom" />
+	  							<input type="text" class="form-control" id="parent2Prenom" name="parent2Prenom" placeholder="Prenom" size="50" ng-model="principal.parent2Prenom" />
 	  						</div>
 	  					</div>
 	          	</fieldset>
@@ -345,21 +346,21 @@
   				<div class="form-group" ng-class="{'has-error':formDossier.adresse.$error.required}">
   					<label for="adresse" class="col-md-2 control-label">Adresse complète</label>
   					<div class="col-md-10">
-  						<input type="text" class="form-control" id="adresse" name="adresse" placeholder="Adresse postale" size="100" ng-model="principal.dossier.adresse" required />
+  						<input type="text" class="form-control" id="adresse" name="adresse" placeholder="Adresse postale" size="100" ng-model="principal.adresse" required />
   					</div>
   					<div ng-messages="formDossier.adresse.$error" ng-messages-include="views/inscription-errors.html"></div>
   				</div>
   				<div class="form-group" ng-class="{'has-error':formDossier.codePostal.$error.required}">
   					<label for="codePostal" class="col-md-2 control-label">Code postal</label>
   					<div class="col-md-10">
-  						<input type="text" class="form-control" id="codePostal" name="codePostal" placeholder="Code postal" size="10" ng-model="principal.dossier.codepostal" required />
+  						<input type="text" class="form-control" id="codePostal" name="codePostal" placeholder="Code postal" size="10" ng-model="principal.codepostal" required />
   					</div>
   					<div ng-messages="formDossier.codePostal.$error" ng-messages-include="views/inscription-errors.html"></div>
   				</div>
   				<div class="form-group" ng-class="{'has-error':formDossier.ville.$error.required}">
   					<label for="ville" class="col-md-2 control-label">Ville</label>
   					<div class="col-md-10">
-  						<input type="text" class="form-control" id="ville" name="ville" placeholder="Ville" size="50" ng-model="principal.dossier.ville" required />
+  						<input type="text" class="form-control" id="ville" name="ville" placeholder="Ville" size="50" ng-model="principal.ville" required />
   					</div>
   					<div ng-messages="formDossier.ville.$error" ng-messages-include="views/inscription-errors.html"></div>
   				</div>
@@ -370,55 +371,55 @@
 	  			<div class="form-group" ng-class="{'has-error':formDossier.telephone.$error.required}">
 	  				<label for="telephone" class="col-md-2 control-label">Numéro de téléphone principal</label>
 	  				<div class="col-md-4">
-	  					<input type="tel" class="form-control" id="telephone" name="telephone" placeholder="Téléphone" size="15" ng-model="principal.dossier.telephone" required />
+	  					<input type="tel" class="form-control" id="telephone" name="telephone" placeholder="Téléphone" size="15" ng-model="principal.telephone" required />
 	  				</div>
 	  				
 					<label for="telephoneSecondaire" class="col-md-2 control-label">Numéro de téléphone secondaire</label>
 					<div class="col-md-4">
-						<input type="tel" class="form-control" id="telephoneSecondaire" placeholder="Téléphone secondaire" size="15" ng-model="principal.dossier.telephoneSecondaire" />
+						<input type="tel" class="form-control" id="telephoneSecondaire" placeholder="Téléphone secondaire" size="15" ng-model="principal.telephoneSecondaire" />
 					</div>
 				</div>
 				<div ng-messages="formDossier.telephone.$error" ng-messages-include="views/inscription-errors.html"></div>
 				<div class="form-group" ng-class="{'has-error':formDossier.email.$error.required}">
 					<label for="email" class="col-md-2 control-label">Adresse e-mail (usuelle pour toutes les communications)</label>
 					<div class="col-md-10">
-						<input type="email" class="form-control" id="email" name="email" placeholder="E-mail" size="50" ng-model="principal.dossier.email" required />
+						<input type="email" class="form-control" id="email" name="email" placeholder="E-mail" size="50" ng-model="principal.email" required />
 					</div>
 					<div ng-messages="formDossier.email.$error" ng-messages-include="views/inscription-errors.html"></div>
 				</div>
 				<div class="form-group">
 					<label for="email2" class="col-md-2 control-label">Adresse e-mail secondaire</label>
 					<div class="col-md-10">
-						<input type="email" class="form-control" id="email2" placeholder="E-mail secondaire" size="50" ng-model="principal.dossier.emailsecondaire" />
+						<input type="email" class="form-control" id="email2" placeholder="E-mail secondaire" size="50" ng-model="principal.emailsecondaire" />
 					</div>
 				</div>
 	  		</fieldset>
   		
-  			<fieldset ng-show="hasMineur">
+  			<fieldset ng-show="hasMineur()">
 	  			<legend>Profession des parents</legend>
   				<div class="form-group" ng-class="{'has-error':formDossier.cspParent1.$error.required || formDossier.professionParent1.$error.required}">
   					<label class="col-md-2 control-label" for="select-profession-parent1">Profession</label>
   					<div class="col-md-4">
-	  					<select id="select-profession-parent1" class="form-control" name="cspParent1" ng-model="principal.dossier.cspParent1" ng-options="csp for csp in csp" required>
+	  					<select id="select-profession-parent1" class="form-control" name="cspParent1" ng-model="principal.parent1Csp" ng-options="csp for csp in cspList" required>
 	  						<option value="">Sélectionnez votre activité</option>
 	  					</select>
   					</div>
   					<label class="col-md-2 control-label" for="input-profession-parent1">Précisez</label>
   					<div class="col-md-4">
-  						<input id="input-profession-parent1" name="professionParent1" type="text" class="form-control" size="30" ng-model="principal.dossier.professionParent1" required />
+  						<input id="input-profession-parent1" name="professionParent1" type="text" class="form-control" size="30" ng-model="principal.parent1Profession" required />
   					</div>
   					<div ng-messages="formDossier.cspParent1.$error || formDossier.professionParent1.$error" ng-messages-include="views/inscription-errors.html"></div>
   				</div>
   				<div class="form-group">
   					<label class="col-md-2 control-label" for="select-profession-parent2">Profession</label>
   					<div class="col-md-4">
-	  					<select id="select-profession-parent2" class="form-control" ng-model="principal.dossier.cspParent2" ng-options="csp for csp in csp">
+	  					<select id="select-profession-parent2" class="form-control" ng-model="principal.parent2Csp" ng-options="csp for csp in cspList">
 	  						<option value="">Sélectionnez votre activité</option>
 	  					</select>
   					</div>
   					<label class="col-md-2 control-label" for="input-profession-parent2">Précisez</label>
   					<div class="col-md-4">
-  						<input id="input-profession-parent2" type="text" class="form-control" size="30" ng-model="principal.dossier.professionParent2" />
+  						<input id="input-profession-parent2" type="text" class="form-control" size="30" ng-model="principal.parent2Profession" />
   					</div>
   				</div>
 	  		</fieldset>
@@ -427,7 +428,7 @@
   			<legend>Accord de licence</legend>
   			<div class="form-group" ng-class="{'has-error':formDossier.accordNomPrenom.$error.required}">
   			
-  				<label for="accordNomPrenom">Je, soussigné</label><input type="text" class="form-control" id="accordNomPrenom" name="accordNomPrenom" placeholder="Nom et prénom" size="50" ng-model="principal.dossier.accordNomPrenom" required /><div ng-messages="formDossier.accordNomPrenom.$error" ng-messages-include="views/inscription-errors.html"></div>
+  				<label for="accordNomPrenom">Je, soussigné</label><input type="text" class="form-control" id="accordNomPrenom" name="accordNomPrenom" placeholder="Nom et prénom" size="50" ng-model="principal.accordNomPrenom" required /><div ng-messages="formDossier.accordNomPrenom.$error" ng-messages-include="views/inscription-errors.html"></div>
   				 reconnais avoir pris connaissance de la notice d’assurance FS ASPTT:
 	  			<ul>
 	  				<li>de la notice d'assurance m'informant du résumé des garanties incluses dans le contrat d'assurance et adhérer au contrat national proposé par la FSASPTT (notice aussi disponible sur le site <a href="http://asptt.com/la-federation/licence-federation-sportive-asptt/" target="_blank">www.asptt.com, rubrique "Licence"</a>)</li>
@@ -441,33 +442,33 @@
   			<div class="form-group">
   				<label for="accidentNom1" class="col-md-1 control-label">Nom</label>
   				<div class="col-md-3">
-  					<input type="text" class="form-control" id="accidentNom1" placeholder="Nom" size="50" ng-model="principal.dossier.accidentNom1" />
+  					<input type="text" class="form-control" id="accidentNom1" placeholder="Nom" size="50" ng-model="principal.accidentNom1" />
   				</div>
   				<label for="accidentPrenom1" class="col-md-1 control-label">Prénom</label>
   				<div class="col-md-3">
-  					<input type="text" class="form-control" id="accidentPrenom1" placeholder="Prénom" size="50" ng-model="principal.dossier.accidentPrenom1" />
+  					<input type="text" class="form-control" id="accidentPrenom1" placeholder="Prénom" size="50" ng-model="principal.accidentPrenom1" />
   				</div>
   				<label for="accidentTelephone1" class="col-md-1 control-label">Téléphone</label>
   				<div class="col-md-3">
-  					<input type="text" class="form-control" id="accidentTelephone1" placeholder="Téléphone" ng-model="principal.dossier.accidentTelephone1" />
+  					<input type="text" class="form-control" id="accidentTelephone1" placeholder="Téléphone" ng-model="principal.accidentTelephone1" />
   				</div>
   			</div>
   			<div class="form-group">
   				<label for="accidentNom2" class="col-md-1 control-label">Nom</label>
   				<div class="col-md-3">
-  					<input type="text" class="form-control" id="accidentNom2" placeholder="Nom" size="50" ng-model="principal.dossier.accidentNom2" />
+  					<input type="text" class="form-control" id="accidentNom2" placeholder="Nom" size="50" ng-model="principal.accidentNom2" />
   				</div>
   				<label for="accidentPrenom2" class="col-md-1 control-label">Prénom</label>
   				<div class="col-md-3">
-  					<input type="text" class="form-control" id="accidentPrenom2" placeholder="Prénom" size="50" ng-model="principal.dossier.accidentPrenom2" />
+  					<input type="text" class="form-control" id="accidentPrenom2" placeholder="Prénom" size="50" ng-model="principal.accidentPrenom2" />
   				</div>
   				<label for="accidentTelephone2" class="col-md-1 control-label">Téléphone</label>
   				<div class="col-md-3">
-  					<input type="text" class="form-control" id="accidentTelephone2" placeholder="Téléphone" ng-model="principal.dossier.accidentTelephone2" />
+  					<input type="text" class="form-control" id="accidentTelephone2" placeholder="Téléphone" ng-model="principal.accidentTelephone2" />
   				</div>
   			</div>
   		</fieldset>
-  		<button type="submit" class="btn btn-default btn-lg btn-block" ng-disabled="!formDossier.$valid">Valider et passer à l'étape suivante</button>
+  		<button type="submit" class="btn btn-default btn-lg btn-block" ng-disabled="isNotDossierValid()">Valider et passer à l'étape suivante</button>
 	  		</form>
           </div>
           
@@ -480,11 +481,15 @@
           	
           	<form role="form" enctype="multipart/form-data" ng-submit="validateInscription()">
           	<h3>Montant de votre cotisation</h3>
-          	         	La montant de votre cotisation est de {{price}} euros: {{priceDetail}}
+          	         	La montant de votre cotisation est de {{price}} euros:<br />
+          	         	<ul>
+          	         		<li ng-repeat="dossier in dossiers">{{dossier.dossier.nom}} {{dossier.dossier.prenom}} (dossier.group.title): {{dossier.dossier.tarif}} euros</li>
+          	         	</ul>
           	         	<div class="checkbox">
 	          		<label>
-	          			<input type="checkbox" name="facture" ng-model="dossiers.principal.dossier.facture" ng-true-value="true" ng-false-value="false" />Je souhaite avoir une facture suite à mon paiement
+	          			<input type="checkbox" id="facture" ng-model="principal.facture" ng-true-value="'true'" ng-false-value="'false'" /> Je souhaite avoir une facture suite à mon paiement
 	          		</label>
+	          		
           		</div>
           		<h5>Moyens de paiement</h5>
           		<ul>
@@ -508,16 +513,14 @@
           					<h4 class="modal-title">Fin de la pré-inscription</h4>
           				</div>
           				<div class="modal-body">
-				          	<div ng-show="links">
 				          		<h4>Vos dossiers d'inscriptions à télécharger</h4>
 				          		<ol style="margin-top: 5%">
 				          			<li ng-repeat="dossier in dossiers">
-				          				<a href="v2/InscriptionAction.do?action=imprimerNew&numero={{dossier.dossier.id}}" >{{dossier.dossier.nom}} {{dossier.dossier.prenom}}</a>
+				          				<a href="resources/inscription/print/{{dossier.dossier.id}}" download>{{dossier.dossier.nom}} {{dossier.dossier.prenom}}</a>
 				          			</li>
 				          		</ol>
 				          		<h4>Finaliser l'inscription</h4>
 				          		<p>Vous devrez nous retourner votre dossier d'inscription <span style=\"color : #FF0000\">signé</span> accompagné du ou des certificats médicaux (si non founie) ainsi que le paiement par chèques sous 15 jours à l'adresse suivante:<br />ASPTT Grand Toulouse Natation<br />54 rue des Sept Troubadours<br />Bureau 215<br />31000 Toulouse.</p>
-				          	</div>
 				        </div>
 				    </div>
 				</div>

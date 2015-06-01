@@ -9,7 +9,8 @@ import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 
 @XmlRootElement
 public class InscriptionDossiersUi implements Serializable {
@@ -18,32 +19,32 @@ public class InscriptionDossiersUi implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 8218965418459608943L;
-	private List<InscriptionDossierUi> dossiers;
-	private InscriptionDossierUi principal;
+	private List<InscriptionDossierUi> nageurs;
+	private DossierEntity dossier;
 	private boolean inconnu;
 	private int price;
 	private Map<String, String> certificats;
 	
 	public InscriptionDossiersUi() {
-		dossiers = new ArrayList<InscriptionDossierUi>(5);
+		nageurs = new ArrayList<InscriptionDossierUi>(5);
 		inconnu = true;
 		price = 0;
 		
 	}
 	
 	public void addDossier(InscriptionDossierUi pAdherent) {
-		dossiers.add(pAdherent);
+		nageurs.add(pAdherent);
 	}
 	
-	public void addDossier(Collection<InscriptionEntity2> pAdherents) {
-		for(InscriptionEntity2 adherent: pAdherents) {
-			dossiers.add(new InscriptionDossierUi(adherent));
+	public void addDossier(Collection<DossierNageurEntity> pAdherents) {
+		for(DossierNageurEntity adherent: pAdherents) {
+			nageurs.add(new InscriptionDossierUi(adherent));
 		}
 	}
 	
 	public InscriptionDossierUi getDossier(Long id) {
 		boolean trouve = false;
-		Iterator<InscriptionDossierUi> it = dossiers.iterator();
+		Iterator<InscriptionDossierUi> it = nageurs.iterator();
 		InscriptionDossierUi dossier = null;
 		while(!trouve && it.hasNext()) {
 			dossier = it.next();
@@ -59,14 +60,7 @@ public class InscriptionDossiersUi implements Serializable {
 		price = price + pPrice;
 	}
 
-	public List<InscriptionDossierUi> getDossiers() {
-		return dossiers;
-	}
-
-	public void setDossiers(List<InscriptionDossierUi> pDossiers) {
-		dossiers = pDossiers;
-	}
-
+	
 	public boolean isInconnu() {
 		return inconnu;
 	}
@@ -75,12 +69,20 @@ public class InscriptionDossiersUi implements Serializable {
 		inconnu = pInconnu;
 	}
 
-	public InscriptionDossierUi getPrincipal() {
-		return principal;
+	public List<InscriptionDossierUi> getNageurs() {
+		return nageurs;
 	}
 
-	public void setPrincipal(InscriptionDossierUi pPrincipal) {
-		principal = pPrincipal;
+	public void setNageurs(List<InscriptionDossierUi> nageurs) {
+		this.nageurs = nageurs;
+	}
+
+	public DossierEntity getDossier() {
+		return dossier;
+	}
+
+	public void setDossier(DossierEntity dossier) {
+		this.dossier = dossier;
 	}
 
 	public int getPrice() {

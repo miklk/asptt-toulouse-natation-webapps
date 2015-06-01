@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 
 @XmlRootElement
@@ -14,28 +14,29 @@ public class InscriptionDossierUi implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 8218965418459608943L;
-	private InscriptionEntity2 dossier;
+	private DossierNageurEntity dossier;
 	private boolean choix;
 	private GroupUi groupe;
 	private LoadingSlotsUi creneaux;
 	private boolean creneauSelected;
 	private boolean supprimer;
+	private String naissanceAsString;
 	
 	
 	public InscriptionDossierUi() {
 		choix = false;
 	}
 	
-	public InscriptionDossierUi(InscriptionEntity2 pAdherent) {
+	public InscriptionDossierUi(DossierNageurEntity pAdherent) {
 		dossier = pAdherent;
 	}
 
-	public InscriptionEntity2 getDossier() {
+	public DossierNageurEntity getDossier() {
 		return dossier;
 	}
 
-	public void setDossier(InscriptionEntity2 pDossier) {
-		dossier = pDossier;
+	public void setDossier(DossierNageurEntity dossier) {
+		this.dossier = dossier;
 	}
 
 	public boolean isChoix() {
@@ -77,6 +78,14 @@ public class InscriptionDossierUi implements Serializable {
 
 	public void setSupprimer(boolean pSupprimer) {
 		supprimer = pSupprimer;
+	}
+
+	public String getNaissanceAsString() {
+		return naissanceAsString;
+	}
+
+	public void setNaissanceAsString(String naissanceAsString) {
+		this.naissanceAsString = naissanceAsString;
 	}
 	
 }
