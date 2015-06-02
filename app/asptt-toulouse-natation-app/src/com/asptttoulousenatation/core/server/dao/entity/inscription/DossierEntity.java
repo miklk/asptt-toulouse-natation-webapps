@@ -76,9 +76,12 @@ public class DossierEntity implements IEntity {
 	private String parent2Csp;
 	private String parent2Profession;
 	private Boolean expire;
+	private Boolean reminder;
+	private Date reminded;
 	
 	public DossierEntity() {
 		expire = false;
+		reminder = false;
 	}
 	
 	public Long getId() {
@@ -305,6 +308,22 @@ public class DossierEntity implements IEntity {
 
 	public void setExpire(Boolean expire) {
 		this.expire = expire;
+	}
+
+	public Boolean getReminder() {
+		return reminder;
+	}
+
+	public void setReminder(Boolean reminder) {
+		this.reminder = reminder;
+	}
+
+	public Date getReminded() {
+		return reminded;
+	}
+
+	public void setReminded(Date reminded) {
+		this.reminded = reminded;
 	}
 
 	@PreUpdate

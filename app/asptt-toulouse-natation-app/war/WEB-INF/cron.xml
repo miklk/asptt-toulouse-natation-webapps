@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
 	<cron>
-	<url>/resources/inscription/expire</url>
-	<description>Expiration des dossiers</description>
-	<schedule>every day 04:00</schedule>
+		<url>/resources/inscription/expire</url>
+		<description>Expiration des dossiers</description>
+		<schedule>every day 04:00</schedule>
+	</cron>
+	<cron>
+		<url>/resources/inscription/rappel</url>
+		<description>Rappel de paiement au bout de 7 jours</description>
+		<schedule>every day 04:30</schedule>
 	</cron>
 </cronentries>

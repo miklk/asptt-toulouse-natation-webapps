@@ -26,7 +26,6 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -318,14 +317,17 @@ public class InscriptionService {
 					message.append("<dd>").append(creneau).append("</dd>");
 				}
 				
-				ByteArrayOutputStream fileOutputStream = new ByteArrayOutputStream();
-				getDossierAsPdf(nageur, dossier, fileOutputStream);
-				
-				MimeBodyPart attachment = new MimeBodyPart();
-				attachment.setFileName("asptt_dossier_" + nageur.getPrenom() + ".pdf");
-				attachment.setContent(
-						new ByteArrayInputStream(fileOutputStream.toByteArray()), "application/pdf");
-				mp.addBodyPart(attachment);
+				try {
+					ByteArrayOutputStream fileOutputStream = new ByteArrayOutputStream();
+					getDossierAsPdf(nageur, dossier, fileOutputStream);
+					MimeBodyPart attachment = new MimeBodyPart();
+					attachment.setFileName("asptt_dossier_" + nageur.getPrenom() + ".pdf");
+					attachment.setContent(
+							new ByteArrayInputStream(fileOutputStream.toByteArray()), "application/pdf");
+					mp.addBodyPart(attachment);
+				} catch (DocumentException | IOException e) {
+					LOG.log(Level.SEVERE, "Erreur lors de la génération du fichier PDF pour l'e-mail: " + dossier.getEmail(), e);
+				}
 			}
 			message.append("</dl>");
 			
@@ -340,16 +342,8 @@ public class InscriptionService {
 					"UTF-8");
 			msg.setContent(mp);
 			Transport.send(msg);
-		} catch (AddressException e) {
-			// ...
-		} catch (MessagingException e) {
-			// ...
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			LOG.severe("Erreur pour l'e-mail: " + dossier.getEmail() + "("
-					+ e.getMessage() + ")");
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			LOG.log(Level.SEVERE, "Erreur pour l'e-mail: " + dossier.getEmail(), e);
 		}
 	}
 	
@@ -524,6 +518,60 @@ public class InscriptionService {
 		reader.close();
 	}
 	
+	@Path("/rappel")
+	@GET
+	public void rappel() {
+		Date seuilInscription = DateTime.now().minusDays(7).toDate();
+		List<DossierEntity> entities = dao.getAll();
+		int count = 0;
+		for(DossierEntity dossier: entities) {
+			if(dossier.getUpdated().before(seuilInscription)) {
+				count++;
+				Properties props = new Properties();
+				Session session = Session.getDefaultInstance(props, null);
+				try {
+					Multipart mp = new MimeMultipart();
+					MimeBodyPart htmlPart = new MimeBodyPart();
+
+					MimeMessage msg = new MimeMessage(session);
+					msg.setFrom(new InternetAddress(
+							"webmaster@asptt-toulouse-natation.com",
+							"ASPTT Toulouse Natation"));
+					Address[] replyTo = {new InternetAddress(
+							"contact@asptt-toulouse-natation.com",
+							"ASPTT Toulouse Natation")};
+					msg.setReplyTo(replyTo);
+					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+							dossier.getEmail()));
+					msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
+							"contact@asptt-toulouse-natation.com"));
+					if(StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
+					msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
+							dossier.getEmailsecondaire()));
+					}
+
+					StringBuilder message = new StringBuilder(
+							"Madame, Monsieur,<p>Vous avez effectué une demande d'inscription au club il y a 7 jours. Nous n'avons pas encore reçu votre paiement.<br /> Nous tenons à vous rappeler qu'au bout de 15 jours, votre dossier sera supprimé et les créneaux sélectionnés libérés pour d'autres adhérents.<br />");
+
+					message.append("<p>Sportivement,<br />"
+							+ "Le secrétariat,<br />"
+							+ "ASPTT Grand Toulouse Natation<br />"
+							+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
+					htmlPart.setContent(message.toString(), "text/html");
+					mp.addBodyPart(htmlPart);
+
+					msg.setSubject("ASPTT Toulouse Natation - Rappel",
+							"UTF-8");
+					msg.setContent(mp);
+					Transport.send(msg);
+				} catch (MessagingException | UnsupportedEncodingException e) {
+					LOG.log(Level.SEVERE,"Erreur pour l'e-mail: " + dossier.getEmail(), e);
+				}
+			}
+		}
+		LOG.log(Level.WARNING, count + " dossiers rappelés");
+	}
+	
 	@Path("/expire")
 	@GET
 	public void expire() {
@@ -534,6 +582,15 @@ public class InscriptionService {
 			if(dossier.getUpdated().before(seuilInscription)) {
 				dossier.setExpire(true);
 				count++;
+				List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+						1);
+				criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
+						dossier.getId(), Operator.EQUAL));
+				List<DossierNageurEntity> nageurs = dossierNageurDao.find(criteria);
+				for(DossierNageurEntity nageur: nageurs) {
+					nageur.setCreneaux(StringUtils.EMPTY);
+					dossierNageurDao.save(nageur);
+				}
 			}
 		}
 		LOG.log(Level.WARNING, count + " dossiers expirés");
