@@ -8,16 +8,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Request;
-import javax.ws.rs.core.UriInfo;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import com.asptttoulousenatation.core.server.dao.club.group.PiscineDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
+import com.asptttoulousenatation.core.server.dao.entity.club.group.PiscineEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
+import com.asptttoulousenatation.core.server.dao.entity.field.PiscineEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
@@ -31,12 +36,9 @@ public class CreneauService {
 	private static final Logger LOG = Logger.getLogger(CreneauService.class
 			.getName());
 
-	@Context
-	private UriInfo uriInfo;
-	@Context
-	private Request request;
-
 	private SlotDao dao = new SlotDao();
+	private PiscineDao piscineDao = new PiscineDao();
+	private SlotTransformer transformer = new SlotTransformer();
 	
 	private static Map<String, Integer> JOURS;
 	
@@ -73,5 +75,46 @@ public class CreneauService {
 		CreneauxBean result = new CreneauxBean();
 		result.setCreneaux(lUis);
 		return result;
+	}
+	
+	@Path("/create/{groupe}")
+	@POST
+	public SlotUi create(@PathParam("groupe") Long groupe, SlotUi creneau) {
+		final SlotEntity entity;
+		if(creneau.getId() == null) {
+			entity = new SlotEntity();
+		} else {
+			entity = dao.get(creneau.getId());
+		}
+		entity.setDayOfWeek(creneau.getDayOfWeek());
+		entity.setGroup(groupe);
+		
+		if(StringUtils.isNotBlank(creneau.getSwimmingPool())) {
+			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteria.add(new CriterionDao<String>(PiscineEntityFields.INTITULE, creneau.getSwimmingPool(),
+					Operator.EQUAL));
+			List<PiscineEntity> lEntities = piscineDao.find(criteria);
+			if(CollectionUtils.isEmpty(lEntities)) {
+				PiscineEntity piscine = new PiscineEntity();
+				piscine.setIntitule(creneau.getSwimmingPool());
+				piscineDao.save(piscine);
+			}
+			entity.setSwimmingPool(creneau.getSwimmingPool());
+		}
+		
+		
+		entity.setSecond(creneau.isSecond());
+		entity.setPlaceDisponible(creneau.getPlaceDisponible());
+		entity.setBeginDt(creneau.getBeginDt());
+		entity.setEndDt(creneau.getEndDt());
+		SlotEntity entityUpdated = dao.save(entity);
+		return transformer.toUi(entityUpdated);
+	}
+	
+	@Path("{creneau}")
+	@DELETE
+	public void delete(@PathParam("creneau") Long creneauId) {
+		dao.delete(creneauId);
 	}
 }

@@ -1,10 +1,14 @@
 package com.asptttoulousenatation.core.server.dao.entity.club.group;
 
+import java.util.Date;
+
 import javax.jdo.annotations.Persistent;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.asptttoulousenatation.core.server.dao.entity.IEntity;
 
@@ -28,6 +32,12 @@ public class SlotEntity implements IEntity {
 	
 	@Persistent
 	private int end;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date beginDt;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date endDt;
 	
 	@Persistent
 	private Long group;
@@ -147,4 +157,21 @@ public class SlotEntity implements IEntity {
 	public void setSecond(Boolean pSecond) {
 		second = pSecond;
 	}
+
+	public Date getBeginDt() {
+		return beginDt;
+	}
+
+	public void setBeginDt(Date beginDt) {
+		this.beginDt = beginDt;
+	}
+
+	public Date getEndDt() {
+		return endDt;
+	}
+
+	public void setEndDt(Date endDt) {
+		this.endDt = endDt;
+	}
+	
 }

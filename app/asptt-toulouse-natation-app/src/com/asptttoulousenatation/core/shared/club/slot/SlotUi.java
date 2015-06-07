@@ -1,5 +1,7 @@
 package com.asptttoulousenatation.core.shared.club.slot;
 
+import java.util.Date;
+
 import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -11,6 +13,9 @@ public class SlotUi implements IsSerializable {
 	private String beginStr;
 	private int end;
 	private String endStr;
+	
+	private Date beginDt;
+	private Date endDt;
 	private GroupUi group;
 	private String swimmingPool;
 	private String educateur;
@@ -152,6 +157,22 @@ public class SlotUi implements IsSerializable {
 
 	public void setComplet(boolean pComplet) {
 		complet = pComplet;
+	}
+
+	public Date getBeginDt() {
+		return beginDt;
+	}
+
+	public void setBeginDt(Date beginDt) {
+		this.beginDt = beginDt;
+	}
+
+	public Date getEndDt() {
+		return endDt;
+	}
+
+	public void setEndDt(Date endDt) {
+		this.endDt = endDt;
 	}
 	
 }

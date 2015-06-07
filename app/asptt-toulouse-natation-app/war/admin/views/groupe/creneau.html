@@ -1,0 +1,70 @@
+<div class="modal fade" id="creneau-popup">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+        <h4 class="modal-title">{{creneauPopupTitle}}</h4>
+      </div>
+      <div class="modal-body">
+		<form name="creneauForm" class="form-horizontal">
+			<div class="form-group">
+				<label for="jour" class="col-md-2 control-label">Jour</label>
+				<div class="col-md-10">
+					<select class="form-control" id="jour" ng-model="creneau.dayOfWeek">
+						<option value="Lundi">Lundi</option>
+						<option value="Mardi">Mardi</option>
+						<option value="Mercredi">Mercredi</option>
+						<option value="Jeudi">Jeudi</option>
+						<option value="Vendredi">Vendredi</option>
+						<option value="Samedi">Samedi</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="beginDt" class="col-md-2 control-label">Horaire</label>
+				<div class="col-md-4">
+					<input type="time" class="form-control" id="beginDt" ng-model="creneau.beginDt" />
+				</div>
+				<div class="col-md-4">
+					<input type="time" class="form-control" id="endDt" ng-model="creneau.endDt" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="swimmingPool" class="col-md-2 control-label">Piscine</label>
+				<div class="col-md-10">
+					<input type="text" list="piscineDataList" class="form-control" id="swimmingPool" ng-model="creneau.swimmingPool" />
+					<datalist id="piscineDataList">
+						<select ng-model="creneau.swimmingPool" ng-options="piscine.intitule for piscine in piscines track by piscine.intitule"></select>
+					</datalist>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="educateur" class="col-md-2 control-label">Educateur</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" id="educateur" ng-model="creneau.educateur" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="placeDisponible" class="col-md-2 control-label">Capacité</label>
+				<div class="col-md-10">
+					<input type="number" class="form-control" id="placeDisponible" ng-model="creneau.placeDisponible" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" ng-model="creneau.second"> Second
+						</label>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-primary" ng-click="createCreate()">Valider</button>
+		<button type="button" class="btn btn-default" ng-click="removeCreneau()" title="Supprimer le créneau"><span class="glyphicon glyphicon-trash" title="Supprimer"></span></button>
+	</div>
+   </div>
+  </div>
+</div>

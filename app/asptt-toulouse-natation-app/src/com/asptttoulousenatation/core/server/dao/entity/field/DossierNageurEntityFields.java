@@ -4,6 +4,7 @@ package com.asptttoulousenatation.core.server.dao.entity.field;
 
 public enum DossierNageurEntityFields implements IEntityFields {
 	DOSSIER(Long.class),
+	GROUPE(Long.class),
 	;
 	
 	private Class<? extends Object> clazz;

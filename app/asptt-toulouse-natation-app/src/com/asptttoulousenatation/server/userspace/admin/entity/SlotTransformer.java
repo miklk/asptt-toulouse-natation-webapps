@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
@@ -33,6 +34,8 @@ public class SlotTransformer extends
 		lUi.setDayOfWeek(pEntity.getDayOfWeek());
 		lUi.setBegin(pEntity.getBegin());
 		lUi.setEnd(pEntity.getEnd());
+		lUi.setBeginDt(pEntity.getBeginDt());
+		lUi.setEndDt(pEntity.getEndDt());
 		lUi.setSwimmingPool(pEntity.getSwimmingPool());
 		lUi.setEducateur(pEntity.getEducateur());
 		lUi.setSecond(BooleanUtils.toBoolean(pEntity.getSecond()));
@@ -48,6 +51,13 @@ public class SlotTransformer extends
 			lUi.setPlaceRestante(pEntity.getPlaceRestante());
 		}
 		lUi.setComplet(lUi.getPlaceRestante() <= 0);
+		
+		if(pEntity.getBeginDt() == null) {
+			lUi.setBeginDt(DateTime.now().withHourOfDay(begin[0]).withMinuteOfHour(begin[1]).toDate());
+		}
+		if(pEntity.getEndDt() == null) {
+			lUi.setEndDt(DateTime.now().withHourOfDay(end[0]).withMinuteOfHour(end[1]).toDate());
+		}
 		return lUi;
 	}
 	
@@ -69,6 +79,8 @@ public class SlotTransformer extends
 		lUi.setDayOfWeek(pEntity.getDayOfWeek());
 		lUi.setBegin(pEntity.getBegin());
 		lUi.setEnd(pEntity.getEnd());
+		lUi.setBeginDt(pEntity.getBeginDt());
+		lUi.setEndDt(pEntity.getEndDt());
 		lUi.setSwimmingPool(pEntity.getSwimmingPool());
 		lUi.setEducateur(pEntity.getEducateur());
 		lUi.setSecond(BooleanUtils.toBoolean(pEntity.getSecond()));
@@ -85,6 +97,13 @@ public class SlotTransformer extends
 		}
 		lUi.setSelected(selectedCreneaux.contains(pEntity.getId().toString()));
 		lUi.setComplet(lUi.getPlaceRestante() <= 0);
+		
+		if(pEntity.getBeginDt() == null) {
+			lUi.setBeginDt(DateTime.now().withHourOfDay(begin[0]).withMinuteOfHour(begin[1]).toDate());
+		}
+		if(pEntity.getEndDt() == null) {
+			lUi.setEndDt(DateTime.now().withHourOfDay(end[0]).withMinuteOfHour(end[1]).toDate());
+		}
 		return lUi;
 	}
 	

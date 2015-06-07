@@ -1,0 +1,51 @@
+<div style="margin-bottom: 1%">
+	<button type="button" class="btn btn-default btn-block" ng-click="prepareCreneau()">Ajouter un créneau</button>
+</div>
+<table class="table">
+	 <thead>
+	 	<tr>
+	 		<th>Piscines</th>
+	 		<th>Lundi</th>
+	 		<th>Mardi</th>
+	 		<th>Mercredi</th>
+	 		<th>Jeudi</th>
+	 		<th>Vendredi</th>
+	 		<th>Samedi</th>
+	 	</tr>
+	 </thead>
+	 <tbody>
+	 	<tr ng-repeat="creneau in creneaux">
+	 		<td>{{creneau.piscine}}</td>
+	 		<td>
+	 			<div ng-repeat="lundi in creneau.lundi">
+	 				<span ng-click="selectCreneau($index, lundi, 'lundi')">{{lundi.beginDt | date: 'HH:mm' : '+0200'}}-{{lundi.endDt | date: 'HH:mm' : '+0200'}} <span ng-show="lundi.second">(2)</span></span>
+	 			</div>
+			</td>
+	 		<td>
+	 			<div ng-repeat="mardi in creneau.mardi">
+	 				<span ng-click="selectCreneau($index, mardi, 'mardi')">{{mardi.beginDt | date: 'HH:mm' : '+0200'}}-{{mardi.endDt | date: 'HH:mm' : '+0200'}} <span ng-show="mardi.second">(2)</span></span>
+	 			</div>
+			</td>
+	 		<td>
+	 			<div ng-repeat="mercredi in creneau.mercredi">
+			    	<span ng-click="selectCreneau($index, mercredi, 'mercredi')">{{mercredi.beginDt | date: 'HH:mm' : '+0200'}}-{{mercredi.endDt | date: 'HH:mm' : '+0200'}} <span ng-show="mercredi.second">(2)</span></span>
+			    </div>
+	 		</td>
+	 		<td>
+	 			<div ng-repeat="jeudi in creneau.jeudi">
+			    	<span ng-click="selectCreneau($index, jeudi, 'jeudi')">{{jeudi.beginDt | date: 'HH:mm' : '+0200'}}-{{jeudi.endDt | date: 'HH:mm' : '+0200'}} <span ng-show="jeudi.second">(2)</span></span>
+			    </div>
+	 		</td>	
+	 		<td>
+	 			<div ng-repeat="vendredi in creneau.vendredi">
+			    	<span ng-click="selectCreneau($index, vendredi, 'vendredi')">{{vendredi.beginDt | date: 'HH:mm' : '+0200'}}-{{vendredi.endDt | date: 'HH:mm' : '+0200'}} <span ng-show="vendredi.second">(2)</span></span>
+			    </div>
+	 		</td>
+	 		<td>
+	 			<div ng-repeat="samedi in creneau.samedi">
+			    	<span ng-click="selectCreneau($index, samedi, 'samedi')">{{samedi.beginDt | date: 'HH:mm' : '+0200'}}-{{samedi.endDt | date: 'HH:mm' : '+0200'}} <span ng-show="samedi.second">(2)</span></span>
+			    </div>
+	 		</td>
+	 	</tr>
+	</tbody>
+</table>

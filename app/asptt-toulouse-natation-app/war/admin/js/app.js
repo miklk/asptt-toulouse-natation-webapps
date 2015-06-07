@@ -1,7 +1,7 @@
 /**
  * 
  */
-var adminApp = angular.module('adminApp', ['ngRoute', 'angular-spinkit', 'adherentsServices','adherentsStatServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'UserController', 'AdherentListCtrl', 'AdherentEmailCtrl', 'AdherentsStatCtrl', 'DocumentController', 'LibelleController', 'SuiviNageurController']);
+var adminApp = angular.module('adminApp', ['ngRoute', 'angular-spinkit', 'adherentsServices','adherentsStatServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'UserController', 'AdherentListCtrl', 'AdherentEmailCtrl', 'AdherentsStatCtrl', 'DocumentController', 'LibelleController', 'SuiviNageurController', 'GroupeController']);
 
 adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
 	$routeProvider.
@@ -60,6 +60,9 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 		}).
 		when('/suivi-nageur-year', {
 			templateUrl: 'views/suivi/suivi-nageur-year.html'
+		}).
+		when('/groupes', {
+			templateUrl: 'views/groupe/groupes.html'
 		}).
 		when('/error', {
 			templateUrl: 'views/error.html'

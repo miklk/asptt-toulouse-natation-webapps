@@ -11,6 +11,7 @@
         <class>com.asptttoulousenatation.core.server.dao.entity.structure.AreaEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.structure.ContentEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.structure.MenuEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.club.group.PiscineEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionDayEntity</class>
