@@ -9,8 +9,6 @@ public enum MenuItems {
 	NEWS_PUBLICATION(false),
 	NEWS_EDITION,
 	STRUCTURE,
-	CLUB_GROUP_EDITION,
-	CLUB_SLOT_EDITION,
 	ADMIN,
 	PUBLIC,
 	VIDE("Pas de valeur"),

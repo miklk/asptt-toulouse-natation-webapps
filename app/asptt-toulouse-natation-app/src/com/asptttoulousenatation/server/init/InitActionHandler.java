@@ -313,13 +313,6 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 		lAreaEntity = new AreaEntity(null, "Organisation du club",
 				ProfileEnum.ADMIN, false, (short) 3);
 		AreaEntity lAreaClub = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.CLUB_GROUP_EDITION.toString(), "Groupes",
-				lAreaClub.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
-				false, 1, false, false);
-		createMenu(MenuItems.CLUB_SLOT_EDITION.toString(), "Créneaux",
-				lAreaClub.getId(), StringUtils.EMPTY, StringUtils.EMPTY, true,
-				false, 2, false, false);
-
 		// Officiels
 		lAreaEntity = new AreaEntity(null, "Officier", ProfileEnum.OFFICIEL,
 				false, (short) 6);

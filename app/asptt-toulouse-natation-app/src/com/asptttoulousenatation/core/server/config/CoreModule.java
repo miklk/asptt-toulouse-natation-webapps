@@ -3,15 +3,6 @@ package com.asptttoulousenatation.core.server.config;
 
 import net.customware.gwt.dispatch.server.guice.ActionHandlerModule;
 
-import com.asptttoulousenatation.core.server.club.group.CreateGroupActionHandler;
-import com.asptttoulousenatation.core.server.club.group.DeleteGroupActionHandler;
-import com.asptttoulousenatation.core.server.club.group.GetAllGroupActionHandler;
-import com.asptttoulousenatation.core.server.club.group.GetGroupSlotActionHandler;
-import com.asptttoulousenatation.core.server.club.group.UpdateGroupActionHandler;
-import com.asptttoulousenatation.core.server.club.slot.CreateSlotActionHandler;
-import com.asptttoulousenatation.core.server.club.slot.DeleteSlotActionHandler;
-import com.asptttoulousenatation.core.server.club.slot.GetAllSlotActionHandler;
-import com.asptttoulousenatation.core.server.club.slot.UpdateSlotActionHandler;
 import com.asptttoulousenatation.core.server.document.DeleteDocumentActionHandler;
 import com.asptttoulousenatation.core.server.document.GetDocumentActionHandler;
 import com.asptttoulousenatation.core.server.document.UpdateDocumentActionHandler;
@@ -32,15 +23,6 @@ import com.asptttoulousenatation.core.server.user.LogoutActionHandler;
 import com.asptttoulousenatation.core.server.user.PasswordForgetActionHandler;
 import com.asptttoulousenatation.core.shared.actu.DeleteActuAction;
 import com.asptttoulousenatation.core.shared.actu.GetAllActuAction;
-import com.asptttoulousenatation.core.shared.club.group.CreateGroupAction;
-import com.asptttoulousenatation.core.shared.club.group.DeleteGroupAction;
-import com.asptttoulousenatation.core.shared.club.group.GetAllGroupAction;
-import com.asptttoulousenatation.core.shared.club.group.GetGroupSlotAction;
-import com.asptttoulousenatation.core.shared.club.group.UpdateGroupAction;
-import com.asptttoulousenatation.core.shared.club.slot.CreateSlotAction;
-import com.asptttoulousenatation.core.shared.club.slot.DeleteSlotAction;
-import com.asptttoulousenatation.core.shared.club.slot.GetAllSlotAction;
-import com.asptttoulousenatation.core.shared.club.slot.UpdateSlotAction;
 import com.asptttoulousenatation.core.shared.document.DeleteDocumentAction;
 import com.asptttoulousenatation.core.shared.document.GetDocumentAction;
 import com.asptttoulousenatation.core.shared.document.UpdateDocumentAction;
@@ -103,19 +85,7 @@ public class CoreModule extends ActionHandlerModule {
 		bindHandler(InitAction.class, InitActionHandler.class);
 		bindHandler(InitUserSpaceAction.class, InitUserSpaceActionHandler.class);
 		
-		//Group
-		bindHandler(GetAllGroupAction.class, GetAllGroupActionHandler.class);
-		bindHandler(CreateGroupAction.class, CreateGroupActionHandler.class);
-		bindHandler(UpdateGroupAction.class, UpdateGroupActionHandler.class);
-		bindHandler(DeleteGroupAction.class, DeleteGroupActionHandler.class);
 		
-		//Slot
-		bindHandler(GetAllSlotAction.class, GetAllSlotActionHandler.class);
-		bindHandler(CreateSlotAction.class, CreateSlotActionHandler.class);
-		bindHandler(UpdateSlotAction.class, UpdateSlotActionHandler.class);
-		bindHandler(DeleteSlotAction.class, DeleteSlotActionHandler.class);
-		
-		bindHandler(GetGroupSlotAction.class, GetGroupSlotActionHandler.class);
 		
 		bindHandler(LoadContentAction.class, LoadContentActionHandler.class);
 		

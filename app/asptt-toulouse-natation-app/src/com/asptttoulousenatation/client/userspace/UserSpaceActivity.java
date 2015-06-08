@@ -4,10 +4,6 @@ import com.asptttoulousenatation.client.config.ClientFactory;
 import com.asptttoulousenatation.client.config.MyAbstractActivity;
 import com.asptttoulousenatation.client.userspace.admin.actu.ActuActivity;
 import com.asptttoulousenatation.client.userspace.admin.actu.ActuPlace;
-import com.asptttoulousenatation.client.userspace.admin.club.group.GroupActivity;
-import com.asptttoulousenatation.client.userspace.admin.club.group.GroupPlace;
-import com.asptttoulousenatation.client.userspace.admin.club.slot.SlotActivity;
-import com.asptttoulousenatation.client.userspace.admin.club.slot.SlotPlace;
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent;
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEventHandler;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaActivity;
@@ -110,22 +106,6 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 													clientFactory);
 											lAreaActivity.setArea(lArea);
 											lAreaActivity.start(lAdminView
-													.getContentPanel(),
-													lEventBus);
-											break;
-										case CLUB_GROUP_EDITION:
-											GroupActivity lGroupActivity = new GroupActivity(
-													new GroupPlace(),
-													clientFactory);
-											lGroupActivity.start(lAdminView
-													.getContentPanel(),
-													lEventBus);
-											break;
-										case CLUB_SLOT_EDITION:
-											SlotActivity lSlotActivity = new SlotActivity(
-													new SlotPlace(),
-													clientFactory);
-											lSlotActivity.start(lAdminView
 													.getContentPanel(),
 													lEventBus);
 											break;

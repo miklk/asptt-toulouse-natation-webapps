@@ -10,10 +10,6 @@ import com.asptttoulousenatation.client.userspace.admin.actu.ActuEditionView;
 import com.asptttoulousenatation.client.userspace.admin.actu.ActuEditionViewImpl;
 import com.asptttoulousenatation.client.userspace.admin.actu.ActuView;
 import com.asptttoulousenatation.client.userspace.admin.actu.ActuViewImpl;
-import com.asptttoulousenatation.client.userspace.admin.club.group.GroupView;
-import com.asptttoulousenatation.client.userspace.admin.club.group.GroupViewImpl;
-import com.asptttoulousenatation.client.userspace.admin.club.slot.SlotView;
-import com.asptttoulousenatation.client.userspace.admin.club.slot.SlotViewImpl;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaView;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaViewImpl;
 import com.asptttoulousenatation.client.userspace.home.HomeView;
@@ -21,8 +17,6 @@ import com.asptttoulousenatation.client.userspace.home.HomeViewImpl;
 import com.asptttoulousenatation.client.userspace.menu.MenuView;
 import com.asptttoulousenatation.client.userspace.menu.MenuViewImpl;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
-import com.asptttoulousenatation.core.shared.club.group.GroupUi;
-import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitResult;
@@ -81,13 +75,5 @@ public class ClientFactoryImpl implements ClientFactory {
 	public ActuEditionView getActuEditionView(List<ActuUi> pData) {
 		actuEditionView = new ActuEditionViewImpl(pData);
 		return actuEditionView;
-	}
-
-	public GroupView getGroupView(List<GroupUi> pGroups) {
-		return new GroupViewImpl(pGroups);
-	}
-
-	public SlotView getSlotView(List<SlotUi> pSlots, List<GroupUi> pGroups) {
-		return new SlotViewImpl(pSlots, pGroups);
 	}
 }
