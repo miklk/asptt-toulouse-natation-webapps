@@ -1,8 +1,7 @@
-package com.asptttoulousenatation.core.shared.club.slot;
+package com.asptttoulousenatation.core.groupe;
 
 import java.util.Date;
 
-import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class SlotUi implements IsSerializable {

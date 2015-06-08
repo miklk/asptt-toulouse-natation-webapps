@@ -47,6 +47,7 @@ import org.apache.commons.lang3.text.StrBuilder;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 
+import com.asptttoulousenatation.core.groupe.SlotUi;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
@@ -57,7 +58,6 @@ import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionE
 import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
-import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 
 @Path("/adherents")
 @Produces("application/json")

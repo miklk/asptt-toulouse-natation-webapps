@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
+import com.asptttoulousenatation.core.groupe.SlotUi;
 
 public class CreneauxBean implements Serializable {
 

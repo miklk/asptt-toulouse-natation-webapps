@@ -9,7 +9,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.adherent.AdherentBean;
-import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
+import com.asptttoulousenatation.core.groupe.SlotUi;
 import com.asptttoulousenatation.web.creneau.CoupleValue;
 
 public class FamilleBean {

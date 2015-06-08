@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.asptttoulousenatation.core.groupe.GroupUi;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
-import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 
 @XmlRootElement
 public class InscriptionDossierUi implements Serializable {

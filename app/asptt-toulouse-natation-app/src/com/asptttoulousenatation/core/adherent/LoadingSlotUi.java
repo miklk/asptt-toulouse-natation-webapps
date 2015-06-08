@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
-import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
+import com.asptttoulousenatation.core.groupe.SlotUi;
 
 public class LoadingSlotUi implements Serializable {
 

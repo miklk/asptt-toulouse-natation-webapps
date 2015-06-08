@@ -1,4 +1,4 @@
-package com.asptttoulousenatation.core.adherent;
+package com.asptttoulousenatation.core.groupe;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +18,7 @@ import javax.ws.rs.Produces;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.asptttoulousenatation.core.adherent.CreneauxBean;
 import com.asptttoulousenatation.core.server.dao.club.group.PiscineDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.PiscineEntity;
@@ -26,7 +27,6 @@ import com.asptttoulousenatation.core.server.dao.entity.field.PiscineEntityField
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
-import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
 
 @Path("/creneaux")

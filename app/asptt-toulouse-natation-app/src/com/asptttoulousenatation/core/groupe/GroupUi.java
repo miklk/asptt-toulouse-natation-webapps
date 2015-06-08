@@ -1,10 +1,9 @@
-package com.asptttoulousenatation.core.shared.club.group;
+package com.asptttoulousenatation.core.groupe;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class GroupUi implements IsSerializable {

@@ -2,8 +2,8 @@ package com.asptttoulousenatation.server.userspace.admin.entity;
 
 import org.apache.commons.lang3.BooleanUtils;
 
+import com.asptttoulousenatation.core.groupe.GroupUi;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
-import com.asptttoulousenatation.core.shared.club.group.GroupUi;
 
 public class GroupTransformer extends
 		AbstractEntityTransformer<GroupUi, GroupEntity> {

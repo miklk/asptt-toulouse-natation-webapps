@@ -4,9 +4,9 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.Set;
 
+import com.asptttoulousenatation.core.groupe.GroupUi;
+import com.asptttoulousenatation.core.groupe.SlotUi;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
-import com.asptttoulousenatation.core.shared.club.group.GroupUi;
-import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 
 public class AdherentBean implements Serializable {
 

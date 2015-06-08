@@ -3,8 +3,6 @@ package com.asptttoulousenatation.core.groupe;
 import java.io.Serializable;
 import java.util.List;
 
-import com.asptttoulousenatation.core.shared.club.group.GroupUi;
-
 public class GroupesUi implements Serializable {
 
 	/**

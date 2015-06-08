@@ -57,6 +57,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 
+import com.asptttoulousenatation.core.groupe.SlotUi;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
@@ -71,7 +72,6 @@ import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
-import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 import com.asptttoulousenatation.web.adherent.AdherentListResultBeanTransformer;
 import com.fasterxml.jackson.core.JsonParser;

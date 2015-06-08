@@ -7,10 +7,10 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
+import com.asptttoulousenatation.core.groupe.GroupUi;
+import com.asptttoulousenatation.core.groupe.SlotUi;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
-import com.asptttoulousenatation.core.shared.club.group.GroupUi;
-import com.asptttoulousenatation.core.shared.club.slot.SlotUi;
 import com.asptttoulousenatation.server.util.DateUtils;
 
 public class SlotTransformer extends
