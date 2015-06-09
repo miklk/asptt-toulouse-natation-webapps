@@ -15,7 +15,6 @@ import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
-import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
 import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
 
@@ -41,20 +40,6 @@ public class AdherentListResultBeanTransformer implements Serializable {
 	private GroupDao groupDao = new GroupDao();
 	private SlotDao slotDao = new SlotDao();
 
-	public AdherentListResultBean get(InscriptionEntity entity) {
-		AdherentListResultBean bean = new AdherentListResultBean();
-		bean.setId(entity.getId());
-		bean.setNom(entity.getNom());
-		bean.setPrenom(entity.getPrenom());
-		bean.setDateNaissance(entity.getDatenaissance());
-
-		bean.setGroupe(getGroupe(entity.getNouveauGroupe()));
-			bean.setCreneaux(getCreneaux(entity.getCreneaux()));
-		bean.setEmail(entity.getEmail());
-		bean.setMotdepasse(entity.getMotdepasse());
-		return bean;
-	}
-	
 	private Inscription2Dao inscription2Dao = new Inscription2Dao();
 	
 	public AdherentListResultBean get2(InscriptionEntity2 entity) {
@@ -92,15 +77,6 @@ public class AdherentListResultBeanTransformer implements Serializable {
 		return bean;
 	}
 
-	public List<AdherentListResultBean> get(List<InscriptionEntity> entities) {
-		List<AdherentListResultBean> results = new ArrayList<AdherentListResultBean>(
-				entities.size());
-		for (InscriptionEntity entity : entities) {
-			results.add(get(entity));
-		}
-		return results;
-	}
-	
 	public List<AdherentListResultBean> get2(List<InscriptionEntity2> entities) {
 		List<AdherentListResultBean> results = new ArrayList<AdherentListResultBean>(
 				entities.size());

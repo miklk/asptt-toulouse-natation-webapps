@@ -127,10 +127,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 
  <servlet>
-        <servlet-name>InscriptionAction</servlet-name>
-        <servlet-class>com.asptttoulousenatation.InscriptionAction</servlet-class>
- </servlet>
- <servlet>
         <servlet-name>CreneauList</servlet-name>
         <servlet-class>com.asptttoulousenatation.web.creneau.CreneauListAction</servlet-class>
  </servlet>
@@ -147,10 +143,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-name>adherentList</servlet-name>
         <servlet-class>com.asptttoulousenatation.web.adherent.AdherentListAction</servlet-class>
  </servlet>
- <servlet-mapping>
-  <servlet-name>InscriptionAction</servlet-name>
-  <url-pattern>/v2/InscriptionAction.do</url-pattern>
- </servlet-mapping>
  <servlet-mapping>
   <servlet-name>CreneauList</servlet-name>
   <url-pattern>/CreneauList.do</url-pattern>
