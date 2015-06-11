@@ -13,7 +13,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.server.dao.entity.IEntity;
-import com.google.appengine.api.datastore.Blob;
 
 @Entity
 @XmlRootElement
@@ -49,10 +48,6 @@ public class DossierNageurEntity implements IEntity {
 	
 	private String profession;
 	
-	private String mineurParent;
-	
-	private String mineur;
-	
 	private String typeLicence;
 	
 	private String creneaux;
@@ -61,22 +56,18 @@ public class DossierNageurEntity implements IEntity {
 	
 	private Long groupe;
 	
-	private Long nouveauGroupe;
-	
-	private Boolean saisie;
-	
-	private Boolean complet;
-	
 	private Boolean nouveau;
+	
+	private String statut;
 	
 	private Date created;
 	private Date updated;
 	
 	private Boolean certificat;
 	
-	private Boolean paiement;
-	
 	private Integer tarif;
+	
+	private Integer montantreel;
 	
 	private String csp;
 	
@@ -172,22 +163,6 @@ public class DossierNageurEntity implements IEntity {
 		this.profession = profession;
 	}
 
-	public String getMineurParent() {
-		return mineurParent;
-	}
-
-	public void setMineurParent(String mineurParent) {
-		this.mineurParent = mineurParent;
-	}
-
-	public String getMineur() {
-		return mineur;
-	}
-
-	public void setMineur(String mineur) {
-		this.mineur = mineur;
-	}
-
 	public String getTypeLicence() {
 		return typeLicence;
 	}
@@ -218,30 +193,6 @@ public class DossierNageurEntity implements IEntity {
 
 	public void setGroupe(Long groupe) {
 		this.groupe = groupe;
-	}
-
-	public Long getNouveauGroupe() {
-		return nouveauGroupe;
-	}
-
-	public void setNouveauGroupe(Long nouveauGroupe) {
-		this.nouveauGroupe = nouveauGroupe;
-	}
-
-	public Boolean getSaisie() {
-		return saisie;
-	}
-
-	public void setSaisie(Boolean saisie) {
-		this.saisie = saisie;
-	}
-
-	public Boolean getComplet() {
-		return complet;
-	}
-
-	public void setComplet(Boolean complet) {
-		this.complet = complet;
 	}
 
 	public Boolean getNouveau() {
@@ -276,14 +227,6 @@ public class DossierNageurEntity implements IEntity {
 		this.certificat = certificat;
 	}
 
-	public Boolean getPaiement() {
-		return paiement;
-	}
-
-	public void setPaiement(Boolean paiement) {
-		this.paiement = paiement;
-	}
-
 	public Integer getTarif() {
 		return tarif;
 	}
@@ -300,6 +243,22 @@ public class DossierNageurEntity implements IEntity {
 		this.csp = csp;
 	}
 
+	public String getStatut() {
+		return statut;
+	}
+
+	public void setStatut(String statut) {
+		this.statut = statut;
+	}
+
+	public Integer getMontantreel() {
+		return montantreel;
+	}
+
+	public void setMontantreel(Integer montantreel) {
+		this.montantreel = montantreel;
+	}
+
 	@PrePersist
 	@PreUpdate
 	public void toUpperCase() {
@@ -307,8 +266,6 @@ public class DossierNageurEntity implements IEntity {
 		nom = StringUtils.upperCase(nom);
 		prenom = StringUtils.upperCase(prenom);
 		profession = StringUtils.upperCase(profession);
-		mineur = StringUtils.upperCase(mineur);
-		mineurParent = StringUtils.upperCase(mineurParent);
 		updated = new Date();
 	}
 	

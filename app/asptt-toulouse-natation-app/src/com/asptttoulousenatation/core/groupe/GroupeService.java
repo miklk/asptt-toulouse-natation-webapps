@@ -39,7 +39,7 @@ public class GroupeService {
 			.getName());
 
 	private GroupDao dao = new GroupDao();
-	private GroupTransformer Transformer = new GroupTransformer();
+	private GroupTransformer transformer = new GroupTransformer();
 	
 	private SlotDao slotDao = new SlotDao();
 	private DossierNageurDao dossierNageurDao = new DossierNageurDao();
@@ -96,7 +96,7 @@ public class GroupeService {
 					groupe, Operator.EQUAL));
 			List<GroupEntity> entities = dao.find(criteria);
 			if (CollectionUtils.isNotEmpty(entities)) {
-				result = Transformer.toUi(entities.get(0));
+				result = transformer.toUi(entities.get(0));
 			} else {
 				result = null;
 			}
@@ -108,8 +108,8 @@ public class GroupeService {
 	
 	@Path("/create")
 	@POST
-	public GroupUi create(GroupUi action) {
-		final GroupUi result;
+	public GroupeCreateResult create(GroupUi action) {
+		final GroupeCreateResult result = new GroupeCreateResult();
 		if (StringUtils.isNotBlank(action.getTitle())) {
 			final GroupEntity entity;
 			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
@@ -119,8 +119,10 @@ public class GroupeService {
 			List<GroupEntity> entities = dao.find(criteria);
 			if (CollectionUtils.isNotEmpty(entities)) {
 				entity = entities.get(0);
+				result.setCreation(false);
 			} else {
 				entity = new GroupEntity();
+				result.setCreation(true);
 			}
 			entity.setTitle(action.getTitle());
 			entity.setDescription(action.getDescription());
@@ -129,15 +131,16 @@ public class GroupeService {
 			entity.setSeanceunique(action.isSeanceunique());
 			entity.setNouveau(action.isNouveau());
 			entity.setEnf(action.isEnf());
+			entity.setCompetition(action.isCompetition());
 			entity.setTarifWeight(action.getTarifWeight());
 			entity.setTarif(action.getTarif());
 			entity.setTarif2(action.getTarif2());
 			entity.setTarif3(action.getTarif3());
 			entity.setTarif4(action.getTarif4());
 			GroupEntity entityCreated = dao.save(entity);
-			result = Transformer.toUi(entityCreated);
+			result.setGroupe(transformer.toUi(entityCreated));
 		} else {
-			result = action;
+			result.setGroupe(action);
 		}
 		return result;
 	}

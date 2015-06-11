@@ -49,6 +49,8 @@ public class GroupEntity implements IEntity {
 	
 	private Boolean enf;
 	
+	private Boolean competition;
+	
 	public GroupEntity() {
 		
 	}
@@ -160,4 +162,13 @@ public class GroupEntity implements IEntity {
 	public void setEnf(Boolean pEnf) {
 		enf = pEnf;
 	}
+
+	public Boolean getCompetition() {
+		return competition;
+	}
+
+	public void setCompetition(Boolean competition) {
+		this.competition = competition;
+	}
+	
 }

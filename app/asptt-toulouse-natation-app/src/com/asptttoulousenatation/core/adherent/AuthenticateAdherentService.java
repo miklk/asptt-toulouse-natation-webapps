@@ -99,10 +99,10 @@ public class AuthenticateAdherentService {
 			for (InscriptionDossierUi nageur : dossiers.getNageurs()) {
 				DossierNageurEntity adherent = nageur.getDossier();
 				// Get nouveau groupe et vérifie si on peut changer
-				if (adherent.getNouveauGroupe() != null) {
+				if (adherent.getGroupe() != null) {
 					try {
 						GroupEntity group = groupDao.get(adherent
-								.getNouveauGroupe());
+								.getGroupe());
 						nageur.setChoix(group.getInscription());
 						nageur.setGroupe(groupTransformer.toUi(group));
 					} catch (Exception e) {
@@ -287,8 +287,8 @@ public class AuthenticateAdherentService {
 		for (InscriptionDossierUi dossier : dossiers.getNageurs()) {
 			DossierNageurEntity nageur = dossier.getDossier();
 			// Get nouveau groupe et vérifie si on peut changer
-			if (nageur.getNouveauGroupe() != null) {
-				GroupEntity group = groupDao.get(nageur.getNouveauGroupe());
+			if (nageur.getGroupe() != null) {
+				GroupEntity group = groupDao.get(nageur.getGroupe());
 				dossier.setChoix(group.getInscription());
 				dossier.setGroupe(groupTransformer.toUi(group));
 			} else {

@@ -22,29 +22,13 @@ public class GroupUi implements IsSerializable {
 	private boolean nouveau;
 	private String description;
 	private boolean enf;
+	private boolean competition;
 	
 	public GroupUi() {
 		super();
 		slots = new ArrayList<SlotUi>(0);
 	}
 	
-	public GroupUi(Long pId, String pTitle, boolean pLicenceFfn, boolean pInscription, int pTarif, int pTarif2, int pTarif3, int pTarif4, boolean pSeanceunique, int pTarifWeight, boolean pNouveau, String pDescription, boolean pEnf) {
-		super();
-		id = pId;
-		title = pTitle;
-		licenceFfn = pLicenceFfn;
-		inscription = pInscription;
-		tarif = pTarif;
-		tarif2 = pTarif2;
-		tarif3 = pTarif3;
-		tarif4 = pTarif4;
-		tarifWeight = pTarifWeight;
-		seanceunique = pSeanceunique;
-		nouveau = pNouveau;
-		description = pDescription;
-		enf = pEnf;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -161,4 +145,13 @@ public class GroupUi implements IsSerializable {
 	public void setEnf(boolean pEnf) {
 		enf = pEnf;
 	}
+
+	public boolean isCompetition() {
+		return competition;
+	}
+
+	public void setCompetition(boolean competition) {
+		this.competition = competition;
+	}
+	
 }

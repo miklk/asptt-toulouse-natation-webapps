@@ -24,7 +24,9 @@ groupeController.controller('GroupeController', ['$http', '$scope', '$location',
 	$scope.create = function() {
 		$http.post("/resources/groupes/create", $scope.groupe, {})
 	       .success(function(dataFromServer, status, headers, config) {
-	    	  $scope.groupes.push(dataFromServer);
+	    	   if(dataFromServer.creation) {
+	    		   $scope.groupes.push(dataFromServer.groupe);
+	    	   }
 	    	  $('#groupe-popup').modal('hide');
 	    	  
 	       })

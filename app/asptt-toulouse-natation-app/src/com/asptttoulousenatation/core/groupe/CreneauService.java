@@ -105,7 +105,12 @@ public class CreneauService {
 		
 		
 		entity.setSecond(creneau.isSecond());
+		
+		int placeRestante = entity.getPlaceRestante() == null ? 0: entity.getPlaceRestante();
+		int placeDisponible = entity.getPlaceDisponible() == null ? 0: entity.getPlaceDisponible();
+		entity.setPlaceRestante(placeRestante + (creneau.getPlaceDisponible() - placeDisponible));
 		entity.setPlaceDisponible(creneau.getPlaceDisponible());
+		
 		entity.setBeginDt(creneau.getBeginDt());
 		entity.setEndDt(creneau.getEndDt());
 		SlotEntity entityUpdated = dao.save(entity);

@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
@@ -56,6 +58,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
+import org.joda.time.format.DateTimeFormat;
 
 import com.asptttoulousenatation.core.groupe.SlotUi;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
@@ -64,12 +67,16 @@ import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierCertificatEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierCertificatEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierCertificatDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
+import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
@@ -117,6 +124,10 @@ public class InscriptionService {
 										.isSupprimer();
 							}
 						}));
+		
+		//Update dossier
+		InscriptionDossierTransfomer.getInstance().updateGroupes(dossiers);
+		
 		Collections.sort(dossiers, new Comparator<InscriptionDossierUi>() {
 
 			@Override
@@ -181,8 +192,8 @@ public class InscriptionService {
 			DossierNageurEntity nageur = dossier.getDossier();
 
 			// Get nouveau groupe et vérifie si on peut changer
-			if (nageur.getNouveauGroupe() != null) {
-				GroupEntity group = groupDao.get(nageur.getNouveauGroupe());
+			if (nageur.getGroupe() != null) {
+				GroupEntity group = groupDao.get(nageur.getGroupe());
 				dossier.setChoix(group.getInscription());
 				dossier.setGroupe(groupTransformer.toUi(group));
 			} else {
@@ -215,11 +226,8 @@ public class InscriptionService {
 						Blob certificat = new Blob(
 								IOUtils.toByteArray(certificatPart
 										.getValueAs(InputStream.class)));
-						System.out.println(certificatPart
-								.getContentDisposition().getFileName());
 						String fileName = new String(certificatPart
 								.getContentDisposition().getFileName().getBytes(), "ISO-8859-1");
-						System.out.println(fileName);
 						String dossierIdAsString = dossiers.getCertificats()
 						.get(fileName);
 						if (StringUtils.isNotBlank(dossierIdAsString)) {
@@ -302,7 +310,7 @@ public class InscriptionService {
 				DossierNageurEntity nageur = nageurUi.getDossier();
 				try {
 				GroupEntity group = groupDao.get(nageur
-						.getNouveauGroupe());
+						.getGroupe());
 				
 				message.append("<dt>").append(nageur.getNom()).append(" ").append(nageur.getPrenom()).append(" ").append(group.getTitle())
 				.append(" (")
@@ -310,7 +318,7 @@ public class InscriptionService {
 				.append(")")
 						.append("</dt>");
 				}catch(Exception e) {
-					LOG.severe("Erreur du groupe (adherent " + nageur.getId() + "): " + nageur.getNouveauGroupe() + " ");
+					LOG.severe("Erreur du groupe (adherent " + nageur.getId() + "): " + nageur.getGroupe() + " ");
 				}
 				for (String creneau : AdherentListResultBeanTransformer
 						.getInstance().getCreneaux(nageur.getCreneaux())) {
@@ -364,15 +372,12 @@ public class InscriptionService {
 	}
 
 	private void buildDossier(InscriptionDossierUi pDossier) {
-		pDossier.getDossier().setSaisie(true);
+		pDossier.getDossier().setStatut(DossierStatutEnum.PREINSCRIT.name());
 		pDossier.getDossier().setCertificat(false);
-		pDossier.getDossier().setPaiement(false);
-		
-		buildMineur(pDossier.getDossier());
 		
 		if (pDossier.getGroupe() != null) {
 			pDossier.getDossier()
-					.setNouveauGroupe(pDossier.getGroupe().getId());
+					.setGroupe(pDossier.getGroupe().getId());
 		}
 
 		if (pDossier.getCreneaux() != null) {
@@ -413,21 +418,6 @@ public class InscriptionService {
 		}
 	}
 	
-	private void buildMineur(DossierNageurEntity adherent) {
-		//Determine si l'adherent est mineur ou majeur
-		LocalDate adherentAge = new LocalDate(adherent.getNaissance());
-		int year = Years.yearsBetween(adherentAge, LocalDate.now()).getYears();
-		if(year < 18) {
-			adherent.setMineur(adherent.getNom() + " " + adherent.getPrenom());
-			//TODO parent 1 / parent 2
-			//adherent.setMineurParent(adherent.get);
-		} else {
-			adherent.setMineur(StringUtils.EMPTY);
-			adherent.setMineurParent(StringUtils.EMPTY);
-		}
-		
-	}
-	
 	@Path("/print/{dossier}")
 	@GET
 	@Produces({"application/pdf"})
@@ -457,62 +447,82 @@ public class InscriptionService {
 		PdfStamper stamper = new PdfStamper(reader, out);
 		AcroFields fields = stamper.getAcroFields();
 
-		fields.setField("untitled1", adherent.getNom());
-		fields.setField("untitled2", adherent.getPrenom());
+		fields.setField("nom", adherent.getNom());
+		fields.setField("prenom", adherent.getPrenom());
 		Date dateNaissance = adherent.getNaissance();
 		SimpleDateFormat formatDD = new SimpleDateFormat("dd");
-		fields.setField("untitled3", formatDD.format(dateNaissance));
+		fields.setField("naissance_day", formatDD.format(dateNaissance));
 		SimpleDateFormat formatMM = new SimpleDateFormat("MM");
-		fields.setField("untitled4", formatMM.format(dateNaissance));
+		fields.setField("naissance_month", formatMM.format(dateNaissance));
 		SimpleDateFormat formatYYYY = new SimpleDateFormat("yyyy");
-		fields.setField("untitled5", formatYYYY.format(dateNaissance));
+		fields.setField("naissance_year", formatYYYY.format(dateNaissance));
 
-		fields.setField("untitled6", adherent.getProfession());
-		fields.setField("untitled7", parent.getAdresse());
-		fields.setField("untitled8", parent.getCodepostal());
-		fields.setField("untitled9", parent.getVille());
-		fields.setField("untitled10", parent.getTelephone());
-		fields.setField("untitled11", parent.getEmail());
-		fields.setField("untitled12", parent.getAccordNomPrenom());
-		fields.setField("untitled13", adherent.getMineurParent());
-		fields.setField("untitled14", adherent.getMineur());
+		
+		fields.setField("adresse", parent.getAdresse());
+		fields.setField("codepostal", parent.getCodepostal());
+		fields.setField("ville", parent.getVille());
+		fields.setField("telephone", parent.getTelephone());
+		fields.setField("email", parent.getEmail());
+		fields.setField("accord_nom", parent.getAccordNomPrenom());
+		
+		// Determine si l'adherent est mineur ou majeur
+		LocalDate adherentAge = new LocalDate(adherent.getNaissance());
+		int year = Years.yearsBetween(adherentAge, LocalDate.now()).getYears();
+		if (year < 18) {
+			fields.setField("mineur_parent", parent.getParent1Nom() + " "
+					+ parent.getParent1Prenom());
+			fields.setField("mineur_nom",
+					adherent.getNom() + " " + adherent.getPrenom());
+			fields.setField("profession", parent.getParent1Profession() + " / " + parent.getParent2Profession());
+		} else {
+			fields.setField("profession", adherent.getProfession());
+		}
 
 		if (StringUtils.isNotBlank(adherent.getCivilite())) {
 			switch (adherent.getCivilite()) {
 			case "0":
-				fields.setField("untitled15", "X");
+				fields.setField("civilite_h", "Yes");
 				break;
 			case "1":
-				fields.setField("untitled16", "X");
+				fields.setField("civilite_f", "Yes");
 				break;
 			default:
 			}
 		}
 
 		if (BooleanUtils.isTrue(adherent.getNouveau())) {
-			fields.setField("untitled17", "X");
-		} else {
-			fields.setField("untitled18", "X");
+			fields.setField("nouveau", "Yes");
 		}
 
-		GroupEntity group = groupDao.get(adherent.getNouveauGroupe());
+		GroupEntity group = groupDao.get(adherent.getGroupe());
 		if (BooleanUtils.isTrue(group.getLicenceFfn())) {
-			fields.setField("untitled19", "X");
-			fields.setField("untitled20", "X");
+			fields.setField("licence_ffn_oui", "Yes");
+		} else {
+			fields.setField("licence_ffn_non", "Yes");
+		}
+		
+		if(BooleanUtils.isFalse(group.getCompetition())) {
+			fields.setField("licence_comp_oui", "Yes");
+		} else {
+			fields.setField("licence_comp_non", "Yes");
 		}
 
 		fields.setField(
-				"accidentNom1",
+				"accident_nom_1",
 				StringUtils.defaultString(parent.getAccidentNom1())
 						+ " "
 						+ StringUtils.defaultString(parent.getAccidentPrenom1()));
-		fields.setField("accidentTel1", parent.getAccidentTelephone1());
+		fields.setField("accident_telephone_1", parent.getAccidentTelephone1());
 		fields.setField(
-				"accidentNom2",
+				"accident_nom_2",
 				StringUtils.defaultString(parent.getAccidentNom2())
 						+ " "
 						+ StringUtils.defaultString(parent.getAccidentPrenom2()));
-		fields.setField("accidentTel2", parent.getAccidentTelephone2());
+		fields.setField("accident_telephone_2", parent.getAccidentTelephone2());
+		
+		fields.setField("montant_du", group.getTarif().toString());
+		fields.setField("remise", Integer.toString((group.getTarif() - adherent.getTarif())));
+		fields.setField("montant_regler", adherent.getTarif().toString());
 
 		stamper.close();
 		reader.close();
@@ -520,7 +530,7 @@ public class InscriptionService {
 	
 	@Path("/rappel")
 	@GET
-	public void rappel() {
+	public int rappel() {
 		Date seuilInscription = DateTime.now().minusDays(7).toDate();
 		List<DossierEntity> entities = dao.getAll();
 		int count = 0;
@@ -570,11 +580,12 @@ public class InscriptionService {
 			}
 		}
 		LOG.log(Level.WARNING, count + " dossiers rappelés");
+		return count;
 	}
 	
 	@Path("/expire")
 	@GET
-	public void expire() {
+	public int expire() {
 		Date seuilInscription = DateTime.now().minusDays(15).toDate();
 		List<DossierEntity> entities = dao.getAll();
 		int count = 0;
@@ -594,5 +605,116 @@ public class InscriptionService {
 			}
 		}
 		LOG.log(Level.WARNING, count + " dossiers expirés");
+		return count;
+	}
+	
+	@Path("/copy")
+	@GET
+	public int copyPreviousYear() {
+		int count = 0;
+		Map<Long, Long> principalDossier = new HashMap<>();
+		Inscription2Dao inscriptionDao = new Inscription2Dao();
+		
+		//Build des principaux
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Long>(InscriptionEntityFields.PRINCIPAL,
+				null, Operator.NULL));
+		List<InscriptionEntity2> entities = inscriptionDao.find(criteria);
+		for(InscriptionEntity2 entity: entities) {
+			DossierEntity dossier = new DossierEntity();
+			dossier.setAccidentNom1(entity.getAccidentNom1());
+			dossier.setAccidentPrenom1(entity.getAccidentPrenom1());
+			dossier.setAccidentTelephone1(entity.getAccidentTelephone1());
+			dossier.setAccidentNom2(entity.getAccidentNom2());
+			dossier.setAccidentPrenom2(entity.getAccidentPrenom2());
+			dossier.setAccidentTelephone2(entity.getAccidentTelephone2());
+			dossier.setAccordNomPrenom(entity.getAccordNomPrenom());
+			dossier.setAdresse(entity.getAdresse());
+			dossier.setCodepostal(entity.getCodepostal());
+			dossier.setVille(entity.getVille());
+			dossier.setEmail(entity.getEmail());
+			dossier.setEmailsecondaire(entity.getEmailsecondaire());
+			dossier.setMotdepasse(entity.getMotdepasse());
+			dossier.setTelephone(entity.getTelephone());
+			dossier.setParent1Profession(entity.getProfessionTextPere());
+			dossier.setParent2Profession(entity.getProfessionTextMere());
+			DossierEntity dossierCreated = dao.save(dossier);
+			count++;
+			
+			principalDossier.put(entity.getId(), dossierCreated.getId());
+			
+			DossierNageurEntity nageur = getNageur(entity);
+			nageur.setDossier(dossierCreated.getId());
+			dossierNageurDao.save(nageur);
+			
+			List<CriterionDao<? extends Object>> criteriaEnfant = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteriaEnfant.add(new CriterionDao<Long>(InscriptionEntityFields.PRINCIPAL,
+					entity.getId(), Operator.EQUAL));
+			List<InscriptionEntity2> entitiesEnfants = inscriptionDao.find(criteriaEnfant);
+			for(InscriptionEntity2 enfant: entitiesEnfants) {
+				DossierNageurEntity nageurEnfant = getNageur(enfant);
+				nageurEnfant.setDossier(dossierCreated.getId());
+				dossierNageurDao.save(nageurEnfant);
+			}
+		}
+		LOG.warning(count + " dossiers créés");
+		return count;
+	}
+	
+	private DossierNageurEntity getNageur(InscriptionEntity2 entity) {
+		DossierNageurEntity nageur = new DossierNageurEntity();
+		nageur.setCivilite(entity.getCivilite());
+		nageur.setMaillot(entity.getMaillot());
+		nageur.setNom(entity.getNom());
+		nageur.setNouveau(Boolean.FALSE);
+		nageur.setPrenom(entity.getPrenom());
+		nageur.setProfession(entity.getProfession());
+		nageur.setStatut(DossierStatutEnum.ANCIEN.name());
+		nageur.setShortPantalon(entity.getShortPantalon());
+		nageur.setTshirt(entity.getTshirt());
+		if(StringUtils.isNotBlank(entity.getDatenaissance())) {
+			try {
+			DateTime dateNaissance = DateTime.parse(entity.getDatenaissance(),
+					DateTimeFormat.forPattern("yyyy-MM-dd"));
+			nageur.setNaissance(dateNaissance.toDate());
+			// Groupe
+			Long groupe = entity.getNouveauGroupe();
+			if (entity.getNouveauGroupe() != null) {// Aquagym, Adultes debutant
+													// (1035002), Loisir adultes
+													// (1039001)
+				if (groupe.longValue() == 1040001L
+						|| groupe.longValue() == 1035002L
+						|| groupe.longValue() == 1039001L) {
+					nageur.setGroupe(groupe);
+				} else if (groupe.longValue() == 1035001L) {// Marsouins
+					if (dateNaissance.year().get() == 2003) {
+						nageur.setGroupe(1034001L);
+					}
+				} else if (groupe.longValue() == 1034001L) {// Cachalots
+					if (dateNaissance.year().get() == 2003) {
+						nageur.setGroupe(1029003L);
+					}
+				} else if (groupe.longValue() == 1024001L) {// Tetard
+					nageur.setGroupe(1025001L);
+				}
+			}
+			} catch(IllegalArgumentException e) {
+				LOG.log(Level.WARNING, e.getMessage(), e);
+			}
+		}
+		return nageur;
+	}
+	
+	@Path("/naissance")
+	@GET
+	@Produces("application/json")
+	public Set<String> dateNaissance() {
+		Set<String> naissances = new HashSet<>();
+		for(InscriptionEntity2 entity: new Inscription2Dao().getAll()) {
+			naissances.add(entity.getDatenaissance());
+		}
+		return naissances;
 	}
 }

@@ -53,12 +53,13 @@
          <div id="tab-content" class="tab-content">
            <div class="tab-pane fade in active" id="home">
 
-               <h3 class="head text-center">Inscription pour la saison sportive 2014-2015</h3>
+               <h3 class="head text-center">Inscription pour la saison sportive 2015-2016</h3>
                <h4>Informations importantes</h4>
                <p>Il est nécessaire, avant toute chose, de consulter et de prendre connaissance des documents joints au préalable à l’inscription en ligne (tarifs, planning récapitulatif….).</p>
   	<ul>
-  		<!-- <li><a href="doc/lettre_presidente_2013_2014.pdf">Lettre de rentrée 2013-2014</a></li>-->
-  		<li><a href="doc/Planning_bassin_2014_2015.pdf" target="_blank">Planning horaire</a></li>
+  		<li><a href="doc/Planning_pedagogique_2015_2016_enf.pdf" target="_blank">Planning pédagogique - Ecole de natation</a></li>
+  		<li><a href="doc/Planning_pedagogique_2015_2016_perf.pdf" target="_blank">Planning pédagogique - Perfectionnement</a></li>
+  		<li><a href="doc/Planning_pedagogique_2015_2016_adultes.pdf" target="_blank">Planning pédagogique - Adultes</a></li>
   		<li><a href="doc/Ecole_de_Natation_Loisirs_2014-2015.pdf" target="_blank">Tarifs - Ecole de natation, Loisirs</a></li>
   		<li><a href="doc/Tarifs_Aquagym_2014-2015.pdf" target="_blank">Tarifs - Aquagym</a></li>
   		<li><a href="doc/Tarifs_Competition_2014-2015.pdf" target="_blank">Tarifs - Compétition</a></li>
@@ -480,8 +481,7 @@
           En l'absence de paiement de la cotisation au bout de 15 jours votre dossier d'inscription sera effacé afin de laisser la place à d'autres adhérents.</p>
           	
           	<form role="form" enctype="multipart/form-data" ng-submit="validateInscription()">
-          	<h3>Montant de votre cotisation</h3>
-          	         	La montant de votre cotisation est de {{price}} euros:<br />
+          	<h3>Montant de votre cotisation: {{price}} euros</h3>
           	         	<ul>
           	         		<li ng-repeat="dossier in dossiers">{{dossier.dossier.nom}} {{dossier.dossier.prenom}} ({{dossier.groupe.title}}): {{dossier.dossier.tarif}} euros</li>
           	         	</ul>
@@ -489,7 +489,6 @@
 	          		<label>
 	          			<input type="checkbox" id="facture" ng-model="principal.facture" ng-true-value="'true'" ng-false-value="'false'" /> Je souhaite avoir une facture suite à mon paiement
 	          		</label>
-	          		
           		</div>
           		<h5>Moyens de paiement</h5>
           		<ul>
@@ -498,7 +497,7 @@
           			<li>chèque-vacances</li>
           		</ul>
           	<h3>Certificats médicaux</h3>
-          	<p>Vous pouvez nous transmettre le(s) certificat(s) médicaux par vois électronique.</p>
+          	<p>Vous pouvez nous transmettre le(s) certificat(s) médicaux par voie électronique.</p>
           	<ul>
           		<li ng-repeat="dossier in dossiers">{{dossier.dossier.nom}} {{dossier.dossier.prenom}} <input type="file" id="file_{{dossier.dossier.id}}" name="file_{{dossier.dossier.id}}" accept="image/*,.pdf"/></li>
           	</ul>
@@ -510,17 +509,17 @@
           			<div class="modal-content">
           				<div class="modal-header">
           					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          					<h4 class="modal-title">Fin de la pré-inscription</h4>
+          					<h4 class="modal-title">L'ASPTT Toulouse Natation vous remercie</h4>
           				</div>
           				<div class="modal-body">
 				          		<h4>Vos dossiers d'inscriptions à télécharger</h4>
 				          		<ol style="margin-top: 5%">
 				          			<li ng-repeat="dossier in dossiers">
-				          				<a href="resources/inscription/print/{{dossier.dossier.id}}" download>{{dossier.dossier.nom}} {{dossier.dossier.prenom}}</a>
+				          				<a href="resources/inscription/print/{{dossier.dossier.id}}" download>{{dossier.dossier.nom}} {{dossier.dossier.prenom}} (cliquer pour télécharger le bulletin d'adhésion)</a>
 				          			</li>
 				          		</ol>
 				          		<h4>Finaliser l'inscription</h4>
-				          		<p>Vous devrez nous retourner votre dossier d'inscription <span style=\"color : #FF0000\">signé</span> accompagné du ou des certificats médicaux (si non founie) ainsi que le paiement par chèques sous 15 jours à l'adresse suivante:<br />ASPTT Grand Toulouse Natation<br />54 rue des Sept Troubadours<br />Bureau 215<br />31000 Toulouse.</p>
+				          		<p>N'oubliez de nous retourner votre dossier d'inscription <span style=\"color : #FF0000\">signé</span> accompagné du ou des certificats médicaux (si non fournis par voie électronique) ainsi que le paiement par chèque(s) sous 15 jours à l'adresse suivante:<p class="text-center">ASPTT Grand Toulouse Natation<br />54 rue des Sept Troubadours<br />Bureau 215<br />31000 Toulouse.</p></p>
 				        </div>
 				    </div>
 				</div>
