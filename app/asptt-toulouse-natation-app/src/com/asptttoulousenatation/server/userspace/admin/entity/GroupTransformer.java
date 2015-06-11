@@ -24,10 +24,23 @@ public class GroupTransformer extends
 		int tarif3 = pEntity.getTarif3() == null ? 0 : pEntity.getTarif3();
 		int tarif4 = pEntity.getTarif4() == null ? 0 : pEntity.getTarif4();
 		int tarifWeight = pEntity.getTarifWeight() == null ? 0 : pEntity.getTarifWeight();
-		GroupUi lUi = new GroupUi(pEntity.getId(), pEntity.getTitle(),
-				BooleanUtils.toBoolean(pEntity.getLicenceFfn()),
-				BooleanUtils.toBoolean(pEntity.getInscription()), tarif,
-				tarif2, tarif3, tarif4, BooleanUtils.toBoolean(pEntity.getSeanceunique()), tarifWeight, BooleanUtils.toBoolean(pEntity.getNouveau()), pEntity.getDescription(), BooleanUtils.toBoolean(pEntity.getEnf()));
+		
+		
+		GroupUi lUi = new GroupUi();
+		lUi.setId(pEntity.getId());
+		lUi.setTitle(pEntity.getTitle());
+		lUi.setLicenceFfn(BooleanUtils.toBoolean(pEntity.getLicenceFfn()));
+		lUi.setInscription(BooleanUtils.toBoolean(pEntity.getInscription()));
+		lUi.setTarif(tarif);
+		lUi.setTarif2(tarif2);
+		lUi.setTarif3(tarif3);
+		lUi.setTarif4(tarif4);
+		lUi.setSeanceunique(BooleanUtils.toBoolean(pEntity.getSeanceunique()));
+		lUi.setTarifWeight(tarifWeight);
+		lUi.setNouveau(BooleanUtils.toBoolean(pEntity.getNouveau()));
+		lUi.setDescription(pEntity.getDescription());
+		lUi.setEnf(BooleanUtils.toBoolean(pEntity.getEnf()));
+		lUi.setCompetition(BooleanUtils.toBoolean(pEntity.getCompetition()));
 		return lUi;
 	}
 

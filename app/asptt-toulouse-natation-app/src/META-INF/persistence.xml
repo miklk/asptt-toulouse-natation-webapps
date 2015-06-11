@@ -19,7 +19,6 @@
         <class>com.asptttoulousenatation.core.server.dao.entity.document.DocumentEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.document.DocumentLibelleJEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.document.LibelleEntity</class>
-        <class>com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionNouveauEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity</class>
