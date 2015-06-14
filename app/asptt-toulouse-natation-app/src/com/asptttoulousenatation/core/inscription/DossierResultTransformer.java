@@ -4,6 +4,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
@@ -79,19 +80,14 @@ public class DossierResultTransformer extends AbstractEntityTransformer<DossierR
 						SlotEntity slotEntity = creneauDao.get(Long
 								.valueOf(creneauId));
 						
+						DateTime beginDt = new DateTime(slotEntity.getBeginDt().getTime());
+						DateTime endDt = new DateTime(slotEntity.getEndDt().getTime());
 						String creneauStr = slotEntity.getDayOfWeek()
 								+ " "
-								+ (slotEntity.getBegin() / 60)
-								+ ":"
-								+ StringUtils
-										.rightPad(Integer.toString((slotEntity
-												.getBegin() % 60)), 2, "0")
+								+ beginDt.toString("HH:mm")
+								+ "-"
+								+ endDt.toString("HH:mm")
 								+ " - "
-								+ (slotEntity.getEnd() / 60)
-								+ ":"
-								+ StringUtils.rightPad(Integer
-										.toString((slotEntity.getEnd() % 60)),
-										2, "0") + " - "
 								+ slotEntity.getSwimmingPool();
 						results.add(creneauStr);
 					}

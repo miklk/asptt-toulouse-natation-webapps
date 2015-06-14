@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//src/com/asptttoulousenatation/shared/util/HTMLUtils.java=UTF-8
 encoding//war/admin/views/document/documents.html=UTF-8
+encoding//war/admin/views/dossier/dossiers.html=UTF-8
 encoding//war/admin/views/groupe/creneau.html=UTF-8
 encoding//war/admin/views/groupe/creneaux.html=UTF-8
 encoding//war/admin/views/groupe/groupe.html=UTF-8

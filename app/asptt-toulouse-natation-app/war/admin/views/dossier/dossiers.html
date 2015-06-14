@@ -5,10 +5,37 @@
 	<div class="row">
 		<button type="button" class="btn btn-block btn-primary" ng-click="search()">Rechercher</button>
 	</div>
-	<div class="row">
-		<div ng-repeat="dossier in dossiers">
-			{{dossier.nom}}
-		</div>
+	<div class="row" ng-show="dossiers">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>E-mail</th>
+					<th>Code</th>
+					<th>Nom</th>
+					<th>Prénom</th>
+					<th>Date de naissance</th>
+					<th>Groupe</th>
+					<th>Créneaux</th>
+					<th>Etat</th>
+					<th>Dernière mise à jour</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="dossier in dossiers">
+					<td>{{dossier.email}}</td>
+					<td>{{dossier.motdepasse}}</td>
+					<td>{{dossier.nom}}</td>
+					<td>{{dossier.prenom}}</td>
+					<td>{{dossier.naissance  | date: 'dd/MM/yyyy'}}</td>
+					<td>{{dossier.groupe}}</td>
+					<td>
+						<span ng-repeat="creneau in dossier.creneaux">{{creneau}}<br /></span>
+					</td>
+					<td>{{dossier.etat}}</td>
+					<td>{{dossier.updated | date: 'dd MMM yyyy HH:mm:ss'}}</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	
 </div>
