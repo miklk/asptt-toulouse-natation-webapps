@@ -1,0 +1,104 @@
+package com.asptttoulousenatation.core.inscription;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
+import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
+import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
+import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
+import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
+import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
+import com.asptttoulousenatation.server.userspace.admin.entity.AbstractEntityTransformer;
+
+public class DossierResultTransformer extends AbstractEntityTransformer<DossierResultBean, DossierNageurEntity> {
+
+	private static DossierResultTransformer INSTANCE;
+	
+	private DossierDao dossierDao = new DossierDao();
+	private GroupDao groupeDao = new GroupDao();
+	private SlotDao creneauDao = new SlotDao();
+	
+	public static DossierResultTransformer getInstance() {
+		if(INSTANCE == null) {
+			INSTANCE = new DossierResultTransformer();
+		}
+		return INSTANCE;
+	}
+	
+	@Override
+	public DossierResultBean toUi(DossierNageurEntity pEntity) {
+		DossierResultBean bean = new DossierResultBean();
+		bean.setNom(pEntity.getNom());
+		bean.setPrenom(pEntity.getPrenom());
+		bean.setNaissance(pEntity.getNaissance());
+		bean.setEtat(pEntity.getStatut());
+		bean.setUpdated(pEntity.getUpdated());
+		
+		//Groupe
+		bean.setGroupe(getGroupe(pEntity.getGroupe()));
+		
+		//Creneaux
+		bean.setCreneaux(getCreneaux(pEntity.getCreneaux()));
+		
+		//Données dossier
+		DossierEntity dossier = dossierDao.get(pEntity.getDossier());
+		bean.setEmail(dossier.getEmail());
+		bean.setMotdepasse(dossier.getMotdepasse());
+		return bean;
+	}
+
+	private String getGroupe(Long groupeId) {
+		final String groupe;
+		if(groupeId != null && groupeId != 0) {
+			GroupEntity entity = groupeDao.get(groupeId);
+			groupe = entity.getTitle();
+		} else {
+			groupe = "INCONNU";
+		}
+		return groupe;
+	}
+
+	public Set<String> getCreneaux(String creneaux) {
+		Set<String> results = new LinkedHashSet<String>();
+		if (StringUtils.isNotBlank(creneaux)) {
+			String[] creneauSplit = creneaux.split(";");
+			for (String creneau : creneauSplit) {
+				if (StringUtils.isNotBlank(creneau)) {
+					final String creneauId;
+					if (StringUtils.contains(creneau, "_")) {
+						creneauId = creneau.split("_")[1];
+					} else {
+						creneauId = creneau;
+					}
+					if (StringUtils.isNumeric(creneauId)) {
+						SlotEntity slotEntity = creneauDao.get(Long
+								.valueOf(creneauId));
+						
+						String creneauStr = slotEntity.getDayOfWeek()
+								+ " "
+								+ (slotEntity.getBegin() / 60)
+								+ ":"
+								+ StringUtils
+										.rightPad(Integer.toString((slotEntity
+												.getBegin() % 60)), 2, "0")
+								+ " - "
+								+ (slotEntity.getEnd() / 60)
+								+ ":"
+								+ StringUtils.rightPad(Integer
+										.toString((slotEntity.getEnd() % 60)),
+										2, "0") + " - "
+								+ slotEntity.getSwimmingPool();
+						results.add(creneauStr);
+					}
+				}
+			}
+		}
+		return results;
+	}
+	
+}

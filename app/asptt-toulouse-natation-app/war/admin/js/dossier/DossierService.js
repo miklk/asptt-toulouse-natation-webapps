@@ -3,8 +3,8 @@ var dossierServices = angular.module('dossierServices', ['ngResource']);
 dossierServices.factory('DossierService', ['$resource', 
                                        function($resource) {
 	return {
-		list: $resource('/resources/dossiers',{},{
-			query:{method:'GET', isArray: false,params: {}}
+		list: $resource('/resources/dossiers/find',{},{
+			query:{method:'GET', isArray: true, params: {q: '@query'}}
 		})
 	};
 }]);

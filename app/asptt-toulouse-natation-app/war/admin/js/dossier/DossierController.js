@@ -7,4 +7,10 @@ dossierController.controller('DossierController', ['$http', '$scope', '$location
 	GroupeService.all.query({}, function(data) {
 		$scope.groupes = data.groups;
 	}); 
+	
+	$scope.search = function() {
+		DossierService.list.query({query: ""}, function(data) {
+			$scope.dossiers = data;
+		});
+	}
 }]);
