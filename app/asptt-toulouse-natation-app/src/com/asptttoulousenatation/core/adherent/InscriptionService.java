@@ -619,7 +619,17 @@ public class InscriptionService {
 		for(DossierNageurEntity removyNageur: removiesNageur) {
 			dossierNageurDao.delete(removyNageur);
 		}
-		
+		return copyPreviousYear(0, 100);
+	}
+	
+	@Path("/copy2/{limit}")
+	@GET
+	public int copyPreviousYear2(@PathParam("limit") String limit) {
+		String[] limitArray = limit.split(",");
+		return copyPreviousYear(Integer.parseInt(limitArray[0]), Integer.parseInt(limitArray[1]));
+	}
+	
+	private int copyPreviousYear(int debut, int fin) {
 		int count = 0;
 		Map<Long, Long> principalDossier = new HashMap<>();
 		Inscription2Dao inscriptionDao = new Inscription2Dao();
@@ -629,7 +639,7 @@ public class InscriptionService {
 				1);
 		criteria.add(new CriterionDao<Long>(InscriptionEntityFields.PRINCIPAL,
 				null, Operator.NULL));
-		List<InscriptionEntity2> entities = inscriptionDao.find(criteria);
+		List<InscriptionEntity2> entities = inscriptionDao.find(criteria, debut, fin);
 		for(InscriptionEntity2 entity: entities) {
 			DossierEntity dossier = new DossierEntity();
 			dossier.setAccidentNom1(entity.getAccidentNom1());
@@ -683,6 +693,7 @@ public class InscriptionService {
 		nageur.setStatut(DossierStatutEnum.ANCIEN.name());
 		nageur.setShortPantalon(entity.getShortPantalon());
 		nageur.setTshirt(entity.getTshirt());
+		nageur.setNouveau(Boolean.FALSE);
 		if(StringUtils.isNotBlank(entity.getDatenaissance())) {
 			try {
 			DateTime dateNaissance = DateTime.parse(entity.getDatenaissance(),

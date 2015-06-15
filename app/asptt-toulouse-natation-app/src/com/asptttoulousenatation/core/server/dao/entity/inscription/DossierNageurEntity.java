@@ -259,18 +259,23 @@ public class DossierNageurEntity implements IEntity {
 		this.montantreel = montantreel;
 	}
 
-	@PrePersist
-	@PreUpdate
 	public void toUpperCase() {
 		civilite = StringUtils.upperCase(civilite);
 		nom = StringUtils.upperCase(nom);
 		prenom = StringUtils.upperCase(prenom);
 		profession = StringUtils.upperCase(profession);
+	}
+	
+	@PreUpdate
+	public void onUpdate() {
+		toUpperCase();
 		updated = new Date();
 	}
 	
 	@PrePersist
 	public void onPersist() {
 		created = new Date();
+		updated = new Date();
+		toUpperCase();
 	}
 }

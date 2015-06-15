@@ -39,6 +39,8 @@ public class DossierResultTransformer extends AbstractEntityTransformer<DossierR
 		bean.setEtat(pEntity.getStatut());
 		bean.setUpdated(pEntity.getUpdated());
 		
+		bean.setNageur(pEntity);
+		
 		//Groupe
 		bean.setGroupe(getGroupe(pEntity.getGroupe()));
 		
@@ -49,6 +51,7 @@ public class DossierResultTransformer extends AbstractEntityTransformer<DossierR
 		DossierEntity dossier = dossierDao.get(pEntity.getDossier());
 		bean.setEmail(dossier.getEmail());
 		bean.setMotdepasse(dossier.getMotdepasse());
+		bean.setDossierId(dossier.getId());
 		return bean;
 	}
 

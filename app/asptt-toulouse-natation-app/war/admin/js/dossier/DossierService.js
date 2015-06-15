@@ -5,6 +5,9 @@ dossierServices.factory('DossierService', ['$resource',
 	return {
 		list: $resource('/resources/dossiers/find',{},{
 			query:{method:'GET', isArray: true, params: {q: '@query'}}
+		}),
+		findOne: $resource('/resources/dossiers/:dossier',{},{
+			query:{method:'GET', isArray: false, params: {}}
 		})
 	};
 }]);

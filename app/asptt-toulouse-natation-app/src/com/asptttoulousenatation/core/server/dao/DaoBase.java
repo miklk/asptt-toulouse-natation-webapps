@@ -173,6 +173,12 @@ public abstract class DaoBase<E extends IEntity> {
 	private List<E> find(Class<E> pClass,
 			List<CriterionDao<? extends Object>> pCriteria, Operator pOperator,
 			OrderDao pOrder) {
+		return find(pClass, pCriteria, pOperator, pOrder, 0, 0);
+	}
+	
+	private List<E> find(Class<E> pClass,
+			List<CriterionDao<? extends Object>> pCriteria, Operator pOperator,
+			OrderDao pOrder, int limitFrom, int limitTo) {
 		final EntityManager em = EMF.get().createEntityManager();
 		String lQueryAsString = "SELECT "
 				+ getAlias()
@@ -188,6 +194,10 @@ public abstract class DaoBase<E extends IEntity> {
 					+ " " + pOrder.getOperator().toString();
 		}
 		final TypedQuery<E> lQuery = em.createQuery(lQueryAsString, pClass);
+		lQuery.setFirstResult(limitFrom);
+		if (limitTo > 0) {
+			lQuery.setMaxResults(limitTo);
+		}
 		final List<E> lResult;
 		try {
 			lResult = lQuery.getResultList();
@@ -210,6 +220,10 @@ public abstract class DaoBase<E extends IEntity> {
 	public List<E> find(List<CriterionDao<? extends Object>> pCriteria,
 			OrderDao pOrder) {
 		return find(getEntityClass(), pCriteria, Operator.AND, pOrder);
+	}
+	
+	public List<E> find(List<CriterionDao<? extends Object>> pCriteria, int limitFrom, int limitTo) {
+		return find(getEntityClass(), pCriteria, Operator.AND, null, limitFrom, limitTo);
 	}
 
 	public abstract Class<E> getEntityClass();

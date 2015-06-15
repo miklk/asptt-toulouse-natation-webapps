@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
+
 public class DossierResultBean implements Serializable {
 
 	/**
@@ -11,6 +13,7 @@ public class DossierResultBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long nageurId;
+	private Long dossierId;
 	private String email;
 	private String motdepasse;
 	private String nom;
@@ -20,6 +23,9 @@ public class DossierResultBean implements Serializable {
 	private Set<String> creneaux;
 	private String etat;
 	private Date updated;
+	
+	private DossierNageurEntity nageur;
+	
 	public Long getNageurId() {
 		return nageurId;
 	}
@@ -80,6 +86,17 @@ public class DossierResultBean implements Serializable {
 	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
-	
+	public Long getDossierId() {
+		return dossierId;
+	}
+	public void setDossierId(Long dossierId) {
+		this.dossierId = dossierId;
+	}
+	public DossierNageurEntity getNageur() {
+		return nageur;
+	}
+	public void setNageur(DossierNageurEntity nageur) {
+		this.nageur = nageur;
+	}
 	
 }
