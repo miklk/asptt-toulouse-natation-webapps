@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
-import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
@@ -79,16 +78,21 @@ public class DossierResultTransformer extends AbstractEntityTransformer<DossierR
 					if (StringUtils.isNumeric(creneauId)) {
 						SlotEntity slotEntity = creneauDao.get(Long
 								.valueOf(creneauId));
-						
-						DateTime beginDt = new DateTime(slotEntity.getBeginDt().getTime());
-						DateTime endDt = new DateTime(slotEntity.getEndDt().getTime());
-						String creneauStr = slotEntity.getDayOfWeek()
-								+ " "
-								+ beginDt.toString("HH:mm")
-								+ "-"
-								+ endDt.toString("HH:mm")
-								+ " - "
-								+ slotEntity.getSwimmingPool();
+
+						String creneauStr = slotEntity.getDayOfWeek() + " ";
+						if (slotEntity.getBeginDt() != null) {
+							DateTime beginDt = new DateTime(slotEntity
+									.getBeginDt().getTime());
+							DateTime endDt = new DateTime(slotEntity.getEndDt()
+									.getTime());
+							creneauStr = creneauStr + beginDt.toString("HH:mm")
+									+ "-" + endDt.toString("HH:mm");
+						} else {
+							creneauStr = creneauStr + " - "
+
+							+ slotEntity.getSwimmingPool();
+
+						}
 						results.add(creneauStr);
 					}
 				}

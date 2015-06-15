@@ -611,6 +611,15 @@ public class InscriptionService {
 	@Path("/copy")
 	@GET
 	public int copyPreviousYear() {
+		List<DossierEntity> removies = dao.getAll();
+		for(DossierEntity removy: removies) {
+			dao.delete(removy);
+		}
+		List<DossierNageurEntity> removiesNageur = dossierNageurDao.getAll();
+		for(DossierNageurEntity removyNageur: removiesNageur) {
+			dossierNageurDao.delete(removyNageur);
+		}
+		
 		int count = 0;
 		Map<Long, Long> principalDossier = new HashMap<>();
 		Inscription2Dao inscriptionDao = new Inscription2Dao();
