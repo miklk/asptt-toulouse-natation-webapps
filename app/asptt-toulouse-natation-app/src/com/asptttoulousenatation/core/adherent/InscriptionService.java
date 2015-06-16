@@ -300,8 +300,8 @@ public class InscriptionService {
 			}
 
 			StringBuilder message = new StringBuilder(
-					"Madame, Monsieur,<p>Nous avons le plaisir de vous confirmer la sélection de vos créneaux pour la nouvelle saison sportive 2014-2015.<br />"
-							+ "Nous attendons votre dossier, certificat médicale ainsi que votre réglement afin de finaliser ainsi votre inscription. <br />"
+					"Madame, Monsieur,<p>Nous avons le plaisir de vous confirmer la pré-sélection de vos créneaux pour la nouvelle saison sportive 2015-2016.<br />"
+							+ "Nous attendons (sous 8 jours) votre dossier signé, ainsi que votre réglement afin de finaliser ainsi votre inscription. Le certificat médical peut nous être envoyé dans un second temps. <br />"
 							+ "Vous recevrez un e-mail de confirmation dès que votre inscription sera finalisée.<br />"
 							+ "Voici les créneaux que vous avez sélectionné: <br />");
 
@@ -493,6 +493,10 @@ public class InscriptionService {
 		if (BooleanUtils.isTrue(adherent.getNouveau())) {
 			fields.setField("nouveau", "Yes");
 		}
+		
+		if (BooleanUtils.isFalse(adherent.getNouveau())) {
+			fields.setField("renouvellement", "Yes");
+		}
 
 		GroupEntity group = groupDao.get(adherent.getGroupe());
 		if (BooleanUtils.isTrue(group.getLicenceFfn())) {
@@ -531,7 +535,7 @@ public class InscriptionService {
 	@Path("/rappel")
 	@GET
 	public int rappel() {
-		Date seuilInscription = DateTime.now().minusDays(7).toDate();
+		Date seuilInscription = DateTime.now().minusDays(5).toDate();
 		List<DossierEntity> entities = dao.getAll();
 		int count = 0;
 		for(DossierEntity dossier: entities) {
@@ -561,7 +565,7 @@ public class InscriptionService {
 					}
 
 					StringBuilder message = new StringBuilder(
-							"Madame, Monsieur,<p>Vous avez effectué une demande d'inscription au club il y a 7 jours. Nous n'avons pas encore reçu votre paiement.<br /> Nous tenons à vous rappeler qu'au bout de 15 jours, votre dossier sera supprimé et les créneaux sélectionnés libérés pour d'autres adhérents.<br />");
+							"Madame, Monsieur,<p>Vous avez effectué une demande d'inscription au club il y a 5 jours. Nous n'avons pas encore reçu votre paiement.<br /> Nous tenons à vous rappeler qu'au bout de 8 jours, votre dossier sera supprimé et les créneaux sélectionnés libérés pour d'autres adhérents.<br />");
 
 					message.append("<p>Sportivement,<br />"
 							+ "Le secrétariat,<br />"
@@ -586,7 +590,7 @@ public class InscriptionService {
 	@Path("/expire")
 	@GET
 	public int expire() {
-		Date seuilInscription = DateTime.now().minusDays(15).toDate();
+		Date seuilInscription = DateTime.now().minusDays(10).toDate();
 		List<DossierEntity> entities = dao.getAll();
 		int count = 0;
 		for(DossierEntity dossier: entities) {
@@ -711,13 +715,19 @@ public class InscriptionService {
 				} else if (groupe.longValue() == 1035001L) {// Marsouins
 					if (dateNaissance.year().get() == 2003) {
 						nageur.setGroupe(1034001L);
+					} else {
+						nageur.setGroupe(groupe);
 					}
 				} else if (groupe.longValue() == 1034001L) {// Cachalots
 					if (dateNaissance.year().get() == 2003) {
 						nageur.setGroupe(1029003L);
+					} else {
+						nageur.setGroupe(groupe);
 					}
 				} else if (groupe.longValue() == 1024001L) {// Tetard
 					nageur.setGroupe(1025001L);
+				} else {
+					nageur.setGroupe(groupe);
 				}
 			}
 			} catch(IllegalArgumentException e) {
