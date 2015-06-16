@@ -9,8 +9,9 @@ dossierController.controller('DossierController', ['$http', '$scope', '$location
 	}); 
 	
 	$scope.search = function() {
-		DossierService.list.query({query: $scope.query}, function(data) {
+		DossierService.list.query({query: $scope.query, groupe: $scope.groupe}, function(data) {
 			$scope.dossiers = data;
+			$scope.dossierCount = dossiers.length;
 		});
 	},
 	

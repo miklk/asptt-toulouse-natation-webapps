@@ -37,7 +37,7 @@ public class DossierService {
 	@Path("/find")
 	@GET
 	@Consumes("application/json")
-	public List<DossierResultBean> find(@QueryParam("query") String texteLibre) {
+	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe) {
 		List<DossierResultBean> result = Collections.emptyList();
 		List<DossierNageurEntity> nageurs = new ArrayList<DossierNageurEntity>();
 		if(StringUtils.isNotBlank(texteLibre)) {
@@ -65,6 +65,13 @@ public class DossierService {
 						texteLibre.toUpperCase(), Operator.EQUAL));
 				nageurs.addAll(dao.find(criteriaNageur));
 			}
+			
+		} else if(groupe != null && groupe > 0) {
+			List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE,
+					groupe, Operator.EQUAL));
+			nageurs.addAll(dao.find(criteriaNageur));
 		} else {
 			nageurs = dao.getAll();
 		}
