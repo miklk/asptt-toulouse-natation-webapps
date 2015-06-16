@@ -112,17 +112,23 @@ public class GroupeService {
 		final GroupeCreateResult result = new GroupeCreateResult();
 		if (StringUtils.isNotBlank(action.getTitle())) {
 			final GroupEntity entity;
-			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-					1);
-			criteria.add(new CriterionDao<String>(GroupEntityFields.TITLE,
-					action.getTitle(), Operator.EQUAL));
-			List<GroupEntity> entities = dao.find(criteria);
-			if (CollectionUtils.isNotEmpty(entities)) {
-				entity = entities.get(0);
-				result.setCreation(false);
+			//Create or update
+			if (action.getId() == null) {
+				List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+						1);
+				criteria.add(new CriterionDao<String>(GroupEntityFields.TITLE,
+						action.getTitle(), Operator.EQUAL));
+				List<GroupEntity> entities = dao.find(criteria);
+				if (CollectionUtils.isNotEmpty(entities)) {
+					entity = entities.get(0);
+					result.setCreation(false);
+				} else {
+					entity = new GroupEntity();
+					result.setCreation(true);
+				}
 			} else {
-				entity = new GroupEntity();
-				result.setCreation(true);
+				entity = dao.get(action.getId());
+				result.setCreation(false);
 			}
 			entity.setTitle(action.getTitle());
 			entity.setDescription(action.getDescription());
