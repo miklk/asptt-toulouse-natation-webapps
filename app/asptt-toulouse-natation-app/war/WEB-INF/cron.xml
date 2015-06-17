@@ -10,9 +10,4 @@
 		<description>Rappel de paiement au bout de 7 jours</description>
 		<schedule>every day 04:30</schedule>
 	</cron>-->
-	<cron>
-		<url>/resources/inscription/copy</url>
-		<description>Copy des inscriptionEntity2 vers Dossier</description>
-		<schedule>every day 03:30</schedule>
-	</cron>
 </cronentries>

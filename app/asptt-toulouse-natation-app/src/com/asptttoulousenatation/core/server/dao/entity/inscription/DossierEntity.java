@@ -78,6 +78,7 @@ public class DossierEntity implements IEntity {
 	private Boolean expire;
 	private Boolean reminder;
 	private Date reminded;
+	private String comment;
 	
 	public DossierEntity() {
 		expire = false;
@@ -324,6 +325,14 @@ public class DossierEntity implements IEntity {
 
 	public void setReminded(Date reminded) {
 		this.reminded = reminded;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	@PreUpdate

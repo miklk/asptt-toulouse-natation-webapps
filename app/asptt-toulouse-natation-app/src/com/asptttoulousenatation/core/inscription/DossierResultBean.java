@@ -23,6 +23,7 @@ public class DossierResultBean implements Serializable {
 	private Set<String> creneaux;
 	private String etat;
 	private Date updated;
+	private String comment;
 	
 	private DossierNageurEntity nageur;
 	
@@ -97,6 +98,12 @@ public class DossierResultBean implements Serializable {
 	}
 	public void setNageur(DossierNageurEntity nageur) {
 		this.nageur = nageur;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	
 }

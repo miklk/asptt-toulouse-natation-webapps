@@ -220,6 +220,7 @@ public class InscriptionService {
 			DossierEntity principal = dao.save(dossiers.getDossier());
 
 			// Add certificats
+			Set<Long> hasCertificat = new HashSet<>();
 			if (MapUtils.isNotEmpty(dossiers.getCertificats())) {
 				for (FormDataBodyPart certificatPart : certificats) {
 					try {
@@ -250,6 +251,7 @@ public class InscriptionService {
 							certificatEntity.setDossier(dossierId);
 							certificatEntity.setCertificatmedical(certificat);
 							dossierCertificatDao.save(certificatEntity);
+							hasCertificat.add(dossierId);
 						}
 					} catch (IOException e) {
 						LOG.log(Level.SEVERE, "Récupération des certificats", e);
@@ -261,6 +263,9 @@ public class InscriptionService {
 			for (InscriptionDossierUi dossier : dossiers.getNageurs()) {
 				if (!dossier.isSupprimer()) {
 					buildDossier(dossier);
+					if(hasCertificat.contains(dossier.getDossier().getId())) {
+						dossier.getDossier().setCertificat(Boolean.TRUE);
+					}
 					dossierNageurDao.save(dossier.getDossier());
 				}
 			}

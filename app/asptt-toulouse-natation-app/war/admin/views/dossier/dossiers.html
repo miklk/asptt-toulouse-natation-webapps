@@ -34,6 +34,9 @@
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 							<span class="glyphicon glyphicon-edit"></span>
 						</button>
+						<button type="button" class="btn btn-default" ng-click="displayComment(dossier)" title="Afficher le commentaire" ng-show="dossier.comment">
+							<span class="glyphicon glyphicon-comment"></span>
+						</button>
 						<ul class="dropdown-menu">
 							<li><a href="#/dossier/{{dossier.dossierId}}">Modifier</a></li>
 							<li><a href="#">Relancer</a></li>

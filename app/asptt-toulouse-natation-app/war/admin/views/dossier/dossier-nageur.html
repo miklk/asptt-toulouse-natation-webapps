@@ -1,0 +1,69 @@
+<div class="row">
+	<h3>{{nageur.nom}} {{nageur.prenom}}</h3>
+	<form>
+		<div class="form-group">
+			<label class="radio-inline">
+				<input type="radio" name="civilite" id="monsieur" value="0" ng-model="naguer.civilite" required />
+				M
+			</label>
+			<label class="radio-inline">
+				<input type="radio" name="civilite" id="madame" value="1" ng-model="nageur.civilite" required />
+				F
+			</label>
+		</div>
+		<div class="form-inline">
+			<div class="form-group">
+				<label for="nom">Nom</label>
+				<input id="nom" type="text" class="form-control" ng-model="nageur.nom" />
+			</div>
+			<div class="form-group">
+				<label for="prenom">Prénom</label>
+				<input id="prenom" type="text" class="form-control" ng-model="nageur.prenom" />
+			</div>
+			<div class="form-group">
+   				<label for=dateNaissance class="control-label">Date de naissance</label>
+				<div class="input-group date">
+					<input id="datenaissance-field" name="datenaissance" ng-model="dossier[index].naissanceAsString" type="text" class="form-control" /><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="form-inline">
+			<div class="form-group">
+				<label for="maillot">Maillot de bain</label>
+				<input type="text" class="form-control" id="maillot" placeholder="Maillot de bain" size="5" ng-model="nageur.maillot" />
+			</div>
+			<div class="form-group">
+				<label for="tshirt">T-Shirt</label>
+				<select id="tshirt" class="form-control" ng-model="nageur.tshirt">
+					<option>XS</option>
+					<option>S</option>
+					<option>M</option>
+					<option>L</option>
+					<option>XL</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="shortPantalon">Short</label>
+				<select id="shortPantalon" class="form-control" ng-model="nageur.shortPantalon">
+					<option>XS</option>
+					<option>S</option>
+					<option>M</option>
+					<option>L</option>
+					<option>XL</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-inline">
+			<div class="form-group">
+				<select class="form-control" name="csp" ng-model="nageur.csp" ng-options="cspValue as cspValue for cspValue in cspList">
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="input-profession">Précisez</label>
+				<input id="input-profession" name="profession" type="text" class="form-control" size="30" ng-model="nageur.profession" />
+			</div>
+		</div>
+	</form>
+</div>

@@ -52,6 +52,7 @@ public class DossierResultTransformer extends AbstractEntityTransformer<DossierR
 		bean.setEmail(dossier.getEmail());
 		bean.setMotdepasse(dossier.getMotdepasse());
 		bean.setDossierId(dossier.getId());
+		bean.setComment(dossier.getComment());
 		return bean;
 	}
 
