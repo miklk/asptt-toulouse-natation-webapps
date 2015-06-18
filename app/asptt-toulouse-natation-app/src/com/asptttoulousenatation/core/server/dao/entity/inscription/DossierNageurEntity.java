@@ -58,16 +58,12 @@ public class DossierNageurEntity implements IEntity {
 	
 	private Boolean nouveau;
 	
-	private String statut;
-	
 	private Date created;
 	private Date updated;
 	
 	private Boolean certificat;
 	
 	private Integer tarif;
-	
-	private Integer montantreel;
 	
 	private String csp;
 	
@@ -241,22 +237,6 @@ public class DossierNageurEntity implements IEntity {
 
 	public void setCsp(String csp) {
 		this.csp = csp;
-	}
-
-	public String getStatut() {
-		return statut;
-	}
-
-	public void setStatut(String statut) {
-		this.statut = statut;
-	}
-
-	public Integer getMontantreel() {
-		return montantreel;
-	}
-
-	public void setMontantreel(Integer montantreel) {
-		this.montantreel = montantreel;
 	}
 
 	public void toUpperCase() {

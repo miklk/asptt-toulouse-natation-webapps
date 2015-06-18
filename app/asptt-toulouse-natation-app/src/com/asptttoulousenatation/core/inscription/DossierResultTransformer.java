@@ -36,7 +36,6 @@ public class DossierResultTransformer extends AbstractEntityTransformer<DossierR
 		bean.setNom(pEntity.getNom());
 		bean.setPrenom(pEntity.getPrenom());
 		bean.setNaissance(pEntity.getNaissance());
-		bean.setEtat(pEntity.getStatut());
 		bean.setUpdated(pEntity.getUpdated());
 		
 		bean.setNageur(pEntity);
@@ -53,6 +52,7 @@ public class DossierResultTransformer extends AbstractEntityTransformer<DossierR
 		bean.setMotdepasse(dossier.getMotdepasse());
 		bean.setDossierId(dossier.getId());
 		bean.setComment(dossier.getComment());
+		bean.setEtat(dossier.getStatut());
 		return bean;
 	}
 

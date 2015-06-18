@@ -217,6 +217,8 @@ public class InscriptionService {
 					true);
 			InscriptionDossiersUi dossiers = mapper.readValue(unscape,
 					InscriptionDossiersUi.class);
+			
+			dossiers.getDossier().setStatut(DossierStatutEnum.PREINSCRIT.name());
 			DossierEntity principal = dao.save(dossiers.getDossier());
 
 			// Add certificats
@@ -377,7 +379,6 @@ public class InscriptionService {
 	}
 
 	private void buildDossier(InscriptionDossierUi pDossier) {
-		pDossier.getDossier().setStatut(DossierStatutEnum.PREINSCRIT.name());
 		pDossier.getDossier().setCertificat(false);
 		
 		if (pDossier.getGroupe() != null) {
@@ -600,7 +601,7 @@ public class InscriptionService {
 		int count = 0;
 		for(DossierEntity dossier: entities) {
 			if(dossier.getUpdated().before(seuilInscription)) {
-				dossier.setExpire(true);
+				dossier.setStatut(DossierStatutEnum.EXPIRE.name());
 				count++;
 				List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 						1);
@@ -699,7 +700,6 @@ public class InscriptionService {
 		nageur.setNouveau(Boolean.FALSE);
 		nageur.setPrenom(entity.getPrenom());
 		nageur.setProfession(entity.getProfession());
-		nageur.setStatut(DossierStatutEnum.ANCIEN.name());
 		nageur.setShortPantalon(entity.getShortPantalon());
 		nageur.setTshirt(entity.getTshirt());
 		nageur.setNouveau(Boolean.FALSE);
@@ -751,5 +751,14 @@ public class InscriptionService {
 			naissances.add(entity.getDatenaissance());
 		}
 		return naissances;
+	}
+	
+	@Path("statut")
+	@GET
+	public void setStatut() {
+		for(DossierEntity entity: dao.getAll()) {
+			entity.setStatut(DossierStatutEnum.INITIALISE.name());
+			dao.save(entity);
+		}
 	}
 }

@@ -75,14 +75,15 @@ public class DossierEntity implements IEntity {
 	private String parent1Profession;
 	private String parent2Csp;
 	private String parent2Profession;
-	private Boolean expire;
 	private Boolean reminder;
 	private Date reminded;
 	private String comment;
+	private String statut;
+	private Integer montantreel;
 	
 	public DossierEntity() {
-		expire = false;
 		reminder = false;
+		statut = DossierStatutEnum.INITIALISE.name();
 	}
 	
 	public Long getId() {
@@ -303,14 +304,6 @@ public class DossierEntity implements IEntity {
 	}
 	
 
-	public Boolean getExpire() {
-		return expire;
-	}
-
-	public void setExpire(Boolean expire) {
-		this.expire = expire;
-	}
-
 	public Boolean getReminder() {
 		return reminder;
 	}
@@ -333,6 +326,24 @@ public class DossierEntity implements IEntity {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	
+
+	public String getStatut() {
+		return statut;
+	}
+
+	public void setStatut(String statut) {
+		this.statut = statut;
+	}
+	
+
+	public Integer getMontantreel() {
+		return montantreel;
+	}
+
+	public void setMontantreel(Integer montantreel) {
+		this.montantreel = montantreel;
 	}
 
 	@PreUpdate

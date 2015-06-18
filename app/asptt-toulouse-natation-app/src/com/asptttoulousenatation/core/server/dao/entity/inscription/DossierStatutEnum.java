@@ -2,7 +2,7 @@ package com.asptttoulousenatation.core.server.dao.entity.inscription;
 
 public enum DossierStatutEnum {
 
-	ANCIEN,
+	INITIALISE,
 	PREINSCRIT,
 	PAIEMENT_PARTIEL,
 	INSCRIT,

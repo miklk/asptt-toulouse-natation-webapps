@@ -1,0 +1,32 @@
+<h3>Statut du dossier</h3><div class="text-center" ng-class="{'bg-danger': dossier.principal.statut == 'EXPIRE' || dossier.principal.statut == 'ANNULE', 'bg-warning': dossier.principal.statut == 'INITIALISE' || dossier.principal.statut == 'PREINSCRIT', 'bg-info': dossier.principal.statut == 'PAIEMENT_PARTIEL', 'bg-success': dossier.principal.statut == 'INSCRIT'}"><h4>{{dossier.principal.statut}}</h4></div>
+
+<div class="row">
+	<div class="col-md-2"><strong>Date d'inscription</strong></div>
+	<div class="col-md-2">{{dossier.principal.created | date: 'dd/MM/yyyy HH:mm'}}</div>
+	<div class="col-md-2"><strong>Dernière mise à jour</strong></div>
+	<div class="col-md-2">{{dossier.principal.updated | date: 'dd/MM/yyyy HH:mm'}}</div>
+	
+	<div ng-show="dossier.principal.reminded">
+		<div class="col-md-2">Dernière rappel de paiement</div>
+		<div class="col-md-2">{{dossier.principal.reminded | date: 'dd/MM/yyyy HH:mm'}}</div>
+	</div>
+</div>
+
+<div class="row">
+	<h5>Informations de connexion</h5>
+	<div class="col-md-2"><strong>E-mail</strong></div>
+	<div class="col-md-2">{{dossier.principal.email}}</div>
+	<div class="col-md-2"><strong>Mot de passe</strong></div>
+	<div class="col-md-2">{{dossier.principal.motdepasse}}</div>
+</div>
+
+<div class="row">
+<h5>Commentaire</h5>
+{{dossier.principal.comment}}
+</div>
+
+<div class="row">
+<h5>Tarif</h5>
+	<div class="col-md-2"><strong>Montant réel payé</strong></div>
+	<div class="col-md-2">{{dossier.principal.montantreel}}</div>
+</div>
