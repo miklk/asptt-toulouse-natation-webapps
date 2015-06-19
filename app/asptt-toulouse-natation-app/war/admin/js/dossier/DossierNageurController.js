@@ -8,13 +8,33 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 	
 	DossierService.findOne.query({'dossier': $routeParams.dossierId}, function(data) {
 		$scope.dossier = data;
+		$scope.dossierUpdateParameters = {
+				principal: null,
+				nageurs: null
+		};
 	});
 	
 	$scope.montantCalcule = function() {
 		var montant = 0;
-		angular.forEach($scope.dossier.nageurs, function(nageur) {
-			montant+=nageur.tarif;
-		});
+		if($scope.dossier) {
+			angular.forEach($scope.dossier.nageurs, function(nageur) {
+				montant+=nageur.tarif;
+			});
+		}
 		return montant;
+	}
+	
+	$scope.update = function() {
+		$scope.dossierUpdateParameters.principal = $scope.dossier.principal;
+		$scope.dossierUpdateParameters.nageurs = $scope.dossier.nageurs;
+		
+		
+		$http.post("/resources/dossiers/update", $scope.dossierUpdateParameters, {})
+	       .success(function(dataFromServer, status, headers, config) {
+    		   alert("Dossier mis à jour avec succès.");
+	       })
+	        .error(function(data, status, headers, config) {
+	          alert("Erreur");
+	       });
 	}
 }]);

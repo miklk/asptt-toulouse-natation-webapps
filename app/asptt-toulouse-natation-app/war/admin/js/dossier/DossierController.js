@@ -39,7 +39,9 @@ dossierController.controller('DossierController', ['$http', '$scope', '$location
 	$scope.initCreerDossier = function() {
 		$scope.creation = {
 				email: '',
-				mdp: ''
+				mdp: '',
+				nom: '',
+				prenom: ''
 		};
 		$('#dossier-creer-popup').modal();
 	}

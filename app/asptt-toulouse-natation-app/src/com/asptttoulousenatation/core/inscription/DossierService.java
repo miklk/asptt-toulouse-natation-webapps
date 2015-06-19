@@ -137,9 +137,22 @@ public class DossierService {
 			entity.setMotdepasse(parameters.getMdp());
 			DossierEntity entityCreated = dossierDao.save(entity);
 			DossierNageurEntity nageur = new DossierNageurEntity();
+			nageur.setNom(parameters.getNom());
+			nageur.setPrenom(parameters.getPrenom());
 			nageur.setDossier(entityCreated.getId());
 			dao.save(nageur);
 			result = true;
+		}
+		return result;
+	}
+	
+	@Path("update")
+	@POST
+	public boolean update(DossierUpdateParameters parameters) {
+		boolean result = true;
+		dossierDao.save(parameters.getPrincipal());
+		for(DossierNageurEntity nageur: parameters.getNageurs()) {
+			dao.save(nageur);
 		}
 		return result;
 	}
