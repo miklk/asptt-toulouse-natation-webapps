@@ -1,10 +1,22 @@
 <div class="row">
-	<a href="#/dossiers" class="btn btn-default" title="Retourner à la liste"><span class="glyphicon glyphicon-arrow-left"></span></a>
-</div>
-<div class="row">
 	<h1 class="page-header">Dossiers {{dossier.principal.email}}
 	<span class="badge">{{dossier.nageurs.length}} dossiers</span></h1>
 </div>
+
+<div style="margin-bottom: 1%" class="btn-toolbar" role="toolbar">
+	<div class="btn-group" role="group">
+		<a href="#/dossiers" class="btn btn-default" title="Retourner à la liste"><span class="glyphicon glyphicon-arrow-left"></span></a>
+	</div>
+	<div class="btn-group" role="group">
+		<button type="button" class="btn btn-default">Supprimer</button>
+	</div>
+	<div class="btn-group" role="group">
+		<button type="button" class="btn btn-default">Relancer</button>
+		<button type="button" class="btn btn-default">Paiement reçu</button>
+		<button type="button" class="btn btn-default">Certificat reçu</button>
+	</div>
+</div>
+
 
 <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#suivi" target="_self">Suivi</a></li>

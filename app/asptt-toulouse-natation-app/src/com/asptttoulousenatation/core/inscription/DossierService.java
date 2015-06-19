@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -17,10 +18,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
+import com.asptttoulousenatation.core.server.dao.entity.field.DossierCertificatEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierCertificatEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
+import com.asptttoulousenatation.core.server.dao.inscription.DossierCertificatDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
@@ -33,6 +37,7 @@ public class DossierService {
 	private DossierNageurDao dao = new DossierNageurDao();
 	private DossierDao dossierDao = new DossierDao();
 	private GroupDao groupeDao = new GroupDao();
+	private DossierCertificatDao certificatDao = new DossierCertificatDao();
 	
 	
 	@Path("/find")
@@ -155,5 +160,30 @@ public class DossierService {
 			dao.save(nageur);
 		}
 		return result;
+	}
+	
+	@Path("{dossier}")
+	@DELETE
+	public void delete(@PathParam("dossier") Long dossierId) {
+		DossierEntity dossier = dossierDao.get(dossierId);
+		if(dossier != null) {
+			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
+					dossierId, Operator.EQUAL));
+			List<DossierNageurEntity> entities = dao.find(criteria);
+			for(DossierNageurEntity nageur: entities) {
+				List<CriterionDao<? extends Object>> criteriaCertificat = new ArrayList<CriterionDao<? extends Object>>(
+						1);
+				criteriaCertificat.add(new CriterionDao<Long>(DossierCertificatEntityFields.DOSSIER,
+						nageur.getId(), Operator.EQUAL));
+				List<DossierCertificatEntity> certificats = certificatDao.find(criteriaCertificat);
+				for(DossierCertificatEntity certificat: certificats) {
+					certificatDao.delete(certificat);
+				}
+				dao.delete(nageur);
+			}
+			dossierDao.delete(dossier);
+		}
 	}
 }

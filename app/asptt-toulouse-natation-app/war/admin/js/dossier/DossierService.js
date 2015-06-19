@@ -8,6 +8,9 @@ dossierServices.factory('DossierService', ['$resource',
 		}),
 		findOne: $resource('/resources/dossiers/:dossier',{},{
 			query:{method:'GET', isArray: false, params: {}}
+		}),
+		remove: $resource('/resources/dossiers/:dossier',{},{
+			query:{method:'DELETE', isArray: false, params: {}}
 		})
 	};
 }]);

@@ -60,4 +60,11 @@ dossierController.controller('DossierController', ['$http', '$scope', '$location
 	          alert("Erreur");
 	       });
 	}
+	
+	$scope.remove = function(index, dossier) {
+		if(confirm("Voulez-vous supprimer le dossier ?")) {
+			DossierService.remove.query({dossier: dossier.dossierId}, function(data) {
+			});
+		}
+	}
 }]);

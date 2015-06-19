@@ -22,6 +22,9 @@ public class DossierCertificatEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	/**
+	 * Identifier of DossierNageurEntity
+	 */
 	private Long dossier;
 	
 	private Blob certificatmedical;

@@ -8,6 +8,11 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 	
 	DossierService.findOne.query({'dossier': $routeParams.dossierId}, function(data) {
 		$scope.dossier = data;
+		
+		//Handle input date
+		angular.forEach($scope.dossier.nageurs, function(nageur) {
+				nageur.naissance = new Date(nageur.naissance);
+		});
 		$scope.dossierUpdateParameters = {
 				principal: null,
 				nageurs: null
@@ -27,7 +32,6 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 	$scope.update = function() {
 		$scope.dossierUpdateParameters.principal = $scope.dossier.principal;
 		$scope.dossierUpdateParameters.nageurs = $scope.dossier.nageurs;
-		
 		
 		$http.post("/resources/dossiers/update", $scope.dossierUpdateParameters, {})
 	       .success(function(dataFromServer, status, headers, config) {
