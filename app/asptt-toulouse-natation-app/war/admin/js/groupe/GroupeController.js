@@ -89,4 +89,12 @@ groupeController.controller('GroupeController', ['$http', '$scope', '$location',
 			});
 		}
 	}
+	
+	$scope.clearCreneaux = function() {
+		if(confirm("Voulez-vous supprimer tous les créneaux ?")) {
+			SlotService.clear.query({creneau: $scope.groupe.id}, function(data) {
+				$scope.loadCreneaux($scope.groupe);
+			});
+		}
+	}
 }]);

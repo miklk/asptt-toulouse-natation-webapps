@@ -122,4 +122,17 @@ public class CreneauService {
 	public void delete(@PathParam("creneau") Long creneauId) {
 		dao.delete(creneauId);
 	}
+	
+	@Path("clear/{groupe}")
+	@DELETE
+	public void clear(@PathParam("groupe") Long groupe) {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Long>(SlotEntityFields.GROUP, groupe,
+				Operator.EQUAL));
+		List<SlotEntity> entities = dao.find(criteria);
+		for(SlotEntity entity: entities) {
+			dao.delete(entity.getId());			
+		}
+	}
 }

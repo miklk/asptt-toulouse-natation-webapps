@@ -11,6 +11,9 @@ slotServices.factory('SlotService', ['$resource',
 		}),
 		remove: $resource('/resources/creneaux/:creneau',{},{
 			query:{method:'DELETE', isArray: false, params: {}}
+		}),
+		clear: $resource('/resources/creneaux/clear/:groupe',{},{
+			query:{method:'DELETE', isArray: false, params: {}}
 		})
 	};
 }]);
