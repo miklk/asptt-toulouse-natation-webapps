@@ -35,4 +35,27 @@ dossierController.controller('DossierController', ['$http', '$scope', '$location
 			$('#groupe-popup').modal('hide');	
 		}
 	}
+	
+	$scope.initCreerDossier = function() {
+		$scope.creation = {
+				email: '',
+				mdp: ''
+		};
+		$('#dossier-creer-popup').modal();
+	}
+	
+	$scope.creerDossier = function() {
+		$http.post("/resources/dossiers/creer", $scope.creation, {})
+	       .success(function(dataFromServer, status, headers, config) {
+	    	   if(dataFromServer) {
+	    		   alert("Dossier créé avec succès.");
+	    		   $('#dossier-creer-popup').modal('hide');
+	    	   } else {
+	    		   alert("Un dossier avec l'adresse e-mail: " + $scope.creation.email + " existe déjà.");
+	    	   }
+	       })
+	        .error(function(data, status, headers, config) {
+	          alert("Erreur");
+	       });
+	}
 }]);

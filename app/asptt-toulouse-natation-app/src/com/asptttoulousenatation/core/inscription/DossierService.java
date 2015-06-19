@@ -12,6 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
@@ -114,6 +115,31 @@ public class DossierService {
 			}
 		} else {
 			result = null;
+		}
+		return result;
+	}
+	
+	@Path("creer")
+	@POST
+	public boolean creer(DossierCreerParameters parameters) {
+		boolean result;
+		// Test existante du dossier même e-mail
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL,
+				parameters.getEmail(), Operator.EQUAL));
+		List<DossierEntity> entities = dossierDao.find(criteria);
+		if (CollectionUtils.isNotEmpty(entities)) {
+			result = false;
+		} else {
+			DossierEntity entity = new DossierEntity();
+			entity.setEmail(parameters.getEmail());
+			entity.setMotdepasse(parameters.getMdp());
+			DossierEntity entityCreated = dossierDao.save(entity);
+			DossierNageurEntity nageur = new DossierNageurEntity();
+			nageur.setDossier(entityCreated.getId());
+			dao.save(nageur);
+			result = true;
 		}
 		return result;
 	}

@@ -9,6 +9,7 @@
 		 	<option value="">Choisir un groupe</option>
 		</select>
 		<button type="button" class="btn btn-block btn-primary" ng-click="search()">Rechercher</button>
+		<button type="button" class="btn btn-block btn-primary" ng-click="initCreerDossier()">Créer un dossier</button>
 	</div>
 	<div class="row" ng-show="dossiers">
 		<p><span class="badge">{{dossierCount}} résultats</span></p>
@@ -67,4 +68,5 @@
 	</div>
 	
 	<div ng-include="'views/dossier/groupe.html'"></div>
+	<div ng-include="'views/dossier/dossier-creer.html'"></div>
 </div>
