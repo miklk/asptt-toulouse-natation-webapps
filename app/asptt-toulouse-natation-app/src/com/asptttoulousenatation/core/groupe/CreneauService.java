@@ -19,10 +19,13 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.adherent.CreneauxBean;
+import com.asptttoulousenatation.core.server.dao.club.group.CreneauHierarchyDao;
 import com.asptttoulousenatation.core.server.dao.club.group.PiscineDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
+import com.asptttoulousenatation.core.server.dao.entity.club.group.CreneauHierarchyEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.PiscineEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
+import com.asptttoulousenatation.core.server.dao.entity.field.CreneauHierarchyEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.PiscineEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
@@ -37,6 +40,7 @@ public class CreneauService {
 			.getName());
 
 	private SlotDao dao = new SlotDao();
+	private CreneauHierarchyDao creneauHierarchyDao = new CreneauHierarchyDao();
 	private PiscineDao piscineDao = new PiscineDao();
 	private SlotTransformer transformer = new SlotTransformer();
 	
@@ -60,6 +64,32 @@ public class CreneauService {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		criteria.add(new CriterionDao<Long>(SlotEntityFields.GROUP, groupe,
+				Operator.EQUAL));
+		List<SlotEntity> lEntities = dao.find(criteria);
+		List<SlotUi> lUis = new SlotTransformer().toUi(lEntities);
+		Collections.sort(lUis, new Comparator<SlotUi>() {
+
+			public int compare(SlotUi pO1, SlotUi pO2) {
+				Integer jour1 = JOURS.get(pO1.getDayOfWeek());
+				Integer jour2 = JOURS.get(pO2.getDayOfWeek());
+				return jour1.compareTo(jour2);
+			}
+		});
+
+		CreneauxBean result = new CreneauxBean();
+		result.setCreneaux(lUis);
+		return result;
+	}
+	
+	@GET
+	@Path("seconde/{groupe}")
+	public CreneauxBean getSecondCreneaux(@PathParam("groupe") Long groupe) {
+		// Retrieve slots
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				2);
+		criteria.add(new CriterionDao<Long>(SlotEntityFields.GROUP, groupe,
+				Operator.EQUAL));
+		criteria.add(new CriterionDao<Boolean>(SlotEntityFields.SECOND, Boolean.TRUE,
 				Operator.EQUAL));
 		List<SlotEntity> lEntities = dao.find(criteria);
 		List<SlotUi> lUis = new SlotTransformer().toUi(lEntities);
@@ -113,7 +143,30 @@ public class CreneauService {
 		
 		entity.setBeginDt(creneau.getBeginDt());
 		entity.setEndDt(creneau.getEndDt());
+		entity.setHasSecond(creneau.isHasSecond());
 		SlotEntity entityUpdated = dao.save(entity);
+		
+		//Build child link
+		if(creneau.isHasSecond() && CollectionUtils.isNotEmpty(creneau.getChildren())) {
+			//Annuler / remplace
+			List<CriterionDao<? extends Object>> criteriaChild = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteriaChild.add(new CriterionDao<Long>(CreneauHierarchyEntityFields.PARENT, entityUpdated.getId(),
+					Operator.EQUAL));
+			List<CreneauHierarchyEntity> children = creneauHierarchyDao.find(criteriaChild);
+			for(CreneauHierarchyEntity child: children) {
+				creneauHierarchyDao.delete(child);
+			}
+			
+			//Create
+			for(Long child: creneau.getChildren()) {
+				CreneauHierarchyEntity creneauHierarchyEntity = new CreneauHierarchyEntity();
+				creneauHierarchyEntity.setParent(entityUpdated.getId());
+				creneauHierarchyEntity.setChild(child);
+				creneauHierarchyDao.save(creneauHierarchyEntity);
+			}
+		}
+		
 		return transformer.toUi(entityUpdated);
 	}
 	
@@ -132,6 +185,16 @@ public class CreneauService {
 				Operator.EQUAL));
 		List<SlotEntity> entities = dao.find(criteria);
 		for(SlotEntity entity: entities) {
+			
+			//suppression du lien avec l'enfant
+			List<CriterionDao<? extends Object>> criteriaChild = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteriaChild.add(new CriterionDao<Long>(CreneauHierarchyEntityFields.PARENT, entity.getId(),
+					Operator.EQUAL));
+			List<CreneauHierarchyEntity> children = creneauHierarchyDao.find(criteriaChild);
+			for(CreneauHierarchyEntity child: children) {
+				creneauHierarchyDao.delete(child);
+			}
 			dao.delete(entity.getId());			
 		}
 	}

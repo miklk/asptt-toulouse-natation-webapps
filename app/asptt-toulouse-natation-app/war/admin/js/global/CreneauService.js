@@ -9,6 +9,9 @@ slotServices.factory('SlotService', ['$resource',
 		byDay: $resource('/resources/slots/:groupe',{},{
 			query:{method:'GET', isArray: false, params: {}}
 		}),
+		secondes: $resource('/resources/creneaux/:groupe',{},{
+			query:{method:'GET', isArray: false, params: {}}
+		}),
 		remove: $resource('/resources/creneaux/:creneau',{},{
 			query:{method:'DELETE', isArray: false, params: {}}
 		}),

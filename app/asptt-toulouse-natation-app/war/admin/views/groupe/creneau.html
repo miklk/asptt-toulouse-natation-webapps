@@ -59,6 +59,21 @@
 					</div>
 				</div>
 			</div>
+			<div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="creneau.hasSecond"> Possède des secondes séances
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" ng-show="creneau.hasSecond">
+                <label for="secondesSeances" class="col-md-2 control-label">Possibles secondes séances</label>
+                <div class="col-md-10">
+                    <select id="secondesSeances" ng-model="creneau.children" ng-options="creneauSeconde.id as (creneauSeconde.dayOfWeek + '-' + creneauSeconde.swimmingPool + ' ' + (creneauSeconde.beginDt | date: 'HH:mm') + '/' + (creneauSeconde.endDt | date:'HH:mm')) for creneauSeconde in secondes" multiple size="{{secondes.length}}"></select>
+                </div>
+            </div>
 		</form>
 	</div>
 	<div class="modal-footer">

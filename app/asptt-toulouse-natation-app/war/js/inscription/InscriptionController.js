@@ -135,13 +135,34 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 					if($scope.dossiers[$scope.currentDossier].groupe.seanceunique) {
 						$scope.unique = true;
 					} else {
-						$scope.unique = false;	
+						$scope.unique = false;
 					}
 					if(!slot.second && slots.seconde) {
 						$scope.hideSeconde = false;
+						$scope.currentSlot = slot;
 						alert("Vous avez le droit à une seconde séance");
+					} else {
+						$scope.currentSlot = null;
 					}
 				};
+				
+				$scope.isNotChild = function(creneau) {
+					var result = true;
+					if($scope.currentSlot != null) {
+						if(creneau.second) { 
+							if($scope.currentSlot.children.indexOf(creneau.id) == -1) {
+								result = true;
+							} else {
+								result = false;
+							}
+						} else {
+							result = true;
+						}
+					} else {
+						result = false;
+					}
+					return result;
+				}
 				$scope.resetSlot = function() {
 					$scope.hideSeconde = true;
 					$scope.unique = false;

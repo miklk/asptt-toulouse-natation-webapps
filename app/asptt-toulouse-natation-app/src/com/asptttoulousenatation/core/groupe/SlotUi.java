@@ -1,6 +1,8 @@
 package com.asptttoulousenatation.core.groupe;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -23,6 +25,9 @@ public class SlotUi implements IsSerializable {
 	private boolean second;
 	private boolean selected = false;
 	private boolean complet;
+	private boolean hasSecond;
+	
+	private List<Long> children;
 
 	public SlotUi() {
 		complet = false;
@@ -30,7 +35,7 @@ public class SlotUi implements IsSerializable {
 
 	public SlotUi(Long pId, String pDayOfWeek, int pBegin, String pBeginStr,
 			int pEnd, String pEndStr, GroupUi pGroup, String pSwimmingPool,
-			String pEducateur, int pPlaceDisponible, int pPlaceRestante, boolean pSecond) {
+			String pEducateur, int pPlaceDisponible, int pPlaceRestante, boolean pSecond, boolean pHasSecond) {
 		this();
 		id = pId;
 		dayOfWeek = pDayOfWeek;
@@ -44,6 +49,14 @@ public class SlotUi implements IsSerializable {
 		placeDisponible = pPlaceDisponible;
 		placeRestante = pPlaceRestante;
 		second = pSecond;
+		hasSecond = pHasSecond;
+	}
+	
+	public void addChild(Long childId) {
+		if(children == null) {
+			children = new ArrayList<Long>(5);
+		}
+		children.add(childId);	
 	}
 
 	public Long getId() {
@@ -172,6 +185,22 @@ public class SlotUi implements IsSerializable {
 
 	public void setEndDt(Date endDt) {
 		this.endDt = endDt;
+	}
+
+	public boolean isHasSecond() {
+		return hasSecond;
+	}
+
+	public void setHasSecond(boolean hasSecond) {
+		this.hasSecond = hasSecond;
+	}
+
+	public List<Long> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<Long> children) {
+		this.children = children;
 	}
 	
 }

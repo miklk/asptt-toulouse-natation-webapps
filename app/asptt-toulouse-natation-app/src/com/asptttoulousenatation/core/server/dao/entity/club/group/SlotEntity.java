@@ -57,13 +57,16 @@ public class SlotEntity implements IEntity {
 	@Persistent
 	private Boolean second;
 	
+	@Persistent
+	private Boolean hasSecond;
+	
 	public SlotEntity() {
 		
 	}
 
 	public SlotEntity(Long pId, String pDayOfWeek, int pBegin, int pEnd,
 			Long pGroup, String pSwimmingPool, String pEducateur,
-			Integer pPlaceDisponible, Integer pPlaceRestante, Boolean pSecond) {
+			Integer pPlaceDisponible, Integer pPlaceRestante, Boolean pSecond, Boolean pHasSecond) {
 		super();
 		id = pId;
 		dayOfWeek = pDayOfWeek;
@@ -75,6 +78,7 @@ public class SlotEntity implements IEntity {
 		placeDisponible = pPlaceDisponible;
 		placeRestante = pPlaceRestante;
 		second = pSecond;
+		hasSecond = pHasSecond;
 	}
 
 
@@ -173,5 +177,12 @@ public class SlotEntity implements IEntity {
 	public void setEndDt(Date endDt) {
 		this.endDt = endDt;
 	}
-	
+
+	public Boolean getHasSecond() {
+		return hasSecond;
+	}
+
+	public void setHasSecond(Boolean hasSecond) {
+		this.hasSecond = hasSecond;
+	}
 }

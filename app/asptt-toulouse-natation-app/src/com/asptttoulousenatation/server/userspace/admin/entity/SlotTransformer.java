@@ -9,14 +9,22 @@ import org.joda.time.DateTime;
 
 import com.asptttoulousenatation.core.groupe.GroupUi;
 import com.asptttoulousenatation.core.groupe.SlotUi;
+import com.asptttoulousenatation.core.server.dao.club.group.CreneauHierarchyDao;
+import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
+import com.asptttoulousenatation.core.server.dao.entity.club.group.CreneauHierarchyEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
+import com.asptttoulousenatation.core.server.dao.entity.field.CreneauHierarchyEntityFields;
+import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
+import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.server.util.DateUtils;
 
 public class SlotTransformer extends
 		AbstractEntityTransformer<SlotUi, SlotEntity> {
 
 	private GroupTransformer groupTransformer = new GroupTransformer();
+	private CreneauHierarchyDao creneauHierarchyDao = new CreneauHierarchyDao();
+	private SlotDao slotDao = new SlotDao();
 	
 	private static SlotTransformer INSTANCE;
 	
@@ -57,6 +65,18 @@ public class SlotTransformer extends
 		}
 		if(pEntity.getEndDt() == null) {
 			lUi.setEndDt(DateTime.now().withHourOfDay(end[0]).withMinuteOfHour(end[1]).toDate());
+		}
+		
+		lUi.setHasSecond(BooleanUtils.toBoolean(pEntity.getHasSecond()));
+		
+		//Search for children
+		List<CriterionDao<? extends Object>> criteriaChild = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteriaChild.add(new CriterionDao<Long>(CreneauHierarchyEntityFields.PARENT, pEntity.getId(),
+				Operator.EQUAL));
+		List<CreneauHierarchyEntity> children = creneauHierarchyDao.find(criteriaChild);
+		for(CreneauHierarchyEntity child: children) {
+			lUi.addChild(child.getChild());
 		}
 		return lUi;
 	}
@@ -103,6 +123,17 @@ public class SlotTransformer extends
 		}
 		if(pEntity.getEndDt() == null) {
 			lUi.setEndDt(DateTime.now().withHourOfDay(end[0]).withMinuteOfHour(end[1]).toDate());
+		}
+		
+		lUi.setHasSecond(BooleanUtils.toBoolean(pEntity.getHasSecond()));
+		//Search for children
+		List<CriterionDao<? extends Object>> criteriaChild = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteriaChild.add(new CriterionDao<Long>(CreneauHierarchyEntityFields.PARENT, pEntity.getId(),
+				Operator.EQUAL));
+		List<CreneauHierarchyEntity> children = creneauHierarchyDao.find(criteriaChild);
+		for(CreneauHierarchyEntity child: children) {
+			lUi.addChild(child.getChild());
 		}
 		return lUi;
 	}

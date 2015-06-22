@@ -59,12 +59,18 @@ groupeController.controller('GroupeController', ['$http', '$scope', '$location',
 	}
 	
 	$scope.prepareCreneau = function() {
+		SlotService.secondes.query({groupe: $scope.groupe.id}, function(data) {
+			$scope.secondes = data.creneaux;
+		});
 		$scope.creneau = new Object();
 		$scope.creneauPopupTitle = "Ajouter un créneau au groupe " + $scope.groupe.title;
 		$('#creneau-popup').modal();
 	}
 	
 	$scope.selectCreneau = function(index, creneau, jour) {
+		SlotService.secondes.query({groupe: $scope.groupe.id}, function(data) {
+			$scope.secondes = data.creneaux;
+		});
 		$scope.currentIndex = index;
 		$scope.creneau = creneau;
 		$scope.creneau.beginDt = new Date($scope.creneau.beginDt);
