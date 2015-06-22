@@ -83,21 +83,24 @@ public class DossierResultTransformer extends AbstractEntityTransformer<DossierR
 						SlotEntity slotEntity = creneauDao.get(Long
 								.valueOf(creneauId));
 
-						String creneauStr = slotEntity.getDayOfWeek() + " ";
-						if (slotEntity.getBeginDt() != null) {
-							DateTime beginDt = new DateTime(slotEntity
-									.getBeginDt().getTime());
-							DateTime endDt = new DateTime(slotEntity.getEndDt()
-									.getTime());
-							creneauStr = creneauStr + beginDt.toString("HH:mm")
-									+ "-" + endDt.toString("HH:mm");
-						} else {
-							creneauStr = creneauStr + " - "
+						if (slotEntity != null) {
+							String creneauStr = slotEntity.getDayOfWeek() + " ";
+							if (slotEntity.getBeginDt() != null) {
+								DateTime beginDt = new DateTime(slotEntity
+										.getBeginDt().getTime());
+								DateTime endDt = new DateTime(slotEntity
+										.getEndDt().getTime());
+								creneauStr = creneauStr
+										+ beginDt.toString("HH:mm") + "-"
+										+ endDt.toString("HH:mm");
+							} else {
+								creneauStr = creneauStr + " - "
 
-							+ slotEntity.getSwimmingPool();
+								+ slotEntity.getSwimmingPool();
 
+							}
+							results.add(creneauStr);
 						}
-						results.add(creneauStr);
 					}
 				}
 			}
