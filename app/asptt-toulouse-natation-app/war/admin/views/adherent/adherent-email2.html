@@ -1,0 +1,85 @@
+<div class="container-fluid" ng-controller="AdherentEmailCtrl">
+	<div class="row">
+		<h1 class="page-header">Envoyer un e-mail aux adhérents</h1>
+	</div>
+	<div class="row">
+	<h3>Destinataires</h3>
+	<form class="form-inline">
+		<div class="form-group">
+			<label class="radio-inline">
+				<input type="radio" ng-model="destinataire" value="all" />Tous les adhérents
+			</label>
+			<label class="radio-inline">
+				<input type="radio" ng-model="destinataire" value="enf" />Ecole de natation
+			</label>
+			<label class="radio-inline">
+				<input type="radio" ng-model="destinataire" value="competiteur" />Compétiteurs
+			</label>
+			<label class="radio-inline">
+				<input type="radio" ng-model="destinataire" value="piscine" />Piscine
+			</label>
+			<select class="form-control" ng-model="piscine"
+		    		ng-options="piscine.creneaux as piscine.intitule for piscine in piscines" ng-show="destinataire == 'piscine'">
+		    		<option value="">Choisir une piscine</option>
+  	    	</select>
+			<label class="radio-inline">
+				<input type="radio" ng-model="destinataire" value="groupes" />Groupe
+			</label>
+			<select class="form-control" ng-model="groupesSelected"
+		    	ng-options="groupe.id as groupe.title for groupe in groupes" ng-show="destinataire == 'groupes'" multiple>
+		    	<option value="" ng-value="0">Choisir un groupe</option>
+	  	    </select>
+	  	    <label class="radio-inline">
+				<input type="radio" ng-model="destinataire" value="creneau" />Créneau
+			</label>
+			<select class="form-control" ng-model="groupesSelected"
+		    	ng-options="groupe.id as groupe.title for groupe in groupes" ng-change="loadCreneau()" ng-show="destinataire == 'creneau'">
+		    	<option value="" ng-value="0">Choisir un groupe</option>
+	  	    </select>
+	  	    <select class="form-control" ng-model="creneau"
+		    	ng-options="creneau.id as creneau.label for creneau in creneaux" ng-show="showCreneau && destinataire == 'creneau'" >
+		    	<option value="" ng-value="0">Choisir un créneau</option>
+	  	    </select>
+		</div>
+	</form>
+	</div>
+	<div class="row">
+		<h3>Sujet</h3>
+		<form>
+			<div class="form-group">
+				<input id="subject" type="text" ng-model="subject" placeholder="Sujet" class="form-control" size="100" maxlength="100" />
+			</div>
+		</form>
+	</div>
+	<div class="row">
+		<h3>Message</h3>
+		<div class="col-md-9">
+			<div text-angular="text-angular" ng-model="htmlcontent"></div>
+		</div>
+		<div class="col-md-3">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<h3 class="panel-title">Pièces jointes</h3>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<form role="form" class="form-vertical" name="uploadForm" ng-submit="upload()" enctype="multipart/form-data" novalidate>
+							<input type="file" id="fileUploadInput" name="files" multiple />
+							<button type="submit" class="btn btn-sm btn-block btn-primary">Ajouter</button>
+						</form>
+					</div>
+					<div class="row">
+						<span>{{fichier.name}}<br /></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="margin-top: 2%">
+		<button type="button" class="btn btn-primary btn-sm btn-block" ng-click="sendEmail2()" >Envoyer le message</button>
+	</div>
+	<div class="row" ng-show="adherents">
+		<h4><span class="badge">{{adherents.length}}</span> destinataires</h4>
+		<p ng-repeat="adherent in adherents">{{adherent}}</p>
+	</div>
+</div>

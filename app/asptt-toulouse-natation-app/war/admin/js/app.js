@@ -32,6 +32,10 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 			templateUrl: 'views/adherent/adherent-email.html',
 			controller: 'AdherentEmailCtrl'
 		}).
+		when('/adherent-email2', {
+			templateUrl: 'views/adherent/adherent-email2.html',
+			controller: 'AdherentEmailCtrl'
+		}).
 		when('/en-jours', {
 			templateUrl: 'views/en-jours.html'
 		}).

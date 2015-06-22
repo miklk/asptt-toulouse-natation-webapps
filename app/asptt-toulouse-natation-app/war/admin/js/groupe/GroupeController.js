@@ -49,6 +49,9 @@ groupeController.controller('GroupeController', ['$http', '$scope', '$location',
 		$scope.groupe = groupe;
 		SlotService.byDay.query({groupe: groupe.id}, function(data) {
 			$scope.creneaux = data.slots;
+			$('html, body').animate({  
+	            scrollTop:$("#panel-creneaux").offset().top  
+	        }, 'slow');
 		});
 		PiscineService.all.query({}, function(data) {
 			$scope.piscines = data;
@@ -92,7 +95,7 @@ groupeController.controller('GroupeController', ['$http', '$scope', '$location',
 	
 	$scope.clearCreneaux = function() {
 		if(confirm("Voulez-vous supprimer tous les créneaux ?")) {
-			SlotService.clear.query({creneau: $scope.groupe.id}, function(data) {
+			SlotService.clear.query({groupe: $scope.groupe.id}, function(data) {
 				$scope.loadCreneaux($scope.groupe);
 			});
 		}

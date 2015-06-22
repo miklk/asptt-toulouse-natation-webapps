@@ -54,7 +54,9 @@ import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.GroupEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
+import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
@@ -542,6 +544,103 @@ public class AdherentService {
 		}
 
 		return recipents;
+	}
+	
+	@Path("/email2")
+	@POST
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public List<String> email2(FormDataMultiPart multiPart) {
+		String subject = multiPart.getField("messageSubject").getValue();
+		String corps = multiPart.getField("messageContent").getValue();
+		FormDataBodyPart fichierMultiPart = multiPart.getField("file");
+		List<String> recipients = new ArrayList<String>();
+		try {
+			Properties props = new Properties();
+			Session session = Session.getDefaultInstance(props, null);
+
+			DossierDao dossierDao = new DossierDao();
+			List<DossierEntity> dossiers = dossierDao.getAll();
+			for (DossierEntity dossier : dossiers) {
+				try {
+					if (StringUtils.isNotBlank(dossier.getEmail())) {
+						recipients.add(dossier.getEmail());
+						Multipart mp = new MimeMultipart();
+						MimeBodyPart htmlPart = new MimeBodyPart();
+
+						String corpsUpdated = StringUtils.replace(corps,
+								"${motdepasse}", dossier.getMotdepasse());
+
+						htmlPart.setContent(corpsUpdated, "text/html");
+						mp.addBodyPart(htmlPart);
+						MimeMessage msg = new MimeMessage(session);
+						msg.setFrom(new InternetAddress(
+								"webmaster@asptt-toulouse-natation.com",
+								"ASPTT Toulouse Natation"));
+						Address[] replyTo = { new InternetAddress(
+								"contact@asptt-toulouse-natation.com",
+								"ASPTT Toulouse Natation") };
+						msg.setReplyTo(replyTo);
+						msg.addRecipient(Message.RecipientType.TO,
+								new InternetAddress(dossier.getEmail()));
+						if (StringUtils
+								.isNotBlank(dossier.getEmailsecondaire())) {
+							msg.addRecipient(
+									Message.RecipientType.CC,
+									new InternetAddress(dossier
+											.getEmailsecondaire()));
+						}
+						if (fichierMultiPart.getFormDataContentDisposition()
+								.getFileName() != null) {
+							MimeBodyPart attachment = new MimeBodyPart();
+							attachment.setFileName(fichierMultiPart
+									.getFormDataContentDisposition()
+									.getFileName());
+							InputStream data = fichierMultiPart
+									.getValueAs(InputStream.class);
+							byte[] fileData = IOUtils.toByteArray(data);
+							String mediaType = fichierMultiPart.getMediaType()
+									.toString();
+							attachment.setContent(new ByteArrayInputStream(
+									fileData), mediaType);
+							mp.addBodyPart(attachment);
+						}
+						msg.setSubject(subject, "UTF-8");
+						msg.setContent(mp);
+						Transport.send(msg);
+					}
+				} catch (Exception e) {
+					LOG.log(Level.SEVERE, e.getMessage(), e);
+				}
+			}
+			Multipart mp = new MimeMultipart();
+			MimeBodyPart htmlPart = new MimeBodyPart();
+			StrBuilder rapport = new StrBuilder();
+			rapport.appendWithSeparators(recipients, "<br />");
+			htmlPart.setContent("E-mail envoyé à " + new Date() + "<br />"
+					+ rapport.toString(), "text/html");
+			mp.addBodyPart(htmlPart);
+			MimeMessage msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress(
+					"webmaster@asptt-toulouse-natation.com",
+					"ASPTT Toulouse Natation"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					"contact@asptt-toulouse-natation.com"));
+			msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
+					"support@asptt-toulouse-natation.com"));
+			msg.setSubject("Rapport d'envoi d'e-mail", "UTF-8");
+			msg.setContent(mp);
+			Transport.send(msg);
+
+		} catch (AddressException e) {
+			LOG.log(Level.SEVERE, e.getMessage(), e);
+
+		} catch (MessagingException e) {
+			LOG.log(Level.SEVERE, e.getMessage(), e);
+		} catch (UnsupportedEncodingException e) {
+			LOG.log(Level.SEVERE, e.getMessage(), e);
+		}
+
+		return recipients;
 	}
 
 	private List<String> getDestinataires(String destinataire, Set<Long> groupes,
