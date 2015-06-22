@@ -156,7 +156,7 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 								result = false;
 							}
 						} else {
-							result = true;
+							result = creneau.complet;
 						}
 					} else {
 						result = false;
