@@ -148,18 +148,18 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 				
 				$scope.isNotChild = function(creneau) {
 					var result = true;
-					if($scope.currentSlot != null) {
+					if($scope.currentSlot != null && $scope.currentSlot.children != null) {
 						if(creneau.second) { 
 							if($scope.currentSlot.children.indexOf(creneau.id) == -1) {
 								result = true;
 							} else {
-								result = false;
+								result = creneau.complet;
 							}
 						} else {
-							result = creneau.complet;
+							result = false;
 						}
 					} else {
-						result = false;
+						result = creneau.second;
 					}
 					return result;
 				}
