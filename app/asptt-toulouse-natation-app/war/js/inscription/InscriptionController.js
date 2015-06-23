@@ -332,7 +332,11 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 					var responsePromise = $http.post("/resources/inscription/price", dataToServer, {});
 				    responsePromise.success(function(dataFromServer, status, headers, config) {
 				    	$scope.dossiers = dataFromServer.nageurs;
-				    	$scope.price = dataFromServer.price;
+				    	$scope.price = 0;
+				    	angular.forEach(dataFromServer.nageurs, function(nageur) {
+				    		$scope.price = $scope.price + nageur.dossier.tarif;	
+				    	});
+				    	
 				    	$scope.dossiersCount = dataFromServer.nageurs.length;
 						$scope.principal = dataFromServer.dossier;
 						var dateInscription = new Date();
