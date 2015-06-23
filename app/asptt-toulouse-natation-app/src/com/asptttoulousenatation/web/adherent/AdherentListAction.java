@@ -44,10 +44,13 @@ import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
+import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionNouveauEntity;
+import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
 import com.asptttoulousenatation.core.server.dao.inscription.InscriptionNouveauDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
@@ -569,13 +572,14 @@ public class AdherentListAction extends HttpServlet {
 
 			criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 			criteria.add(new CriterionDao<Long>(
-					InscriptionEntityFields.NOUVEAUGROUPE, group.getId(),
+					DossierNageurEntityFields.GROUPE, group.getId(),
 					Operator.EQUAL));
-			criteria.add(new CriterionDao<Date>(
-					InscriptionEntityFields.INSCRIPTIONDT, new Date(),
+			criteria.add(new CriterionDao<String>(
+					DossierNageurEntityFields.CRENEAUX, null,
 					Operator.NOT_NULL));
-			List<InscriptionEntity2> adherents = inscription2Dao.find(criteria);
-			for (InscriptionEntity2 adherent : adherents) {
+			DossierNageurDao dossierNageurDao = new DossierNageurDao();
+			List<DossierNageurEntity> adherents = dossierNageurDao.find(criteria);
+			for (DossierNageurEntity adherent : adherents) {
 				String creneau = adherent.getCreneaux();
 				if (StringUtils.isNotBlank(creneau)) {
 					for (String creneauSplit : creneau.split(";")) {

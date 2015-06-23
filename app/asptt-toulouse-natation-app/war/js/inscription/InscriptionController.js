@@ -146,6 +146,10 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 					}
 				};
 				
+				$scope.disableCreneau = function(creneau) {
+					return ($scope.hideSeconde && creneau.second) || ($scope.unique && !creneau.second) || creneau.complet || $scope.isNotChild(creneau);
+				}
+				
 				$scope.isNotChild = function(creneau) {
 					var result = true;
 					if($scope.currentSlot != null && $scope.currentSlot.children != null) {
