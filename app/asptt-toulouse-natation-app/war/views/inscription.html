@@ -61,6 +61,7 @@
   	 <ul>
         <li><a href="doc/Note_dinformation_2015_2016.pdf" target="_blank">Note d'information pour la saison 2015-2016</a></li>
         <li><a href="doc/Cheminement_inscriptions_2015_2016.pdf" target="_blank">Cheminement des inscriptions (choix du groupe)</a></li>
+        <li><a href="doc/Affectations_groupe_competition.pdf" target="_blank">Critères d'affectations des groupes compétitions</a></li>
         <li><a href="doc/Reglement_interieur_natation_2014-2015.pdf" target="_blank">Règlement Intérieur</a></li>
     </ul>
     <div class="row center-block">
@@ -181,7 +182,7 @@
 		  	 		<td>
 		  	 			<div class="checkbox" ng-repeat="lundi in slot.lundi | orderBy:'beginDt'">
 						  <label>
-						    <input type="checkbox" name="creneaux" ng-model="lundi.selected" ng-disabled="(hideSeconde && lundi.second) || (unique && !lundi.second) || lundi.complet || isNotChild(lundi)" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, lundi)">
+						    <input type="checkbox" name="creneaux" ng-model="lundi.selected" ng-disabled="(hideSeconde && lundi.second) || (unique && !lundi.second) || lundi.complet || (!dossiers[currentDossier].groupe.secondes && lundi.second) || isNotChild(lundi)" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, lundi)">
 						    {{lundi.beginDt | date: 'HH:mm'}}-{{lundi.endDt | date: 'HH:mm'}} ({{lundi.placeDisponible - lundi.placeRestante}}/{{lundi.placeDisponible}}) <span ng-show="lundi.second">Seconde séance.</span><span ng-show="lundi.complet">&nbsp;Complet</span><br >
 						  </label>
 						</div>
@@ -189,7 +190,7 @@
 		  	 		<td>
 		  	 			<div class="checkbox" ng-repeat="mardi in slot.mardi | orderBy:'beginDt'">
 						  <label>
-						    <input type="checkbox" name="creneaux" ng-model="mardi.selected" ng-disabled="(hideSeconde && mardi.second) || (unique && !mardi.second) || mardi.complet || isNotChild(mardi)" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, mardi)">
+						    <input type="checkbox" name="creneaux" ng-model="mardi.selected" ng-disabled="(hideSeconde && mardi.second) || (unique && !mardi.second) || mardi.complet || (!dossiers[currentDossier].groupe.secondes && mardi.second) || isNotChild(mardi)" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, mardi)">
 						    {{mardi.beginDt | date: 'HH:mm'}}-{{mardi.endDt | date: 'HH:mm'}} ({{mardi.placeDisponible - mardi.placeRestante}}/{{mardi.placeDisponible}}) <span ng-show="mardi.second">Seconde séance.</span><span ng-show="mardi.complet">&nbsp;Complet</span><br >
 						  </label>
 						</div>
@@ -197,7 +198,7 @@
 		  	 		<td>
 		  	 			<div class="checkbox" ng-repeat="mercredi in slot.mercredi | orderBy:'beginDt'">
 						  <label>
-						    <input type="checkbox" name="creneaux" ng-model="mercredi.selected" ng-disabled="(hideSeconde && mercredi.second) || (unique && !mercredi.second) || mercredi.complet || isNotChild(mercredi)" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, mercredi)">
+						    <input type="checkbox" name="creneaux" ng-model="mercredi.selected" ng-disabled="(hideSeconde && mercredi.second) || (unique && !mercredi.second) || mercredi.complet || (!dossiers[currentDossier].groupe.secondes && mercredi.second) || isNotChild(mercredi)" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, mercredi)">
 						    {{mercredi.beginDt | date: 'HH:mm'}}-{{mercredi.endDt | date: 'HH:mm'}} ({{mercredi.placeDisponible - mercredi.placeRestante}}/{{mercredi.placeDisponible}}) <span ng-show="mercredi.second">Seconde séance.</span><span ng-show="mercredi.complet">&nbsp;Complet</span><br >
 						  </label>
 						</div>
@@ -205,7 +206,7 @@
 		  	 		<td>
 		  	 			<div class="checkbox" ng-repeat="jeudi in slot.jeudi | orderBy:'beginDt'">
 						  <label>
-						    <input type="checkbox" name="creneaux" ng-model="jeudi.selected" ng-disabled="(hideSeconde && jeudi.second) || (unique && !jeudi.second) || jeudi.complet || isNotChild(jeudi)"  ng-change="toggleCreneau(dossiers[currentDossier].creneaux, jeudi)">
+						    <input type="checkbox" name="creneaux" ng-model="jeudi.selected" ng-disabled="(hideSeconde && jeudi.second) || (unique && !jeudi.second) || jeudi.complet || (!dossiers[currentDossier].groupe.secondes && jeudi.second) || isNotChild(jeudi)"  ng-change="toggleCreneau(dossiers[currentDossier].creneaux, jeudi)">
 						    {{jeudi.beginDt | date: 'HH:mm'}}-{{jeudi.endDt | date: 'HH:mm'}} ({{jeudi.placeDisponible - jeudi.placeRestante}}/{{jeudi.placeDisponible}}) <span ng-show="jeudi.second">Seconde séance.</span><span ng-show="jeudi.complet">&nbsp;Complet</span><br >
 						  </label>
 						</div>
@@ -213,7 +214,7 @@
 		  	 		<td>
 		  	 			<div class="checkbox" ng-repeat="vendredi in slot.vendredi | orderBy:'beginDt'">
 						  <label>
-						    <input type="checkbox" name="creneaux" ng-model="vendredi.selected" ng-disabled="(hideSeconde && vendredi.second) || (unique && !vendredi.second) || vendredi.complet || isNotChild(vendredi)" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, vendredi)">
+						    <input type="checkbox" name="creneaux" ng-model="vendredi.selected" ng-disabled="(hideSeconde && vendredi.second) || (unique && !vendredi.second) || vendredi.complet || (!dossiers[currentDossier].groupe.secondes && vendredi.second) || isNotChild(vendredi)" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, vendredi)">
 						    {{vendredi.beginDt | date: 'HH:mm'}}-{{vendredi.endDt | date: 'HH:mm'}} ({{vendredi.placeDisponible - vendredi.placeRestante}}/{{vendredi.placeDisponible}}) <span ng-show="vendredi.second">Seconde séance.</span><span ng-show="vendredi.complet">&nbsp;Complet</span><br >
 						  </label>
 						</div>
@@ -221,7 +222,7 @@
 		  	 		<td>
 		  	 			<div class="checkbox" ng-repeat="samedi in slot.samedi | orderBy:'beginDt'">
 						  <label>
-						    <input type="checkbox" name="creneaux" ng-model="samedi.selected" ng-disabled="(hideSeconde && samedi.second) || (unique && !samedi.second) || samedi.complet || isNotChild(samedi)" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, samedi)">
+						    <input type="checkbox" name="creneaux" ng-model="samedi.selected" ng-disabled="(hideSeconde && samedi.second) || (unique && !samedi.second) || samedi.complet || (!dossiers[currentDossier].groupe.secondes && samedi.second) || isNotChild(samedi)" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, samedi)">
 						    {{samedi.beginDt | date: 'HH:mm'}}-{{samedi.endDt | date: 'HH:mm'}} ({{samedi.placeDisponible - samedi.placeRestante}}/{{samedi.placeDisponible}}) <span ng-show="samedi.second">Seconde séance.</span><span ng-show="samedi.complet">&nbsp;Complet</span><br >
 						  </label>
 						</div>

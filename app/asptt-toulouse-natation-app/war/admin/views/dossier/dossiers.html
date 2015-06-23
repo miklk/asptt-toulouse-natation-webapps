@@ -8,6 +8,15 @@
     	ng-options="groupe.id as groupe.title for groupe in groupes">
 		 	<option value="">Choisir un groupe</option>
 		</select>
+		<div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="sansGroupe"> Sans groupe
+                        </label>
+                    </div>
+                </div>
+         </div>
 		<button type="button" class="btn btn-block btn-primary" ng-click="search()">Rechercher</button>
 		<button type="button" class="btn btn-block btn-primary" ng-click="initCreerDossier()">Créer un dossier</button>
 	</div>
@@ -29,7 +38,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="dossier in dossiers" ng-class="{'warning': dossier.etat =='PREINSCRIT'}">
+				<tr ng-repeat="dossier in dossiers | orderBy:'nom'" ng-class="{'warning': dossier.etat =='PREINSCRIT'}">
 					<td>
 						<div class="btn-group">
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
@@ -67,6 +76,7 @@
 			</tbody>
 		</table>
 	</div>
+
 	
 	<div ng-include="'views/dossier/groupe.html'"></div>
 	<div ng-include="'views/dossier/dossier-creer.html'"></div>

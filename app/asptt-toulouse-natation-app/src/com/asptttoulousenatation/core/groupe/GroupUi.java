@@ -23,6 +23,7 @@ public class GroupUi implements IsSerializable {
 	private String description;
 	private boolean enf;
 	private boolean competition;
+	private boolean secondes;
 	
 	public GroupUi() {
 		super();
@@ -152,6 +153,14 @@ public class GroupUi implements IsSerializable {
 
 	public void setCompetition(boolean competition) {
 		this.competition = competition;
+	}
+
+	public boolean isSecondes() {
+		return secondes;
+	}
+
+	public void setSecondes(boolean secondes) {
+		this.secondes = secondes;
 	}
 	
 }

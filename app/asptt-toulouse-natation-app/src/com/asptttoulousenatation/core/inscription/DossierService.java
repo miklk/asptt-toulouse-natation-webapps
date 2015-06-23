@@ -14,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
@@ -43,7 +44,7 @@ public class DossierService {
 	@Path("/find")
 	@GET
 	@Consumes("application/json")
-	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe) {
+	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe) {
 		List<DossierResultBean> result = Collections.emptyList();
 		List<DossierNageurEntity> nageurs = new ArrayList<DossierNageurEntity>();
 		if(StringUtils.isNotBlank(texteLibre)) {
@@ -77,6 +78,12 @@ public class DossierService {
 					1);
 			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE,
 					groupe, Operator.EQUAL));
+			nageurs.addAll(dao.find(criteriaNageur));
+		} else if (BooleanUtils.isTrue(sansGroupe)) {
+			List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE,
+					null, Operator.NULL));
 			nageurs.addAll(dao.find(criteriaNageur));
 		} else {
 			nageurs = dao.getAll();

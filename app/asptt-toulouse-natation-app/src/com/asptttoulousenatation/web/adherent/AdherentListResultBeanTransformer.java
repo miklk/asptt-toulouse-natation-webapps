@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
@@ -113,19 +114,15 @@ public class AdherentListResultBeanTransformer implements Serializable {
 						SlotEntity slotEntity = slotDao.get(Long
 								.valueOf(creneauId));
 						
+						String beginDtAsString = new DateTime(slotEntity.getBeginDt().getTime()).toString("HH:mm");
+						String endDtAsString = new DateTime(slotEntity.getEndDt().getTime()).toString("HH:mm");
+						
 						String creneauStr = slotEntity.getDayOfWeek()
 								+ " "
-								+ (slotEntity.getBegin() / 60)
-								+ ":"
-								+ StringUtils
-										.rightPad(Integer.toString((slotEntity
-												.getBegin() % 60)), 2, "0")
+								+ beginDtAsString
 								+ " - "
-								+ (slotEntity.getEnd() / 60)
-								+ ":"
-								+ StringUtils.rightPad(Integer
-										.toString((slotEntity.getEnd() % 60)),
-										2, "0") + " - "
+								+ endDtAsString
+								+ " - "
 								+ slotEntity.getSwimmingPool();
 						results.add(creneauStr);
 					}

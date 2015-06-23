@@ -47,9 +47,14 @@ public class GroupEntity implements IEntity {
 	@Persistent
 	private String description;
 	
+	@Persistent
 	private Boolean enf;
 	
+	@Persistent
 	private Boolean competition;
+	
+	@Persistent
+	private Boolean secondes;
 	
 	public GroupEntity() {
 		
@@ -169,6 +174,14 @@ public class GroupEntity implements IEntity {
 
 	public void setCompetition(Boolean competition) {
 		this.competition = competition;
+	}
+
+	public Boolean getSecondes() {
+		return secondes;
+	}
+
+	public void setSecondes(Boolean secondes) {
+		this.secondes = secondes;
 	}
 	
 }

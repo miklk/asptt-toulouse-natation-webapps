@@ -1,6 +1,7 @@
 package com.asptttoulousenatation.core.inscription;
 
 import java.util.LinkedHashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -91,8 +92,8 @@ public class DossierResultTransformer extends AbstractEntityTransformer<DossierR
 								DateTime endDt = new DateTime(slotEntity
 										.getEndDt().getTime());
 								creneauStr = creneauStr
-										+ beginDt.toString("HH:mm") + "-"
-										+ endDt.toString("HH:mm");
+										+ beginDt.toString("HH:mm", Locale.FRANCE) + "-"
+										+ endDt.toString("HH:mm", Locale.FRANCE);
 							} else {
 								creneauStr = creneauStr + " - "
 

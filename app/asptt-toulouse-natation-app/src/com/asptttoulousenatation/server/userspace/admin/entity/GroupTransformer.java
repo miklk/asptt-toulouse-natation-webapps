@@ -41,6 +41,7 @@ public class GroupTransformer extends
 		lUi.setDescription(pEntity.getDescription());
 		lUi.setEnf(BooleanUtils.toBoolean(pEntity.getEnf()));
 		lUi.setCompetition(BooleanUtils.toBoolean(pEntity.getCompetition()));
+		lUi.setSecondes(BooleanUtils.toBoolean(pEntity.getSecondes()));
 		return lUi;
 	}
 
