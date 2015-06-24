@@ -13,10 +13,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
@@ -66,8 +64,8 @@ import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierCertificatEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
-import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierCertificatEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
@@ -542,7 +540,12 @@ public class InscriptionService {
 	@GET
 	public int rappel() {
 		Date seuilInscription = DateTime.now().minusDays(5).toDate();
-		List<DossierEntity> entities = dao.getAll();
+		
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.PREINSCRIT.name(), Operator.EQUAL));
+		List<DossierEntity> entities = dao.find(criteria);
 		int count = 0;
 		for(DossierEntity dossier: entities) {
 			if(dossier.getUpdated().before(seuilInscription)) {
@@ -584,6 +587,9 @@ public class InscriptionService {
 							"UTF-8");
 					msg.setContent(mp);
 					Transport.send(msg);
+					dossier.setReminded(new DateTime().toDate());
+					dossier.setReminder(true);
+					dao.save(dossier);
 				} catch (MessagingException | UnsupportedEncodingException e) {
 					LOG.log(Level.SEVERE,"Erreur pour l'e-mail: " + dossier.getEmail(), e);
 				}
@@ -597,17 +603,22 @@ public class InscriptionService {
 	@GET
 	public int expire() {
 		Date seuilInscription = DateTime.now().minusDays(10).toDate();
-		List<DossierEntity> entities = dao.getAll();
+		
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.PREINSCRIT.name(), Operator.EQUAL));
+		List<DossierEntity> entities = dao.find(criteria);
 		int count = 0;
 		for(DossierEntity dossier: entities) {
 			if(dossier.getUpdated().before(seuilInscription)) {
 				dossier.setStatut(DossierStatutEnum.EXPIRE.name());
 				count++;
-				List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
 						1);
-				criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
+				criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
 						dossier.getId(), Operator.EQUAL));
-				List<DossierNageurEntity> nageurs = dossierNageurDao.find(criteria);
+				List<DossierNageurEntity> nageurs = dossierNageurDao.find(criteriaNageur);
 				for(DossierNageurEntity nageur: nageurs) {
 					nageur.setCreneaux(StringUtils.EMPTY);
 					dossierNageurDao.save(nageur);
