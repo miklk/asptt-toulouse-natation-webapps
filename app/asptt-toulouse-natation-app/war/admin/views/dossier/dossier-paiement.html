@@ -1,0 +1,33 @@
+<div class="modal fade" id="dossier-paiement-popup">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+        <h4 class="modal-title">Réception du paiement</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+            <div class="form-group">
+				<select class="form-control" name="statutPaiement" ng-model="dossierPaiementParameters.statutPaiement" ng-options="statut as statut for statut in paiementStatus">
+				</select>
+            </div>
+            <div class="form-group">
+                <label for="montantReel" class="col-md-3 control-label">Montant réel payé</label>
+                <div class="col-md-9">
+                    <input type="number" id="montantReel" class="form-control" ng-model="dossierPaiementParameters.montantReel" />
+                </div>
+            </div>
+             <div class="form-group">
+                <label for="commentaire" class="col-md-3 control-label">Commentaire</label>
+                <div class="col-md-9">
+                    <textarea id="commentaire" class="form-control" ng-model="dossierPaiementParameters.commentaire" cols="10" rows="10"></textarea>
+                </div>
+            </div>
+        </form>
+      </div>
+      <div class="modal-bottom">
+        <button type="button" class="btn btn-primary btn-block" ng-click="paiement()">Valider</button>
+      </div>
+    </div>
+  </div>
+</div>

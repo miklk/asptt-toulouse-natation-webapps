@@ -75,4 +75,35 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 			});
 		}
 	}
+	
+	$scope.initPaiement = function(dossier) {
+		$scope.paiementStatus = ['PAIEMENT_PARTIEL', 'PAIEMENT_COMPLET'];
+		$scope.dossier = dossier;
+		$scope.dossierPaiementParameters = {
+				dossierId: dossier.dossierId,
+				statutPaiement: 'PAIEMENT_COMPLET',
+				montantReel: dossier.montantreel,
+				commentaire: ''
+		};
+		$('#dossier-paiement-popup').modal();
+	}
+	
+	$scope.paiement = function(dossier) {
+		$rootScope.isLoading = true;
+		$http.post("/resources/dossiers/paiement", $scope.dossierPaiementParameters, {})
+	       .success(function(dataFromServer, status, headers, config) {
+    		   alert("Paiement enregistré.");
+    		   $('#dossier-paiement-popup').modal('hide');
+    		   $rootScope.isLoading = false;
+	    	   
+	       })
+	        .error(function(data, status, headers, config) {
+	          alert("Erreur");
+	       });
+	}
+	
+	$scope.displayComment = function(dossier) {
+		$scope.currentCommentaire = dossier.comment;
+		 $('#dossier-comment-popup').modal();
+	}
 }]);

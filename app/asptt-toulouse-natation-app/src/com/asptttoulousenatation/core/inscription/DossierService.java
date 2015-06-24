@@ -25,6 +25,7 @@ import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntit
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierCertificatEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierCertificatDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
@@ -192,5 +193,22 @@ public class DossierService {
 			}
 			dossierDao.delete(dossier);
 		}
+	}
+	
+	@Path("paiement")
+	@POST
+	public void paiement(DossierPaiementParameters parameters) {
+		DossierEntity dossier = dossierDao.get(parameters.getDossierId());
+		dossier.setStatut(DossierStatutEnum.valueOf(parameters.getStatutPaiement()).name());
+		dossier.setMontantreel(parameters.getMontantReel());
+		if(StringUtils.isNotBlank(parameters.getCommentaire())) {
+			StringBuilder builder = new StringBuilder();
+			if(StringUtils.isNotBlank(dossier.getComment())) {
+				builder.append(dossier.getComment()).append("\n");
+			}
+			builder.append(parameters.getCommentaire());
+			dossier.setComment(builder.toString());
+		}
+		dossierDao.save(dossier);
 	}
 }

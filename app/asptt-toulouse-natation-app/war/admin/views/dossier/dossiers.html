@@ -50,9 +50,9 @@
 						<ul class="dropdown-menu">
 							<li><a href="#/dossier/{{dossier.dossierId}}">Modifier</a></li>
 							<li><a href="#">Relancer</a></li>
-							<li><a href="#" ng-click="remove(index, dossier)">Supprimer</a></li>
+							<li><a href="" ng-click="remove(index, dossier)">Supprimer</a></li>
 							<li class="divider"></li>
-							<li><a href="#">Paiement reçu</a></li>
+							<li><a href="" ng-click="initPaiement(dossier)">Paiement reçu</a></li>
 							<li><a href="#">Certificat</a></li>
 							<li><a href="#">Ajouter un commentaire</a></li>
 							<li class="divider"></li>
@@ -80,4 +80,6 @@
 	
 	<div ng-include="'views/dossier/groupe.html'"></div>
 	<div ng-include="'views/dossier/dossier-creer.html'"></div>
+	<div ng-include="'views/dossier/dossier-paiement.html'"></div>
+	<div ng-include="'views/dossier/dossier-commentaire.html'"></div>
 </div>
