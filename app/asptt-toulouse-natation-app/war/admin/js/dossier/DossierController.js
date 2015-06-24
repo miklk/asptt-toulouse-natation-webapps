@@ -3,15 +3,17 @@
  */
 var dossierController = angular.module('DossierController', ['ngRoute', 'dossierServices', 'groupeServices']);
 
-dossierController.controller('DossierController', ['$http', '$scope', '$location', '$filter', 'DossierService', 'GroupeService', function($http, $scope, $location, $filter, DossierService, GroupeService) {
+dossierController.controller('DossierController', ['$rootScope', '$http', '$scope', '$location', '$filter', 'DossierService', 'GroupeService', function($rootScope, $http, $scope, $location, $filter, DossierService, GroupeService) {
 	GroupeService.all.query({}, function(data) {
 		$scope.groupes = data.groups;
 	}); 
 	
 	$scope.search = function() {
+		$rootScope.isLoading = true;
 		DossierService.list.query({query: $scope.query, groupe: $scope.groupe, sansGroupe: $scope.sansGroupe}, function(data) {
 			$scope.dossiers = data;
 			$scope.dossierCount = data.length;
+			$rootScope.isLoading = false;
 		});
 	},
 	
@@ -23,10 +25,12 @@ dossierController.controller('DossierController', ['$http', '$scope', '$location
 	
 	$scope.updateGroupe = function() {
 		if(confirm("Souhaitez-vous changer le groupe ? (les créneaux vont être libérés)")) {
+			$rootScope.isLoading = true;
 			$http.post("/resources/dossiers/changerGroupe", $scope.dossier.nageur, {})
 		       .success(function(dataFromServer, status, headers, config) {
 		    	  $scope.dossiers.splice($scope.currentIndex, 1, dataFromServer);
 		    	  $('#groupe-popup').modal('hide');
+		    	  $rootScope.isLoading = false;
 		       })
 		        .error(function(data, status, headers, config) {
 		          alert("Erreur");
@@ -47,11 +51,13 @@ dossierController.controller('DossierController', ['$http', '$scope', '$location
 	}
 	
 	$scope.creerDossier = function() {
+		$rootScope.isLoading = true;
 		$http.post("/resources/dossiers/creer", $scope.creation, {})
 	       .success(function(dataFromServer, status, headers, config) {
 	    	   if(dataFromServer) {
 	    		   alert("Dossier créé avec succès.");
 	    		   $('#dossier-creer-popup').modal('hide');
+	    		   $rootScope.isLoading = false;
 	    	   } else {
 	    		   alert("Un dossier avec l'adresse e-mail: " + $scope.creation.email + " existe déjà.");
 	    	   }
@@ -63,7 +69,9 @@ dossierController.controller('DossierController', ['$http', '$scope', '$location
 	
 	$scope.remove = function(index, dossier) {
 		if(confirm("Voulez-vous supprimer le dossier ?")) {
+			$rootScope.isLoading = true;
 			DossierService.remove.query({dossier: dossier.dossierId}, function(data) {
+				$rootScope.isLoading = false;
 			});
 		}
 	}
