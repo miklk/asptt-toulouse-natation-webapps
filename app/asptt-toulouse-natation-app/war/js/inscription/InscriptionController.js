@@ -147,23 +147,35 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 				};
 				
 				$scope.disableCreneau = function(creneau) {
-					return ($scope.hideSeconde && creneau.second) || ($scope.unique && !creneau.second) || creneau.complet || $scope.isNotChild(creneau);
+					var disable = false;
+					if(creneau.complet) {
+						disable = true;
+					} else {
+						if(!creneau.second) {
+							if($scope.unique) {
+								disable = true;
+							}
+						} else { //second
+							if($scope.hideSeconde) {
+								disable = true;
+							} else if ($scope.isChild(creneau)) {
+								disable = true;
+							} else if (!$scope.dossiers[$scope.currentDossier].groupe.secondes) {
+								disable = true;
+							}
+						}
+					}
+					return disable;
 				}
 				
-				$scope.isNotChild = function(creneau) {
-					var result = true;
+				$scope.isChild = function(creneau) {
+					var result = false;
 					if($scope.currentSlot != null && $scope.currentSlot.children != null) {
 						if(creneau.second) { 
-							if($scope.currentSlot.children.indexOf(creneau.id) == -1) {
+							if($scope.currentSlot.children.indexOf(creneau.id) != -1) {
 								result = true;
-							} else {
-								result = creneau.complet;
 							}
-						} else {
-							result = false;
 						}
-					} else {
-						result = creneau.second;
 					}
 					return result;
 				}
