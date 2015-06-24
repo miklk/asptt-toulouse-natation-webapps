@@ -574,9 +574,9 @@ public class AdherentListAction extends HttpServlet {
 			criteria.add(new CriterionDao<Long>(
 					DossierNageurEntityFields.GROUPE, group.getId(),
 					Operator.EQUAL));
-			criteria.add(new CriterionDao<String>(
-					DossierNageurEntityFields.CRENEAUX, null,
-					Operator.NOT_NULL));
+			//criteria.add(new CriterionDao<String>(
+				//	DossierNageurEntityFields.CRENEAUX, null,
+					//Operator.NOT_NULL));
 			DossierNageurDao dossierNageurDao = new DossierNageurDao();
 			List<DossierNageurEntity> adherents = dossierNageurDao.find(criteria);
 			for (DossierNageurEntity adherent : adherents) {
