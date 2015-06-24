@@ -158,10 +158,10 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 						} else { //second
 							if($scope.hideSeconde) {
 								disable = true;
-							} else if ($scope.isChild(creneau)) {
-								disable = true;
 							} else if (!$scope.dossiers[$scope.currentDossier].groupe.secondes) {
-								disable = true;
+								if (!$scope.isChild(creneau)) {
+									disable = true;
+								}
 							}
 						}
 					}
