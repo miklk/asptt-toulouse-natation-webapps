@@ -5,13 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.LocalDateTime;
+import org.joda.time.DateTime;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
@@ -115,8 +114,8 @@ public class AdherentListResultBeanTransformer implements Serializable {
 						SlotEntity slotEntity = slotDao.get(Long
 								.valueOf(creneauId));
 						
-						String beginDtAsString = new LocalDateTime(slotEntity.getBeginDt().getTime()).toString("HH:mm", Locale.FRANCE);
-						String endDtAsString = new LocalDateTime(slotEntity.getEndDt().getTime()).toLocalDate().toString("HH:mm", Locale.FRANCE);
+						String beginDtAsString = new DateTime(slotEntity.getBeginDt().getTime()).plusHours(1).toString("HH:mm");
+						String endDtAsString = new DateTime(slotEntity.getEndDt().getTime()).plusHours(1).toString("HH:mm");
 						
 						String creneauStr = slotEntity.getDayOfWeek()
 								+ " "

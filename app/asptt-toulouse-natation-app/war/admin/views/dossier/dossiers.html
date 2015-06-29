@@ -57,7 +57,7 @@
 							<li><a href="#">Ajouter un commentaire</a></li>
 							<li class="divider"></li>
 							<li><a href="" ng-click="changerGroupe(index, dossier)">Changer de groupe</a></li>
-							<li><a href="#">Changer de créneau</a></li>
+							<li><a href="" ng-click="initCreneaux(dossier)">Changer de créneau</a></li>
 						</ul>
 						</div>
 					</td>
@@ -82,4 +82,5 @@
 	<div ng-include="'views/dossier/dossier-creer.html'"></div>
 	<div ng-include="'views/dossier/dossier-paiement.html'"></div>
 	<div ng-include="'views/dossier/dossier-commentaire.html'"></div>
+	<div ng-include="'views/dossier/creneaux.html'"></div>
 </div>

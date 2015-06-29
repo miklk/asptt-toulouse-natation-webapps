@@ -1,9 +1,9 @@
 /**
  * 
  */
-var dossierController = angular.module('DossierController', ['ngRoute', 'dossierServices', 'groupeServices']);
+var dossierController = angular.module('DossierController', ['ngRoute', 'dossierServices', 'groupeServices', 'slotServices']);
 
-dossierController.controller('DossierController', ['$rootScope', '$http', '$scope', '$location', '$filter', 'DossierService', 'GroupeService', function($rootScope, $http, $scope, $location, $filter, DossierService, GroupeService) {
+dossierController.controller('DossierController', ['$rootScope', '$http', '$scope', '$location', '$filter', 'DossierService', 'GroupeService', 'SlotService', function($rootScope, $http, $scope, $location, $filter, DossierService, GroupeService, SlotService) {
 	GroupeService.all.query({}, function(data) {
 		$scope.groupes = data.groups;
 	}); 
@@ -88,7 +88,7 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 		$('#dossier-paiement-popup').modal();
 	}
 	
-	$scope.paiement = function(dossier) {
+	$scope.paiement = function() {
 		$rootScope.isLoading = true;
 		$http.post("/resources/dossiers/paiement", $scope.dossierPaiementParameters, {})
 	       .success(function(dataFromServer, status, headers, config) {
@@ -105,5 +105,31 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	$scope.displayComment = function(dossier) {
 		$scope.currentCommentaire = dossier.comment;
 		 $('#dossier-comment-popup').modal();
+	}
+	
+	$scope.initCreneaux = function(dossier) {
+		$scope.dossier = dossier;
+		$scope.dossierCreneauxParameters = {
+				nageurId: dossier.nageur.id,
+				creneaux: null
+		};
+		SlotService.list.query({groupe: dossier.nageur.groupe}, function(data) {
+			$scope.creneaux = data.creneaux;
+			$('#dossier-creneaux-popup').modal();	
+		});
+		
+	}
+	
+	$scope.updateCreneaux = function() {
+		$rootScope.isLoading = true;
+		$http.post("/resources/dossiers/creneaux", $scope.dossierCreneauxParameters, {})
+	       .success(function(dataFromServer, status, headers, config) {
+    		   alert("Créneaux modifiés avec succès.");
+    		   $('#dossier-creneaux-popup').modal('hide');
+    		   $rootScope.isLoading = false;
+	       })
+	        .error(function(data, status, headers, config) {
+	          alert("Erreur");
+	       });
 	}
 }]);

@@ -14,11 +14,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.StrBuilder;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
+import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
+import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierCertificatEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
@@ -40,6 +44,7 @@ public class DossierService {
 	private DossierDao dossierDao = new DossierDao();
 	private GroupDao groupeDao = new GroupDao();
 	private DossierCertificatDao certificatDao = new DossierCertificatDao();
+	private SlotDao slotDao = new SlotDao();
 	
 	
 	@Path("/find")
@@ -210,5 +215,48 @@ public class DossierService {
 			dossier.setComment(builder.toString());
 		}
 		dossierDao.save(dossier);
+	}
+	
+	@Path("creneaux")
+	@POST
+	public void creneaux(DossierCreneauxParameters parameters) {
+		DossierNageurEntity nageur = dao.get(parameters.getNageurId());
+		// Suppression des créneaux actuels
+		if (StringUtils.isNotBlank(nageur.getCreneaux())) {
+			String[] creneauSplit = nageur.getCreneaux().split(";");
+			for (String creneau : creneauSplit) {
+				if (StringUtils.isNotBlank(creneau)) {
+					final String creneauId;
+					if (StringUtils.contains(creneau, "_")) {
+						creneauId = creneau.split("_")[1];
+					} else {
+						creneauId = creneau;
+					}
+					if (StringUtils.isNumeric(creneauId)) {
+						SlotEntity slotEntity = slotDao.get(Long
+								.valueOf(creneauId));
+						slotEntity.setPlaceRestante(slotEntity
+								.getPlaceRestante() + 1);
+						slotDao.save(slotEntity);
+					}
+				}
+			}
+		}
+
+		// Mise à jour du groupe et du créneau
+		if (CollectionUtils.isEmpty(parameters.getCreneaux())) {
+			nageur.setCreneaux(null);
+		} else {
+			StrBuilder builder = new StrBuilder();
+			builder.appendWithSeparators(parameters.getCreneaux(), ";");
+			nageur.setCreneaux(builder.toString());
+			for (Long creneau : parameters.getCreneaux()) {
+				SlotEntity creneauEntity = slotDao.get(creneau);
+				creneauEntity
+						.setPlaceRestante(creneauEntity.getPlaceRestante() - 1);
+				slotDao.save(creneauEntity);
+			}
+		}
+		dao.save(nageur);
 	}
 }
