@@ -328,7 +328,7 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 				$scope.isNotDossierValid = function() {
 					var notValid = false;
 					if($scope.hasMineur()) {
-						notValid = !$scope.formDossier.$valid;
+						notValid = $scope.formDossier.$invalid;
 					} else {
 						//adresse, code postal, ville, telephone, email, accordNomPrenom
 						notValid = !$scope.formDossier.adresse.$valid 
