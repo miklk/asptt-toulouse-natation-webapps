@@ -204,6 +204,15 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 						});
 					});
 				};
+				
+				$scope.getPlacePrises = function(slot) {
+					var result = slot.placeDisponible - slot.placeRestante;
+					if(result > slot.placeDisponible) {
+						result = slot.placeDisponible;
+					}
+					return result;
+				}
+				
 				$scope.dossiersValide = function(dossiers) {
 					var areValide = true;
 					$(dossiers).each(function () {
