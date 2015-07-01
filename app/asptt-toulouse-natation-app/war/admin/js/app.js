@@ -1,7 +1,7 @@
 /**
  * 
  */
-var adminApp = angular.module('adminApp', ['ngRoute', 'angular-spinkit', 'adherentsServices','adherentsStatServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'dossierServices', 'UserController', 'AdherentListCtrl', 'AdherentEmailCtrl', 'AdherentsStatCtrl', 'DocumentController', 'LibelleController', 'SuiviNageurController', 'GroupeController','DossierController', 'DossierNageurController']);
+var adminApp = angular.module('adminApp', ['ngRoute', 'angular-spinkit', 'adherentsServices','adherentsStatServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'dossierServices', 'UserController', 'AdherentListCtrl', 'AdherentEmailCtrl', 'AdherentsStatCtrl', 'DocumentController', 'LibelleController', 'SuiviNageurController', 'GroupeController','DossierController', 'DossierNageurController', 'CreneauStatController', 'creneauStatServices']);
 
 adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
 	$routeProvider.
@@ -74,6 +74,9 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 		when('/dossier/:dossierId', {
 			templateUrl: 'views/dossier/dossier.html',
 			controller: 'DossierNageurController',
+		}).
+		when('/remplissage', {
+			templateUrl: 'views/dossier/remplissage.html'
 		}).
 		when('/error', {
 			templateUrl: 'views/error.html'
