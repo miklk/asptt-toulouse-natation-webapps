@@ -38,6 +38,16 @@ public class GroupEntity implements IEntity {
 	private Integer tarif4;
 	@Persistent
 	private Integer tarifWeight;
+	
+	@Persistent
+	private Integer tarifUnique;
+	@Persistent
+	private Integer tarifUnique2;
+	@Persistent
+	private Integer tarifUnique3;
+	@Persistent
+	private Integer tarifUnique4;
+	
 	@Persistent
 	private Boolean seanceunique;
 	
@@ -182,6 +192,38 @@ public class GroupEntity implements IEntity {
 
 	public void setSecondes(Boolean secondes) {
 		this.secondes = secondes;
+	}
+
+	public Integer getTarifUnique() {
+		return tarifUnique;
+	}
+
+	public void setTarifUnique(Integer tarifUnique) {
+		this.tarifUnique = tarifUnique;
+	}
+
+	public Integer getTarifUnique2() {
+		return tarifUnique2;
+	}
+
+	public void setTarifUnique2(Integer tarifUnique2) {
+		this.tarifUnique2 = tarifUnique2;
+	}
+
+	public Integer getTarifUnique3() {
+		return tarifUnique3;
+	}
+
+	public void setTarifUnique3(Integer tarifUnique3) {
+		this.tarifUnique3 = tarifUnique3;
+	}
+
+	public Integer getTarifUnique4() {
+		return tarifUnique4;
+	}
+
+	public void setTarifUnique4(Integer tarifUnique4) {
+		this.tarifUnique4 = tarifUnique4;
 	}
 	
 }

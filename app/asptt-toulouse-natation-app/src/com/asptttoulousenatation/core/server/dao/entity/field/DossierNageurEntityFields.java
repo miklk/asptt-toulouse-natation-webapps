@@ -6,6 +6,7 @@ public enum DossierNageurEntityFields implements IEntityFields {
 	DOSSIER(Long.class),
 	GROUPE(Long.class),
 	NOM(String.class),
+	PRENOM(String.class),
 	CRENEAUX(String.class),
 	;
 	

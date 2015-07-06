@@ -139,23 +139,25 @@ public class InscriptionService {
 		for (InscriptionDossierUi dossier : dossiers) {
 			dossierCount++;
 			// Recherche du tarif
+			//Determine le nombre de séances
+			boolean unique = !dossier.hasMultipleCreneaux();
 			GroupEntity group = groupDao.get(dossier.getGroupe().getId());
 			int tarif = 0; 
 			switch (dossierCount) {
 			case 1:
-				tarif = GroupEntity.getTarif(group.getTarif());
+				tarif = GroupEntity.getTarif((unique ? group.getTarifUnique(): group.getTarif()));
 				break;
 			case 2:
-				tarif = GroupEntity.getTarif(group.getTarif2());
+				tarif = GroupEntity.getTarif((unique ? group.getTarifUnique2(): group.getTarif2()));
 				break;
 			case 3:
-				tarif = GroupEntity.getTarif(group.getTarif3());
+				tarif = GroupEntity.getTarif((unique ? group.getTarifUnique3(): group.getTarif3()));
 				break;
 			case 4:
-				tarif = GroupEntity.getTarif(group.getTarif4());
+				tarif = GroupEntity.getTarif((unique ? group.getTarifUnique4(): group.getTarif4()));
 				break;
 			default:
-				tarif = GroupEntity.getTarif(group.getTarif4());
+				tarif = GroupEntity.getTarif((unique ? group.getTarifUnique4(): group.getTarif4()));
 			}
 			dossier.getDossier().setTarif(tarif);
 			dossierNageurDao.save(dossier.getDossier());

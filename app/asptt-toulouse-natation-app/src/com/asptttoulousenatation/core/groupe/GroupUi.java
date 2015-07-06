@@ -18,6 +18,10 @@ public class GroupUi implements IsSerializable {
 	private int tarif3;
 	private int tarif4;
 	private int tarifWeight;
+	private int tarifUnique;
+	private int tarifUnique2;
+	private int tarifUnique3;
+	private int tarifUnique4;
 	private boolean seanceunique;
 	private boolean nouveau;
 	private String description;
@@ -161,6 +165,38 @@ public class GroupUi implements IsSerializable {
 
 	public void setSecondes(boolean secondes) {
 		this.secondes = secondes;
+	}
+
+	public int getTarifUnique() {
+		return tarifUnique;
+	}
+
+	public void setTarifUnique(int tarifUnique) {
+		this.tarifUnique = tarifUnique;
+	}
+
+	public int getTarifUnique2() {
+		return tarifUnique2;
+	}
+
+	public void setTarifUnique2(int tarifUnique2) {
+		this.tarifUnique2 = tarifUnique2;
+	}
+
+	public int getTarifUnique3() {
+		return tarifUnique3;
+	}
+
+	public void setTarifUnique3(int tarifUnique3) {
+		this.tarifUnique3 = tarifUnique3;
+	}
+
+	public int getTarifUnique4() {
+		return tarifUnique4;
+	}
+
+	public void setTarifUnique4(int tarifUnique4) {
+		this.tarifUnique4 = tarifUnique4;
 	}
 	
 }

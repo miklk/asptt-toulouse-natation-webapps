@@ -143,6 +143,10 @@ public class GroupeService {
 			entity.setTarif2(action.getTarif2());
 			entity.setTarif3(action.getTarif3());
 			entity.setTarif4(action.getTarif4());
+			entity.setTarifUnique(action.getTarifUnique() == 0 ? action.getTarif() : action.getTarifUnique());
+			entity.setTarifUnique2(action.getTarifUnique2() == 0 ? action.getTarif2() : action.getTarifUnique2());
+			entity.setTarifUnique3(action.getTarifUnique3() == 0 ? action.getTarif3() : action.getTarifUnique3());
+			entity.setTarifUnique4(action.getTarifUnique4() == 0 ? action.getTarif4() : action.getTarifUnique4());
 			entity.setSecondes(action.isSecondes());
 			GroupEntity entityCreated = dao.save(entity);
 			result.setGroupe(transformer.toUi(entityCreated));

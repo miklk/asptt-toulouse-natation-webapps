@@ -1,10 +1,12 @@
 package com.asptttoulousenatation.core.adherent;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.asptttoulousenatation.core.groupe.GroupUi;
+import com.asptttoulousenatation.core.groupe.SlotUi;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 
 @XmlRootElement
@@ -29,6 +31,29 @@ public class InscriptionDossierUi implements Serializable {
 	
 	public InscriptionDossierUi(DossierNageurEntity pAdherent) {
 		dossier = pAdherent;
+	}
+	
+	public boolean hasMultipleCreneaux() {
+		int count = 0;
+		for(LoadingSlotUi creneau: creneaux.getSlots()) {
+			count+=countCreneau(creneau.getLundi());
+			count+=countCreneau(creneau.getMardi());
+			count+=countCreneau(creneau.getMercredi());
+			count+=countCreneau(creneau.getJeudi());
+			count+=countCreneau(creneau.getVendredi());
+			count+=countCreneau(creneau.getSamedi());
+		}
+		return count > 1;
+	}
+	
+	private int countCreneau(List<SlotUi> creneaux) {
+		int count = 0;
+		for(SlotUi creneau: creneaux) {
+			if(creneau.isSelected()) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 	public DossierNageurEntity getDossier() {
