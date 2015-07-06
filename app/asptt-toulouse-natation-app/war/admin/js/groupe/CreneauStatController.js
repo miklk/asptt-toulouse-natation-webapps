@@ -24,7 +24,7 @@ creneauStatController.controller('CreneauStatController', ['$http', '$rootScope'
 		return groupe.capacite - groupe.disponibles;
 	}
 	$scope.groupeTaux = function(groupe) {
-		return ((groupe.capacite - groupe.disponibles) / groupe.disponibles ) * 100;
+		return ((groupe.capacite - groupe.disponibles) / groupe.capacite ) * 100;
 	}
 	
 	$scope.getTotalCapacite = function(liste) {
@@ -52,10 +52,12 @@ creneauStatController.controller('CreneauStatController', ['$http', '$rootScope'
 	}
 	
 	$scope.getTotalTaux = function(liste) {
-		var total = 0;
+		var occupe = 0;
+		var capacite = 0;
 		angular.forEach(liste, function(element) {
-			total = total + ((element.capacite - element.disponibles) / element.disponibles);
+			occupe = occupe + (element.capacite - element.disponibles);
+			capacite = capacite + element.capacite;
 		});
-		return total * 100;
+		return (occupe / capacite) * 100;
 	}
 }]);
