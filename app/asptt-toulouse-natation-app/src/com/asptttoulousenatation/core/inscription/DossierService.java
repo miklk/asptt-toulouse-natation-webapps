@@ -1,9 +1,23 @@
 package com.asptttoulousenatation.core.inscription;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -34,10 +48,14 @@ import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
+import com.asptttoulousenatation.web.adherent.AdherentListResultBeanTransformer;
 
 @Path("/dossiers")
 @Produces("application/json")
 public class DossierService {
+	
+	private static final Logger LOG = Logger.getLogger(DossierService.class
+			.getName());
 
 	private DossierNageurDao dao = new DossierNageurDao();
 	private DossierDao dossierDao = new DossierDao();
@@ -203,7 +221,13 @@ public class DossierService {
 	@POST
 	public void paiement(DossierPaiementParameters parameters) {
 		DossierEntity dossier = dossierDao.get(parameters.getDossierId());
-		dossier.setStatut(DossierStatutEnum.valueOf(parameters.getStatutPaiement()).name());
+	
+		if(DossierStatutEnum.PAIEMENT_COMPLET.equals(DossierStatutEnum.valueOf(parameters.getStatutPaiement()))
+				&& hasAllCertificats(dossier)) {
+			dossier.setStatut(DossierStatutEnum.INSCRIT.name());
+		} else {
+			dossier.setStatut(DossierStatutEnum.valueOf(parameters.getStatutPaiement()).name());
+		}
 		dossier.setMontantreel(parameters.getMontantReel());
 		if(StringUtils.isNotBlank(parameters.getCommentaire())) {
 			StringBuilder builder = new StringBuilder();
@@ -214,6 +238,8 @@ public class DossierService {
 			dossier.setComment(builder.toString());
 		}
 		dossierDao.save(dossier);
+		
+		sendConfirmation(dossier);
 	}
 	
 	@Path("creneaux")
@@ -257,5 +283,99 @@ public class DossierService {
 			}
 		}
 		dao.save(nageur);
+	}
+	
+	private void sendConfirmation(DossierEntity dossier) {
+		Properties props = new Properties();
+		Session session = Session.getDefaultInstance(props, null);
+		try {
+			Multipart mp = new MimeMultipart();
+			MimeBodyPart htmlPart = new MimeBodyPart();
+
+			MimeMessage msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress(
+					"webmaster@asptt-toulouse-natation.com",
+					"ASPTT Toulouse Natation"));
+			Address[] replyTo = {new InternetAddress(
+					"contact@asptt-toulouse-natation.com",
+					"ASPTT Toulouse Natation")};
+			msg.setReplyTo(replyTo);
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					dossier.getEmail()));
+			msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
+					"contact@asptt-toulouse-natation.com"));
+			if(StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
+			msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
+					dossier.getEmailsecondaire()));
+			}
+			
+			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
+					dossier.getId(), Operator.EQUAL));
+			List<DossierNageurEntity> nageurs = dao.find(criteria);
+
+			StringBuilder message = new StringBuilder(
+					"Madame, Monsieur,<p>Nous avons le plaisir de vous compter parmi nous pour cette nouvelle saison sportive 2015-2016.<br />");
+			
+			message.append("Nous vous confirmons la bonne réception de votre dossier qui finalise ainsi votre inscription. <br />");
+			List<String> certificatsManquants = new ArrayList<String>();
+			for(DossierNageurEntity nageur: nageurs) {
+				if(BooleanUtils.isFalse(nageur.getCertificat())) {
+					certificatsManquants.add(nageur.getNom() + " " + nageur.getPrenom());
+				}
+			}
+			if(CollectionUtils.isNotEmpty(certificatsManquants)) {
+				StrBuilder certificatsBuilder = new StrBuilder();
+				certificatsBuilder.append("Cependant il manque le certificat médical de ");
+				certificatsBuilder.appendWithSeparators(certificatsManquants, ",");
+				certificatsBuilder.append(". Nous vous remercions de nous les faire parvenir avant le début des cours.<br />");
+				message.append(certificatsBuilder.toString());
+			}
+			message.append("Les cours reprendront à partir du 21 septembre selon les bassins et jours de pratique (voir ci-dessous):<br />");
+
+			message.append("<dl>");
+			for (DossierNageurEntity nageur : nageurs) {
+				try {
+				GroupEntity group = groupeDao.get(nageur
+						.getGroupe());
+				message.append("<dt>").append(nageur.getNom()).append(" ").append(nageur.getPrenom()).append(" ").append(group.getTitle()).append("</dt>");
+				}catch(Exception e) {
+					LOG.severe("Erreur du groupe (adherent " + nageur.getId() + "): " + nageur.getGroupe() + " ");
+				}
+				for (String creneau : AdherentListResultBeanTransformer
+						.getInstance().getCreneaux(nageur.getCreneaux())) {
+					message.append("<dd>").append(creneau).append("</dd>");
+				}
+			}
+			message.append("</dl>");
+			
+			message.append("<p>Sportivement,<br />"
+					+ "Le secrétariat,<br />"
+					+ "ASPTT Grand Toulouse Natation<br />"
+					+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
+			htmlPart.setContent(message.toString(), "text/html");
+			mp.addBodyPart(htmlPart);
+
+			msg.setSubject("ASPTT Toulouse Natation - Confirmation",
+					"UTF-8");
+			msg.setContent(mp);
+			Transport.send(msg);
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			LOG.log(Level.SEVERE, "Erreur pour l'e-mail: " + dossier.getEmail(), e);
+		}
+	}
+	
+	private boolean hasAllCertificats(DossierEntity dossier) {
+		boolean result = true;
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
+				dossier.getId(), Operator.EQUAL));
+		List<DossierNageurEntity> nageurs = dao.find(criteria);
+		for(DossierNageurEntity nageur: nageurs) {
+			result = result && BooleanUtils.isTrue(nageur.getCertificat());
+		}
+		return result;
 	}
 }
