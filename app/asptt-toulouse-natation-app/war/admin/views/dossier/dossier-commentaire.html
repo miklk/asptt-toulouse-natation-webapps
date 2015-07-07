@@ -6,7 +6,13 @@
         <h4 class="modal-title">Commentaire</h4>
       </div>
       <div class="modal-body">
-      	{{currentCommentaire}}
+      	<div ng-hide="editCommentaire">{{currentCommentaire}}</div>
+      	<div ng-show="editCommentaire">
+      		<textarea class="form-control" ng-model="dossierCommentaireParameters.commentaire" rows="20"></textarea>
+      	</div>
+      </div>
+      <div class="modal-bottom" ng-show="editCommentaire">
+      	<button type="button" class="btn btn-primary btn-block" ng-click="updateCommentaire()">Valider</button>
       </div>
     </div>
   </div>

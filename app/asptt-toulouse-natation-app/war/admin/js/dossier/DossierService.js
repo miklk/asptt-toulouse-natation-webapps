@@ -12,7 +12,10 @@ dossierServices.factory('DossierService', ['$resource',
 		remove: $resource('/resources/dossiers/:dossier',{},{
 			query:{method:'DELETE', isArray: false, params: {}}
 		}),
-		certificat: $resource('/resources/dossiers/certificat/:nageur',{},{
+		certificat: $resource('/resources/dossiers/certificat/:nageur',{nageur: '@nageur'},{
+			query:{method:'PUT', isArray: false, params: {}}
+		}),
+		relancer: $resource('/resources/dossiers/relancer/:dossier',{dossier: '@dossier'},{
 			query:{method:'PUT', isArray: false, params: {}}
 		})
 	};

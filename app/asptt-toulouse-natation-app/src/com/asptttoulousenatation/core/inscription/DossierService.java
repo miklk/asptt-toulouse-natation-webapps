@@ -3,6 +3,7 @@ package com.asptttoulousenatation.core.inscription;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -398,15 +399,87 @@ public class DossierService {
 		}
 	}
 	
-	@Path("commentaire/{nageur}")
+	@Path("commentaire")
 	@POST
 	public void commentaire(DossierCommentaireParameters parameters) {
 		if(parameters.getDossier() != null && StringUtils.isNotBlank(parameters.getCommentaire())) {
 			DossierEntity dossier = dossierDao.get(parameters.getDossier());
-			StringBuilder builder = new StringBuilder(dossier.getComment());
-			builder.append("\n").append(parameters.getCommentaire());
-			dossier.setComment(builder.toString());
+			dossier.setComment(parameters.getCommentaire());
 			dossierDao.save(dossier);
+		}
+	}
+	
+	@Path("relancer/{dossier}")
+	@PUT
+	public void relancer(@PathParam("dossier") Long dossierId) {
+		DossierEntity dossier = dossierDao.get(dossierId);
+		Properties props = new Properties();
+		Session session = Session.getDefaultInstance(props, null);
+		try {
+			Multipart mp = new MimeMultipart();
+			MimeBodyPart htmlPart = new MimeBodyPart();
+
+			MimeMessage msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress(
+					"webmaster@asptt-toulouse-natation.com",
+					"ASPTT Toulouse Natation"));
+			Address[] replyTo = {new InternetAddress(
+					"contact@asptt-toulouse-natation.com",
+					"ASPTT Toulouse Natation")};
+			msg.setReplyTo(replyTo);
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					dossier.getEmail()));
+			msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
+					"contact@asptt-toulouse-natation.com"));
+			if(StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
+				msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
+					dossier.getEmailsecondaire()));
+			}
+			
+			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
+					dossier.getId(), Operator.EQUAL));
+			List<DossierNageurEntity> nageurs = dao.find(criteria);
+			StringBuilder message = new StringBuilder(
+					"Madame, Monsieur,<p>Nous vous envoyons cet e-mail suite à votre inscription. Nous constatons que votre dossier n'est pas complet.<br />");
+			message.append("En effet les informations suivantes ne nous sont pas encore parvenues:");
+			message.append("<ul>");
+			if(!DossierStatutEnum.PAIEMENT_COMPLET.name().equals(dossier.getStatut())) {
+				message.append("<li>paiement de votre cotisation</li>");
+			}
+			
+			List<String> certificatsManquants = new ArrayList<String>();
+			for(DossierNageurEntity nageur: nageurs) {
+				if(BooleanUtils.isFalse(nageur.getCertificat())) {
+					certificatsManquants.add(nageur.getNom() + " " + nageur.getPrenom());
+				}
+			}
+			if(CollectionUtils.isNotEmpty(certificatsManquants)) {
+				StrBuilder certificatsBuilder = new StrBuilder();
+				certificatsBuilder.appendWithSeparators(certificatsManquants, ", ");
+				message.append("<li>certificat médicale (").append(certificatsBuilder.toString()).append(") </li>");
+			}
+			message.append("</ul>");
+			message.append("<p>Nous vous demandons de nous informer quant à la suite à donner à votre dossier.</p>");
+			
+			message.append("<p>Sportivement,<br />"
+					+ "Le secrétariat,<br />"
+					+ "ASPTT Grand Toulouse Natation<br />"
+					+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
+			htmlPart.setContent(message.toString(), "text/html");
+			mp.addBodyPart(htmlPart);
+
+			msg.setSubject("ASPTT Toulouse Natation - Relance",
+					"UTF-8");
+			msg.setContent(mp);
+			Transport.send(msg);
+			
+			dossier.setReminded(new Date());
+			dossier.setReminder(true);
+			dossierDao.save(dossier);
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			LOG.log(Level.SEVERE, "Erreur pour l'e-mail: " + dossier.getEmail(), e);
 		}
 	}
 }

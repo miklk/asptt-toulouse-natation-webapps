@@ -6,7 +6,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -31,9 +30,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.BeanUtilsBean2;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
@@ -49,7 +46,6 @@ import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityF
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
-import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionNouveauEntity;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
 import com.asptttoulousenatation.core.server.dao.inscription.InscriptionNouveauDao;
@@ -99,26 +95,10 @@ public class AdherentListAction extends HttpServlet {
 				loadGroupes(pReq, pResp);
 			} else if ("loadCreneaux".equals(action)) {
 				loadCreneaux(pReq, pResp);
-			} else if ("sendEmail".equals(action)) {
-				BeanUtilsBean2.getInstance().populate(form,
-						pReq.getParameterMap());
-				sendEmail(pReq, pResp, form);
 			} else if ("fixCreneaux".equals(action)) {
 				fixCreneaux(pReq, pResp);
-			} else if ("sendConfirmation".equals(action)) {
-				BeanUtilsBean2.getInstance().populate(form,
-						pReq.getParameterMap());
-				sendConfirmation(pReq, pResp);
-			} else if ("affecter".equals(action)) {
-				BeanUtilsBean2.getInstance().populate(form,
-						pReq.getParameterMap());
-				affecter(pReq, pResp, form);
-			} else if ("supprimer".equals(action)) {
-				supprimer(pReq, pResp);
 			} else if ("loadAdherent".equals(action)) {
 				loadAdherent(pReq, pResp);
-			} else if ("updateAdherent".equals(action)) {
-				updateAdherent(pReq, pResp);
 			} else if ("loadPiscines".equals(action)) {
 				loadPiscines(pReq, pResp);
 			} else if ("facture".equals(action)) {
@@ -132,12 +112,8 @@ public class AdherentListAction extends HttpServlet {
 				forgetEmail(pReq, pResp);
 			} else if("export".equals(action)) {
 				export(pReq, pResp);
-			} else if("sendOuverture".equals(action)) {
-				sendOuverture(pReq, pResp);
 			} else if("updateAttribute".equals(action)) {
 				updateAttribute(pReq, pResp);
-			} else if("fixComplet".equals(action)) {
-				fixComplet(pReq, pResp);
 			} else if("deleteNonInscrits".equals(action)) {
 				deleteNonInscrits(pReq, pResp);
 			}
@@ -363,195 +339,6 @@ public class AdherentListAction extends HttpServlet {
 		pResp.getWriter().write(json);
 	}
 
-	protected void sendEmail(HttpServletRequest pReq,
-			HttpServletResponse pResp, AdherentListForm form)
-			throws ServletException, IOException {
-		try {
-			Properties props = new Properties();
-			Session session = Session.getDefaultInstance(props, null);
-			List<String> recipents = new ArrayList<String>();
-			List<String> destinataires = getAdresseEmail(form);
-			for (int i = 0; i < destinataires.size(); i += EMAIL_PAQUET) {
-				try {
-					Multipart mp = new MimeMultipart();
-					MimeBodyPart htmlPart = new MimeBodyPart();
-					htmlPart.setContent(form.getSendEmail().getCorps(),
-							"text/html");
-					mp.addBodyPart(htmlPart);
-					MimeMessage msg = new MimeMessage(session);
-					msg.setFrom(new InternetAddress(
-							"webmaster@asptt-toulouse-natation.com",
-							"ASPTT Toulouse Natation"));
-					Address[] replyTo = { new InternetAddress(
-							"contact@asptt-toulouse-natation.com",
-							"ASPTT Toulouse Natation") };
-					msg.setReplyTo(replyTo);
-					msg.addRecipient(Message.RecipientType.TO,
-							new InternetAddress(
-									"support@asptt-toulouse-natation.com"));
-
-					int first = i;
-					int end = Math.min(first + EMAIL_PAQUET,
-							destinataires.size());
-					try {
-						for (int j = first; j < end; j++) {
-							String destinataire = destinataires.get(j);
-							if (StringUtils.isNotBlank(destinataire)) {
-								LOG.warning("Send to " + destinataire);
-								msg.addRecipient(Message.RecipientType.BCC,
-										new InternetAddress(destinataire));
-								recipents.add(destinataire);
-							}
-						}
-						msg.setSubject(form.getSendEmail().getSujet(), "UTF-8");
-						msg.setContent(mp);
-						Transport.send(msg);
-					} catch (Exception e) {
-						LOG.severe(e.getMessage());
-					}
-				} catch (Exception e) {
-					LOG.severe(e.getMessage());
-				}
-			}
-
-			Multipart mp = new MimeMultipart();
-			MimeBodyPart htmlPart = new MimeBodyPart();
-			StrBuilder rapport = new StrBuilder();
-			rapport.appendWithSeparators(recipents, "<br />");
-			htmlPart.setContent("E-mail envoyé à " + new Date() + "<br />"
-					+ rapport.toString(), "text/html");
-			mp.addBodyPart(htmlPart);
-			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress(
-					"webmaster@asptt-toulouse-natation.com",
-					"ASPTT Toulouse Natation"));
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					"contact@asptt-toulouse-natation.com"));
-			msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
-					"support@asptt-toulouse-natation.com"));
-			msg.setSubject("Rapport d'envoi d'e-mail", "UTF-8");
-			msg.setContent(mp);
-			Transport.send(msg);
-
-			pResp.setContentType("text/html;charset=UTF-8");
-			pResp.getWriter().write(Integer.toString(recipents.size()));
-		} catch (AddressException e) {
-			// ...
-		} catch (MessagingException e) {
-			// ...
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	
-	protected void sendConfirmation(HttpServletRequest pReq,
-			HttpServletResponse pResp) throws ServletException, IOException {
-		Long adherentId = Long.valueOf(pReq.getParameter("adherentId"));
-		Boolean attributeValue = Boolean.parseBoolean(pReq
-				.getParameter("attributeValue"));
-		Boolean envoi = Boolean.parseBoolean(pReq.getParameter("envoi"));
-
-		if (BooleanUtils.isTrue(attributeValue)) {
-			if (BooleanUtils.isTrue(envoi)) {
-				sendConfirmation(pReq, pResp, adherentId);
-			} else {
-				InscriptionEntity2 adherent = inscription2Dao.get(adherentId);
-				adherent.setComplet(false);
-				inscription2Dao.save(adherent);
-			}
-		} else {
-			InscriptionEntity2 adherent = inscription2Dao.get(adherentId);
-			adherent.setComplet(false);
-			inscription2Dao.save(adherent);
-		}
-	}
-	
-	private void sendConfirmation(HttpServletRequest pReq,
-			HttpServletResponse pResp, Long adherentId)
-			throws ServletException, IOException {
-
-		Properties props = new Properties();
-		Session session = Session.getDefaultInstance(props, null);
-
-		InscriptionEntity2 adherent = inscription2Dao.get(adherentId);
-		try {
-			Multipart mp = new MimeMultipart();
-			MimeBodyPart htmlPart = new MimeBodyPart();
-
-			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress(
-					"webmaster@asptt-toulouse-natation.com",
-					"ASPTT Toulouse Natation"));
-			Address[] replyTo = { new InternetAddress(
-					"contact@asptt-toulouse-natation.com",
-					"ASPTT Toulouse Natation") };
-			msg.setReplyTo(replyTo);
-			msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
-					"contact@asptt-toulouse-natation.com"));
-
-			InscriptionEntity2 principal = adherent;
-			if (principal.getPrincipal() != null) {
-				principal = inscription2Dao.get(principal.getPrincipal());
-			}
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					principal.getEmail()));
-			if (StringUtils.isNotBlank(principal.getEmailsecondaire())) {
-				msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
-						principal.getEmailsecondaire()));
-			}
-
-			StringBuilder message = new StringBuilder(
-					"Madame, Monsieur,<p>Nous avons le plaisir de vous compter parmi nous pour cette nouvelle saison sportive 2014-2015.<br />"
-							+ "Nous vous confirmons la bonne réception de votre dossier qui finalise ainsi votre inscription. <br />"
-							+ "Les cours reprendront à partir du 22 septembre selon les bassins et jours de pratique (voir ci-dessous):<br />");
-
-			message.append("<dl>");
-			if (adherent.getInscriptiondt() != null
-					&& BooleanUtils.isTrue(adherent.getCertificat())
-					&& BooleanUtils.isTrue(adherent.getPaiement())) {
-				adherent.setComplet(true);
-				inscription2Dao.save(adherent);
-				GroupEntity group = groupDao.get(adherent.getNouveauGroupe());
-				message.append("<dt>")
-						.append(StringUtils.defaultString(adherent.getNom()))
-						.append(" ")
-						.append(StringUtils.defaultString(adherent.getPrenom()))
-						.append(" ").append(group.getTitle()).append("</dt>");
-				for (String creneau : AdherentListResultBeanTransformer
-						.getInstance().getCreneaux(adherent.getCreneaux())) {
-					message.append("<dd>").append(creneau).append("</dd>");
-				}
-			}
-			message.append("</dl>");
-			message.append("<p>Sportivement,<br />"
-					+ "Le secrétariat,<br />"
-					+ "ASPTT Grand Toulouse Natation<br />"
-					+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
-			htmlPart.setContent(message.toString(), "text/html");
-			mp.addBodyPart(htmlPart);
-
-			msg.setSubject("ASPTT Toulouse Natation - Accusé de réception",
-					"UTF-8");
-			msg.setContent(mp);
-			Transport.send(msg);
-		} catch (AddressException e) {
-			// ...
-		} catch (MessagingException e) {
-			// ...
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			LOG.severe("Erreur pour l'adherent: " + adherent.getNom() + "("
-					+ e.getMessage() + ")");
-		}
-		pResp.setContentType("text/html;charset=UTF-8");
-		pResp.getWriter().write("ok");
-
-	}
-
 	protected void fixCreneaux(HttpServletRequest pReq,
 			HttpServletResponse pResp) throws ServletException, IOException {
 		StringBuilder builder = new StringBuilder();
@@ -614,89 +401,6 @@ public class AdherentListAction extends HttpServlet {
 		pResp.getWriter().write(builder.toString());
 	}
 
-	protected void affecter(HttpServletRequest pReq, HttpServletResponse pResp,
-			AdherentListForm form) throws ServletException, IOException {
-		InscriptionEntity2 adherent = inscription2Dao.get(form.getAffecter()
-				.getAffecterAdherent());
-		// Suppression des créneaux actuels
-		if (StringUtils.isNotBlank(adherent.getCreneaux())) {
-			String[] creneauSplit = adherent.getCreneaux().split(";");
-			for (String creneau : creneauSplit) {
-				if (StringUtils.isNotBlank(creneau)) {
-					final String creneauId;
-					if (StringUtils.contains(creneau, "_")) {
-						creneauId = creneau.split("_")[1];
-					} else {
-						creneauId = creneau;
-					}
-					if (StringUtils.isNumeric(creneauId)) {
-						SlotEntity slotEntity = slotDao.get(Long
-								.valueOf(creneauId));
-						slotEntity.setPlaceRestante(slotEntity
-								.getPlaceRestante() + 1);
-						slotDao.save(slotEntity);
-					}
-				}
-			}
-		}
-
-		// Mise à jour du groupe et du créneau
-		if (form.getAffecter().getAffecterGroupe() == -1l) {
-			adherent.setNouveauGroupe(null);
-		} else {
-			adherent.setNouveauGroupe(form.getAffecter().getAffecterGroupe());
-		}
-
-		if (ArrayUtils.contains(form.getAffecter().getAffecterCreneau(), -1l)) {
-			adherent.setCreneaux("");
-		} else {
-			StrBuilder builder = new StrBuilder();
-			builder.appendWithSeparators(form.getAffecter()
-					.getAffecterCreneau(), ";");
-			for (Long creneau : form.getAffecter().getAffecterCreneau()) {
-				SlotEntity creneauEntity = slotDao.get(creneau);
-				creneauEntity
-						.setPlaceRestante(creneauEntity.getPlaceRestante() - 1);
-				slotDao.save(creneauEntity);
-			}
-			adherent.setCreneaux(builder.toString());
-		}
-		inscription2Dao.save(adherent);
-
-		pResp.setContentType("application/json;charset=UTF-8");
-		pResp.getWriter().write("ok");
-	}
-
-	protected void supprimer(HttpServletRequest pReq, HttpServletResponse pResp)
-			throws ServletException, IOException {
-		InscriptionEntity2 adherent = inscription2Dao.get(Long.valueOf(pReq
-				.getParameter("selectedAdherent")));
-		// Suppression des créneaux actuels
-		if (StringUtils.isNotBlank(adherent.getCreneaux())) {
-			String[] creneauSplit = adherent.getCreneaux().split(";");
-			for (String creneau : creneauSplit) {
-				if (StringUtils.isNotBlank(creneau)) {
-					final String creneauId;
-					if (StringUtils.contains(creneau, "_")) {
-						creneauId = creneau.split("_")[1];
-					} else {
-						creneauId = creneau;
-					}
-					if (StringUtils.isNumeric(creneauId)) {
-						SlotEntity slotEntity = slotDao.get(Long
-								.valueOf(creneauId));
-						slotEntity.setPlaceRestante(slotEntity
-								.getPlaceRestante() + 1);
-						slotDao.save(slotEntity);
-					}
-				}
-			}
-		}
-		inscription2Dao.delete(adherent);
-		pResp.setContentType("application/json;charset=UTF-8");
-		pResp.getWriter().write("ok");
-	}
-
 	protected void loadAdherent(HttpServletRequest pReq,
 			HttpServletResponse pResp) throws ServletException, IOException {
 		InscriptionEntity2 adherent = inscription2Dao.get(Long.valueOf(pReq
@@ -705,24 +409,6 @@ public class AdherentListAction extends HttpServlet {
 		String json = mapper.writeValueAsString(adherent);
 		pResp.setContentType("application/json;charset=UTF-8");
 		pResp.getWriter().write(json);
-	}
-
-	protected void updateAdherent(HttpServletRequest pReq,
-			HttpServletResponse pResp) throws ServletException, IOException {
-		Long adherentId = Long.valueOf(pReq.getParameter("adherentId"));
-
-		InscriptionEntity2 entity = inscription2Dao.get(adherentId);
-		try {
-			BeanUtils.populate(entity, pReq.getParameterMap());
-			inscription2Dao.save(entity);
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		pResp.getWriter().write("ok");
 	}
 
 	protected void loadPiscines(HttpServletRequest pReq,
@@ -756,80 +442,6 @@ public class AdherentListAction extends HttpServlet {
 		out.print(results.toString());
 		out.flush();
 		out.close();
-	}
-
-	protected void telephone(HttpServletRequest pReq,
-			HttpServletResponse pResp, AdherentListForm form)
-			throws ServletException, IOException {
-		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		criteria.add(new CriterionDao<String>(InscriptionEntityFields.FACTURE,
-				"on", Operator.EQUAL));
-		List<InscriptionEntity2> adherents = inscription2Dao.find(criteria);
-
-		StrBuilder results = new StrBuilder();
-		for (InscriptionEntity2 adherent : adherents) {
-			results.append(adherent.getNom() + " " + adherent.getPrenom())
-					.appendNewLine();
-		}
-		ServletOutputStream out = pResp.getOutputStream();
-		String contentType = "application/text";
-		String contentDisposition = "attachment;filename=factures.txt;";
-		pResp.setContentType(contentType);
-		pResp.setHeader("Content-Disposition", contentDisposition);
-
-		out.print(results.toString());
-		out.flush();
-		out.close();
-	}
-
-	private List<String> getAdresseEmail(AdherentListForm pForm) {
-		List<String> adresseEmail = new ArrayList<String>();
-		if (pForm.getSendEmail().isAll()) {
-			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-					1);
-			criteria.add(new CriterionDao<Object>(
-					InscriptionEntityFields.INSCRIPTIONDT, null,
-					Operator.NOT_NULL));
-			List<InscriptionEntity2> adherents = inscription2Dao.find(criteria);
-			for (InscriptionEntity2 adherent : adherents) {
-				if (StringUtils.isNotBlank(adherent.getEmail())) {
-					adresseEmail.add(adherent.getEmail());
-				}
-			}
-		} else {
-			for (Long id : pForm.getSelections()) {
-				try {
-					InscriptionEntity2 adherent = inscription2Dao.get(id);
-					// Rechercher le principal
-					if (adherent.getPrincipal() != null) {
-						InscriptionEntity2 adherentPrincipal = inscription2Dao
-								.get(adherent.getPrincipal());
-						if (StringUtils
-								.isNotBlank(adherentPrincipal.getEmail())) {
-							adresseEmail.add(adherentPrincipal.getEmail());
-						}
-						if (StringUtils.isNotBlank(adherentPrincipal
-								.getEmailsecondaire())) {
-							adresseEmail.add(adherentPrincipal
-									.getEmailsecondaire());
-						}
-					} else {
-						if (StringUtils.isNotBlank(adherent.getEmail())) {
-							adresseEmail.add(adherent.getEmail());
-						}
-						if (StringUtils.isNotBlank(adherent
-								.getEmailsecondaire())) {
-							adresseEmail.add(adherent.getEmailsecondaire());
-						}
-					}
-				} catch (Exception e) {
-					LOG.severe("Erreur pour l'e-mail: " + id + " "
-							+ e.getMessage());
-				}
-			}
-		}
-		return adresseEmail;
 	}
 
 	protected void forgetEmail(HttpServletRequest pReq,
@@ -905,80 +517,6 @@ public class AdherentListAction extends HttpServlet {
 			pResp.setContentType("application/text;charset=UTF-8");
 			pResp.getWriter().write(builder.toString());
 		}
-	}
-	
-	protected void sendOuverture(HttpServletRequest pReq,
-			HttpServletResponse pResp)
-			throws ServletException, IOException {
-
-		Properties props = new Properties();
-		Session session = Session.getDefaultInstance(props, null);
-		
-		List<InscriptionNouveauEntity> adherents = inscriptionNouveauDao.getAll();
-			try {
-				Multipart mp = new MimeMultipart();
-				MimeBodyPart htmlPart = new MimeBodyPart();
-
-				MimeMessage msg = new MimeMessage(session);
-				msg.setFrom(new InternetAddress(
-						"webmaster@asptt-toulouse-natation.com",
-						"ASPTT Toulouse Natation"));
-				msg.addRecipient(Message.RecipientType.TO, new InternetAddress("contact@asptt-toulouse-natation.com"));
-				int count = 0;
-				int modulo = 10;
-				
-				StringBuilder message = new StringBuilder(
-						"Madame, Monsieur,<p>Nous vous informons que les inscriptions pour la saison 2014-2015 sont ouvertes.<br />"
-								+ "Vous pouvez vous inscrire depuis notre site internet à l'adresse suivante <a href=\"http://www.asptt-toulouse-natation.com/#/page/Inscription\">http://www.asptt-toulouse-natation.com/#/page/Inscription</a><br />");
-
-				message.append("<p>Sportivement,<br />"
-						+ "Le secrétariat,<br />"
-						+ "ASPTT Grand Toulouse Natation<br />"
-						+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
-				htmlPart.setContent(message.toString(), "text/html");
-				mp.addBodyPart(htmlPart);
-
-				msg.setSubject("ASPTT Toulouse Natation - Ouverture des inscriptions",
-						"UTF-8");
-				msg.setContent(mp);
-				for(InscriptionNouveauEntity nouveau: adherents) {
-					msg.addRecipient(Message.RecipientType.BCC, new InternetAddress(
-							nouveau.getEmail()));
-					LOG.warning("Added " + nouveau.getEmail());
-					count++;
-					if(count % modulo == 0) {
-						Transport.send(msg);
-						LOG.warning("Sended: " + count);
-						msg = new MimeMessage(session);
-						mp = new MimeMultipart();
-						htmlPart = new MimeBodyPart();
-						msg.setFrom(new InternetAddress(
-								"webmaster@asptt-toulouse-natation.com",
-								"ASPTT Toulouse Natation"));
-						msg.addRecipient(Message.RecipientType.TO, new InternetAddress("contact@asptt-toulouse-natation.com"));
-						htmlPart.setContent(message.toString(), "text/html");
-						mp.addBodyPart(htmlPart);
-
-						msg.setSubject("ASPTT Toulouse Natation - Ouverture des inscriptions",
-								"UTF-8");
-						msg.setContent(mp);
-					}
-					
-				}
-				Transport.send(msg);
-			} catch (AddressException e) {
-				// ...
-			} catch (MessagingException e) {
-				// ...
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				LOG.severe("Erreur "
-						+ e.getMessage());
-			}
-		pResp.setContentType("text/html;charset=UTF-8");
-		pResp.getWriter().write("ok");
 	}
 	
 	protected void updateAttribute(HttpServletRequest pReq,
@@ -1095,29 +633,6 @@ public class AdherentListAction extends HttpServlet {
 		}
 		pResp.setContentType("text/html;charset=UTF-8");
 		pResp.getWriter().write("ok");
-	}
-	
-	protected void fixComplet(HttpServletRequest pReq, HttpServletResponse pResp)
-			throws ServletException, IOException {
-		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-				2);
-		criteria.add(new CriterionDao<Boolean>(InscriptionEntityFields.CERTIFICAT,
-				Boolean.TRUE, Operator.EQUAL));
-		criteria.add(new CriterionDao<Boolean>(InscriptionEntityFields.PAIEMENT,
-				Boolean.TRUE, Operator.EQUAL));
-		criteria.add(new CriterionDao<Boolean>(InscriptionEntityFields.COMPLET,
-				Boolean.FALSE, Operator.EQUAL));
-		List<InscriptionEntity2> entities = inscription2Dao.find(criteria);
-		
-		int count = 0;
-		for(InscriptionEntity2 entity: entities) {
-			if(BooleanUtils.isFalse(entity.getComplet())) {
-				sendConfirmation(pReq, pResp, entity.getId());
-				count++;
-			}
-		}
-		pResp.setContentType("application/json;charset=UTF-8");
-		pResp.getWriter().write(count + " / " + entities.size() + "adhérents mis à jour");
 	}
 	
 	protected void deleteNonInscrits(HttpServletRequest pReq, HttpServletResponse pResp)

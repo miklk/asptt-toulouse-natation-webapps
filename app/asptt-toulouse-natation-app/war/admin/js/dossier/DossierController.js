@@ -138,4 +138,34 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 			alert("Mise à jour avec succès");
 		});
 	}
+	
+	$scope.initCommentaire = function(dossier) {
+		$scope.editCommentaire = true;
+		$scope.dossier = dossier;
+		$scope.dossierCommentaireParameters = {
+				dossier: dossier.dossierId,
+				commentaire: dossier.comment
+		};
+		$('#dossier-comment-popup').modal();
+	}
+	
+	$scope.updateCommentaire = function() {
+		$rootScope.isLoading = true;
+		$http.post("/resources/dossiers/commentaire", $scope.dossierCommentaireParameters, {})
+	       .success(function(dataFromServer, status, headers, config) {
+    		   alert("Commentaire modifié avec succès.");
+    		   $scope.editCommentaire = false;
+    		   $('#dossier-comment-popup').modal('hide');
+    		   $rootScope.isLoading = false;
+	       })
+	        .error(function(data, status, headers, config) {
+	          alert("Erreur");
+	       });	
+	}
+	
+	$scope.relancer = function(dossier) {
+		DossierService.relancer.query({dossier: dossier.dossierId}, function(data) {
+			alert("E-mail de relance envoyé avec succès");
+		});
+	}
 }]);

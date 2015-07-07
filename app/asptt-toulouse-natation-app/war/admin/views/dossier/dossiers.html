@@ -49,12 +49,12 @@
 						</button>
 						<ul class="dropdown-menu">
 							<li><a href="#/dossier/{{dossier.dossierId}}">Modifier</a></li>
-							<li><a href="#">Relancer</a></li>
+							<li ng-hide="dossier.etat == 'INSCRIT'"><a href="" ng-click="relancer(dossier)">Relancer</a></li>
 							<li><a href="" ng-click="remove(index, dossier)">Supprimer</a></li>
 							<li class="divider"></li>
 							<li><a href="" ng-click="initPaiement(dossier)">Paiement reçu</a></li>
-							<li><a href="" ng-click="certificatRecu(dossier)">Certificat</a></li>
-							<li><a href="#">Ajouter un commentaire</a></li>
+							<li><a href="" ng-click="certificatRecu(dossier)">Certificat reçu</a></li>
+							<li><a href="" ng-click="initCommentaire(dossier)">Ajouter un commentaire</a></li>
 							<li class="divider"></li>
 							<li><a href="" ng-click="changerGroupe(index, dossier)">Changer de groupe</a></li>
 							<li><a href="" ng-click="initCreneaux(dossier)">Changer de créneau</a></li>
