@@ -78,6 +78,9 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 		when('/remplissage', {
 			templateUrl: 'views/dossier/stat/remplissage.html'
 		}).
+		when('/remplissage-detail', {
+			templateUrl: 'views/dossier/stat/remplissage-piscine.html'
+		}).
 		when('/error', {
 			templateUrl: 'views/error.html'
 		}).
