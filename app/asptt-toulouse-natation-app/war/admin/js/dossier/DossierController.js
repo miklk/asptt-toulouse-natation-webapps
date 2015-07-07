@@ -132,4 +132,10 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	          alert("Erreur");
 	       });
 	}
+	
+	$scope.certificatRecu = function(dossier) {
+		DossierService.certificat.query({nageur: dossier.nageur.id}, function(data) {
+			alert("Mise à jour avec succès");
+		});
+	}
 }]);

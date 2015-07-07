@@ -22,6 +22,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -328,7 +329,7 @@ public class DossierService {
 			if(CollectionUtils.isNotEmpty(certificatsManquants)) {
 				StrBuilder certificatsBuilder = new StrBuilder();
 				certificatsBuilder.append("Cependant il manque le certificat médical de ");
-				certificatsBuilder.appendWithSeparators(certificatsManquants, ",");
+				certificatsBuilder.appendWithSeparators(certificatsManquants, ", ");
 				certificatsBuilder.append(". Nous vous remercions de nous les faire parvenir avant le début des cours.<br />");
 				message.append(certificatsBuilder.toString());
 			}
@@ -377,5 +378,35 @@ public class DossierService {
 			result = result && BooleanUtils.isTrue(nageur.getCertificat());
 		}
 		return result;
+	}
+	
+	@Path("certificat/{nageur}")
+	@PUT
+	public void certificat(@PathParam("nageur") Long nageur) {
+		if(nageur != null) {
+			DossierNageurEntity entity = dao.get(nageur);
+			entity.setCertificat(Boolean.TRUE);
+			dao.save(entity);
+			
+			DossierEntity dossier = dossierDao.get(entity.getDossier());
+			if(DossierStatutEnum.PAIEMENT_COMPLET.equals(DossierStatutEnum.valueOf(dossier.getStatut()))
+					&& hasAllCertificats(dossier)) {
+				dossier.setStatut(DossierStatutEnum.INSCRIT.name());
+				dossierDao.save(dossier);
+				sendConfirmation(dossier);
+			}
+		}
+	}
+	
+	@Path("commentaire/{nageur}")
+	@POST
+	public void commentaire(DossierCommentaireParameters parameters) {
+		if(parameters.getDossier() != null && StringUtils.isNotBlank(parameters.getCommentaire())) {
+			DossierEntity dossier = dossierDao.get(parameters.getDossier());
+			StringBuilder builder = new StringBuilder(dossier.getComment());
+			builder.append("\n").append(parameters.getCommentaire());
+			dossier.setComment(builder.toString());
+			dossierDao.save(dossier);
+		}
 	}
 }

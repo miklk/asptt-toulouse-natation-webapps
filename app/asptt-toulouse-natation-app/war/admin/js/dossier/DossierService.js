@@ -12,7 +12,7 @@ dossierServices.factory('DossierService', ['$resource',
 		remove: $resource('/resources/dossiers/:dossier',{},{
 			query:{method:'DELETE', isArray: false, params: {}}
 		}),
-		paiement: $resource('/resources/dossiers/paiement/:dossier',{},{
+		certificat: $resource('/resources/dossiers/certificat/:nageur',{},{
 			query:{method:'PUT', isArray: false, params: {}}
 		})
 	};
