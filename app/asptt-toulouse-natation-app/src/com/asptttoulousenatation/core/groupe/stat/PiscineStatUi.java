@@ -1,51 +1,36 @@
 package com.asptttoulousenatation.core.groupe.stat;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class PiscineStatUi implements Serializable {
+
+public class PiscineStatUi extends StatBase {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String piscineTitle;
-	private Integer capacite;
-	private Integer disponibles;
+	
+	private List<JourStat> jours;
 	
 	public PiscineStatUi() {
-		capacite = 0;
-		disponibles = 0;
+		super();
+	}
+	
+	public void addJour(JourStat jour) {
+		addCapacite(jour.getCapacite());
+		addDisponibles(jour.getDisponibles());
+		if(jours == null) {
+			jours = new ArrayList<JourStat>();
+		}
+		jours.add(jour);
 	}
 
-	public void addCapacite(Integer pCapacite) {
-		capacite += pCapacite;
+	public List<JourStat> getJours() {
+		return jours;
 	}
 
-	public void addDisponibles(Integer pDisponibles) {
-		disponibles += pDisponibles;
-	}
-
-	public String getPiscineTitle() {
-		return piscineTitle;
-	}
-
-	public void setPiscineTitle(String piscineTitle) {
-		this.piscineTitle = piscineTitle;
-	}
-
-	public Integer getCapacite() {
-		return capacite;
-	}
-
-	public void setCapacite(Integer capacite) {
-		this.capacite = capacite;
-	}
-
-	public Integer getDisponibles() {
-		return disponibles;
-	}
-
-	public void setDisponibles(Integer disponibles) {
-		this.disponibles = disponibles;
+	public void setJours(List<JourStat> jours) {
+		this.jours = jours;
 	}
 }

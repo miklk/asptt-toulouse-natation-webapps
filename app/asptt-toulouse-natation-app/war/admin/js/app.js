@@ -76,7 +76,7 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 			controller: 'DossierNageurController',
 		}).
 		when('/remplissage', {
-			templateUrl: 'views/dossier/remplissage.html'
+			templateUrl: 'views/dossier/stat/remplissage.html'
 		}).
 		when('/error', {
 			templateUrl: 'views/error.html'

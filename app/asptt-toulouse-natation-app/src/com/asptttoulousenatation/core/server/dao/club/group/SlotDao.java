@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import com.asptttoulousenatation.core.server.dao.DaoBase;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
+import com.asptttoulousenatation.core.server.service.EMF;
 
 public class SlotDao extends DaoBase<SlotEntity> {
 
@@ -20,6 +24,39 @@ public class SlotDao extends DaoBase<SlotEntity> {
 			piscines.add(entity.getSwimmingPool());
 		}
 		return new ArrayList<String>(piscines);
+	}
+	
+	public List<String> getDays(String piscine) {
+		final EntityManager em = EMF.get().createEntityManager();
+		Query query = em.createQuery("SELECT DISTINCT " + getAlias()
+				+ ".dayOfWeek FROM " + getEntityClass().getSimpleName()
+				+ " as " + getAlias() + " WHERE " + getAlias()
+				+ ".swimmingPool =:piscine");
+		query.setParameter("piscine", piscine);
+		final List<String> lResult;
+		try {
+			lResult = new ArrayList<String>(query.getResultList());
+		} finally {
+			em.close();
+		}
+		return lResult;
+	}
+	
+	public List<Long> getGroupesDays(String piscine, String dayOfWeek) {
+		final EntityManager em = EMF.get().createEntityManager();
+		Query query = em.createQuery("SELECT DISTINCT " + getAlias()
+				+ ".group FROM " + getEntityClass().getSimpleName()
+				+ " as " + getAlias() + " WHERE " + getAlias()
+				+ ".swimmingPool =:piscine AND " + getAlias() +".dayOfWeek=:dayOfWeek");
+		query.setParameter("piscine", piscine);
+		query.setParameter("dayOfWeek", dayOfWeek);
+		final List<Long> lResult;
+		try {
+			lResult = new ArrayList<>(query.getResultList());
+		} finally {
+			em.close();
+		}
+		return lResult;
 	}
 
 	@Override

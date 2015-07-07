@@ -1,0 +1,47 @@
+<div class="row">
+   <h3>Par créneaux <small>piscines et groupes</small></h3>
+</div>
+   
+<div class="row" ng-repeat="piscine in piscines |orderBy: 'piscineTitle'" style="font-size:0.8em">
+    <h4>{{piscine.statTitle}} ({{groupeOccupe(piscine)}}/{{piscine.capacite}})</h4>
+    
+    <div class="col-md-4 table-responsive"  ng-repeat="jour in piscine.jours">
+       <h5>{{jour.statTitle}} ({{groupeOccupe(jour)}}/{{jour.capacite}})</h5>
+	   <table class="table table-hover">
+	       <thead>
+	           <tr>
+	               <th>Groupe</th>
+	               <th>Horaire</th>
+	               <th>Capacité</th>
+	               <th>Occupé</th>
+	               <th>Disponible</th>
+	               <th>Taux d'occupation</th>
+	           </tr>
+	       </thead>
+	       <tbody ng-repeat="groupe in jour.groupes">
+	           <tr>
+	               <td colspan="2">{{groupe.statTitle}}</td>
+	               <td>{{groupe.capacite}}</td>
+	               <td>{{groupeOccupe(groupe)}}</td>
+	               <td>{{groupe.disponibles}}</td>
+	               <td>{{groupeTaux(groupe) | number:2}} %</td>
+	           </tr>
+	           <tr ng-repeat="creneau in groupe.creneaux">
+                   <td></td>
+                   <td>{{creneau.statTitle}}</td>
+                   <td>{{creneau.capacite}}</td>
+                   <td>{{groupeOccupe(creneau)}}</td>
+                   <td>{{creneau.disponibles}}</td>
+                   <td>{{groupeTaux(creneau) | number:2}} %</td>
+               </tr>
+	           <tr class="info">
+	               <td></td>
+	               <td>{{getTotalCapacite(groupe.creneaux)}}</td>
+	               <td>{{getTotalOccupe(groupe.creneaux)}}</td>
+	               <td>{{getTotalDisponible(groupe.creneaux)}}</td>
+	               <td>{{getTotalTaux(groupe.creneaux) | number:2}} %</td>
+	           </tr>
+	       </tbody>
+	   </table>
+	  </div>
+</div>

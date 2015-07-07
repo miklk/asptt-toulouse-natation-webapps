@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import org.apache.commons.lang3.BooleanUtils;
+import org.joda.time.DateTime;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.PiscineDao;
@@ -50,7 +51,7 @@ public class CreneauStatService {
 			stat.setGroupeTitle(groupe.getTitle());
 			//récupération des créneaux
 			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-					1);
+					2);
 			criteria.add(new CriterionDao<Long>(SlotEntityFields.GROUP, groupe.getId(),
 					Operator.EQUAL));
 			criteria.add(new CriterionDao<Boolean>(SlotEntityFields.SECOND, Boolean.FALSE,
@@ -71,18 +72,40 @@ public class CreneauStatService {
 		List<PiscineStatUi> result = new ArrayList<>();
 		for(PiscineEntity piscine: piscineDao.getAll()) {
 			PiscineStatUi stat = new PiscineStatUi();
-			stat.setPiscineTitle(piscine.getIntitule());
-			//récupération des créneaux
-			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-					1);
-			criteria.add(new CriterionDao<String>(SlotEntityFields.SWIMMINGPOOL, piscine.getIntitule(),
-					Operator.EQUAL));
-			criteria.add(new CriterionDao<Boolean>(SlotEntityFields.SECOND, Boolean.FALSE,
-					Operator.EQUAL));
-			List<SlotEntity> entities = slotDao.find(criteria);
-			for(SlotEntity entity: entities) {
-				stat.addCapacite(entity.getPlaceDisponible());
-				stat.addDisponibles(entity.getPlaceRestante());
+			stat.setStatTitle(piscine.getIntitule());
+			
+			//Récupération des jours
+			List<String> dayOfWeeks = slotDao.getDays(piscine.getIntitule());
+			//récupération des créneaux par jour
+			for(String dayOfWeek: dayOfWeeks) {
+				JourStat jourStat = new JourStat();
+				jourStat.setStatTitle(dayOfWeek);
+				
+				List<Long> groupes = slotDao.getGroupesDays(piscine.getIntitule(), dayOfWeek);
+				for(Long groupe: groupes) {
+					GroupEntity groupeEntity = groupeDao.get(groupe);
+					GroupeStat groupeStat = new GroupeStat();
+					groupeStat.setStatTitle(groupeEntity.getTitle());
+					
+					List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+							3);
+					criteria.add(new CriterionDao<String>(SlotEntityFields.SWIMMINGPOOL, piscine.getIntitule(),
+							Operator.EQUAL));
+					criteria.add(new CriterionDao<String>(SlotEntityFields.DAYOFWEEK, dayOfWeek,
+							Operator.EQUAL));
+					criteria.add(new CriterionDao<Long>(SlotEntityFields.GROUP, groupe,
+							Operator.EQUAL));
+					List<SlotEntity> entities = slotDao.find(criteria);
+					for(SlotEntity entity: entities) {
+						StatBase creneauStat = new StatBase();
+						creneauStat.setStatTitle(new DateTime(entity.getBeginDt().getTime()).toString("HH:mm") + " - " + new DateTime(entity.getEndDt().getTime()).toString("HH:mm"));
+						creneauStat.addCapacite(entity.getPlaceDisponible());
+						creneauStat.addDisponibles(entity.getPlaceRestante());
+						groupeStat.addCreneau(creneauStat);
+					}
+					jourStat.addGroupe(groupeStat);
+				}
+				stat.addJour(jourStat);
 			}
 			result.add(stat);
 		}
