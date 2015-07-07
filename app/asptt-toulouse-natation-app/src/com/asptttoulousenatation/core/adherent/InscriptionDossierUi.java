@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import com.asptttoulousenatation.core.groupe.GroupUi;
 import com.asptttoulousenatation.core.groupe.SlotUi;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
@@ -35,13 +38,18 @@ public class InscriptionDossierUi implements Serializable {
 	
 	public boolean hasMultipleCreneaux() {
 		int count = 0;
-		for(LoadingSlotUi creneau: creneaux.getSlots()) {
-			count+=countCreneau(creneau.getLundi());
-			count+=countCreneau(creneau.getMardi());
-			count+=countCreneau(creneau.getMercredi());
-			count+=countCreneau(creneau.getJeudi());
-			count+=countCreneau(creneau.getVendredi());
-			count+=countCreneau(creneau.getSamedi());
+		if(creneaux != null && CollectionUtils.isNotEmpty(creneaux.getSlots())) {
+			for(LoadingSlotUi creneau: creneaux.getSlots()) {
+				count+=countCreneau(creneau.getLundi());
+				count+=countCreneau(creneau.getMardi());
+				count+=countCreneau(creneau.getMercredi());
+				count+=countCreneau(creneau.getJeudi());
+				count+=countCreneau(creneau.getVendredi());
+				count+=countCreneau(creneau.getSamedi());
+			}
+		} else if(StringUtils.isNotBlank(dossier.getCreneaux())) {
+			String[] creneauSplit = dossier.getCreneaux().split(";");
+			count = creneauSplit.length;
 		}
 		return count > 1;
 	}
