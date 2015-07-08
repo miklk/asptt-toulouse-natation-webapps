@@ -52,8 +52,8 @@
 							<li ng-hide="dossier.etat == 'INSCRIT'"><a href="" ng-click="relancer(dossier)">Relancer</a></li>
 							<li><a href="" ng-click="remove(index, dossier)">Supprimer</a></li>
 							<li class="divider"></li>
-							<li><a href="" ng-click="initPaiement(dossier)">Paiement reçu</a></li>
-							<li><a href="" ng-click="certificatRecu(dossier)">Certificat reçu</a></li>
+							<li><a href="" ng-click="initPaiement(dossier)" ng-hide="dossier.etat == 'PAIEMENT_COMPLET' || dossier.etat == 'INSCRIT'">Paiement reçu</a></li>
+							<li><a href="" ng-click="certificatRecu(dossier)" ng-hide="dossier.nageur.certificat">Certificat reçu</a></li>
 							<li><a href="" ng-click="initCommentaire(dossier)">Ajouter un commentaire</a></li>
 							<li class="divider"></li>
 							<li><a href="" ng-click="changerGroupe(index, dossier)">Changer de groupe</a></li>
