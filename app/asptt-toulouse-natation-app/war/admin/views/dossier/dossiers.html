@@ -1,24 +1,31 @@
-<div ng-controller="DossierController">
+<div class="container" ng-controller="DossierController">
 	<div class="row">
 		<h1 class="page-header">Dossiers d'inscriptions</h1>
 	</div>
 	<div class="row">
-		<input type="text" class="form-control" ng-model="query" />
-    	<select class="form-control" placeholder="Groupes" ng-model="groupe"
-    	ng-options="groupe.id as groupe.title for groupe in groupes">
-		 	<option value="">Choisir un groupe</option>
-		</select>
-		<div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" ng-model="sansGroupe"> Sans groupe
-                        </label>
-                    </div>
-                </div>
-         </div>
+	   <form class="form-horizontal">
+	       <div class="form-group">
+	           <input type="text" class="form-control" ng-model="query" />
+	       </div>
+    	
+    	   <div class="form-group">
+    	       <div class="form-inline">
+    	               <label for="groupe">Groupe</label>
+			    	<select class="form-control" id="groupe" ng-model="groupe"
+			    	ng-options="groupe.id as groupe.title for groupe in groupes">
+					 	<option value="">Choisir un groupe</option>
+					</select>
+                   <label for="dossierStatut">Statut du dossier</label> 
+	                <select class="form-control" id="dossierStatut" name="dossierStatut" ng-model="dossierStatut" ng-options="statut as statut for statut in dossierStatus">
+	                   <option value="">Choisir un statut</option>
+	                </select>
+			   </div>
+		    </div>
+         </form>
 		<button type="button" class="btn btn-block btn-primary" ng-click="search()">Rechercher</button>
+		
 		<button type="button" class="btn btn-block btn-primary" ng-click="initCreerDossier()">Créer un dossier</button>
+		
 	</div>
 	<div class="row" ng-show="dossiers">
 		<p><span class="badge">{{dossierCount}} résultats</span></p>

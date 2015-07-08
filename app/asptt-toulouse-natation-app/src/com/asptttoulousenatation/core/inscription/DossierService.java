@@ -69,10 +69,37 @@ public class DossierService {
 	@Path("/find")
 	@GET
 	@Consumes("application/json")
-	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe) {
+	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe, @QueryParam("dossierStatut") String dossierStatut) {
 		List<DossierResultBean> result = Collections.emptyList();
 		List<DossierNageurEntity> nageurs = new ArrayList<DossierNageurEntity>();
-		if(StringUtils.isNotBlank(texteLibre)) {
+		
+		if(groupe != null && groupe > 0) {
+			List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE,
+					groupe, Operator.EQUAL));
+			nageurs.addAll(dao.find(criteriaNageur));
+		} else if (BooleanUtils.isTrue(sansGroupe)) {
+			List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE,
+					null, Operator.NULL));
+			nageurs.addAll(dao.find(criteriaNageur));
+		} else if(StringUtils.isNotBlank(dossierStatut)) {
+			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+					dossierStatut, Operator.EQUAL));
+			
+			List<DossierEntity> entities = dossierDao.find(criteria);
+			for(DossierEntity dossier: entities) {
+				List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
+						1);
+				criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
+						dossier.getId(), Operator.EQUAL));
+				nageurs.addAll(dao.find(criteriaNageur));
+			}
+		} else if(StringUtils.isNotBlank(texteLibre)) {
 			/**Nom prenom email
 			String[] splitGuillemets = texteLibre.split("\"");
 			for(String slitGuillemets: splitGuillemets) {
@@ -97,19 +124,6 @@ public class DossierService {
 						texteLibre.toUpperCase(), Operator.EQUAL));
 				nageurs.addAll(dao.find(criteriaNageur));
 			}
-			
-		} else if(groupe != null && groupe > 0) {
-			List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
-					1);
-			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE,
-					groupe, Operator.EQUAL));
-			nageurs.addAll(dao.find(criteriaNageur));
-		} else if (BooleanUtils.isTrue(sansGroupe)) {
-			List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
-					1);
-			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE,
-					null, Operator.NULL));
-			nageurs.addAll(dao.find(criteriaNageur));
 		} else {
 			nageurs = dao.getAll();
 		}

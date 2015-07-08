@@ -6,11 +6,15 @@ var dossierController = angular.module('DossierController', ['ngRoute', 'dossier
 dossierController.controller('DossierController', ['$rootScope', '$http', '$scope', '$location', '$filter', 'DossierService', 'GroupeService', 'SlotService', function($rootScope, $http, $scope, $location, $filter, DossierService, GroupeService, SlotService) {
 	GroupeService.all.query({}, function(data) {
 		$scope.groupes = data.groups;
-	}); 
+		var sansGroupe = {title:'Sans groupe', id:'-1'};
+		$scope.groupes.push(sansGroupe);
+	});
+	
+	$scope.dossierStatus = ['INITIALISE','PREINSCRIT', 'PAIEMENT_PARTIEL', 'PAIEMENT_COMPLET', 'INSCRIT', 'ANNULE', 'EXPIRE'];
 	
 	$scope.search = function() {
 		$rootScope.isLoading = true;
-		DossierService.list.query({query: $scope.query, groupe: $scope.groupe, sansGroupe: $scope.sansGroupe}, function(data) {
+		DossierService.list.query({query: $scope.query, groupe: $scope.groupe, sansGroupe: $scope.sansGroupe, dossierStatut: $scope.dossierStatut}, function(data) {
 			$scope.dossiers = data;
 			$scope.dossierCount = data.length;
 			$rootScope.isLoading = false;
