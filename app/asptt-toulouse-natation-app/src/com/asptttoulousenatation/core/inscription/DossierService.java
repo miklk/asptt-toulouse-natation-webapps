@@ -70,7 +70,7 @@ public class DossierService {
 	@GET
 	@Consumes("application/json")
 	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe, @QueryParam("dossierStatut") String dossierStatut) {
-		List<DossierResultBean> result = Collections.emptyList();
+		List<DossierResultBean> result = new ArrayList<DossierResultBean>();
 		List<DossierNageurEntity> nageurs = new ArrayList<DossierNageurEntity>();
 		
 		if(groupe != null && groupe > 0) {
@@ -115,7 +115,12 @@ public class DossierService {
 							1);
 					criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
 							dossier.getId(), Operator.EQUAL));
-					nageurs.addAll(dao.find(criteriaNageur));
+					List<DossierNageurEntity> nageursDossier = dao.find(criteriaNageur);
+					if(CollectionUtils.isNotEmpty(nageursDossier)) {
+						nageurs.addAll(nageursDossier);
+					} else {
+						result.add(DossierResultTransformer.getInstance().toUiDossier(dossier));
+					}
 				}
 			} else {
 				List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
@@ -127,7 +132,7 @@ public class DossierService {
 		} else {
 			nageurs = dao.getAll();
 		}
-		result = DossierResultTransformer.getInstance().toUi(nageurs);
+		result.addAll(DossierResultTransformer.getInstance().toUi(nageurs));
 		return result;
 	}
 	

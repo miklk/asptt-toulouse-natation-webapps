@@ -56,6 +56,16 @@ public class DossierResultTransformer extends AbstractEntityTransformer<DossierR
 		bean.setEtat(dossier.getStatut());
 		return bean;
 	}
+	
+	public DossierResultBean toUiDossier(DossierEntity pEntity) {
+		DossierResultBean bean = new DossierResultBean();
+		bean.setEmail(pEntity.getEmail());
+		bean.setMotdepasse(pEntity.getMotdepasse());
+		bean.setDossierId(pEntity.getId());
+		bean.setComment(pEntity.getComment());
+		bean.setEtat(pEntity.getStatut());
+		return bean;
+	}
 
 	private String getGroupe(Long groupeId) {
 		final String groupe;
