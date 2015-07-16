@@ -10,7 +10,7 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 		$scope.groupes.push(sansGroupe);
 	});
 	
-	$scope.dossierStatus = ['INITIALISE','PREINSCRIT', 'PAIEMENT_PARTIEL', 'PAIEMENT_COMPLET', 'INSCRIT', 'ANNULE', 'EXPIRE'];
+	$scope.dossierStatus = ['INITIALISE','PREINSCRIT', 'PAIEMENT_PARTIEL', 'PAIEMENT_COMPLET', 'INSCRIT', 'ANNULE', 'EXPIRE', 'ATTENTE'];
 	
 	$scope.search = function() {
 		$rootScope.isLoading = true;
