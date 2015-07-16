@@ -72,6 +72,7 @@ public class CreneauStatService {
 		List<PiscineStatUi> result = new ArrayList<>();
 		for(PiscineEntity piscine: piscineDao.getAll()) {
 			PiscineStatUi stat = new PiscineStatUi();
+			stat.setId(piscine.getId());
 			stat.setStatTitle(piscine.getIntitule());
 			
 			//Récupération des jours

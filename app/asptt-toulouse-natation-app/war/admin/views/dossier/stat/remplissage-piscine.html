@@ -2,11 +2,21 @@
 	<div class="row">
 		<h1 class="page-header">Taux de remplissage <small>par créneaux</small></h1>
 	</div>
+	
+	<ul class="nav nav-tabs">
+	    <li ng-repeat="piscine in piscines |orderBy: 'statTitle'">
+	    	<a data-toggle="tab" href="#{{piscine.id}}" target="_self">{{piscine.statTitle}}</a>
+	    </li>
+ 	</ul>
+ 
+<div class="tab-content">
+    <div ng-repeat="piscine in piscines |orderBy: 'statTitle'" id="{{piscine.id}}" class="tab-pane fade in">
 
-<div class="row" ng-repeat="piscine in piscines |orderBy: 'piscineTitle'" style="font-size:0.8em">
+
+<div class="row" style="font-size:0.8em">
     <h4>{{piscine.statTitle}} ({{groupeOccupe(piscine)}}/{{piscine.capacite}})</h4>
     
-    <div class="col-md-4 table-responsive"  ng-repeat="jour in piscine.jours">
+    <div class="row table-responsive"  ng-repeat="jour in piscine.jours | orderBy:jourSort">
        <h5>{{jour.statTitle}} ({{groupeOccupe(jour)}}/{{jour.capacite}})</h5>
 	   <table class="table table-hover">
 	       <thead>
@@ -45,5 +55,7 @@
 	       </tbody>
 	   </table>
 	  </div>
+</div>
+</div>
 </div>
 </div>

@@ -11,6 +11,7 @@ public class PiscineStatUi extends StatBase {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private Long id;
 	private List<JourStat> jours;
 	
 	public PiscineStatUi() {
@@ -24,6 +25,14 @@ public class PiscineStatUi extends StatBase {
 			jours = new ArrayList<JourStat>();
 		}
 		jours.add(jour);
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public List<JourStat> getJours() {

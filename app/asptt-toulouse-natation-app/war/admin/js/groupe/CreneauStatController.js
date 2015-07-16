@@ -60,4 +60,26 @@ creneauStatController.controller('CreneauStatController', ['$http', '$rootScope'
 		});
 		return (occupe / capacite) * 100;
 	}
+	
+	$scope.jourSort = function(jour) {
+		var result = 0;
+		switch(jour.statTitle) {
+		case "Lundi": result = 1;
+		break;
+		case "Mardi": result = 2;
+		break;
+		case "Mercredi": result = 3;
+		break;
+		case "Jeudi": result = 4;
+		break;
+		case "Vendredi": result = 5;
+		break;
+		case "Samedi": result = 6;
+		break;
+		case "Dimanche": result = 7;
+		break;
+		default: result = 0;
+		}
+		return result;
+	}
 }]);
