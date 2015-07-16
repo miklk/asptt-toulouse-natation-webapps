@@ -502,4 +502,12 @@ public class DossierService {
 			LOG.log(Level.SEVERE, "Erreur pour l'e-mail: " + dossier.getEmail(), e);
 		}
 	}
+	
+	@Path("attente/{dossier}")
+	@PUT
+	public void attente(@PathParam("dossier") Long dossierId) {
+		DossierEntity dossier = dossierDao.get(dossierId);
+		dossier.setStatut(DossierStatutEnum.ATTENTE.name());
+		dossierDao.save(dossier);
+	}
 }

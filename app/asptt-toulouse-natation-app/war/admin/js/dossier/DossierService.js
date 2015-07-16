@@ -17,6 +17,9 @@ dossierServices.factory('DossierService', ['$resource',
 		}),
 		relancer: $resource('/resources/dossiers/relancer/:dossier',{dossier: '@dossier'},{
 			query:{method:'PUT', isArray: false, params: {}}
+		}),
+		attente: $resource('/resources/dossiers/attente/:dossier',{dossier: '@dossier'},{
+			query:{method:'PUT', isArray: false, params: {}}
 		})
 	};
 }]);

@@ -172,4 +172,10 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 			alert("E-mail de relance envoyé avec succès");
 		});
 	}
+	
+	$scope.attente = function(dossier) {
+		DossierService.attente.query({dossier: dossier.dossierId}, function(data) {
+			alert("Dossier mis en attente (Si c'est une famille tous les dossiers sont en attentes)");
+		});
+	}
 }]);

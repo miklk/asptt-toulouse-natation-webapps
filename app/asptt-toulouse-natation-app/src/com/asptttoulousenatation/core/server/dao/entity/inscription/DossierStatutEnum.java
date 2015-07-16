@@ -8,5 +8,6 @@ public enum DossierStatutEnum {
 	PAIEMENT_COMPLET,
 	INSCRIT,
 	ANNULE,
-	EXPIRE;
+	EXPIRE,
+	ATTENTE;
 }

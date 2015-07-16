@@ -57,6 +57,7 @@
 						<ul class="dropdown-menu">
 							<li><a href="#/dossier/{{dossier.dossierId}}">Modifier</a></li>
 							<li ng-hide="dossier.etat == 'INSCRIT'"><a href="" ng-click="relancer(dossier)">Relancer</a></li>
+							<li ng-hide="dossier.etat == 'ATTENTE'"><a href="" ng-click="attente(dossier)">Mettre en attente</a></li>
 							<li><a href="" ng-click="remove(index, dossier)">Supprimer</a></li>
 							<li class="divider"></li>
 							<li><a href="" ng-click="initPaiement(dossier)" ng-hide="dossier.etat == 'PAIEMENT_COMPLET' || dossier.etat == 'INSCRIT'">Paiement reçu</a></li>
