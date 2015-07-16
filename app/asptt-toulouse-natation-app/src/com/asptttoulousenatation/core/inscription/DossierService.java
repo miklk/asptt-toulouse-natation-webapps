@@ -196,6 +196,7 @@ public class DossierService {
 			nageur.setNom(parameters.getNom());
 			nageur.setPrenom(parameters.getPrenom());
 			nageur.setDossier(entityCreated.getId());
+			nageur.setNouveau(Boolean.TRUE);
 			dao.save(nageur);
 			result = true;
 		}

@@ -198,16 +198,15 @@ background: linear-gradient(to right, #1e5799 0%,#7db9e8 100%);
 }
 
 .footer {
-	background: #cdeff8;
-	border-top: 5px solid #9750D4;
+	
 	line-height: 24px;
 	padding: 40px 0 20px;
 	margin: auto;
-	background: url('img/fond_footer.jpg') no-repeat;
 	 background-size: 1300px auto;
 }
 
 .footer-partenaires {
+	border-top: 5px solid #9750D4;
 	margin: 2% 0 0 10%;
 	
 }
