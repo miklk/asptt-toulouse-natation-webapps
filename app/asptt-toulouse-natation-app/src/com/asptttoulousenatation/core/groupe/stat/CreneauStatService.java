@@ -17,8 +17,14 @@ import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.PiscineEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
+import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.GroupEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
+import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
+import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 
@@ -30,6 +36,8 @@ public class CreneauStatService {
 	private GroupDao groupeDao = new GroupDao();
 	private SlotDao slotDao = new SlotDao();
 	private PiscineDao piscineDao = new PiscineDao();
+	private DossierNageurDao dossierNageurDao = new DossierNageurDao();
+	private DossierDao dossierDao = new DossierDao();
 	
 	@Path("/groupes")
 	@GET
@@ -37,29 +45,49 @@ public class CreneauStatService {
 		List<GroupeStatUi> result = new ArrayList<>();
 		
 		final List<GroupEntity> groupes;
-		if(BooleanUtils.isTrue(enf)) {
-			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-					1);
-			criteria.add(new CriterionDao<Boolean>(GroupEntityFields.ENF, Boolean.TRUE,
-					Operator.EQUAL));
-			groupes = groupeDao.find(criteria);
-		} else {
-			groupes = groupeDao.getAll();
-		}
-		for(GroupEntity groupe: groupes) {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Boolean>(GroupEntityFields.ENF, BooleanUtils.isTrue(enf),
+				Operator.EQUAL));
+		groupes = groupeDao.find(criteria);
+		for (GroupEntity groupe : groupes) {
 			GroupeStatUi stat = new GroupeStatUi();
 			stat.setGroupeTitle(groupe.getTitle());
-			//récupération des créneaux
-			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-					2);
-			criteria.add(new CriterionDao<Long>(SlotEntityFields.GROUP, groupe.getId(),
-					Operator.EQUAL));
-			criteria.add(new CriterionDao<Boolean>(SlotEntityFields.SECOND, Boolean.FALSE,
-					Operator.EQUAL));
-			List<SlotEntity> entities = slotDao.find(criteria);
-			for(SlotEntity entity: entities) {
-				stat.addCapacite(entity.getPlaceDisponible());
-				stat.addDisponibles(entity.getPlaceRestante());
+
+			if (groupe.getEnf()) { // Groupe ENF
+				// récupération des créneaux
+				List<CriterionDao<? extends Object>> criteriaCreneau = new ArrayList<CriterionDao<? extends Object>>(2);
+				criteriaCreneau.add(new CriterionDao<Long>(SlotEntityFields.GROUP, groupe.getId(), Operator.EQUAL));
+				criteriaCreneau.add(new CriterionDao<Boolean>(SlotEntityFields.SECOND, Boolean.FALSE, Operator.EQUAL));
+				List<SlotEntity> entities = slotDao.find(criteriaCreneau);
+				for (SlotEntity entity : entities) {
+					stat.addCapacite(entity.getPlaceDisponible());
+					stat.addDisponibles(entity.getPlaceRestante());
+				}
+			} else {
+				List<CriterionDao<? extends Object>> criteriaGroupe = new ArrayList<CriterionDao<? extends Object>>(1);
+				criteriaGroupe
+						.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE, groupe.getId(), Operator.EQUAL));
+				List<DossierNageurEntity> nageurs = dossierNageurDao.find(criteriaGroupe);
+				int countInscrit = 0;
+				for(DossierNageurEntity nageur: nageurs) {
+					DossierEntity dossier = dossierDao.get(nageur.getDossier());
+					switch(DossierStatutEnum.valueOf(dossier.getStatut())) {
+					case ATTENTE:
+					case INSCRIT:
+					case PAIEMENT_COMPLET:
+					case PAIEMENT_PARTIEL:
+					case PREINSCRIT: countInscrit++;
+						break;
+						default: 
+					}
+				}
+
+				List<CriterionDao<? extends Object>> criteriaCreneau = new ArrayList<CriterionDao<? extends Object>>(2);
+				criteriaCreneau.add(new CriterionDao<Long>(SlotEntityFields.GROUP, groupe.getId(), Operator.EQUAL));
+				List<SlotEntity> entities = slotDao.find(criteriaCreneau);
+				stat.setCapacite(entities.get(0).getPlaceDisponible());
+				stat.setDisponibles(entities.get(0).getPlaceDisponible() - countInscrit);
 			}
 			result.add(stat);
 		}
