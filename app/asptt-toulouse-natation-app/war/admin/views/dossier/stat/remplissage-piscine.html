@@ -39,7 +39,7 @@
 	           </tr>
 	           <tr ng-repeat="creneau in groupe.creneaux">
                    <td></td>
-                   <td>{{creneau.statTitle}}</td>
+                   <td>{{creneau.statTitle}}<span ng-show="creneau.second"> (2)</span></td>
                    <td>{{creneau.capacite}}</td>
                    <td>{{groupeOccupe(creneau)}}</td>
                    <td>{{creneau.disponibles}}</td>

@@ -98,7 +98,8 @@ public class CreneauStatService {
 							Operator.EQUAL));
 					List<SlotEntity> entities = slotDao.find(criteria);
 					for(SlotEntity entity: entities) {
-						StatBase creneauStat = new StatBase();
+						CreneauStat creneauStat = new CreneauStat();
+						creneauStat.setSecond(BooleanUtils.toBoolean(entity.getSecond()));
 						creneauStat.setStatTitle(new DateTime(entity.getBeginDt().getTime()).toString("HH:mm") + " - " + new DateTime(entity.getEndDt().getTime()).toString("HH:mm"));
 						creneauStat.addCapacite(entity.getPlaceDisponible());
 						creneauStat.addDisponibles(entity.getPlaceRestante());

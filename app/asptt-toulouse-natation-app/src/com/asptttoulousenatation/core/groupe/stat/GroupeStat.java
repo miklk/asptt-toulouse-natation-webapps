@@ -10,23 +10,23 @@ public class GroupeStat extends StatBase {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private List<StatBase> creneaux;
+	private List<CreneauStat> creneaux;
 
-	public void addCreneau(StatBase creneau) {
+	public void addCreneau(CreneauStat creneau) {
 		addCapacite(creneau.getCapacite());
 		addDisponibles(creneau.getDisponibles());
 		
 		if(creneaux == null) {
-			creneaux = new ArrayList<StatBase>();
+			creneaux = new ArrayList<CreneauStat>();
 		}
 		creneaux.add(creneau);
 	}
 
-	public List<StatBase> getCreneaux() {
+	public List<CreneauStat> getCreneaux() {
 		return creneaux;
 	}
 
-	public void setCreneaux(List<StatBase> creneaux) {
+	public void setCreneaux(List<CreneauStat> creneaux) {
 		this.creneaux = creneaux;
 	}
 	
