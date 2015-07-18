@@ -19,8 +19,6 @@ import com.asptttoulousenatation.core.server.dao.entity.club.group.PiscineEntity
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.GroupEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
-import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
-import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 
