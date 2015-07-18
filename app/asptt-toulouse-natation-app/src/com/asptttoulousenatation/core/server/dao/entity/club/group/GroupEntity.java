@@ -66,6 +66,12 @@ public class GroupEntity implements IEntity {
 	@Persistent
 	private Boolean secondes;
 	
+	@Persistent
+	private Integer capacite;
+	
+	@Persistent
+	private Integer occupe;
+	
 	public GroupEntity() {
 		
 	}
@@ -224,6 +230,22 @@ public class GroupEntity implements IEntity {
 
 	public void setTarifUnique4(Integer tarifUnique4) {
 		this.tarifUnique4 = tarifUnique4;
+	}
+
+	public Integer getCapacite() {
+		return capacite;
+	}
+
+	public void setCapacite(Integer capacite) {
+		this.capacite = capacite;
+	}
+
+	public Integer getOccupe() {
+		return occupe;
+	}
+
+	public void setOccupe(Integer occupe) {
+		this.occupe = occupe;
 	}
 	
 }

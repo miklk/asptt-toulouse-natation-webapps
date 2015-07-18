@@ -28,6 +28,8 @@ public class GroupUi implements IsSerializable {
 	private boolean enf;
 	private boolean competition;
 	private boolean secondes;
+	private int capacite;
+	private int occupe;
 	
 	public GroupUi() {
 		super();
@@ -197,6 +199,22 @@ public class GroupUi implements IsSerializable {
 
 	public void setTarifUnique4(int tarifUnique4) {
 		this.tarifUnique4 = tarifUnique4;
+	}
+
+	public int getCapacite() {
+		return capacite;
+	}
+
+	public void setCapacite(int capacite) {
+		this.capacite = capacite;
+	}
+
+	public int getOccupe() {
+		return occupe;
+	}
+
+	public void setOccupe(int occupe) {
+		this.occupe = occupe;
 	}
 	
 }

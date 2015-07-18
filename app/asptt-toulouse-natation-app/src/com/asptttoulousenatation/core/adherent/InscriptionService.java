@@ -161,10 +161,10 @@ public class InscriptionService {
 			pDossiers.addPrice(tarif);
 
 			// Enregistrement du dossier
-				dossier.getDossier().setDossier(
-						principal.getId());
-				buildDossier(dossier);
-				dossierNageurDao.save(dossier.getDossier());
+			dossier.getDossier().setDossier(
+					principal.getId());
+			buildDossier(dossier);
+			dossierNageurDao.save(dossier.getDossier());
 		}
 
 		//Reload dossiers
@@ -379,8 +379,10 @@ public class InscriptionService {
 		pDossier.getDossier().setCertificat(false);
 		
 		if (pDossier.getGroupe() != null) {
-			pDossier.getDossier()
-					.setGroupe(pDossier.getGroupe().getId());
+			GroupEntity groupe = groupDao.get(pDossier.getGroupe().getId());
+			groupe.setOccupe(groupe.getOccupe() + 1);
+			groupDao.save(groupe);
+			pDossier.getDossier().setGroupe(groupe.getId());
 		}
 
 		if (pDossier.getCreneaux() != null) {

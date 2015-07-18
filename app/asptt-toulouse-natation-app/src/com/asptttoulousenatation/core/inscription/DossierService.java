@@ -2,7 +2,6 @@ package com.asptttoulousenatation.core.inscription;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -161,6 +160,8 @@ public class DossierService {
 			DossierNageurEntity entity = dao.get(nageur.getId());
 			GroupEntity groupe = groupeDao.get(nageur.getGroupe());
 			if (groupe != null) {
+				groupe.setOccupe(groupe.getOccupe() + 1);
+				groupeDao.save(groupe);
 				entity.setGroupe(nageur.getGroupe());
 				entity.setCreneaux(null);
 				DossierNageurEntity entitySaved = dao.save(entity);

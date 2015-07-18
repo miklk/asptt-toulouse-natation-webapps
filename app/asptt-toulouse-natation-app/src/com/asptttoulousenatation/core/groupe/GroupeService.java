@@ -148,6 +148,8 @@ public class GroupeService {
 			entity.setTarifUnique3(action.getTarifUnique3() == 0 ? action.getTarif3() : action.getTarifUnique3());
 			entity.setTarifUnique4(action.getTarifUnique4() == 0 ? action.getTarif4() : action.getTarifUnique4());
 			entity.setSecondes(action.isSecondes());
+			entity.setCapacite(action.getCapacite());
+			entity.setOccupe(action.getOccupe());
 			GroupEntity entityCreated = dao.save(entity);
 			result.setGroupe(transformer.toUi(entityCreated));
 		} else {

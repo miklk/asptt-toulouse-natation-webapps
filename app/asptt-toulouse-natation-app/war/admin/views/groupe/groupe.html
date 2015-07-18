@@ -82,6 +82,16 @@
 					</div>
 				</div>
 			</div>
+			<div class="form-group" ng-show="groupe.competition">
+				<label for="capacite" class="control-label col-md-2">Capacité</label>
+				<div class="col-md-4">
+					<input type="number" class="form-control" id="capacite" ng-model="groupe.capacite" />
+				</div>
+				<label for="occupe" class="control-label col-md-2">Occupé</label>
+				<div class="col-md-4">
+					<input type="number" class="form-control" id="occupe" ng-model="groupe.occupe" />
+				</div>
+			</div>
 			<div class="form-group">
 				<label for="tarifWeight" class="col-md-2 control-label">Priorité pour les tarifs</label>
 				<div class="col-md-10">
