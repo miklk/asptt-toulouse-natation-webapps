@@ -13,11 +13,11 @@
 	<cron>
 		<url>/resources/dossier-maintenance/creneaux</url>
 		<description>Calcul de l'occupation des créneaux</description>
-		<schedule>every day 06:30</schedule>
+		<schedule>every 4 hours</schedule>
 	</cron>
 	<cron>
 		<url>/resources/dossier-maintenance/groupes</url>
 		<description>Calcul de l'occupation des groupes compétition</description>
-		<schedule>every day 05:30</schedule>
+		<schedule>every 4 hours</schedule>
 	</cron>
 </cronentries>
