@@ -4,6 +4,9 @@
 var dossierController = angular.module('DossierController', ['ngRoute', 'dossierServices', 'groupeServices', 'slotServices']);
 
 dossierController.controller('DossierController', ['$rootScope', '$http', '$scope', '$location', '$filter', 'DossierService', 'GroupeService', 'SlotService', function($rootScope, $http, $scope, $location, $filter, DossierService, GroupeService, SlotService) {
+	DossierService.statistiques.query({}, function(data) {
+		$scope.statistiques = data;
+	});
 	GroupeService.all.query({}, function(data) {
 		$scope.groupes = data.groups;
 		var sansGroupe = {title:'Sans groupe', id:'-1'};

@@ -225,6 +225,43 @@ public abstract class DaoBase<E extends IEntity> {
 	public List<E> find(List<CriterionDao<? extends Object>> pCriteria, int limitFrom, int limitTo) {
 		return find(getEntityClass(), pCriteria, Operator.AND, null, limitFrom, limitTo);
 	}
+	
+	public Long count(List<CriterionDao<? extends Object>> pCriteria) {
+		final EntityManager em = EMF.get().createEntityManager();
+		String lQueryAsString = "SELECT count("
+				+ getAlias()
+				+ ") FROM "
+				+ getEntityClass().getSimpleName()
+				+ " "
+				+ getAlias()
+				+ " WHERE "
+				+ CriteriaUtils
+						.getWhereClause(pCriteria, Operator.AND, getAlias());
+		final TypedQuery<Long> lQuery = em.createQuery(lQueryAsString, Long.class);
+		final Long lResult;
+		try {
+			lResult = lQuery.getSingleResult();
+
+		} finally {
+			em.close();
+		}
+		return lResult;
+	}
+	
+	public Long countAll() {
+		EntityManager em = EMF.get().createEntityManager();
+		Long result;
+		try {
+			TypedQuery<Long> query = em.createQuery("SELECT count(" + getAlias()
+					+ ") FROM " + getEntityClass().getSimpleName() + " " + getAlias(),
+					Long.class);
+			result = query.getSingleResult();
+		} finally {
+			em.close();
+		}
+
+		return result;
+	}
 
 	public abstract Class<E> getEntityClass();
 

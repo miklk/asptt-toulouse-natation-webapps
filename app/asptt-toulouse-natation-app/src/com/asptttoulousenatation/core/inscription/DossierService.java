@@ -511,4 +511,34 @@ public class DossierService {
 		dossier.setStatut(DossierStatutEnum.ATTENTE.name());
 		dossierDao.save(dossier);
 	}
+	
+	@Path("statistiques")
+	@GET
+	public DossierStatistiques statistiques() {
+		DossierStatistiques result = new DossierStatistiques();
+		result.setTotal(dossierDao.countAll());
+		
+		//Complets
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.INSCRIT.name(), Operator.EQUAL));
+		result.setComplets(dossierDao.count(criteria));
+		
+		
+		//Non payé
+		criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.PAIEMENT_COMPLET.name(), Operator.NOT_EQUAL));
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.PAIEMENT_PARTIEL.name(), Operator.NOT_EQUAL));
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.INSCRIT.name(), Operator.NOT_EQUAL));
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.ANNULE.name(), Operator.NOT_EQUAL));
+		result.setNonpayes(dossierDao.count(criteria));
+		return result;
+	}
+	
 }

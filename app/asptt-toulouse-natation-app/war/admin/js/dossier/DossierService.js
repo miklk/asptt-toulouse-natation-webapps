@@ -20,6 +20,9 @@ dossierServices.factory('DossierService', ['$resource',
 		}),
 		attente: $resource('/resources/dossiers/attente/:dossier',{dossier: '@dossier'},{
 			query:{method:'PUT', isArray: false, params: {}}
+		}),
+		statistiques: $resource('/resources/dossiers/statistiques',{},{
+			query:{method:'GET', isArray: false, params: {}}
 		})
 	};
 }]);
