@@ -7,6 +7,7 @@ public enum GroupEntityFields implements IEntityFields {
 	NOUVEAU(Boolean.class),
 	ENF(Boolean.class),
 	LICENCEFFN(Boolean.class, "licenceFfn"),
+	COMPETITION(Boolean.class),
 	;
 	
 	private Class<? extends Object> clazz;

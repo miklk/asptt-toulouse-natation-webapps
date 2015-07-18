@@ -6,10 +6,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -41,14 +39,10 @@ import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
-import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
-import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
-import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
-import com.asptttoulousenatation.core.server.dao.inscription.InscriptionNouveauDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.search.OrderDao;
@@ -67,12 +61,9 @@ public class AdherentListAction extends HttpServlet {
 	private static final Logger LOG = Logger.getLogger(AdherentListAction.class
 			.getName());
 
-	private static final int EMAIL_PAQUET = 10;
 
 	private SlotDao slotDao = new SlotDao();
-	private GroupDao groupDao = new GroupDao();
 	private Inscription2Dao inscription2Dao = new Inscription2Dao();
-	private InscriptionNouveauDao inscriptionNouveauDao = new InscriptionNouveauDao();
 
 	@Override
 	protected void doGet(HttpServletRequest pReq, HttpServletResponse pResp)
@@ -95,8 +86,6 @@ public class AdherentListAction extends HttpServlet {
 				loadGroupes(pReq, pResp);
 			} else if ("loadCreneaux".equals(action)) {
 				loadCreneaux(pReq, pResp);
-			} else if ("fixCreneaux".equals(action)) {
-				fixCreneaux(pReq, pResp);
 			} else if ("loadAdherent".equals(action)) {
 				loadAdherent(pReq, pResp);
 			} else if ("loadPiscines".equals(action)) {
@@ -337,68 +326,6 @@ public class AdherentListAction extends HttpServlet {
 		String json = mapper.writeValueAsString(lUis);
 		pResp.setContentType("application/json;charset=UTF-8");
 		pResp.getWriter().write(json);
-	}
-
-	protected void fixCreneaux(HttpServletRequest pReq,
-			HttpServletResponse pResp) throws ServletException, IOException {
-		StringBuilder builder = new StringBuilder();
-		for (GroupEntity group : groupDao.getAll()) {
-			LOG.warning("Début " + group.getTitle());
-			builder.append(group.getTitle());
-
-			// Creation des creneaux
-			Map<Long, Integer> counter = new HashMap<Long, Integer>();
-			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-					1);
-			criteria.add(new CriterionDao<Long>(SlotEntityFields.GROUP, group
-					.getId(), Operator.EQUAL));
-			List<SlotEntity> creneaux = slotDao.find(criteria);
-			for (SlotEntity creneau : creneaux) {
-				counter.put(creneau.getId(), 0);
-			}
-
-			criteria = new ArrayList<CriterionDao<? extends Object>>(1);
-			criteria.add(new CriterionDao<Long>(
-					DossierNageurEntityFields.GROUPE, group.getId(),
-					Operator.EQUAL));
-			//criteria.add(new CriterionDao<String>(
-				//	DossierNageurEntityFields.CRENEAUX, null,
-					//Operator.NOT_NULL));
-			DossierNageurDao dossierNageurDao = new DossierNageurDao();
-			List<DossierNageurEntity> adherents = dossierNageurDao.find(criteria);
-			for (DossierNageurEntity adherent : adherents) {
-				String creneau = adherent.getCreneaux();
-				if (StringUtils.isNotBlank(creneau)) {
-					for (String creneauSplit : creneau.split(";")) {
-						final String creneauId;
-						if (StringUtils.contains(creneauSplit, "_")) {
-							creneauId = creneauSplit.split("_")[1];
-						} else {
-							creneauId = creneauSplit;
-						}
-						if (StringUtils.isNumeric(creneauId)) {
-							Long creneauIdentifier = Long.valueOf(creneauId);
-							final int count;
-							if (counter.containsKey(creneauIdentifier)) {
-								count = counter.get(creneauIdentifier) + 1;
-								counter.put(creneauIdentifier, count);
-							}
-
-						}
-					}
-				}
-			}
-
-			for (Map.Entry<Long, Integer> creneauEntry : counter.entrySet()) {
-				SlotEntity creneauEntity = slotDao.get(creneauEntry.getKey());
-				creneauEntity.setPlaceRestante(creneauEntity
-						.getPlaceDisponible() - creneauEntry.getValue());
-				slotDao.save(creneauEntity);
-			}
-			LOG.warning("Fin " + group.getTitle());
-		}
-		pResp.setContentType("application/json;charset=UTF-8");
-		pResp.getWriter().write(builder.toString());
 	}
 
 	protected void loadAdherent(HttpServletRequest pReq,
