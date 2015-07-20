@@ -240,6 +240,23 @@ public class DossierService {
 		}
 	}
 	
+	@Path("/nageur/{nageur}")
+	@DELETE
+	public void deleteNageur(@PathParam("nageur") Long nageurId) {
+		DossierNageurEntity nageur = dao.get(nageurId);
+		if (nageur != null) {
+
+			List<CriterionDao<? extends Object>> criteriaCertificat = new ArrayList<CriterionDao<? extends Object>>(1);
+			criteriaCertificat
+					.add(new CriterionDao<Long>(DossierCertificatEntityFields.DOSSIER, nageur.getId(), Operator.EQUAL));
+			List<DossierCertificatEntity> certificats = certificatDao.find(criteriaCertificat);
+			for (DossierCertificatEntity certificat : certificats) {
+				certificatDao.delete(certificat);
+			}
+			dao.delete(nageur);
+		}
+	}
+	
 	@Path("paiement")
 	@POST
 	public void paiement(DossierPaiementParameters parameters) {

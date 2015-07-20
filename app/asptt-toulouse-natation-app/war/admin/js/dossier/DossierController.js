@@ -75,9 +75,18 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	}
 	
 	$scope.remove = function(index, dossier) {
-		if(confirm("Voulez-vous supprimer le dossier ?")) {
+		if(confirm("Voulez-vous supprimer le dossier (et les éventuels membre de la famille) ?")) {
 			$rootScope.isLoading = true;
 			DossierService.remove.query({dossier: dossier.dossierId}, function(data) {
+				$rootScope.isLoading = false;
+			});
+		}
+	}
+	
+	$scope.removeNageur = function(index, dossier) {
+		if(confirm("Voulez-vous supprimer le dossier du nageur?")) {
+			$rootScope.isLoading = true;
+			DossierService.removeNageur.query({nageur: dossier.nageur.id}, function(data) {
 				$rootScope.isLoading = false;
 			});
 		}
