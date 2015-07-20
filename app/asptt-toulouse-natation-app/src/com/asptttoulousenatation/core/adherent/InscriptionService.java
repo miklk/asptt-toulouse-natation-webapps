@@ -380,8 +380,10 @@ public class InscriptionService {
 		
 		if (pDossier.getGroupe() != null) {
 			GroupEntity groupe = groupDao.get(pDossier.getGroupe().getId());
-			groupe.setOccupe(groupe.getOccupe() + 1);
-			groupDao.save(groupe);
+			if(BooleanUtils.isTrue(groupe.getCompetition())) {
+				groupe.setOccupe(groupe.getOccupe() + 1);
+				groupDao.save(groupe);
+			}
 			pDossier.getDossier().setGroupe(groupe.getId());
 		}
 
