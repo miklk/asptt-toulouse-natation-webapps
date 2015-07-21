@@ -29,6 +29,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
@@ -68,23 +69,23 @@ public class DossierService {
 	@Path("/find")
 	@GET
 	@Consumes("application/json")
-	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe, @QueryParam("dossierStatut") String dossierStatut) {
+	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe, @QueryParam("dossierStatut") final String dossierStatut, @QueryParam("creneau") Long creneau) {
 		List<DossierResultBean> result = new ArrayList<DossierResultBean>();
 		List<DossierNageurEntity> nageurs = new ArrayList<DossierNageurEntity>();
 		
+		List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>();
 		if(groupe != null && groupe > 0) {
-			List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
-					1);
 			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE,
 					groupe, Operator.EQUAL));
 			nageurs.addAll(dao.find(criteriaNageur));
 		} else if (BooleanUtils.isTrue(sansGroupe)) {
-			List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
-					1);
 			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE,
 					null, Operator.NULL));
 			nageurs.addAll(dao.find(criteriaNageur));
-		} else if(StringUtils.isNotBlank(dossierStatut)) {
+		} 
+		
+		if(StringUtils.isNotBlank(dossierStatut)) {
+			if(CollectionUtils.isEmpty(nageurs)) {
 			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 					1);
 			criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
@@ -92,11 +93,22 @@ public class DossierService {
 			
 			List<DossierEntity> entities = dossierDao.find(criteria);
 			for(DossierEntity dossier: entities) {
-				List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
+				criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
 						1);
 				criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
 						dossier.getId(), Operator.EQUAL));
 				nageurs.addAll(dao.find(criteriaNageur));
+			}
+			} else {
+				CollectionUtils.filter(nageurs, new Predicate() {
+					
+					@Override
+					public boolean evaluate(Object arg0) {
+						DossierNageurEntity nageur = (DossierNageurEntity) arg0;
+						DossierEntity dossier = dossierDao.get(nageur.getDossier());
+						return dossierStatut.equals(dossier.getStatut());
+					}
+				});
 			}
 		} else if(StringUtils.isNotBlank(texteLibre)) {
 			/**Nom prenom email
@@ -110,7 +122,7 @@ public class DossierService {
 						texteLibre, Operator.EQUAL));
 				List<DossierEntity> entities = dossierDao.find(criteria);
 				for(DossierEntity dossier: entities) {
-					List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
+					criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
 							1);
 					criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
 							dossier.getId(), Operator.EQUAL));
@@ -122,7 +134,7 @@ public class DossierService {
 					}
 				}
 			} else {
-				List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
+				criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
 						1);
 				criteriaNageur.add(new CriterionDao<String>(DossierNageurEntityFields.NOM,
 						texteLibre.toUpperCase(), Operator.EQUAL));
