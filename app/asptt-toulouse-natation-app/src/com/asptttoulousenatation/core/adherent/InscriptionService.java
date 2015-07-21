@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -54,6 +53,7 @@ import org.apache.commons.lang3.text.StrBuilder;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 
@@ -456,13 +456,10 @@ public class InscriptionService {
 
 		fields.setField("nom", adherent.getNom());
 		fields.setField("prenom", adherent.getPrenom());
-		Date dateNaissance = adherent.getNaissance();
-		SimpleDateFormat formatDD = new SimpleDateFormat("dd");
-		fields.setField("naissance_day", formatDD.format(dateNaissance));
-		SimpleDateFormat formatMM = new SimpleDateFormat("MM");
-		fields.setField("naissance_month", formatMM.format(dateNaissance));
-		SimpleDateFormat formatYYYY = new SimpleDateFormat("yyyy");
-		fields.setField("naissance_year", formatYYYY.format(dateNaissance));
+		DateTime naissanceAsDate = new DateTime(adherent.getNaissance().getTime(), DateTimeZone.UTC).plusHours(3);
+		fields.setField("naissance_day", "" + naissanceAsDate.getDayOfMonth());
+		fields.setField("naissance_month", "" + naissanceAsDate.getMonthOfYear());
+		fields.setField("naissance_year", "" + naissanceAsDate.getYear());
 
 		
 		fields.setField("adresse", parent.getAdresse());
@@ -480,7 +477,7 @@ public class InscriptionService {
 					+ parent.getParent1Prenom());
 			fields.setField("mineur_nom",
 					adherent.getNom() + " " + adherent.getPrenom());
-			fields.setField("profession", parent.getParent1Profession() + " / " + parent.getParent2Profession());
+			fields.setField("profession", parent.getParent1Profession() + " / " + StringUtils.defaultString(parent.getParent2Profession()));
 		} else {
 			fields.setField("profession", adherent.getProfession());
 		}
