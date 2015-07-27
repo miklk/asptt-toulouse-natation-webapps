@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
-import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 
 public class DossierUpdateParameters implements Serializable {
 
@@ -13,17 +12,17 @@ public class DossierUpdateParameters implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private DossierEntity principal;
-	private List<DossierNageurEntity> nageurs;
+	private List<DossierNageurUi> nageurs;
 	public DossierEntity getPrincipal() {
 		return principal;
 	}
 	public void setPrincipal(DossierEntity principal) {
 		this.principal = principal;
 	}
-	public List<DossierNageurEntity> getNageurs() {
+	public List<DossierNageurUi> getNageurs() {
 		return nageurs;
 	}
-	public void setNageurs(List<DossierNageurEntity> nageurs) {
+	public void setNageurs(List<DossierNageurUi> nageurs) {
 		this.nageurs = nageurs;
 	}
 }

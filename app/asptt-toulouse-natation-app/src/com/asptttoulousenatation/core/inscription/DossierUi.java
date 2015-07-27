@@ -7,7 +7,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
-import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 
 @XmlRootElement
 public class DossierUi implements Serializable {
@@ -17,13 +16,13 @@ public class DossierUi implements Serializable {
 	 */
 	private static final long serialVersionUID = -5602574756341513489L;
 	private DossierEntity principal;
-	private List<DossierNageurEntity> nageurs;
+	private List<DossierNageurUi> nageurs;
 	
 	public DossierUi() {
-		nageurs = new ArrayList<DossierNageurEntity>(5);
+		nageurs = new ArrayList<DossierNageurUi>(5);
 	}
 	
-	public void addNageur(DossierNageurEntity nageur) {
+	public void addNageur(DossierNageurUi nageur) {
 		nageurs.add(nageur);
 	}
 	
@@ -33,10 +32,10 @@ public class DossierUi implements Serializable {
 	public void setPrincipal(DossierEntity principal) {
 		this.principal = principal;
 	}
-	public List<DossierNageurEntity> getNageurs() {
+	public List<DossierNageurUi> getNageurs() {
 		return nageurs;
 	}
-	public void setNageurs(List<DossierNageurEntity> nageurs) {
+	public void setNageurs(List<DossierNageurUi> nageurs) {
 		this.nageurs = nageurs;
 	}
 }

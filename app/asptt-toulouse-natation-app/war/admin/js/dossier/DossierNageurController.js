@@ -11,7 +11,7 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 		
 		//Handle input date
 		angular.forEach($scope.dossier.nageurs, function(nageur) {
-				nageur.naissance = new Date(nageur.naissance);
+				nageur.nageur.naissance = new Date(nageur.nageur.naissance);
 		});
 		$scope.dossierUpdateParameters = {
 				principal: null,
@@ -23,7 +23,7 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 		var montant = 0;
 		if($scope.dossier) {
 			angular.forEach($scope.dossier.nageurs, function(nageur) {
-				montant+=nageur.tarif;
+				montant+=nageur.nageur.tarif;
 			});
 		}
 		return montant;
@@ -40,5 +40,14 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 	        .error(function(data, status, headers, config) {
 	          alert("Erreur");
 	       });
+	}
+	
+	$scope.changerGroupe = function(nageur) {
+		GroupeService.all.query({}, function(data) {
+			$scope.groupes = data.groups;
+			var sansGroupe = {title:'Sans groupe', id:'-1'};
+			$scope.groupes.push(sansGroupe);
+		});
+		$('#groupe-popup').modal();
 	}
 }]);

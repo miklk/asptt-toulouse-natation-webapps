@@ -1,13 +1,13 @@
-<h3>{{nageur.nom}} {{nageur.prenom}}</h3>
+<h3>{{nageur.nageur.nom}} {{nageur.nageur.prenom}}</h3>
 <form class="form-horizontal">
 	<div class="form-group">
 		<div class="col-md-1"></div>
 		<label class="radio-inline">
-			<input type="radio" name="civilite" id="monsieur" value="0" ng-model="nageur.civilite" />
+			<input type="radio" name="civilite" id="monsieur" value="0" ng-model="nageur.nageur.civilite" />
 			M
 		</label>
 		<label class="radio-inline">
-			<input type="radio" name="civilite" id="madame" value="1" ng-model="nageur.civilite" />
+			<input type="radio" name="civilite" id="madame" value="1" ng-model="nageur.nageur.civilite" />
 			F
 		</label>
 	</div>
@@ -15,15 +15,15 @@
 		<div class="col-md-1"></div>
 		<div class="form-inline">
 			<label for="nom" class="control-label">Nom</label>
-			<input id="nom" type="text" class="form-control" ng-model="nageur.nom" size="50" />
+			<input id="nom" type="text" class="form-control" ng-model="nageur.nageur.nom" size="50" />
 			<label for="prenom" class="control-label">Prénom</label>
-			<input id="prenom" type="text" class="form-control" ng-model="nageur.prenom" size="50" />
+			<input id="prenom" type="text" class="form-control" ng-model="nageur.nageur.prenom" size="50" />
 		</div>
 	</div>
 	<div class="form-group">
 		<label for=dateNaissance class="col-md-2 control-label">Date de naissance</label>
 		<div class="col-md-4">
-			<input id="datenaissance-field" name="datenaissance" type="date" ng-model="nageur.naissance" class="form-control" />
+			<input id="datenaissance-field" name="datenaissance" type="date" ng-model="nageur.nageur.naissance" class="form-control" />
 		</div>
 	</div>
 	
@@ -33,9 +33,9 @@
 		<div class="col-md-1"></div>
 		<div class="form-inline">
 			<label for="maillot" class="control-label">Maillot de bain</label>
-			<input type="text" class="form-control" id="maillot" placeholder="Maillot de bain" size="5" ng-model="nageur.maillot" />
+			<input type="text" class="form-control" id="maillot" placeholder="Maillot de bain" size="5" ng-model="nageur.nageur.maillot" />
 			<label for="tshirt" class="control-label">T-Shirt</label>
-			<select id="tshirt" class="form-control" ng-model="nageur.tshirt">
+			<select id="tshirt" class="form-control" ng-model="nageur.nageur.tshirt">
 				<option>XS</option>
 				<option>S</option>
 				<option>M</option>
@@ -43,7 +43,7 @@
 				<option>XL</option>
 			</select>
 			<label for="shortPantalon" class="control-label">Short</label>
-			<select id="shortPantalon" class="form-control" ng-model="nageur.shortPantalon">
+			<select id="shortPantalon" class="form-control" ng-model="nageur.nageur.shortPantalon">
 				<option>XS</option>
 				<option>S</option>
 				<option>M</option>
@@ -57,21 +57,21 @@
 	<div class="form-group">
 		<div class="col-md-1"></div>
 		<div class="form-inline">
-			<select class="form-control" name="csp" ng-model="nageur.csp" ng-options="cspValue as cspValue for cspValue in cspList">
+			<select class="form-control" name="csp" ng-model="nageur.nageur.csp" ng-options="cspValue as cspValue for cspValue in cspList">
 			</select>
 			<label for="input-profession" class="control-label">Précisez</label>
-			<input id="input-profession" name="profession" type="text" class="form-control" size="30" ng-model="nageur.profession" />
+			<input id="input-profession" name="profession" type="text" class="form-control" size="30" ng-model="nageur.nageur.profession" />
 		</div>
 	</div>
 	
 	<h3>Certificat médical</h3>
 	<p>Papier ou télécharger</p>
 	
-	<h3>Groupe: {{nageur.groupe}}</h3>
+	<h3>Groupe: {{nageur.groupe.title}}&nbsp;<button type="button" class="btn btn-info"><span class="glyphicon glyphicon-pencil" ng-click="changerGroupe(nageur)"></span></button></h3>
 	<h3>Créneaux</h3>
 		<div class="form-group">
 			<div class="col-md-5">
-				<select multiple class="form-control" size="30" ng-model="nageur.creneaux" ng-options="(creneau.swimmingPool + ' ' + creneau.dayOfWeek + ' ' +  creneau.beginStr + '-' + creneau.endStr + ' (' + (creneau.placeDisponible - creneau.placeRestante) + '/' + creneau.placeDisponible + ')') for creneau in creneaux track by creneau.id">
+				<select multiple class="form-control" size="30" ng-model="nageur.nageur.creneaux" ng-options="(creneau.swimmingPool + ' ' + creneau.dayOfWeek + ' ' +  creneau.beginStr + '-' + creneau.endStr + ' (' + (creneau.placeDisponible - creneau.placeRestante) + '/' + creneau.placeDisponible + ')') for creneau in creneaux track by creneau.id">
 					<option value="">Choisir un creneau</option>
 				</select>
 			</div>
@@ -79,3 +79,4 @@
 	
 	<button type="button" class="btn btn-primary btn-block" ng-click="update()">Valider les modifications</button>
 </form>
+<div ng-include="'views/dossier/dossier-groupe.html'"></div>

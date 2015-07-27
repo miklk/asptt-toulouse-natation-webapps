@@ -50,6 +50,7 @@ import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
+import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 import com.asptttoulousenatation.web.adherent.AdherentListResultBeanTransformer;
 
 @Path("/dossiers")
@@ -73,12 +74,15 @@ public class DossierService {
 		List<DossierResultBean> result = new ArrayList<DossierResultBean>();
 		List<DossierNageurEntity> nageurs = new ArrayList<DossierNageurEntity>();
 		
+		boolean hasSelectGroupe = false;
 		List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>();
 		if(groupe != null && groupe > 0) {
+			hasSelectGroupe = true;
 			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE,
 					groupe, Operator.EQUAL));
 			nageurs.addAll(dao.find(criteriaNageur));
 		} else if (BooleanUtils.isTrue(sansGroupe)) {
+			hasSelectGroupe = true;
 			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE,
 					null, Operator.NULL));
 			nageurs.addAll(dao.find(criteriaNageur));
@@ -140,7 +144,7 @@ public class DossierService {
 						texteLibre.toUpperCase(), Operator.EQUAL));
 				nageurs.addAll(dao.find(criteriaNageur));
 			}
-		} else {
+		} else if(!hasSelectGroupe) {
 			nageurs = dao.getAll();
 		}
 		result.addAll(DossierResultTransformer.getInstance().toUi(nageurs));
@@ -159,7 +163,13 @@ public class DossierService {
 				dossierId, Operator.EQUAL));
 		List<DossierNageurEntity> entities = dao.find(criteria);
 		for(DossierNageurEntity entity: entities) {
-			dossierUi.addNageur(entity);
+			DossierNageurUi nageurUi = new DossierNageurUi();
+			nageurUi.setNageur(entity);
+			if(entity.getGroupe() != null) {
+				GroupEntity groupe = groupeDao.get(entity.getGroupe());
+				nageurUi.setGroupe(GroupTransformer.getInstance().toUi(groupe));
+			}
+			dossierUi.addNageur(nageurUi);
 		}
 		return dossierUi;
 	}
@@ -221,7 +231,11 @@ public class DossierService {
 	public boolean update(DossierUpdateParameters parameters) {
 		boolean result = true;
 		dossierDao.save(parameters.getPrincipal());
-		for(DossierNageurEntity nageur: parameters.getNageurs()) {
+		for(DossierNageurUi nageurUi: parameters.getNageurs()) {
+			DossierNageurEntity nageur = nageurUi.getNageur();
+			if(nageurUi.getGroupe() != null) {
+				nageur.setGroupe(nageurUi.getGroupe().getId());
+			}
 			dao.save(nageur);
 		}
 		return result;
