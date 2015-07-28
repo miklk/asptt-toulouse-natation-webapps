@@ -1,5 +1,6 @@
 package com.asptttoulousenatation.core.inscription;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,9 +28,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Response;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
@@ -582,6 +585,29 @@ public class DossierService {
 				DossierStatutEnum.ANNULE.name(), Operator.NOT_EQUAL));
 		result.setNonpayes(dossierDao.count(criteria));
 		return result;
+	}
+	
+	@Path("/downloadCertificat/{nageur}")
+	@GET
+	@Produces({ "application/pdf" })
+	public Response downloadCertificat(@PathParam("nageur") Long nageurId) {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		criteria.add(new CriterionDao<Long>(DossierCertificatEntityFields.DOSSIER, nageurId, Operator.EQUAL));
+		DossierCertificatDao dossierCertificatDao = new DossierCertificatDao();
+		List<DossierCertificatEntity> certificats = dossierCertificatDao.find(criteria);
+		if (CollectionUtils.isNotEmpty(certificats)) {
+			DossierCertificatEntity certificat = certificats.get(0);
+			try {
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				out.write(certificat.getCertificatmedical().getBytes());
+				String contentDisposition = "attachment;filename=certificat.pdf;";
+				return Response.ok(out.toByteArray(), "application/pdf")
+						.header("content-disposition", contentDisposition).build();
+			} catch (IOException e) {
+				LOG.log(Level.SEVERE, "Erreur lors de l'impression PDF", e);
+			}
+		}
+		return Response.serverError().build();
 	}
 	
 }

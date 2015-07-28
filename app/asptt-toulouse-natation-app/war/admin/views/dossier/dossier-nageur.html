@@ -65,7 +65,9 @@
 	</div>
 	
 	<h3>Certificat médical</h3>
-	<p>Papier ou télécharger</p>
+	<p ng-show="!nageur.hasCertificat">Il n'y a pas de certificat en base de donnée.</p>
+	<p ng-show="nageur.hasCertificat"><a href="/resources/dossiers/downloadCertificat/{{nageur.nageur.id}}" >Télécharger le certificat</a></p>
+	<button type="button" class="btn btn-default"><span class="glyphicon glyphicon-file"></span>Sauvegarder un certificat (remplace l'ancien)</button>
 	
 	<h3>Groupe: {{nageur.groupe.title}}&nbsp;<button type="button" class="btn btn-info"><span class="glyphicon glyphicon-pencil" ng-click="changerGroupe(nageur)"></span></button></h3>
 	<h3>Créneaux</h3>
