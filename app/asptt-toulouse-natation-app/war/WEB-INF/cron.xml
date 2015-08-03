@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
-	<cron>
+	<!-- <cron>
 		<url>/resources/inscription/expire</url>
 		<description>Expiration des dossiers</description>
 		<schedule>every day 04:00</schedule>
@@ -9,7 +9,7 @@
 		<url>/resources/inscription/rappel</url>
 		<description>Rappel de paiement au bout de 7 jours</description>
 		<schedule>every day 04:30</schedule>
-	</cron>
+	</cron>-->
 	<cron>
 		<url>/resources/dossier-maintenance/creneaux</url>
 		<description>Calcul de l'occupation des créneaux</description>
