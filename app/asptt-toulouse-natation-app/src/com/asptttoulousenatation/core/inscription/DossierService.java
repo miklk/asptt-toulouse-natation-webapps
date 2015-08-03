@@ -584,6 +584,25 @@ public class DossierService {
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.ANNULE.name(), Operator.NOT_EQUAL));
 		result.setNonpayes(dossierDao.count(criteria));
+		
+		//payé
+		criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.PAIEMENT_COMPLET.name(), Operator.EQUAL));
+		result.addPaye(dossierDao.count(criteria));
+		
+		criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.PAIEMENT_PARTIEL.name(), Operator.EQUAL));
+		result.addPaye(dossierDao.count(criteria));
+		
+		criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.INSCRIT.name(), Operator.EQUAL));
+		result.addPaye(dossierDao.count(criteria));
 		return result;
 	}
 	

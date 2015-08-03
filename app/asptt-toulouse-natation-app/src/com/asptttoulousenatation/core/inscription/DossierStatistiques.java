@@ -11,6 +11,11 @@ public class DossierStatistiques implements Serializable {
 	private long total;
 	private long complets;
 	private long nonpayes;
+	private long payes;
+	
+	public void addPaye(long paye) {
+		payes+=paye;
+	}
 	
 	public void addComplet() {
 		complets++;
@@ -42,6 +47,14 @@ public class DossierStatistiques implements Serializable {
 
 	public void setNonpayes(long nonpayes) {
 		this.nonpayes = nonpayes;
+	}
+
+	public long getPayes() {
+		return payes;
+	}
+
+	public void setPayes(long payes) {
+		this.payes = payes;
 	}
 
 }
