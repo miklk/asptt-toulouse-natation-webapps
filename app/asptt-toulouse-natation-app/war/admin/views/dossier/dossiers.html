@@ -15,7 +15,7 @@
     	       <div class="form-inline">
     	               <label for="groupe">Groupe</label>
 			    	<select class="form-control" id="groupe" ng-model="groupe"
-			    	ng-options="groupe.id as groupe.title for groupe in groupes">
+			    	ng-options="groupe.id as groupe.title for groupe in groupes" ng-change="loadCreneaux()">
 					 	<option value="">Choisir un groupe</option>
 					</select>
                    <label for="dossierStatut">Statut du dossier</label> 
@@ -23,6 +23,15 @@
 	                   <option value="">Choisir un statut</option>
 	                </select>
 			   </div>
+		    </div>
+		    <div class="form-group" ng-show="showCreneaux">
+		    	<div class="form-inline col-md-5">
+	  	            <label for="creneaux">Créneaux</label>
+			    	<select class="form-control" id="creneaux" ng-model="creneau"
+			    		ng-options="creneau.id as creneauLabel(creneau) for creneau in creneaux">
+					 	<option value="">Choisir un créneau</option>
+					</select>
+				</div>
 		    </div>
          </form>
 		<button type="button" class="btn btn-block btn-primary" ng-click="search()">Rechercher</button>

@@ -73,7 +73,7 @@ public class DossierService {
 	@Path("/find")
 	@GET
 	@Consumes("application/json")
-	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe, @QueryParam("dossierStatut") final String dossierStatut, @QueryParam("creneau") Long creneau) {
+	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe, @QueryParam("dossierStatut") final String dossierStatut, @QueryParam("creneau") final Long creneau) {
 		List<DossierResultBean> result = new ArrayList<DossierResultBean>();
 		List<DossierNageurEntity> nageurs = new ArrayList<DossierNageurEntity>();
 		
@@ -83,7 +83,19 @@ public class DossierService {
 			hasSelectGroupe = true;
 			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE,
 					groupe, Operator.EQUAL));
-			nageurs.addAll(dao.find(criteriaNageur));
+			
+			List<DossierNageurEntity> selectedNageur = dao.find(criteriaNageur);
+			if (creneau != null) {
+				CollectionUtils.filter(selectedNageur, new Predicate() {
+
+					@Override
+					public boolean evaluate(Object arg0) {
+						DossierNageurEntity nageur = (DossierNageurEntity) arg0;
+						return StringUtils.contains(nageur.getCreneaux(), creneau.toString());
+					}
+				});
+			}
+			nageurs.addAll(selectedNageur);
 		} else if (BooleanUtils.isTrue(sansGroupe)) {
 			hasSelectGroupe = true;
 			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE,

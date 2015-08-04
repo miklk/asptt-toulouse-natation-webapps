@@ -17,7 +17,7 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	
 	$scope.search = function() {
 		$rootScope.isLoading = true;
-		DossierService.list.query({query: $scope.query, groupe: $scope.groupe, sansGroupe: $scope.sansGroupe, dossierStatut: $scope.dossierStatut}, function(data) {
+		DossierService.list.query({query: $scope.query, groupe: $scope.groupe, sansGroupe: $scope.sansGroupe, dossierStatut: $scope.dossierStatut, creneau: $scope.creneau}, function(data) {
 			$scope.dossiers = data;
 			$scope.dossierCount = data.length;
 			$rootScope.isLoading = false;
@@ -189,5 +189,24 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 		DossierService.attente.query({dossier: dossier.dossierId}, function(data) {
 			alert("Dossier mis en attente (Si c'est une famille tous les dossiers sont en attentes)");
 		});
+	}
+	
+	$scope.loadCreneaux = function() {
+		if($scope.groupe > 0) {
+			SlotService.list.query({groupe: $scope.groupe}, function(data) {
+				$scope.creneaux = data.creneaux;
+				$scope.showCreneaux = $scope.creneaux.length > 0;
+			});
+		} else {
+			$scope.showCreneaux = false;
+		}
+	};
+	
+	$scope.creneauLabel = function(creneau) {
+		var label = creneau.swimmingPool + ' - ' + creneau.dayOfWeek + ' - ' + $filter('date') (creneau.beginDt, 'HH:mm') + '-' + $filter('date') (creneau.endDt, 'HH:mm') + ' - (' + (creneau.placeDisponible - creneau.placeRestante) + '/' + creneau.placeDisponible + ' )';
+		if(creneau.second) {
+			label = label + " #2";
+		}
+		return label;
 	}
 }]);
