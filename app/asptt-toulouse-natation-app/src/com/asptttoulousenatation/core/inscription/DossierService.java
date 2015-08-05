@@ -86,14 +86,14 @@ public class DossierService {
 			
 			List<DossierNageurEntity> selectedNageur = dao.find(criteriaNageur);
 			if (creneau != null) {
-				CollectionUtils.filter(selectedNageur, new Predicate() {
+				selectedNageur = new ArrayList<DossierNageurEntity>(CollectionUtils.select(selectedNageur, new Predicate() {
 
 					@Override
 					public boolean evaluate(Object arg0) {
 						DossierNageurEntity nageur = (DossierNageurEntity) arg0;
 						return StringUtils.contains(nageur.getCreneaux(), creneau.toString());
 					}
-				});
+				}));
 			}
 			nageurs.addAll(selectedNageur);
 		} else if (BooleanUtils.isTrue(sansGroupe)) {
