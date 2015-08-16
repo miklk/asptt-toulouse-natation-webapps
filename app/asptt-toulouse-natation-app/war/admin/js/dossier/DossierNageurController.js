@@ -1,9 +1,9 @@
 /**
  * 
  */
-var dossierNageurController = angular.module('DossierNageurController', ['ngRoute', 'dossierServices', 'groupeServices']);
+var dossierNageurController = angular.module('DossierNageurController', ['ngRoute', 'dossierServices', 'groupeServices', 'slotServices']);
 
-dossierNageurController.controller('DossierNageurController', ['$http', '$scope', '$location', '$filter', '$routeParams', 'DossierService', 'GroupeService', function($http, $scope, $location, $filter, $routeParams, DossierService, GroupeService) {
+dossierNageurController.controller('DossierNageurController', ['$http', '$scope', '$location', '$filter', '$routeParams', 'DossierService', 'GroupeService', 'SlotService', function($http, $scope, $location, $filter, $routeParams, DossierService, GroupeService, SlotService) {
 	$scope.cspList = ['Scolaire', 'Agriculteurs exploitants', 'Artisans, commerçants et chefs d\'entreprise', 'Cadres et professions intellectuelles supérieures','Professions Intermédiaires', 'Employés', 'Ouvriers', 'Retraités', 'Sans activité professionnelle'];
 	
 	DossierService.findOne.query({'dossier': $routeParams.dossierId}, function(data) {
@@ -49,7 +49,14 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 			$scope.groupes.push(sansGroupe);
 		});
 		$('#groupe-popup').modal();
-	}
+	};
+	
+	$scope.changerCreneaux = function(nageur) {
+		SlotService.list.query({groupe: nageur.groupe.id}, function(data) {
+			$scope.creneaux = data.creneaux;
+			$('#dossier-creneaux-popup').modal();
+		});
+	};
 	
 	$scope.uploadCertificat = function() {
 		var formData = new FormData();
@@ -73,4 +80,12 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 	          alert("Erreur lors de l'ajout du certificat médical.");
 	       });
 	};
+	
+	$scope.creneauLabel = function(creneau) {
+		var label = creneau.swimmingPool + ' - ' + creneau.dayOfWeek + ' - ' + $filter('date') (creneau.beginDt, 'HH:mm') + '-' + $filter('date') (creneau.endDt, 'HH:mm') + ' - (' + (creneau.placeDisponible - creneau.placeRestante) + '/' + creneau.placeDisponible + ')';
+		if(creneau.second) {
+			label = label + " #2";
+		}
+		return label;
+	}
 }]);

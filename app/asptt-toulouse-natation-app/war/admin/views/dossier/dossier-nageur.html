@@ -72,15 +72,18 @@
 	<p class="bg-success" ng-show="uploadCertificatSuccess"><strong>Ajout du certificat avec succès.</strong></p>
 	
 	<h3>Groupe: {{nageur.groupe.title}}&nbsp;<button type="button" class="btn btn-info"><span class="glyphicon glyphicon-pencil" ng-click="changerGroupe(nageur)"></span></button></h3>
-	<h3>Créneaux</h3>
+	<h3>Créneaux&nbsp;<button type="button" class="btn btn-info"><span class="glyphicon glyphicon-pencil" ng-click="changerCreneaux(nageur)"></span></button></h3>
 		<div class="form-group">
 			<div class="col-md-5">
-				<select multiple class="form-control" size="30" ng-model="nageur.nageur.creneaux" ng-options="(creneau.swimmingPool + ' ' + creneau.dayOfWeek + ' ' +  creneau.beginStr + '-' + creneau.endStr + ' (' + (creneau.placeDisponible - creneau.placeRestante) + '/' + creneau.placeDisponible + ')') for creneau in creneaux track by creneau.id">
-					<option value="">Choisir un creneau</option>
-				</select>
+				<ul>
+					<li ng-repeat="creneau in nageur.creneaux">
+						{{(creneau.swimmingPool + ' ' + creneau.dayOfWeek + ' ' +  creneau.beginStr + '-' + creneau.endStr)}}
+					</li>
+				</ul>
 			</div>
 		</div>
 	
 	<button type="button" class="btn btn-primary btn-block" ng-click="update()">Valider les modifications</button>
 </form>
 <div ng-include="'views/dossier/dossier-groupe.html'"></div>
+<div ng-include="'views/dossier/dossier-creneaux.html'"></div>

@@ -5,8 +5,10 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,6 +44,8 @@ import org.apache.commons.lang3.text.StrBuilder;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
+import com.asptttoulousenatation.core.adherent.AdherentBeanTransformer;
+import com.asptttoulousenatation.core.groupe.SlotUi;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
@@ -186,10 +190,19 @@ public class DossierService {
 		for(DossierNageurEntity entity: entities) {
 			DossierNageurUi nageurUi = new DossierNageurUi();
 			nageurUi.setNageur(entity);
+			
+			//Groupe
 			if(entity.getGroupe() != null) {
 				GroupEntity groupe = groupeDao.get(entity.getGroupe());
 				nageurUi.setGroupe(GroupTransformer.getInstance().toUi(groupe));
 			}
+			
+			//Creneaux
+			if(StringUtils.isNotBlank(entity.getCreneaux())) {
+				nageurUi.setCreneaux(AdherentBeanTransformer.getInstance().getCreneaux(
+						entity.getCreneaux()));
+			}
+			
 			//Certificat
 			List<CriterionDao<? extends Object>> certificatCriteria = new ArrayList<CriterionDao<? extends Object>>(1);
 			certificatCriteria.add(new CriterionDao<Long>(DossierCertificatEntityFields.DOSSIER, entity.getId(), Operator.EQUAL));
@@ -259,8 +272,27 @@ public class DossierService {
 		dossierDao.save(parameters.getPrincipal());
 		for(DossierNageurUi nageurUi: parameters.getNageurs()) {
 			DossierNageurEntity nageur = nageurUi.getNageur();
+			//Groupe
 			if(nageurUi.getGroupe() != null) {
 				nageur.setGroupe(nageurUi.getGroupe().getId());
+			}
+			//Creneaux
+			if (CollectionUtils.isNotEmpty(nageurUi.getCreneaux())) {
+				String oldCreneaux = nageur.getCreneaux();
+				Set<Long> newCreneaux = new HashSet<>();
+				for (SlotUi slot : nageurUi.getCreneaux()) {
+					newCreneaux.add(slot.getId());
+					if (!StringUtils.contains(oldCreneaux, slot.getId().toString())) {
+						SlotEntity slotEntity = slotDao.get(slot.getId());
+						slotEntity.setPlaceRestante(slotEntity.getPlaceRestante() - 1);
+						slotDao.save(slotEntity);
+					}
+				}
+				StrBuilder creneauxAsString = new StrBuilder();
+				creneauxAsString.appendWithSeparators(newCreneaux, ";");
+				nageur.setCreneaux(creneauxAsString.toString());
+			} else {
+				nageur.setCreneaux(null);
 			}
 			dao.save(nageur);
 		}
