@@ -68,7 +68,7 @@
 	<p ng-show="!nageur.hasCertificat">Il n'y a pas de certificat en base de donnée.</p>
 	<p ng-show="nageur.hasCertificat"><a href="/resources/dossiers/downloadCertificat/{{nageur.nageur.id}}" >Télécharger le certificat</a></p>
 	<h6><span class="glyphicon glyphicon-file"></span>Sauvegarder un certificat (remplace l'ancien)</h6>
-	<input type="file" id="certificat" name="certificat_{{nageur.nageur.id}}" class="btn btn-default" accept="image/*,.pdf" onchange="angular.element(this).scope().uploadCertificat()">
+	<input type="file" id="certificat" name="certificat_{{nageur.nageur.id}}" class="btn btn-default" accept="image/*,.pdf" onchange="angular.element(this).scope().uploadCertificat(this)">
 	<p class="bg-success" ng-show="uploadCertificatSuccess"><strong>Ajout du certificat avec succès.</strong></p>
 	
 	<h3>Groupe: {{nageur.groupe.title}}&nbsp;<button type="button" class="btn btn-info"><span class="glyphicon glyphicon-pencil" ng-click="changerGroupe(nageur)"></span></button></h3>

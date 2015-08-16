@@ -58,27 +58,26 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 		});
 	};
 	
-	$scope.uploadCertificat = function() {
+	$scope.uploadCertificat = function(element) {
 		var formData = new FormData();
 		//Récuperer les certificats
 		var nageurId = 0;
-		var elt = document.getElementById('certificat');
-		file = elt.files[0];
-			if(file != null) {
-				formData.append("file", file);
-				nageurId = elt.name.split("_")[1];
-			}
-		var responsePromise = $http.post("/resources/dossiers/uploadCertificat/" + nageurId, formData, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-        })
-	    .success(function(dataFromServer, status, headers, config) {
-	    	$scope.uploadCertificatSuccess = true;
-	       })
-	        .error(function(data, status, headers, config) {
-	        	$scope.uploadCertificatSuccess = false;
-	          alert("Erreur lors de l'ajout du certificat médical.");
-	       });
+		file = element.files[0];
+		if(file != null) {
+			formData.append("file", file);
+			nageurId = element.name.split("_")[1];
+			var responsePromise = $http.post("/resources/dossiers/uploadCertificat/" + nageurId, formData, {
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined}
+	        })
+		    .success(function(dataFromServer, status, headers, config) {
+		    	$scope.uploadCertificatSuccess = true;
+		       })
+		        .error(function(data, status, headers, config) {
+		        	$scope.uploadCertificatSuccess = false;
+		          alert("Erreur lors de l'ajout du certificat médical.");
+		       });
+		}
 	};
 	
 	$scope.creneauLabel = function(creneau) {
