@@ -1,6 +1,7 @@
 package com.asptttoulousenatation.core.inscription;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,14 +29,18 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
@@ -55,6 +60,7 @@ import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 import com.asptttoulousenatation.web.adherent.AdherentListResultBeanTransformer;
+import com.google.appengine.api.datastore.Blob;
 
 @Path("/dossiers")
 @Produces("application/json")
@@ -184,6 +190,11 @@ public class DossierService {
 				GroupEntity groupe = groupeDao.get(entity.getGroupe());
 				nageurUi.setGroupe(GroupTransformer.getInstance().toUi(groupe));
 			}
+			//Certificat
+			List<CriterionDao<? extends Object>> certificatCriteria = new ArrayList<CriterionDao<? extends Object>>(1);
+			certificatCriteria.add(new CriterionDao<Long>(DossierCertificatEntityFields.DOSSIER, entity.getId(), Operator.EQUAL));
+			List<DossierCertificatEntity> certificats = certificatDao.find(certificatCriteria);
+			nageurUi.setHasCertificat(CollectionUtils.isNotEmpty(certificats));
 			dossierUi.addNageur(nageurUi);
 		}
 		return dossierUi;
@@ -631,7 +642,7 @@ public class DossierService {
 			try {
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
 				out.write(certificat.getCertificatmedical().getBytes());
-				String contentDisposition = "attachment;filename=certificat.pdf;";
+				String contentDisposition = "attachment;filename=" + StringUtils.defaultString(certificat.getFileName(), "certificat.jpg") + ";";
 				return Response.ok(out.toByteArray(), "application/pdf")
 						.header("content-disposition", contentDisposition).build();
 			} catch (IOException e) {
@@ -639,6 +650,42 @@ public class DossierService {
 			}
 		}
 		return Response.serverError().build();
+	}
+	
+	@Path("/uploadCertificat/{nageur}")
+	@POST
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response uploadCertificat(@PathParam("nageur") Long nageurId,
+			@FormDataParam("file") FormDataBodyPart certificatPart) {
+		Response response = null;
+		// Existence du nageur
+		DossierNageurEntity nageur = dao.get(nageurId);
+		if (nageur != null) {
+			try {
+				Blob certificat = new Blob(IOUtils.toByteArray(certificatPart.getValueAs(InputStream.class)));
+				List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+				criteria.add(new CriterionDao<Long>(DossierCertificatEntityFields.DOSSIER, nageurId, Operator.EQUAL));
+				List<DossierCertificatEntity> entities = certificatDao.find(criteria);
+				if (CollectionUtils.isNotEmpty(entities)) {
+					for (DossierCertificatEntity entity : entities) {
+						certificatDao.delete(entity);
+					}
+				}
+				DossierCertificatEntity certificatEntity = new DossierCertificatEntity();
+				certificatEntity.setDossier(nageurId);
+				certificatEntity.setCertificatmedical(certificat);
+				certificatEntity.setFileName(certificatPart.getContentDisposition().getFileName());
+				certificatDao.save(certificatEntity);
+				response = Response.ok().build();
+			} catch (IOException e) {
+				LOG.log(Level.SEVERE, "Récupération des certificats", e);
+				response = Response.serverError().build();
+			}
+		} else {
+			response = Response.serverError().build();
+		}
+
+		return response;
 	}
 	
 }

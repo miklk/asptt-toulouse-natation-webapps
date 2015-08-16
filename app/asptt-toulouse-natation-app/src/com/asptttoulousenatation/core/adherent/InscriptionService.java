@@ -249,6 +249,7 @@ public class InscriptionService {
 							DossierCertificatEntity certificatEntity = new DossierCertificatEntity();
 							certificatEntity.setDossier(dossierId);
 							certificatEntity.setCertificatmedical(certificat);
+							certificatEntity.setFileName(certificatPart.getContentDisposition().getFileName());
 							dossierCertificatDao.save(certificatEntity);
 							hasCertificat.add(dossierId);
 						}

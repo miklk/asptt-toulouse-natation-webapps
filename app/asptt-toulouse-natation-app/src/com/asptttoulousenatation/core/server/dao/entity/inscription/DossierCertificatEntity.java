@@ -29,6 +29,8 @@ public class DossierCertificatEntity implements IEntity {
 	
 	private Blob certificatmedical;
 	
+	private String fileName;
+	
 	public DossierCertificatEntity() {
 		
 	}
@@ -56,5 +58,12 @@ public class DossierCertificatEntity implements IEntity {
 	public void setCertificatmedical(Blob certificatmedical) {
 		this.certificatmedical = certificatmedical;
 	}
-	
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 }
