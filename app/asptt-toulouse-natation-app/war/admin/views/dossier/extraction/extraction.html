@@ -4,14 +4,14 @@
 	</div>
    <form class="form-horizontal">
    		<div class="form-inline">
-	   	   <div class="col-md-2 form-group">
+	   	   <div class="col-md-4 form-group">
 	       		<label for="groupe">Groupe</label>
 	    		<select class="form-control" id="groupe" ng-model="groupe"
-	    			ng-options="groupe.id as groupe.title for groupe in groupes" multiple>
+	    			ng-options="groupe.id as groupe.title for groupe in groupes" multiple size="15">
 			 		<option value="">Choisir un groupe</option>
 				</select>
 			</div>
-			<div class="col-md-2 form-group">
+			<div class="col-md-4 form-group">
 	        	<label for="fields">Valeurs à extraire</label> 
 	            <select class="form-control" id="fields" name="fields" ng-model="selectedFields" ng-options="possibleField as possibleField for possibleField in possibleFields" multiple size="10">
 	                 <option value="">Choisir une valeur</option>

@@ -722,6 +722,7 @@ public class DossierService {
 
 	@Path("extraction/{fields}")
 	@GET
+	@Produces("text/csv; charset=UTF-8")
 	public Response extraction(@PathParam("fields") String fields, @QueryParam("groupes") Set<Long> groupes) {
 		String[] fieldsToChoose = fields.split("_");
 		List<List<String>> extractions = new ArrayList<>();
@@ -766,6 +767,13 @@ public class DossierService {
 				case "MAILLOT":
 					nageurValues.add(nageur.getMaillot());
 					break;
+				case "PROFESSION": {
+					nageurValues.add(nageur.getProfession());
+					DossierEntity dossier = dossierDao.get(nageur.getDossier());
+					nageurValues.add(dossier.getParent1Profession());
+					nageurValues.add(dossier.getParent2Profession());
+				}
+					break;
 				default:// Do nothing
 				}
 			}
@@ -773,7 +781,11 @@ public class DossierService {
 		}
 		StrBuilder extractionAsString = new StrBuilder();
 		//Build header
-		extractionAsString.appendWithSeparators(fieldsToChoose, ",").appendNewLine();
+		extractionAsString.appendWithSeparators(fieldsToChoose, ",");
+		if(fields.contains("PROFESSION")) {
+			extractionAsString.append(",").append("PROFESSION PARENT 1").append(",").append("PROFESSION PARENT 2");
+		}
+		extractionAsString.appendNewLine();
 		for (List<String> nageurFields : extractions) {
 			StrBuilder nageurFieldsBuilder = new StrBuilder();
 			nageurFieldsBuilder.appendWithSeparators(nageurFields, ",");
@@ -781,7 +793,7 @@ public class DossierService {
 		}
 		try {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			out.write(extractionAsString.toString().getBytes());
+			out.write(extractionAsString.toString().getBytes("UTF-8"));
 
 			String contentDisposition = "attachment;filename=extraction.csv;";
 			return Response.ok(out.toByteArray(), "text/csv").header("content-disposition", contentDisposition)
