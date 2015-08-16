@@ -1,0 +1,25 @@
+<div class="container" ng-controller="ExtractionController">
+	<div class="row">
+		<h1 class="page-header">Extraction des données adhérents</h1>
+	</div>
+   <form class="form-horizontal">
+   		<div class="form-inline">
+	   	   <div class="col-md-2 form-group">
+	       		<label for="groupe">Groupe</label>
+	    		<select class="form-control" id="groupe" ng-model="groupe"
+	    			ng-options="groupe.id as groupe.title for groupe in groupes" multiple>
+			 		<option value="">Choisir un groupe</option>
+				</select>
+			</div>
+			<div class="col-md-2 form-group">
+	        	<label for="fields">Valeurs à extraire</label> 
+	            <select class="form-control" id="fields" name="fields" ng-model="selectedFields" ng-options="possibleField as possibleField for possibleField in possibleFields" multiple size="10">
+	                 <option value="">Choisir une valeur</option>
+	            </select>
+		    </div>
+		    <div class="col-md-2 form-group">
+	    		<a href="{{extraire()}}" class="btn btn-primary btn-block" role="button"><span class="glyphicon glyphicon-file"></span> Extraire</a>
+		    </div>
+	    </div>
+    </form>
+</div>

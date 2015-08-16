@@ -719,5 +719,76 @@ public class DossierService {
 
 		return response;
 	}
-	
+
+	@Path("extraction/{fields}")
+	@GET
+	public Response extraction(@PathParam("fields") String fields, @QueryParam("groupes") Set<Long> groupes) {
+		String[] fieldsToChoose = fields.split("_");
+		List<List<String>> extractions = new ArrayList<>();
+		
+		List<DossierNageurEntity> nageurs;
+		if(CollectionUtils.isNotEmpty(groupes)) {
+			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(groupes.size());
+			for (Long groupe : groupes) {
+				criteria.add(new CriterionDao<Long>(
+						DossierNageurEntityFields.GROUPE, groupe,
+						Operator.EQUAL));
+			}
+			nageurs = dao.find(criteria, Operator.OR, null);
+		} else {
+			nageurs = dao.getAll();
+		}
+		for (DossierNageurEntity nageur : nageurs) {
+			List<String> nageurValues = new ArrayList<>(fieldsToChoose.length);
+			for (String field : fieldsToChoose) {
+				switch (field) {
+				case "NOM":
+					nageurValues.add(nageur.getNom());
+					break;
+				case "PRENOM":
+					nageurValues.add(nageur.getPrenom());
+					break;
+				case "GROUPE": {
+					if (nageur.getGroupe() != null) {
+						GroupEntity groupe = groupeDao.get(nageur.getGroupe());
+						if (groupe != null) {
+							nageurValues.add(groupe.getTitle());
+						}
+					}
+				}
+					break;
+				case "SHORT":
+					nageurValues.add(nageur.getShortPantalon());
+					break;
+				case "TSHIRT":
+					nageurValues.add(nageur.getTshirt());
+					break;
+				case "MAILLOT":
+					nageurValues.add(nageur.getMaillot());
+					break;
+				default:// Do nothing
+				}
+			}
+			extractions.add(nageurValues);
+		}
+		StrBuilder extractionAsString = new StrBuilder();
+		//Build header
+		extractionAsString.appendWithSeparators(fieldsToChoose, ",").appendNewLine();
+		for (List<String> nageurFields : extractions) {
+			StrBuilder nageurFieldsBuilder = new StrBuilder();
+			nageurFieldsBuilder.appendWithSeparators(nageurFields, ",");
+			extractionAsString.append(nageurFieldsBuilder.toString()).appendNewLine();
+		}
+		try {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			out.write(extractionAsString.toString().getBytes());
+
+			String contentDisposition = "attachment;filename=extraction.csv;";
+			return Response.ok(out.toByteArray(), "text/csv").header("content-disposition", contentDisposition)
+					.build();
+		} catch (IOException e) {
+			LOG.log(Level.SEVERE, "Erreur when writing response (" + extractionAsString + ")", e);
+			return Response.serverError().build();
+		}
+	}
 }

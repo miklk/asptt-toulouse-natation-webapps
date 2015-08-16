@@ -47,8 +47,13 @@
 					<li>
 						<span class="menu">Inscription</span>
 						<ul class="nav nav-sidebar">
-							<li><a href="#/groupes">Groupes (piscines, groupes, créneaux)</a>
-							<li><a href="#/dossiers">Dossiers</a>
+							<li><a href="#/groupes">Groupes (piscines, groupes, créneaux)</a></li>
+							<li>Dossiers
+								<ul class="nav nav-sidebar">
+									<li><a href="#/dossiers">Suivi</a></li>
+									<li><a href="#/extraction">Extraction</a></li>
+								</ul>
+							</li>
 							<li>Taux de remplissage
 								<ul class="nav nav-sidebar">
 									<li><a href="#/remplissage">Global</a></li>
@@ -141,6 +146,7 @@
     <script type="text/javascript" src="js/groupe/GroupeController.js"></script>
     <script type="text/javascript" src="js/dossier/DossierController.js"></script>
     <script type="text/javascript" src="js/dossier/DossierNageurController.js"></script>
+    <script type="text/javascript" src="js/dossier/ExtractionController.js"></script>
     <script type="text/javascript" src="js/dossier/DossierService.js"></script>
     <script type="text/javascript" src="js/groupe/CreneauStatController.js"></script>
     <script type="text/javascript" src="js/groupe/CreneauStatService.js"></script>
