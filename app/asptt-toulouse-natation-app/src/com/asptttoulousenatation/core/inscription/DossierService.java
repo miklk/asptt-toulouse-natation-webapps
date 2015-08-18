@@ -803,4 +803,17 @@ public class DossierService {
 			return Response.serverError().build();
 		}
 	}
+	
+	@Path("/certificat/{nageur}")
+	@DELETE
+	public void deleteCertificat(@PathParam("nageur") Long nageurId) {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		criteria.add(new CriterionDao<Long>(DossierCertificatEntityFields.DOSSIER, nageurId, Operator.EQUAL));
+		List<DossierCertificatEntity> entities = certificatDao.find(criteria);
+		if (CollectionUtils.isNotEmpty(entities)) {
+			for (DossierCertificatEntity entity : entities) {
+				certificatDao.delete(entity);
+			}
+		}
+	}
 }

@@ -26,6 +26,9 @@ dossierServices.factory('DossierService', ['$resource',
 		}),
 		statistiques: $resource('/resources/dossiers/statistiques',{},{
 			query:{method:'GET', isArray: false, params: {}}
-		})
+		}),
+		removeCertificat: $resource('/resources/dossiers/certificat/:nageur',{},{
+			query:{method:'DELETE', isArray: false, params: {}}
+		}),
 	};
 }]);

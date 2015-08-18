@@ -87,4 +87,12 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 		}
 		return label;
 	}
+	
+	$scope.removeCertificat = function(nageur) {
+		if(confirm("Souhaitez-vous supprimer le certificat médical du nageur " + nageur.nageur.nom + " " + nageur.nageur.prenom + " ?")) {
+			DossierService.removeCertificat.query({nageur: nageur.nageur.id}, function(data) {
+				nageur.hasCertificat = false;
+			});
+		}
+	}
 }]);
