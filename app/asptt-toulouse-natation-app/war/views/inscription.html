@@ -277,18 +277,18 @@
 	          				</div>
           			</fieldset>
           			
-          			<fieldset>
+          			<fieldset ng-if="dossiers[currentDossier].groupe.competition">
 	  				<legend>Equipement - mensuration (Taille Arena)</legend>
-	  					<div class="form-group">
+	  					<div class="form-group" ng-class="{'has-error':formNageur.maillot.$error.required}">
 	  						<label for="maillot" class="col-md-2 control-label">Maillot de bain</label>
 	  						<div class="col-md-10">
-	  							<input type="text" class="form-control" id="maillot" placeholder="Maillot de bain" size="5" ng-model="dossiers[currentDossier].dossier.maillot" />
+	  							<input type="text" class="form-control" id="maillot" name="maillot" placeholder="Maillot de bain" size="5" ng-model="dossiers[currentDossier].dossier.maillot" required />
   							</div>
 	  					</div>
-	  					<div class="form-group">
+	  					<div class="form-group" ng-class="{'has-error':formNageur.tshirt.$error.required}">
 	  						<label for="tshirt" class="col-md-2 control-label">T-Shirt</label>
 	  						<div class="col-md-10">
-	  							<select id="tshirt" class="form-control" ng-model="dossiers[currentDossier].dossier.tshirt">
+	  							<select id="tshirt" class="form-control" name="tshirt" ng-model="dossiers[currentDossier].dossier.tshirt" required>
 			  						<option>XS</option>
 			  						<option>S</option>
 			  						<option>M</option>
@@ -297,10 +297,10 @@
 			  					</select>
 	  						</div>
 	  					</div>
-	  					<div class="form-group">
+	  					<div class="form-group" ng-class="{'has-error':formNageur.shortPantalon.$error.required}">
 	  						<label for="shortPantalon" class="col-md-2 control-label">Short</label>
 	  						<div class="col-md-10">
-	  							<select id="shortPantalon" class="form-control" ng-model="dossiers[currentDossier].dossier.shortPantalon">
+	  							<select id="shortPantalon" name="shortPantalon" class="form-control" ng-model="dossiers[currentDossier].dossier.shortPantalon" required>
 		  							<option>XS</option>
 			  						<option>S</option>
 			  						<option>M</option>
