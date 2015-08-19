@@ -95,4 +95,46 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 			});
 		}
 	}
+	
+	$scope.relancer = function(dossier) {
+		DossierService.relancer.query({dossier: dossier.principal.id}, function(data) {
+			alert("E-mail de relance envoyé avec succès");
+		});
+	}
+	
+	$scope.attente = function(dossier) {
+		DossierService.attente.query({dossier: dossier.principal.id}, function(data) {
+			alert("Dossier mis en attente (Si c'est une famille tous les dossiers sont en attentes)");
+		});
+	}
+	
+	$scope.removeDossier = function(dossier) {
+		if(confirm("Voulez-vous supprimer le dossier (et les éventuels membre de la famille) ?")) {
+			DossierService.remove.query({dossier: dossier.principal.id}, function(data) {
+			});
+		}
+	}
+	
+	$scope.initPaiement = function(dossier) {
+		$scope.paiementStatus = ['PAIEMENT_PARTIEL', 'PAIEMENT_COMPLET'];
+		$scope.dossierPaiementParameters = {
+				dossierId: dossier.principal.id,
+				statutPaiement: 'PAIEMENT_COMPLET',
+				montantReel: dossier.principal.montantreel,
+				commentaire: dossier.principal.commentaire
+		};
+		$('#dossier-paiement-popup').modal();
+	}
+	
+	$scope.paiement = function() {
+		$http.post("/resources/dossiers/paiement", $scope.dossierPaiementParameters, {})
+	       .success(function(dataFromServer, status, headers, config) {
+    		   alert("Paiement enregistré.");
+    		   $('#dossier-paiement-popup').modal('hide');
+	    	   
+	       })
+	        .error(function(data, status, headers, config) {
+	          alert("Erreur");
+	       });
+	}
 }]);

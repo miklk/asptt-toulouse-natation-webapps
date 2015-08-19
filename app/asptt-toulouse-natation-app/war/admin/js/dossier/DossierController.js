@@ -99,7 +99,7 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 				dossierId: dossier.dossierId,
 				statutPaiement: 'PAIEMENT_COMPLET',
 				montantReel: dossier.montantreel,
-				commentaire: ''
+				commentaire: dossier.comment
 		};
 		$('#dossier-paiement-popup').modal();
 	}

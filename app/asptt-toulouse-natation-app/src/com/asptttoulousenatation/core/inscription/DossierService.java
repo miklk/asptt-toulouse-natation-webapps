@@ -708,6 +708,18 @@ public class DossierService {
 				certificatEntity.setCertificatmedical(certificat);
 				certificatEntity.setFileName(certificatPart.getContentDisposition().getFileName());
 				certificatDao.save(certificatEntity);
+				
+				//Update dossier nageur
+				nageur.setCertificat(true);
+				dao.save(nageur);
+				DossierEntity dossier = dossierDao.get(nageur.getDossier());
+				if(DossierStatutEnum.PAIEMENT_COMPLET.equals(DossierStatutEnum.valueOf(dossier.getStatut()))
+						&& hasAllCertificats(dossier)) {
+					dossier.setStatut(DossierStatutEnum.INSCRIT.name());
+					dossierDao.save(dossier);
+					
+					sendConfirmation(dossier);
+				}
 				response = Response.ok().build();
 			} catch (IOException e) {
 				LOG.log(Level.SEVERE, "Récupération des certificats", e);

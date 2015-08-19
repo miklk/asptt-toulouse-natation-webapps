@@ -1,4 +1,4 @@
-<h3>{{nageur.nageur.nom}} {{nageur.nageur.prenom}}</h3>
+<h3>{{nageur.nageur.nom}} {{nageur.nageur.prenom}}&nbsp;<button type="button" class="btn btn-danger btn-xs" title="Supprimer le nageur"><span class="glyphicon glyphicon-remove" ng-click=""></span></button>&nbsp;<button type="button" class="btn btn-info btn-xs" title="Certificat reçu"><span class="glyphicon glyphicon-ok" ng-click=""></span></button></h3>
 <form role="form" class="form-horizontal" enctype="multipart/form-data">
 	<div class="form-group">
 		<div class="col-md-1"></div>
@@ -66,7 +66,7 @@
 	
 	<h3>Certificat médical</h3>
 	<p ng-show="!nageur.hasCertificat">Il n'y a pas de certificat en base de donnée.</p>
-	<p ng-show="nageur.hasCertificat"><a href="/resources/dossiers/downloadCertificat/{{nageur.nageur.id}}" >Télécharger le certificat</a> <button type="button" class="btn btn-danger btn-xs" ng-click="removeCertificat(nageur)" title="Supprimer le certificat"><span class="glyphicon glyphicon-remove"></span></button></p>
+	<p ng-show="nageur.hasCertificat"><a href="/resources/dossiers/downloadCertificat/{{nageur.nageur.id}}" >Télécharger le certificat</a> <button type="button" class="btn btn-danger btn-xs" ng-click="removeCertificat(nageur)" title="Supprimer le certificat"><span class="glyphicon glyphicon-trash"></span></button></p>
 	<h6><span class="glyphicon glyphicon-file"></span>Sauvegarder un certificat (remplace l'ancien)</h6>
 	<input type="file" id="certificat" name="certificat_{{nageur.nageur.id}}" class="btn btn-default" accept="image/*,.pdf" onchange="angular.element(this).scope().uploadCertificat(this)">
 	<p class="bg-success" ng-show="uploadCertificatSuccess"><strong>Ajout du certificat avec succès.</strong></p>
