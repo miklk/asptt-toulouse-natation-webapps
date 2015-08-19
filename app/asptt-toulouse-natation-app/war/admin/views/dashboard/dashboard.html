@@ -1,0 +1,26 @@
+<div class="container" ng-controller="DashboardController">
+	<div class="row">
+		<h1 class="page-header">Tableau de bord</h1>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-5">
+			<div class="panel panel-primary">
+				<div class="panel-heading"><a href="#/dossiers" class="btn btn-primary">Dossiers d'inscription</a></div>
+				<div class="panel-body">
+					<p><label>Complets:</label> {{statistiques.complets}}</p>
+					<p><label>Payés:</label> {{statistiques.payes}}</p>
+					<p><label>Non payés:</label> {{statistiques.nonpayes}}</p>
+					<p><label>Total:</label> {{statistiques.total}}</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-5">
+			<div class="panel panel-primary">
+				<div class="panel-heading"><a href="#/remplissage-detail" class="btn btn-primary">Taux de remplissage</a></div>
+				<div class="panel-body">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
