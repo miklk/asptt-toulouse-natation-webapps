@@ -1,3 +1,62 @@
+<style>
+path {  stroke: #fff; }
+path:hover {  opacity:0.9; }
+rect:hover {  fill:blue; }
+.axis {  font: 10px sans-serif; }
+.legend tr{    border-bottom:1px solid grey; }
+.legend tr:first-child{    border-top:1px solid grey; }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {  display: none; }
+.legend{
+    margin-bottom:76px;
+    display:inline-block;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+.legend td{
+    padding:4px 5px;
+    vertical-align:bottom;
+}
+.legendFreq, .legendPerc{
+    align:right;
+    width:50px;
+}
+
+.arc path {
+  stroke: #fff;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis-famille-groupe {
+  font: 10px sans-serif;
+}
+
+.axis-famille-groupe path,
+.axis-famille-groupe line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis-famille-groupe path {
+  display: none;
+}
+
+</style>
 <div class="container" ng-controller="DashboardController">
 	<div class="row">
 		<h1 class="page-header">Tableau de bord</h1>
@@ -12,6 +71,7 @@
 					<p><label>Payés:</label> {{statistiques.payes}}</p>
 					<p><label>Non payés:</label> {{statistiques.nonpayes}}</p>
 					<p><label>Total:</label> {{statistiques.total}}</p>
+					<div id="dossiers-graph"></div>
 				</div>
 			</div>
 		</div>

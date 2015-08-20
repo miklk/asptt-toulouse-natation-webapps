@@ -1,6 +1,10 @@
 package com.asptttoulousenatation.core.inscription;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.asptttoulousenatation.core.lang.StatistiqueBase;
 
 public class DossierStatistiques implements Serializable {
 
@@ -13,6 +17,12 @@ public class DossierStatistiques implements Serializable {
 	private long nonpayes;
 	private long payes;
 	
+	private List<StatistiqueBase> dossiers;
+	
+	public DossierStatistiques() {
+		dossiers = new ArrayList<>(3);
+	}
+	
 	public void addPaye(long paye) {
 		payes+=paye;
 	}
@@ -23,6 +33,10 @@ public class DossierStatistiques implements Serializable {
 	
 	public void addNonPayes() {
 		nonpayes++;
+	}
+	
+	public void addDossier(StatistiqueBase stat) {
+		dossiers.add(stat);
 	}
 
 	public long getTotal() {
@@ -55,6 +69,14 @@ public class DossierStatistiques implements Serializable {
 
 	public void setPayes(long payes) {
 		this.payes = payes;
+	}
+
+	public List<StatistiqueBase> getDossiers() {
+		return dossiers;
+	}
+
+	public void setDossiers(List<StatistiqueBase> dossiers) {
+		this.dossiers = dossiers;
 	}
 
 }

@@ -46,6 +46,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import com.asptttoulousenatation.core.adherent.AdherentBeanTransformer;
 import com.asptttoulousenatation.core.groupe.SlotUi;
+import com.asptttoulousenatation.core.lang.StatistiqueBase;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
@@ -658,6 +659,10 @@ public class DossierService {
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.INSCRIT.name(), Operator.EQUAL));
 		result.addPaye(dossierDao.count(criteria));
+		
+		result.addDossier(new StatistiqueBase("Payés", new Long(result.getPayes()).intValue()));
+		result.addDossier(new StatistiqueBase("Complets", new Long(result.getComplets()).intValue()));
+		result.addDossier(new StatistiqueBase("Non payés", new Long(result.getNonpayes()).intValue()));
 		return result;
 	}
 	
