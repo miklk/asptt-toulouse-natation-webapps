@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.CompareToBuilder;
+
 public class LoadingSlotsUi implements Serializable {
 
 	/**
@@ -29,7 +31,7 @@ public class LoadingSlotsUi implements Serializable {
 
 			@Override
 			public int compare(LoadingSlotUi o1, LoadingSlotUi o2) {
-				return o1.getPiscine().compareTo(o2.getPiscine());
+				return new CompareToBuilder().append(o1.getPiscine(), o2.getPiscine()).toComparison();
 			}
 		});
 		for(LoadingSlotUi loadingSlotUi: slots) {
