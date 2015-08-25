@@ -16,13 +16,13 @@ public class DossierStatistiques implements Serializable {
 	private long complets;
 	private long nonpayes;
 	private long payes;
-	
+	private long nageurs;
 	private List<StatistiqueBase> dossiers;
-	private List<StatistiqueBase> nageurs;
+	private List<StatistiqueBase> nageursDetail;
 	
 	public DossierStatistiques() {
 		dossiers = new ArrayList<>(3);
-		nageurs = new ArrayList<>(2);
+		nageursDetail = new ArrayList<>(2);
 	}
 	
 	public void addPaye(long paye) {
@@ -42,7 +42,7 @@ public class DossierStatistiques implements Serializable {
 	}
 	
 	public void addNageur(StatistiqueBase stat) {
-		nageurs.add(stat);
+		nageursDetail.add(stat);
 	}
 
 	public long getTotal() {
@@ -85,12 +85,19 @@ public class DossierStatistiques implements Serializable {
 		this.dossiers = dossiers;
 	}
 
-	public List<StatistiqueBase> getNageurs() {
+	public long getNageurs() {
 		return nageurs;
 	}
 
-	public void setNageurs(List<StatistiqueBase> nageurs) {
+	public void setNageurs(long nageurs) {
 		this.nageurs = nageurs;
 	}
 
+	public List<StatistiqueBase> getNageursDetail() {
+		return nageursDetail;
+	}
+
+	public void setNageursDetail(List<StatistiqueBase> nageursDetail) {
+		this.nageursDetail = nageursDetail;
+	}
 }

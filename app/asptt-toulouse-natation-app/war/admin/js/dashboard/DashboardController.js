@@ -7,7 +7,7 @@ dashboardController.controller('DashboardController', ['$rootScope', '$http', '$
 	DossierService.statistiques.query({}, function(data) {
 		$scope.statistiques = data;
 		dossiers("#dossiers-graph", data.dossiers);
-		nageurs("#nageurs-graph", data.nageurs);
+		nageurs("#nageurs-graph", data.nageursDetail);
 		
 	});
 }]);

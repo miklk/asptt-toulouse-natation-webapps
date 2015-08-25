@@ -667,14 +667,31 @@ public class DossierService {
 		//Nageur (nouveau, ancien)
 		criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
-		criteria.add(new CriterionDao<Boolean>(DossierNageurEntityFields.NOUVEAU,
-				Boolean.TRUE, Operator.EQUAL));
-		result.addNageur(new StatistiqueBase("Nouveau", new Long(dao.count(criteria)).intValue()));
-		criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		criteria.add(new CriterionDao<Boolean>(DossierNageurEntityFields.NOUVEAU,
-				Boolean.FALSE, Operator.EQUAL));
-		result.addNageur(new StatistiqueBase("Renouvellement", new Long(dao.count(criteria)).intValue()));
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.INSCRIT.name(), Operator.EQUAL));
+		long nageurTotal = 0l;
+		int nageurNouveau = 0;
+		int nageurRenouvellement = 0;
+		for(DossierEntity dossier: dossierDao.find(criteria)) {
+			List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
+					dossier.getId(), Operator.EQUAL));
+			for(DossierNageurEntity nageur: dao.find(criteriaNageur)) {
+				nageurTotal++;
+				if(BooleanUtils.isTrue(nageur.getNouveau())) {
+					nageurNouveau++;
+				}
+				if(BooleanUtils.isFalse(nageur.getNouveau())) {
+					nageurRenouvellement++;
+				}
+			}
+			
+		}
+		
+		result.setNageurs(nageurTotal);
+		result.addNageur(new StatistiqueBase("Nouveau", nageurNouveau));
+		result.addNageur(new StatistiqueBase("Renouvellement", nageurRenouvellement));
 		return result;
 	}
 	
