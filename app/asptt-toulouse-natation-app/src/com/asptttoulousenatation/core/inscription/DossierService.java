@@ -663,6 +663,18 @@ public class DossierService {
 		result.addDossier(new StatistiqueBase("Payés", new Long(result.getPayes()).intValue()));
 		result.addDossier(new StatistiqueBase("Complets", new Long(result.getComplets()).intValue()));
 		result.addDossier(new StatistiqueBase("Non payés", new Long(result.getNonpayes()).intValue()));
+		
+		//Nageur (nouveau, ancien)
+		criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Boolean>(DossierNageurEntityFields.NOUVEAU,
+				Boolean.TRUE, Operator.EQUAL));
+		result.addNageur(new StatistiqueBase("Nouveau", new Long(dao.count(criteria)).intValue()));
+		criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Boolean>(DossierNageurEntityFields.NOUVEAU,
+				Boolean.FALSE, Operator.EQUAL));
+		result.addNageur(new StatistiqueBase("Renouvellement", new Long(dao.count(criteria)).intValue()));
 		return result;
 	}
 	

@@ -8,6 +8,7 @@ public enum DossierNageurEntityFields implements IEntityFields {
 	NOM(String.class),
 	PRENOM(String.class),
 	CRENEAUX(String.class),
+	NOUVEAU(Boolean.class),
 	;
 	
 	private Class<? extends Object> clazz;

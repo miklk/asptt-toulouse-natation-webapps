@@ -18,9 +18,11 @@ public class DossierStatistiques implements Serializable {
 	private long payes;
 	
 	private List<StatistiqueBase> dossiers;
+	private List<StatistiqueBase> nageurs;
 	
 	public DossierStatistiques() {
 		dossiers = new ArrayList<>(3);
+		nageurs = new ArrayList<>(2);
 	}
 	
 	public void addPaye(long paye) {
@@ -37,6 +39,10 @@ public class DossierStatistiques implements Serializable {
 	
 	public void addDossier(StatistiqueBase stat) {
 		dossiers.add(stat);
+	}
+	
+	public void addNageur(StatistiqueBase stat) {
+		nageurs.add(stat);
 	}
 
 	public long getTotal() {
@@ -77,6 +83,14 @@ public class DossierStatistiques implements Serializable {
 
 	public void setDossiers(List<StatistiqueBase> dossiers) {
 		this.dossiers = dossiers;
+	}
+
+	public List<StatistiqueBase> getNageurs() {
+		return nageurs;
+	}
+
+	public void setNageurs(List<StatistiqueBase> nageurs) {
+		this.nageurs = nageurs;
 	}
 
 }
