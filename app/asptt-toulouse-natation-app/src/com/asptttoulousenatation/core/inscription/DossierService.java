@@ -84,7 +84,7 @@ public class DossierService {
 	@Path("/find")
 	@GET
 	@Consumes("application/json")
-	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe, @QueryParam("dossierStatut") final String dossierStatut, @QueryParam("creneau") final Long creneau) {
+	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe, @QueryParam("dossierStatut") final String dossierStatut, @QueryParam("creneau") final Long creneau, @QueryParam("filter_facture") final Boolean facture) {
 		List<DossierResultBean> result = new ArrayList<DossierResultBean>();
 		List<DossierNageurEntity> nageurs = new ArrayList<DossierNageurEntity>();
 		
@@ -171,8 +171,25 @@ public class DossierService {
 				nageurs.addAll(dao.find(criteriaNageur));
 			}
 		} else if(!hasSelectGroupe) {
-			nageurs = dao.getAll();
+			nageurs = new ArrayList<>(dao.getAll());
 		}
+		
+		CollectionUtils.filter(nageurs, new Predicate() {
+			
+			@Override
+			public boolean evaluate(Object arg0) {
+				DossierNageurEntity nageur = (DossierNageurEntity) arg0;
+				
+				final boolean keep;
+				if(facture != null) {
+					DossierEntity dossier = dossierDao.get(nageur.getDossier());
+					keep = BooleanUtils.toBoolean(dossier.getFacture()) == facture;
+				} else {
+					keep = true;
+				}
+				return keep;
+			}
+		});
 		result.addAll(DossierResultTransformer.getInstance().toUi(nageurs));
 		return result;
 	}
@@ -766,11 +783,12 @@ public class DossierService {
 		return response;
 	}
 
-	@Path("extraction/{fields}")
+	@Path("extraction/{fields}/{conditions}")
 	@GET
 	@Produces("text/csv; charset=UTF-8")
-	public Response extraction(@PathParam("fields") String fields, @QueryParam("groupes") Set<Long> groupes) {
+	public Response extraction(@PathParam("fields") String fields, @QueryParam("groupes") Set<Long> groupes, @PathParam("conditions") String conditions) {
 		String[] fieldsToChoose = fields.split("_");
+		String[] conditionsToAdd = conditions.split("_");
 		List<List<String>> extractions = new ArrayList<>();
 		
 		List<DossierNageurEntity> nageurs;
@@ -819,7 +837,7 @@ public class DossierService {
 					nageurValues.add(dossier.getParent1Profession());
 					nageurValues.add(dossier.getParent2Profession());
 				}
-					break;
+				break;
 				default:// Do nothing
 				}
 			}
