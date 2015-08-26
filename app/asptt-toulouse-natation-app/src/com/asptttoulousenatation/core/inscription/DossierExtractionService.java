@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
@@ -77,6 +78,15 @@ public class DossierExtractionService {
 						break;
 					case "PRENOM":
 						nageurValues.add(nageur.getPrenom());
+						break;
+					case "EMAIL": {
+						DossierEntity dossier = dossierDao.get(nageur.getDossier());
+						String email = dossier.getEmail();
+						if(StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
+							email+=" / " + dossier.getEmailsecondaire();
+						}
+						nageurValues.add(email);
+					}
 						break;
 					case "GROUPE": {
 						if (nageur.getGroupe() != null) {
