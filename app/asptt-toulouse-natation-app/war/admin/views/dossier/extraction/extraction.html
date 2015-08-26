@@ -11,12 +11,24 @@
 			 		<option value="">Choisir un groupe</option>
 				</select>
 			</div>
-			<div class="col-md-4 form-group">
+			<div class="col-md-3 form-group">
 	        	<label for="fields">Valeurs à extraire</label> 
 	            <select class="form-control" id="fields" name="fields" ng-model="selectedFields" ng-options="possibleField as possibleField for possibleField in possibleFields" multiple size="10">
 	                 <option value="">Choisir une valeur</option>
 	            </select>
 		    </div>
+		    <div class="col-md-3 form-group">
+	        	<label for="conditions">Conditions</label> 
+	            <select class="form-control" id="conditions" name="conditions" ng-model="selectedConditions" ng-options="possibleCondition as possibleCondition for possibleCondition in possibleConditions" multiple size="10">
+	                 <option value="">Choisir une valeur</option>
+	            </select>
+	            <div class="checkbox">
+	          		<label>
+	          			<input type="checkbox" id="dossierOnly" ng-model="dossierOnly" ng-true-value="'true'" ng-false-value="'false'" /> Dossier uniquement
+	          		</label>
+          		</div>
+		    </div>
+		    
 		    <div class="col-md-2 form-group">
 	    		<a href="{{extraire()}}" class="btn btn-primary btn-block" role="button"><span class="glyphicon glyphicon-file"></span> Extraire</a>
 		    </div>

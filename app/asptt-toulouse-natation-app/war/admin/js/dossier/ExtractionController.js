@@ -11,9 +11,12 @@ extractionController.controller('ExtractionController', ['$rootScope', '$http', 
 	});
 	
 	$scope.possibleFields = ['NOM','PRENOM', 'GROUPE', 'SHORT', 'TSHIRT', 'MAILLOT', 'PROFESSION'];
+	$scope.possibleConditions = ['FACTURE'];
 	
 	$scope.selectedFields = null;
+	$scope.selectedConditions = null;
 	$scope.groupe = null;
+	$scope.dossierOnly = "true";
 	
 	$scope.extraire = function() {
 		var fieldsAsString = "";
@@ -24,6 +27,14 @@ extractionController.controller('ExtractionController', ['$rootScope', '$http', 
 			}
 		});
 		
+		var conditionsAsString = "";
+		angular.forEach($scope.selectedConditions, function(selectedCondition, index) {
+			conditionsAsString+=selectedCondition;
+			if(index < ($scope.selectedConditions.length - 1)) {
+				conditionsAsString+="_";
+			}
+		});
+		
 		var groupeAsString = "";
 		angular.forEach($scope.groupe, function(selectedGroupe, index) {
 			groupeAsString+="groupes=" + selectedGroupe;
@@ -31,9 +42,9 @@ extractionController.controller('ExtractionController', ['$rootScope', '$http', 
 				groupeAsString+="&";
 			}
 		});
-		var url = "/resources/dossiers/extraction/" + fieldsAsString;
+		var url = "/resources/dossiers/extraction/" + fieldsAsString + "/" + conditionsAsString + "?dossierOnly=" + $scope.dossierOnly;
 		if(groupeAsString) {
-			url+="?" + groupeAsString;
+			url+="&" + groupeAsString;
 		}
 		
 		return url;
