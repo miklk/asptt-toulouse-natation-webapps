@@ -30,5 +30,8 @@ dossierServices.factory('DossierService', ['$resource',
 		removeCertificat: $resource('/resources/dossiers/certificat/:nageur',{},{
 			query:{method:'DELETE', isArray: false, params: {}}
 		}),
+		facture: $resource('/resources/dossiers/facture/:dossier',{dossier: '@dossier'},{
+			query:{method:'PUT', isArray: false, params: {}}
+		}),
 	};
 }]);

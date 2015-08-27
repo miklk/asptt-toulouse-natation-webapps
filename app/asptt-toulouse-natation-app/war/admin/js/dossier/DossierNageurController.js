@@ -137,4 +137,9 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 	          alert("Erreur");
 	       });
 	}
+	
+	$scope.factureSend = function(dossier) {
+		DossierService.facture.query({dossier: dossier.principal.id}, null, function(data) {
+		});
+	}
 }]);

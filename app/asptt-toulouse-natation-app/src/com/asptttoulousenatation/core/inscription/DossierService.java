@@ -56,10 +56,13 @@ import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityField
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierCertificatEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierFactureEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierFactureEnum;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierCertificatDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
+import com.asptttoulousenatation.core.server.dao.inscription.DossierFactureDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
@@ -79,12 +82,13 @@ public class DossierService {
 	private GroupDao groupeDao = new GroupDao();
 	private DossierCertificatDao certificatDao = new DossierCertificatDao();
 	private SlotDao slotDao = new SlotDao();
+	private DossierFactureDao factureDao = new DossierFactureDao();
 	
 	
 	@Path("/find")
 	@GET
 	@Consumes("application/json")
-	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe, @QueryParam("dossierStatut") final String dossierStatut, @QueryParam("creneau") final Long creneau, @QueryParam("filter_facture") final Boolean facture) {
+	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe, @QueryParam("dossierStatut") final String dossierStatut, @QueryParam("creneau") final Long creneau, @QueryParam("filter_facture") final Boolean facture, @QueryParam("filter_facture2") final Boolean facture2) {
 		List<DossierResultBean> result = new ArrayList<DossierResultBean>();
 		List<DossierNageurEntity> nageurs = new ArrayList<DossierNageurEntity>();
 		
@@ -181,9 +185,15 @@ public class DossierService {
 				DossierNageurEntity nageur = (DossierNageurEntity) arg0;
 				
 				final boolean keep;
-				if(facture != null) {
+				if(facture != null || facture2 != null) {
+					final DossierFactureEnum statut;
+					if(facture != null) {
+						statut = DossierFactureEnum.ENVOYE;
+					} else {
+						statut = DossierFactureEnum.DEMANDE;
+					}
 					DossierEntity dossier = dossierDao.get(nageur.getDossier());
-					keep = BooleanUtils.toBoolean(dossier.getFacture()) == facture;
+					keep = BooleanUtils.toBoolean(dossier.getFacture()) && !factureDao.existsByDossierAndStatut(nageur.getDossier(), statut);
 				} else {
 					keep = true;
 				}
@@ -200,6 +210,13 @@ public class DossierService {
 		DossierUi dossierUi = new DossierUi();
 		DossierEntity dossier = dossierDao.get(dossierId);
 		dossierUi.setPrincipal(dossier);
+		
+		//Facture
+		DossierFactureEntity facture = factureDao.findByDossier(dossierId);
+		if(facture != null) {
+			dossierUi.setFacture(facture);
+		}
+		
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
@@ -886,6 +903,32 @@ public class DossierService {
 		if (CollectionUtils.isNotEmpty(entities)) {
 			for (DossierCertificatEntity entity : entities) {
 				certificatDao.delete(entity);
+			}
+		}
+	}
+	
+	@Path("facture/{dossier}")
+	@PUT
+	public void facture(@PathParam("dossier") Long dossier, List<Long> dossiers) {
+		Set<Long> dossierIds = new HashSet<>();
+		if (CollectionUtils.isNotEmpty(dossiers)) {
+			dossierIds.addAll(dossiers);
+		} else {
+			dossierIds.add(dossier);
+		}
+		for (Long dossierId : dossierIds) {
+			DossierFactureEntity facture = factureDao.findByDossier(dossierId);
+			if (facture != null) {
+				facture.setStatut(DossierFactureEnum.ENVOYE);
+				factureDao.save(facture);
+			} else { // Rattrapage car peut être demandé par e-mail
+				DossierEntity dossierEntity = dossierDao.get(dossierId);
+				dossierEntity.setFacture("true");
+				dossierDao.save(dossierEntity);
+				facture = new DossierFactureEntity();
+				facture.setDossier(dossierId);
+				facture.setStatut(DossierFactureEnum.ENVOYE);
+				factureDao.save(facture);
 			}
 		}
 	}

@@ -17,7 +17,7 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	
 	$scope.search = function() {
 		$rootScope.isLoading = true;
-		DossierService.list.query({query: $scope.query, groupe: $scope.groupe, sansGroupe: $scope.sansGroupe, dossierStatut: $scope.dossierStatut, creneau: $scope.creneau, filter_facture: $scope.facture}, function(data) {
+		DossierService.list.query({query: $scope.query, groupe: $scope.groupe, sansGroupe: $scope.sansGroupe, dossierStatut: $scope.dossierStatut, creneau: $scope.creneau, filter_facture: $scope.facture, filter_facture2: $scope.facture2}, function(data) {
 			$scope.dossiers = data;
 			$scope.dossierCount = data.length;
 			$rootScope.isLoading = false;
@@ -186,12 +186,7 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	}
 	
 	$scope.relancerSelected = function() {
-		var selectedDossiers = new Array();
-		angular.forEach($scope.dossiers, function(dossier) {
-			if(dossier.selected) {
-				selectedDossiers.push(dossier.dossierId);
-			}
-		});
+		var selectedDossiers = getSelectedDossiers();
 		DossierService.relancer.query({dossier: -1}, selectedDossiers, function(data) {
 			alert("E-mail de relance envoyé avec succès");
 		});
@@ -225,4 +220,21 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	$scope.selectDossier = function(dossier) {
 		dossier.selected = !dossier.selected;
 	}
+	
+	$scope.factureSelected = function() {
+		var selectedDossiers = getSelectedDossiers();
+		DossierService.facture.query({dossier: -1}, selectedDossiers, function(data) {
+			alert("Validation de l'envoi des factures");
+		});
+	}
+	
+	function getSelectedDossiers() {
+		var selectedDossiers = new Array();
+		angular.forEach($scope.dossiers, function(dossier) {
+			if(dossier.selected) {
+				selectedDossiers.push(dossier.dossierId);
+			}
+		});
+		return selectedDossiers;
+	};
 }]);

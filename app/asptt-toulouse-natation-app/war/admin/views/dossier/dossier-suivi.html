@@ -49,5 +49,9 @@
 			<input id="montantreel" type="number" class="form-control" ng-model="dossier.principal.montantreel" />
 		</div>
 	</div>
+	
+	<h3>Facture <span ng-show="!dossier.facture">non demandée</span><span ng-show="dossier.facture.statut == 'DEMANDE'">demandée</span><span ng-show="dossier.facture.statut == 'ENVOYE'">demandée et envoyée</span>
+	&nbsp;<button type="button" class="btn btn-primary btn-xs" title="Confirmer l'envoi de la facture"><span class="glyphicon glyphicon-send" ng-click="factureSend(dossier)"></span></button></h3>
+	
 	<button type="button" class="btn btn-primary btn-block" ng-click="update()">Valider les modifications</button>
 </form>

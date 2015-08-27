@@ -67,10 +67,13 @@ import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityField
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierCertificatEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierFactureEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierFactureEnum;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierCertificatDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
+import com.asptttoulousenatation.core.server.dao.inscription.DossierFactureDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
@@ -100,6 +103,7 @@ public class InscriptionService {
 	private DossierCertificatDao dossierCertificatDao = new DossierCertificatDao();
 	private SlotDao slotDao = new SlotDao();
 	private GroupDao groupDao = new GroupDao();
+	private DossierFactureDao factureDao = new DossierFactureDao();
 	private GroupTransformer groupTransformer = new GroupTransformer();
 	
 	@Path("/price")
@@ -217,6 +221,23 @@ public class InscriptionService {
 			
 			dossiers.getDossier().setStatut(DossierStatutEnum.PREINSCRIT.name());
 			DossierEntity principal = dao.save(dossiers.getDossier());
+			
+			//Facture
+			DossierFactureEntity facture = factureDao.findByDossier(principal.getId());
+			if(BooleanUtils.toBoolean(principal.getFacture())) {
+				if(facture == null) {
+					facture = new DossierFactureEntity();
+					facture.setDossier(principal.getId());
+					facture.setStatut(DossierFactureEnum.DEMANDE);
+					factureDao.save(facture);
+				}
+			} else {
+				//Supprime la demande si case décoché et facture existe.
+				if(facture != null) {
+					factureDao.delete(facture.getId());
+				}
+			}
+			
 
 			// Add certificats
 			Set<Long> hasCertificat = new HashSet<>();

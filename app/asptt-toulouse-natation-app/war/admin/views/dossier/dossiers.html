@@ -32,10 +32,18 @@
 		    </div>
 		    <div class="form-group">
 		    	<h5>Filtres</h5>
-		    	<div class="checkbox">
-	          		<label>
-	          			<input type="checkbox" id="filterFacture" ng-model="facture" ng-true-value="'true'" ng-false-value="'false'" /> Facture
-	          		</label>
+		    	<div class="form-inline">
+		    	
+			    	<div class="checkbox">
+		          		<label>
+		          			<input type="checkbox" id="filterFacture" ng-model="facture" ng-true-value="'true'" ng-false-value="'false'" /> Facture demandée
+		          		</label>
+	          		</div>
+	          		<div class="checkbox">
+		          		<label>
+		          			<input type="checkbox" id="filterFacture2" ng-model="facture2" ng-true-value="'true'" ng-false-value="'false'" /> Facture envoyée
+		          		</label>
+	          		</div>
           		</div>
 		    </div>
          </form>
@@ -63,7 +71,8 @@
 			</thead>
 			<tfoot>
 				<tr>
-					<td><button type="button" class="btn btn-sm btn-primary" ng-click="relancerSelected()">Relancer</button></td>
+					<td colspan="10"><button type="button" class="btn btn-sm btn-primary" ng-click="relancerSelected()">Relancer</button>
+					&nbsp;<button type="button" class="btn btn-sm btn-primary" ng-click="factureSelected()" title="Confirmer l'envoi de la facture">Facturer</button></td>
 				</tr>
 			</tfoot>
 			<tbody>
