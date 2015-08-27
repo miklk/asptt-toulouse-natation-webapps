@@ -186,14 +186,12 @@ public class DossierService {
 				
 				final boolean keep;
 				if(facture != null || facture2 != null) {
-					final DossierFactureEnum statut;
-					if(facture != null) {
-						statut = DossierFactureEnum.ENVOYE;
-					} else {
-						statut = DossierFactureEnum.DEMANDE;
-					}
 					DossierEntity dossier = dossierDao.get(nageur.getDossier());
-					keep = BooleanUtils.toBoolean(dossier.getFacture()) && !factureDao.existsByDossierAndStatut(nageur.getDossier(), statut);
+					if(facture != null) {
+						keep = BooleanUtils.toBoolean(dossier.getFacture()) && !factureDao.existsByDossierAndStatut(nageur.getDossier(), DossierFactureEnum.ENVOYE);
+					} else {
+						keep = BooleanUtils.toBoolean(dossier.getFacture()) && factureDao.existsByDossierAndStatut(nageur.getDossier(), DossierFactureEnum.ENVOYE);
+					}
 				} else {
 					keep = true;
 				}
