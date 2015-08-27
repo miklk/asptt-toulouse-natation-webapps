@@ -62,7 +62,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-webmvc-4.2.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-context-4.1.7.RELEASE.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-core-4.1.7.RELEASE.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-security-config-3.2.7.RELEASE.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-security-config-3.2.7.RELEASE.jar" sourcepath="/Users/mikl/.m2/repository/org/springframework/security/spring-security-config/3.2.7.RELEASE/spring-security-config-3.2.7.RELEASE-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-security-core-3.2.7.RELEASE.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-security-web-3.2.7.RELEASE.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-boot-legacy-1.0.1.RELEASE.jar" sourcepath="/Users/mikl/.m2/repository/org/springframework/boot/spring-boot-legacy/1.0.1.RELEASE/spring-boot-legacy-1.0.1.RELEASE-sources.jar"/>
