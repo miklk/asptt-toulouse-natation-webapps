@@ -185,6 +185,18 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 		});
 	}
 	
+	$scope.relancerSelected = function() {
+		var selectedDossiers = new Array();
+		angular.forEach($scope.dossiers, function(dossier) {
+			if(dossier.selected) {
+				selectedDossiers.push(dossier.dossierId);
+			}
+		});
+		DossierService.relancer.query({dossier: -1}, selectedDossiers, function(data) {
+			alert("E-mail de relance envoyé avec succès");
+		});
+	}
+	
 	$scope.attente = function(dossier) {
 		DossierService.attente.query({dossier: dossier.dossierId}, function(data) {
 			alert("Dossier mis en attente (Si c'est une famille tous les dossiers sont en attentes)");
@@ -208,5 +220,9 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 			label = label + " #2";
 		}
 		return label;
+	}
+	
+	$scope.selectDossier = function(dossier) {
+		dossier.selected = !dossier.selected;
 	}
 }]);

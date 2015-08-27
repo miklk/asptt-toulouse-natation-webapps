@@ -61,8 +61,13 @@
 					<th>Dernière mise à jour</th>
 				</tr>
 			</thead>
+			<tfoot>
+				<tr>
+					<td><button type="button" class="btn btn-sm btn-primary" ng-click="relancerSelected()">Relancer</button></td>
+				</tr>
+			</tfoot>
 			<tbody>
-				<tr ng-repeat="dossier in dossiers | orderBy:'nom'" ng-class="{'warning': dossier.etat =='PREINSCRIT'}">
+				<tr ng-repeat="dossier in dossiers | orderBy:'nom'" ng-class="{'warning': dossier.etat =='PREINSCRIT', 'danger': dossier.selected}" ng-click="selectDossier(dossier)">
 					<td>
 						<div class="btn-group">
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">

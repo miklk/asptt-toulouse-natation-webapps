@@ -27,6 +27,8 @@ public class DossierResultBean implements Serializable {
 	
 	private DossierNageurEntity nageur;
 	
+	private boolean selected = false;
+	
 	public Long getNageurId() {
 		return nageurId;
 	}
@@ -104,6 +106,12 @@ public class DossierResultBean implements Serializable {
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	public boolean isSelected() {
+		return selected;
+	}
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 	
 }
