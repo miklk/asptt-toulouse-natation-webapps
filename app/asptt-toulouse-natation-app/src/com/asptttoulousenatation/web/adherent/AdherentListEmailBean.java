@@ -8,6 +8,8 @@ public class AdherentListEmailBean implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -4468044892482381684L;
+	
+	private String from;
 	private String sujet;
 	private String corps;
 	private boolean all;
@@ -17,6 +19,16 @@ public class AdherentListEmailBean implements Serializable {
 	public AdherentListEmailBean() {
 		all = false;
 	}
+
+	public String getFrom() {
+		return from;
+	}
+
+
+	public void setFrom(String from) {
+		this.from = from;
+	}
+
 
 	public String getSujet() {
 		return sujet;

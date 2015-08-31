@@ -445,6 +445,7 @@ public class AdherentService {
 		String groupesAsString = multiPart.getField("groupes").getValue();
 		Long creneau = multiPart.getField("creneau").getValueAs(Long.class);
 		String piscine = multiPart.getField("piscine").getValue();
+		String from = multiPart.getField("messageFrom").getValue();
 		String subject = multiPart.getField("messageSubject").getValue();
 		String corps = multiPart.getField("messageContent").getValue();
 		FormDataBodyPart fichierMultiPart = multiPart.getField("file");
@@ -468,10 +469,10 @@ public class AdherentService {
 					mp.addBodyPart(htmlPart);
 					MimeMessage msg = new MimeMessage(session);
 					msg.setFrom(new InternetAddress(
-							"webmaster@asptt-toulouse-natation.com",
+							from,
 							"ASPTT Toulouse Natation"));
 					Address[] replyTo = { new InternetAddress(
-							"contact@asptt-toulouse-natation.com",
+							from,
 							"ASPTT Toulouse Natation") };
 					msg.setReplyTo(replyTo);
 					msg.addRecipient(Message.RecipientType.TO,

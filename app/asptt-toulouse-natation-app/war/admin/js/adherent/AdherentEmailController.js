@@ -4,6 +4,7 @@
 var adherentController = angular.module('AdherentEmailCtrl', ['ngRoute', 'textAngular', 'adherentsServices', 'groupeServices', 'slotServices', 'piscineServices']);
 adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$location', 'AdherentsService', 'GroupeService', 'SlotService', 'PiscineService', function($http, $scope, $location, AdherentsService, GroupeService, SlotService, PiscineService) {
 	$scope.fichier = null;
+	$scope.sender = "contact@asptt-toulouse-natation.com";
 	$scope.subject = "";
 	$scope.htmlcontent = "";
 	$scope.destinataire = "";
@@ -15,6 +16,8 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
 	$scope.htmlcontent = "<img src=\"https://lh3.googleusercontent.com/-G9O-07NDcNY/VBvelTpt3lI/AAAAAAAABgI/yAYJInY7jU4/w917-h69-no/logo_entete.png\" /><p>Madame, Monsieur,</p>";
 	
 	$scope.showCreneau = false;
+	
+	$scope.senderList = ['contact@asptt-toulouse-natation.com','loic.pilorget@asptt-toulouse-natation.com', 'cyril.cavagna@asptt-toulouse-natation.com', 'sebastien.borderas@asptt-toulouse-natation.com', 'remi.lacaze@asptt-toulouse-natation.com', 'elysabeth.patte@asptt-toulouse-natation.com'];
 
 	GroupeService.all.query({}, function(data) {
 		$scope.groupes = data.groups;
@@ -35,6 +38,7 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
 	$scope.sendEmail = function() {
 		var formData = new FormData();
 		formData.append("file", $scope.fichier);
+		formData.append("messageFrom", $scope.sender);
 		formData.append("messageSubject", $scope.subject);
 		formData.append("messageContent", $scope.htmlcontent);
 		formData.append("destinataire", $scope.destinataire);

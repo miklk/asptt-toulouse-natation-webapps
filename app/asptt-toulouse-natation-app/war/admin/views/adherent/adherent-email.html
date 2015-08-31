@@ -44,8 +44,14 @@
 	</form>
 	</div>
 	<div class="row">
-		<h3>Sujet</h3>
 		<form>
+		<h3>De</h3>
+			<div class="form-group">
+	            <select class="form-control" id="senderList" name="senderList" ng-model="sender" ng-options="senderElt as senderElt for senderElt in senderList">
+	            </select>
+	        </div>
+		<h3>Sujet</h3>
+		
 			<div class="form-group">
 				<input id="subject" type="text" ng-model="subject" placeholder="Sujet" class="form-control" size="100" maxlength="100" />
 			</div>
