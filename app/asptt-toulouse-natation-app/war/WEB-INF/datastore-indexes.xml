@@ -121,4 +121,9 @@
         <property name="nom" direction="asc"/>
         <property name="prenom" direction="asc"/>
     </datastore-index>
+    
+    <datastore-index kind="DossierNageurEntity" ancestor="false" source="manual">
+        <property name="groupe" direction="asc"/>
+        <property name="nom" direction="asc"/>
+    </datastore-index>
 </datastore-indexes>
