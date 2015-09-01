@@ -1,13 +1,12 @@
 /**
  * 
  */
-var adminApp = angular.module('adminApp', ['ngRoute', 'angular-spinkit', 'adherentsServices','adherentsStatServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'dossierServices', 'UserController', 'AdherentListCtrl', 'AdherentEmailCtrl', 'AdherentsStatCtrl', 'DocumentController', 'LibelleController', 'SuiviNageurController', 'GroupeController','DossierController', 'DossierNageurController', 'CreneauStatController', 'creneauStatServices', 'ExtractionController','DashboardController']);
+var adminApp = angular.module('adminApp', ['ngRoute', 'angular-spinkit', 'adherentsServices','adherentsStatServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'dossierServices', 'UserController', 'AdherentListCtrl', 'AdherentEmailCtrl', 'AdherentsStatCtrl', 'DocumentController', 'LibelleController', 'SuiviNageurController', 'GroupeController','DossierController', 'DossierNageurController', 'CreneauStatController', 'creneauStatServices', 'ExtractionController','DashboardController', 'EnfController', 'enfServices']);
 
 adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
 	$routeProvider.
 		when('/', {
-			templateUrl: 'views/adherents.html',
-			controller: 'AdherentListCtrl'
+			templateUrl: 'views/dashboard/dashboard.html'
 		}).
 		when('/home', {
 			templateUrl: 'views/index.html'
@@ -39,8 +38,8 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 			templateUrl: 'views/adherent/adherent-email2.html',
 			controller: 'AdherentEmailCtrl'
 		}).
-		when('/en-jours', {
-			templateUrl: 'views/en-jours.html'
+		when('/enf', {
+			templateUrl: 'views/enf/enf.html'
 		}).
 		when('/users', {
 			templateUrl: 'views/user/users.html',

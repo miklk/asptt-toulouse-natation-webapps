@@ -198,4 +198,23 @@ public class CreneauService {
 			dao.delete(entity.getId());			
 		}
 	}
+	
+	@GET
+	@Path("/all")
+	public CreneauxBean getAll() {
+		List<SlotEntity> lEntities = dao.getAll();
+		List<SlotUi> lUis = new SlotTransformer().toUi(lEntities);
+		Collections.sort(lUis, new Comparator<SlotUi>() {
+
+			public int compare(SlotUi pO1, SlotUi pO2) {
+				Integer jour1 = JOURS.get(pO1.getDayOfWeek());
+				Integer jour2 = JOURS.get(pO2.getDayOfWeek());
+				return jour1.compareTo(jour2);
+			}
+		});
+
+		CreneauxBean result = new CreneauxBean();
+		result.setCreneaux(lUis);
+		return result;
+	}
 }
