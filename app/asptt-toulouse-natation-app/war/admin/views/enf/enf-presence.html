@@ -3,8 +3,9 @@
 
 <div class="form-group">
 	<select class="form-control" id="creneau" ng-model="creneauSelected"
-	    	ng-options="creneau.id as creneauLabel(creneau) for creneau in creneaux" ng-change="presences()">
+	    	ng-options="creneau.id as creneauLabel(creneau) for creneau in creneaux">
 	    <option value="">Choisir un créneau</option>
 	</select>
 </div>
+<p ng-show="creneauSelected"><a href="/resources/enf/presences/{{creneauSelected}}" download>Télécharger la fiche de présence</a>
 </div>
