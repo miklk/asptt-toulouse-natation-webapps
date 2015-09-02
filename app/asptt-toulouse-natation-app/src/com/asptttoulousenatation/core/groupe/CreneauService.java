@@ -2,10 +2,7 @@ package com.asptttoulousenatation.core.groupe;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.ws.rs.DELETE;
@@ -30,6 +27,7 @@ import com.asptttoulousenatation.core.server.dao.entity.field.PiscineEntityField
 import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
+import com.asptttoulousenatation.core.util.DayComparator;
 import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
 
 @Path("/creneaux")
@@ -44,19 +42,6 @@ public class CreneauService {
 	private PiscineDao piscineDao = new PiscineDao();
 	private SlotTransformer transformer = new SlotTransformer();
 	
-	private static Map<String, Integer> JOURS;
-	
-	static {
-		JOURS = new HashMap<String, Integer>();
-		JOURS.put("Lundi", 0);
-		JOURS.put("Mardi", 1);
-		JOURS.put("Mercredi", 2);
-		JOURS.put("Jeudi", 3);
-		JOURS.put("Vendredi", 4);
-		JOURS.put("Samedi", 5);
-		JOURS.put("Dimanche", 6);
-	}
-
 	@GET
 	@Path("{groupe}")
 	public CreneauxBean getCreneaux(@PathParam("groupe") Long groupe) {
@@ -67,14 +52,7 @@ public class CreneauService {
 				Operator.EQUAL));
 		List<SlotEntity> lEntities = dao.find(criteria);
 		List<SlotUi> lUis = new SlotTransformer().toUi(lEntities);
-		Collections.sort(lUis, new Comparator<SlotUi>() {
-
-			public int compare(SlotUi pO1, SlotUi pO2) {
-				Integer jour1 = JOURS.get(pO1.getDayOfWeek());
-				Integer jour2 = JOURS.get(pO2.getDayOfWeek());
-				return jour1.compareTo(jour2);
-			}
-		});
+		
 
 		CreneauxBean result = new CreneauxBean();
 		result.setCreneaux(lUis);
@@ -93,14 +71,7 @@ public class CreneauService {
 				Operator.EQUAL));
 		List<SlotEntity> lEntities = dao.find(criteria);
 		List<SlotUi> lUis = new SlotTransformer().toUi(lEntities);
-		Collections.sort(lUis, new Comparator<SlotUi>() {
-
-			public int compare(SlotUi pO1, SlotUi pO2) {
-				Integer jour1 = JOURS.get(pO1.getDayOfWeek());
-				Integer jour2 = JOURS.get(pO2.getDayOfWeek());
-				return jour1.compareTo(jour2);
-			}
-		});
+		Collections.sort(lUis, new DayComparator());
 
 		CreneauxBean result = new CreneauxBean();
 		result.setCreneaux(lUis);
@@ -204,14 +175,7 @@ public class CreneauService {
 	public CreneauxBean getAll() {
 		List<SlotEntity> lEntities = dao.getAll();
 		List<SlotUi> lUis = new SlotTransformer().toUi(lEntities);
-		Collections.sort(lUis, new Comparator<SlotUi>() {
-
-			public int compare(SlotUi pO1, SlotUi pO2) {
-				Integer jour1 = JOURS.get(pO1.getDayOfWeek());
-				Integer jour2 = JOURS.get(pO2.getDayOfWeek());
-				return jour1.compareTo(jour2);
-			}
-		});
+		Collections.sort(lUis, new DayComparator());
 
 		CreneauxBean result = new CreneauxBean();
 		result.setCreneaux(lUis);

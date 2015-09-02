@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.asptttoulousenatation.core.lang.HasDay;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class SlotUi implements IsSerializable {
+public class SlotUi implements HasDay, IsSerializable {
 
 	private Long id;
 	private String dayOfWeek;

@@ -8,6 +8,10 @@ enfController.controller('EnfController', ['$rootScope', '$http', '$scope', '$lo
 	$scope.creneauSelected = null;
 	SlotService.all.query({}, function(data) {
 		$scope.creneaux = data.creneaux;
+	});
+	
+	EnfService.creneaux.query({}, function(data) {
+		$scope.days = data;
 		$rootScope.isLoading = false;
 	});
 	

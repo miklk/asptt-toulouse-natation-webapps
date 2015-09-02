@@ -7,7 +7,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,6 +30,8 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
 import com.asptttoulousenatation.client.util.CollectionUtils;
+import com.asptttoulousenatation.core.enf.EnfDayGroupe;
+import com.asptttoulousenatation.core.enf.EnfGroupeCreneau;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
@@ -44,6 +48,8 @@ import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.search.OrderDao;
 import com.asptttoulousenatation.core.server.dao.search.OrderDao.OrderOperator;
+import com.asptttoulousenatation.core.util.DayComparator;
+import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
 
 @Path("/enf")
 @Produces("application/json")
@@ -55,6 +61,34 @@ public class EnfGestionService {
 	private GroupDao groupDao = new GroupDao();
 	private DossierNageurDao nageurDao = new DossierNageurDao();
 	private DossierDao dossierDao = new DossierDao();
+	
+	
+	@Path("/creneaux")
+	@GET
+	public List<EnfDayGroupe> creneauPerGroupePerDay() {
+		List<EnfDayGroupe> days = new ArrayList<>(7);
+		List<SlotEntity> entities = slotDao.getAll();
+		Map<String, EnfDayGroupe> daysMap = new HashMap<>();
+		for(SlotEntity entity: entities) {
+			String day = entity.getDayOfWeek();
+			final EnfDayGroupe dayGroupe;
+			if(daysMap.containsKey(day)) {
+				dayGroupe = daysMap.get(day);
+			} else {
+				dayGroupe = new EnfDayGroupe();
+				daysMap.put(day, dayGroupe);
+			}
+			EnfGroupeCreneau groupe = new EnfGroupeCreneau();
+			GroupEntity groupeEntity = groupDao.get(entity.getGroup());
+			groupe.setGroupe(groupeEntity.getTitle());
+			groupe.addCreneau(SlotTransformer.getInstance().toUi(entity));
+			dayGroupe.addGroupe(groupe);
+		}
+		
+		days.addAll(daysMap.values());
+		Collections.sort(days, new DayComparator());
+		return days;
+	}
 
 	@Path("/presences/{creneau}")
 	@GET

@@ -1,0 +1,57 @@
+package com.asptttoulousenatation.core.enf;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import com.asptttoulousenatation.core.lang.HasDay;
+
+public class EnfDayGroupe implements HasDay, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String dayOfWeek;
+	private List<EnfGroupeCreneau> groupes;
+	private Map<String, EnfGroupeCreneau> groupesMap;
+	
+	public EnfDayGroupe() {
+		groupes = new ArrayList<>();
+	}
+	
+	public void addGroupe(EnfGroupeCreneau groupe) {
+		if(groupesMap.containsKey(groupe.getGroupe())) {
+			groupesMap.get(groupe.getGroupe()).getCreneaux().addAll(groupe.getCreneaux());
+		} else {
+			groupesMap.put(groupe.getGroupe(), groupe);
+			groupes.add(groupe);
+		}
+		
+	}
+	
+	public String getDayOfWeek() {
+		return dayOfWeek;
+	}
+
+	public void setDayOfWeek(String dayOfWeek) {
+		this.dayOfWeek = dayOfWeek;
+	}
+
+	public List<EnfGroupeCreneau> getGroupes() {
+		return groupes;
+	}
+	public void setGroupes(List<EnfGroupeCreneau> groupes) {
+		this.groupes = groupes;
+	}
+
+	public Map<String, EnfGroupeCreneau> getGroupesMap() {
+		return groupesMap;
+	}
+
+	public void setGroupesMap(Map<String, EnfGroupeCreneau> groupesMap) {
+		this.groupesMap = groupesMap;
+	}
+
+}
