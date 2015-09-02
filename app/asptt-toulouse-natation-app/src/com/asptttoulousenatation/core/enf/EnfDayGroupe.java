@@ -2,6 +2,9 @@ package com.asptttoulousenatation.core.enf;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +22,7 @@ public class EnfDayGroupe implements HasDay, Serializable {
 	
 	public EnfDayGroupe() {
 		groupes = new ArrayList<>();
+		groupesMap = new HashMap<>();
 	}
 	
 	public void addGroupe(EnfGroupeCreneau groupe) {
@@ -29,6 +33,16 @@ public class EnfDayGroupe implements HasDay, Serializable {
 			groupes.add(groupe);
 		}
 		
+	}
+	
+	public void sort() {
+		Collections.sort(groupes, new Comparator<EnfGroupeCreneau>() {
+
+			@Override
+			public int compare(EnfGroupeCreneau o1, EnfGroupeCreneau o2) {
+				return o1.getGroupe().compareTo(o2.getGroupe());
+			}
+		});
 	}
 	
 	public String getDayOfWeek() {

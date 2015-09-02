@@ -6,9 +6,6 @@ var enfController = angular.module('EnfController', ['ngRoute', 'enfServices', '
 enfController.controller('EnfController', ['$rootScope', '$http', '$scope', '$location', '$filter', 'EnfService', 'SlotService', function($rootScope, $http, $scope, $location, $filter, EnfService, SlotService) {
 	$rootScope.isLoading = true;
 	$scope.creneauSelected = null;
-	SlotService.all.query({}, function(data) {
-		$scope.creneaux = data.creneaux;
-	});
 	
 	EnfService.creneaux.query({}, function(data) {
 		$scope.days = data;
@@ -16,7 +13,7 @@ enfController.controller('EnfController', ['$rootScope', '$http', '$scope', '$lo
 	});
 	
 	$scope.creneauLabel = function(creneau) {
-		var label = creneau.swimmingPool + ' - ' + creneau.dayOfWeek + ' - ' + $filter('date') (creneau.beginDt, 'HH:mm') + '-' + $filter('date') (creneau.endDt, 'HH:mm') + ' - (' + (creneau.placeDisponible - creneau.placeRestante) + '/' + creneau.placeDisponible + ')';
+		var label = creneau.swimmingPool + ' - ' + $filter('date') (creneau.beginDt, 'HH:mm') + '-' + $filter('date') (creneau.endDt, 'HH:mm') + ' - (' + (creneau.placeDisponible - creneau.placeRestante) + ')';
 		if(creneau.second) {
 			label = label + " #2";
 		}

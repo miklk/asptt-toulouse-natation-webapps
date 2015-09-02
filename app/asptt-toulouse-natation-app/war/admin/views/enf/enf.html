@@ -1,8 +1,11 @@
 <div class="container" ng-controller="EnfController">
 <div class="row">
-	<h1 class="page-header">Ecole de natation
+	<div class="col-md-10">
+		<h1 class="page-header">Ecole de natation</h1>
+	</div>
 </div>
 
+<div class="col-md-10">
 <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#presence" target="_self">Fiches de présences</a></li>
     <li><a data-toggle="tab" href="#jour" target="_self">Liste des inscrits par jour (à supprimer)</a></li>
@@ -17,5 +20,6 @@
     	<div ng-include="'views/enf/enf-jours.html'"></div>
     </div>
     
+</div>
 </div>
 </div>

@@ -1,11 +1,28 @@
 <div ng-controller="EnfController">
 <h3>Fiches de présences</h3>
 
-<div class="form-group">
-	<select class="form-control" id="creneau" ng-model="creneauSelected"
-	    	ng-options="creneau.id as creneauLabel(creneau) for creneau in creneaux">
-	    <option value="">Choisir un créneau</option>
-	</select>
-</div>
-<p ng-show="creneauSelected"><a href="/resources/enf/presences/{{creneauSelected}}" download>Télécharger la fiche de présence</a>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Lundi</th>
+			<th>Mardi</th>
+			<th>Mercredi</th>
+			<th>Jeudi</th>
+			<th>Vendredi</th>
+			<th>Samedi</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td ng-repeat="day in days">
+				<div ng-repeat="groupe in day.groupes">
+					<h5>{{groupe.groupe}}</h5>
+					<ul>
+						<li ng-repeat="creneau in groupe.creneaux"><a href="/resources/enf/presences/{{creneau.id}}" download>{{creneauLabel(creneau)}}</a></li>
+					</ul>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
 </div>
