@@ -88,7 +88,7 @@ public class DossierService {
 	@Path("/find")
 	@GET
 	@Consumes("application/json")
-	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe, @QueryParam("dossierStatut") final String dossierStatut, @QueryParam("creneau") final Long creneau, @QueryParam("filter_facture") final Boolean facture, @QueryParam("filter_facture2") final Boolean facture2) {
+	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe, @QueryParam("dossierStatut") final String dossierStatut, @QueryParam("creneau") final Long creneau, @QueryParam("filter_facture") final Boolean facture, @QueryParam("filter_facture2") final Boolean facture2, @QueryParam("certificat") final Boolean certificat) {
 		List<DossierResultBean> result = new ArrayList<DossierResultBean>();
 		List<DossierNageurEntity> nageurs = new ArrayList<DossierNageurEntity>();
 		
@@ -175,7 +175,13 @@ public class DossierService {
 				nageurs.addAll(dao.find(criteriaNageur));
 			}
 		} else if(!hasSelectGroupe) {
-			nageurs = new ArrayList<>(dao.getAll());
+			if(BooleanUtils.isTrue(certificat)) {
+				criteriaNageur.add(new CriterionDao<Boolean>(DossierNageurEntityFields.CERTIFICAT,
+						certificat, Operator.EQUAL));
+				nageurs = new ArrayList<>(dao.find(criteriaNageur));
+			} else {
+				nageurs = new ArrayList<>(dao.getAll());
+			}
 		}
 		
 		CollectionUtils.filter(nageurs, new Predicate() {

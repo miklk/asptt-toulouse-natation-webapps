@@ -14,10 +14,11 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	});
 	
 	$scope.dossierStatus = ['INITIALISE','PREINSCRIT', 'PAIEMENT_PARTIEL', 'PAIEMENT_COMPLET', 'INSCRIT', 'ANNULE', 'EXPIRE', 'ATTENTE'];
+	$scope.certificat = false;
 	
 	$scope.search = function() {
 		$rootScope.isLoading = true;
-		DossierService.list.query({query: $scope.query, groupe: $scope.groupe, sansGroupe: $scope.sansGroupe, dossierStatut: $scope.dossierStatut, creneau: $scope.creneau, filter_facture: $scope.facture, filter_facture2: $scope.facture2}, function(data) {
+		DossierService.list.query({query: $scope.query, groupe: $scope.groupe, sansGroupe: $scope.sansGroupe, dossierStatut: $scope.dossierStatut, creneau: $scope.creneau, filter_facture: $scope.facture, filter_facture2: $scope.facture2, certificat: $scope.certificat}, function(data) {
 			$scope.dossiers = data;
 			$scope.dossierCount = data.length;
 			$rootScope.isLoading = false;
