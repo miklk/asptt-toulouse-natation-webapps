@@ -562,16 +562,17 @@ public class InscriptionService {
 	@GET
 	public int rappel() {
 		Date seuilInscription = DateTime.now().minusDays(5).toDate();
-		
-		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.PREINSCRIT.name(), Operator.EQUAL));
+
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.PREINSCRIT.name(),
+				Operator.EQUAL));
 		List<DossierEntity> entities = dao.find(criteria);
 		int count = 0;
-		for(DossierEntity dossier: entities) {
-			if(dossier.getUpdated().before(seuilInscription)) {
+		List<String> dossiersRappeler = new ArrayList<>();
+		for (DossierEntity dossier : entities) {
+			if (dossier.getUpdated().before(seuilInscription)) {
 				count++;
+				dossiersRappeler.add(dossier.getEmail());
 				Properties props = new Properties();
 				Session session = Session.getDefaultInstance(props, null);
 				try {
@@ -579,44 +580,156 @@ public class InscriptionService {
 					MimeBodyPart htmlPart = new MimeBodyPart();
 
 					MimeMessage msg = new MimeMessage(session);
-					msg.setFrom(new InternetAddress(
-							"webmaster@asptt-toulouse-natation.com",
-							"ASPTT Toulouse Natation"));
-					Address[] replyTo = {new InternetAddress(
-							"contact@asptt-toulouse-natation.com",
-							"ASPTT Toulouse Natation")};
+					msg.setFrom(
+							new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+					Address[] replyTo = {
+							new InternetAddress("contact@asptt-toulouse-natation.com", "ASPTT Toulouse Natation") };
 					msg.setReplyTo(replyTo);
-					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-							dossier.getEmail()));
-					msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
-							"contact@asptt-toulouse-natation.com"));
-					if(StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
-					msg.addRecipient(Message.RecipientType.CC, new InternetAddress(
-							dossier.getEmailsecondaire()));
+					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(dossier.getEmail()));
+					msg.addRecipient(Message.RecipientType.CC,
+							new InternetAddress("contact@asptt-toulouse-natation.com"));
+					if (StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
+						msg.addRecipient(Message.RecipientType.CC, new InternetAddress(dossier.getEmailsecondaire()));
 					}
 
 					StringBuilder message = new StringBuilder(
 							"Madame, Monsieur,<p>Vous avez effectué une demande d'inscription au club il y a 5 jours. Nous n'avons pas encore reçu votre paiement.<br /> Nous tenons à vous rappeler qu'au bout de 8 jours, votre dossier sera supprimé et les créneaux sélectionnés libérés pour d'autres adhérents.<br />");
 
-					message.append("<p>Sportivement,<br />"
-							+ "Le secrétariat,<br />"
+					message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />"
 							+ "ASPTT Grand Toulouse Natation<br />"
 							+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
 					htmlPart.setContent(message.toString(), "text/html");
 					mp.addBodyPart(htmlPart);
 
-					msg.setSubject("ASPTT Toulouse Natation - Rappel",
-							"UTF-8");
+					msg.setSubject("ASPTT Toulouse Natation - Rappel", "UTF-8");
 					msg.setContent(mp);
 					Transport.send(msg);
 					dossier.setReminded(new DateTime().toDate());
 					dossier.setReminder(true);
 					dao.save(dossier);
 				} catch (MessagingException | UnsupportedEncodingException e) {
-					LOG.log(Level.SEVERE,"Erreur pour l'e-mail: " + dossier.getEmail(), e);
+					LOG.log(Level.SEVERE, "Erreur pour l'e-mail: " + dossier.getEmail(), e);
 				}
 			}
 		}
+
+		// Rapport
+		Properties props = new Properties();
+		Session session = Session.getDefaultInstance(props, null);
+		try {
+			Multipart mp = new MimeMultipart();
+			MimeBodyPart htmlPart = new MimeBodyPart();
+
+			MimeMessage msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("contact@asptt-toulouse-natation.com"));
+			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("remi.lacaze@asptt-toulouse-natation.com"));
+
+			StrBuilder message = new StrBuilder("<p>").append(count).append(" dossiers vont expirer dans 5 jours.</p>");
+			message.append("<ul>");
+			for (String dossierRappeler : dossiersRappeler) {
+				message.append("<li>").append(dossierRappeler).append("</li>");
+			}
+			message.append("</ul>");
+
+			htmlPart.setContent(message.toString(), "text/html");
+			mp.addBodyPart(htmlPart);
+
+			msg.setSubject("Rapport  - dossiers arrivant à expiration", "UTF-8");
+			msg.setContent(mp);
+			Transport.send(msg);
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			LOG.log(Level.SEVERE, "Erreur pour l'e-mail de rapport", e);
+		}
+
+		LOG.log(Level.WARNING, count + " dossiers rappelés");
+		return count;
+	}
+	
+	@Path("/rappel2")
+	@GET
+	public int rappel2() {
+		Date seuilInscription = DateTime.now().minusDays(8).toDate();
+
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.PREINSCRIT.name(),
+				Operator.EQUAL));
+		List<DossierEntity> entities = dao.find(criteria);
+		int count = 0;
+		List<String> dossiersRappeler = new ArrayList<>();
+		for (DossierEntity dossier : entities) {
+			if (dossier.getUpdated().before(seuilInscription)) {
+				count++;
+				dossiersRappeler.add(dossier.getEmail());
+				Properties props = new Properties();
+				Session session = Session.getDefaultInstance(props, null);
+				try {
+					Multipart mp = new MimeMultipart();
+					MimeBodyPart htmlPart = new MimeBodyPart();
+
+					MimeMessage msg = new MimeMessage(session);
+					msg.setFrom(
+							new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+					Address[] replyTo = {
+							new InternetAddress("contact@asptt-toulouse-natation.com", "ASPTT Toulouse Natation") };
+					msg.setReplyTo(replyTo);
+					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(dossier.getEmail()));
+					msg.addRecipient(Message.RecipientType.CC,
+							new InternetAddress("contact@asptt-toulouse-natation.com"));
+					if (StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
+						msg.addRecipient(Message.RecipientType.CC, new InternetAddress(dossier.getEmailsecondaire()));
+					}
+
+					StringBuilder message = new StringBuilder(
+							"Madame, Monsieur,<p>Vous avez effectué une demande d'inscription au club il y a 5 jours. Nous n'avons pas encore reçu votre paiement.<br /> Nous tenons à vous rappeler qu'au bout de 8 jours, votre dossier sera supprimé et les créneaux sélectionnés libérés pour d'autres adhérents.<br />");
+
+					message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />"
+							+ "ASPTT Grand Toulouse Natation<br />"
+							+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
+					htmlPart.setContent(message.toString(), "text/html");
+					mp.addBodyPart(htmlPart);
+
+					msg.setSubject("ASPTT Toulouse Natation - Rappel", "UTF-8");
+					msg.setContent(mp);
+					Transport.send(msg);
+					dossier.setReminded(new DateTime().toDate());
+					dossier.setReminder(true);
+					dao.save(dossier);
+				} catch (MessagingException | UnsupportedEncodingException e) {
+					LOG.log(Level.SEVERE, "Erreur pour l'e-mail: " + dossier.getEmail(), e);
+				}
+			}
+		}
+
+		// Rapport
+		Properties props = new Properties();
+		Session session = Session.getDefaultInstance(props, null);
+		try {
+			Multipart mp = new MimeMultipart();
+			MimeBodyPart htmlPart = new MimeBodyPart();
+
+			MimeMessage msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("contact@asptt-toulouse-natation.com"));
+			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("remi.lacaze@asptt-toulouse-natation.com"));
+
+			StrBuilder message = new StrBuilder("<p>").append(count).append(" dossiers vont expirer dans 2 jours.</p>");
+			message.append("<ul>");
+			for (String dossierRappeler : dossiersRappeler) {
+				message.append("<li>").append(dossierRappeler).append("</li>");
+			}
+			message.append("</ul>");
+
+			htmlPart.setContent(message.toString(), "text/html");
+			mp.addBodyPart(htmlPart);
+
+			msg.setSubject("Rapport  - dossiers arrivant à expiration", "UTF-8");
+			msg.setContent(mp);
+			Transport.send(msg);
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			LOG.log(Level.SEVERE, "Erreur pour l'e-mail de rapport", e);
+		}
+
 		LOG.log(Level.WARNING, count + " dossiers rappelés");
 		return count;
 	}
