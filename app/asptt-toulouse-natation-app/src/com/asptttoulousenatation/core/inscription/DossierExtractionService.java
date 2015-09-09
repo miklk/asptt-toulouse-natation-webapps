@@ -70,6 +70,7 @@ public class DossierExtractionService {
 		
 		for (DossierNageurEntity nageur : nageurs) {
 			if (canAddNageur(conditionsToAdd, nageur)) {
+				DossierEntity dossier = dossierDao.get(nageur.getDossier());
 				List<String> nageurValues = new ArrayList<>(fieldsToChoose.length);
 				for (String field : fieldsToChoose) {
 					switch (field) {
@@ -80,7 +81,6 @@ public class DossierExtractionService {
 						nageurValues.add(nageur.getPrenom());
 						break;
 					case "EMAIL": {
-						DossierEntity dossier = dossierDao.get(nageur.getDossier());
 						String email = dossier.getEmail();
 						if(StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
 							email+=" / " + dossier.getEmailsecondaire();
@@ -108,10 +108,15 @@ public class DossierExtractionService {
 						break;
 					case "PROFESSION": {
 						nageurValues.add(nageur.getProfession());
-						DossierEntity dossier = dossierDao.get(nageur.getDossier());
 						nageurValues.add(dossier.getParent1Profession());
 						nageurValues.add(dossier.getParent2Profession());
 					}
+						break;
+					case "MONTANT":
+						nageurValues.add(dossier.getMontantreel() == null ? "" : dossier.getMontantreel().toString());
+						break;
+					case "COMMENTAIRE":
+						nageurValues.add(dossier.getComment());
 						break;
 					default:// Do nothing
 					}
