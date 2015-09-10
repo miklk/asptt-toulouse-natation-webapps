@@ -46,7 +46,7 @@ public class DossierExtractionService {
 	private GroupDao groupeDao = new GroupDao();
 	private DossierCertificatDao certificatDao = new DossierCertificatDao();
 
-	@Path("{fields}/{conditions}")
+	@Path("{fields}{conditions:(/[^/]+?)?}")
 	@GET
 	@Produces("text/csv; charset=UTF-8")
 	public Response extraction(@PathParam("fields") String fields, @QueryParam("groupes") Set<Long> groupes,
@@ -116,7 +116,7 @@ public class DossierExtractionService {
 						nageurValues.add(dossier.getMontantreel() == null ? "" : dossier.getMontantreel().toString());
 						break;
 					case "COMMENTAIRE":
-						nageurValues.add(dossier.getComment());
+						nageurValues.add(StringUtils.defaultString(dossier.getComment()));
 						break;
 					default:// Do nothing
 					}
