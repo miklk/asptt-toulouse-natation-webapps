@@ -3,6 +3,8 @@ package com.asptttoulousenatation.core.inscription;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -16,8 +18,13 @@ import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageu
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.server.userspace.admin.entity.AbstractEntityTransformer;
 
+
+
 public class DossierResultTransformer extends AbstractEntityTransformer<DossierResultBean, DossierNageurEntity> {
 
+	private static final Logger LOG = Logger.getLogger(DossierResultTransformer.class
+			.getName());
+	
 	private static DossierResultTransformer INSTANCE;
 	
 	private DossierDao dossierDao = new DossierDao();
@@ -71,7 +78,12 @@ public class DossierResultTransformer extends AbstractEntityTransformer<DossierR
 		final String groupe;
 		if(groupeId != null && groupeId != 0) {
 			GroupEntity entity = groupeDao.get(groupeId);
-			groupe = entity.getTitle();
+			if(entity != null) {
+				groupe = entity.getTitle();
+			} else {
+				LOG.log(Level.SEVERE, "Groupe inconu " + groupeId);
+				groupe = "INCONNU";
+			}
 		} else {
 			groupe = "INCONNU";
 		}

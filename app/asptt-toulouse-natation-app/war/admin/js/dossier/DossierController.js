@@ -18,7 +18,7 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	
 	$scope.search = function() {
 		$rootScope.isLoading = true;
-		DossierService.list.query({query: $scope.query, groupe: $scope.groupe, sansGroupe: $scope.sansGroupe, dossierStatut: $scope.dossierStatut, creneau: $scope.creneau, filter_facture: $scope.facture, filter_facture2: $scope.facture2, certificat: $scope.certificat}, function(data) {
+		DossierService.list.query({query: $scope.query, groupe: $scope.groupe, sansGroupe: $scope.sansGroupe, dossierStatut: $scope.dossierStatut, creneau: $scope.creneau, filter_facture: $scope.facture, filter_facture2: $scope.facture2, certificat: $scope.certificat, certificat2: $scope.certificat2}, function(data) {
 			$scope.dossiers = data;
 			$scope.dossierCount = data.length;
 			$rootScope.isLoading = false;

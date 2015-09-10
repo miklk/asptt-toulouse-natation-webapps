@@ -88,7 +88,7 @@ public class DossierService {
 	@Path("/find")
 	@GET
 	@Consumes("application/json")
-	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe, @QueryParam("dossierStatut") final String dossierStatut, @QueryParam("creneau") final Long creneau, @QueryParam("filter_facture") final Boolean facture, @QueryParam("filter_facture2") final Boolean facture2, @QueryParam("certificat") final Boolean certificat) {
+	public List<DossierResultBean> find(@QueryParam("query") String texteLibre, @QueryParam("groupe") Long groupe, @QueryParam("sansGroupe") Boolean sansGroupe, @QueryParam("dossierStatut") final String dossierStatut, @QueryParam("creneau") final Long creneau, @QueryParam("filter_facture") final Boolean facture, @QueryParam("filter_facture2") final Boolean facture2, @QueryParam("certificat") final Boolean certificat, @QueryParam("certificat2") final Boolean certificat2) {
 		List<DossierResultBean> result = new ArrayList<DossierResultBean>();
 		List<DossierNageurEntity> nageurs = new ArrayList<DossierNageurEntity>();
 		
@@ -174,11 +174,28 @@ public class DossierService {
 						texteLibre.toUpperCase(), Operator.EQUAL));
 				nageurs.addAll(dao.find(criteriaNageur));
 			}
-		} else if(!hasSelectGroupe) {
-			if(BooleanUtils.isTrue(certificat)) {
-				criteriaNageur.add(new CriterionDao<Boolean>(DossierNageurEntityFields.CERTIFICAT,
-						certificat, Operator.EQUAL));
+		} else if (!hasSelectGroupe) {
+			if (BooleanUtils.isTrue(certificat)) {
+				criteriaNageur.add(
+						new CriterionDao<Boolean>(DossierNageurEntityFields.CERTIFICAT, certificat, Operator.EQUAL));
 				nageurs = new ArrayList<>(dao.find(criteriaNageur));
+			} else if (BooleanUtils.isTrue(certificat2)) {
+				criteriaNageur.add(
+						new CriterionDao<Boolean>(DossierNageurEntityFields.CERTIFICAT, Boolean.TRUE, Operator.EQUAL));
+				List<DossierNageurEntity> nageursCertificat = dao.find(criteriaNageur);
+				nageurs = new ArrayList<>();
+				for (DossierNageurEntity nageur : nageursCertificat) {
+					List<CriterionDao<? extends Object>> certificatCriteria = new ArrayList<CriterionDao<? extends Object>>(
+							1);
+					certificatCriteria.add(new CriterionDao<Long>(DossierCertificatEntityFields.DOSSIER,
+							nageur.getId(), Operator.EQUAL));
+					List<DossierCertificatEntity> nageurCertificat = certificatDao.find(certificatCriteria);
+					if (CollectionUtils.isNotEmpty(nageurCertificat)) {
+						nageurs.add(nageur);
+					}
+
+				}
+
 			} else {
 				nageurs = new ArrayList<>(dao.getAll());
 			}
