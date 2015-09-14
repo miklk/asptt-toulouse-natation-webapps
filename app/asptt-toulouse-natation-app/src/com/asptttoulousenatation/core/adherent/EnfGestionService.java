@@ -314,6 +314,14 @@ public class EnfGestionService {
 							sheetRow.getCell(4).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
 							sheetRow.getCell(4).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
 							sheetRow.getCell(4).getCellStyle().setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
+							
+							boolean hasCertificat = BooleanUtils.toBoolean(adherent.getCertificat());
+							sheetRow.createCell(5)
+							.setCellValue(BooleanUtils.toString(hasCertificat, "", "KO"));
+							sheetRow.getCell(5).getCellStyle().setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(5).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(5).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
+							sheetRow.getCell(5).getCellStyle().setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
 						} catch (Exception e) {
 							LOG.log(Level.SEVERE, "Adherent " + adherent.getId(), e);
 						}
