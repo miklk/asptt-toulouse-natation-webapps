@@ -219,7 +219,11 @@ public class InscriptionService {
 			InscriptionDossiersUi dossiers = mapper.readValue(unscape,
 					InscriptionDossiersUi.class);
 			
-			dossiers.getDossier().setStatut(DossierStatutEnum.PREINSCRIT.name());
+			if(!dossiers.getDossier().getStatut().equals(DossierStatutEnum.PAIEMENT_PARTIEL) 
+					&& !dossiers.getDossier().getStatut().equals(DossierStatutEnum.PAIEMENT_COMPLET)
+					&& !dossiers.getDossier().getStatut().equals(DossierStatutEnum.INSCRIT)) {
+				dossiers.getDossier().setStatut(DossierStatutEnum.PREINSCRIT.name());
+			}
 			DossierEntity principal = dao.save(dossiers.getDossier());
 			
 			//Facture
