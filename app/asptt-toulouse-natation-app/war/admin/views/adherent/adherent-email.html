@@ -3,34 +3,37 @@
 		<h1 class="page-header">Envoyer un e-mail aux adhérents</h1>
 	</div>
 	<div class="row">
+		<div class="col-md-9">
 	<h3>Destinataires</h3>
-	<form class="form-inline">
+	<form class="form-horizontal">
 		<div class="form-group">
 			<label class="radio-inline">
-				<input type="radio" ng-model="destinataire" value="all" />Tous les adhérents
+				<input type="radio" ng-model="destinataire" value="all" ng-change="getRecipient()" />Tous les adhérents
 			</label>
 			<label class="radio-inline">
-				<input type="radio" ng-model="destinataire" value="enf" />Ecole de natation
+				<input type="radio" ng-model="destinataire" value="enf" ng-change="getRecipient()" />Ecole de natation
 			</label>
 			<label class="radio-inline">
-				<input type="radio" ng-model="destinataire" value="competiteur" />Compétiteurs
+				<input type="radio" ng-model="destinataire" value="competiteur" ng-change="getRecipient()" />Compétiteurs
 			</label>
+		</div>
+		<div class="form-group">
 			<label class="radio-inline">
-				<input type="radio" ng-model="destinataire" value="piscine" />Piscine
+				<input type="radio" ng-model="destinataire" value="piscine" ng-change="getRecipient()" />Piscine
 			</label>
 			<select class="form-control" ng-model="piscine"
 		    		ng-options="piscine.creneaux as piscine.intitule for piscine in piscines" ng-show="destinataire == 'piscine'">
 		    		<option value="">Choisir une piscine</option>
   	    	</select>
 			<label class="radio-inline">
-				<input type="radio" ng-model="destinataire" value="groupes" />Groupe
+				<input type="radio" ng-model="destinataire" value="groupes" ng-change="getRecipient()" />Groupe
 			</label>
 			<select class="form-control" ng-model="groupesSelected"
 		    	ng-options="groupe.id as groupe.title for groupe in groupes" ng-show="destinataire == 'groupes'" multiple>
 		    	<option value="" ng-value="0">Choisir un groupe</option>
 	  	    </select>
 	  	    <label class="radio-inline">
-				<input type="radio" ng-model="destinataire" value="creneau" />Créneau
+				<input type="radio" ng-model="destinataire" value="creneau"  ng-change="getRecipient()"/>Créneau
 			</label>
 			<select class="form-control" ng-model="groupesSelected"
 		    	ng-options="groupe.id as groupe.title for groupe in groupes" ng-change="loadCreneau()" ng-show="destinataire == 'creneau'">
@@ -43,8 +46,13 @@
 		</div>
 	</form>
 	</div>
+	</div>
 	<div class="row">
 		<form>
+			<h3>A</h3>
+			<div class="form-group">
+	            <input type="text" class="form-control" id="recipient" name="recipient" ng-model="recipient" />
+	        </div>
 		<h3>De</h3>
 			<div class="form-group">
 	            <select class="form-control" id="senderList" name="senderList" ng-model="sender" ng-options="senderElt as senderElt for senderElt in senderList">
