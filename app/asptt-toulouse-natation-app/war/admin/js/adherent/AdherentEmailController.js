@@ -58,28 +58,6 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
         });
 	};
 	
-	$scope.sendEmail2 = function() {
-		var formData = new FormData();
-		formData.append("file", $scope.fichier);
-		formData.append("messageSubject", $scope.subject);
-		formData.append("messageContent", $scope.htmlcontent);
-		formData.append("destinataire", $scope.destinataire);
-		formData.append("groupes", $scope.groupesSelected);
-		formData.append("creneau", $scope.creneau);
-		formData.append("piscine", $scope.piscine);
-		$http.post("/resources/adherents/email2", formData, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-        }).
-        success(function (data, status, headers, config) {
-        	$scope.adherents = data;
-			window.alert("E-mail envoyé à " + data.length + " adhérents.");
-        }).
-        error(function (data, status, headers, config) {
-			window.alert("Erreur lors de l'envoi.");
-        });
-	};
-	
 	$scope.upload = function() {
 		var file = null;
 		if(files == null) {
