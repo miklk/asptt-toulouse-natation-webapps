@@ -25,4 +25,9 @@
 		<description>Calcul de l'occupation des groupes compétition</description>
 		<schedule>every 4 hours</schedule>
 	</cron>
+	<cron>
+		<url>/resources/dossiers/clean</url>
+		<description>Annulation des dossiers INITIALISE sans nom</description>
+		<schedule>every day 05:00</schedule>
+	</cron>
 </cronentries>

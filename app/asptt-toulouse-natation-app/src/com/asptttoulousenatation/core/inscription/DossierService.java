@@ -953,4 +953,30 @@ public class DossierService {
 			}
 		}
 	}
+	
+	@Path("/clean")
+	@GET
+	public int clean() {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.INITIALISE.name(),
+				Operator.EQUAL));
+		List<DossierEntity> entities = dossierDao.find(criteria);
+		int count = 0;
+		for (DossierEntity dossier : entities) {
+			List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
+					2);
+			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
+					dossier.getId(), Operator.EQUAL));
+			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.NOM,
+					null, Operator.NULL));
+			List<DossierNageurEntity> nageurs = dao.find(criteriaNageur);
+			if(CollectionUtils.isNotEmpty(nageurs)) {
+				dossier.setStatut(DossierStatutEnum.ANNULE.name());
+				dossierDao.save(dossier);
+				count++;
+			}
+		}
+		LOG.log(Level.WARNING, count + " dossiers clean");
+		return count;
+	}
 }
