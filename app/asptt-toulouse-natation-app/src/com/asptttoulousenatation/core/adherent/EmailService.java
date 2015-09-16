@@ -107,7 +107,7 @@ public class EmailService {
 					mp.addBodyPart(htmlPart);
 					MimeMessage msg = new MimeMessage(session);
 					msg.setFrom(new InternetAddress(
-							from,
+							"webmaster@asptt-toulouse-natation.com",
 							"ASPTT Toulouse Natation"));
 					Address[] replyTo = { new InternetAddress(
 							from,
