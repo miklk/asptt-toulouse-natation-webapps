@@ -236,6 +236,12 @@ public class DossierService {
 		DossierFactureEntity facture = factureDao.findByDossier(dossierId);
 		if(facture != null) {
 			dossierUi.setFacture(facture);
+		} else if(BooleanUtils.toBoolean(dossier.getFacture())) {
+			DossierFactureEntity newFacture = new DossierFactureEntity();
+			newFacture.setDossier(dossierId);
+			newFacture.setStatut(DossierFactureEnum.DEMANDE);
+			DossierFactureEntity factureCreated = factureDao.save(newFacture);
+			dossierUi.setFacture(factureCreated);
 		}
 		
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
