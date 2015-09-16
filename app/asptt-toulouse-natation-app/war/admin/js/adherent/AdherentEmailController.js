@@ -23,8 +23,8 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
 	GroupeService.all.query({}, function(data) {
 		$scope.groupes = data.groups;
 	});
-	PiscineService.list.query({}, function(data) {
-		$scope.piscines = data.piscines;
+	PiscineService.all.query({}, function(data) {
+		$scope.piscines = data;
 	});
 	$scope.loadCreneau = function() {
 		SlotService.list.query({groupe: $scope.groupesSelected}, function(data) {

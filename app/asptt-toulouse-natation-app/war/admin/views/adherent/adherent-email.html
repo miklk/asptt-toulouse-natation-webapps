@@ -22,7 +22,7 @@
 				<input type="radio" ng-model="destinataire" value="piscine" ng-change="getRecipient()" />Piscine
 			</label>
 			<select class="form-control" ng-model="piscine"
-		    		ng-options="piscine.creneaux as piscine.intitule for piscine in piscines" ng-show="destinataire == 'piscine'">
+		    		ng-options="piscine.id as piscine.intitule for piscine in piscines" ng-show="destinataire == 'piscine'">
 		    		<option value="">Choisir une piscine</option>
   	    	</select>
 			<label class="radio-inline">

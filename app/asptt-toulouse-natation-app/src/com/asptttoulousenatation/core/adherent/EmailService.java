@@ -41,12 +41,15 @@ import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
+import com.asptttoulousenatation.core.server.dao.club.group.PiscineDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
+import com.asptttoulousenatation.core.server.dao.entity.club.group.PiscineEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.GroupEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
@@ -68,6 +71,7 @@ public class EmailService {
 	private DossierNageurDao dao = new DossierNageurDao();
 	private SlotDao slotDao = new SlotDao();
 	private GroupDao groupDao = new GroupDao();
+	private PiscineDao piscineDao = new PiscineDao();
 
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -76,7 +80,7 @@ public class EmailService {
 				.getValue();
 		String groupesAsString = multiPart.getField("groupes").getValue();
 		Long creneau = multiPart.getField("creneau").getValueAs(Long.class);
-		String piscine = multiPart.getField("piscine").getValue();
+		Long piscine = multiPart.getField("piscine").getValueAs(Long.class);
 		String to = multiPart.getField("messageTo").getValue();
 		String from = multiPart.getField("messageFrom").getValue();
 		String subject = multiPart.getField("messageSubject").getValue();
@@ -186,7 +190,7 @@ public class EmailService {
 	}
 	
 	private List<String> getDestinataires(String destinataire, Set<Long> groupes,
-			Set<Long> creneaux, String piscine) {
+			Set<Long> creneaux, Long piscine) {
 		List<String> destinataires = new ArrayList<>();
 		switch (destinataire) {
 		case "all": {
@@ -232,16 +236,20 @@ public class EmailService {
 		};
 			break;
 		case "piscine": {
-			Set<Long> creneauFromPiscine = AdherentBeanTransformer
-					.getInstance().getCreneauIds(piscine);
+			PiscineEntity piscineEntity = piscineDao.get(piscine);
+			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+			criteria.add(new CriterionDao<String>(SlotEntityFields.SWIMMINGPOOL, piscineEntity.getIntitule(),
+					Operator.EQUAL));
+			List<SlotEntity> creneauEntities = slotDao.find(criteria);
+			Set<Long> creneauFromPiscine = new HashSet<>();
 			Set<Long> groupePiscineEntities = new HashSet<>();
-			for (Long creneauId : creneauFromPiscine) {
-				SlotEntity slotEntity = slotDao.get(creneauId);
-				groupePiscineEntities.add(slotEntity.getGroup());
+			for (SlotEntity creneauEntity : creneauEntities) {
+				creneauFromPiscine.add(creneauEntity.getId());
+				groupePiscineEntities.add(creneauEntity.getGroup());
 			}
-			destinataires.addAll(getDestinatairesByGroupe(groupePiscineEntities,
-					creneauFromPiscine));
-		};
+			destinataires.addAll(getDestinatairesByGroupe(groupePiscineEntities, creneauFromPiscine));
+		}
+			;
 			break;
 		case "groupes": {
 			destinataires.addAll(getDestinatairesByGroupe(groupes,
