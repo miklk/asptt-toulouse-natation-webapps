@@ -3,7 +3,7 @@
  */
 var groupeController = angular.module('GroupeController', ['ngRoute', 'groupeServices', 'slotServices', 'piscineServices']);
 
-groupeController.controller('GroupeController', ['$http', '$scope', '$location', '$filter', 'GroupeService', 'SlotService', 'PiscineService', function($http, $scope, $location, $filter, GroupeService, SlotService, PiscineService) {
+groupeController.controller('GroupeController', ['$http', '$scope', '$location', '$filter', '$timeout', 'GroupeService', 'SlotService', 'PiscineService', function($http, $scope, $location, $filter, $timeout, GroupeService, SlotService, PiscineService) {
 	GroupeService.all.query({}, function(data) {
 		$scope.groupes = data.groups;
 	}); 
@@ -49,9 +49,11 @@ groupeController.controller('GroupeController', ['$http', '$scope', '$location',
 		$scope.groupe = groupe;
 		SlotService.byDay.query({groupe: groupe.id}, function(data) {
 			$scope.creneaux = data.slots;
-			$('html, body').animate({  
-	            scrollTop:$("#panel-creneaux").offset().top  
-	        }, 'slow');
+			$timeout(function() {
+				$('html, body').animate({  
+		            scrollTop:$("#panel-creneaux").offset().top  
+		        }, 'slow');
+			}, 10);
 		});
 		PiscineService.all.query({}, function(data) {
 			$scope.piscines = data;

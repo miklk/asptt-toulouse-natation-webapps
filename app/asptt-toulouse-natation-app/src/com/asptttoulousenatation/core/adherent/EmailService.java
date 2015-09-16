@@ -99,7 +99,13 @@ public class EmailService {
 			
 			final List<String> destinataires;
 			if (to.contains("@")) {
-				destinataires = Collections.singletonList(to);
+				Set<String> destinatairesTmp = new HashSet<>();
+				for(String toEmail: to.split(";")) {
+					if(StringUtils.isNotBlank(toEmail)) {
+						destinatairesTmp.add(toEmail);
+					}
+				}
+				destinataires = new ArrayList<>(destinatairesTmp);
 			} else {
 				destinataires = getDestinataires(destinataireParam, groupes, creneaux, piscine);
 			}

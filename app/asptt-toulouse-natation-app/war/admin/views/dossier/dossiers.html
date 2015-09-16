@@ -82,7 +82,8 @@
 			<tfoot>
 				<tr>
 					<td colspan="10"><button type="button" class="btn btn-sm btn-primary" ng-click="relancerSelected()">Relancer</button>
-					&nbsp;<button type="button" class="btn btn-sm btn-primary" ng-click="factureSelected()" title="Confirmer l'envoi de la facture">Facturer</button></td>
+					&nbsp;<button type="button" class="btn btn-sm btn-primary" ng-click="factureSelected()" title="Confirmer l'envoi de la facture">Facturer</button>
+					&nbsp;<button type="button" class="btn btn-sm btn-primary" ng-click="initEmail()" title="Envoyer un e-mail aux adhérents sélectionné">E-mail</button></td>
 				</tr>
 			</tfoot>
 			<tbody>
@@ -136,4 +137,5 @@
 	<div ng-include="'views/dossier/dossier-paiement.html'"></div>
 	<div ng-include="'views/dossier/dossier-commentaire.html'"></div>
 	<div ng-include="'views/dossier/creneaux.html'"></div>
+	<div ng-show="showEmail" ng-include="'views/dossier/email.html'"></div>
 </div>

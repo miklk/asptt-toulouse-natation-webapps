@@ -10,7 +10,7 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
 	$scope.destinataire = "";
 	$scope.groupesSelected = 0;
 	$scope.creneau = 0;
-	$scope.piscine = "";
+	$scope.piscine = 0;
 	$scope.recipient = "";
 	
 	
@@ -40,6 +40,17 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
 	};
 	
 	$scope.sendEmail = function() {
+		//Get recipients
+		if($scope.dossiers) {
+			angular.forEach($scope.dossiers, function(dossier) {
+				$scope.recipient = $scope.recipient + ";" + dossier.email;
+				if(dossier.emailSecondaire) {
+					$scope.recipient = $scope.recipient + ";" + dossier.emailSecondaire;
+				}
+			});
+		}
+		
+		
 		var formData = new FormData();
 		formData.append("file", $scope.fichier);
 		formData.append("messageTo", $scope.recipient);

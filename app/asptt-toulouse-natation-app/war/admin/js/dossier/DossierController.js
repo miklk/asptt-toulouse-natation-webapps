@@ -3,7 +3,7 @@
  */
 var dossierController = angular.module('DossierController', ['ngRoute', 'dossierServices', 'groupeServices', 'slotServices']);
 
-dossierController.controller('DossierController', ['$rootScope', '$http', '$scope', '$location', '$filter', 'DossierService', 'GroupeService', 'SlotService', function($rootScope, $http, $scope, $location, $filter, DossierService, GroupeService, SlotService) {
+dossierController.controller('DossierController', ['$rootScope', '$http', '$scope', '$location', '$filter', '$timeout', 'DossierService', 'GroupeService', 'SlotService', function($rootScope, $http, $scope, $location, $filter, $timeout, DossierService, GroupeService, SlotService) {
 	DossierService.statistiques.query({}, function(data) {
 		$scope.statistiques = data;
 	});
@@ -15,6 +15,7 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	
 	$scope.dossierStatus = ['INITIALISE','PREINSCRIT', 'PAIEMENT_PARTIEL', 'PAIEMENT_COMPLET', 'INSCRIT', 'ANNULE', 'EXPIRE', 'ATTENTE'];
 	$scope.certificat = false;
+	$scope.showEmail = false;
 	
 	$scope.search = function() {
 		$rootScope.isLoading = true;
@@ -227,6 +228,15 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 		DossierService.facture.query({dossier: -1}, selectedDossiers, function(data) {
 			alert("Validation de l'envoi des factures");
 		});
+	}
+	
+	$scope.initEmail = function() {
+		$scope.showEmail = true;
+		$timeout(function() {
+		$('html, body').animate({  
+            scrollTop:$("#email-top").offset().top  
+        }, 'slow');
+		}, 10);
 	}
 	
 	function getSelectedDossiers() {
