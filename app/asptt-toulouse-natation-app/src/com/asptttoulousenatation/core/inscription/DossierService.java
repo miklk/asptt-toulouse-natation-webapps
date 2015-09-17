@@ -43,6 +43,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.joda.time.DateTime;
 
 import com.asptttoulousenatation.core.adherent.AdherentBeanTransformer;
 import com.asptttoulousenatation.core.groupe.SlotUi;
@@ -692,10 +693,21 @@ public class DossierService {
 	@GET
 	public DossierStatistiques statistiques() {
 		DossierStatistiques result = new DossierStatistiques();
-		result.setTotal(dossierDao.countAll());
+		result.setPotentiel(dossierDao.countAll());
+		
+		//Total
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.PREINSCRIT.name(), Operator.NOT_EQUAL));
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.EXPIRE.name(), Operator.NOT_EQUAL));
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.ANNULE.name(), Operator.NOT_EQUAL));
+		result.setTotal(dossierDao.count(criteria));
 		
 		//Complets
-		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+		criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.INSCRIT.name(), Operator.EQUAL));
@@ -967,24 +979,18 @@ public class DossierService {
 	@Path("/clean")
 	@GET
 	public int clean() {
+		DateTime seuil = DateTime.now().minusDays(7);
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.INITIALISE.name(),
 				Operator.EQUAL));
+		criteria.add(new CriterionDao<Date>(DossierEntityFields.UPDATED, seuil.toDate(),
+				Operator.LESS));
 		List<DossierEntity> entities = dossierDao.find(criteria);
 		int count = 0;
 		for (DossierEntity dossier : entities) {
-			List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
-					2);
-			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
-					dossier.getId(), Operator.EQUAL));
-			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.NOM,
-					null, Operator.NULL));
-			List<DossierNageurEntity> nageurs = dao.find(criteriaNageur);
-			if(CollectionUtils.isNotEmpty(nageurs)) {
-				dossier.setStatut(DossierStatutEnum.ANNULE.name());
-				dossierDao.save(dossier);
-				count++;
-			}
+			dossier.setStatut(DossierStatutEnum.ANNULE.name());
+			dossierDao.save(dossier);
+			count++;
 		}
 		LOG.log(Level.WARNING, count + " dossiers clean");
 		return count;

@@ -17,6 +17,7 @@ public class DossierStatistiques implements Serializable {
 	private long nonpayes;
 	private long payes;
 	private long nageurs;
+	private long potentiel;
 	private List<StatistiqueBase> dossiers;
 	private List<StatistiqueBase> nageursDetail;
 	
@@ -100,4 +101,13 @@ public class DossierStatistiques implements Serializable {
 	public void setNageursDetail(List<StatistiqueBase> nageursDetail) {
 		this.nageursDetail = nageursDetail;
 	}
+
+	public long getPotentiel() {
+		return potentiel;
+	}
+
+	public void setPotentiel(long potentiel) {
+		this.potentiel = potentiel;
+	}
+	
 }
