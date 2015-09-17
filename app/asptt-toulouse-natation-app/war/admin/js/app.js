@@ -1,7 +1,7 @@
 /**
  * 
  */
-var adminApp = angular.module('adminApp', ['ngRoute', 'angular-spinkit', 'adherentsServices','adherentsStatServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'dossierServices', 'UserController', 'AdherentListCtrl', 'AdherentEmailCtrl', 'AdherentsStatCtrl', 'DocumentController', 'LibelleController', 'SuiviNageurController', 'GroupeController','DossierController', 'DossierNageurController', 'CreneauStatController', 'creneauStatServices', 'ExtractionController','DashboardController', 'EnfController', 'enfServices']);
+var adminApp = angular.module('adminApp', ['ngRoute', 'angular-spinkit', 'adherentsServices','adherentsStatServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'dossierServices', 'UserController', 'AdherentListCtrl', 'AdherentEmailCtrl', 'AdherentsStatCtrl', 'DocumentController', 'LibelleController', 'SuiviNageurController', 'GroupeController','DossierController', 'DossierNageurController', 'CreneauStatController', 'creneauStatServices', 'ExtractionController','DashboardController', 'EnfController', 'enfServices', 'authorizationService', 'LoginController', 'loginServices']);
 
 adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
 	$routeProvider.
@@ -67,7 +67,8 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 			templateUrl: 'views/groupe/groupes.html'
 		}).
 		when('/dossiers', {
-			templateUrl: 'views/dossier/dossiers.html'
+			templateUrl: 'views/dossier/dossiers.html',
+			access: 'ACCESS_DOSSIERS'
 		}).
 		when('/dossier/:dossierId', {
 			templateUrl: 'views/dossier/dossier.html',
@@ -82,8 +83,14 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 		when('/remplissage-detail', {
 			templateUrl: 'views/dossier/stat/remplissage-piscine.html'
 		}).
+		when('/page/login', {
+			templateUrl: 'views/login.html'
+		}).
 		when('/error', {
 			templateUrl: 'views/error.html'
+		}).
+		when('/unauthorized', {
+			templateUrl: 'views/no-rights.html'
 		}).
 		otherwise({
 			redirectTo: '/error'
@@ -94,6 +101,16 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
      ]);
 
 }]);
+
+adminApp.run(function($rootScope, $location, AuthorizationService) {
+    $rootScope.$on("$routeChangeStart", function (event, next, current) {
+        if (!AuthorizationService.isConnected()) {
+            $location.url("/page/login");
+        } else if(next && next.$$route && !AuthorizationService.hasAccess(next.$$route.access)){
+        	$location.url("/unauthorized");
+        }
+    });
+});
 
 adminApp.directive('ngLoadingIndicator', function($rootScope) {
 	return {
@@ -114,3 +131,21 @@ adminApp.directive('ngLoadingIndicator', function($rootScope) {
 		    }
 	}
 });	
+
+adminApp.directive("showWhenConnected", function (AuthorizationService) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var showIfConnected = function() {
+                if(AuthorizationService.isConnected() && AuthorizationService.hasAccess(attrs.showWhenConnected)) {
+                    $(element).show();
+                } else {
+                    $(element).hide();
+                }
+            };
+ 
+            showIfConnected();
+            scope.$on("connectionStateChanged", showIfConnected);
+        }
+    };
+});
