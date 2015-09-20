@@ -1,7 +1,7 @@
 /**
  * 
  */
-var adherentStatController = angular.module('AdherentsStatCtrl', ['ngRoute', 'textAngular', 'adherentsStatServices', 'adherentsServices', 'adherentServices', 'groupeServices', 'slotServices', 'piscineServices']);
+var adherentStatController = angular.module('AdherentsStatCtrl', ['ngRoute', 'textAngular', 'adherentsStatServices', 'adherentsServices', 'groupeServices', 'slotServices', 'piscineServices']);
 adherentStatController.controller('AdherentsStatCtrl', ['$rootScope', '$scope', '$location', 'AdherentsStatService', 'AdherentsService', 'GroupeService', 'SlotService', 'PiscineService', function($rootScope, $scope, $location, AdherentsStatService, AdherentsService, GroupeService, SlotService, PiscineService) {
 	$rootScope.isLoading = true;
 	AdherentsStatService.sexeAge.query({}, function(data) {

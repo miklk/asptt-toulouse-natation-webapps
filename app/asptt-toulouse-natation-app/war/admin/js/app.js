@@ -1,7 +1,20 @@
 /**
  * 
  */
-var adminApp = angular.module('adminApp', ['ngRoute', 'angular-spinkit', 'adherentsServices','adherentsStatServices', 'adherentServices', 'groupeServices', 'slotServices', 'userServices', 'dossierServices', 'UserController', 'AdherentListCtrl', 'AdherentEmailCtrl', 'AdherentsStatCtrl', 'DocumentController', 'LibelleController', 'SuiviNageurController', 'GroupeController','DossierController', 'DossierNageurController', 'CreneauStatController', 'creneauStatServices', 'ExtractionController','DashboardController', 'EnfController', 'enfServices', 'authorizationService', 'LoginController', 'loginServices']);
+var adminApp = angular.module('adminApp', ['ngRoute', 'angular-spinkit', 
+                                           'adherentsServices','adherentsStatServices', 
+                                           'groupeServices', 
+                                           'slotServices', 'userServices', 
+                                           'dossierServices', 'UserController', 
+                                           'AdherentEmailCtrl', 'AdherentsStatCtrl', 
+                                           'DocumentController', 'LibelleController', 
+                                           'SuiviNageurController', 'GroupeController', 
+                                           'DossierController', 'DossierNageurController', 
+                                           'CreneauStatController', 'creneauStatServices', 
+                                           'ExtractionController','DashboardController', 
+                                           'EnfController', 'enfServices', 
+                                           'authorizationService', 'LoginController', 
+                                           'loginServices']);
 
 adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
 	$routeProvider.
@@ -14,21 +27,8 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 		when('/dashboard', {
 			templateUrl: 'views/dashboard/dashboard.html'
 		}).
-		when('/adherents', {
-			templateUrl: 'views/adherent/adherents.html',
-			controller: 'AdherentListCtrl'
-		}).
-		when('/adherents/:adherentId', {
-			templateUrl: 'views/adherent/adherent.html',
-			controller: 'AdherentCtrl'
-		}).
-		when('/adherents/edit/:adherentId', {
-			templateUrl: 'views/adherent/adherent-edit.html',
-			controller: 'AdherentCtrl'
-		}).
 		when('/adherents-stat', {
-			templateUrl: 'views/adherent/adherents-stat.html',
-			controller: 'AdherentListCtrl'
+			templateUrl: 'views/adherent/adherents-stat.html'
 		}).
 		when('/adherent-email', {
 			templateUrl: 'views/adherent/adherent-email.html',
