@@ -117,6 +117,7 @@ public class EnfGestionService {
 				HSSFWorkbook workbook = new HSSFWorkbook(fichier);
 				HSSFSheet sheet = workbook.getSheetAt(0);
 				sheet.getPrintSetup().setLandscape(false);
+				sheet.getRow(6).getCell(13).setCellValue(creneauEntity.getSwimmingPool());
 				sheet.getRow(35).getCell(0)
 						.setCellValue(groupe.getTitle() + " " + creneauEntity.getDayOfWeek() + " "
 								+ new DateTime(creneauEntity.getBeginDt().getTime()).toString("HH:mm"));
