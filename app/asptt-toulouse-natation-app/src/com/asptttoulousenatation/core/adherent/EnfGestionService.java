@@ -207,25 +207,27 @@ public class EnfGestionService {
 				List<DossierNageurEntity> adherentsSelected = new ArrayList<DossierNageurEntity>();
 				for (SlotEntity creneauEntity : creneaux) {
 					GroupEntity group = groupDao.get(creneauEntity.getGroup());
-					if (BooleanUtils.isFalse(group.getLicenceFfn())) {
-						// Adherent
-						criteria = new ArrayList<CriterionDao<? extends Object>>(1);
-						criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE, group.getId(),
-								Operator.EQUAL));
-
-						List<DossierNageurEntity> adherents = nageurDao.find(criteria,
-								new OrderDao(DossierNageurEntityFields.NOM, OrderOperator.ASC));
-						try {
-							for (DossierNageurEntity adherent : adherents) {
-								if (StringUtils.isNotBlank(adherent.getCreneaux())
-										&& adherent.getCreneaux().contains(Long.toString(creneauEntity.getId()))
-										&& StringUtils.isNotBlank(creneauEntity.getSwimmingPool())
-										&& StringUtils.containsIgnoreCase(creneauEntity.getSwimmingPool(), piscine)) {
-									adherentsSelected.add(adherent);
+					if(group != null) {
+						if (BooleanUtils.isFalse(group.getLicenceFfn())) {
+							// Adherent
+							criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+							criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE, group.getId(),
+									Operator.EQUAL));
+	
+							List<DossierNageurEntity> adherents = nageurDao.find(criteria,
+									new OrderDao(DossierNageurEntityFields.NOM, OrderOperator.ASC));
+							try {
+								for (DossierNageurEntity adherent : adherents) {
+									if (StringUtils.isNotBlank(adherent.getCreneaux())
+											&& adherent.getCreneaux().contains(Long.toString(creneauEntity.getId()))
+											&& StringUtils.isNotBlank(creneauEntity.getSwimmingPool())
+											&& StringUtils.containsIgnoreCase(creneauEntity.getSwimmingPool(), piscine)) {
+										adherentsSelected.add(adherent);
+									}
 								}
+							} catch (Exception e) {
+								LOG.log(Level.SEVERE, "Erreur récupération des adhérents du groupe " + group.getTitle(), e);
 							}
-						} catch (Exception e) {
-							LOG.log(Level.SEVERE, "Erreur récupération des adhérents du groupe " + group.getTitle(), e);
 						}
 					}
 				}
