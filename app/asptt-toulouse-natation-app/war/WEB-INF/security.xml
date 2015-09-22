@@ -1,29 +1,15 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security"
 	xmlns:beans="http://www.springframework.org/schema/beans" 
+	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 	http://www.springframework.org/schema/security
-	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
-
-<beans:bean id="authenticationListener" class="com.asptttoulousenatation.core.security.AuthenticationListener"/>
-
-
-    <http use-expressions="true" entry-point-ref="gaeEntryPoint">
-        <intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
-        <custom-filter position="PRE_AUTH_FILTER" ref="gaeFilter" />
-    </http>
-
-    <beans:bean id="gaeEntryPoint" class="com.asptttoulousenatation.core.security.GoogleAccountsAuthenticationEntryPoint" />
-    
-<beans:bean id="gaeFilter" class="com.asptttoulousenatation.core.security.GaeAuthenticationFilter">
-        <beans:property name="authenticationManager" ref="authenticationManager"/>
-    </beans:bean>
-
-    <authentication-manager alias="authenticationManager">
-        <authentication-provider ref="gaeAuthenticationProvider"/>
-    </authentication-manager>
-
-    <beans:bean id="gaeAuthenticationProvider" class="com.asptttoulousenatation.core.security.GoogleAccountsAuthenticationProvider" />
+	http://www.springframework.org/schema/security/spring-security-3.2.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+	
+	<context:annotation-config/>
+	<beans:bean class="com.asptttoulousenatation.core.spring.WebSecurityConfig"/>
 
 </beans:beans>
