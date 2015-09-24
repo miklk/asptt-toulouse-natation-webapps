@@ -209,7 +209,7 @@ public class EnfGestionService {
 				for (SlotEntity creneauEntity : creneaux) {
 					GroupEntity group = groupDao.get(creneauEntity.getGroup());
 					if(group != null) {
-						if (BooleanUtils.isFalse(group.getLicenceFfn())) {
+						if (BooleanUtils.isTrue(group.getEnf())) {
 							// Adherent
 							criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 							criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE, group.getId(),
