@@ -580,10 +580,8 @@ public class AdherentService {
 		case "competiteur": {
 			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 					1);
-			criteria.add(new CriterionDao<Boolean>(GroupEntityFields.ENF,
-					Boolean.FALSE, Operator.EQUAL));
-			criteria.add(new CriterionDao<Boolean>(
-					GroupEntityFields.LICENCEFFN, Boolean.TRUE, Operator.EQUAL));
+			criteria.add(new CriterionDao<Boolean>(GroupEntityFields.COMPETITION,
+					Boolean.TRUE, Operator.EQUAL));
 			List<GroupEntity> groupeEntities = groupDao.find(criteria);
 			Set<Long> groupesId = new HashSet<>();
 			for (GroupEntity groupeEntity : groupeEntities) {
