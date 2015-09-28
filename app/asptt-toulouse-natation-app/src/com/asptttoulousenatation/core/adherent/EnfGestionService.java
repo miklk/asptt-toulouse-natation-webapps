@@ -120,7 +120,9 @@ public class EnfGestionService {
 				sheet.getRow(6).getCell(13).setCellValue(creneauEntity.getSwimmingPool());
 				sheet.getRow(35).getCell(0)
 						.setCellValue(groupe.getTitle() + " " + creneauEntity.getDayOfWeek() + " "
-								+ new DateTime(creneauEntity.getBeginDt().getTime()).plusHours(1).toString("HH:mm"));
+								+ new DateTime(creneauEntity.getBeginDt().getTime()).plusHours(1).toString("HH:mm")
+								+ " - "
+								+ new DateTime(creneauEntity.getEndDt().getTime()).plusHours(1).toString("HH:mm"));
 
 				// Adherent
 				List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
@@ -146,6 +148,7 @@ public class EnfGestionService {
 									nomPrenom.append(" (2)");
 								}
 								sheet.getRow(row).getCell(1).setCellValue(nomPrenom.toString());
+								sheet.getRow(row).getCell(1).getCellStyle().setWrapText(true);
 
 								String anneeNaissance;
 								if (adherent.getNaissance() != null) {
