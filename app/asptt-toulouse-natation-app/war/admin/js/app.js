@@ -16,7 +16,7 @@ var adminApp = angular.module('adminApp', ['ngRoute', 'angular-spinkit',
                                            'authorizationService', 'LoginController', 
                                            'loginServices']);
 
-adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
+adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.
 		when('/', {
 			templateUrl: 'views/dashboard/dashboard.html'
@@ -39,11 +39,13 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 		}).
 		when('/users', {
 			templateUrl: 'views/user/users.html',
-			controller: 'UserController'
+			controller: 'UserController',
+			access: 'ACCESS_USERS'
 		}).
 		when('/users/creer', {
 			templateUrl: 'views/user/user-creer.html',
-			controller: 'UserController'
+			controller: 'UserController',
+			access: 'ACCESS_USERS'
 		}).
 		when('/documents', {
 			templateUrl: 'views/document/documents.html'
@@ -64,7 +66,8 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 			templateUrl: 'views/suivi/suivi-nageur-year.html'
 		}).
 		when('/groupes', {
-			templateUrl: 'views/groupe/groupes.html'
+			templateUrl: 'views/groupe/groupes.html',
+			access: 'ACCESS_GROUPES'
 		}).
 		when('/dossiers', {
 			templateUrl: 'views/dossier/dossiers.html',
@@ -73,15 +76,19 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
 		when('/dossier/:dossierId', {
 			templateUrl: 'views/dossier/dossier.html',
 			controller: 'DossierNageurController',
+			access: 'ACCESS_DOSSIERS'
 		}).
 		when('/extraction', {
-			templateUrl: 'views/dossier/extraction/extraction.html'
+			templateUrl: 'views/dossier/extraction/extraction.html',
+			access: 'ACCESS_DOSSIERS'
 		}).
 		when('/remplissage', {
-			templateUrl: 'views/dossier/stat/remplissage.html'
+			templateUrl: 'views/dossier/stat/remplissage.html',
+			access: 'ACCESS_REMPLISSAGE'
 		}).
 		when('/remplissage-detail', {
-			templateUrl: 'views/dossier/stat/remplissage-piscine.html'
+			templateUrl: 'views/dossier/stat/remplissage-piscine.html',
+			access: 'ACCESS_REMPLISSAGE'
 		}).
 		when('/page/login', {
 			templateUrl: 'views/login.html'
@@ -99,14 +106,15 @@ adminApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvi
        'self',
        'http://docs.google.com/viewer?url=*'
      ]);
+	$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 
 }]);
 
 adminApp.run(function($rootScope, $location, AuthorizationService) {
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
-        if (!AuthorizationService.isConnected()) {
+        if (!$rootScope.authenticated) {
             $location.url("/page/login");
-        } else if(next && next.$$route && !AuthorizationService.hasAccess(next.$$route.access)){
+        } else if(next && next.$$route && next.$$route.access && !AuthorizationService.hasAccess(next.$$route.access)){
         	$location.url("/unauthorized");
         }
     });

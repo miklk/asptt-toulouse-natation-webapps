@@ -1,10 +1,37 @@
 var loginController = angular.module('LoginController', ['ngRoute', 'loginServices']);
-loginController.controller('LoginController', ['$scope', '$location', 'LoginService', '$sce', function($scope, $location, LoginService, $sce) {
+loginController.controller('LoginController', ['$rootScope', '$scope', '$http', '$location', 'LoginService', '$sce', function($rootScope, $scope, $http, $location, LoginService, $sce) {
 	$scope.formData = {
 			email: "",
 			password: ""
 	};
-	$scope.authenticate = function(provider) {
+	$scope.credentials = {};
+	
+	$scope.authenticate = function() {
+
+	    var headers = $scope.credentials ? {authorization : "Basic "
+	        + btoa($scope.credentials.email + ":" + $scope.credentials.password)
+	    } : {};
+
+	    $http.get('/resources/authentication/isAuthenticated', {headers : headers}).success(function(data) {
+	      if (data.logged) {
+	        $rootScope.authenticated = true;
+	      } else {
+	        $rootScope.authenticated = false;
+	      }
+	      console.log(data);
+	 		$scope.loginResult = data;
+	 		window.location.href = "#/dashboard";
+	    }).error(function() {
+	      $rootScope.authenticated = false;
+	      console.log(data);
+	 		$scope.loginResult = data;
+	 		window.location.href = "#/dashboard";
+	    });
+	};
+	
+	  
+	
+	$scope.authenticateFederate = function(provider) {
 	 	LoginService.openId.query({openIdService: provider}, function(data) {
 	 		window.location.href = data.providerUrl;
 		});

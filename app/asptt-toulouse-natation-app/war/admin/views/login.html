@@ -10,7 +10,7 @@
     			<div class="col-md-offset-1">
     				<div class="row omb_socialButtons">
 						<div class="col-md-10">
-					        <a href="" ng-click="authenticate('google')" class="btn btn-lg btn-block omb_btn-google">
+					        <a href="" ng-click="authenticateFederate('google')" class="btn btn-lg btn-block omb_btn-google">
 						        <i class="fa fa-google-plus visible-xs"></i>
 						        <span class="hidden-xs">Google+</span>
 					        </a>
@@ -25,11 +25,11 @@
 
 					<div class="row">
 						<div class="col-md-10">	
-						    <form role="form" class="form-horizontal" name="loginForm" ng-submit="login()" novalidate>
+						    <form role="form" class="form-horizontal" name="loginForm" ng-submit="authenticate()" novalidate>
 								<div class="form-group" ng-class="{'has-error has-feedback' : loginForm.email.$invalid && !loginForm.email.$pristine , 'has-success has-feedback':  !loginForm.email.$invalid && !loginForm.email.$pristine}">
 									<label for="email" class="col-md-3 control-label">E-mail</label>
 									<div class="col-md-6">
-										<input type="email" class="form-control" id="email" name="email" placeholder="E-mail" ng-model="email" required />
+										<input type="email" class="form-control" id="email" name="email" placeholder="E-mail" ng-model="credentials.email" required />
 										<span ng-class="{ 'glyphicon glyphicon-remove form-control-feedback' : loginForm.email.$invalid && !loginForm.email.$pristine , 'glyphicon glyphicon-ok form-control-feedback': !loginForm.email.$invalid && !loginForm.email.$pristine }"></span>
 									</div>
 									<div class="col-md-4" ng-show="loginForm.email.$dirty && loginForm.email.$invalid">
@@ -41,7 +41,7 @@
 								<div class="form-group" ng-class="{'has-error has-feedback' : loginForm.password.$invalid && !loginForm.password.$pristine , 'has-success has-feedback':  !loginForm.password.$invalid && !loginForm.password.$pristine}">
 									<label for="password" class="col-md-3 control-label">Mot de passe</label>
 									<div class="col-md-6">
-										<input type="password" class="form-control" name="password" id="password" placeholder="Mot de passe" ng-model="password" required />
+										<input type="password" class="form-control" name="password" id="password" placeholder="Mot de passe" ng-model="credentials.password" required />
 									</div>
 								</div>
 								<div class="form-group">

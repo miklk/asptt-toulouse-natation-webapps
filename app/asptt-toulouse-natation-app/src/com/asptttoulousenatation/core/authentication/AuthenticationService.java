@@ -17,12 +17,17 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.asptttoulousenatation.core.server.dao.entity.field.UserEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.user.UserAuthorizationEntity;
 import com.asptttoulousenatation.core.server.dao.entity.user.UserDataEntity;
 import com.asptttoulousenatation.core.server.dao.entity.user.UserEntity;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
+import com.asptttoulousenatation.core.server.dao.user.UserAuthorizationDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
 import com.asptttoulousenatation.server.util.Utils;
@@ -38,6 +43,8 @@ public class AuthenticationService {
 	@Context
 	private HttpServletRequest request;
 
+	private UserAuthorizationDao userAuthorizationDao = new UserAuthorizationDao();
+	
 	@Path("{openIdService}")
 	@GET
 	public AuthenticationResult authentication(
@@ -92,12 +99,34 @@ public class AuthenticationService {
 				result.setNom(userDataEntity.getLastName());
 				result.setPrenom(userDataEntity.getFirstName());
 				result.setLogged(true);
+				
+				//Authorizations
+				List<UserAuthorizationEntity> authorizations = userAuthorizationDao.getAuthorization(user.getId());
+				for(UserAuthorizationEntity authorization: authorizations) {
+					result.addAuthorization(authorization.getAccess());
+				}
 			} else {
 				result.setLogged(false);
 			}
 		} else {
 			result.setLogged(false);
 		}
+		return result;
+	}
+	
+	@Path("/isAuthenticated")
+	@GET
+	public LoginResult isAuthenticated() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		boolean isAuthenticated = authentication!= null && !(authentication instanceof AnonymousAuthenticationToken) &&
+				 SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+		final LoginResult result;
+		if(isAuthenticated) {
+			result = (LoginResult) SecurityContextHolder.getContext().getAuthentication().getDetails();
+		} else {
+			result = new LoginResult();
+		}
+		result.setLogged(isAuthenticated);
 		return result;
 	}
 }

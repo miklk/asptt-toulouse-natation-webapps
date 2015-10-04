@@ -32,6 +32,7 @@
         <class>com.asptttoulousenatation.core.server.dao.entity.swimmer.SwimmerStatEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.user.Slot</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.user.UserEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.user.UserAuthorizationEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.user.UserDataEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.record.RecordEpreuveEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.record.RecordEntity</class>

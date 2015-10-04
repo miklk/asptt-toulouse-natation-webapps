@@ -1,6 +1,8 @@
 package com.asptttoulousenatation.core.authentication;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.asptttoulousenatation.core.shared.user.UserUi;
 
@@ -16,9 +18,15 @@ public class LoginResult implements Serializable {
 	private String nom;
 	private String prenom;
 	private String email;
+	private Set<String> authorizations;
 	
 	public LoginResult() {
+		authorizations = new HashSet<>();
 		logged = false;
+	}
+	
+	public void addAuthorization(String authorization) {
+		authorizations.add(authorization);
 	}
 
 	public boolean isLogged() {
@@ -60,4 +68,13 @@ public class LoginResult implements Serializable {
 	public void setEmail(String pEmail) {
 		email = pEmail;
 	}
+
+	public Set<String> getAuthorizations() {
+		return authorizations;
+	}
+
+	public void setAuthorizations(Set<String> authorizations) {
+		this.authorizations = authorizations;
+	}
+	
 }
