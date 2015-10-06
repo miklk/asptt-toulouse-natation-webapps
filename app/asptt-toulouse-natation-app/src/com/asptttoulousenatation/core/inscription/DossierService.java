@@ -531,7 +531,7 @@ public class DossierService {
 				GroupEntity group = groupeDao.get(nageur
 						.getGroupe());
 				message.append("<dt>").append(nageur.getNom()).append(" ").append(nageur.getPrenom()).append(" ").append(group.getTitle()).append("</dt>");
-				}catch(Exception e) {
+				} catch(Exception e) {
 					LOG.severe("Erreur du groupe (adherent " + nageur.getId() + "): " + nageur.getGroupe() + " ");
 				}
 				for (String creneau : AdherentListResultBeanTransformer
