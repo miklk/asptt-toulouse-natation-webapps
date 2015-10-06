@@ -11,12 +11,11 @@ import com.asptttoulousenatation.core.server.dao.entity.user.UserAuthorizationEn
 import com.asptttoulousenatation.core.server.service.EMF;
 
 public class UserAuthorizationDao extends DaoBase<UserAuthorizationEntity> {
-	
-	public List<UserAuthorizationEntity> getAuthorization(Long user) {
+
+	public List<UserAuthorizationEntity> findByUser(Long user) {
 		final EntityManager em = EMF.get().createEntityManager();
-		Query query = em.createQuery("SELECT " + getAlias() + " FROM " + getEntityClass().getSimpleName()
-				+ " as " + getAlias() + " WHERE " + getAlias()
-				+ ".user =:user");
+		Query query = em.createQuery("SELECT " + getAlias() + " FROM " + getEntityClass().getSimpleName() + " as "
+				+ getAlias() + " WHERE " + getAlias() + ".user =:user");
 		query.setParameter("user", user);
 		final List<UserAuthorizationEntity> lResult;
 		try {
@@ -26,7 +25,18 @@ public class UserAuthorizationDao extends DaoBase<UserAuthorizationEntity> {
 		}
 		return lResult;
 	}
-	
+
+	public void deleteByUser(Long user) {
+		final EntityManager em = EMF.get().createEntityManager();
+		Query query = em.createQuery("DELETE FROM " + getEntityClass().getSimpleName() + " as " + getAlias() + " WHERE "
+				+ getAlias() + ".user =:user");
+		query.setParameter("user", user);
+		try {
+			query.executeUpdate();
+		} finally {
+			em.close();
+		}
+	}
 
 	@Override
 	public Class<UserAuthorizationEntity> getEntityClass() {

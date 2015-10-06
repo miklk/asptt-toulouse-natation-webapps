@@ -13,22 +13,26 @@ userController.controller('UserController', ['$scope', '$location', 'UserService
 		email: "",
 		nom: "",
 		prenom: "",
-		profiles: {}
+		authorizations: {}
 	};
 	
 	$scope.userCreateAction = angular.copy($scope.initForm);
+	
+	//Load authorizations
+	UserService.availableAuthorizations.query({}, function (data) {
+		$scope.availableAuthorizations = data;
+	});
 	
 	$scope.search = function() {
 		UserService.users.query({search: $scope.formData.search}, function (data) {
 			$scope.userFindResult = data;
 		});
 	}
+	$scope.search();
 	
 	$scope.creer = function() {
-		UserService.create.query({userCreateAction: $scope.userCreateAction}, function (data) {
+		UserService.create.query({}, $scope.userCreateAction, function (data) {
 			$scope.userCreateResult = data;
-			$scope.email = $scope.userCreation.email;
-			$scope.userCreateAction = angular.copy($scope.initForm);
 		});
 	}
 	
@@ -36,5 +40,12 @@ userController.controller('UserController', ['$scope', '$location', 'UserService
 		UserService.remove.query({user: userId}, function() {
 			$scope.userFindResult.users.splice(index, 1);	
 		});
+	}
+	
+	$scope.loadUser = function(user) {
+		$scope.userCreateAction.email = user.emailAddress;
+		$scope.userCreateAction.nom = user.userData.lastName;
+		$scope.userCreateAction.prenom = user.userData.firstName;
+		$scope.userCreateAction.authorizations = user.profiles;
 	}
 }]);

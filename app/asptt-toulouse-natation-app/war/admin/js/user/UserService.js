@@ -7,10 +7,13 @@ userServices.factory('UserService', ['$resource',
 			query:{method:'GET', isArray: false,params: {}}
 		}),
 		create: $resource('/resources/users/create',{},{
-			query:{method:'POST', params: {userCreateAction: '@userCreateAction'}}
+			query:{method:'POST', params: {}}
 		}),
 		remove: $resource('/resources/users/:user',{},{
 			query:{method:'DELETE', params: {}}
+		}),
+		availableAuthorizations: $resource('/resources/users/available-authorizations',{},{
+			query:{method:'GET', isArray: true,params: {}}
 		})
 	};
 }]);

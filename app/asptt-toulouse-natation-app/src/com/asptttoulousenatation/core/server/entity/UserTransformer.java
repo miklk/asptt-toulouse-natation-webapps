@@ -12,8 +12,7 @@ public class UserTransformer extends
 	@Override
 	public UserUi toUi(UserEntity pEntity) {
 		UserUi lUi = new UserUi(pEntity.getId(), pEntity.getEmailaddress(),
-				pEntity.isValidated(), new HashSet<String>(
-						pEntity.getProfiles()), null, null);
+				pEntity.isValidated(), new HashSet<String>(), null, null);
 		if (pEntity.getSlots() != null) {
 			lUi.setSlots(new HashSet<Long>(pEntity.getSlots()));
 		}

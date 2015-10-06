@@ -26,6 +26,10 @@ public class UserUi implements IsSerializable {
 		userData = pUserData;
 		slots = pSlots;
 	}
+	
+	public void addAccess(String access) {
+		profiles.add(access);
+	}
 
 	public Long getId() {
 		return id;

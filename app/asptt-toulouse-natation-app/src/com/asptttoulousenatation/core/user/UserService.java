@@ -1,7 +1,9 @@
 package com.asptttoulousenatation.core.user;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -17,10 +19,12 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.server.dao.entity.field.UserDataEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.UserEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.user.UserAuthorizationEntity;
 import com.asptttoulousenatation.core.server.dao.entity.user.UserDataEntity;
 import com.asptttoulousenatation.core.server.dao.entity.user.UserEntity;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
+import com.asptttoulousenatation.core.server.dao.user.UserAuthorizationDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
 import com.asptttoulousenatation.core.server.entity.UserDataTransformer;
@@ -34,8 +38,22 @@ public class UserService {
 
 	private UserDao userDao = new UserDao();
 	private UserDataDao userDataDao = new UserDataDao();
+	private UserAuthorizationDao userAuthorizationDao = new UserAuthorizationDao();
 	private UserTransformer userTransformer = new UserTransformer();
 	private UserDataTransformer userDataTransformer = new UserDataTransformer();
+	
+	private static Set<String> AUTHORIZATIONS;
+	static {
+		AUTHORIZATIONS = new HashSet<>();
+		AUTHORIZATIONS.add("ACCESS_INSCRIPTION");
+		AUTHORIZATIONS.add("ACCESS_GROUPES");
+		AUTHORIZATIONS.add("ACCESS_DOSSIERS");
+		AUTHORIZATIONS.add("ACCESS_REMPLISSAGE");
+		AUTHORIZATIONS.add("ACCESS_ENF");
+		AUTHORIZATIONS.add("ACCESS_DOCUMENTS");
+		AUTHORIZATIONS.add("ACCESS_USERS");
+		AUTHORIZATIONS.add("ACCESS_SUIVI_NAGEURS");	
+	}
 	
 	@GET
 	public UserFindResult find(@QueryParam("search") String pSearch) {
@@ -82,6 +100,10 @@ public class UserService {
 				UserDataEntity userData = userDataDao.get(user.getUserData());
 				UserUi userUi = userTransformer.toUi(user);
 				userUi.setUserData(userDataTransformer.toUi(userData));
+				List<UserAuthorizationEntity> authorizations = userAuthorizationDao.findByUser(user.getId());
+				for(UserAuthorizationEntity authorization: authorizations) {
+					userUi.addAccess(authorization.getAccess());
+				}
 				result.addUser(userUi);
 			}
 		}
@@ -91,7 +113,7 @@ public class UserService {
 	
 	@Path("/create")
 	@POST
-	public UserCreateResult create(@QueryParam("userCreateAction") UserCreateAction pAction) {
+	public UserCreateResult create(UserCreateAction pAction) {
 		UserCreateResult result = new UserCreateResult();
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
@@ -99,22 +121,39 @@ public class UserService {
 				UserEntityFields.EMAILADDRESS, pAction.getEmail(),
 				Operator.EQUAL));
 		List<UserEntity> users = userDao.find(criteria);
+		final UserEntity userEntity;
 		if(CollectionUtils.isEmpty(users)) {
-			UserEntity userEntity = new UserEntity();
-			userEntity.setEmailaddress(pAction.getEmail());
-			userEntity.setValidated(true);
-			userEntity.setProfiles(pAction.getProfiles());
-			UserDataEntity userDataEntity = new UserDataEntity();
-			userDataEntity.setFirstName(pAction.getPrenom());
-			userDataEntity.setLastName(pAction.getNom());
-			UserDataEntity userDataEntityCreated = userDataDao.save(userDataEntity);
-			userEntity.setUserData(userDataEntityCreated.getId());
-			userDao.save(userEntity);
-			result.setSuccess(true);
+			userEntity = new UserEntity();
+			
 		} else {
-			result.setExists(true);
-			result.setSuccess(false);
+			userEntity = users.get(0);
 		}
+		userEntity.setEmailaddress(pAction.getEmail());
+		userEntity.setValidated(true);
+		
+		final UserDataEntity userDataEntity; 
+		if(userEntity.getUserData() == null) {
+			userDataEntity = new UserDataEntity();
+		} else {
+			userDataEntity = userDataDao.get(userEntity.getUserData());
+		}
+		
+		userDataEntity.setFirstName(pAction.getPrenom());
+		userDataEntity.setLastName(pAction.getNom());
+		UserDataEntity userDataEntityCreated = userDataDao.save(userDataEntity);
+		userEntity.setUserData(userDataEntityCreated.getId());
+		UserEntity userSaved = userDao.save(userEntity);
+		//Create authorizations
+		userAuthorizationDao.deleteByUser(userSaved.getId());
+		for (String access : pAction.getAuthorizations()) {
+			if (AUTHORIZATIONS.contains(access)) {
+				UserAuthorizationEntity authorization = new UserAuthorizationEntity();
+				authorization.setUser(userSaved.getId());
+				authorization.setAccess(access);
+				userAuthorizationDao.save(authorization);
+			}
+		}
+		result.setSuccess(true);
 		return result;
 	}
 	
@@ -122,7 +161,14 @@ public class UserService {
 	@DELETE
 	public void remove(@PathParam("user") Long userId) {
 		UserEntity user = userDao.get(userId);
+		userAuthorizationDao.deleteByUser(user.getId());
 		userDataDao.delete(user.getUserData());
 		userDao.delete(userId);
+	}
+	
+	@Path("/available-authorizations")
+	@GET
+	public Set<String> authorizations() {
+		return AUTHORIZATIONS;
 	}
 }
