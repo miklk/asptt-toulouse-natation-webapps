@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -17,7 +18,9 @@ import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -66,7 +69,7 @@ public class AuthenticationService {
 	}
 
 	@Path("/login")
-	@GET
+	@POST
 	public LoginResult login(@QueryParam("email") String pEmail,
 			@QueryParam("password") String pPassword) {
 		LoginResult result = new LoginResult();
@@ -101,7 +104,7 @@ public class AuthenticationService {
 				result.setLogged(true);
 				
 				//Authorizations
-				List<UserAuthorizationEntity> authorizations = userAuthorizationDao.getAuthorization(user.getId());
+				List<UserAuthorizationEntity> authorizations = userAuthorizationDao.findByUser(user.getId());
 				for(UserAuthorizationEntity authorization: authorizations) {
 					result.addAuthorization(authorization.getAccess());
 				}
@@ -114,9 +117,12 @@ public class AuthenticationService {
 		return result;
 	}
 	
+	@Autowired
+	private AuthenticationProvider authenticationProvider = new AuthenticationProvider();
+	
 	@Path("/isAuthenticated")
-	@GET
-	public LoginResult isAuthenticated() {
+	@POST
+	public LoginResult isAuthenticated(AuthenticationParameters parameters) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		boolean isAuthenticated = authentication!= null && !(authentication instanceof AnonymousAuthenticationToken) &&
 				 SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
@@ -124,9 +130,11 @@ public class AuthenticationService {
 		if(isAuthenticated) {
 			result = (LoginResult) SecurityContextHolder.getContext().getAuthentication().getDetails();
 		} else {
-			result = new LoginResult();
+			Authentication authenticationToken = new UsernamePasswordAuthenticationToken(parameters.getEmail(), parameters.getPassword());
+			       authentication = authenticationProvider.authenticate(authenticationToken);
+			        SecurityContextHolder.getContext().setAuthentication(authentication);
+			result = (LoginResult) authentication.getDetails();
 		}
-		result.setLogged(isAuthenticated);
 		return result;
 	}
 }

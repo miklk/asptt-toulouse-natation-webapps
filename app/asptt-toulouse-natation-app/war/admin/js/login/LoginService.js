@@ -5,8 +5,8 @@ loginServices.factory('LoginService', ['$resource',
 		openId: $resource('/resources/authentication/:openIdService',{},{
 			query:{method:'GET'}
 		}),
-		login: $resource('/resources/authentication/login',{},{
-			query:{method:'GET'}
+		login: $resource('/resources/authentication/isAuthenticated',{},{
+			query:{method:'POST'}
 		})
 	};
 }]);

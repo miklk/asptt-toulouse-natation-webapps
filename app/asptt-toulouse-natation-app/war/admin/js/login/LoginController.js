@@ -12,7 +12,10 @@ loginController.controller('LoginController', ['$rootScope', '$scope', '$http', 
 	        + btoa($scope.credentials.email + ":" + $scope.credentials.password)
 	    } : {};
 
-	    $http.get('/resources/authentication/isAuthenticated', {headers : headers}).success(function(data) {
+	    $scope.formData.email = $scope.credentials.email;
+	    $scope.formData.password= $scope.credentials.password;
+	    //$http.get('/resources/authentication/isAuthenticated', {emailheaders : headers}).success(function(data) {
+	    LoginService.login.query({}, $scope.formData, function(data) {
 	      if (data.logged) {
 	        $rootScope.authenticated = true;
 	      } else {
@@ -21,12 +24,12 @@ loginController.controller('LoginController', ['$rootScope', '$scope', '$http', 
 	      console.log(data);
 	 		$scope.loginResult = data;
 	 		window.location.href = "#/dashboard";
-	    }).error(function() {
+	    });/**.error(function() {
 	      $rootScope.authenticated = false;
 	      console.log(data);
 	 		$scope.loginResult = data;
 	 		window.location.href = "#/dashboard";
-	    });
+	    });**/
 	};
 	
 	  

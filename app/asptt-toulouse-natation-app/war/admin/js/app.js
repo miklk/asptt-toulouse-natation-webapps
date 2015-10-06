@@ -1,7 +1,7 @@
 /**
  * 
  */
-var adminApp = angular.module('adminApp', ['ngRoute', 'angular-spinkit', 
+var adminApp = angular.module('adminApp', ['ngCookies', 'ngRoute', 'angular-spinkit', 
                                            'adherentsServices','adherentsStatServices', 
                                            'groupeServices', 
                                            'slotServices', 'userServices', 
@@ -39,13 +39,11 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 		}).
 		when('/users', {
 			templateUrl: 'views/user/users.html',
-			controller: 'UserController',
-			access: 'ACCESS_USERS'
+			controller: 'UserController'
 		}).
 		when('/users/creer', {
 			templateUrl: 'views/user/user-creer.html',
-			controller: 'UserController',
-			access: 'ACCESS_USERS'
+			controller: 'UserController'
 		}).
 		when('/documents', {
 			templateUrl: 'views/document/documents.html'
@@ -107,6 +105,8 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
        'http://docs.google.com/viewer?url=*'
      ]);
 	$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+	$httpProvider.defaults.withCredentials = true;
+    //$httpProvider.interceptors.push('XSRFInterceptor');
 
 }]);
 
@@ -157,3 +157,22 @@ adminApp.directive("showWhenConnected", function (AuthorizationService) {
         }
     };
 });
+
+/**adminApp.factory('XSRFInterceptor', function ($cookies, $log) {
+
+    var XSRFInterceptor = {
+
+      request: function(config) {
+
+        var token = $cookies.get('XSRF-TOKEN');
+
+        if (token) {
+          config.headers['X-XSRF-TOKEN'] = token;
+          $log.info("X-XSRF-TOKEN: " + token);
+        }
+
+        return config;
+      }
+    };
+    return XSRFInterceptor;
+  });**/
