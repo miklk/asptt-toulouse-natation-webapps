@@ -29,6 +29,7 @@ import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierCertificatDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
@@ -118,6 +119,24 @@ public class DossierExtractionService {
 					case "COMMENTAIRE":
 						nageurValues.add(StringUtils.defaultString(dossier.getComment()));
 						break;
+					case "PAIEMENT":
+						String paiement = "";
+						switch(DossierStatutEnum.valueOf(dossier.getStatut())) {
+						case ANNULE: 
+						case ATTENTE:
+						case EXPIRE:
+						case INITIALISE:
+						case PREINSCRIT:
+						case PAIEMENT_PARTIEL:
+							paiement = "non payé";
+						break;
+						case PAIEMENT_COMPLET:
+						case INSCRIT:
+							paiement = "à jour";
+							break;
+							default: paiement = "invalide";
+						}
+						nageurValues.add(paiement);
 					default:// Do nothing
 					}
 				}
@@ -144,8 +163,9 @@ public class DossierExtractionService {
 			nageurFieldsBuilder.appendWithSeparators(nageurFields, ",");
 			extractionAsString.append(nageurFieldsBuilder.toString()).appendNewLine();
 		}
+		ByteArrayOutputStream out = null;
 		try {
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			out = new ByteArrayOutputStream();
 			out.write(extractionAsString.toString().getBytes("UTF-8"));
 
 			String contentDisposition = "attachment;filename=extraction.csv;";
@@ -153,6 +173,15 @@ public class DossierExtractionService {
 		} catch (IOException e) {
 			LOG.log(Level.SEVERE, "Erreur when writing response (" + extractionAsString + ")", e);
 			return Response.serverError().build();
+		} finally {
+			if(out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					LOG.log(Level.SEVERE, "Erreur when writing response (" + extractionAsString + ")", e);
+					return Response.serverError().build();
+				}
+			}
 		}
 	}
 
