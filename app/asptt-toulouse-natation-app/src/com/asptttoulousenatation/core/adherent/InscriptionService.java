@@ -762,6 +762,7 @@ public class InscriptionService {
 					nageur.setCreneaux(StringUtils.EMPTY);
 					dossierNageurDao.save(nageur);
 				}
+				dao.save(dossier);
 			}
 		}
 		LOG.log(Level.WARNING, count + " dossiers expirés");
