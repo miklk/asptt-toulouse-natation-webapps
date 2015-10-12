@@ -14,8 +14,10 @@ public class SwimmerStatYearUi implements Serializable {
 	private String prenom;
 	private int totalDistance;
 	private int totalPresence;
+	private int totalMuscu;
 	private List<Integer> distances;
 	private List<Integer> presences;
+	private List<Integer> muscus;
 
 	public SwimmerStatYearUi() {
 		distances = new ArrayList<>(12);
@@ -23,7 +25,9 @@ public class SwimmerStatYearUi implements Serializable {
 		for (int i = 0; i < 12; i++) {
 			distances.add(0);
 			presences.add(0);
+			muscus.add(0);
 		}
+		muscus = new ArrayList<>(12);
 	}
 
 	public void addDistance(int month, int pDistance) {
@@ -32,6 +36,10 @@ public class SwimmerStatYearUi implements Serializable {
 
 	public void addPresence(int month, int pPresence) {
 		presences.set(month, presences.get(month) + pPresence);
+	}
+	
+	public void addMuscu(int month, int pPresence) {
+		muscus.set(month, muscus.get(month) + pPresence);
 	}
 
 	public void computeTotalDistance() {
@@ -51,6 +59,16 @@ public class SwimmerStatYearUi implements Serializable {
 				lTotal += presence;
 			}
 			totalPresence = lTotal;
+		}
+	}
+	
+	public void computeTotalMuscu() {
+		if (totalMuscu == 0) {
+			int lTotal = 0;
+			for (Integer presence : muscus) {
+				lTotal += presence;
+			}
+			totalMuscu = lTotal;
 		}
 	}
 
@@ -101,4 +119,21 @@ public class SwimmerStatYearUi implements Serializable {
 	public void setPresences(List<Integer> pPresences) {
 		presences = pPresences;
 	}
+
+	public int getTotalMuscu() {
+		return totalMuscu;
+	}
+
+	public void setTotalMuscu(int totalMuscu) {
+		this.totalMuscu = totalMuscu;
+	}
+
+	public List<Integer> getMuscus() {
+		return muscus;
+	}
+
+	public void setMuscus(List<Integer> muscus) {
+		this.muscus = muscus;
+	}
+	
 }

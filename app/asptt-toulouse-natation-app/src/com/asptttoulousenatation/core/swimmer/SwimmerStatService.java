@@ -200,6 +200,7 @@ public class SwimmerStatService {
 				dayStat.setNom(nageur.getNom());
 				dayStat.setPrenom(nageur.getPrenom());
 				for (SwimmerStatEntity swimmerStat : statEntities) {
+					boolean muscu = false;
 					int index = 0;
 					switch (DayTimeEnum.valueOf(swimmerStat.getDaytime())) {
 					case MATIN:
@@ -211,43 +212,74 @@ public class SwimmerStatService {
 					case SOIR:
 						index = 2;
 						break;
+					case MUSCU: muscu = true;
+					break;
 					default://
 					}
 					LocalDate localDate = new LocalDate(swimmerStat.getDay());
 					switch (localDate.getDayOfWeek()) {
 					case DateTimeConstants.MONDAY: {
-						dayStat.addDistance(0, index, swimmerStat.getDistance());
-						dayStat.addPresence(0, swimmerStat.getPresence());
+						if(muscu) {
+							dayStat.addMuscu(0, swimmerStat.getPresence());	
+						} else {
+							dayStat.addDistance(0, index, swimmerStat.getDistance());
+							dayStat.addPresence(0, swimmerStat.getPresence());
+						}
+						
 					}
 						break;
 					case DateTimeConstants.TUESDAY: {
-						dayStat.addDistance(1, index, swimmerStat.getDistance());
-						dayStat.addPresence(1, swimmerStat.getPresence());
+						if(muscu) {
+							dayStat.addMuscu(1, swimmerStat.getPresence());	
+						} else {
+							dayStat.addDistance(1, index, swimmerStat.getDistance());
+							dayStat.addPresence(1, swimmerStat.getPresence());
+						}
 					}
 						break;
 					case DateTimeConstants.WEDNESDAY: {
-						dayStat.addDistance(2, index, swimmerStat.getDistance());
-						dayStat.addPresence(2, swimmerStat.getPresence());
+						if(muscu) {
+							dayStat.addMuscu(2, swimmerStat.getPresence());	
+						} else {
+							dayStat.addDistance(2, index, swimmerStat.getDistance());
+							dayStat.addPresence(2, swimmerStat.getPresence());
+						}
 					}
 						break;
 					case DateTimeConstants.THURSDAY: {
-						dayStat.addDistance(3, index, swimmerStat.getDistance());
-						dayStat.addPresence(3, swimmerStat.getPresence());
+						if(muscu) {
+							dayStat.addMuscu(3, swimmerStat.getPresence());	
+						} else {
+							dayStat.addDistance(3, index, swimmerStat.getDistance());
+							dayStat.addPresence(3, swimmerStat.getPresence());
+						}
 					}
 						break;
 					case DateTimeConstants.FRIDAY: {
-						dayStat.addDistance(4, index, swimmerStat.getDistance());
-						dayStat.addPresence(4, swimmerStat.getPresence());
+						if(muscu) {
+							dayStat.addMuscu(4, swimmerStat.getPresence());	
+						} else {
+							dayStat.addDistance(4, index, swimmerStat.getDistance());
+							dayStat.addPresence(4, swimmerStat.getPresence());
+						}
 					}
 						break;
 					case DateTimeConstants.SATURDAY: {
-						dayStat.addDistance(5, index, swimmerStat.getDistance());
-						dayStat.addPresence(5, swimmerStat.getPresence());
+						if(muscu) {
+							dayStat.addMuscu(5, swimmerStat.getPresence());	
+						} else {
+							dayStat.addDistance(5, index, swimmerStat.getDistance());
+							dayStat.addPresence(5, swimmerStat.getPresence());
+						}
 					}
 						break;
 					case DateTimeConstants.SUNDAY: {
-						dayStat.addDistance(6, index, swimmerStat.getDistance());
-						dayStat.addPresence(6, swimmerStat.getPresence());
+						if(muscu) {
+							dayStat.addMuscu(6, swimmerStat.getPresence());	
+						} else {
+							dayStat.addDistance(6, index, swimmerStat.getDistance());
+							dayStat.addPresence(6, swimmerStat.getPresence());
+						}
 					}
 						break;
 					default://
@@ -255,6 +287,7 @@ public class SwimmerStatService {
 				}
 				dayStat.computeTotalDistance();
 				dayStat.computeTotalPresence();
+				dayStat.computeTotalMuscu();
 				result.addNageur(dayStat);
 			}
 			result.setBegin(dayBeginToMindnight);
@@ -305,13 +338,20 @@ public class SwimmerStatService {
 					calendar.setTimeInMillis(swimmerStat.getDay());
 					int weekOfMonth = calendar.get(Calendar.WEEK_OF_MONTH);
 					weeks.put(weekOfMonth, new LocalDate(swimmerStat.getDay()));
-					dayStat.addDistance(weekOfMonth - 1,
-							swimmerStat.getDistance());
-					dayStat.addPresence(weekOfMonth - 1,
-							swimmerStat.getPresence() ? 1 : 0);
+					
+					if(DayTimeEnum.valueOf(swimmerStat.getDaytime()).equals(DayTimeEnum.MUSCU)) {
+						dayStat.addMuscu(weekOfMonth - 1,
+								swimmerStat.getPresence() ? 1 : 0);
+					} else {
+						dayStat.addDistance(weekOfMonth - 1,
+								swimmerStat.getDistance());
+						dayStat.addPresence(weekOfMonth - 1,
+								swimmerStat.getPresence() ? 1 : 0);
+					}
 				}
 				dayStat.computeTotalDistance();
 				dayStat.computeTotalPresence();
+				dayStat.computeTotalMuscu();
 				result.addNageur(dayStat);
 			}
 			Collections.sort(result.getNageurs(), new Comparator<SwimmerStatMonthUi>() {
@@ -368,78 +408,139 @@ public class SwimmerStatService {
 				dayStat.setNom(nageur.getNom());
 				dayStat.setPrenom(nageur.getPrenom());
 				for (SwimmerStatEntity swimmerStat : statEntities) {
+					boolean muscu = DayTimeEnum.valueOf(swimmerStat.getDaytime()).equals(DayTimeEnum.MUSCU);
 					LocalDate localDate = new LocalDate(swimmerStat.getDay());
 					switch (localDate.getMonthOfYear()) {
 					case DateTimeConstants.JANUARY: {
-						dayStat.addDistance(0, swimmerStat.getDistance());
-						dayStat.addPresence(0, swimmerStat.getPresence() ? 1
-								: 0);
+						if(muscu) {
+							dayStat.addMuscu(0, swimmerStat.getPresence() ? 1
+									: 0);
+						} else {
+							dayStat.addDistance(0, swimmerStat.getDistance());
+							dayStat.addPresence(0, swimmerStat.getPresence() ? 1
+									: 0);
+						}
 					}
 						break;
 					case DateTimeConstants.FEBRUARY: {
-						dayStat.addDistance(1, swimmerStat.getDistance());
-						dayStat.addPresence(1, swimmerStat.getPresence() ? 1
-								: 0);
+						if(muscu) {
+							dayStat.addMuscu(1, swimmerStat.getPresence() ? 1
+									: 0);
+						} else {
+							dayStat.addDistance(1, swimmerStat.getDistance());
+							dayStat.addPresence(1, swimmerStat.getPresence() ? 1
+									: 0);
+						}
 					}
 						break;
 					case DateTimeConstants.MARCH: {
-						dayStat.addDistance(2, swimmerStat.getDistance());
-						dayStat.addPresence(2, swimmerStat.getPresence() ? 1
-								: 0);
+						if(muscu) {
+							dayStat.addMuscu(2, swimmerStat.getPresence() ? 1
+									: 0);
+						} else {
+							dayStat.addDistance(2, swimmerStat.getDistance());
+							dayStat.addPresence(2, swimmerStat.getPresence() ? 1
+									: 0);
+						}
 					}
 						break;
 					case DateTimeConstants.APRIL: {
-						dayStat.addDistance(3, swimmerStat.getDistance());
-						dayStat.addPresence(3, swimmerStat.getPresence() ? 1
-								: 0);
+						if(muscu) {
+							dayStat.addMuscu(3, swimmerStat.getPresence() ? 1
+									: 0);
+						} else {
+							dayStat.addDistance(3, swimmerStat.getDistance());
+							dayStat.addPresence(3, swimmerStat.getPresence() ? 1
+									: 0);
+						}
 					}
 						break;
 					case DateTimeConstants.MAY: {
-						dayStat.addDistance(4, swimmerStat.getDistance());
-						dayStat.addPresence(4, swimmerStat.getPresence() ? 1
-								: 0);
+						if(muscu) {
+							dayStat.addMuscu(4, swimmerStat.getPresence() ? 1
+									: 0);
+						} else {
+							dayStat.addDistance(4, swimmerStat.getDistance());
+							dayStat.addPresence(4, swimmerStat.getPresence() ? 1
+									: 0);
+						}
 					}
 						break;
 					case DateTimeConstants.JUNE: {
-						dayStat.addDistance(5, swimmerStat.getDistance());
-						dayStat.addPresence(5, swimmerStat.getPresence() ? 1
-								: 0);
+						if(muscu) {
+							dayStat.addMuscu(5, swimmerStat.getPresence() ? 1
+									: 0);
+						} else {
+							dayStat.addDistance(5, swimmerStat.getDistance());
+							dayStat.addPresence(5, swimmerStat.getPresence() ? 1
+									: 0);
+						}
 					}
 						break;
 					case DateTimeConstants.JULY: {
-						dayStat.addDistance(6, swimmerStat.getDistance());
-						dayStat.addPresence(6, swimmerStat.getPresence() ? 1
-								: 0);
+						if(muscu) {
+							dayStat.addMuscu(6, swimmerStat.getPresence() ? 1
+									: 0);
+						} else {
+							dayStat.addDistance(6, swimmerStat.getDistance());
+							dayStat.addPresence(6, swimmerStat.getPresence() ? 1
+									: 0);
+						}
 					}
 						break;
 					case DateTimeConstants.AUGUST: {
-						dayStat.addDistance(7, swimmerStat.getDistance());
-						dayStat.addPresence(7, swimmerStat.getPresence() ? 1
-								: 0);
+						if(muscu) {
+							dayStat.addMuscu(7, swimmerStat.getPresence() ? 1
+									: 0);
+						} else {
+							dayStat.addDistance(7, swimmerStat.getDistance());
+							dayStat.addPresence(7, swimmerStat.getPresence() ? 1
+									: 0);
+						}
 					}
 						break;
 					case DateTimeConstants.SEPTEMBER: {
-						dayStat.addDistance(8, swimmerStat.getDistance());
-						dayStat.addPresence(8, swimmerStat.getPresence() ? 1
-								: 0);
+						if(muscu) {
+							dayStat.addMuscu(8, swimmerStat.getPresence() ? 1
+									: 0);
+						} else {
+							dayStat.addDistance(8, swimmerStat.getDistance());
+							dayStat.addPresence(8, swimmerStat.getPresence() ? 1
+									: 0);
+						}
 					}
 						break;
 					case DateTimeConstants.OCTOBER: {
-						dayStat.addDistance(9, swimmerStat.getDistance());
-						dayStat.addPresence(9, swimmerStat.getPresence() ? 1
-								: 0);
+						if(muscu) {
+							dayStat.addMuscu(9, swimmerStat.getPresence() ? 1
+									: 0);
+						} else {
+							dayStat.addDistance(9, swimmerStat.getDistance());
+							dayStat.addPresence(9, swimmerStat.getPresence() ? 1
+									: 0);
+						}
 					}
 						break;
 					case DateTimeConstants.NOVEMBER: {
-						dayStat.addDistance(10, swimmerStat.getDistance());
-						dayStat.addPresence(10, swimmerStat.getPresence() ? 1
-								: 0);
+						if(muscu) {
+							dayStat.addMuscu(10, swimmerStat.getPresence() ? 1
+									: 0);
+						} else {
+							dayStat.addDistance(10, swimmerStat.getDistance());
+							dayStat.addPresence(10, swimmerStat.getPresence() ? 1
+									: 0);
+						}
 					}
 						break;
 					case DateTimeConstants.DECEMBER: {
-						dayStat.addDistance(11, swimmerStat.getDistance());
-						dayStat.addPresence(11, swimmerStat.getPresence() ? 1
-								: 0);
+						if(muscu) {
+							dayStat.addMuscu(11, swimmerStat.getPresence() ? 1
+									: 0);
+						} else {
+							dayStat.addDistance(11, swimmerStat.getDistance());
+							dayStat.addPresence(11, swimmerStat.getPresence() ? 1
+									: 0);
+						}
 					}
 						break;
 					default://
@@ -447,6 +548,7 @@ public class SwimmerStatService {
 				}
 				dayStat.computeTotalDistance();
 				dayStat.computeTotalPresence();
+				dayStat.computeTotalMuscu();
 				result.addNageur(dayStat);
 			}
 			result.setBegin(dayBeginToMindnight);

@@ -9,8 +9,10 @@ public class SwimmerStatWeekUi {
 	private String prenom;
 	private int totalDistance;
 	private int totalPresence;
+	private int totalMuscu;
 	private List<Integer[]> distances;
 	private Integer[] presences;
+	private Integer[] muscus;
 
 	public SwimmerStatWeekUi() {
 		distances = new ArrayList<Integer[]>(7);
@@ -18,6 +20,7 @@ public class SwimmerStatWeekUi {
 		for (int i = 0; i < 7; i++) {
 			distances.add(new Integer[] { 0, 0, 0, 0 });
 		}
+		muscus = new Integer[] { 0, 0, 0, 0, 0, 0, 0 };
 	}
 
 	public void addDistance(int day, int index, int pDistance) {
@@ -26,6 +29,10 @@ public class SwimmerStatWeekUi {
 
 	public void addPresence(int day, Boolean pPresence) {
 		presences[day] = presences[day] + (pPresence ? 1 : 0);
+	}
+	
+	public void addMuscu(int day, Boolean pPresence) {
+		muscus[day] = muscus[day] + (pPresence ? 1 : 0);
 	}
 
 	public List<Integer[]> getDistances() {
@@ -55,6 +62,16 @@ public class SwimmerStatWeekUi {
 				lTotal += presence;
 			}
 			totalPresence = lTotal;
+		}
+	}
+	
+	public void computeTotalMuscu() {
+		if (totalMuscu == 0) {
+			int lTotal = 0;
+			for (Integer presence : muscus) {
+				lTotal += presence;
+			}
+			totalMuscu = lTotal;
 		}
 	}
 
@@ -96,6 +113,22 @@ public class SwimmerStatWeekUi {
 
 	public void setTotalPresence(int pTotalPresence) {
 		totalPresence = pTotalPresence;
+	}
+
+	public int getTotalMuscu() {
+		return totalMuscu;
+	}
+
+	public void setTotalMuscu(int totalMuscu) {
+		this.totalMuscu = totalMuscu;
+	}
+
+	public Integer[] getMuscus() {
+		return muscus;
+	}
+
+	public void setMuscus(Integer[] muscus) {
+		this.muscus = muscus;
 	}
 
 }

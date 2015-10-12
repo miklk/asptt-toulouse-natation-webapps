@@ -34,7 +34,7 @@
 				<tr ng-repeat="nageur in nageurs | orderBy:['+nageur.nom', '+nageur.prenom']">
 					<td>{{nageur.nom}} {{nageur.prenom}}</td>
 					<td ng-repeat="distanceWeek in nageur.distances track by $index"><span ng-if="weeks[$index].first > 0">{{distanceWeek}} ({{nageur.presences[$index]}})</span></td>
-					<td>{{nageur.totalDistance}} <span class="badge">{{nageur.totalPresence}}</span></td>
+					<td>{{nageur.totalDistance}} <span class="badge">{{nageur.totalPresence}} ({{nageur.totalMuscu}} muscus)</span></td>
 				</tr>
 			</tbody>
 		</table>
