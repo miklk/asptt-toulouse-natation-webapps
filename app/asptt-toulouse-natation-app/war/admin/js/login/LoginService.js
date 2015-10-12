@@ -7,6 +7,9 @@ loginServices.factory('LoginService', ['$resource',
 		}),
 		login: $resource('/resources/authentication/isAuthenticated',{},{
 			query:{method:'POST'}
+		}),
+		forget: $resource('/resources/authentication/forget/:password',{},{
+			query:{method:'GET'}
 		})
 	};
 }]);

@@ -1,11 +1,24 @@
 package com.asptttoulousenatation.core.authentication;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -17,6 +30,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -40,6 +54,9 @@ import com.google.appengine.api.users.UserServiceFactory;
 @Path("/authentication")
 @Produces("application/json")
 public class AuthenticationService {
+	
+	private static final Logger LOG = Logger.getLogger(AuthenticationService.class
+			.getName());
 
 	@Context
 	private UriInfo uriInfo;
@@ -47,6 +64,7 @@ public class AuthenticationService {
 	private HttpServletRequest request;
 
 	private UserAuthorizationDao userAuthorizationDao = new UserAuthorizationDao();
+	private UserDao userDao = new UserDao();
 	
 	@Path("{openIdService}")
 	@GET
@@ -134,6 +152,55 @@ public class AuthenticationService {
 			       authentication = authenticationProvider.authenticate(authenticationToken);
 			        SecurityContextHolder.getContext().setAuthentication(authentication);
 			result = (LoginResult) authentication.getDetails();
+		}
+		return result;
+	}
+	
+	@Path("/forget/{email}")
+	@GET
+	public boolean forget(@PathParam("email") String email) {
+		boolean result = false;
+		try {
+
+			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+			criteria.add(new CriterionDao<String>(UserEntityFields.EMAILADDRESS, email, Operator.EQUAL));
+			List<UserEntity> users = userDao.find(criteria);
+			final UserEntity userEntity;
+			if (CollectionUtils.isEmpty(users)) {
+				result = false;
+			} else {
+				result = true;
+				userEntity = users.get(0);
+				final String code;
+				code = RandomStringUtils.randomNumeric(4);
+				// Encrypt password
+				MessageDigest lMessageDigest = Utils.getMD5();
+				String encryptedPassword = new String(lMessageDigest.digest(code.getBytes()));
+				userEntity.setPassword(encryptedPassword);
+				userDao.save(userEntity);
+
+				Properties props = new Properties();
+				Session session = Session.getDefaultInstance(props, null);
+
+				Multipart mp = new MimeMultipart();
+				MimeBodyPart htmlPart = new MimeBodyPart();
+				String msgBody = "Votre nouveau mot de passe est : " + "<b>" + code + "</b>" + ".<br />"
+						+ "<a href=\"http://www.asptt-toulouse-natation.com/admin\">Espace privé</a>"
+						+ "<p>Sportivement,<br />ASPTT Toulouse Natation</p>";
+
+				htmlPart.setContent(msgBody, "text/html");
+				mp.addBodyPart(htmlPart);
+				MimeMessage msg = new MimeMessage(session);
+				msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(userEntity.getEmailaddress()));
+				msg.setSubject("Réinitialisation du mot de passe", "UTF-8");
+				msg.setContent(mp);
+				Transport.send(msg);
+			}
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			LOG.log(Level.SEVERE, "Impossible d'envoyer le mot de passe par e-mail", e);
+		} catch (NoSuchAlgorithmException e) {
+			LOG.log(Level.SEVERE, "Error during user creation", e);
 		}
 		return result;
 	}

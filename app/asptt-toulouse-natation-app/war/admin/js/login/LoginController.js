@@ -46,4 +46,10 @@ loginController.controller('LoginController', ['$rootScope', '$scope', '$http', 
 	 		window.location.href = "admin/#/home";
 		});
 	};
+	
+	$scope.forget = function() {
+		LoginService.forget.query({email: $scope.credentials.email}, function(data) {
+			forgetOk = data;
+		});
+	}
 }]);

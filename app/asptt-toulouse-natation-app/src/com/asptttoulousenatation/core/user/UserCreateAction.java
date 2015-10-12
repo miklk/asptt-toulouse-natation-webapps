@@ -16,6 +16,7 @@ public class UserCreateAction implements Serializable {
 	private String nom;
 	private String prenom;
 	private Set<String> authorizations;
+	private String password;
 	
 	public String getEmail() {
 		return email;
@@ -48,4 +49,13 @@ public class UserCreateAction implements Serializable {
 	public void setAuthorizations(Set<String> authorizations) {
 		this.authorizations = authorizations;
 	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
 }
