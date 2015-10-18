@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan("com.asptttoulousenatation.core.web")
+@ComponentScan("com.asptttoulousenatation.core")	
 @Import({ WebSecurityConfig.class })
 public class AppConfig {
 

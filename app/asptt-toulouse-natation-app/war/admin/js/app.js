@@ -104,13 +104,13 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
        'self',
        'http://docs.google.com/viewer?url=*'
      ]);
-	$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
-	$httpProvider.defaults.withCredentials = true;
+	//$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+	//$httpProvider.defaults.withCredentials = true;
     //$httpProvider.interceptors.push('XSRFInterceptor');
 
 }]);
 
-adminApp.run(function($rootScope, $location, AuthorizationService) {
+/**adminApp.run(function($rootScope, $location, AuthorizationService) {
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
         if (!$rootScope.authenticated) {
             $location.url("/page/login");
@@ -118,7 +118,7 @@ adminApp.run(function($rootScope, $location, AuthorizationService) {
         	$location.url("/unauthorized");
         }
     });
-});
+});**/
 
 adminApp.directive('ngLoadingIndicator', function($rootScope) {
 	return {
