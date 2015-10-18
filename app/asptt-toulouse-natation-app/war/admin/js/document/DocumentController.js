@@ -6,7 +6,7 @@ var documentController = angular.module('DocumentController', ['ngRoute', 'docum
 
 documentController.controller('DocumentController', ['$http', '$scope', '$location', 'DocumentService', 'LibelleService', function($http, $scope, $location, DocumentService, LibelleService) {
 	function init() {
-		$scope.searchText = null;
+		$scope.searchText = "";
 		$scope.showCreationPanel = false;
 		DocumentService.list.query({}, function (data) {
 			$scope.documents = data.documents;
