@@ -128,4 +128,20 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 			$scope.enf = enf;
 		});
 	};
+	
+	$scope.computeTotalPresence = function(nageur) {
+		var total = 0;
+		angular.forEach(nageur.distances, function(distance) {
+			if(distance[0] > 0) {
+				total++;
+			}
+			if(distance[1] > 0) {
+				total++;
+			}
+			if(distance[2] > 0) {
+				total++;
+			}
+		});
+		return total;
+	}
 }]);
