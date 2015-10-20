@@ -11,9 +11,8 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.web.creneau.CoupleValue;
 
 @XmlRootElement
@@ -54,12 +53,12 @@ public class AdherentSexeAgeResult {
 		CSP.put("directrice association", "Cadres et professions intellectuelles supérieures");
 		CSP.put("cadre administratif", "Cadres et professions intellectuelles supérieures");
 		CSP.put("economiste de la construction", "Cadres et professions intellectuelles supérieures");
-		
+
 		CSP.put("infirmière", "Professions Intermédiaires");
 		CSP.put("informatitien", "Professions Intermédiaires");
 		CSP.put("éducatrice spécialisée", "Professions Intermédiaires");
 		CSP.put("cadreur video", "Professions Intermédiaires");
-		
+
 		CSP.put("gestionnaire comptable", "Employés");
 		CSP.put("aide menagère", "Employés");
 		CSP.put("aide-soignante", "Employés");
@@ -68,7 +67,7 @@ public class AdherentSexeAgeResult {
 		CSP.put("interimaire", "Employés");
 		CSP.put("chargée de veille", "Employés");
 		CSP.put("employée la poste", "Employés");
-		
+
 		CSP.put("luthier", "Ouvriers");
 		CSP.put("", "Retraités");
 		CSP.put("chomeur", "Autres personnes sans activité professionnelle");
@@ -85,18 +84,14 @@ public class AdherentSexeAgeResult {
 		sexeAges.add(stat);
 	}
 
-	public void computeLocalisationToulouse(
-			Map<String, LocalisationStatBean> localisationMap) {
+	public void computeLocalisationToulouse(Map<String, LocalisationStatBean> localisationMap) {
 		Map<String, LocalisationStatBean> localisationToulouseMap = new HashMap<>();
 		LocalisationStatBean autreLocalisation = new LocalisationStatBean();
 		autreLocalisation.setCodepostal(LOCALISATION_TOULOUSE_AUTRE);
-		localisationToulouseMap.put(LOCALISATION_TOULOUSE_AUTRE,
-				autreLocalisation);
-		for (Map.Entry<String, LocalisationStatBean> localisationEntry : localisationMap
-				.entrySet()) {
+		localisationToulouseMap.put(LOCALISATION_TOULOUSE_AUTRE, autreLocalisation);
+		for (Map.Entry<String, LocalisationStatBean> localisationEntry : localisationMap.entrySet()) {
 			if (CODE_POSTAUX_TOULOUSE.contains(localisationEntry.getKey())) {
-				localisationToulouseMap.put(localisationEntry.getKey(),
-						localisationEntry.getValue());
+				localisationToulouseMap.put(localisationEntry.getKey(), localisationEntry.getValue());
 			} else {
 				autreLocalisation.add();
 			}
@@ -116,19 +111,16 @@ public class AdherentSexeAgeResult {
 	public void computeAges() {
 		ageArray = new ArrayList<>();
 		for (Map.Entry<Integer, Integer> entry : ages.entrySet()) {
-			ageArray.add(new CoupleValue<Integer, Integer>(entry.getKey(),
-					entry.getValue()));
+			ageArray.add(new CoupleValue<Integer, Integer>(entry.getKey(), entry.getValue()));
 		}
-		Collections.sort(ageArray,
-				new Comparator<CoupleValue<Integer, Integer>>() {
+		Collections.sort(ageArray, new Comparator<CoupleValue<Integer, Integer>>() {
 
-					@Override
-					public int compare(CoupleValue<Integer, Integer> pO1,
-							CoupleValue<Integer, Integer> pO2) {
-						return pO2.getFirst().compareTo(pO1.getFirst());
-					}
+			@Override
+			public int compare(CoupleValue<Integer, Integer> pO1, CoupleValue<Integer, Integer> pO2) {
+				return pO2.getFirst().compareTo(pO1.getFirst());
+			}
 
-				});
+		});
 	}
 
 	public void addComplet() {
@@ -171,8 +163,7 @@ public class AdherentSexeAgeResult {
 		return localisationsToulouse;
 	}
 
-	public void setLocalisationsToulouse(
-			List<LocalisationStatBean> pLocalisationsToulouse) {
+	public void setLocalisationsToulouse(List<LocalisationStatBean> pLocalisationsToulouse) {
 		localisationsToulouse = pLocalisationsToulouse;
 	}
 
@@ -216,24 +207,14 @@ public class AdherentSexeAgeResult {
 		renouvellement = pRenouvellement;
 	}
 
-	public static String getCsp(InscriptionEntity2 pAdherent, Boolean type) {
+	public static String getCsp(DossierEntity dossier, DossierNageurEntity pAdherent, Boolean type) {
 		final String csp;
-		if (StringUtils.isNotBlank(pAdherent.getCsp())) {
+		if (type == null) {
 			csp = pAdherent.getCsp();
+		} else if (type) {
+			csp = dossier.getParent1Csp();
 		} else {
-			final String profession;
-			if (type == null) {
-				profession = pAdherent.getProfession();
-			} else if (type) {
-				profession = pAdherent.getProfessionTextMere();
-			} else {
-				profession = pAdherent.getProfessionTextPere();
-			}
-			if (StringUtils.isNotBlank(profession) && CSP.containsKey(profession.trim())) {
-				csp = CSP.get(profession);
-			} else {
-				csp = "";
-			}
+			csp = dossier.getParent2Csp();
 		}
 		return csp;
 	}

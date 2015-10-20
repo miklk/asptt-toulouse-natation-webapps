@@ -45,19 +45,4 @@ public class Inscription2Dao extends DaoBase<InscriptionEntity2> {
 		Set<Long> result = new HashSet<>(lAllList);
 		return result;
 	}
-
-	public Collection<String> getDateNaissances() {
-		EntityManager em = EMF.get().createEntityManager();
-		List<String> lAllList = new ArrayList<>();
-		try {
-			TypedQuery<String> query = em.createQuery("SELECT DISTINCT "
-					+ getAlias() + ".datenaissance FROM "
-					+ getEntityClass().getSimpleName() + " " + getAlias(),
-					String.class);
-			lAllList = query.getResultList();
-		} finally {
-			em.close();
-		}
-		return lAllList;
-	}
 }

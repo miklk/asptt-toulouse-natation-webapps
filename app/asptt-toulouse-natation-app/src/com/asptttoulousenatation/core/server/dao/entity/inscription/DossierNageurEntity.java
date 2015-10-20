@@ -11,6 +11,7 @@ import javax.persistence.PreUpdate;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 import com.asptttoulousenatation.core.server.dao.entity.IEntity;
 
@@ -257,5 +258,9 @@ public class DossierNageurEntity implements IEntity {
 		created = new Date();
 		updated = new Date();
 		toUpperCase();
+	}
+	
+	public DateTime getDateNaissanceAsDateTime() {
+		return new DateTime(naissance.getTime());
 	}
 }

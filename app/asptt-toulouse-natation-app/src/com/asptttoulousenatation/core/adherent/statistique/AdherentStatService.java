@@ -1,7 +1,6 @@
 package com.asptttoulousenatation.core.adherent.statistique;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,12 +16,15 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
-import com.asptttoulousenatation.core.adherent.AdherentBeanTransformer;
-import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityFields;
-import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
-import com.asptttoulousenatation.core.server.dao.inscription.Inscription2Dao;
+import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
+import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
+import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
+import com.asptttoulousenatation.core.util.DossierUtils;
 
 @Path("/adherentsStat")
 @Produces("application/json")
@@ -31,7 +33,8 @@ public class AdherentStatService {
 	private static final Logger LOG = Logger
 			.getLogger(AdherentStatService.class.getName());
 
-	private Inscription2Dao dao = new Inscription2Dao();
+	private DossierDao dao = new DossierDao();
+	private DossierNageurDao nageurDao = new DossierNageurDao();
 
 	@Path("/sexe-age")
 	@GET
@@ -39,7 +42,7 @@ public class AdherentStatService {
 		AdherentSexeAgeResult result = new AdherentSexeAgeResult();
 		int currentMajeur = DateTime.now().year().get() - 18;
 
-		List<InscriptionEntity2> adherents = dao.getAll();
+		List<DossierNageurEntity> adherents = nageurDao.getAll();
 		result.setNbAdherents(adherents.size());
 		SexeAgeStatBean homme = new SexeAgeStatBean();
 		homme.setSexe("Homme");
@@ -51,8 +54,9 @@ public class AdherentStatService {
 		Map<String, LocalisationStatBean> localisations = new HashMap<>();
 		Map<String, ProfessionStatBean> professions = new HashMap<>();
 
-		for (InscriptionEntity2 adherent : adherents) {
-			if (adherent.getInscriptiondt() != null) {
+		for (DossierNageurEntity adherent : adherents) {
+			DossierEntity dossier = dao.get(adherent.getDossier());
+			if(dossier != null && DossierUtils.isValid(dossier)) {
 				if (StringUtils.isNotBlank(adherent.getCivilite())) {
 					switch (adherent.getCivilite()) {
 					case "0":
@@ -71,7 +75,7 @@ public class AdherentStatService {
 				}
 
 				// Localisation
-				String codepostal = adherent.getCodepostal();
+				String codepostal = dossier.getCodepostal();
 				if (StringUtils.isNotBlank(codepostal)
 						&& StringUtils.isNumeric(codepostal)
 						&& codepostal.length() == 5) {
@@ -87,17 +91,18 @@ public class AdherentStatService {
 				}
 
 				// Profession
-				countProfession(professions, adherent, null);
-				countProfession(professions, adherent, true);
-				countProfession(professions, adherent, false);
+				countProfession(professions, dossier, adherent, null);
+				countProfession(professions, dossier, adherent, true);
+				countProfession(professions, dossier, adherent, false);
 
 				// Age
-				String anneeNaissance = getAnneeNaissance(adherent);
-				if (StringUtils.isNumeric(anneeNaissance)) {
-					result.addAge(Integer.valueOf(anneeNaissance));
+				if(adherent.getNaissance() != null) {
+					result.addAge(adherent.getDateNaissanceAsDateTime().year().get());
+				} else {
+					LOG.log(Level.WARNING, "Pas de naissance pour " + adherent.getId());
 				}
 				
-				if(BooleanUtils.isTrue(adherent.getComplet())) {
+				if(DossierStatutEnum.INSCRIT.name().equals(dossier.getStatut())) {
 					result.addComplet();
 				}
 				if(BooleanUtils.isTrue(adherent.getNouveau())) {
@@ -113,8 +118,8 @@ public class AdherentStatService {
 		return result;
 	}
 
-	private void countProfession(Map<String, ProfessionStatBean> professions, InscriptionEntity2 pAdherent, Boolean type) {
-		String csp = AdherentSexeAgeResult.getCsp(pAdherent, type);
+	private void countProfession(Map<String, ProfessionStatBean> professions, DossierEntity dossier, DossierNageurEntity pAdherent, Boolean type) {
+		String csp = AdherentSexeAgeResult.getCsp(dossier, pAdherent, type);
 		if (StringUtils.isNotBlank(csp)) {
 			final ProfessionStatBean professionStatBean;
 			if (professions.containsKey(csp)) {
@@ -128,11 +133,11 @@ public class AdherentStatService {
 		}
 	}
 
-	private void setAge(InscriptionEntity2 adherent, SexeAgeStatBean sexe,
-			int yearMajeur) {
-		String anneeAsString = getAnneeNaissance(adherent);
-		if (StringUtils.isNumeric(anneeAsString)) {
-			int annee = Integer.valueOf(anneeAsString);
+	private void setAge(DossierNageurEntity adherent, SexeAgeStatBean sexe, int yearMajeur) {
+		if (adherent.getNaissance() == null) {
+			LOG.log(Level.WARNING, "Pas de naissance pour " + adherent.getId());
+		} else {
+			int annee = adherent.getDateNaissanceAsDateTime().year().get();
 			if (annee < yearMajeur) {
 				sexe.addMineur();
 			} else {
@@ -141,58 +146,39 @@ public class AdherentStatService {
 		}
 	}
 
-	private String getAnneeNaissance(InscriptionEntity2 adherent) {
-		String anneeAsString = StringUtils.substring(
-				adherent.getDatenaissance(), 0, 4);
-		return anneeAsString;
-	}
-
 	@Path("/familles")
 	@GET
 	public AdherentFamilleStatResult getFamilles() {
 		AdherentFamilleStatResult result = new AdherentFamilleStatResult();
 
-		Collection<Long> famillesId = dao.getPrincipal();
+		List<DossierEntity> dossiers = dao.getAll();
 		List<FamilleBean> familles = new ArrayList<FamilleBean>(
-				famillesId.size());
-		for (Long parentId : famillesId) {
-			try {
-				FamilleBean famille = new FamilleBean();
-				InscriptionEntity2 parent = dao.get(parentId);
-				if (parent != null) {
-					famille.setParent(AdherentBeanTransformer.getInstance()
-							.get(parent));
-					List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-							1);
-					criteria.add(new CriterionDao<Long>(
-							InscriptionEntityFields.PRINCIPAL, parentId,
-							Operator.EQUAL));
-					List<InscriptionEntity2> enfants = dao.find(criteria);
-					if (CollectionUtils.isNotEmpty(enfants)) {
-						famille.setEnfants(AdherentBeanTransformer
-								.getInstance().get(enfants));
-						result.addPiscine(famille);
-						result.addGroupe(famille);
-						familles.add(famille);
-					}
-				} else {
-					LOG.warning("No parent with id " + parentId);
+				dossiers.size());
+		for (DossierEntity dossier : dossiers) {
+			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteria.add(new CriterionDao<Long>(
+					DossierNageurEntityFields.DOSSIER, dossier.getId(),
+					Operator.EQUAL));
+			List<DossierNageurEntity> enfants = nageurDao.find(criteria);
+			if(CollectionUtils.isNotEmpty(enfants) && enfants.size() > 1) {//Uniquement familles
+				try {
+					FamilleBean famille = new FamilleBean();
+							/**famille.setEnfants(AdherentBeanTransformer
+									.getInstance().get(enfants));
+							result.addPiscine(famille);
+							result.addGroupe(famille);**/
+							familles.add(famille);
+				} catch (Exception e) {
+					LOG.severe(e.getMessage());
+					LOG.log(Level.SEVERE, e.getMessage(), e);
+	
 				}
-			} catch (Exception e) {
-				LOG.severe(e.getMessage());
-				LOG.log(Level.SEVERE, e.getMessage(), e);
-
 			}
 		}
 		result.setNbFamilles(familles.size());
 		result.toList();
 
 		return result;
-	}
-
-	@Path("/annees")
-	@GET
-	public Collection<String> getAnnees() {
-		return dao.getDateNaissances();
 	}
 }
