@@ -45,6 +45,7 @@
             <property name="datanucleus.ConnectionURL" value="appengine"/>
             <property name="datanucleus.singletonEMFForName" value="true"/>
             <property name="datanucleus.Optimistic" value="true" />
+            <property name="javax.persistence.validation.mode" value="none" />
         </properties>
 
     </persistence-unit>

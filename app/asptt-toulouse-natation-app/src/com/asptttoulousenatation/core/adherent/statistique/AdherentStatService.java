@@ -97,7 +97,7 @@ public class AdherentStatService {
 
 				// Age
 				if(adherent.getNaissance() != null) {
-					result.addAge(adherent.getDateNaissanceAsDateTime().year().get());
+					result.addAge(DossierUtils.getDateNaissanceAsDateTime(adherent).year().get());
 				} else {
 					LOG.log(Level.WARNING, "Pas de naissance pour " + adherent.getId());
 				}
@@ -137,7 +137,7 @@ public class AdherentStatService {
 		if (adherent.getNaissance() == null) {
 			LOG.log(Level.WARNING, "Pas de naissance pour " + adherent.getId());
 		} else {
-			int annee = adherent.getDateNaissanceAsDateTime().year().get();
+			int annee = DossierUtils.getDateNaissanceAsDateTime(adherent).year().get();
 			if (annee < yearMajeur) {
 				sexe.addMineur();
 			} else {

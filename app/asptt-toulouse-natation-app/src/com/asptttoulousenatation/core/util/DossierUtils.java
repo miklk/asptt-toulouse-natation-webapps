@@ -1,8 +1,10 @@
 package com.asptttoulousenatation.core.util;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
 
 public class DossierUtils {
@@ -18,5 +20,9 @@ public class DossierUtils {
 					|| DossierStatutEnum.PAIEMENT_COMPLET.equals(dossierStatut);
 		}
 		return result;
+	}
+	
+	public static DateTime getDateNaissanceAsDateTime(DossierNageurEntity nageur) {
+		return new DateTime(nageur.getNaissance().getTime());
 	}
 }
