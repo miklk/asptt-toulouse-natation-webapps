@@ -126,4 +126,9 @@
         <property name="groupe" direction="asc"/>
         <property name="nom" direction="asc"/>
     </datastore-index>
+    
+    <datastore-index kind="DossierEntity" ancestor="false" source="manual">
+        <property name="statut" direction="asc"/>
+        <property name="updated" direction="asc"/>
+    </datastore-index>
 </datastore-indexes>
