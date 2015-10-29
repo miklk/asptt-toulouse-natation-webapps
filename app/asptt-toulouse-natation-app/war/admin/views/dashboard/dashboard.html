@@ -67,11 +67,11 @@ rect:hover {  fill:blue; }
 			<div class="panel panel-primary">
 				<div class="panel-heading"><a href="#/dossiers" class="btn btn-primary">Dossiers d'inscription</a></div>
 				<div class="panel-body">
-					<p><label>Complets:</label> {{statistiques.complets}}</p>
-					<p><label>Payés:</label> {{statistiques.payes}}</p>
-					<p><label>Non payés:</label> {{statistiques.nonpayes}}</p>
+					<p><label>Complets (inscrits):</label> {{statistiques.complets}}</p>
+					<p><label>Payés (inscrit, paiement):</label> {{statistiques.payes}}</p>
+					<p><label>Non payés (préinscrit, expiré):</label> {{statistiques.nonpayes}}</p>
 					<p><label>Potentiel inscription:</label> {{statistiques.potentiel}}</p>
-					<p><label>Total:</label> {{statistiques.total}}</p>
+					<p><label>Total (inscrits, paiement):</label> {{statistiques.total}}</p>
 					<div id="dossiers-graph"></div>
 				</div>
 			</div>
