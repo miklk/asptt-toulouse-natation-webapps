@@ -7,7 +7,6 @@ documentationController.controller('DocumentationController', ['$http', '$scope'
 	$scope.libelles = ['Documentation'];
 	DocumentService.byLibelles.query({libelles: $scope.libelles}, function (data) {
 		$scope.results = data.documents;
-		console.log($scope.results);
 	});
 	
 	$scope.download = function(document) {

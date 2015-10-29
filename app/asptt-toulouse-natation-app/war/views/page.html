@@ -16,6 +16,14 @@
 							<h5 class="list-group-item-heading">{{document.title}}</h5>
 							<p class="list-group-item-text">{{document.summary}}</p>
 						</a>
+						<div class="row" ng-repeat="(libelle, documents) in pageDocuments" id="{{$index}}">
+				
+						<a href="http://docs.google.com/viewer?embedded=true&url=http%3A%2F%2Fwww.asptt-toulouse-natation.com%2FdownloadDocument%3FdocumentId%3D{{document.id}}%26fileId%3D{{document.data}}" target="_blank" class="list-group-item" ng-repeat="document in documents">
+							<h5 class="list-group-item-heading">{{document.title}}</h5>
+							<p class="list-group-item-text">{{document.summary}}</p>
+						</a>
+						</div>
+					</div>
 						<div id="pdf-viewer" style="display:none">
 						</div>
 					</div>

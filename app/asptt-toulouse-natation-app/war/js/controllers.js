@@ -43,7 +43,7 @@ aspttNatTlsApp.controller('LoadingAppCtrl', ['$scope', 'LoadingApp', '$sce', fun
 	};
 }]);
 
-aspttNatTlsApp.controller('PageCtrl', ['$scope', 'pageId', 'PageService', '$routeParams', '$sce', function($scope, pageId, PageService, $routeParams, $sce) {
+aspttNatTlsApp.controller('PageCtrl', ['$scope', 'pageId', 'PageService', 'DocumentService', '$routeParams', '$sce', function($scope, pageId, PageService, DocumentService, $routeParams, $sce) {
 	var pageIdentifier = pageId;
 	if(pageId == null) {
 		pageIdentifier = $routeParams.pageId;
@@ -62,6 +62,9 @@ aspttNatTlsApp.controller('PageCtrl', ['$scope', 'pageId', 'PageService', '$rout
 	            scrollTop:$("#pdf-viewer").offset().top  
 	        }, 'slow');	
 		};
+		DocumentService.byLibelles.query({libelles: pageIdentifier}, function (data) {
+			$scope.pageDocuments = data.documents;
+		});
 	});
 }]);
 
