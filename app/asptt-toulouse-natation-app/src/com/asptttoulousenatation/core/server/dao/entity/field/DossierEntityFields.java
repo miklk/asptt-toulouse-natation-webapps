@@ -1,8 +1,6 @@
 package com.asptttoulousenatation.core.server.dao.entity.field;
 
-import com.google.gdata.data.dublincore.Date;
-
-
+import java.util.Date;
 
 public enum DossierEntityFields implements IEntityFields {
 	EMAIL(String.class),
