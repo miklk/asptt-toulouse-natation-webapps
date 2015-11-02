@@ -64,6 +64,8 @@ aspttNatTlsApp.controller('PageCtrl', ['$scope', 'pageId', 'PageService', 'Docum
 		};
 		DocumentService.byLibelles.query({libelles: pageIdentifier}, function (data) {
 			$scope.pageDocuments = data.documents;
+			$scope.hasDocument = data.documents != null;
+			$scope.nbDocuments = data.documents.length;
 		});
 	});
 }]);
