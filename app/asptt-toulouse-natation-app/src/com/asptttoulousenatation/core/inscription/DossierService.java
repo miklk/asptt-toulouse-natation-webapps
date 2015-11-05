@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -60,11 +61,13 @@ import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntit
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierFactureEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierFactureEnum;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurPhotoEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierCertificatDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierFactureDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
+import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurPhotoDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
@@ -84,6 +87,7 @@ public class DossierService {
 	private DossierCertificatDao certificatDao = new DossierCertificatDao();
 	private SlotDao slotDao = new SlotDao();
 	private DossierFactureDao factureDao = new DossierFactureDao();
+	private DossierNageurPhotoDao nageurPhotoDao = new DossierNageurPhotoDao();
 	
 	
 	@Path("/find")
@@ -275,6 +279,9 @@ public class DossierService {
 			certificatCriteria.add(new CriterionDao<Long>(DossierCertificatEntityFields.DOSSIER, entity.getId(), Operator.EQUAL));
 			List<DossierCertificatEntity> certificats = certificatDao.find(certificatCriteria);
 			nageurUi.setHasCertificat(CollectionUtils.isNotEmpty(certificats));
+			
+			//Photo
+			nageurUi.setHasPhoto(nageurPhotoDao.findByDossier(entity.getId()) != null);
 			dossierUi.addNageur(nageurUi);
 		}
 		return dossierUi;
@@ -994,5 +1001,48 @@ public class DossierService {
 		}
 		LOG.log(Level.WARNING, count + " dossiers clean");
 		return count;
+	}
+	
+	@Path("/uploadPhoto/{nageur}")
+	@POST
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response uploadPhoto(@PathParam("nageur") Long nageurId, @FormDataParam("file") FormDataBodyPart photoPart) {
+		Response response = null;
+		// Existence du nageur
+		DossierNageurEntity nageur = dao.get(nageurId);
+		if (nageur != null) {
+			try {
+				Blob photo = new Blob(IOUtils.toByteArray(photoPart.getValueAs(InputStream.class)));
+
+				// Create or update photo
+				DossierNageurPhotoEntity photoEntity = nageurPhotoDao.findByDossier(nageur.getId());
+				if (photoEntity == null) {
+					photoEntity = new DossierNageurPhotoEntity();
+					photoEntity.setDossier(nageur.getId());
+				}
+				photoEntity.setPhoto(photo);
+				nageurPhotoDao.save(photoEntity);
+				response = Response.ok().build();
+			} catch (IOException e) {
+				LOG.log(Level.SEVERE, "Ajout de la photo", e);
+				response = Response.serverError().build();
+			}
+		} else {
+			response = Response.serverError().build();
+		}
+
+		return response;
+	}
+	
+	@Path("/downloadPhoto/{nageur}")
+	@GET
+	@Produces("application/octet-stream")
+	public Response downloadPhoto(@PathParam("nageur") Long nageurId) {
+		DossierNageurPhotoEntity photoEntity = nageurPhotoDao.findByDossier(nageurId);
+		if(photoEntity != null) {
+			return Response.ok(photoEntity.getPhoto().getBytes()).build(); 
+		} else {
+			return Response.noContent().build();
+		}
 	}
 }

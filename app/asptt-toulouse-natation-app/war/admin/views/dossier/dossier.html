@@ -22,7 +22,7 @@
     <li class="active"><a data-toggle="tab" href="#suivi" target="_self">Suivi</a></li>
     <li><a data-toggle="tab" href="#principal" target="_self">Informations générales</a></li>
     <li ng-repeat="nageur in dossier.nageurs">
-    	<a data-toggle="tab" href="#{{nageur.nageur.id}}" target="_self">{{nageur.nageur.nom}} {{nageur.nageur.prenom}}</a>
+    	<a data-toggle="tab" href="#{{nageur.nageur.id}}" target="_self" ng-click>{{nageur.nageur.nom}} {{nageur.nageur.prenom}}</a>
     </li>
  </ul>
  
@@ -35,7 +35,9 @@
     </div>
     
     <div ng-repeat="nageur in dossier.nageurs" id="{{nageur.nageur.id}}" class="tab-pane fade in">
-    	<div ng-include="'views/dossier/dossier-nageur.html'"></div>
+        <div class="container">
+            <div ng-include="'views/dossier/dossier-nageur.html'"></div>
+        </div>
     </div>
 </div>
 <div ng-include="'views/dossier/dossier-paiement.html'"></div>

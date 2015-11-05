@@ -1,37 +1,42 @@
 <h3>{{nageur.nageur.nom}} {{nageur.nageur.prenom}}&nbsp;<button type="button" class="btn btn-danger btn-xs" title="Supprimer le nageur"><span class="glyphicon glyphicon-remove" ng-click=""></span></button>&nbsp;<button type="button" class="btn btn-info btn-xs" title="Certificat reçu"><span class="glyphicon glyphicon-ok" ng-click=""></span></button>
 &nbsp;<a class="btn btn-primary btn-xs" href="/resources/inscription/print/{{nageur.nageur.id}}" download><span class="glyphicon glyphicon-save-file" ng-click=""></span> Bulletin d'adhésion</a></button></h3>
 <form role="form" class="form-horizontal" enctype="multipart/form-data">
-	<div class="form-group">
-		<div class="col-md-1"></div>
-		<label class="radio-inline">
-			<input type="radio" name="civilite" id="monsieur" value="0" ng-model="nageur.nageur.civilite" />
-			M
-		</label>
-		<label class="radio-inline">
-			<input type="radio" name="civilite" id="madame" value="1" ng-model="nageur.nageur.civilite" />
-			F
-		</label>
-	</div>
-	<div class="form-group">
-		<div class="col-md-1"></div>
-		<div class="form-inline">
-			<label for="nom" class="control-label">Nom</label>
-			<input id="nom" type="text" class="form-control" ng-model="nageur.nageur.nom" size="50" />
-			<label for="prenom" class="control-label">Prénom</label>
-			<input id="prenom" type="text" class="form-control" ng-model="nageur.nageur.prenom" size="50" />
+    <div class="row">
+	    <div class="col-md-4">
+	        <img src="/resources/dossiers/downloadPhoto/{{nageur.nageur.id}}" class="img-thumbnail" style="max-height: 200px" ng-show="nageur.hasPhoto" />
+	        <img src="../../img/nageur-nopic.png" class="img-thumbnail" style="max-height: 200px" ng-hide="nageur.hasPhoto" />
+	        <input type="file" id="idphoto" name="idphoto_{{nageur.nageur.id}}" class="btn btn-default btn-xs" accept="image/*" onchange="angular.element(this).scope().uploadIdPhoto(this)">
+	    </div>
+	    <div class="col-md-6">
+			<div class="form-group">
+				<label class="radio-inline">
+					<input type="radio" name="civilite" id="monsieur" value="0" ng-model="nageur.nageur.civilite" />
+					M
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="civilite" id="madame" value="1" ng-model="nageur.nageur.civilite" />
+					F
+				</label>
+			</div>
+			<div class="form-group">
+				<div class="form">
+					<label for="nom" class="control-label">Nom</label>
+					<input id="nom" type="text" class="form-control" ng-model="nageur.nageur.nom" size="50" />
+					<label for="prenom" class="control-label">Prénom</label>
+					<input id="prenom" type="text" class="form-control" ng-model="nageur.nageur.prenom" size="50" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for=dateNaissance class="control-label">Date de naissance</label>
+					<input id="datenaissance-field" name="datenaissance" type="date" ng-model="nageur.nageur.naissance" class="form-control" />
+			</div>
 		</div>
 	</div>
-	<div class="form-group">
-		<label for=dateNaissance class="col-md-2 control-label">Date de naissance</label>
-		<div class="col-md-4">
-			<input id="datenaissance-field" name="datenaissance" type="date" ng-model="nageur.nageur.naissance" class="form-control" />
-		</div>
-	</div>
-	
+	<div class="row">
+	   <div class="col-md-8">
 	<h3>Equipement</h3>
 	
 	<div class="form-group">
-		<div class="col-md-1"></div>
 		<div class="form-inline">
 			<label for="maillot" class="control-label">Maillot de bain</label>
 			<input type="text" class="form-control" id="maillot" placeholder="Maillot de bain" size="5" ng-model="nageur.nageur.maillot" />
@@ -85,6 +90,8 @@
 		</div>
 	
 	<button type="button" class="btn btn-primary btn-block" ng-click="update()">Valider les modifications</button>
+	</div>
+	</div>
 </form>
 <div ng-include="'views/dossier/dossier-groupe.html'"></div>
 <div ng-include="'views/dossier/dossier-creneaux.html'"></div>

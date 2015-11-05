@@ -9,7 +9,7 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 	DossierService.findOne.query({'dossier': $routeParams.dossierId}, function(data) {
 		$scope.dossier = data;
 		
-		//Handle input date
+		//Handle input date and photo
 		angular.forEach($scope.dossier.nageurs, function(nageur) {
 				nageur.nageur.naissance = new Date(nageur.nageur.naissance);
 		});
@@ -142,4 +142,28 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 		DossierService.facture.query({dossier: dossier.principal.id}, null, function(data) {
 		});
 	}
+	
+	$scope.uploadIdPhoto = function(element) {
+		var formData = new FormData();
+		//Upload photo
+		var nageurId = 0;
+		file = element.files[0];
+		if(file != null) {
+			formData.append("file", file);
+			nageurId = element.name.split("_")[1];
+			var responsePromise = $http.post("/resources/dossiers/uploadPhoto/" + nageurId, formData, {
+	            transformRequest: angular.identity,
+	            headers: {'Content-Type': undefined}
+	        })
+		    .success(function(dataFromServer, status, headers, config) {
+		    	$scope.uploadPhotoSuccess = true;
+		       })
+		        .error(function(data, status, headers, config) {
+		        	$scope.uploadPhotoSuccess = false;
+		          alert("Erreur lors de l'ajout de la photo.");
+		       });
+		}
+	};
+	
+	
 }]);

@@ -17,6 +17,7 @@ public class DossierNageurUi implements Serializable {
 	private GroupUi groupe;
 	private Set<SlotUi> creneaux;
 	private boolean hasCertificat;
+	private boolean hasPhoto;
 	public DossierNageurEntity getNageur() {
 		return nageur;
 	}
@@ -41,4 +42,11 @@ public class DossierNageurUi implements Serializable {
 	public void setCreneaux(Set<SlotUi> creneaux) {
 		this.creneaux = creneaux;
 	}
+	public boolean isHasPhoto() {
+		return hasPhoto;
+	}
+	public void setHasPhoto(boolean hasPhoto) {
+		this.hasPhoto = hasPhoto;
+	}
+	
 }

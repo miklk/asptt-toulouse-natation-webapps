@@ -188,7 +188,7 @@ public class DocumentService {
 
 		ContentEntity lEntity = new ContentEntity(fileName, new Blob(
 				IOUtils.toByteArray(pFileInput)),
-				ContentDataKindEnum.DOCUMENT.toString(), 0l);
+				ContentDataKindEnum.DOCUMENT.name(), 0l);
 		ContentEntity lSavedEntity = contentDao.save(lEntity);
 
 		DocumentEntity lDocumentEntity = new DocumentEntity(action.getTitle(),
