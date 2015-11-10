@@ -37,3 +37,25 @@
 		</ul>
 	</div>
 </div>
+
+<div class="row" style="margin-top: 5%" ng-controller="CalendarController">
+    <div class="col-md-10">
+        <div class="row" ng-repeat="(libelle, documents) in results" id="{{$index}}">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h4>{{libelle}} <span class="badge">{{documents.length}}</span></h4>
+                </div>
+                <div class="panel-body">
+                    <div class="list-group">
+                        <a href="http://docs.google.com/viewer?embedded=true&url=http%3A%2F%2Fwww.asptt-toulouse-natation.com%2FdownloadDocument%3FdocumentId%3D{{document.id}}%26fileId%3D{{document.data}}" target="_blank" class="list-group-item" ng-repeat="document in documents">
+                            <h5 class="list-group-item-heading">{{document.title}}</h5>
+                            <p class="list-group-item-text">
+                                <span class="text-muted" ng-hide="!document.summary"><small>{{document.summary}}</small></span>
+                            </p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
