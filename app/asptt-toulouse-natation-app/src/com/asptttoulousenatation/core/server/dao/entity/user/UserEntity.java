@@ -1,9 +1,9 @@
+
 package com.asptttoulousenatation.core.server.dao.entity.user;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.jdo.annotations.Persistent;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,22 +23,16 @@ public class UserEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Persistent
 	private String emailaddress;
 	
-	@Persistent
 	private boolean validated;
 	
-	@Persistent
 	private String password;
 	
-	@Persistent
 	private Set<String> profiles;
 
-	@Persistent
 	private Set<Long> slots;
 	
-	@Persistent
 	private Long userData;
 	
 	private UserAuthenticationTypeEnum authentication;
