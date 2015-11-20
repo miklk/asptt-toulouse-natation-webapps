@@ -40,6 +40,7 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
@@ -1044,5 +1045,18 @@ public class DossierService {
 		} else {
 			return Response.noContent().build();
 		}
+	}
+	
+	@Path("/annuler/{nageur}")
+	@GET
+	public void annuler(@PathParam("nageur") Long nageurId) {
+		DossierNageurEntity nageur = dao.get(nageurId);
+		DossierEntity dossier = dossierDao.get(nageur.getDossier());
+		DossierEntity dossierCopied = SerializationUtils.clone(dossier);
+		dossierCopied.setId(null);
+		dossierCopied.setStatut(DossierStatutEnum.ANNULE.name());
+		DossierEntity dossierCopiedSaved = dossierDao.save(dossierCopied);
+		nageur.setDossier(dossierCopiedSaved.getId());
+		dao.save(nageur);
 	}
 }
