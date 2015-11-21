@@ -380,4 +380,17 @@ public class DossierEntity implements IEntity {
 		updated = new Date();
 		toUpperCase();
 	}
+	
+	public void copyAnnuler(DossierEntity copied) {
+		copied.setComment(getComment());
+		copied.setEmail(getEmail());
+		copied.setMontantreel(getMontantreel());
+		copied.setMotdepasse(getMotdepasse());
+		copied.setParent1Nom(getParent1Nom());
+		copied.setParent1Prenom(getParent1Prenom());
+		copied.setParent2Nom(getParent2Nom());
+		copied.setParent2Prenom(getParent2Prenom());
+		copied.setTelephone(getTelephone());
+		copied.setStatut(DossierStatutEnum.ANNULE.name());
+	}
 }

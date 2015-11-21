@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.imageio.ImageIO;
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -40,7 +39,6 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
@@ -1048,15 +1046,26 @@ public class DossierService {
 	}
 	
 	@Path("/annuler/{nageur}")
-	@GET
+	@PUT
 	public void annuler(@PathParam("nageur") Long nageurId) {
 		DossierNageurEntity nageur = dao.get(nageurId);
 		DossierEntity dossier = dossierDao.get(nageur.getDossier());
-		DossierEntity dossierCopied = SerializationUtils.clone(dossier);
-		dossierCopied.setId(null);
-		dossierCopied.setStatut(DossierStatutEnum.ANNULE.name());
-		DossierEntity dossierCopiedSaved = dossierDao.save(dossierCopied);
-		nageur.setDossier(dossierCopiedSaved.getId());
+		//Duplicate dossier if more than one nageur
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
+				dossier.getId(), Operator.EQUAL));
+		List<DossierNageurEntity> nageurs = dao.find(criteria);
+		if(nageurs.size() > 1) {
+			DossierEntity dossierCopied = new DossierEntity();
+			dossier.copyAnnuler(dossierCopied);
+			DossierEntity dossierCopiedSaved = dossierDao.save(dossierCopied);
+			nageur.setDossier(dossierCopiedSaved.getId());
+		} else {
+			dossier.setStatut(DossierStatutEnum.ANNULE.name());
+			dossierDao.save(dossier);
+		}
+		nageur.setCreneaux(null);
 		dao.save(nageur);
 	}
 }

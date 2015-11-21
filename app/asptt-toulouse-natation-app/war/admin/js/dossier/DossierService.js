@@ -33,5 +33,8 @@ dossierServices.factory('DossierService', ['$resource',
 		facture: $resource('/resources/dossiers/facture/:dossier',{dossier: '@dossier'},{
 			query:{method:'PUT', isArray: false, params: {}}
 		}),
+		annuler: $resource('/resources/dossiers/annuler/:nageur',{nageur: '@nageur'},{
+			query:{method:'PUT', isArray: false, params: {}}
+		}),
 	};
 }]);

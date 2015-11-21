@@ -248,4 +248,13 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 		});
 		return selectedDossiers;
 	};
+	
+	$scope.annulerNageur = function(dossier) {
+		if(confirm("Voulez-vous annuler le dossier de ce nageur?")) {
+			$rootScope.isLoading = true;
+			DossierService.annuler.query({nageur: dossier.nageur.id}, function(data) {
+				$rootScope.isLoading = false;
+			});
+		}
+	}
 }]);
