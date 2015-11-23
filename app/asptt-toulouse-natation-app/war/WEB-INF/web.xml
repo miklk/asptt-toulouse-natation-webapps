@@ -137,7 +137,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 <!-- 			<role-name>admin</role-name> -->
 <!-- 		</auth-constraint> -->
 <!-- 	</security-constraint> -->
- 
+ <!-- 
 <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>/WEB-INF/security.xml</param-value>
@@ -171,5 +171,5 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 <servlet-mapping>
     <servlet-name>spring-dispatcher</servlet-name>
     <url-pattern>/*</url-pattern>
-</servlet-mapping>
+</servlet-mapping>-->
  </web-app>

@@ -8,18 +8,12 @@
      <link rel="shortcut icon" href="../img/favicon.png">
 
     <title>ASPTT Toulouse Natation - Administration</title>
-    
+
     <!-- Bootstrap core CSS -->
     <link href="index.css" rel="stylesheet">
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    
-	<!-- <link rel="stylesheet" href="bootstrap/css/magic-bootstrap.css" /> -->
-	
-	<link href="../js/textangular/textAngular.css" rel="stylesheet">
-	
-	<link rel="stylesheet" href="../js/angular-spinkit-master/build/angular-spinkit.min.css">
-	
+
     <!-- Bootstrap core CSS -->
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -29,68 +23,78 @@
     <![endif]-->
 	<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 	<script src="bootstrap/js/bootstrap.js"></script>
-	
+
     <link rel="stylesheet/less" href="bootstrap/less/bootstrap.less">
 	<script src="bootstrap/assets/js/less.js"></script> -->
   </head>
 <!-- NAVBAR
 ================================================== -->
   <body style="background-color: #e9f8fc;">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-md-2 sidebar" id="menu">
-				<ul class="nav nav-sidebar">
-					<li>
-						<img src="../img/logoclub.png" style="max-height: 60px" />
-                	<span class="logo-text">ASPTT Toulouse Natation - Admin</span>
-					</li>
-					<li data-show-when-connected="ACCESS_INSCRIPTION">
-						<span class="menu">Inscription</span>
-						<ul class="nav nav-sidebar">
-							<li data-show-when-connected="ACCESS_GROUPES"><a href="#/groupes">Groupes (piscines, groupes, créneaux)</a></li>
-							<li data-show-when-connected="ACCESS_DOSSIERS">Dossiers
-								<ul class="nav nav-sidebar">
-									<li><a href="#/dossiers">Suivi</a></li>
-									<li><a href="#/extraction">Extraction</a></li>
-									<li><a href="#/adherent-email">E-mail</a></li>
-									<li><a href="#/adherents-stat">Statistiques</a></li>
-								</ul>
-							</li>
-							<li data-show-when-connected="ACCESS_REMPLISSAGE">Taux de remplissage
-								<ul class="nav nav-sidebar">
-									<li><a href="#/remplissage">Global</a></li>
-									<li><a href="#/remplissage-detail">Par piscines</a></li>
-								</ul>
-							</li>
-						</ul>
-					</li>
-					<li data-show-when-connected="ACCESS_ENF"><span class="menu">Ecole de natation</span>
-						<ul class="nav nav-sidebar">
-							<li><a href="#/enf">Gestion des groupes</a></li>
-						</ul>
-					</li>
-					<li><p class="menu"><a href="#/users">Utilisateurs</a></p>
-					</li>
-					<li data-show-when-connected="ACCESS_DOCUMENTS"><span class="menu">Documents</span>
-						<ul class="nav nav-sidebar">
-	                  	<li><a href="#/documents">Documents</a></li>
-	                  	<li><a href="#/libelles">Gestion des libellés</a></li>
-                		</ul>	
-					</li>
-					<li data-show-when-connected="ACCESS_SUIVI_NAGEURS"><span class="menu">Nageurs</span>
-						<ul class="nav nav-sidebar">
-							<li><a href="#/suivi-nageur-day">Par jour</a></li>
-							<li><a href="#/suivi-nageur-week">Par semaine</a></li>
-							<li><a href="#/suivi-nageur-month">Par mois</a></li>
-							<li><a href="#/suivi-nageur-year">Par année</a></li>
-						</ul>
-					</li>
-				</ul>
+	<div class="container-fluid" ng-controller="LoginController">
+		<div class="row" style="border: 1px solid #000000">
+			<div class="col-md-4">
+				<img src="../img/logoclub.png" style="max-height: 60px" />
 			</div>
-  			<div class="col-md-10 main">
-  				<ng-loading-indicator></ng-loading-indicator>
-  				<div ng-view></div>
-  			</div>
+			<div class="col-md-8">
+				ASPTT Toulouse Natation Administration
+			</div>
+		</div>
+
+      <div class="modal fade" id="login-modal">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-body">
+          			<div class="panel">
+            				<div class="panel-body">
+            					<a href="/oauth_connect?from=google_login&service=google" class="btn btn-block btn-large" style="border: 1px solid #ccc">
+        							Connexion avec Google
+          						</a>
+
+              				<div style="position: relative; height: 34px; text-align: center; background: none">
+              					<span class="h6" style="display: inline-block; padding: 8px; background-color: white; margin: auto">ou</span>
+              					<hr style="margin: -13px auto 10px auto; width: 90%" />
+              				</div>
+          				    <form role="form" name="loginForm" ng-submit="authenticate()" novalidate>
+                        <div class="form-group" ng-show="loginForm.$submitted && !authenticated">
+                            <span class="text-danger">Adresse e-mail ou mot de passe inconnu.</span>
+                        </div>
+            						<div class="form-group">
+            							<input type="email" class="form-control" id="email" name="email" placeholder="Adresse e-mail" ng-model="credentials.email" required />
+            					    </div>
+            						<div class="form-group">
+            							<input type="password" class="form-control" name="password" id="password" placeholder="Mot de passe" ng-model="credentials.password" required />
+            						</div>
+            						<div class="clearfix">
+            							<a href="" class="pull-right">Mot de passe oublié ?</a>
+            						</div>
+            						<div class="form-group">
+            							<button class="btn btn-primary btn-block" type="submit">Connexion</button>
+            						</div>
+          					</form>
+                  </div>
+      		      </div>
+              </div>
+            </div>
+          </div>
+    	<!--
+					<div class="row ">
+						<div class="col-md-4 col-md-offset-4">
+							<p class="text-right">
+								<button type="button" class="btn btn-primary" ng-click="forget()">J'ai oublié mon mot de passe</button>
+								<div class="text-center" ng-class="{'bg-danger': !forgetOk}" ng-show="loginForm.$submitted">
+									<span ng-show="!forgetOk"><strong>L'utilisateur {{email}} n'a pas connu.</strong></span>
+								</div>
+								<div class="text-center" ng-class="{'bg-success': forgetOk}" ng-show="loginForm.$submitted">
+									<span ng-show="forgetOk"><strong>Un nouveau mot de passe est envoyé à l'adresse e-mail {{email}}.</strong></span>
+								</div>
+							</p>
+						</div>
+					</div>
+</div>
+</div>
+</div>
+</div>-->
+</div>
   		</div>
 
 		<!-- FOOTER -->
@@ -102,60 +106,21 @@
     <script src="../bootstrap/assets/js/jquery.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../bootstrap/assets/js/holder.js"></script>
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-resource.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-cookies.min.js"></script>
     <script src="https://code.angularjs.org/1.3.15/i18n/angular-locale_fr-fr.js"></script>
-    <script src="../js/textangular/textAngular-rangy.min.js" type="text/javascript"></script>
-    <script src="../js/textangular/textAngular-sanitize.min.js" type="text/javascript"></script>
-    <script src="../js/textangular/textAngular.min.js" type="text/javascript"></script>
-    <script src="../js/angular-spinkit-master/build/angular-spinkit.min.js"></script>
-    
-    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-    
+
+    <script type="text/javascript" src="js/login/LoginController.js"></script>
+    <script type="text/javascript" src="js/login/LoginService.js"></script>
     <script type="text/javascript" src="js/controllers.js"></script>
     <script type="text/javascript" src="js/services.js"></script>
-    <script type="text/javascript" src="js/user/UserController.js"></script>
-    <script type="text/javascript" src="js/user/UserService.js"></script>
-    <script type="text/javascript" src="js/document/DocumentController.js"></script>
-    <script type="text/javascript" src="js/document/DocumentService.js"></script>
-    <script type="text/javascript" src="js/document/libelle/LibelleController.js"></script>
-    <script type="text/javascript" src="js/document/libelle/LibelleService.js"></script>
-    <script type="text/javascript" src="js/suivi/SuiviNageurController.js"></script>
-    <script type="text/javascript" src="js/suivi/SuiviNageurService.js"></script>
-    <script type="text/javascript" src="js/global/PiscineService.js"></script>
-    <script type="text/javascript" src="js/global/GroupeService.js"></script>
-    <script type="text/javascript" src="js/global/CreneauService.js"></script>
-    <script type="text/javascript" src="js/adherent/AdherentService.js"></script>
-    <script type="text/javascript" src="js/adherent/AdherentStatController.js"></script>
-    <script type="text/javascript" src="js/adherent/AdherentStatService.js"></script>
-    <script type="text/javascript" src="js/adherent/AdherentEmailController.js"></script>
-    <script type="text/javascript" src="js/groupe/GroupeController.js"></script>
-    <script type="text/javascript" src="js/dossier/DossierController.js"></script>
-    <script type="text/javascript" src="js/dossier/DossierNageurController.js"></script>
-    <script type="text/javascript" src="js/dossier/ExtractionController.js"></script>
-    <script type="text/javascript" src="js/dossier/DossierService.js"></script>
-    <script type="text/javascript" src="js/groupe/CreneauStatController.js"></script>
-    <script type="text/javascript" src="js/groupe/CreneauStatService.js"></script>
-    <script type="text/javascript" src="js/dashboard/DashboardController.js"></script>
-    <script type="text/javascript" src="js/enf/EnfController.js"></script>
-    <script type="text/javascript" src="js/enf/EnfService.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
-    
-    <script src="js/statistiques/adherents.js" type="text/javascript"></script>
-    <script src="js/statistiques/famillesGroupes.js" type="text/javascript"></script>
-    <script src="js/statistiques/localisations.js" type="text/javascript"></script>
-    <script src="js/statistiques/professions.js" type="text/javascript"></script>
-    <script src="js/statistiques/dossiers.js" type="text/javascript"></script>
-    <script src="js/statistiques/nageurs.js" type="text/javascript"></script>
-    
-    <script type="text/javascript" src="js/login/LoginController.js"></script>
-	<script type="text/javascript" src="js/login/LoginService.js"></script>
-    
-    
-    
+    <script type="text/javascript" src="js/app0.js"></script>
+
+
+    <script type="text/javascript">$('#login-modal').modal();</script>
+
   </body>
 </html>

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,10 +23,10 @@ import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
@@ -57,6 +58,8 @@ public class AuthenticationService {
 	
 	private static final Logger LOG = Logger.getLogger(AuthenticationService.class
 			.getName());
+	
+	private static Set<Integer> tokens = new HashSet<Integer>();
 
 	@Context
 	private UriInfo uriInfo;
@@ -88,15 +91,14 @@ public class AuthenticationService {
 
 	@Path("/login")
 	@POST
-	public LoginResult login(@QueryParam("email") String pEmail,
-			@QueryParam("password") String pPassword) {
+	public LoginResult login(AuthenticationParameters parameters) {
 		LoginResult result = new LoginResult();
-		if (StringUtils.isNotBlank(pEmail) && StringUtils.isNotBlank(pPassword)) {
+		if (StringUtils.isNotBlank(parameters.getEmail()) && StringUtils.isNotBlank(parameters.getPassword())) {
 			// Encrypt password
 			String lEncryptedPassword = null;
 			try {
 				MessageDigest lMessageDigest = Utils.getMD5();
-				lEncryptedPassword = new String(lMessageDigest.digest(pPassword
+				lEncryptedPassword = new String(lMessageDigest.digest(parameters.getPassword()
 						.getBytes()));
 			} catch (NoSuchAlgorithmException e) {
 				// TODO Auto-generated catch block
@@ -106,7 +108,7 @@ public class AuthenticationService {
 			List<CriterionDao<? extends Object>> lCriteria = new ArrayList<CriterionDao<? extends Object>>(
 					2);
 			lCriteria.add(new CriterionDao<String>(
-					UserEntityFields.EMAILADDRESS, pEmail, Operator.EQUAL));
+					UserEntityFields.EMAILADDRESS, parameters.getEmail(), Operator.EQUAL));
 			lCriteria.add(new CriterionDao<String>(UserEntityFields.PASSWORD,
 					lEncryptedPassword, Operator.EQUAL));
 			UserDao userDao = new UserDao();
@@ -126,6 +128,9 @@ public class AuthenticationService {
 				for(UserAuthorizationEntity authorization: authorizations) {
 					result.addAuthorization(authorization.getAccess());
 				}
+				Integer token = user.hashCode();
+				result.setToken(token);
+				tokens.add(token);
 			} else {
 				result.setLogged(false);
 			}
@@ -203,5 +208,23 @@ public class AuthenticationService {
 			LOG.log(Level.SEVERE, "Error during user creation", e);
 		}
 		return result;
+	}
+	
+	@Path("/isLogged/{token}")
+	@GET
+	public boolean isLogged(@PathParam("token") Integer token) {
+		final boolean result;
+		if(token != null) {
+			result = tokens.contains(token);
+		} else {
+			result = false;
+		}
+		return result;
+	}
+	
+	@Path("/logout/{token}")
+	@PUT
+	public void logout(@PathParam("token") Integer token) {
+		tokens.remove(token);
 	}
 }

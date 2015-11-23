@@ -18,7 +18,10 @@ public class AuthenticationProvider implements org.springframework.security.auth
 		String email = authentication.getName();
 		String password = authentication.getCredentials().toString();
 		AuthenticationService service = new AuthenticationService();
-		LoginResult result = service.login(email, password);
+		AuthenticationParameters authenticationParameters = new AuthenticationParameters();
+		authenticationParameters.setEmail(email);
+		authenticationParameters.setPassword(password);
+		LoginResult result = service.login(authenticationParameters);
 		if(result.isLogged()) {
 			List<GrantedAuthority> grantedAuths = new ArrayList<>();
             grantedAuths.add(new SimpleGrantedAuthority("ADMIN"));

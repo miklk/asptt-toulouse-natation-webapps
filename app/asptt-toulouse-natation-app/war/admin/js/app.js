@@ -1,19 +1,19 @@
 /**
- * 
+ *
  */
-var adminApp = angular.module('adminApp', ['ngCookies', 'ngRoute', 'angular-spinkit', 
-                                           'adherentsServices','adherentsStatServices', 
-                                           'groupeServices', 
-                                           'slotServices', 'userServices', 
-                                           'dossierServices', 'UserController', 
-                                           'AdherentEmailCtrl', 'AdherentsStatCtrl', 
-                                           'DocumentController', 'LibelleController', 
-                                           'SuiviNageurController', 'GroupeController', 
-                                           'DossierController', 'DossierNageurController', 
-                                           'CreneauStatController', 'creneauStatServices', 
-                                           'ExtractionController','DashboardController', 
-                                           'EnfController', 'enfServices', 
-                                           'authorizationService', 'LoginController', 
+var adminApp = angular.module('adminApp', ['ngCookies', 'ngRoute', 'angular-spinkit',
+                                           'adherentsServices','adherentsStatServices',
+                                           'groupeServices',
+                                           'slotServices', 'userServices',
+                                           'dossierServices', 'UserController',
+                                           'AdherentEmailCtrl', 'AdherentsStatCtrl',
+                                           'DocumentController', 'LibelleController',
+                                           'SuiviNageurController', 'GroupeController',
+                                           'DossierController', 'DossierNageurController',
+                                           'CreneauStatController', 'creneauStatServices',
+                                           'ExtractionController','DashboardController',
+                                           'EnfController', 'enfServices',
+                                           'authorizationService', 'LoginController',
                                            'loginServices']);
 
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
@@ -110,15 +110,22 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 
 }]);
 
-/**adminApp.run(function($rootScope, $location, AuthorizationService) {
+adminApp.run(function($rootScope, $location, $cookieStore, LoginService) {
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
-        if (!$rootScope.authenticated) {
-            $location.url("/page/login");
-        } else if(next && next.$$route && next.$$route.access && !AuthorizationService.hasAccess(next.$$route.access)){
-        	$location.url("/unauthorized");
-        }
+      var token = $cookieStore.get("asptt-token");
+    	if(token) {
+    		LoginService.isLogged.query({token: token}, function(data) {
+    			if(!data) {
+    					window.location.href = "index.html";
+    			} else {
+            $rootScope.authenticated = true;
+          }
+    		});
+    	} else {
+        window.location.href = "index.html";
+      }
     });
-});**/
+});
 
 adminApp.directive('ngLoadingIndicator', function($rootScope) {
 	return {
@@ -138,7 +145,7 @@ adminApp.directive('ngLoadingIndicator', function($rootScope) {
 		      });
 		    }
 	}
-});	
+});
 
 adminApp.directive("showWhenConnected", function (AuthorizationService) {
     return {
@@ -151,7 +158,7 @@ adminApp.directive("showWhenConnected", function (AuthorizationService) {
                     $(element).hide();
                 }
             };
- 
+
             showIfConnected();
             scope.$on("connectionStateChanged", showIfConnected);
         }

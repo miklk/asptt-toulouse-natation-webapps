@@ -1,11 +1,21 @@
 var loginController = angular.module('LoginController', ['ngRoute', 'loginServices']);
-loginController.controller('LoginController', ['$rootScope', '$scope', '$http', '$location', 'LoginService', '$sce', function($rootScope, $scope, $http, $location, LoginService, $sce) {
+loginController.controller('LoginController', ['$rootScope', '$scope', '$http', '$location', 'LoginService', '$sce', '$cookieStore', function($rootScope, $scope, $http, $location, LoginService, $sce, $cookieStore) {
 	$scope.formData = {
 			email: "",
 			password: ""
 	};
 	$scope.credentials = {};
-	
+
+	var token = $cookieStore.get("asptt-token");
+	if(token) {
+		LoginService.isLogged.query({token: token}, function(data) {
+			if(data) {
+					window.location.href = "admin.html";
+			}
+		});
+	}
+
+
 	$scope.authenticate = function() {
 
 	    var headers = $scope.credentials ? {authorization : "Basic "
@@ -17,13 +27,14 @@ loginController.controller('LoginController', ['$rootScope', '$scope', '$http', 
 	    //$http.get('/resources/authentication/isAuthenticated', {emailheaders : headers}).success(function(data) {
 	    LoginService.login.query({}, $scope.formData, function(data) {
 	      if (data.logged) {
+					$cookieStore.put("asptt-token", data.token);
 	        $rootScope.authenticated = true;
 	      } else {
 	        $rootScope.authenticated = false;
 	      }
 	      console.log(data);
 	 		$scope.loginResult = data;
-	 		window.location.href = "#/dashboard";
+	 		window.location.href = "admin.html";
 	    });/**.error(function() {
 	      $rootScope.authenticated = false;
 	      console.log(data);
@@ -31,9 +42,9 @@ loginController.controller('LoginController', ['$rootScope', '$scope', '$http', 
 	 		window.location.href = "#/dashboard";
 	    });**/
 	};
-	
-	  
-	
+
+
+
 	$scope.authenticateFederate = function(provider) {
 	 	LoginService.openId.query({openIdService: provider}, function(data) {
 	 		window.location.href = data.providerUrl;
@@ -46,10 +57,18 @@ loginController.controller('LoginController', ['$rootScope', '$scope', '$http', 
 	 		window.location.href = "admin/#/home";
 		});
 	};
-	
+
 	$scope.forget = function() {
 		LoginService.forget.query({email: $scope.credentials.email}, function(data) {
 			forgetOk = data;
+		});
+	}
+
+	$scope.logout = function() {
+		var token = $cookieStore.get("asptt-token");
+		$cookieStore.remove("asptt-token");
+		LoginService.logout.query({token: token}, function(data) {
+			window.location.href = "index.html";
 		});
 	}
 }]);
