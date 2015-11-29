@@ -104,6 +104,7 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
        'self',
        'http://docs.google.com/viewer?url=*'
      ]);
+	
 	//$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 	//$httpProvider.defaults.withCredentials = true;
     //$httpProvider.interceptors.push('XSRFInterceptor');
@@ -113,13 +114,15 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 adminApp.run(function($rootScope, $location, $cookieStore, LoginService) {
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
       var token = $cookieStore.get("asptt-token");
+      $rootScope.aspttToken = token;
+      console.log(token);
     	if(token) {
     		LoginService.isLogged.query({token: token}, function(data) {
-    			if(!data) {
+    			if(!data.logged) {
     					window.location.href = "index.html";
     			} else {
-            $rootScope.authenticated = true;
-          }
+    				$rootScope.authenticated = true;
+    			}
     		});
     	} else {
         window.location.href = "index.html";

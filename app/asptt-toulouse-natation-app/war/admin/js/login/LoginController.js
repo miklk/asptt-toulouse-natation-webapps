@@ -9,8 +9,9 @@ loginController.controller('LoginController', ['$rootScope', '$scope', '$http', 
 	var token = $cookieStore.get("asptt-token");
 	if(token) {
 		LoginService.isLogged.query({token: token}, function(data) {
-			if(data) {
-					window.location.href = "admin.html";
+			console.log("IsLogged " + data);
+			if(data.logged) {
+				window.location.href = "admin.html";
 			}
 		});
 	}

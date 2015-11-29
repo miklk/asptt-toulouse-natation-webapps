@@ -23,7 +23,6 @@ import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -212,18 +211,18 @@ public class AuthenticationService {
 	
 	@Path("/isLogged/{token}")
 	@GET
-	public boolean isLogged(@PathParam("token") Integer token) {
-		final boolean result;
+	public IsLoggedResult isLogged(@PathParam("token") Integer token) {
+		final IsLoggedResult result = new IsLoggedResult();
 		if(token != null) {
-			result = tokens.contains(token);
+			result.setLogged(tokens.contains(token));
 		} else {
-			result = false;
+			result.setLogged(false);
 		}
 		return result;
 	}
 	
 	@Path("/logout/{token}")
-	@PUT
+	@GET
 	public void logout(@PathParam("token") Integer token) {
 		tokens.remove(token);
 	}
