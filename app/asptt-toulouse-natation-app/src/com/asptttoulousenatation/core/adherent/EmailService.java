@@ -313,11 +313,13 @@ public class EmailService {
 	}
 	
 	private void fillDestinataires(Collection<String> destinataires, DossierEntity dossier) {
-		if (StringUtils.isNotBlank(dossier.getEmail())) {
-			destinataires.add(dossier.getEmail());
-		}
-		if(StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
-			destinataires.add(dossier.getEmailsecondaire());
+		if(DossierStatutEnum.INSCRIT.name().equals(dossier.getStatut())) {
+			if (StringUtils.isNotBlank(dossier.getEmail())) {
+				destinataires.add(dossier.getEmail());
+			}
+			if(StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
+				destinataires.add(dossier.getEmailsecondaire());
+			}
 		}
 	}
 }
