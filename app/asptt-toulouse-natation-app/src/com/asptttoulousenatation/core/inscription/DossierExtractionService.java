@@ -30,7 +30,6 @@ import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntit
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
-import com.asptttoulousenatation.core.server.dao.inscription.DossierCertificatDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
@@ -45,7 +44,6 @@ public class DossierExtractionService {
 	private DossierNageurDao dao = new DossierNageurDao();
 	private DossierDao dossierDao = new DossierDao();
 	private GroupDao groupeDao = new GroupDao();
-	private DossierCertificatDao certificatDao = new DossierCertificatDao();
 
 	@Path("{fields}{conditions:(/[^/]+?)?}")
 	@GET
@@ -114,7 +112,7 @@ public class DossierExtractionService {
 					}
 						break;
 					case "MONTANT":
-						nageurValues.add(dossier.getMontantreel() == null ? "" : dossier.getMontantreel().toString());
+						nageurValues.add(nageur.getTarif() == null ? "" : nageur.getTarif().toString());
 						break;
 					case "COMMENTAIRE":
 						nageurValues.add(StringUtils.defaultString(dossier.getComment()));
