@@ -14,7 +14,8 @@ var adminApp = angular.module('adminApp', ['ngCookies', 'ngRoute', 'angular-spin
                                            'ExtractionController','DashboardController',
                                            'EnfController', 'enfServices',
                                            'authorizationService', 'LoginController',
-                                           'loginServices']);
+                                           'loginServices',
+                                           'AdminController']);
 
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.
@@ -39,11 +40,13 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 		}).
 		when('/users', {
 			templateUrl: 'views/user/users.html',
-			controller: 'UserController'
+			controller: 'UserController',
+			access: 'ACCESS_USERS'
 		}).
 		when('/users/creer', {
 			templateUrl: 'views/user/user-creer.html',
-			controller: 'UserController'
+			controller: 'UserController',
+			access: 'ACCESS_USERS'
 		}).
 		when('/documents', {
 			templateUrl: 'views/document/documents.html'
@@ -52,16 +55,20 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 			templateUrl: 'views/document/libelle/libelles.html'
 		}).
 		when('/suivi-nageur-day', {
-			templateUrl: 'views/suivi/suivi-nageur-day.html'
+			templateUrl: 'views/suivi/suivi-nageur-day.html',
+			access: 'ACCESS_SUIVI_NAGEURS'
 		}).
 		when('/suivi-nageur-week', {
-			templateUrl: 'views/suivi/suivi-nageur-week.html'
+			templateUrl: 'views/suivi/suivi-nageur-week.html',
+			access: 'ACCESS_SUIVI_NAGEURS'
 		}).
 		when('/suivi-nageur-month', {
-			templateUrl: 'views/suivi/suivi-nageur-month.html'
+			templateUrl: 'views/suivi/suivi-nageur-month.html',
+			access: 'ACCESS_SUIVI_NAGEURS'
 		}).
 		when('/suivi-nageur-year', {
-			templateUrl: 'views/suivi/suivi-nageur-year.html'
+			templateUrl: 'views/suivi/suivi-nageur-year.html',
+			access: 'ACCESS_SUIVI_NAGEURS'
 		}).
 		when('/groupes', {
 			templateUrl: 'views/groupe/groupes.html',
@@ -111,11 +118,9 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 
 }]);
 
-adminApp.run(function($rootScope, $location, $cookieStore, LoginService) {
+adminApp.run(function($rootScope, $location, LoginService) {
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
-      var token = $cookieStore.get("asptt-token");
-      $rootScope.aspttToken = token;
-      console.log(token);
+    	var token = $rootScope.aspttToken;
     	if(token) {
     		LoginService.isLogged.query({token: token}, function(data) {
     			if(!data.logged) {
@@ -125,7 +130,7 @@ adminApp.run(function($rootScope, $location, $cookieStore, LoginService) {
     			}
     		});
     	} else {
-        window.location.href = "index.html";
+    		window.location.href = "index.html";
       }
     });
 });
@@ -155,11 +160,7 @@ adminApp.directive("showWhenConnected", function (AuthorizationService) {
         restrict: 'A',
         link: function (scope, element, attrs) {
             var showIfConnected = function() {
-                if(AuthorizationService.isConnected() && AuthorizationService.hasAccess(attrs.showWhenConnected)) {
-                    $(element).show();
-                } else {
-                    $(element).hide();
-                }
+            	AuthorizationService.hasAccess($(element), attrs.showWhenConnected);
             };
 
             showIfConnected();

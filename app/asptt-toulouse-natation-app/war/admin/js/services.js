@@ -12,15 +12,18 @@ angular.module('authorizationService', [])
         	});**/
         	return true;
         },
-        hasAccess: function(access) {
-        	/**var found = false;
-        	var index = 0;
-        	while(!found && index < $rootScope.authenticatDetails.authorizations.length) {
-        		found = $rootScope.authenticatDetails.authorizations[index] == access;
-        		index++;
-        	}
-        	return found;**/
-        	return true;
+        hasAccess: function(element, access) {
+        	var token = $rootScope.aspttToken;
+        	var found = false;
+        	$http.get('/resources/authorization/hasAccess/' + token + '/' + access, {}).success(function(data) {
+        		found = data.hasAccess;
+        		if(found) {
+        			element.show();
+        		} else {
+        			element.hide();
+        		}
+        	});
+        	return found;
         },
         signIn: function() {
             $rootScope.$broadcast("connectionStateChanged");

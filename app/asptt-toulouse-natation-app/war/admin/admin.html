@@ -36,7 +36,7 @@
 <!-- NAVBAR
 ================================================== -->
   <body style="background-color: #e9f8fc;">
-	<div class="container-fluid" ng-show="authenticated">
+	<div class="container-fluid" ng-show="authenticated" ng-controller="AdminController">
 		<div class="row">
 			<div class="col-md-2 sidebar" id="menu">
 				<ul class="nav nav-sidebar">
@@ -71,7 +71,7 @@
 							<li><a href="#/enf">Gestion des groupes</a></li>
 						</ul>
 					</li>
-					<li><p class="menu"><a href="#/users">Utilisateurs</a></p>
+					<li data-show-when-connected="ACCESS_USERS"><p class="menu"><a href="#/users">Utilisateurs</a></p>
 					</li>
 					<li data-show-when-connected="ACCESS_DOCUMENTS"><span class="menu">Documents</span>
 						<ul class="nav nav-sidebar">

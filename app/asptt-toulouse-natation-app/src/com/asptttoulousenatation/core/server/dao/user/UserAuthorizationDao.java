@@ -25,6 +25,21 @@ public class UserAuthorizationDao extends DaoBase<UserAuthorizationEntity> {
 		}
 		return lResult;
 	}
+	
+	public List<UserAuthorizationEntity> findByUserAndAccess(Long user, String access) {
+		final EntityManager em = EMF.get().createEntityManager();
+		Query query = em.createQuery("SELECT " + getAlias() + " FROM " + getEntityClass().getSimpleName() + " as "
+				+ getAlias() + " WHERE " + getAlias() + ".user =:user AND " + getAlias() + ".access =:access");
+		query.setParameter("user", user);
+		query.setParameter("access", access);
+		final List<UserAuthorizationEntity> lResult;
+		try {
+			lResult = new ArrayList<UserAuthorizationEntity>(query.getResultList());
+		} finally {
+			em.close();
+		}
+		return lResult;
+	}
 
 	public void deleteByUser(Long user) {
 		final EntityManager em = EMF.get().createEntityManager();

@@ -4,10 +4,11 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,7 +59,7 @@ public class AuthenticationService {
 	private static final Logger LOG = Logger.getLogger(AuthenticationService.class
 			.getName());
 	
-	private static Set<Integer> tokens = new HashSet<Integer>();
+	public static Map<Integer, Long> tokens = new HashMap<Integer, Long>();
 
 	@Context
 	private UriInfo uriInfo;
@@ -129,7 +130,7 @@ public class AuthenticationService {
 				}
 				Integer token = user.hashCode();
 				result.setToken(token);
-				tokens.add(token);
+				tokens.put(token, user.getId());
 			} else {
 				result.setLogged(false);
 			}
@@ -214,7 +215,7 @@ public class AuthenticationService {
 	public IsLoggedResult isLogged(@PathParam("token") Integer token) {
 		final IsLoggedResult result = new IsLoggedResult();
 		if(token != null) {
-			result.setLogged(tokens.contains(token));
+			result.setLogged(tokens.containsKey(token));
 		} else {
 			result.setLogged(false);
 		}
