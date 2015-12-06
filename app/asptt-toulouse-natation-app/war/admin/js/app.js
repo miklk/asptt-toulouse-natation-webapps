@@ -20,23 +20,27 @@ var adminApp = angular.module('adminApp', ['ngCookies', 'ngRoute', 'angular-spin
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.
 		when('/', {
-			templateUrl: 'views/dashboard/dashboard.html'
+			templateUrl: 'views/index.html'
 		}).
 		when('/home', {
 			templateUrl: 'views/index.html'
 		}).
 		when('/dashboard', {
-			templateUrl: 'views/dashboard/dashboard.html'
+			templateUrl: 'views/dashboard/dashboard.html',
+			access: 'ACCESS_DOSSIERS'
 		}).
 		when('/adherents-stat', {
-			templateUrl: 'views/adherent/adherents-stat.html'
+			templateUrl: 'views/adherent/adherents-stat.html',
+			access: 'ACCESS_DOSSIERS'
 		}).
 		when('/adherent-email', {
 			templateUrl: 'views/adherent/adherent-email.html',
-			controller: 'AdherentEmailCtrl'
+			controller: 'AdherentEmailCtrl',
+			access: 'ACCESS_DOSSIERS_EMAIL'
 		}).
 		when('/enf', {
-			templateUrl: 'views/enf/enf.html'
+			templateUrl: 'views/enf/enf.html',
+			access: 'ACCESS_ENF'
 		}).
 		when('/users', {
 			templateUrl: 'views/user/users.html',
@@ -49,10 +53,12 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 			access: 'ACCESS_USERS'
 		}).
 		when('/documents', {
-			templateUrl: 'views/document/documents.html'
+			templateUrl: 'views/document/documents.html',
+			access: 'ACCESS_DOCUMENTS'
 		}).
 		when('/libelles', {
-			templateUrl: 'views/document/libelle/libelles.html'
+			templateUrl: 'views/document/libelle/libelles.html',
+			access: 'ACCESS_DOCUMENTS'
 		}).
 		when('/suivi-nageur-day', {
 			templateUrl: 'views/suivi/suivi-nageur-day.html',

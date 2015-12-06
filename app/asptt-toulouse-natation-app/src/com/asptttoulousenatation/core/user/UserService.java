@@ -72,6 +72,7 @@ public class UserService {
 		AUTHORIZATIONS.add("ACCESS_DOCUMENTS");
 		AUTHORIZATIONS.add("ACCESS_USERS");
 		AUTHORIZATIONS.add("ACCESS_SUIVI_NAGEURS");
+		AUTHORIZATIONS.add("ACCESS_DOSSIERS_EMAIL");
 	}
 
 	@GET
@@ -130,11 +131,13 @@ public class UserService {
 			criteria.add(new CriterionDao<String>(UserEntityFields.EMAILADDRESS, pAction.getEmail(), Operator.EQUAL));
 			List<UserEntity> users = userDao.find(criteria);
 			final UserEntity userEntity;
+			final boolean creation;
 			if (CollectionUtils.isEmpty(users)) {
 				userEntity = new UserEntity();
-
+				creation = true;
 			} else {
 				userEntity = users.get(0);
+				creation = false;
 			}
 			userEntity.setEmailaddress(pAction.getEmail());
 			final String code;
@@ -174,25 +177,27 @@ public class UserService {
 			}
 			result.setSuccess(true);
 
-			Properties props = new Properties();
-			Session session = Session.getDefaultInstance(props, null);
-
-			Multipart mp = new MimeMultipart();
-			MimeBodyPart htmlPart = new MimeBodyPart();
-			String msgBody = "Bienvenue à l'espace privé ASPTT Toulouse Natation,<br />"
-					+ "Vous pouvez maintenant accéder à l'espace privé ASPTT Toulouse Natation en utilisant le code suivant: "
-					+ "<b>" + code + "</b>" + ".<br />"
-					+ "<a href=\"http://www.asptt-toulouse-natation.com/admin\">Espace privé</a>"
-					+ "<p>Sportivement,<br />ASPTT Toulouse Natation</p>";
-
-			htmlPart.setContent(msgBody, "text/html");
-			mp.addBodyPart(htmlPart);
-			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(userEntity.getEmailaddress()));
-			msg.setSubject("Votre compte web privé a été créé.", "UTF-8");
-			msg.setContent(mp);
-			Transport.send(msg);
+			if(creation) {
+				Properties props = new Properties();
+				Session session = Session.getDefaultInstance(props, null);
+	
+				Multipart mp = new MimeMultipart();
+				MimeBodyPart htmlPart = new MimeBodyPart();
+				String msgBody = "Bienvenue à l'espace privé ASPTT Toulouse Natation,<br />"
+						+ "Vous pouvez maintenant accéder à l'espace privé ASPTT Toulouse Natation en utilisant le code suivant: "
+						+ "<b>" + code + "</b>" + ".<br />"
+						+ "<a href=\"http://www.asptt-toulouse-natation.com/admin\">Espace privé</a>"
+						+ "<p>Sportivement,<br />ASPTT Toulouse Natation</p>";
+	
+				htmlPart.setContent(msgBody, "text/html");
+				mp.addBodyPart(htmlPart);
+				MimeMessage msg = new MimeMessage(session);
+				msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(userEntity.getEmailaddress()));
+				msg.setSubject("Votre compte web privé a été créé.", "UTF-8");
+				msg.setContent(mp);
+				Transport.send(msg);
+			}
 		} catch (MessagingException | UnsupportedEncodingException e) {
 			LOG.error("Impossible d'envoyer le mot de passe par e-mail", e);
 		} catch (NoSuchAlgorithmException e) {
