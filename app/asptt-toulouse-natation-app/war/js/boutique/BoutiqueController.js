@@ -2,7 +2,7 @@
  * 
  */
 var boutiqueController = angular.module('BoutiqueCtrl', ['ngRoute', 'boutiqueServices']);
-boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'BoutiqueService', function($rootScope, $scope, BoutiqueService) {
+boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'BoutiqueService', 'InscriptionService', function($rootScope, $scope, BoutiqueService, InscriptionService) {
 	$rootScope.isLoading = false;
 	
 	$scope.calendriers = new Array();

@@ -8,7 +8,7 @@
     <div class="panel-heading" role="tab">
       <h4 class="panel-title">
         <a role="button" data-toggle="collapse" data-parent="#selection" href="#selection" aria-expanded="true" target="_self">
-          <h4>Sélectionner le(s) calendrier(s) et la quantité souhaité(s) <span class="badge" ng-show="panier.length > 0">{{panier.length}}</span></h4>
+          <h4>Sélectionner le(s) calendrier(s) et la quantité souhaité(s) <span class="badge" ng-show="commande.panier.length > 0">{{commande.panier.length}}</span></h4>
         </a>
       </h4>
     </div>
@@ -56,8 +56,8 @@
                  <input type="password" class="form-control" id="find_email_motdepasse" placeholder="Mot de passe" ng-model="mdp" />
              </div>
              <div style="position: relative; height: 34px; text-align: center; background: none">
-                 <span class="h6" style="display: inline-block; padding: 8px; background-color: white; margin: auto">ou</span>
-                 <hr style="margin: -13px auto 10px auto; width: 90%" />
+                 <span class="h3" style="display: inline-block; padding: 8px; background-color: white; margin: auto">ou</span>
+                 <hr style="margin: -20px auto 10px auto; width: 90%" />
              </div>
              <div class="form-group">
                  <label for="nom">Nom</label>

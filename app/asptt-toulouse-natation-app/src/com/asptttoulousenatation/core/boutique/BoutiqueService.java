@@ -92,7 +92,7 @@ public class BoutiqueService {
 		String email = order.getEmail();
 		String emailSecondaire = null;
 		if (order.getDossier() != null) {
-			DossierEntity dossier = dossierDao.get(order.getId());
+			DossierEntity dossier = dossierDao.get(order.getDossier());
 			email = dossier.getEmail();
 			emailSecondaire = dossier.getEmailsecondaire();
 		}
@@ -116,7 +116,7 @@ public class BoutiqueService {
 
 			StringBuilder message = new StringBuilder(
 					"Madame, Monsieur,<p>Nous avons le plaisir de vous confirmer la pré-commande de vos calendriers.<br />"
-							+ "Nous vous tiendrons dès que votre commande sera validée. <br />");
+							+ "Nous vous tiendrons informé dès que votre commande sera validée. <br />");
 			message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />" + "ASPTT Grand Toulouse Natation<br />"
 					+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
 			htmlPart.setContent(message.toString(), "text/html");
