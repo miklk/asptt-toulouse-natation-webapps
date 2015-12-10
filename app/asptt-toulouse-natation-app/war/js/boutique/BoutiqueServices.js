@@ -3,7 +3,10 @@ var boutiqueServices = angular.module('boutiqueServices', ['ngResource']);
 boutiqueServices.factory('BoutiqueService', ['$resource', 
                                        function($resource) {
 	return {
-		commander: $resource('/resources/boutique/commander',{},{
+		products: $resource('/resources/boutique/products',{},{
+			query:{method:'GET', isArray: true, params: {}}
+		}),
+		commander: $resource('/resources/boutique/order',{},{
 			query:{method:'PUT', isArray: false, params: {}}
 		})
 	};

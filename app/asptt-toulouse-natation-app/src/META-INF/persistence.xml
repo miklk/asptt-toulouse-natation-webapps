@@ -37,6 +37,9 @@
         <class>com.asptttoulousenatation.core.server.dao.entity.user.UserDataEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.record.RecordEpreuveEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.record.RecordEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.boutique.ProductEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.boutique.OrderEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.boutique.OrderProductEntity</class>
         
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         

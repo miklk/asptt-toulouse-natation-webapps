@@ -4,12 +4,25 @@
 var boutiqueController = angular.module('BoutiqueCtrl', ['ngRoute', 'boutiqueServices']);
 boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'BoutiqueService', function($rootScope, $scope, BoutiqueService) {
 	$rootScope.isLoading = false;
-	$scope.calendriers = [
-	                      {id: 1, title:'Cal1', description: 'Jeudi soir', quantite: 0, prices: [5, 4, 3], image: 'img/logo.png'},
-	                      {id: 2, title:'Cal1', description: 'Jeudi soir', quantite: 0, prices: [5, 4, 3], image: 'img/logo.png'},
-	                      ];
 	
-	$scope.panier = new Array();
+	$scope.calendriers = new Array();
+	BoutiqueService.products.query(function(data) {
+		angular.forEach(data, function(product) {
+		var orderProduct = {
+				quantite : 0,
+				product: product
+		};
+		$scope.calendriers.push(orderProduct);
+		});
+	});
+	
+	$scope.commande = {
+			panier : new Array(),
+			dossier : null,
+			nom: '',
+			prenom: '',
+			email: ''
+	};
 	
 	$scope.productQuantite = function(calendrier, addMinus) {
 		if(addMinus) {//Premier ajout au panier
@@ -22,7 +35,11 @@ boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'Boutique
 	$scope.goToIdentite = function() {
 		angular.forEach($scope.calendriers, function(calendrier) {
 			if(calendrier.quantite > 0) {
-				$scope.panier.push(calendrier);
+				var orderProduct = {
+						id: calendrier.product.id,
+						quantite: calendrier.quantite
+				}
+				$scope.commande.panier.push(orderProduct);
 			}
 		});
 		$('#selection').collapse('hide');
@@ -30,12 +47,6 @@ boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'Boutique
 	}
 	
 	$scope.commander = function() {
-		$scope.commande = {
-				panier : $scope.panier,
-				dossier : 0,
-				nom: '',
-				prenom: '',
-		};
 		if($scope.email && $scope.mdp) {
 			InscriptionService.authenticate.query({email: $scope.email, mdp: $scope.mdp}, function (data) {
 				if(data.inconnu) {
@@ -47,9 +58,7 @@ boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'Boutique
 					});
 				}
 			});
-		} else if($scope.nom) {
-			$scope.commande.nom = $scope.nom;
-			$scope.commande.prenom = $scope.prenom;
+		} else if($scope.commande.email) {
 			BoutiqueService.commander.query({}, $scope.commande, function(data) {
 				alert("Ok");
 			});
