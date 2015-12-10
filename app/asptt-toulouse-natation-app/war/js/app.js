@@ -1,4 +1,4 @@
-var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','ngMessages', 'angular-spinkit', 'loadingAppServices', 'pageServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'authenticationServices', 'actualiteServices', 'DocumentController', 'DocumentationController', 'mediaServices', 'MediaCtrl', 'InscriptionController', 'CalendarController']);
+var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','ngMessages', 'angular-spinkit', 'loadingAppServices', 'pageServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'authenticationServices', 'actualiteServices', 'DocumentController', 'DocumentationController', 'mediaServices', 'MediaCtrl', 'InscriptionController', 'CalendarController', 'BoutiqueCtrl']);
 aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
 	$routeProvider.
 		when('/', {
@@ -66,6 +66,10 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 		}).
 		when('/mentions', {
 			templateUrl: 'views/mentions-legales.html'
+		}).
+		when('/vente-calendriers', {
+			templateUrl: 'views/vente-calendriers.html',
+			controller: 'BoutiqueCtrl'
 		}).
 		when('/error', {
 			templateUrl: 'views/error.html'
