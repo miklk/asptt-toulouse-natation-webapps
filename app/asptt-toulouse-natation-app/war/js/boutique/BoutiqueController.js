@@ -32,7 +32,12 @@ boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'Boutique
 		}
 	}
 	
-	$scope.goToIdentite = function() {
+	$scope.goToPanier = function() {
+		$scope.panier = {
+				count: 0,
+				total: 0
+		}
+		var tarif = 0;
 		angular.forEach($scope.calendriers, function(calendrier) {
 			if(calendrier.quantite > 0) {
 				var orderProduct = {
@@ -40,15 +45,29 @@ boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'Boutique
 						quantite: calendrier.quantite
 				}
 				$scope.commande.panier.push(orderProduct);
+				
+				$scope.panier.count = $scope.panier.count + orderProduct.quantite;
+				if($scope.panier.count < 3) {
+					tarif = tarif + (calendrier.product.price * calendrier.quantite);
+				} else if($scope.panier.count >= 3 && $scope.panier.count < 5) {
+					tarif = tarif + (calendrier.product.price2 * calendrier.quantite);
+				} else {
+					tarif = tarif + (calendrier.product.price3 * calendrier.quantite);
+				}
 			}
 		});
-		
+		$scope.panier.total = tarif;
 		if($scope.commande.panier.length > 0) {
 			$('#selection').collapse('hide');
-			$('#identite').collapse('show');
+			$('#panier').collapse('show');
 		} else {
 			$('#commandeErrorPanierVide').modal('show');
 		}
+	}
+	
+	$scope.goToIdentite = function() {
+		$('#panier').collapse('hide');
+		$('#identite').collapse('show');
 	}
 	
 	$scope.commander = function() {
