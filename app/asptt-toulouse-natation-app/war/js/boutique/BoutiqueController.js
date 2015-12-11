@@ -42,26 +42,33 @@ boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'Boutique
 				$scope.commande.panier.push(orderProduct);
 			}
 		});
-		$('#selection').collapse('hide');
-		$('#identite').collapse('show');
+		
+		if($scope.commande.panier.length > 0) {
+			$('#selection').collapse('hide');
+			$('#identite').collapse('show');
+		} else {
+			$('#commandeErrorPanierVide').modal('show');
+		}
 	}
 	
 	$scope.commander = function() {
 		if($scope.email && $scope.mdp) {
 			InscriptionService.authenticate.query({email: $scope.email, mdp: $scope.mdp}, function (data) {
 				if(data.inconnu) {
-					alert("Vous n'êtes pas dans nos listing. Peut être qu'ils ne sont pas à jour. Veuillez valider la commande avec votre nom et prénom.");
+					alert("Vous n'êtes pas dans nos listing. Peut être qu'ils ne sont pas à jour. Veuillez valider la commande avec votre nom, prénom et adresse e-mail.");
 				} else {
 					$scope.commande.dossier = data.dossier.id;
 					BoutiqueService.commander.query({}, $scope.commande, function(data) {
-						alert("Ok");
+						$('#commandeConfirm').modal('show');
 					});
 				}
 			});
 		} else if($scope.commande.email) {
 			BoutiqueService.commander.query({}, $scope.commande, function(data) {
-				alert("Ok");
+				$('#commandeConfirm').modal('show');
 			});
+		} else {
+			$('#commandeErrorEmail').modal('show');
 		}
 	}
 	
