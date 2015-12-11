@@ -15,15 +15,15 @@ var adminApp = angular.module('adminApp', ['ngCookies', 'ngRoute', 'angular-spin
                                            'EnfController', 'enfServices',
                                            'authorizationService', 'LoginController',
                                            'loginServices',
-                                           'AdminController']);
+                                           'AdminController', 'BoutiqueCtrl']);
 
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.
 		when('/', {
-			templateUrl: 'views/index.html'
+			templateUrl: 'views/home.html'
 		}).
 		when('/home', {
-			templateUrl: 'views/index.html'
+			templateUrl: 'views/home.html'
 		}).
 		when('/dashboard', {
 			templateUrl: 'views/dashboard/dashboard.html',
@@ -100,6 +100,13 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 		when('/remplissage-detail', {
 			templateUrl: 'views/dossier/stat/remplissage-piscine.html',
 			access: 'ACCESS_REMPLISSAGE'
+		}).
+		when('/produits', {
+			templateUrl: 'views/boutique/produits.html',
+		}).
+		when('/orders', {
+			templateUrl: 'views/boutique/orders.html',
+			access: 'ACCESS_BOUTIQUE'
 		}).
 		when('/page/login', {
 			templateUrl: 'views/login.html'

@@ -17,11 +17,11 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.server.dao.boutique.OrderDao;
@@ -48,18 +48,6 @@ public class BoutiqueService {
 	@GET
 	public List<ProductEntity> products() {
 		List<ProductEntity> products = productDao.getAll();
-		if (CollectionUtils.isEmpty(products)) {
-			ProductEntity product = new ProductEntity();
-			product.setTitle("Marsouins");
-			product.setDescription("Jeuid soir");
-			product.setPrice(5);
-			product.setPrice2(4);
-			product.setPrice3(3);
-			product.setImage("img/calendriers/Je av1 18h.jpg");
-			productDao.save(product);
-
-			products = productDao.getAll();
-		}
 		return products;
 	}
 
@@ -128,5 +116,11 @@ public class BoutiqueService {
 		} catch (MessagingException | UnsupportedEncodingException e) {
 			LOG.log(Level.SEVERE, "Erreur pour l'e-mail: " + email, e);
 		}
+	}
+	
+	@Path("/product/update")
+	@POST
+	public void updateProduct(ProductEntity product) {
+		productDao.save(product);
 	}
 }
