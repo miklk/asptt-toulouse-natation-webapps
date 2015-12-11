@@ -55,7 +55,7 @@ public class BoutiqueService {
 			product.setPrice(5);
 			product.setPrice2(4);
 			product.setPrice3(3);
-			product.setImage("img/logo.png");
+			product.setImage("img/calendriers/Je av1 18h.jpg");
 			productDao.save(product);
 
 			products = productDao.getAll();
