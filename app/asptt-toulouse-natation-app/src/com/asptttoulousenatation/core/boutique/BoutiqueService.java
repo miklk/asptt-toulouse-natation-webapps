@@ -1,6 +1,7 @@
 package com.asptttoulousenatation.core.boutique;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -122,5 +123,22 @@ public class BoutiqueService {
 	@POST
 	public void updateProduct(ProductEntity product) {
 		productDao.save(product);
+	}
+	
+	@Path("orders")
+	@GET
+	public List<OrderUi> orders() {
+		List<OrderEntity> entities = orderDao.getAll();
+		List<OrderUi> uis = new ArrayList<>(entities.size());
+		for(OrderEntity entity: entities) {
+			OrderUi ui = new OrderUi();
+			ui.setOrder(entity);
+			List<OrderProductEntity> orderProducts = orderProductDao.findByOrder(entity.getId());
+			for(OrderProductEntity orderProduct: orderProducts) {
+				ui.addProduit(productDao.get(orderProduct.getProduct()), orderProduct.getQuantity());
+			}
+			uis.add(ui);
+		}
+		return uis;
 	}
 }

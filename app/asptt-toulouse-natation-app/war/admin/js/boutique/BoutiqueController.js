@@ -8,7 +8,7 @@ boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'Boutique
 	$scope.showFull = true;
 	$scope.currentProduct = null;
 	
-	$scope.products = BoutiqueService.products.query(function (data) {
+	BoutiqueService.products.query(function (data) {
 		$scope.products = data;
 		$rootScope.isLoading = false;
 	});

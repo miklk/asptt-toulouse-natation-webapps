@@ -1,0 +1,30 @@
+<div class="container-fluid" ng-controller="OrderController">
+    <div class="row">
+        <h1 class="page-header">Commandes</h1>
+    </div>
+    <div class="row" ng-show="orders">
+        <p><span class="badge">{{orders.length}} commande(s)</span></p>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>E-mail</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Articles</th>
+                    <th>Montant</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="order in orders| orderBy:'order.order.updated'">
+                    <td>{{order.order.email}}</td>
+                    <td>{{order.order.nom}}</td>
+                    <td>{{order.order.prenom}}</td>
+                    <td><p ng-repeat="product in order.produits">{{product.second}} - {{product.first.title}}</p></td>
+                    <td>{{displayMontant(order)}} euros</td>
+                    <td>{{order.order.status}}<br /><small>{{order.order.updated | date: 'dd/MM/yyyy HH:mm'}}</small></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -8,6 +8,9 @@ boutiqueServices.factory('BoutiqueService', ['$resource',
 		}),
 		saveProduct: $resource('/resources/boutique/product/update',{},{
 			query:{method:'POST', isArray: false, params: {}}
+		}),
+		orders: $resource('/resources/boutique/orders',{},{
+			query:{method:'GET', isArray: true, params: {}}
 		})
 	};
 }]);
