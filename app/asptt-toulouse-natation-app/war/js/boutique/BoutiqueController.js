@@ -32,7 +32,12 @@ boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'Boutique
 		}
 	}
 	
-	$scope.goToIdentite = function() {
+	$scope.goToPanier = function() {
+		$scope.panier = {
+				count: 0,
+				total: 0
+		}
+		var tarif = 0;
 		angular.forEach($scope.calendriers, function(calendrier) {
 			if(calendrier.quantite > 0) {
 				var orderProduct = {
@@ -40,9 +45,28 @@ boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'Boutique
 						quantite: calendrier.quantite
 				}
 				$scope.commande.panier.push(orderProduct);
+				
+				$scope.panier.count = $scope.panier.count + orderProduct.quantite;
+				if($scope.panier.count < 3) {
+					tarif = tarif + (calendrier.product.price * calendrier.quantite);
+				} else if($scope.panier.count >= 3 && $scope.panier.count < 5) {
+					tarif = tarif + (calendrier.product.price2 * calendrier.quantite);
+				} else {
+					tarif = tarif + (calendrier.product.price3 * calendrier.quantite);
+				}
 			}
 		});
-		$('#selection').collapse('hide');
+		$scope.panier.total = tarif;
+		if($scope.commande.panier.length > 0) {
+			$('#selection').collapse('hide');
+			$('#panier').collapse('show');
+		} else {
+			$('#commandeErrorPanierVide').modal('show');
+		}
+	}
+	
+	$scope.goToIdentite = function() {
+		$('#panier').collapse('hide');
 		$('#identite').collapse('show');
 	}
 	
@@ -50,18 +74,20 @@ boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'Boutique
 		if($scope.email && $scope.mdp) {
 			InscriptionService.authenticate.query({email: $scope.email, mdp: $scope.mdp}, function (data) {
 				if(data.inconnu) {
-					alert("Vous n'êtes pas dans nos listing. Peut être qu'ils ne sont pas à jour. Veuillez valider la commande avec votre nom et prénom.");
+					alert("Vous n'êtes pas dans nos listing. Peut être qu'ils ne sont pas à jour. Veuillez valider la commande avec votre nom, prénom et adresse e-mail.");
 				} else {
 					$scope.commande.dossier = data.dossier.id;
 					BoutiqueService.commander.query({}, $scope.commande, function(data) {
-						alert("Ok");
+						$('#commandeConfirm').modal('show');
 					});
 				}
 			});
 		} else if($scope.commande.email) {
 			BoutiqueService.commander.query({}, $scope.commande, function(data) {
-				alert("Ok");
+				$('#commandeConfirm').modal('show');
 			});
+		} else {
+			$('#commandeErrorEmail').modal('show');
 		}
 	}
 	

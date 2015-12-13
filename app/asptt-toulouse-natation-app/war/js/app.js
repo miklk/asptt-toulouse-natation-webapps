@@ -56,6 +56,10 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 			controller: 'MediaCtrl',
 			resolve: {albums: function() {return null;}}
 		}).
+		when('/page/vente-calendriers', {
+			templateUrl: 'views/vente-calendriers.html',
+			controller: 'BoutiqueCtrl'
+		}).
 		when('/page/:pageId', {
 			templateUrl: 'views/page.html',
 			controller: 'PageCtrl',
@@ -66,10 +70,6 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 		}).
 		when('/mentions', {
 			templateUrl: 'views/mentions-legales.html'
-		}).
-		when('/vente-calendriers', {
-			templateUrl: 'views/vente-calendriers.html',
-			controller: 'BoutiqueCtrl'
 		}).
 		when('/error', {
 			templateUrl: 'views/error.html'
