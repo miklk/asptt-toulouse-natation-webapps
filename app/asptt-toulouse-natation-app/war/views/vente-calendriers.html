@@ -2,6 +2,12 @@
 <h1>Vente des calendriers édition 2015-2016</h1>
 </div>
 
+<div class="col-md-6">
+<img src="img/calendriers/calendriers2016.jpg" class="img-responsive" />
+</div>
+<div class="col-md-6">
+
+</div>
 
 <div class="panel-group" id="accordion" role="tablist">
   <div class="panel panel-default">
@@ -19,7 +25,7 @@
 	<div class="col-md-6"  ng-class-odd="'col-md-offset-0'" ng-class-even="'col-md-offset-6'">
 	   <div class="col-md-8">
 		<h4>{{calendrier.product.title}} <small>{{calendrier.product.description}}</small></h4>
-		<img ng-src="{{calendrier.product.image}}" />
+		<img ng-src="{{calendrier.product.image}}" class="img-responsive" />
 	   </div>
 	   <div class="col-md-4 input-group input-group-sm">
 	       <span class="input-group-btn"><button type="button" class="btn btn-default btn-sm" ng-click="productQuantite(calendrier, false)"><span class="glyphicon glyphicon-minus"></span></button></span>

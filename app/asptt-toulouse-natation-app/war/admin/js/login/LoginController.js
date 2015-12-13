@@ -25,8 +25,10 @@ loginController.controller('LoginController', ['$rootScope', '$scope', '$http', 
 
 	    $scope.formData.email = $scope.credentials.email;
 	    $scope.formData.password= $scope.credentials.password;
+	    $scope.authenticationResponse = false;
 	    //$http.get('/resources/authentication/isAuthenticated', {emailheaders : headers}).success(function(data) {
 	    LoginService.login.query({}, $scope.formData, function(data) {
+	    	$scope.authenticationResponse = true;
 	      if (data.logged) {
 					$cookieStore.put("asptt-token", data.token);
 	        $rootScope.authenticated = true;

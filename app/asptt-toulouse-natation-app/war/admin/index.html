@@ -55,7 +55,7 @@
               					<hr style="margin: -13px auto 10px auto; width: 90%" />
               				</div>
           				    <form role="form" name="loginForm" ng-submit="authenticate()" novalidate>
-                        <div class="form-group" ng-show="loginForm.$submitted && !authenticated">
+                        <div class="form-group" ng-show="loginForm.$submitted && !authenticated && authenticationResponse">
                             <span class="text-danger">Adresse e-mail ou mot de passe inconnu.</span>
                         </div>
             						<div class="form-group">
