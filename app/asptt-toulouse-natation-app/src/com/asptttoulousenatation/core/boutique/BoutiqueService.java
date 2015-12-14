@@ -137,7 +137,7 @@ public class BoutiqueService {
 			String title = lineSplitted[0] + " - " + lineSplitted[1] + " - " + lineSplitted[2];
 			product.setTitle(title);
 			product.setDescription(title + " encadrés par " + lineSplitted[3]);
-			product.setImage("img/calendriers/" + lineSplitted[4] + ".jpg");
+			product.setImage("img/calendriers/" + lineSplitted[4].trim() + ".jpg");
 			product.setPrice(5);
 			product.setPrice2(4);
 			product.setPrice3(3);
