@@ -21,7 +21,7 @@
     <div id="selection" class="panel-collapse collapse in" role="tabpanel">
       <div class="panel-body">
 <form>
-<div class="row" ng-repeat="calendrier in calendriers">
+<div class="row" ng-repeat="calendrier in calendriers | orderBy:  '+product.title'">
 	<div class="col-md-6"  ng-class-odd="'col-md-offset-0'" ng-class-even="'col-md-offset-6'">
 	   <div class="col-md-8">
 		<h4>{{calendrier.product.title}} <small>{{calendrier.product.description}}</small></h4>

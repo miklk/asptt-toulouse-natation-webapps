@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -123,6 +124,26 @@ public class BoutiqueService {
 	@POST
 	public void updateProduct(ProductEntity product) {
 		productDao.save(product);
+	}
+	
+	@Path("/product/load")
+	@POST
+	public void loadProducts(String products) {
+		Scanner scanner = new Scanner(products);
+		while(scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			String[] lineSplitted = line.split(";");
+			ProductEntity product = new ProductEntity();
+			String title = lineSplitted[0] + " - " + lineSplitted[1] + " - " + lineSplitted[2];
+			product.setTitle(title);
+			product.setDescription(title + " encadrés par " + lineSplitted[3]);
+			product.setImage("img/calendriers/" + lineSplitted[4] + ".jpg");
+			product.setPrice(5);
+			product.setPrice2(4);
+			product.setPrice3(3);
+			productDao.save(product);
+		}
+		scanner.close();
 	}
 	
 	@Path("orders")
