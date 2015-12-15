@@ -46,13 +46,15 @@ boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'Boutique
 				}
 				$scope.commande.panier.push(orderProduct);
 				
-				$scope.panier.count = $scope.panier.count + orderProduct.quantite;
-				if($scope.panier.count < 3) {
-					tarif = tarif + (calendrier.product.price * calendrier.quantite);
-				} else if($scope.panier.count >= 3 && $scope.panier.count < 5) {
-					tarif = tarif + (calendrier.product.price2 * calendrier.quantite);
-				} else {
-					tarif = tarif + (calendrier.product.price3 * calendrier.quantite);
+				for(i = 1; i <= orderProduct.quantite; i++) {
+					$scope.panier.count = $scope.panier.count + 1;
+					if($scope.panier.count <= 2) {
+						tarif = tarif + calendrier.product.price;
+					} else if($scope.panier.count > 2 && $scope.panier.count <= 4) {
+						tarif = tarif + calendrier.product.price2;
+					} else {
+						tarif = tarif + calendrier.product.price3;
+					}
 				}
 			}
 		});

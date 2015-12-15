@@ -32,6 +32,7 @@ public class OrderEntity implements IEntity {
 	private String prenom;
 	private String email;
 	private String status;
+	private String comment;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date created;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -102,6 +103,14 @@ public class OrderEntity implements IEntity {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	
 }

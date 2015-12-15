@@ -64,18 +64,29 @@ public class BoutiqueService {
 			order.setPrenom(parameters.getPrenom());
 			order.setEmail(parameters.getEmail());
 		}
-		OrderEntity OrderSaved = orderDao.save(order);
+		OrderEntity orderSaved = orderDao.save(order);
 
+		StringBuilder comment = new StringBuilder();
+		if(StringUtils.isNotBlank(orderSaved.getComment())) {
+			comment.append(orderSaved.getComment());
+		}
 		for (ProductUi productUi : parameters.getPanier()) {
 			ProductEntity product = productDao.get(productUi.getId());
+			int quantite = productUi.getQuantite();
+			if(quantite > product.getStock()) {
+				quantite = product.getStock();
+				comment.append("attention pré-commande pour ").append(product.getTitle()).append("\n");
+			}
+			product.setStock(product.getStock() - quantite);
 			OrderProductEntity orderProduct = new OrderProductEntity();
-			orderProduct.setOrder(OrderSaved.getId());
+			orderProduct.setOrder(orderSaved.getId());
 			orderProduct.setProduct(product.getId());
 			orderProduct.setQuantity(productUi.getQuantite());
 			orderProductDao.save(orderProduct);
 		}
-
-		sendConfirmation(order);
+		orderSaved.setComment(comment.toString());
+		orderDao.save(orderSaved);
+		sendConfirmation(orderSaved);
 	}
 
 	private void sendConfirmation(OrderEntity order) {
@@ -104,9 +115,35 @@ public class BoutiqueService {
 				msg.addRecipient(Message.RecipientType.CC, new InternetAddress(emailSecondaire));
 			}
 
+			// Products
+			List<OrderProductEntity> orderProducts = orderProductDao.findByOrder(order.getId());
 			StringBuilder message = new StringBuilder(
 					"Madame, Monsieur,<p>Nous avons le plaisir de vous confirmer la pré-commande de vos calendriers.<br />"
-							+ "Nous vous tiendrons informé dès que votre commande sera validée. <br />");
+							+ "Nous vous tiendrons informé dès que votre commande sera validée. <br />"
+							+ "<p>Commande n°" + order.getId() + "<br /><table>");
+			int countProduct = 0;
+			int total = 0;
+			for (OrderProductEntity orderProduct : orderProducts) {
+
+				ProductEntity product = productDao.get(orderProduct.getProduct());
+				message.append("<tr><td>").append(product.getTitle()).append("</td><td>")
+						.append(orderProduct.getQuantity()).append("</td></td>");
+				int productPrice = 0;
+				for (int i = 1; i <= orderProduct.getQuantity(); i++) {
+					countProduct++;
+					if (countProduct <= 2) {
+						productPrice+=product.getPrice();
+					} else if (countProduct > 2 && countProduct <= 4) {
+						productPrice+=product.getPrice2();
+					} else {
+						productPrice+=product.getPrice3();
+					}
+				}
+				total+=productPrice;
+				message.append(productPrice).append("</td></tr>");
+			}
+			message.append("<td></td><td>").append(countProduct).append("</td><td>").append(total).append("</td>");
+			message.append("</table>");
 			message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />" + "ASPTT Grand Toulouse Natation<br />"
 					+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
 			htmlPart.setContent(message.toString(), "text/html");
@@ -137,7 +174,8 @@ public class BoutiqueService {
 			String title = lineSplitted[0] + " - " + lineSplitted[1] + " - " + lineSplitted[2];
 			product.setTitle(title);
 			product.setDescription(title + " encadrés par " + lineSplitted[3]);
-			product.setImage("img/calendriers/" + lineSplitted[4].trim() + ".jpg");
+			product.setStock(10);
+			product.setImage("img/calendriers/" + lineSplitted[4].replaceAll(" ", "") + ".jpg");
 			product.setPrice(5);
 			product.setPrice2(4);
 			product.setPrice3(3);

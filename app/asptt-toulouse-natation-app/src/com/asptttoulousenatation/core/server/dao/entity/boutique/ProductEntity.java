@@ -23,6 +23,7 @@ public class ProductEntity implements IEntity {
 	
 	private String title;
 	private String description;
+	private int stock;
 	private int price;
 	private int price2;
 	private int price3;
@@ -69,5 +70,10 @@ public class ProductEntity implements IEntity {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	
+	public int getStock() {
+		return stock;
+	}
+	public void setStock(int stock) {
+		this.stock = stock;
+	}
 }
