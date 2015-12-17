@@ -2,6 +2,7 @@ package com.asptttoulousenatation.core.boutique;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
@@ -188,6 +189,13 @@ public class BoutiqueService {
 	@GET
 	public List<OrderUi> orders() {
 		List<OrderEntity> entities = orderDao.getAll();
+		java.util.Collections.sort(entities, new Comparator<OrderEntity>() {
+
+			@Override
+			public int compare(OrderEntity o1, OrderEntity o2) {
+				return o1.getUpdated().compareTo(o2.getUpdated());
+			}
+		});
 		List<OrderUi> uis = new ArrayList<>(entities.size());
 		for(OrderEntity entity: entities) {
 			OrderUi ui = new OrderUi();
