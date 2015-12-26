@@ -112,7 +112,7 @@ public class DossierExtractionService {
 					}
 						break;
 					case "MONTANT":
-						nageurValues.add(nageur.getTarif() == null ? "" : nageur.getTarif().toString());
+						nageurValues.add(nageur.getTarif() == null ? "0" : nageur.getTarif().toString());
 						break;
 					case "COMMENTAIRE":
 						nageurValues.add(StringUtils.defaultString(dossier.getComment()));
