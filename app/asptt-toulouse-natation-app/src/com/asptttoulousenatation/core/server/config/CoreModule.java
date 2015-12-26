@@ -1,14 +1,11 @@
 
 package com.asptttoulousenatation.core.server.config;
 
-import net.customware.gwt.dispatch.server.guice.ActionHandlerModule;
-
 import com.asptttoulousenatation.core.server.document.DeleteDocumentActionHandler;
 import com.asptttoulousenatation.core.server.document.GetDocumentActionHandler;
 import com.asptttoulousenatation.core.server.document.UpdateDocumentActionHandler;
 import com.asptttoulousenatation.core.server.reference.IsDataUpdateActionHandler;
 import com.asptttoulousenatation.core.server.reference.SetDataUpdateActionHandler;
-import com.asptttoulousenatation.core.server.stat.IncrementVisitorCounterActionHandler;
 import com.asptttoulousenatation.core.server.structure.area.CreateAreaActionHandler;
 import com.asptttoulousenatation.core.server.structure.area.DeleteAreaActionHandler;
 import com.asptttoulousenatation.core.server.structure.area.UpdateAreaActionHandler;
@@ -28,7 +25,6 @@ import com.asptttoulousenatation.core.shared.document.GetDocumentAction;
 import com.asptttoulousenatation.core.shared.document.UpdateDocumentAction;
 import com.asptttoulousenatation.core.shared.reference.IsDataUpdateAction;
 import com.asptttoulousenatation.core.shared.reference.SetDataUpdateAction;
-import com.asptttoulousenatation.core.shared.stat.IncrementVisitorCounterAction;
 import com.asptttoulousenatation.core.shared.structure.LoadContentAction;
 import com.asptttoulousenatation.core.shared.structure.area.CreateAreaAction;
 import com.asptttoulousenatation.core.shared.structure.area.DeleteAreaAction;
@@ -59,6 +55,8 @@ import com.asptttoulousenatation.shared.userspace.admin.actu.UpdateActuAction;
 import com.asptttoulousenatation.shared.userspace.admin.structure.area.GetAreaAction;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.CreateContentAction;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.UpdateContentAction;
+
+import net.customware.gwt.dispatch.server.guice.ActionHandlerModule;
 
 public class CoreModule extends ActionHandlerModule {
 	
@@ -107,8 +105,5 @@ public class CoreModule extends ActionHandlerModule {
 		//Data update
 		bindHandler(SetDataUpdateAction.class, SetDataUpdateActionHandler.class);
 		bindHandler(IsDataUpdateAction.class, IsDataUpdateActionHandler.class);
-		
-		bindHandler(IncrementVisitorCounterAction.class, IncrementVisitorCounterActionHandler.class);
-		
 	}
 }
