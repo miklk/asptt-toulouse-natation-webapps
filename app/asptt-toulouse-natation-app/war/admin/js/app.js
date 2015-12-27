@@ -133,6 +133,7 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 
 adminApp.run(function($rootScope, $location, LoginService) {
     $rootScope.$on("$routeChangeStart", function (event, next, current) {
+    	$rootScope.displayMenu = false;
     	var token = $rootScope.aspttToken;
     	if(token) {
     		LoginService.isLogged.query({token: token}, function(data) {

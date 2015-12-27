@@ -37,57 +37,73 @@
 ================================================== -->
   <body style="background-color: #e9f8fc;">
 	<div class="container-fluid" ng-show="authenticated" ng-controller="AdminController">
-		<div class="row">
-			<div class="col-md-2 sidebar" id="menu">
+	<div class="row">
+		<div class="col-md-6">
+			
+			<button type="button" class="navbar-toggle" style="display: block; float: left" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" ng-click="toogleMenu()">
+		    	<i class="fa fa-bars"></i> Menu
+			</button>
+			<div style="margin-top: 8px; margin-bottom: 8px; padding: 9px 10px; font-size: 1.1em">
+				<a href="#/dashboard"><span>ASPTT Toulouse Natation<span></a>
+			</div>
+			
+		</div>
+		<ul class="nav navbar-nav navbar-right" style="float:right; padding: 0px 10px">
+			<li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown">
+					<img src="../../img/nageur-nopic.png" style="max-height: 32px" />
+				</a>
+				<ul class="dropdown-menu">
+					<li><a ng-href="/resources/authentication/logout/{{aspttToken}}" class="btn btn-xs"><span class="glyphicon glyphicon-off"></span></a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+		<div class="container-fluid">
+			<div class="col-md-3 sidebar" id="menu"  ng-show="displayMenu">
 				<ul class="nav nav-sidebar">
-					<li>
-						<img src="../img/logoclub.png" style="max-height: 60px" />
-						
-                	<span class="logo-text">ASPTT Toulouse Natation - Admin</span>
-                	<a ng-href="/resources/authentication/logout/{{aspttToken}}" class="btn btn-xs"><span class="glyphicon glyphicon-off"></span></a>
-					</li>
 					<li data-show-when-connected="ACCESS_INSCRIPTION">
-						<span class="menu">Inscription</span>
 						<ul class="nav nav-sidebar">
+							<li><span class="menu" style="color: rgba(0,0,0,0.54); border-top:1px solid #000000">Adhérents</span></li>
 							<li data-show-when-connected="ACCESS_GROUPES"><a href="#/groupes">Groupes (piscines, groupes, créneaux)</a></li>
-							<li data-show-when-connected="ACCESS_DOSSIERS">Dossiers
+							<li data-show-when-connected="ACCESS_DOSSIERS">
 								<ul class="nav nav-sidebar">
-									<li><a href="#/dossiers">Suivi</a></li>
-									<li><a href="#/extraction">Extraction</a></li>
-									<li><a href="#/adherent-email">E-mail</a></li>
-									<li><a href="#/adherents-stat">Statistiques</a></li>
+									<li><a href="#/dossiers">Suivi des dossiers</a></li>
+									<li><a href="#/extraction">Extraction d'informations</a></li>
+									<li><a href="#/adherent-email">E-mail aux adhérents</a></li>
+									<li><a href="#/adherents-stat">Statistiques adhésions</a></li>
 								</ul>
 							</li>
-							<li data-show-when-connected="ACCESS_REMPLISSAGE">Taux de remplissage
+							<li data-show-when-connected="ACCESS_REMPLISSAGE">
 								<ul class="nav nav-sidebar">
-									<li><a href="#/remplissage">Global</a></li>
-									<li><a href="#/remplissage-detail">Par piscines</a></li>
+									<li><a href="#/remplissage">Taux de remplissage - Global</a></li>
+									<li><a href="#/remplissage-detail">Taux de remplissage - Par piscines</a></li>
 								</ul>
 							</li>
 						</ul>
 					</li>
-					<li data-show-when-connected="ACCESS_ENF"><span class="menu">Ecole de natation</span>
+					<li data-show-when-connected="ACCESS_ENF"><span class="menu" style="color: rgba(0,0,0,0.54); border-top:1px solid #000000">Ecole de natation</span></li>
+					<li data-show-when-connected="ACCESS_ENF"><a href="#/enf">Gestion des groupes</a></li>
+					<li data-show-when-connected="ACCESS_USERS"><span class="menu" style="color: rgba(0,0,0,0.54); border-top:1px solid #000000">Administration</span>
 						<ul class="nav nav-sidebar">
-							<li><a href="#/enf">Gestion des groupes</a></li>
+		                  	<li data-show-when-connected="ACCESS_USERS"><a href="#/users">Utilisateurs</a></li>
 						</ul>
 					</li>
-					<li data-show-when-connected="ACCESS_USERS"><p class="menu"><a href="#/users">Utilisateurs</a></p>
-					</li>
-					<li data-show-when-connected="ACCESS_DOCUMENTS"><span class="menu">Documents</span>
+					<li data-show-when-connected="ACCESS_SITE"><span class="menu" style="color: rgba(0,0,0,0.54); border-top:1px solid #000000">Gestion du site</span>
 						<ul class="nav nav-sidebar">
-	                  	<li><a href="#/documents">Documents</a></li>
-	                  	<li><a href="#/libelles">Gestion des libellés</a></li>
-                		</ul>
-					</li>
-					<li data-show-when-connected="ACCESS_SUIVI_NAGEURS"><span class="menu">Nageurs</span>
-						<ul class="nav nav-sidebar">
-							<li><a href="#/suivi-nageur-day">Par jour</a></li>
-							<li><a href="#/suivi-nageur-week">Par semaine</a></li>
-							<li><a href="#/suivi-nageur-month">Par mois</a></li>
-							<li><a href="#/suivi-nageur-year">Par année</a></li>
+		                  	<li data-show-when-connected="ACCESS_DOCUMENTS"><a href="#/documents">Documents</a></li>
+		                  	<li data-show-when-connected="ACCESS_DOCUMENTS"><a href="#/libelles">Gestion des libellés</a></li>
 						</ul>
 					</li>
-					<li data-show-when-connected="ACCESS_BOUTIQUE"><span class="menu">Boutique</span>
+					<li data-show-when-connected="ACCESS_SUIVI_NAGEURS"><span class="menu" style="color: rgba(0,0,0,0.54); border-top:1px solid #000000">Entrainement</span>
+						<ul class="nav nav-sidebar">
+							<li><a href="#/suivi-nageur-day">Suivi par jour</a></li>
+							<li><a href="#/suivi-nageur-week">Suivi par semaine</a></li>
+							<li><a href="#/suivi-nageur-month">Suivi par mois</a></li>
+							<li><a href="#/suivi-nageur-year">Suivi par année</a></li>
+						</ul>
+					</li>
+					<li data-show-when-connected="ACCESS_BOUTIQUE"><span class="menu" style="color: rgba(0,0,0,0.54); border-top:1px solid #000000">Boutique</span>
                         <ul class="nav nav-sidebar">
                             <li><a href="#/produits">Produits</a></li>
                             <li><a href="#/orders">Commandes</a></li>
@@ -95,12 +111,12 @@
                     </li>
 				</ul>
 			</div>
-  			<div class="col-md-10 main">
+  			<div class="col-md-9 main">
   				<ng-loading-indicator></ng-loading-indicator>
   				<div ng-view></div>
   			</div>
-  		</div>
-
+  			</div>
+</div>
 		<!-- FOOTER -->
       <footer>
       </footer>
