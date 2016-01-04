@@ -4,8 +4,6 @@ import com.asptttoulousenatation.client.MainActivity;
 import com.asptttoulousenatation.client.MainPlace;
 import com.asptttoulousenatation.client.userspace.UserSpaceActivity;
 import com.asptttoulousenatation.client.userspace.UserSpacePlace;
-import com.asptttoulousenatation.client.userspace.admin.actu.ActuActivity;
-import com.asptttoulousenatation.client.userspace.admin.actu.ActuPlace;
 import com.asptttoulousenatation.client.userspace.home.HomeActivity;
 import com.asptttoulousenatation.client.userspace.home.HomePlace;
 import com.asptttoulousenatation.client.userspace.menu.MenuActivity;
@@ -38,9 +36,6 @@ public class MainActivityMapper implements ActivityMapper {
 		}
 		else if(pPlace instanceof MenuPlace) {
 			activity = new MenuActivity((MenuPlace) pPlace, clientFactory);
-		}
-		else if(pPlace instanceof ActuPlace) {
-			activity = new ActuActivity((ActuPlace) pPlace, clientFactory, false);
 		} else {
 			activity = null;
 		}

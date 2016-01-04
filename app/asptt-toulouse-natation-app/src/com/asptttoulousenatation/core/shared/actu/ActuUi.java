@@ -12,7 +12,6 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 public class ActuUi implements IsSerializable {
 	private Long id;
 	private String title;
-	private String summary;
 	private Date creationDate;
 	private String content;
 	private String imageUrl;
@@ -28,12 +27,11 @@ public class ActuUi implements IsSerializable {
 		hasDocument = false;
 	}
 	
-	public ActuUi(Long pId,String pTitle, String pSummary, Date pCreationDate,
+	public ActuUi(Long pId,String pTitle, Date pCreationDate,
 			String pContent, String pImageUrl, boolean pCompetition, Date pExpiration) {
 		this();
 		id = pId;
 		title = pTitle;
-		summary = pSummary;
 		creationDate = pCreationDate;
 		content = pContent;
 		imageUrl = pImageUrl;
@@ -55,14 +53,6 @@ public class ActuUi implements IsSerializable {
 
 	public void setTitle(String pTitle) {
 		title = pTitle;
-	}
-
-	public String getSummary() {
-		return summary;
-	}
-
-	public void setSummary(String pSummary) {
-		summary = pSummary;
 	}
 
 	public Date getCreationDate() {

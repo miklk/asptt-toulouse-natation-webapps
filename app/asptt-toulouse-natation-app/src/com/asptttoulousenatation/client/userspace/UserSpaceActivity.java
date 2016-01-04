@@ -2,8 +2,6 @@ package com.asptttoulousenatation.client.userspace;
 
 import com.asptttoulousenatation.client.config.ClientFactory;
 import com.asptttoulousenatation.client.config.MyAbstractActivity;
-import com.asptttoulousenatation.client.userspace.admin.actu.ActuActivity;
-import com.asptttoulousenatation.client.userspace.admin.actu.ActuPlace;
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEvent;
 import com.asptttoulousenatation.client.userspace.admin.event.UpdateContentEventHandler;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaActivity;
@@ -81,23 +79,6 @@ public class UserSpaceActivity extends MyAbstractActivity<UserSpacePlace> {
 									public void updateContent(
 											UpdateContentEvent pEvent) {
 										switch (pEvent.getAction()) {
-										case NEWS_PUBLICATION:
-											ActuActivity lActuActivity = new ActuActivity(
-													new ActuPlace(),
-													clientFactory, false);
-											lActuActivity.start(lAdminView
-													.getContentPanel(),
-													lEventBus);
-											break;
-										case NEWS_EDITION:
-											ActuActivity lActuEditionActivity = new ActuActivity(
-													new ActuPlace(),
-													clientFactory, true);
-											lActuEditionActivity.start(
-													lAdminView
-															.getContentPanel(),
-													lEventBus);
-											break;
 										case STRUCTURE:
 											AreaUi lArea = (AreaUi) pEvent
 													.getObject();

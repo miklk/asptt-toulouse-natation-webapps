@@ -13,14 +13,10 @@ public class ActuTransformer extends
 
 	@Override
 	public ActuUi toUi(ActuEntity pEntity) {
-		ActuUi lUi = new ActuUi(pEntity.getId(), pEntity.getTitle(),
-				pEntity.getSummary(), new Date(pEntity.getCreationDate().getTime()),
+		ActuUi lUi = new ActuUi(pEntity.getId(), pEntity.getTitle(), new Date(pEntity.getCreationDate().getTime()),
 				pEntity.getContent().getValue(), StringUtils.defaultString(pEntity.getImageUrl(), "img/actu_defaut.jpg"), BooleanUtils.toBoolean(pEntity.getCompetition()), pEntity.getExpiration());
 		if(pEntity.getExpiration() != null) {
 			lUi.setExpiration(new Date(pEntity.getExpiration().getTime()));
-		}
-		if(StringUtils.isBlank(pEntity.getSummary())) {
-			lUi.setSummary("Détail...");
 		}
 		return lUi;
 	}

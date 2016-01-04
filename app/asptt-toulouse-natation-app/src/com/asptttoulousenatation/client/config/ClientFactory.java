@@ -4,12 +4,9 @@ import java.util.List;
 
 import com.asptttoulousenatation.client.MainView;
 import com.asptttoulousenatation.client.userspace.UserSpaceView;
-import com.asptttoulousenatation.client.userspace.admin.actu.ActuEditionView;
-import com.asptttoulousenatation.client.userspace.admin.actu.ActuView;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaView;
 import com.asptttoulousenatation.client.userspace.home.HomeView;
 import com.asptttoulousenatation.client.userspace.menu.MenuView;
-import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.shared.init.InitResult;
@@ -29,7 +26,5 @@ public interface ClientFactory {
 	public UserSpaceView getAdminView();
 	public HomeView getHomeView(List<MenuUi> pMenuList);
 	public MenuView getMenuView(InitUserSpaceResult pInitUserSpaceResult, Command pStackPanelShowCommand);
-	public ActuView getActuView();
 	public AreaView getAreaView(AreaUi pArea);
-	public ActuEditionView getActuEditionView(List<ActuUi> pData);
 }

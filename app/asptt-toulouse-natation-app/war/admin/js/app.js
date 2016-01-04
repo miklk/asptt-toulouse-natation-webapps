@@ -15,7 +15,7 @@ var adminApp = angular.module('adminApp', ['ngCookies', 'ngRoute', 'angular-spin
                                            'EnfController', 'enfServices',
                                            'authorizationService', 'LoginController',
                                            'loginServices',
-                                           'AdminController', 'BoutiqueCtrl', 'OrderController']);
+                                           'AdminController', 'BoutiqueCtrl', 'OrderController', 'ActualiteController']);
 
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.
@@ -107,6 +107,10 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 		when('/orders', {
 			templateUrl: 'views/boutique/orders.html',
 			access: 'ACCESS_BOUTIQUE'
+		}).
+		when('/actualites', {
+			templateUrl: 'views/actualite/actualites.html',
+			access: 'ACCESS_ACTUALITES'
 		}).
 		when('/page/login', {
 			templateUrl: 'views/login.html'

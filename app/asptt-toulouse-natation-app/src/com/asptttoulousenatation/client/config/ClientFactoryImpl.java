@@ -6,10 +6,6 @@ import com.asptttoulousenatation.client.MainView;
 import com.asptttoulousenatation.client.MainViewImpl;
 import com.asptttoulousenatation.client.userspace.UserSpaceView;
 import com.asptttoulousenatation.client.userspace.UserSpaceViewImpl;
-import com.asptttoulousenatation.client.userspace.admin.actu.ActuEditionView;
-import com.asptttoulousenatation.client.userspace.admin.actu.ActuEditionViewImpl;
-import com.asptttoulousenatation.client.userspace.admin.actu.ActuView;
-import com.asptttoulousenatation.client.userspace.admin.actu.ActuViewImpl;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaView;
 import com.asptttoulousenatation.client.userspace.admin.structure.area.AreaViewImpl;
 import com.asptttoulousenatation.client.userspace.home.HomeView;
@@ -47,9 +43,7 @@ public class ClientFactoryImpl implements ClientFactory {
 		return mainView;
 	}
 	
-	private final ActuView actuView = new ActuViewImpl();
 	private AreaView areaView;
-	private ActuEditionView actuEditionView;
 	
 	public HomeView getHomeView(List<MenuUi> pMenuList) {
 		return new HomeViewImpl(pMenuList);
@@ -63,17 +57,8 @@ public class ClientFactoryImpl implements ClientFactory {
 		return new UserSpaceViewImpl();
 	}
 
-	public ActuView getActuView() {
-		return actuView;
-	}
-
 	public AreaView getAreaView(AreaUi pArea) {
 		areaView = new AreaViewImpl(pArea);
 		return areaView;
-	}
-
-	public ActuEditionView getActuEditionView(List<ActuUi> pData) {
-		actuEditionView = new ActuEditionViewImpl(pData);
-		return actuEditionView;
 	}
 }

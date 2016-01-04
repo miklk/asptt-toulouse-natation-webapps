@@ -3,7 +3,6 @@ package com.asptttoulousenatation.client;
 import java.util.List;
 
 import com.asptttoulousenatation.core.client.ui.PopupValidateAction;
-import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -36,6 +35,5 @@ public interface MainView extends IsWidget {
 	public void loadContent(final Panel pPanel);
 	
 	public HasClickHandlers getMoreActuButton();
-	public void setMoreActu(List<ActuUi> pActu, long end);
 	public long getMoreActuEnd();
 }

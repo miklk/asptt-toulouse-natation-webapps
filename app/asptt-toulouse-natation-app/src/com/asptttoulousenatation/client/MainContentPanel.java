@@ -7,20 +7,16 @@ import java.util.List;
 import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent;
 import com.asptttoulousenatation.client.userspace.admin.event.LoadContentEvent.LoadContentAreaEnum;
 import com.asptttoulousenatation.client.util.CollectionUtils;
-import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.structure.MenuUi;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Cursor;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.DisclosurePanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
@@ -182,36 +178,5 @@ public class MainContentPanel extends Composite {
 	
 	public long getMoreActuEnd() {
 		return moreActuEnd;
-	}
-	
-	public void setMoreActu(List<ActuUi> pActu, long end) {
-		moreActuEnd = end;
-		actuPanel.remove(moreActuButton);
-		DateTimeFormat lDateTimeFormat = DateTimeFormat
-				.getFormat("dd MMMM yyyy");
-		for (ActuUi lActuUi : pActu) {
-			DisclosurePanel lActuDetail = new DisclosurePanel();
-			HorizontalPanel headerPanel = new HorizontalPanel();
-			Label open = new Label("+");
-			open.getElement().getStyle().setMarginRight(5, Unit.PX);
-			headerPanel.add(open);
-			headerPanel.add(new HTML(
-					lActuUi.getSummary()));
-			lActuDetail.setHeader(headerPanel);
-			VerticalPanel lContentPanel = new VerticalPanel();
-			lContentPanel.add(new HTML(lActuUi.getContent()));
-			lContentPanel.add(getActuDocumentPanel(lActuUi.getDocumentSet()));
-			lActuDetail.add(lContentPanel);
-			lActuDetail.getContent().getElement().getStyle()
-					.clearBackgroundColor();
-			HeaderPanel lHeaderPanel = new HeaderPanel(
-					lDateTimeFormat.format(lActuUi.getCreationDate()) + " - "
-							+ lActuUi.getTitle(), lActuDetail);
-			lHeaderPanel.setHeaderStyle(CSS.actuBlocHeader());
-			lHeaderPanel.setContentStyle(CSS.actuBlocContent());	
-			lHeaderPanel.isOdd();
-			actuPanel.add(lHeaderPanel);
-		}
-		actuPanel.add(moreActuButton);
 	}
 }

@@ -1,3 +1,4 @@
+
 package com.asptttoulousenatation.core.server.dao.entity;
 
 import java.util.Date;
@@ -6,11 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.google.appengine.api.datastore.Text;
 
 
 @Entity
+@XmlRootElement
 public class ActuEntity implements IEntity {
 	
 	/**
@@ -24,8 +27,6 @@ public class ActuEntity implements IEntity {
 	
 	private String title;
 	
-	private String summary;
-	
 	private Text content;
 	
 	private Date creationDate;
@@ -36,22 +37,8 @@ public class ActuEntity implements IEntity {
 	
 	private Date expiration;
 	
-	public ActuEntity() {
-		
-	}
-
-	public ActuEntity(Long pId, String pTitle, String pSummary,
-			Text pContent, Date pCreationDate, String pImageUrl, Boolean pCompetition, Date pExpiration) {
-		id = pId;
-		title = pTitle;
-		summary = pSummary;
-		content = pContent;
-		creationDate = pCreationDate;
-		imageUrl = pImageUrl;
-		competition = pCompetition;
-		expiration = pExpiration;
-	}
-
+	private String statut;
+	
 	public Long getId() {
 		return id;
 	}
@@ -66,14 +53,6 @@ public class ActuEntity implements IEntity {
 
 	public void setTitle(String pTitle) {
 		title = pTitle;
-	}
-
-	public String getSummary() {
-		return summary;
-	}
-
-	public void setSummary(String pSummary) {
-		summary = pSummary;
 	}
 
 	public Text getContent() {
@@ -114,6 +93,14 @@ public class ActuEntity implements IEntity {
 
 	public void setExpiration(Date pExpiration) {
 		expiration = pExpiration;
+	}
+
+	public String getStatut() {
+		return statut;
+	}
+
+	public void setStatut(String statut) {
+		this.statut = statut;
 	}
 	
 }

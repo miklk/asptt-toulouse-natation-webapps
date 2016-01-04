@@ -1,0 +1,28 @@
+<div class="container-fluid" ng-controller="ActualiteController">
+	<div class="row">
+		<h1 class="page-header">Actualités</h1>
+	</div>
+	<div class="row" ng-show="actualites && showFull">
+		<p><span class="badge">{{actualites.length}} actualité(s)</span></p>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Intitulé</th>
+				</tr>
+			</thead>
+			<tfoot>
+				<tr>
+					<td colspan="10"><button type="button" class="btn btn-sm btn-primary" ng-click="edit(null)">Ajouter</button>
+				</tr>
+			</tfoot>
+			<tbody>
+				<tr ng-repeat="actualite in actualites" ng-click="edit(actualite)">
+					<td>{{actualite.title}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+    <div class="row" ng-hide="showFull">
+    	<div ng-include="'views/actualite/actualite.html'"></div>
+	</div>
+</div>

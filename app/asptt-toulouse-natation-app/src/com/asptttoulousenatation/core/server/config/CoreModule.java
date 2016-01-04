@@ -18,8 +18,6 @@ import com.asptttoulousenatation.core.server.user.ChangePasswordActionHandler;
 import com.asptttoulousenatation.core.server.user.IsAuthenticatedActionHandler;
 import com.asptttoulousenatation.core.server.user.LogoutActionHandler;
 import com.asptttoulousenatation.core.server.user.PasswordForgetActionHandler;
-import com.asptttoulousenatation.core.shared.actu.DeleteActuAction;
-import com.asptttoulousenatation.core.shared.actu.GetAllActuAction;
 import com.asptttoulousenatation.core.shared.document.DeleteDocumentAction;
 import com.asptttoulousenatation.core.shared.document.GetDocumentAction;
 import com.asptttoulousenatation.core.shared.document.UpdateDocumentAction;
@@ -41,18 +39,10 @@ import com.asptttoulousenatation.core.shared.user.PasswordForgetAction;
 import com.asptttoulousenatation.server.init.InitActionHandler;
 import com.asptttoulousenatation.server.init.InitUserSpaceActionHandler;
 import com.asptttoulousenatation.server.init.LoadContentActionHandler;
-import com.asptttoulousenatation.server.userspace.admin.actu.DeleteActuActionHandler;
-import com.asptttoulousenatation.server.userspace.admin.actu.GetAllActuActionHandler;
-import com.asptttoulousenatation.server.userspace.admin.actu.PublishActuActionHandler;
-import com.asptttoulousenatation.server.userspace.admin.actu.UpdateActuActionHandler;
-import com.asptttoulousenatation.server.userspace.admin.structure.GetAreaActionHandler;
 import com.asptttoulousenatation.server.userspace.admin.structure.content.CreateContentActionHandler;
 import com.asptttoulousenatation.server.userspace.admin.structure.content.UpdateContentActionHandler;
 import com.asptttoulousenatation.shared.init.InitAction;
 import com.asptttoulousenatation.shared.init.InitUserSpaceAction;
-import com.asptttoulousenatation.shared.userspace.admin.actu.PublishActuAction;
-import com.asptttoulousenatation.shared.userspace.admin.actu.UpdateActuAction;
-import com.asptttoulousenatation.shared.userspace.admin.structure.area.GetAreaAction;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.CreateContentAction;
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.UpdateContentAction;
 
@@ -64,13 +54,6 @@ public class CoreModule extends ActionHandlerModule {
 
 	@Override
 	protected void configureHandlers() {
-		//Actu
-		bindHandler(GetAllActuAction.class, GetAllActuActionHandler.class);
-		bindHandler(PublishActuAction.class, PublishActuActionHandler.class);
-		bindHandler(GetAreaAction.class, GetAreaActionHandler.class);
-		bindHandler(UpdateActuAction.class, UpdateActuActionHandler.class);
-		bindHandler(DeleteActuAction.class, DeleteActuActionHandler.class);
-		
 		bindHandler(CreateContentAction.class, CreateContentActionHandler.class);
 		bindHandler(UpdateContentAction.class, UpdateContentActionHandler.class);
 		
