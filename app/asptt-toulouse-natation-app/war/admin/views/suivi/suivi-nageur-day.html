@@ -12,7 +12,7 @@ input[type="number"] {
 		<form class="form-inline">
 			<div class="form-group">
 				 <select class="form-control" ng-model="groupesSelected"
-				    	ng-options="groupe.title for groupe in groupes.groups track by groupe.id" ng-change="loadSuivi()" multiple size="10">
+				    	ng-options="groupe.title for groupe in groupes.groups track by groupe.id" ng-change="loadSuivi()">
 			    	<option value="">Choisir un groupe</option>
 		  	    </select>
 			</div>

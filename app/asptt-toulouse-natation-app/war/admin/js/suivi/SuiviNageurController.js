@@ -15,9 +15,7 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 	                                     swimmers: null};
 	function load() {
 		var groupes = [];
-		angular.forEach($scope.groupesSelected, function(groupe) {
-			groupes.push(groupe.id);
-		});
+		groupes.push($scope.groupesSelected.id);
 		SuiviNageurService.days.query({groupes: groupes, day: $scope.day.getTime()}, function(data) {
 			var enf = true;
 			angular.forEach($scope.groupesSelected, function(groupe) {
@@ -79,9 +77,7 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 	
 	$scope.loadWeeks = function() {
 		var groupes = [];
-		angular.forEach($scope.groupesSelected, function(groupe) {
-			groupes.push(groupe.id);
-		});
+		groupes.push($scope.groupesSelected.id);
 		SuiviNageurService.weeks.query({groupes: groupes,  week: $filter('date')($scope.day,'yyyy-Www')}, function(data) {
 			$scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
 			$scope.beginDt = data.begin;
@@ -96,9 +92,7 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 	
 	$scope.loadMonths = function() {
 		var groupes = [];
-		angular.forEach($scope.groupesSelected, function(groupe) {
-			groupes.push(groupe.id);
-		});
+		groupes.push($scope.groupesSelected.id);
 		SuiviNageurService.months.query({groupes: groupes,  month: $filter('date')($scope.day,'yyyy-MM')}, function(data) {
 			$scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
 			$scope.beginDt = data.begin;
@@ -114,9 +108,7 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 	
 	$scope.loadYears = function() {
 		var groupes = [];
-		angular.forEach($scope.groupesSelected, function(groupe) {
-			groupes.push(groupe.id);
-		});
+		groupes.push($scope.groupesSelected.id);
 		SuiviNageurService.years.query({groupes: groupes, year: $filter('date')($scope.day,'yyyy')}, function(data) {
 			$scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
 			$scope.beginDt = data.begin;

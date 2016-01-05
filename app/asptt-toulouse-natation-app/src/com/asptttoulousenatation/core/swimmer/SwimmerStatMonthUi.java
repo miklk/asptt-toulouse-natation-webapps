@@ -22,12 +22,12 @@ public class SwimmerStatMonthUi implements Serializable {
 	public SwimmerStatMonthUi() {
 		distances = new ArrayList<>(5);
 		presences = new ArrayList<>(5);
+		muscus = new ArrayList<>(12);
 		for (int i = 0; i < 5; i++) {
 			distances.add(0);
 			presences.add(0);
 			muscus.add(0);
 		}
-		muscus = new ArrayList<>(12);
 	}
 
 	public void addDistance(int month, int pDistance) {
