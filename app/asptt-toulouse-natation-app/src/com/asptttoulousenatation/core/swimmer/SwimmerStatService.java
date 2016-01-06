@@ -309,13 +309,13 @@ public class SwimmerStatService {
 		SwimmerStatMonthListResult result = new SwimmerStatMonthListResult();
 
 			LocalDate longDate = ISODateTimeFormat.yearMonth().parseLocalDate(month);
-			Long dayBeginToMindnight = longDate.toDateTimeAtStartOfDay().getMillis();
+			Long dayBeginToMindnight = longDate.dayOfMonth().withMinimumValue().toDateTimeAtStartOfDay().getMillis();
 			// Get end of week to midnight
 			Long dayEndToMindnight = longDate.dayOfMonth().withMaximumValue().toDateTimeAtStartOfDay().hourOfDay().withMaximumValue().getMillis();
 
 			// Recuperer les nageur du groupe
+			Map<Integer, LocalDate> weeks = new LinkedHashMap<>();
 			List<DossierNageurEntity> entities = getNageurs(groupes);
-			Map<Integer, LocalDate> weeks = new LinkedHashMap<>(); 
 			for (DossierNageurEntity nageur : entities) {
 				// Recuperer la stat du jour du nageur
 				List<CriterionDao<? extends Object>> statCriteria = new ArrayList<CriterionDao<? extends Object>>(
@@ -363,11 +363,12 @@ public class SwimmerStatService {
 			});
 			
 			//Set weeks
-			List<LocalDate> weeksList = new ArrayList<>(weeks.values()); 
-			Collections.sort(weeksList);
-			for(LocalDate week: weeksList) {
-				long firstDay = week.dayOfWeek().withMinimumValue().toDateTimeAtStartOfDay().getMillis();
-				long lastDay = week.dayOfWeek().withMaximumValue().toDateTimeAtStartOfDay().getMillis();
+			LocalDate firstOfMonth = longDate.dayOfMonth().withMinimumValue();
+			int beginWeek = firstOfMonth.weekOfWeekyear().get();
+			int endWeek = longDate.dayOfMonth().withMaximumValue().weekOfWeekyear().get();
+			for(int i = beginWeek; i <= endWeek; i++) {
+				long firstDay = firstOfMonth.withWeekOfWeekyear(i).dayOfWeek().withMinimumValue().toDateTimeAtStartOfDay().getMillis();
+				long lastDay = firstOfMonth.withWeekOfWeekyear(i).dayOfWeek().withMaximumValue().toDateTimeAtStartOfDay().getMillis();
 				result.addWeek(new CoupleValue<Long, Long>(firstDay, lastDay));
 			}
 			

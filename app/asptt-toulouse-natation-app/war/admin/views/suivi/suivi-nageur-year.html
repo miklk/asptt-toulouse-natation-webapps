@@ -44,7 +44,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="nageur in nageurs | orderBy:['+nageur.nom', '+nageur.prenom']">
+				<tr ng-repeat="nageur in nageurs">
 					<td>{{nageur.nom}} {{nageur.prenom}}</td>
 					<td><span ng-show="nageur.distances[8] > 0">{{nageur.distances[8] | number}} ({{nageur.presences[8]}} séances)</span></td>
 					<td><span ng-show="nageur.distances[9] > 0">{{nageur.distances[9] | number}} ({{nageur.presences[9]}} séances)</span></td>
