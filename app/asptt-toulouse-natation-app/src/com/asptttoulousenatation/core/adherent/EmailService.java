@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
@@ -27,8 +29,10 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -72,7 +76,10 @@ public class EmailService {
 	private SlotDao slotDao = new SlotDao();
 	private GroupDao groupDao = new GroupDao();
 	private PiscineDao piscineDao = new PiscineDao();
+	
+	private static Map<String, Long> EMAILS = new HashMap<>();
 
+	@Path("/send")
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public List<String> email(FormDataMultiPart multiPart) {
@@ -85,6 +92,7 @@ public class EmailService {
 		String from = multiPart.getField("messageFrom").getValue();
 		String subject = multiPart.getField("messageSubject").getValue();
 		String corps = multiPart.getField("messageContent").getValue();
+		String copie = multiPart.getField("messageCc").getValue();
 		FormDataBodyPart fichierMultiPart = multiPart.getField("file");
 		List<String> recipents = new ArrayList<String>();
 		try {
@@ -109,6 +117,7 @@ public class EmailService {
 			} else {
 				destinataires = getDestinataires(destinataireParam, groupes, creneaux, piscine);
 			}
+			
 			for (int i = 0; i < destinataires.size(); i += EMAIL_PAQUET) {
 				try {
 					Multipart mp = new MimeMultipart();
@@ -126,6 +135,11 @@ public class EmailService {
 					msg.addRecipient(Message.RecipientType.TO,
 							new InternetAddress(
 									"support@asptt-toulouse-natation.com"));
+					if(StringUtils.isNotBlank(copie)) {
+						for(String cc: copie.split(",")) {
+							msg.addRecipient(Message.RecipientType.CC, new InternetAddress(cc));
+						}
+					}
 					if (fichierMultiPart.getFormDataContentDisposition()
 							.getFileName() != null) {
 						MimeBodyPart attachment = new MimeBodyPart();
@@ -321,5 +335,34 @@ public class EmailService {
 				destinataires.add(dossier.getEmailsecondaire());
 			}
 		}
+	}
+	
+	@Path("/initEmail")
+	@GET
+	public void initEmail() {
+		List<DossierNageurEntity> nageurs = dao.getAll();
+		for(DossierNageurEntity nageur: nageurs) {
+			DossierEntity dossier = dossierDao.get(nageur.getDossier());
+			if(dossier.getStatut().equals(DossierStatutEnum.INSCRIT.name())) {
+				EMAILS.put(nageur.getNom(), nageur.getDossier());
+			}
+		}
+	}
+	
+	@Path("/findEmail/{value}")
+	@GET
+	@Consumes("application/json")
+	public List<String> find(@PathParam("value") String value) {
+		List<String> results = new ArrayList<>();
+		for(Map.Entry<String, Long> entry: EMAILS.entrySet()) {
+			if(entry.getKey().startsWith(value.toUpperCase())) {
+				DossierEntity dossier = dossierDao.get(entry.getValue());
+				results.add(dossier.getEmail());
+				if(StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
+					results.add(dossier.getEmailsecondaire());
+				}
+			}
+		}
+		return results;
 	}
 }

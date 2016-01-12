@@ -12,6 +12,7 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
 	$scope.creneau = 0;
 	$scope.piscine = 0;
 	$scope.recipient = "";
+	$scope.carboncopie = "";
 	
 	
 	$scope.htmlcontent = "<img src=\"https://lh3.googleusercontent.com/-G9O-07NDcNY/VBvelTpt3lI/AAAAAAAABgI/yAYJInY7jU4/w917-h69-no/logo_entete.png\" /><p>Madame, Monsieur,</p>";
@@ -26,6 +27,9 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
 	PiscineService.all.query({}, function(data) {
 		$scope.piscines = data;
 	});
+	
+	AdherentsService.initEmail.query();
+	
 	$scope.loadCreneau = function() {
 		SlotService.list.query({groupe: $scope.groupesSelected}, function(data) {
 			$scope.creneaux = data.creneaux;
@@ -61,7 +65,8 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
 		formData.append("groupes", $scope.groupesSelected);
 		formData.append("creneau", $scope.creneau);
 		formData.append("piscine", $scope.piscine);
-		$http.post("/resources/email", formData, {
+		formData.append("messageCc", $scope.carboncopie);
+		$http.post("/resources/email/send", formData, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         }).
@@ -101,5 +106,17 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
 		break;
 		default: $scope.recipient = "";
 		}
-	}	
+	}
+	$scope.findEmail = function(typedValue) {
+		var realValue = typedValue;
+		if(typedValue.length > 2 && typedValue.indexOf(",") > -1) {
+			realValue = typedValue.substring(typedValue.lastIndexOf(",") + 1).trim();
+		}
+		if(realValue.length > 2) {
+			AdherentsService.findEmail.query({'value': realValue}, function(data) {
+				$scope.emails = data;
+			});
+			console.log("start to find " + realValue);
+		}
+	}
 }]);

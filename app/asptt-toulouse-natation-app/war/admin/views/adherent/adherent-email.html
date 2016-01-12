@@ -53,6 +53,13 @@
 			<div class="form-group">
 	            <input type="text" class="form-control" id="recipient" name="recipient" ng-model="recipient" />
 	        </div>
+	        <h3>Cc</h3>
+			<div class="form-group">
+	            <input list="carboncopieList" type="text" class="form-control" id="carboncopie" name="carboncopie" ng-model="carboncopie" ng-change="findEmail(carboncopie)" />
+	            <datalist id="carboncopieList">
+	            	<option ng-repeat="email in emails" value="{{email}}" />
+	            </datalist>
+	        </div>
 		<h3>De</h3>
 			<div class="form-group">
 	            <select class="form-control" id="senderList" name="senderList" ng-model="sender" ng-options="senderElt as senderElt for senderElt in senderList">
