@@ -2,7 +2,7 @@
  * 
  */
 var adherentController = angular.module('AdherentEmailCtrl', ['ngRoute', 'textAngular', 'adherentsServices', 'groupeServices', 'slotServices', 'piscineServices']);
-adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$location', '$filter', 'AdherentsService', 'GroupeService', 'SlotService', 'PiscineService', function($http, $scope, $location, $filter, AdherentsService, GroupeService, SlotService, PiscineService) {
+adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$location', '$filter','$timeout', 'AdherentsService', 'GroupeService', 'SlotService', 'PiscineService', function($http, $scope, $location, $filter,$timeout, AdherentsService, GroupeService, SlotService, PiscineService) {
 	$scope.fichier = null;
 	$scope.sender = "contact@asptt-toulouse-natation.com";
 	$scope.subject = "";
@@ -13,6 +13,7 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
 	$scope.piscine = 0;
 	$scope.recipient = "";
 	$scope.carboncopie = "";
+	$scope.emails = [];
 	
 	
 	$scope.htmlcontent = "<img src=\"https://lh3.googleusercontent.com/-G9O-07NDcNY/VBvelTpt3lI/AAAAAAAABgI/yAYJInY7jU4/w917-h69-no/logo_entete.png\" /><p>Madame, Monsieur,</p>";
@@ -114,7 +115,7 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
 		}
 		if(realValue.length > 2) {
 			AdherentsService.findEmail.query({'value': realValue}, function(data) {
-				$scope.emails = data;
+					$scope.emails = data;
 			});
 			console.log("start to find " + realValue);
 		}

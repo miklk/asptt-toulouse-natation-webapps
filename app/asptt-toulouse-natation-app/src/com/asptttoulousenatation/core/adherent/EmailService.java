@@ -352,15 +352,12 @@ public class EmailService {
 	@Path("/findEmail/{value}")
 	@GET
 	@Consumes("application/json")
-	public List<String> find(@PathParam("value") String value) {
-		List<String> results = new ArrayList<>();
+	public Map<String, String> find(@PathParam("value") String value) {
+		Map<String, String> results = new HashMap<>();
 		for(Map.Entry<String, Long> entry: EMAILS.entrySet()) {
 			if(entry.getKey().startsWith(value.toUpperCase())) {
 				DossierEntity dossier = dossierDao.get(entry.getValue());
-				results.add(dossier.getEmail());
-				if(StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
-					results.add(dossier.getEmailsecondaire());
-				}
+				results.put(entry.getKey(), dossier.getEmail());
 			}
 		}
 		return results;
