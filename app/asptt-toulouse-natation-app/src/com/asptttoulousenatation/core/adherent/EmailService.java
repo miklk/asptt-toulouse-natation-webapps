@@ -342,8 +342,12 @@ public class EmailService {
 		List<DossierNageurEntity> nageurs = dao.getAll();
 		for(DossierNageurEntity nageur: nageurs) {
 			DossierEntity dossier = dossierDao.get(nageur.getDossier());
-			if(dossier.getStatut().equals(DossierStatutEnum.INSCRIT.name())) {
-				EMAILS.put(nageur.getNom(), dossier.getEmail());
+			if(dossier != null) {
+				if(dossier.getStatut().equals(DossierStatutEnum.INSCRIT.name())) {
+					EMAILS.put(nageur.getNom(), dossier.getEmail());
+				}
+			} else {
+				LOG.log(Level.WARNING, "Pas de dossier pour le nageur #" + nageur.getId() + " ("+nageur.getNom()+")");
 			}
 		}
 		return EMAILS;
