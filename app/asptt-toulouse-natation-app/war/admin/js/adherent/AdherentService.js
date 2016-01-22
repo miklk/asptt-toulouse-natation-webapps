@@ -9,8 +9,5 @@ adherentsServices.factory('AdherentsService', ['$resource',
 		initEmail: $resource('/resources/email/initEmail/',{},{
 			query:{method:'GET', isArray: false, params: {}}
 		}),
-		findEmail: $resource('/resources/email/findEmail/:value',{},{
-			query:{method:'GET', isArray: false, params: {}}
-		}),
 	};
 }]);

@@ -55,9 +55,9 @@
 	        </div>
 	        <h3>Cc</h3>
 			<div class="form-group">
-	            <input list="carboncopieList" type="text" class="form-control" id="carboncopie" name="carboncopie" ng-model="carboncopie" ng-change="findEmail(carboncopie)" />
+	            <input list="carboncopieList" type="text" class="form-control" id="carboncopie" name="carboncopie" ng-model="carboncopie" />
 	            <datalist id="carboncopieList">
-	            	<option ng-repeat="(key, value) in emails" value="{{value}}">{{key}}</option>
+	            	<option ng-repeat="(key, value) in emails" data-value="{{key}}" value="{{value}}"></option>
 	            </datalist>
 	        </div>
 		<h3>De</h3>

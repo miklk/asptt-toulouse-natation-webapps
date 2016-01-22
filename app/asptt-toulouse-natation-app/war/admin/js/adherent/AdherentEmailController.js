@@ -29,7 +29,9 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
 		$scope.piscines = data;
 	});
 	
-	AdherentsService.initEmail.query();
+	AdherentsService.initEmail.query({}, function(data) {
+		$scope.emails = data;
+	});
 	
 	$scope.loadCreneau = function() {
 		SlotService.list.query({groupe: $scope.groupesSelected}, function(data) {
@@ -67,6 +69,7 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
 		formData.append("creneau", $scope.creneau);
 		formData.append("piscine", $scope.piscine);
 		formData.append("messageCc", $scope.carboncopie);
+		alert($('#carboncopieList [value="' + $scope.carboncopie + '"]').data('value'));
 		$http.post("/resources/email/send", formData, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}

@@ -32,7 +32,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -77,7 +76,7 @@ public class EmailService {
 	private GroupDao groupDao = new GroupDao();
 	private PiscineDao piscineDao = new PiscineDao();
 	
-	private static Map<String, Long> EMAILS = new HashMap<>();
+	private static Map<String, String> EMAILS = new HashMap<>();
 
 	@Path("/send")
 	@POST
@@ -339,27 +338,14 @@ public class EmailService {
 	
 	@Path("/initEmail")
 	@GET
-	public void initEmail() {
+	public Map<String, String> initEmail() {
 		List<DossierNageurEntity> nageurs = dao.getAll();
 		for(DossierNageurEntity nageur: nageurs) {
 			DossierEntity dossier = dossierDao.get(nageur.getDossier());
 			if(dossier.getStatut().equals(DossierStatutEnum.INSCRIT.name())) {
-				EMAILS.put(nageur.getNom(), nageur.getDossier());
+				EMAILS.put(nageur.getNom(), dossier.getEmail());
 			}
 		}
-	}
-	
-	@Path("/findEmail/{value}")
-	@GET
-	@Consumes("application/json")
-	public Map<String, String> find(@PathParam("value") String value) {
-		Map<String, String> results = new HashMap<>();
-		for(Map.Entry<String, Long> entry: EMAILS.entrySet()) {
-			if(entry.getKey().startsWith(value.toUpperCase())) {
-				DossierEntity dossier = dossierDao.get(entry.getValue());
-				results.put(entry.getKey(), dossier.getEmail());
-			}
-		}
-		return results;
+		return EMAILS;
 	}
 }
