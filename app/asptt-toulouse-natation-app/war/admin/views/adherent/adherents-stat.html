@@ -63,10 +63,15 @@ rect:hover {  fill:blue; }
 	</div>
 
 <h3><span class="badge">{{nbAdherents}}</span> adhérents</h3>
+<h4>Par statuts (<span ng-click="showStatusDetails = !showStatusDetails">cliquez ici pour plus de détails</span>)</h4>
+<div ng-show="showStatusDetails">
+	<p ng-repeat="(statut, count) in perStatus">{{statut}}: {{count}}</p>
+</div>
 <h4>Inscriptions</h4>
 <h5>Dossiers complets: {{nbComplet}} ({{pourcentageComplet}}%)</h5>
 <h5>Dossiers nouvelles adhésions: {{nbNouveau}}  ({{pourcentageNouveau}}%)</h5>
 <h5>Dossiers renouvellement: {{nbRenouvellement}}  ({{pourcentageRenouvellement}}%)</h5>
+<h5>Dossiers annulés: {{nbAnnuler}} ({{pourcentageAnnuler}}%)</h5>
 <h4>Répartition par sexe et âge (mineur/majeur)</h4>
 <div id="sexe-age">
 </div>

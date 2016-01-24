@@ -56,6 +56,10 @@ public class AdherentStatService {
 
 		for (DossierNageurEntity adherent : adherents) {
 			DossierEntity dossier = dao.get(adherent.getDossier());
+			if(dossier != null) {
+				String statut = StringUtils.defaultString(dossier.getStatut(), "Pas de statut");
+				result.addStatus(statut);
+			}
 			if(dossier != null && DossierUtils.isValid(dossier)) {
 				if (StringUtils.isNotBlank(adherent.getCivilite())) {
 					switch (adherent.getCivilite()) {
