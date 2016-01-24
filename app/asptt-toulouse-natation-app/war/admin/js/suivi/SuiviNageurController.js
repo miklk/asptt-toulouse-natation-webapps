@@ -13,7 +13,7 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 	                                     valeur: '',
 	                                     presence: '',
 	                                     swimmers: null};
-	function load() {
+	function load(selectedNageur) {
 		var groupes = [];
 		groupes.push($scope.groupesSelected.id);
 		SuiviNageurService.days.query({groupes: groupes, day: $scope.day.getTime()}, function(data) {
@@ -28,6 +28,11 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 				$scope.swimmerStatUpdateAllAction.dayTime = 'MATIN';
 			}
 			$scope.nageurs = $filter('orderBy') (data.swimmers, ['+nom', '+prenom']);
+			angular.forEach($scope.nageurs, function(nageur) {
+				if(nageur.adherent == selectedNageur) {
+					nageur.updated = true;
+				}
+			});
 		});
 	}
 	
@@ -42,7 +47,7 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 				stat: stat};
 		SuiviNageurService.update.query({nageur: nageur}, $scope.swimmerStatUpdateAction, function(data) {
 			console.log(data);
-			load();
+			load(nageur);
 		});
 	};
 	

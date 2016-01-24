@@ -12,6 +12,7 @@ public class SwimmerStatUi {
 	private String prenom;
 	private Long day;
 	private boolean selected;
+	private boolean updated;
 	
 	private SwimmerStatDataUi morning;
 	private SwimmerStatDataUi midday;
@@ -28,6 +29,7 @@ public class SwimmerStatUi {
 		bodybuilding = new SwimmerStatDataUi();
 		presence = new SwimmerStatDataUi();
 		selected = false;
+		updated = false;
 	}
 	
 
@@ -144,5 +146,14 @@ public class SwimmerStatUi {
 	public void setPresence(SwimmerStatDataUi pPresence) {
 		presence = pPresence;
 	}
-	
+
+
+	public boolean isUpdated() {
+		return updated;
+	}
+
+
+	public void setUpdated(boolean updated) {
+		this.updated = updated;
+	}
 }
