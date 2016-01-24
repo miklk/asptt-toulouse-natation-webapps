@@ -223,4 +223,15 @@ public class UserService {
 	public Set<String> authorizations() {
 		return AUTHORIZATIONS;
 	}
+	
+	/**@Path("/default")
+	@GET
+	public void createDefault() {
+		UserCreateAction action = new UserCreateAction();
+		action.setEmail("root@root.com");
+		action.setNom("Root");
+		action.setPassword("0123");
+		action.setAuthorizations(AUTHORIZATIONS);
+		create(action);
+	}**/
 }
