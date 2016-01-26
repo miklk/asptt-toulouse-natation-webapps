@@ -2,8 +2,10 @@ package com.asptttoulousenatation.core.adherent.statistique;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,6 +18,10 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
+import com.asptttoulousenatation.core.adherent.AdherentBeanTransformer;
+import com.asptttoulousenatation.core.groupe.SlotUi;
+import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
+import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
@@ -35,6 +41,7 @@ public class AdherentStatService {
 
 	private DossierDao dao = new DossierDao();
 	private DossierNageurDao nageurDao = new DossierNageurDao();
+	private GroupDao groupDao = new GroupDao();
 
 	@Path("/sexe-age")
 	@GET
@@ -156,8 +163,6 @@ public class AdherentStatService {
 		AdherentFamilleStatResult result = new AdherentFamilleStatResult();
 
 		List<DossierEntity> dossiers = dao.getAll();
-		List<FamilleBean> familles = new ArrayList<FamilleBean>(
-				dossiers.size());
 		for (DossierEntity dossier : dossiers) {
 			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 					1);
@@ -166,21 +171,27 @@ public class AdherentStatService {
 					Operator.EQUAL));
 			List<DossierNageurEntity> enfants = nageurDao.find(criteria);
 			if(CollectionUtils.isNotEmpty(enfants) && enfants.size() > 1) {//Uniquement familles
-				try {
-					FamilleBean famille = new FamilleBean();
-							/**famille.setEnfants(AdherentBeanTransformer
-									.getInstance().get(enfants));
-							result.addPiscine(famille);
-							result.addGroupe(famille);**/
-							familles.add(famille);
-				} catch (Exception e) {
-					LOG.severe(e.getMessage());
-					LOG.log(Level.SEVERE, e.getMessage(), e);
-	
+				result.addFamille();
+				Set<String> piscines = new HashSet<>();
+				Set<String> groupes = new HashSet<>(); 
+				for(DossierNageurEntity enfant: enfants) {
+					if(enfant.getGroupe() != null) {
+						GroupEntity groupEntity = groupDao.get(enfant.getGroupe());
+						groupes.add(groupEntity.getTitle());
+						Set<SlotUi> creneaux = AdherentBeanTransformer.getInstance().getCreneaux(enfant.getCreneaux());
+						for(SlotUi creneau: creneaux) {
+							piscines.add(creneau.getSwimmingPool());
+						}
+					}
+				}
+				for(String piscine: piscines) {
+					result.addPiscine(piscine);
+				}
+				for(String groupe: groupes) {
+					result.addGroupe(groupe);
 				}
 			}
 		}
-		result.setNbFamilles(familles.size());
 		result.toList();
 
 		return result;
