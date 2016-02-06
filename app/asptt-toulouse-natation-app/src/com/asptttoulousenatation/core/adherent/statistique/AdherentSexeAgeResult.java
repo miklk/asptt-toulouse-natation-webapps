@@ -31,6 +31,7 @@ public class AdherentSexeAgeResult {
 
 	private Map<Integer, Integer> ages;
 	private List<CoupleValue<Integer, Integer>> ageArray;
+	private Map<String, Integer> perStatus;
 
 	static {
 		CODE_POSTAUX_TOULOUSE = new HashSet<>();
@@ -78,6 +79,7 @@ public class AdherentSexeAgeResult {
 		localisationsToulouse = new ArrayList<>();
 		professions = new ArrayList<>();
 		ages = new HashMap<>();
+		perStatus = new HashMap<>();
 	}
 
 	public void addSexeAgeStat(SexeAgeStatBean stat) {
@@ -121,6 +123,17 @@ public class AdherentSexeAgeResult {
 			}
 
 		});
+	}
+	
+	public void addStatus(String status) {
+		Integer count;
+		if(perStatus.containsKey(status)) {
+			count = perStatus.get(status);
+		} else {
+			count = new Integer(0);
+		}
+		count++;
+		perStatus.put(status, count);
 	}
 
 	public void addComplet() {
@@ -218,4 +231,13 @@ public class AdherentSexeAgeResult {
 		}
 		return csp;
 	}
+
+	public Map<String, Integer> getPerStatus() {
+		return perStatus;
+	}
+
+	public void setPerStatus(Map<String, Integer> perStatus) {
+		this.perStatus = perStatus;
+	}
+	
 }

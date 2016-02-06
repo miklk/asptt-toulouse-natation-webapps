@@ -21,11 +21,14 @@ public class AdherentFamilleStatResult {
 		piscines = new HashMap<String, Integer>();
 		groupes = new HashMap<String, Integer>();
 	}
+	
+	public void addFamille() {
+		nbFamilles++;
+	}
 
-	public void addPiscine(FamilleBean famille) {
-		String piscine = famille.getPiscine();
+	public void addPiscine(String piscine) {
 		if (StringUtils.isNotBlank(piscine)) {
-			int nb = 0;
+			Integer nb = 0;
 			if (piscines.containsKey(piscine)) {
 				nb = piscines.get(piscine);
 			}
@@ -34,17 +37,13 @@ public class AdherentFamilleStatResult {
 		}
 	}
 
-	public void addGroupe(FamilleBean famille) {
-		Map<String, Integer> familleGroupes = famille.countGroupes();
-		for (Map.Entry<String, Integer> familleGroupe : familleGroupes
-				.entrySet()) {
-			int nb = 0;
-			if (groupes.containsKey(familleGroupe.getKey())) {
-				nb = groupes.get(familleGroupe.getKey());
-			}
-			nb++;
-			groupes.put(familleGroupe.getKey(), nb);
+	public void addGroupe(String groupe) {
+		int nb = 0;
+		if (groupes.containsKey(groupe)) {
+			nb = groupes.get(groupe);
 		}
+		nb++;
+		groupes.put(groupe, nb);
 	}
 
 	public void toList() {
