@@ -7,6 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.google.appengine.api.datastore.Text;
@@ -38,6 +42,24 @@ public class ActuEntity implements IEntity {
 	private Date expiration;
 	
 	private String statut;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date created;
+	private String createdBy;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updated;
+	private String updatedBy;
+	
+	@PrePersist
+	public void onPersist() {
+		created = new Date();
+		updated = new Date();
+	}
+	
+	@PreUpdate
+	public void onUpdate() {
+		updated = new Date();
+	}
 	
 	public Long getId() {
 		return id;
@@ -101,6 +123,38 @@ public class ActuEntity implements IEntity {
 
 	public void setStatut(String statut) {
 		this.statut = statut;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 	
 }

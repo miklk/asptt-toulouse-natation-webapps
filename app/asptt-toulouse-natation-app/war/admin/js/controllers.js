@@ -4,6 +4,8 @@ adminController.controller('AdminController', ['$rootScope', '$scope', '$cookieS
     $rootScope.aspttToken = token;
     console.log(token);
     $rootScope.displayMenu = false;
+    var tokenInfo = $cookieStore.get("asptt-token-info");
+    $rootScope.aspttTokenInfo = tokenInfo;
     $scope.toogleMenu = function() {
     	$rootScope.displayMenu = ! $rootScope.displayMenu;
     }

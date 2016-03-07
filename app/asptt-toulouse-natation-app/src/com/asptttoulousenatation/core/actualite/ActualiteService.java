@@ -90,12 +90,18 @@ public class ActualiteService {
 			entity  = dao.get(parameters.getId());
 		} else {
 			entity = new ActuEntity();
+			entity.setCreatedBy(parameters.getUser());
 		}
+		entity.setUpdatedBy(parameters.getUser());
 		
 		entity.setTitle(parameters.getTitle());
 		entity.setCreationDate(parameters.getBegin().toDate());
 		entity.setExpiration(parameters.getEnd().toDate());
-		entity.setImageUrl(parameters.getImage());
+		if(StringUtils.isBlank(parameters.getImage())) {
+			entity.setImageUrl("img/actu_defaut.jpg");
+		} else {
+			entity.setImageUrl(parameters.getImage());
+		}
 		entity.setContent(new Text(parameters.getContent()));
 		if(parameters.isDraft()) {
 			entity.setStatut(ActuStatutEnum.DRAFT.name());

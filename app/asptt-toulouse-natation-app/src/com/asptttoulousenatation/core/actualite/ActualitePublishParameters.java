@@ -3,6 +3,7 @@ package com.asptttoulousenatation.core.actualite;
 import java.io.Serializable;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 public class ActualitePublishParameters implements Serializable {
 
@@ -13,12 +14,13 @@ public class ActualitePublishParameters implements Serializable {
 	
 	private Long id;
 	private String title;
-	private DateTime begin;
-	private DateTime end;
+	private String beginAsString;
+	private String endAsString;
 	private String image;
 	private String content;
 	private boolean facebook;
 	private boolean draft;
+	private String user;
 	
 	public Long getId() {
 		return id;
@@ -33,16 +35,10 @@ public class ActualitePublishParameters implements Serializable {
 		this.title = title;
 	}
 	public DateTime getBegin() {
-		return begin;
-	}
-	public void setBegin(DateTime begin) {
-		this.begin = begin;
+		return DateTime.parse(beginAsString, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
 	}
 	public DateTime getEnd() {
-		return end;
-	}
-	public void setEnd(DateTime end) {
-		this.end = end;
+		return DateTime.parse(endAsString, DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
 	}
 	public String getImage() {
 		return image;
@@ -67,6 +63,24 @@ public class ActualitePublishParameters implements Serializable {
 	}
 	public void setDraft(boolean draft) {
 		this.draft = draft;
+	}
+	public String getBeginAsString() {
+		return beginAsString;
+	}
+	public void setBeginAsString(String beginAsString) {
+		this.beginAsString = beginAsString;
+	}
+	public String getEndAsString() {
+		return endAsString;
+	}
+	public void setEndAsString(String endAsString) {
+		this.endAsString = endAsString;
+	}
+	public String getUser() {
+		return user;
+	}
+	public void setUser(String user) {
+		this.user = user;
 	}
 	
 }

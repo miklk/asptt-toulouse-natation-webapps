@@ -30,13 +30,13 @@ loginController.controller('LoginController', ['$rootScope', '$scope', '$http', 
 	    LoginService.login.query({}, $scope.formData, function(data) {
 	    	$scope.authenticationResponse = true;
 	      if (data.logged) {
-					$cookieStore.put("asptt-token", data.token);
+			$cookieStore.put("asptt-token", data.token);
+			$cookieStore.put("asptt-token-info", data);
 	        $rootScope.authenticated = true;
 	      } else {
 	        $rootScope.authenticated = false;
 	      }
 	      console.log(data);
-	 		$scope.loginResult = data;
 	 		window.location.href = "admin.html";
 	    });/**.error(function() {
 	      $rootScope.authenticated = false;

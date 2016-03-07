@@ -18,6 +18,10 @@ public class ActuTransformer extends
 		if(pEntity.getExpiration() != null) {
 			lUi.setExpiration(new Date(pEntity.getExpiration().getTime()));
 		}
+		lUi.setCreated(pEntity.getCreated());
+		lUi.setUpdated(pEntity.getUpdated());
+		lUi.setCreatedBy(pEntity.getCreatedBy());
+		lUi.setUpdatedBy(pEntity.getUpdatedBy());
 		return lUi;
 	}
 }

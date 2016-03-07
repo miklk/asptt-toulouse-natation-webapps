@@ -1,29 +1,39 @@
-<div class="col-md-4">
-	<p><span class="badge">{{actualites.length}} actualite(s)</span></p>
-	<button type="button" class="btn btn-default btn-sm" ng-click="goBackToFull()"><span class="glyphicon glyphicon-chevron-left"></span></button>
-	<table class="table table-hover">
-	    <thead>
-	        <tr>
-	            <th>Intitulé</th>
-	        </tr>
-	    </thead>
-	    <tbody>
-	        <tr ng-repeat="actualite in actualites" ng-click="edit(actualite)">
-	            <td>{{actualite.title}}</td>
-	        </tr>
-	    </tbody>
-	</table>
-</div>
-<div class="col-md-8">
-    <form>
-        <div class="form-group">
-            <label>Titre</label>
-            <input type="text" class="form-control" ng-model="currentActualite.title" placeholder="Titre" />
-        </div>
-        <div class="form-group">
-            <label>Images</label>
-            <input type="text" class="form-control" ng-model="currentActualite.image" placeholder="Image" />
-        </div>
-        <button type="button" class="btn btn-primary btn-block" ng-click="publish()">Publier</button>
-    </form>
-</div>
+<form name="actualiteForm" novalidate>
+    <div class="form-group">
+        <label>Titre</label>
+        <input type="text" class="form-control" ng-model="currentActualite.title" placeholder="Titre" required />
+    </div>
+    <div class="form-group">
+        <label>Images</label>
+        <input type="text" class="form-control" ng-model="currentActualite.image" placeholder="Image" />
+    </div>
+    <div class="form-group">
+    	<label>Message</label>
+    	<div text-angular="text-angular" ng-model="currentActualite.content"></div>
+    </div>
+    <div class="form-group">
+    	<div class="checkbox">
+    		<label>
+    			<input type="checkbox" ng-model="currentActualite.facebook" />
+    			Publier sur Facebook (attention les photos et la mise en forme ne fonctionnent pas)
+    		</label>
+    	</div>
+    </div>
+    <div class="form-group">
+    	<div class="checkbox">
+    		<label>
+    			<input type="checkbox" ng-model="currentActualite.draft" />
+    			Enregistrer en brouillon
+    		</label>
+    	</div>
+    </div>
+    <div class="form-group">
+    	<label>Début de publication</label>
+    	<input type="datetime-local" class="form-control" ng-model="currentActualite.beginAsString" />
+    </div>
+    <div class="form-group">
+    	<label>Fin de publication</label>
+    	<input type="datetime-local" class="form-control" ng-model="currentActualite.endAsString" />
+    </div>
+    <button type="button" class="btn btn-primary btn-block" ng-disabled="!actualiteForm.$valid" ng-click="publish()">Publier</button>
+</form>

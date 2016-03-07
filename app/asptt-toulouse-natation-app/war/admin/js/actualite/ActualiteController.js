@@ -4,9 +4,17 @@
 var actualiteController = angular.module('ActualiteController', ['ngRoute', 'actualiteServices']);
 actualiteController.controller('ActualiteController', ['$rootScope', '$scope', 'ActualiteService', function($rootScope, $scope, ActualiteService) {
 	$rootScope.isLoading = true;
-	
 	$scope.showFull = true;
-	$scope.currentActualite = null;
+	$scope.currentActualite = {
+			title: '',
+			image: '',
+			content : '',
+			facebook: false,
+			draft: false,
+			beginAsString: new Date(),
+			endAsString: new Date(2016, 7, 31, 23, 59, 59, 0),
+			user: $rootScope.aspttTokenInfo.prenom + ' ' + $rootScope.aspttTokenInfo.nom.substring(0, 1) + '.',
+	};
 	
 	ActualiteService.actualites.query(function (data) {
 		$scope.actualites = data;
@@ -22,12 +30,6 @@ actualiteController.controller('ActualiteController', ['$rootScope', '$scope', '
 			$scope.currentActualite.end = new Date().getTime();
 		}
 		
-		$scope.showFull = false;
-	}
-	
-	$scope.goBackToFull = function() {
-		$scope.currentActualite = null;
-		$scope.showFull = true;
 	}
 	
 	$scope.publish = function() {
@@ -35,7 +37,6 @@ actualiteController.controller('ActualiteController', ['$rootScope', '$scope', '
 			alert("Publié avec succès.");
 			$scope.actualites = ActualiteService.actualites.query(function (data) {
 				$scope.actualites = data;
-				$scope.showFull = true;
 				$rootScope.isLoading = false;
 			});
 		});
