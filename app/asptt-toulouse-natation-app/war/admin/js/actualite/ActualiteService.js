@@ -9,7 +9,7 @@ actualiteServices.factory('ActualiteService', ['$resource',
 		publish: $resource('/resources/actualites',{},{
 			query:{method:'POST', isArray: false, params: {}}
 		}),
-		remove: $resource('/resources/actualites/',{},{
+		remove: $resource('/resources/actualites/:actualite',{},{
 			query:{method:'DELETE', isArray: false, params: {}}
 		})
 	};

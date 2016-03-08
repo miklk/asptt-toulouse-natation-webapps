@@ -12,6 +12,7 @@
 		<table class="table table-hover">
 			<thead>
 				<tr>
+					<th></th>
 					<th>Titre</th>
 					<th>Date publication</th>
 					<th>Date maj</th>
@@ -19,9 +20,13 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="actualite in actualites" ng-click="edit(actualite)">
+					<td>
+						<button class="btn btn-danger btn-xs" title="Supprimer la publication" ng-click="remove(actualite)"><span class="glyphicon glyphicon-remove"></span></button>
+						<button class="btn btn-edit btn-xs" title="Editer la publication" ng-click="edit(actualite)"><span class="glyphicon glyphicon-edit"></span></button>
+					</td>
 					<td>{{actualite.title}}</td>
-					<td>{{actualite.created | date: 'dd/MM/yyyy HH:mm'}} ({{actualite.createdBy}})</td>
-					<td>{{actualite.updated | date: 'dd/MM/yyyy HH:mm'}} ({{actualite.updatedBy}})</td>
+					<td>{{actualite.created | date: 'dd/MM/yyyy HH:mm'}} <span ng-show="actualite.createdBy">({{actualite.createdBy}})</span></td>
+					<td>{{actualite.updated | date: 'dd/MM/yyyy HH:mm'}} <span ng-show="actualite.updatedBy">({{actualite.updatedBy}})</span></td>
 				</tr>
 			</tbody>
 		</table>
