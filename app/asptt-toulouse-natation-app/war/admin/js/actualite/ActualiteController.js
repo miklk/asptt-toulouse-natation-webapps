@@ -2,7 +2,7 @@
  * 
  */
 var actualiteController = angular.module('ActualiteController', ['ngRoute', 'actualiteServices']);
-actualiteController.controller('ActualiteController', ['$rootScope', '$scope', 'ActualiteService', function($rootScope, $scope, ActualiteService) {
+actualiteController.controller('ActualiteController', ['$rootScope', '$scope', '$location', '$anchorScroll', 'ActualiteService', function($rootScope, $scope, $location, $anchorScroll, ActualiteService) {
 	$rootScope.isLoading = true;
 	$scope.showFull = true;
 	
@@ -41,6 +41,8 @@ actualiteController.controller('ActualiteController', ['$rootScope', '$scope', '
 				endAsString: new Date(actualite.expiration),
 				user: $rootScope.aspttTokenInfo.prenom + ' ' + $rootScope.aspttTokenInfo.nom.substring(0, 1) + '.',
 		};
+		$location.hash('creation');
+		$anchorScroll();
 	}
 	
 	$scope.publish = function() {
@@ -58,5 +60,9 @@ actualiteController.controller('ActualiteController', ['$rootScope', '$scope', '
 				load();
 			});
 		}
+	}
+	
+	$scope.clear = function() {
+		init();
 	}
 }]);

@@ -35,5 +35,6 @@
     	<label>Fin de publication</label>
     	<input type="datetime-local" class="form-control" ng-model="currentActualite.endAsString" />
     </div>
-    <button type="button" class="btn btn-primary btn-block" ng-disabled="!actualiteForm.$valid" ng-click="publish()">Publier</button>
+    <button type="button" class="btn btn-primary btn-lg" ng-disabled="!actualiteForm.$valid" ng-click="publish()">Publier</button>
+    <button type="button" class="btn btn-primary btn-lg" ng-click="clear()">Effacer</button>
 </form>
