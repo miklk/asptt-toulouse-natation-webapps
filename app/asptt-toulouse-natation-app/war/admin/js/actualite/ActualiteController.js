@@ -46,7 +46,6 @@ actualiteController.controller('ActualiteController', ['$rootScope', '$scope', '
 	}
 	
 	$scope.publish = function() {
-		$scope.currentActualite.content = $scope.message;
 		ActualiteService.publish.query({}, $scope.currentActualite, function(data) {
 			alert("Publié avec succès.");
 			init();
