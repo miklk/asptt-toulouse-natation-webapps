@@ -159,6 +159,13 @@ public class DossierService {
 				criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL,
 						texteLibre, Operator.EQUAL));
 				List<DossierEntity> entities = dossierDao.find(criteria);
+				if(CollectionUtils.isEmpty(entities)) {
+					criteria = new ArrayList<CriterionDao<? extends Object>>(
+							1);
+					criteria.add(new CriterionDao<String>(DossierEntityFields.EMAILSECONDAIRE,
+							texteLibre, Operator.EQUAL));
+					entities = dossierDao.find(criteria);
+				}
 				for(DossierEntity dossier: entities) {
 					criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
 							1);

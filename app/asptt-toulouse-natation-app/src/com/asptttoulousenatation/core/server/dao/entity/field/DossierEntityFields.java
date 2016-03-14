@@ -7,6 +7,7 @@ public enum DossierEntityFields implements IEntityFields {
 	MOTDEPASSE(String.class),
 	UPDATED(Date.class),
 	STATUT(String.class),
+	EMAILSECONDAIRE(String.class),
 	;
 	
 	private Class<? extends Object> clazz;
