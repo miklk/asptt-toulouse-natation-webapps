@@ -2,6 +2,7 @@ package com.asptttoulousenatation.core.server.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
@@ -54,7 +55,7 @@ public abstract class DaoBase<E extends IEntity> {
 			tx.commit();
 
 		} catch (Exception e) {
-			LOG.severe(e.getMessage());
+			LOG.log(Level.SEVERE, "Error saving entity", e);
 			if (tx.isActive()) {
 				tx.rollback();
 			}
