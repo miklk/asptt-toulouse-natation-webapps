@@ -32,11 +32,17 @@
 
     <link rel="stylesheet/less" href="bootstrap/less/bootstrap.less">
 	<script src="bootstrap/assets/js/less.js"></script> -->
+	
+	<style>
+	[ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak {
+	    display: none;
+	}
+	</style>
   </head>
 <!-- NAVBAR
 ================================================== -->
   <body style="background-color: #e9f8fc;">
-	<div class="container-fluid" ng-show="authenticated" ng-controller="AdminController">
+	<div class="container-fluid" ng-show="authenticated" ng-controller="AdminController" ng-cloak>
 	<div class="row">
 		<div class="col-md-6">
 			

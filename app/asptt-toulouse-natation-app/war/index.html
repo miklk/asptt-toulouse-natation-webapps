@@ -57,13 +57,17 @@
 	
     <link rel="stylesheet/less" href="bootstrap/less/bootstrap.less">
 	<script src="bootstrap/assets/js/less.js"></script> -->
-	
+	<style>
+	[ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak {
+	    display: none;
+	}
+	</style>
   </head>
 <!-- NAVBAR
 ================================================== -->
-  <body data-target="#scroll-top" data-spy="scroll" id="body_top" >
+  <body data-target="#scroll-top" data-spy="scroll" id="body_top">
   
-  <nav class="navbar navbar-default" role="navigation" ng-controller="LoadingAppCtrl" style="margin-top: 25px; min-height: 26px">
+  <nav class="navbar navbar-default" role="navigation" ng-controller="LoadingAppCtrl" style="margin-top: 25px; min-height: 26px" ng-cloak>
           <div class="container">
 	          <div class="navbar-header">
 	              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
