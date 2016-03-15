@@ -1,5 +1,7 @@
 package com.asptttoulousenatation.core.authorization;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -34,4 +36,20 @@ public class AuthorizationService {
 		result.setHasAccess(hasAccess);
 		return result;
 	}
+	
+	@Path("/access/{token}")
+	@GET
+	public List<String> findAccess(@PathParam("token") Integer token) {
+		final List<String> access;
+		if(AuthenticationService.tokens.containsKey(token)) {
+			List<UserAuthorizationEntity> rights = dao.findByUser(AuthenticationService.tokens.get(token));
+			access = new ArrayList<>(rights.size());
+			for(UserAuthorizationEntity right: rights) {
+				access.add(right.getAccess());
+			}
+		} else {
+			access = Collections.emptyList();
+		}
+		return access;
+	} 
 }

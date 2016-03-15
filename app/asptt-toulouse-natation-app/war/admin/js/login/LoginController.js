@@ -28,16 +28,22 @@ loginController.controller('LoginController', ['$rootScope', '$scope', '$http', 
 	    $scope.authenticationResponse = false;
 	    //$http.get('/resources/authentication/isAuthenticated', {emailheaders : headers}).success(function(data) {
 	    LoginService.login.query({}, $scope.formData, function(data) {
-	    	$scope.authenticationResponse = true;
+	      $scope.authenticationResponse = true;
 	      if (data.logged) {
+	    	  var token = data.token;
 			$cookieStore.put("asptt-token", data.token);
 			$cookieStore.put("asptt-token-info", data);
+			
 	        $rootScope.authenticated = true;
 	      } else {
 	        $rootScope.authenticated = false;
 	      }
 	      console.log(data);
-	 		window.location.href = "admin.html";
+		  $http.get('/resources/authorization/access/' + token, {}).success(function(data) {
+			$cookieStore.put("asptt-token-access", data);
+			window.location.href = "admin.html";
+		  });
+	 		
 	    });/**.error(function() {
 	      $rootScope.authenticated = false;
 	      console.log(data);
@@ -70,6 +76,8 @@ loginController.controller('LoginController', ['$rootScope', '$scope', '$http', 
 	$scope.logout = function() {
 		var token = $cookieStore.get("asptt-token");
 		$cookieStore.remove("asptt-token");
+		$cookieStore.remove("asptt-token-info");
+		$cookieStore.remove("asptt-token-access");
 		LoginService.logout.query({token: token}, function(data) {
 			window.location.href = "index.html";
 		});

@@ -15,14 +15,14 @@ angular.module('authorizationService', [])
         hasAccess: function(element, access) {
         	var token = $rootScope.aspttToken;
         	var found = false;
-        	$http.get('/resources/authorization/hasAccess/' + token + '/' + access, {}).success(function(data) {
-        		found = data.hasAccess;
+        	//$http.get('/resources/authorization/hasAccess/' + token + '/' + access, {}).success(function(data) {
+        		found = $rootScope.access && $rootScope.access.indexOf(access) != -1;
         		if(found) {
         			element.show();
         		} else {
         			element.hide();
         		}
-        	});
+        	//});
         	return found;
         },
         signIn: function() {
