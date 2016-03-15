@@ -13,9 +13,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 
-import com.asptttoulousenatation.client.userspace.menu.MenuItems;
 import com.asptttoulousenatation.core.server.dao.ActuDao;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.AreaEntityFields;
@@ -187,123 +185,6 @@ public class InitActionHandler implements ActionHandler<InitAction, InitResult> 
 			ExecutionContext pArg2) throws DispatchException {
 		// TODO Auto-generated method stub
 
-	}
-
-	private void createData() {
-		deleteAll();
-
-		AreaDao lAreaDao = new AreaDao();
-
-		AreaEntity lAreaEntity = new AreaEntity(null, "Le Club",
-				ProfileEnum.PUBLIC, (short) 1);
-		AreaEntity lAreaEntity2 = lAreaDao.save(lAreaEntity);
-
-		// Historique
-		createMenu(MenuItems.VIDE.toString(), "Historique du club",
-				lAreaEntity2.getId(), "contenu de l'historique du club",
-				"contenu de l'historique", false, true, 1, false, false);
-		createMenu(MenuItems.VIDE.toString(), "Vie du club",
-				lAreaEntity2.getId(), "contenu de vie du club",
-				"contenu de l'organisation du club", false, true, 2, false, false);
-		createMenu(MenuItems.VIDE.toString(), "Piscine",
-				lAreaEntity2.getId(), "contenu de Piscine",
-				"contenu de Lieux d'entrainements", false, true, 3, false, false);
-		createMenu(MenuItems.VIDE.toString(), "Organisation",
-				lAreaEntity2.getId(), "contenu de officiels",
-				"contenu de officiels", false, true, 4, true, true);
-		createMenu(MenuItems.VIDE.toString(), "Comité de section",
-				lAreaEntity2.getId(), "contenu de comité de section",
-				"contenu de la vie du club", false, true, 5, false, false);
-		createMenu(MenuItems.VIDE.toString(), "Les officiels",
-				lAreaEntity2.getId(), "contenu de les officiels",
-				"contenu de la vie du club", false, true, 5, false, false);
-		createMenu(MenuItems.VIDE.toString(), "Les entraineurs",
-				lAreaEntity2.getId(), "contenu de les entraineurs",
-				"contenu de la vie du club", false, true, 5, false, false);
-		createMenu(MenuItems.VIDE.toString(), "Les éducateurs",
-				lAreaEntity2.getId(), "contenu de les éducateurs",
-				"contenu de la vie du club", false, true, 5, false, false);
-
-		lAreaEntity = new AreaEntity(null, "Nos activités", ProfileEnum.PUBLIC,
-				(short) 2);
-		AreaEntity lAreaGroupes = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.VIDE.toString(), "Ecole de natation",
-				lAreaGroupes.getId(), "contenu de Ecole de natation",
-				"contenu de Ecole de natation", false, true, 1, false, false);
-		createMenu(MenuItems.VIDE.toString(), "Loisirs",
-				lAreaGroupes.getId(), "contenu de Loisirs",
-				"contenu de Loisirs", false, true, 2, false, false);
-		createMenu(MenuItems.VIDE.toString(), "Aquagym", lAreaGroupes.getId(),
-				"contenu de Aquagym", "contenu de Aquagym", false, true, 3, false, false);
-		createMenu(MenuItems.VIDE.toString(), "Compétition",
-				lAreaGroupes.getId(), "contenu de Compétition",
-				"contenu de perfrectionnement", false, true, 4, false, false);
-		
-		lAreaEntity = new AreaEntity(null, "Compétitions", ProfileEnum.PUBLIC,
-				(short) 3);
-		AreaEntity lAreaCompetition = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.VIDE.toString(), "Actualités",
-				lAreaCompetition.getId(), "contenu de Actualités",
-				"contenu de Calendrier", false, true, 1, false, false);
-		createMenu(MenuItems.VIDE.toString(), "Résultats",
-				lAreaCompetition.getId(), "contenu de Résultats",
-				"contenu de Résultats", false, true, 2, false, false);
-		createMenu(MenuItems.VIDE.toString(), "Records du club",
-				lAreaCompetition.getId(), "contenu de Records du club",
-				"contenu de Records du club", false, true, 3, false, false);
-		
-
-		lAreaEntity = new AreaEntity(null, "Santé", ProfileEnum.PUBLIC,
-				(short) 4);
-		lAreaDao.save(lAreaEntity);
-		
-		lAreaEntity = new AreaEntity(null, "Boutique", ProfileEnum.PUBLIC,
-				(short) 5);
-		lAreaDao.save(lAreaEntity);
-		
-
-		lAreaEntity = new AreaEntity(null, "Inscription", ProfileEnum.PUBLIC,
-				(short) 6);
-		lAreaDao.save(lAreaEntity);
-		
-		lAreaEntity = new AreaEntity(null, "Partenaires", ProfileEnum.PUBLIC,
-				(short) 7);
-		lAreaDao.save(lAreaEntity);
-
-		lAreaEntity = new AreaEntity(null, "Contact", ProfileEnum.PUBLIC,
-				(short) 8);
-		lAreaDao.save(lAreaEntity);
-		
-
-		// Admin
-		lAreaEntity = new AreaEntity(null, "Actualités", ProfileEnum.ADMIN,
-				false, (short) 1);
-		AreaEntity lAreaAdmActu = lAreaDao.save(lAreaEntity);
-		createMenu(MenuItems.NEWS_PUBLICATION.toString(), "Publier",
-				lAreaAdmActu.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
-				true, true, 1, false, false);
-		createMenu(MenuItems.NEWS_EDITION.toString(), "Modification",
-				lAreaAdmActu.getId(), StringUtils.EMPTY, StringUtils.EMPTY,
-				true, true, 2, false, false);
-
-		lAreaEntity = new AreaEntity(null, "Utilisateur", ProfileEnum.ADMIN,
-				false, (short) 5);
-
-		// Organisation du club
-		lAreaEntity = new AreaEntity(null, "Organisation du club",
-				ProfileEnum.ADMIN, false, (short) 3);
-		AreaEntity lAreaClub = lAreaDao.save(lAreaEntity);
-		// Officiels
-		lAreaEntity = new AreaEntity(null, "Officier", ProfileEnum.OFFICIEL,
-				false, (short) 6);
-
-		lAreaEntity = new AreaEntity(null, "Structure du site",
-				ProfileEnum.ADMIN, (short) 2);
-		lAreaDao.save(lAreaEntity);
-
-		createUserAdmin();
-		createUserRoot();
-		createUserOfficiel();
 	}
 
 	private void createMenu(String pMenuKey, String pTitle, Long pArea,

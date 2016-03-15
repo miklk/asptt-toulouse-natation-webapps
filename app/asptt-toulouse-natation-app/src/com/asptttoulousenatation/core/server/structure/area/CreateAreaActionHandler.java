@@ -33,7 +33,10 @@ public class CreateAreaActionHandler implements
 		List<AreaEntity> existenceTest = dao.find(lCriteria);
 		if(CollectionUtils.isEmpty(existenceTest)) {//doesn't exist
 			//Creation
-			AreaEntity lArea = new AreaEntity(null, pAction.getTitle(), ProfileEnum.PUBLIC, pAction.getOrder());
+			AreaEntity lArea = new AreaEntity();
+			lArea.setTitle(pAction.getTitle());
+			lArea.setProfile(ProfileEnum.PUBLIC);
+			lArea.setOrder(pAction.getOrder());
 			dao.save(lArea);
 		} else {
 			result.setExists(true);
