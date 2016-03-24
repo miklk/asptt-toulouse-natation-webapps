@@ -55,6 +55,7 @@ import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierCertificatEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierCertificatEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierFactureEntity;
@@ -1074,5 +1075,38 @@ public class DossierService {
 		}
 		nageur.setCreneaux(null);
 		dao.save(nageur);
+	}
+	
+	@Path("/findByGroupeDay/{groupe}/{day}")
+	@GET
+	public List<DossierNageurEntity> findByGroupeDay(@PathParam("groupe") Long groupe, @PathParam("day") String day) {
+		// Retrieve slots
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				2);
+		criteria.add(new CriterionDao<Long>(SlotEntityFields.GROUP, groupe,
+				Operator.EQUAL));
+		criteria.add(new CriterionDao<String>(SlotEntityFields.DAYOFWEEK, day,
+				Operator.EQUAL));
+		List<SlotEntity> lEntities = slotDao.find(criteria);
+		Set<Long> slots = new HashSet<>();
+		for(SlotEntity creneau: lEntities) {
+			slots.add(creneau.getId());
+		}
+		
+		//Find nageur du groupe
+		criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE,
+				groupe, Operator.EQUAL));
+		List<DossierNageurEntity> nageurs = dao.find(criteria);
+		List<DossierNageurEntity> selectedNageurs = new ArrayList<>();
+		for(DossierNageurEntity nageur: nageurs) {
+			Set<Long> nageurCreneaux = AdherentBeanTransformer.getInstance().getCreneauIds(nageur.getCreneaux());
+			if(CollectionUtils.containsAny(slots, nageurCreneaux)) {
+				selectedNageurs.add(nageur);
+			}
+		}
+		
+		return selectedNageurs;
 	}
 }

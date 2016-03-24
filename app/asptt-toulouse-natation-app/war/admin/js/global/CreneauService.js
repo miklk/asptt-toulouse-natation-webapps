@@ -20,6 +20,9 @@ slotServices.factory('SlotService', ['$resource',
 		}),
 		all: $resource('/resources/creneaux/all',{},{
 			query:{method:'GET', isArray: false, params: {}}
+		}),
+		days: $resource('/resources/creneaux/days/:groupe',{},{
+			query:{method:'GET', isArray: true, params: {}}
 		})
 	};
 }]);

@@ -36,5 +36,8 @@ dossierServices.factory('DossierService', ['$resource',
 		annuler: $resource('/resources/dossiers/annuler/:nageur',{nageur: '@nageur'},{
 			query:{method:'PUT', isArray: false, params: {}}
 		}),
+		byGroupeDay: $resource('/resources/dossiers/findByGroupeDay/:groupe/:day',{},{
+			query:{method:'GET', isArray: true, params: {}}
+		}),
 	};
 }]);

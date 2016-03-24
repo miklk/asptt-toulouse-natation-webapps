@@ -1,8 +1,11 @@
 package com.asptttoulousenatation.core.groupe;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 import javax.ws.rs.DELETE;
@@ -28,6 +31,7 @@ import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.util.DayComparator;
+import com.asptttoulousenatation.core.util.DayStringComparator;
 import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
 
 @Path("/creneaux")
@@ -180,5 +184,22 @@ public class CreneauService {
 		CreneauxBean result = new CreneauxBean();
 		result.setCreneaux(lUis);
 		return result;
+	}
+	
+	@GET
+	@Path("/days/{groupe}")
+	public Collection<String> getDays(@PathParam("groupe") Long groupe) {
+		// Retrieve slots
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Long>(SlotEntityFields.GROUP, groupe,
+				Operator.EQUAL));
+		List<SlotEntity> lEntities = dao.find(criteria);
+		
+		Set<String> days = new TreeSet<>(new DayStringComparator());
+		for(SlotEntity slot: lEntities) {
+			days.add(slot.getDayOfWeek());
+		}
+		return days;
 	}
 }

@@ -16,7 +16,8 @@ var adminApp = angular.module('adminApp', ['ngCookies', 'ngRoute', 'angular-spin
                                            'authorizationService', 'LoginController',
                                            'loginServices',
                                            'AdminController', 'BoutiqueCtrl', 'OrderController', 'ActualiteController',
-                                           'PageEditionController']);
+                                           'PageEditionController',
+                                           'GroupeEffectifController']);
 
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.
@@ -116,6 +117,10 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 		when('/pages', {
 			templateUrl: 'views/page/pages.html',
 			access: 'ACCESS_PAGEEDITION'
+		}).
+		when('/nageur-effectif', {
+			templateUrl: 'views/nageur/effectifs.html',
+			access: 'ACCESS_NAGEUR_EFFECTIF'
 		}).
 		when('/page/login', {
 			templateUrl: 'views/login.html'
