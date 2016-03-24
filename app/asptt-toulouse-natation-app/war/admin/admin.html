@@ -43,7 +43,7 @@
 ================================================== -->
   <body style="background-color: #e9f8fc;">
 	<div class="container-fluid" ng-show="authenticated" ng-controller="AdminController" ng-cloak>
-	<div class="row">
+	<div class="row hidden-print">
 		<div class="col-md-6">
 			
 			<button type="button" class="navbar-toggle" style="display: block; float: left" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" ng-click="toogleMenu()">
@@ -67,7 +67,7 @@
 		</ul>
 	</div>
 		<div class="container-fluid">
-			<div class="col-md-3 sidebar" id="menu"  ng-show="displayMenu">
+			<div class="col-md-3 sidebar hidden-print" id="menu"  ng-show="displayMenu">
 				<ul class="nav nav-sidebar">
 					<li data-show-when-connected="ACCESS_INSCRIPTION">
 						<ul class="nav nav-sidebar">

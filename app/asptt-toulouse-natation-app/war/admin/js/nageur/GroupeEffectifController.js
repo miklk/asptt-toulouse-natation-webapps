@@ -22,9 +22,14 @@ groupeController.controller('GroupeEffectifController', ['$http', '$scope', '$lo
 	$scope.findNageurs = function() {
 		$scope.showNageurs = false;
 		DossierService.byGroupeDay.query({groupe: $scope.selectedGroupe.id, day: $scope.selectedDay}, function(data) {
-			$scope.nageurs = data;
+			$scope.nageurs = new Array();
+			var columns = 6;
+			for(var i = 0; i < data.length; i+=columns) {
+				$scope.nageurs.push(data.slice(i, i + columns));
+			}
 			$scope.showNageurs = true;
 		});
 	}
+	
 	
 }]);

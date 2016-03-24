@@ -1,18 +1,30 @@
 <div class="container" ng-controller="GroupeEffectifController">
-	<div class="row">
+	<div class="row hidden-print">
 		<h1 class="page-header">Effectifs par groupe et jour</h1>
 	</div>
-	<div class="row">
-		<select ng-model="selectedGroupe" ng-options="groupe.title for groupe in groupes" ng-change=findDays()></select>
-		<select ng-model="selectedDay" ng-options="day for day in days" ng-change="findNageurs()" ng-show="showDays"></select>
+	<div class="row hidden-print">
+		<div class="form-inline">
+			<div class="form-group">
+				<label for="groupe">Groupe</label>
+				<select id="groupe" class="form-control" ng-model="selectedGroupe" ng-options="groupe.title for groupe in groupes" ng-change=findDays()></select>
+			</div>
+			<div class="form-group" ng-show="showDays">
+				<label for="day">Jour de la semaine</label>
+				<select id="day" class="form-control" ng-model="selectedDay" ng-options="day for day in days" ng-change="findNageurs()"></select>
+			</div>
+		</div>
 	</div>
 	<div class="row" ng-show="showNageurs">
 		<h3>Nageurs du groupe {{selectedGroupe.title}} - {{selectedDay}}</h3>
 		
-		<ul>
-			<li ng-repeat="nageur in nageurs">
-			<!-- /resources/dossiers/downloadPhoto/{{nageur.id}} -->
-				<img src="../../img/nageur-nopic.png" class="img-thumbnail" style="max-height: 100px" /> {{nageur.prenom}} {{nageur.nom}}</li>
-		</ul>
+			<div ng-repeat="nageursPart in nageurs" class="row" style="margin-top:2%">
+				<div class="row">
+					<div class="col-md-2" ng-repeat="nageur in nageursPart">
+				<!-- /resources/dossiers/downloadPhoto/{{nageur.id}} -->
+					<img src="../../img/nageur-nopic.png" class="img-thumbnail" style="max-height: 100px" /><br/> {{nageur.prenom}} {{nageur.nom}}</li>
+					</div>
+				</div>
+			</div>
+				
 	</div>
 </div>
