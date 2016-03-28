@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -31,12 +32,41 @@ public class RecordService {
 	@Path("/{bassin}")
 	@GET
 	@Consumes("application/json")
-	public List<RecordEntity> find(@PathParam("bassin") String bassin) {
+	public List<RecordUi> find(@PathParam("bassin") String bassin) {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		criteria.add(new CriterionDao<String>(RecordEpreuveEntityFields.BASSIN,
 				bassin, Operator.EQUAL));
 		List<RecordEpreuveEntity> epreuves = epreuveDao.find(criteria);
-		return null;
+		List<RecordUi> records = new ArrayList<>();
+		for(RecordEpreuveEntity epreuve: epreuves) {
+			RecordUi ui = new RecordUi();
+			ui.setEpreuve(epreuve);
+			List<RecordEntity> entities = dao.findByEpreuve(epreuve.getId());
+			ui.setRecords(new ArrayList<>(entities));
+			records.add(ui);
+		}
+		return records;
+	}
+	
+	@Path("/epreuve")
+	@POST
+	public void createEpreuve(RecordEpreuveEntity epreuve) {
+		final RecordEpreuveEntity entity;
+		if(epreuve == null) {
+			entity = epreuve;
+		} else {
+			entity = epreuveDao.get(epreuve.getId());
+			entity.setBassin(epreuve.getBassin());
+			entity.setDistance(epreuve.getDistance());
+			entity.setNage(epreuve.getNage());
+		}
+		epreuveDao.save(entity);
+	}
+	
+	@Path("/record")
+	@POST
+	public void createRecord(RecordEntity entity) {
+		
 	}
 }

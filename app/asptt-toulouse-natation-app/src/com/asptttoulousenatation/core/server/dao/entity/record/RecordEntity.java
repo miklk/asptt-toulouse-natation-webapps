@@ -33,6 +33,7 @@ public class RecordEntity implements IEntity {
 	private String annee;
 	private String ancienTemps;
 	private Date updated;
+	private Boolean valid;
 	
 	@PreUpdate
 	public void onUpdate() {
@@ -110,5 +111,12 @@ public class RecordEntity implements IEntity {
 	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
-	
+
+	public Boolean getValid() {
+		return valid;
+	}
+
+	public void setValid(Boolean valid) {
+		this.valid = valid;
+	}
 }
