@@ -30,20 +30,19 @@ loginController.controller('LoginController', ['$rootScope', '$scope', '$http', 
 	    LoginService.login.query({}, $scope.formData, function(data) {
 	      $scope.authenticationResponse = true;
 	      if (data.logged) {
-	    	  var token = data.token;
+	    	var token = data.token;
 			$cookieStore.put("asptt-token", data.token);
 			$cookieStore.put("asptt-token-info", data);
 			
 	        $rootScope.authenticated = true;
+	        $http.get('/resources/authorization/access/' + token, {}).success(function(data) {
+				$cookieStore.put("asptt-token-access", data);
+				window.location.href = "admin.html";
+			  });
 	      } else {
 	        $rootScope.authenticated = false;
 	      }
 	      console.log(data);
-		  $http.get('/resources/authorization/access/' + token, {}).success(function(data) {
-			$cookieStore.put("asptt-token-access", data);
-			window.location.href = "admin.html";
-		  });
-	 		
 	    });/**.error(function() {
 	      $rootScope.authenticated = false;
 	      console.log(data);
