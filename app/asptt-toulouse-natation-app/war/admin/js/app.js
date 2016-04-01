@@ -17,7 +17,7 @@ var adminApp = angular.module('adminApp', ['ngCookies', 'ngRoute', 'angular-spin
                                            'loginServices',
                                            'AdminController', 'BoutiqueCtrl', 'OrderController', 'ActualiteController',
                                            'PageEditionController',
-                                           'GroupeEffectifController']);
+                                           'GroupeEffectifController', 'RecordController']);
 
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.
@@ -78,6 +78,10 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 			templateUrl: 'views/suivi/suivi-nageur-year.html',
 			access: 'ACCESS_SUIVI_NAGEURS'
 		}).
+		when('/suivi-nageur-periode', {
+			templateUrl: 'views/suivi/suivi-nageur-periode.html',
+			access: 'ACCESS_SUIVI_NAGEURS'
+		}).
 		when('/groupes', {
 			templateUrl: 'views/groupe/groupes.html',
 			access: 'ACCESS_GROUPES'
@@ -121,6 +125,10 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 		when('/nageur-effectif', {
 			templateUrl: 'views/nageur/effectifs.html',
 			access: 'ACCESS_NAGEUR_EFFECTIF'
+		}).
+		when('/records', {
+			templateUrl: 'views/record/records.html',
+			access: 'ACCESS_SUIVI_NAGEURS'
 		}).
 		when('/page/login', {
 			templateUrl: 'views/login.html'

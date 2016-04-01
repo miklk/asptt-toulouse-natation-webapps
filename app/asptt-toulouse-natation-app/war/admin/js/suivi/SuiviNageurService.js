@@ -20,6 +20,9 @@ suiviNageurServices.factory('SuiviNageurService', ['$resource',
 		}),
 		updateAll: $resource('/resources/swimmerStats/',{},{
 			query:{method:'POST', params: {}}
-		})
+		}),
+		periode: $resource('/resources/swimmerStats/periode/',{},{
+			query:{method:'GET', isArray: false,params: {groupes: '@groupes', beginDay: '@beginDay', endDay: '@endDay'}}
+		}),
 	};
 }]);

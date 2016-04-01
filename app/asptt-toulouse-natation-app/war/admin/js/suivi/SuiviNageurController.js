@@ -6,6 +6,7 @@ var suiviNageurController = angular.module('SuiviNageurController', ['ngRoute', 
 suiviNageurController.controller('SuiviNageurController', ['$scope', '$location', '$filter', 'SuiviNageurService', 'GroupeService', function($scope, $location, $filter, SuiviNageurService, GroupeService) {
 	$scope.groupesSelected;
 	$scope.day = new Date();
+	$scope.endDay = new Date();
 	$scope.groupes = GroupeService.all.query({});
 	$scope.swimmerStatUpdateAllAction = {
 	                                     dayTime:'',
@@ -125,6 +126,22 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 			$scope.enf = enf;
 		});
 	};
+	
+	$scope.loadPeriode = function() {
+		var groupes = [];
+		groupes.push($scope.groupesSelected.id);
+		SuiviNageurService.periode.query({groupes: groupes, beginDay: $scope.day.getTime(), endDay: $scope.endDay.getTime()}, function(data) {
+			$scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
+			$scope.beginDt = data.begin;
+			$scope.endDt = data.end;
+			$scope.weeks = data.weeks;
+			var enf = true;
+			angular.forEach($scope.groupesSelected, function(groupe) {
+				enf = enf && groupe.enf;
+			});
+			$scope.enf = enf;
+		});
+	}
 	
 	$scope.computeTotalPresence = function(nageur) {
 		var total = 0;
