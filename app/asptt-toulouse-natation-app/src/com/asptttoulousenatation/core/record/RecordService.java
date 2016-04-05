@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -68,5 +69,26 @@ public class RecordService {
 	@POST
 	public void createRecord(RecordEntity entity) {
 		
+	}
+	
+	@Path("/init-epreuves")
+	@PUT
+	public void initEpreuve() {
+		String[][] distances = { { "50", "100", "200", "400", "800", "1500" }, { "50", "100", "200" },
+				{ "50", "100", "200" }, { "50", "100", "200" }, { "100", "200", "400" }, };
+		String[] nages = { "NL", "Dos", "Brasse", "Papillon", "4N" };
+		String[] bassins = { "25", "50" };
+		for (String bassin : bassins) {
+			for (int i = 0; i < nages.length; i++) {
+				String nage = nages[i];
+				for (String distance : distances[i]) {
+					RecordEpreuveEntity epreuve = new RecordEpreuveEntity();
+					epreuve.setBassin(bassin);
+					epreuve.setDistance(distance);
+					epreuve.setNage(nage);
+					epreuveDao.save(epreuve);
+				}
+			}
+		}
 	}
 }

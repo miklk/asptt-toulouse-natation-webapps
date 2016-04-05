@@ -16,8 +16,9 @@ public class RecordDao extends DaoBase<RecordEntity> {
 		EntityManager em = EMF.get().createEntityManager();
 		List<RecordEntity> list = new ArrayList<>();
 		try {
-			TypedQuery<RecordEntity> query = em.createQuery("SELECT * FROM "
+			TypedQuery<RecordEntity> query = em.createQuery("SELECT " + getAlias() + " FROM "
 					+ getEntityClass().getSimpleName() + " " + getAlias() + " WHERE " + getAlias() + ".epreuve=:epreuve", RecordEntity.class);
+			query.setParameter("epreuve", epreuve);
 			list = query.getResultList();
 		} finally {
 			em.close();

@@ -3,7 +3,7 @@ var recordServices = angular.module('recordServices', ['ngResource']);
 recordServices.factory('RecordService', ['$resource', 
                                        function($resource) {
 	return {
-		areas: $resource('/resources/page-edition/area/all',{},{
+		records: $resource('/resources/records/:bassin',{},{
 			query:{method:'GET', isArray: true, params: {}}
 		}),
 	};
