@@ -131,15 +131,49 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 		var groupes = [];
 		groupes.push($scope.groupesSelected.id);
 		SuiviNageurService.periode.query({groupes: groupes, beginDay: $scope.day.getTime(), endDay: $scope.endDay.getTime()}, function(data) {
-			$scope.nageurs = $filter('orderBy') (data.nageurs, ['+nom', '+prenom']);
-			$scope.beginDt = data.begin;
-			$scope.endDt = data.end;
-			$scope.weeks = data.weeks;
-			var enf = true;
-			angular.forEach($scope.groupesSelected, function(groupe) {
-				enf = enf && groupe.enf;
+			$scope.nageurs = $filter('orderBy') (data, ['+nom', '+prenom']);
+			
+			//Build table result according to search date (default month)
+			var beginMonth = $scope.day.getMonth();
+			var endMonth = $scope.endDay.getMonth();
+			$scope.monthArray = new Array();
+			for(var i = beginMonth; i <= endMonth; i++) {
+				$scope.monthArray.push(new Date(new Date().getFullYear(), i, 1));
+			}
+			console.log($scope.monthArray);
+			
+			//order distance
+			angular.forEach($scope.nageurs, function(nageur){
+				var totalDistance = 0;
+				var totalPresence = 0;
+				var totalMuscu = 0;
+				var distances = new Array();
+				for(var i = 0; i < $scope.monthArray.length; i++) {
+					distances.push({valeur: 0, presence: 0, muscu: 0});
+				}
+				angular.forEach(nageur.stats, function(stat) {
+					totalDistance = totalDistance + stat.distance;
+					var monthIndex = (new Date(stat.day).getMonth()) % $scope.monthArray.length;
+					distances[monthIndex].valeur = distances[monthIndex].valeur + stat.distance;
+					if(stat.presence) {
+						totalPresence++;
+						distances[monthIndex].presence = distances[monthIndex].presence + 1;
+					}
+				});
+				nageur.distances = distances;
+				nageur.totalDistance = totalDistance;
+				
+				
+				angular.forEach(nageur.musculations, function(musculation) {
+					totalMuscu++;
+					totalPresence++;
+					var monthIndex = (new Date(musculation.day).getMonth()) % $scope.monthArray.length;
+					distances[monthIndex].muscu = distances[monthIndex].muscu + 1;
+				});
+				nageur.totalMuscu = totalMuscu;
+				nageur.totalPresence = totalPresence;
 			});
-			$scope.enf = enf;
+			console.log($scope.nageurs);
 		});
 	}
 	

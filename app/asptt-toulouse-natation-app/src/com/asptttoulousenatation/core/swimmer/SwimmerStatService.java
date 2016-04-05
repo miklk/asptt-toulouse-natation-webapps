@@ -566,78 +566,39 @@ public class SwimmerStatService {
 	
 	@Path("/periode")
 	@GET
-	public SwimmerStatMonthListResult getPeriode(@QueryParam("groupes") Set<Long> groupes,
+	public List<SwimmerStatPeriodeUi> getPeriode(@QueryParam("groupes") Set<Long> groupes,
 			@QueryParam("beginDay") Long beginDay, @QueryParam("endDay") Long endDay) {
-		SwimmerStatMonthListResult result = new SwimmerStatMonthListResult();
+		List<SwimmerStatPeriodeUi> result = new ArrayList<>();
 
 		// Set to midnight
 		LocalDate beginDayAsDate = new LocalDate(beginDay);
 		Long beginDayToMindnight = beginDayAsDate.toDateTimeAtStartOfDay().getMillis();
-		
+
 		LocalDate endDayAsDate = new LocalDate(endDay);
 		Long endDayToMindnight = endDayAsDate.toDateTimeAtStartOfDay().getMillis();
 
 		// Recuperer les nageur du groupe
-		Map<Integer, LocalDate> weeks = new LinkedHashMap<>();
 		List<DossierNageurEntity> entities = getNageurs(groupes);
 		for (DossierNageurEntity nageur : entities) {
 			// Recuperer la stat du jour du nageur
-			List<CriterionDao<? extends Object>> statCriteria = new ArrayList<CriterionDao<? extends Object>>(
-					2);
-			statCriteria.add(new CriterionDao<Long>(
-					SwimmerStatEntityFields.DAY, beginDayToMindnight,
-					Operator.GREATER_EQ));
-			statCriteria.add(new CriterionDao<Long>(
-					SwimmerStatEntityFields.DAY, endDayToMindnight,
-					Operator.LESS_EQ));
-			statCriteria.add(new CriterionDao<Long>(
-					SwimmerStatEntityFields.SWIMMER, nageur.getId(),
-					Operator.EQUAL));
+			List<CriterionDao<? extends Object>> statCriteria = new ArrayList<CriterionDao<? extends Object>>(2);
+			statCriteria
+					.add(new CriterionDao<Long>(SwimmerStatEntityFields.DAY, beginDayToMindnight, Operator.GREATER_EQ));
+			statCriteria.add(new CriterionDao<Long>(SwimmerStatEntityFields.DAY, endDayToMindnight, Operator.LESS_EQ));
+			statCriteria.add(new CriterionDao<Long>(SwimmerStatEntityFields.SWIMMER, nageur.getId(), Operator.EQUAL));
 			List<SwimmerStatEntity> statEntities = dao.find(statCriteria);
-			SwimmerStatMonthUi dayStat = new SwimmerStatMonthUi();
+			SwimmerStatPeriodeUi dayStat = new SwimmerStatPeriodeUi();
 			dayStat.setNom(nageur.getNom());
 			dayStat.setPrenom(nageur.getPrenom());
 			for (SwimmerStatEntity swimmerStat : statEntities) {
-				Calendar calendar = GregorianCalendar.getInstance();
-				calendar.setTimeInMillis(swimmerStat.getDay());
-				int weekOfMonth = calendar.get(Calendar.WEEK_OF_MONTH);
-				weeks.put(weekOfMonth, new LocalDate(swimmerStat.getDay()));
-				
-				if(DayTimeEnum.valueOf(swimmerStat.getDaytime()).equals(DayTimeEnum.MUSCU)) {
-					dayStat.addMuscu(weekOfMonth - 1,
-							swimmerStat.getPresence() ? 1 : 0);
+				if (DayTimeEnum.valueOf(swimmerStat.getDaytime()).equals(DayTimeEnum.MUSCU)) {
+					dayStat.addMusculation(swimmerStat);
 				} else {
-					dayStat.addDistance(weekOfMonth - 1,
-							swimmerStat.getDistance());
-					dayStat.addPresence(weekOfMonth - 1,
-							swimmerStat.getPresence() ? 1 : 0);
+					dayStat.addStat(swimmerStat);
 				}
 			}
-			dayStat.computeTotalDistance();
-			dayStat.computeTotalPresence();
-			dayStat.computeTotalMuscu();
-			result.addNageur(dayStat);
+			result.add(dayStat);
 		}
-		Collections.sort(result.getNageurs(), new Comparator<SwimmerStatMonthUi>() {
-
-			@Override
-			public int compare(SwimmerStatMonthUi pO1, SwimmerStatMonthUi pO2) {
-				return pO1.getNom().compareTo(pO2.getNom());
-			}
-		});
-		
-		//Set weeks
-		LocalDate firstOfMonth = beginDayAsDate.dayOfMonth().withMinimumValue();
-		int beginWeek = firstOfMonth.weekOfWeekyear().get();
-		int endWeek = endDayAsDate.dayOfMonth().withMaximumValue().weekOfWeekyear().get();
-		for(int i = beginWeek; i <= endWeek; i++) {
-			long firstDay = firstOfMonth.withWeekOfWeekyear(i).dayOfWeek().withMinimumValue().toDateTimeAtStartOfDay().getMillis();
-			long lastDay = firstOfMonth.withWeekOfWeekyear(i).dayOfWeek().withMaximumValue().toDateTimeAtStartOfDay().getMillis();
-			result.addWeek(new CoupleValue<Long, Long>(firstDay, lastDay));
-		}
-		
-		result.setBegin(beginDayToMindnight);
-		result.setEnd(endDayToMindnight);
-	return result;
+		return result;
 	}
 }
