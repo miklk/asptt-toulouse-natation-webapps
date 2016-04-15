@@ -57,6 +57,7 @@ public class PageEditionService {
 		List<PageEditionUi> uis = new ArrayList<>();
 		for(MenuEntity menu: menus) {
 			PageEditionUi ui = new PageEditionUi();
+			ui.setId(menu.getId());
 			ui.setTitle(menu.getTitle());
 			ui.setOrder(menu.getOrder());
 			ui.setAlone(menu.getAlone());
@@ -78,13 +79,16 @@ public class PageEditionService {
 	@POST
 	public void savePage(@PathParam("areaId") Long area, PageEditionUi page) {
 		final MenuEntity entity;
-		final ContentEntity content;
+		ContentEntity content;
 		if(page.getId() == null) {
 			entity = new MenuEntity();
 			content = new ContentEntity();
 		} else {
 			entity = menuDao.get(page.getId());
 			content = contentDao.findByMenu(page.getId());
+			if(content == null) {
+				content = new ContentEntity();
+			}
 		}
 		entity.setArea(area);
 		entity.setTitle(page.getTitle());
