@@ -60,6 +60,12 @@ public class AdherentStatService {
 
 		Map<String, LocalisationStatBean> localisations = new HashMap<>();
 		Map<String, ProfessionStatBean> professions = new HashMap<>();
+		
+		int currentYear = DateTime.now().year().get();
+		int sumAge = 0;
+		int nbAdherents = 0;
+		int tranche1 = 0;
+		int tranche2 = 0;
 
 		for (DossierNageurEntity adherent : adherents) {
 			DossierEntity dossier = dao.get(adherent.getDossier());
@@ -108,7 +114,18 @@ public class AdherentStatService {
 
 				// Age
 				if(adherent.getNaissance() != null) {
-					result.addAge(DossierUtils.getDateNaissanceAsDateTime(adherent).year().get());
+					int annee = DossierUtils.getDateNaissanceAsDateTime(adherent).year().get();
+					result.addAge(annee);
+					if(annee > 1900 && annee < currentYear) {
+						int age = currentYear - annee;
+						sumAge+=age;
+						nbAdherents++;
+						if(age >=4 && age <= 10) {
+							tranche1++;
+						} else if(age >= 11 && age <= 18) {
+							tranche2++;
+						}
+					}
 				} else {
 					LOG.log(Level.WARNING, "Pas de naissance pour " + adherent.getId());
 				}
@@ -126,6 +143,9 @@ public class AdherentStatService {
 		result.computeLocalisationToulouse(localisations);
 		result.computeAges();
 		result.getProfessions().addAll(professions.values());
+		result.setAverageAge(sumAge / nbAdherents);
+		result.setTranche1(tranche1);
+		result.setTranche2(tranche2);
 		return result;
 	}
 

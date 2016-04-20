@@ -17,6 +17,9 @@ adherentStatController.controller('AdherentsStatCtrl', ['$rootScope', '$scope', 
 		$scope.pourcentageRenouvellement = Math.floor((data.renouvellement / data.nbAdherents) * 100);
 		$scope.nbAnnuler = data.perStatus['ANNULER'];
 		$scope.pourcentageAnnuler = Math.floor(($scope.nbAnnuler / data.nbAdherents) * 100);
+		$scope.averageAge = data.averageAge;
+		$scope.tranche1 = data.tranche1;
+		$scope.tranche2 = data.tranche2;
 		//console.log(data.sexeAgeStat);
 		sexeAge("#sexe-age", data.sexeAges);
 		localisations("#localisations-toulouse", data.localisationsToulouse);

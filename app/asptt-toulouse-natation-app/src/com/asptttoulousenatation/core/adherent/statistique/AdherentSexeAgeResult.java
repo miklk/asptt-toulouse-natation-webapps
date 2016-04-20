@@ -28,6 +28,9 @@ public class AdherentSexeAgeResult {
 	private int complets;
 	private int nouveau;
 	private int renouvellement;
+	private long averageAge;
+	private int tranche1;
+	private int tranche2;
 
 	private Map<Integer, Integer> ages;
 	private List<CoupleValue<Integer, Integer>> ageArray;
@@ -238,6 +241,30 @@ public class AdherentSexeAgeResult {
 
 	public void setPerStatus(Map<String, Integer> perStatus) {
 		this.perStatus = perStatus;
+	}
+
+	public long getAverageAge() {
+		return averageAge;
+	}
+
+	public void setAverageAge(long averageAge) {
+		this.averageAge = averageAge;
+	}
+
+	public int getTranche1() {
+		return tranche1;
+	}
+
+	public void setTranche1(int tranche1) {
+		this.tranche1 = tranche1;
+	}
+
+	public int getTranche2() {
+		return tranche2;
+	}
+
+	public void setTranche2(int tranche2) {
+		this.tranche2 = tranche2;
 	}
 	
 }
