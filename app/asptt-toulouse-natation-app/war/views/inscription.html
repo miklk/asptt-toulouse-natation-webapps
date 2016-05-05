@@ -286,7 +286,27 @@
 	  					<div class="form-group" ng-class="{'has-error':formNageur.maillot.$error.required}">
 	  						<label for="maillot" class="col-md-2 control-label">Maillot de bain</label>
 	  						<div class="col-md-10">
-	  							<input type="text" class="form-control" id="maillot" name="maillot" placeholder="Maillot de bain" size="5" ng-model="dossiers[currentDossier].dossier.maillot" required />
+	  							<select id="maillot" class="form-control" name="maillot" ng-model="dossiers[currentDossier].dossier.maillot" required>
+	  								<option value="">Choisir une taille</option>
+	  								<option value="6">6 ans</option>
+	  								<option value="8">8 ans</option>
+	  								<option value="10">10 ans</option>
+	  								<option value="12">12 ans</option>
+	  								<option value="1'">14 ans</option>
+	  								<option value="34">34 (Femmes)</option>
+	  								<option value="36">36 (Femmes)</option>
+	  								<option value="38">38 (Femmes)</option>
+	  								<option value="40">40 (Femmes)</option>
+	  								<option value="42">42 (Femmes)</option>
+	  								<option value="44">44 (Femmes)</option>
+	  								<option value="65">65 (Hommes)</option>
+	  								<option value="70">70 (Hommes)</option>
+	  								<option value="75">75 (Hommes)</option>
+	  								<option value="80">80 (Hommes)</option>
+	  								<option value="85">85 (Hommes)</option>
+	  								<option value="90">90 (Hommes)</option>
+	  								<option value="95">95 (Hommes)</option>
+	  							</select>
   							</div>
 	  					</div>
 	  					<div class="form-group" ng-class="{'has-error':formNageur.tshirt.$error.required}">
