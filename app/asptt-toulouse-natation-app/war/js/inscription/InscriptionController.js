@@ -78,10 +78,11 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 					$scope.creneauxSelection = "";
 					$scope.groupes = GroupeService.get({nouveau: $scope.dossiers[index].dossier.nouveau});
 					if($scope.dossiers[index].groupe != null) {
-						$scope.slots = SlotService.get({groupe: $scope.dossiers[index].groupe.id, creneaux: $scope.dossiers[index].dossier.creneaux});
-						$scope.dossiers[index].creneaux = $scope.slots;
+						$('#myTab a[href="#dossiers"]').tab('show');
+					} else {
+						$('#myTab a[href="#activite"]').tab('show');
 					}
-					$('#myTab a[href="#activite"]').tab('show');
+					
 				} else {
 					$('#myTab a[href="#dossiers"]').tab('show');
 				}
