@@ -206,3 +206,29 @@ padding-top: 20px;
 	background-color: #FF0000;
 	opacity: 0.2;
 }
+
+.datefield {
+	display: inline;
+	padding: 0.3em;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background: white;
+}
+
+.datefield * {
+	display: inline-block;
+}
+
+.datefield input {
+	border: none;
+	width: 2.2em;
+	padding: 0 0.4em;
+	font-size: 100%;
+}
+
+.datefield input#year {
+	width:3.5em;
+}
+.datefield input:focus {
+	outline:none;
+}

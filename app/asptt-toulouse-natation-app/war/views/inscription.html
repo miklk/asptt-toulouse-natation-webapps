@@ -273,8 +273,10 @@
 	          				<div class="form-group row" ng-class="{'has-error':formNageur.datenaissance.$error.required}">
 		          				<label for=dateNaissance class="col-md-2 control-label">Date de naissance</label>
 		          				<div class="col-md-6">
-		          					<div class="input-group date">
-	  									<input id="datenaissance-field" name="datenaissance" ng-model="dossiers[currentDossier].naissanceAsString" type="text" class="form-control" required /><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+		          					<div class="datefield">
+	  									<input id="day" name="day" ng-model="dossiers[currentDossier].day" type="tel" ng-keyup="goToInput('month')" maxlength="2" placeholder="01" required />/
+	  									<input id="month" name="month" ng-model="dossiers[currentDossier].month" type="tel" ng-keyup="goToInput('year')" maxlength="2" placeholder="01" required />/
+	  									<input id="year" name="year" ng-model="dossiers[currentDossier].year" type="tel" maxlength="4" placeholder="1998" ng-keyup="buildNaissance()" required />
 									</div>
 		          				</div>
 		          				<div ng-messages="formNageur.datenaissance.$error" ng-messages-include="views/inscription-errors.html"></div>

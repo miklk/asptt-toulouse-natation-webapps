@@ -12,16 +12,6 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 	
 	$scope.cspList = ['Scolaire', 'Agriculteurs exploitants', 'Artisans, commerçants et chefs d\'entreprise', 'Cadres et professions intellectuelles supérieures','Professions Intermédiaires', 'Employés', 'Ouvriers', 'Retraités', 'Sans activité professionnelle'];
 	
-	var datepickerInput = $('.input-group.date').datepicker({
-		format: "dd/mm/yyyy",
-		language: "fr"
-	});
-	datepickerInput.on("changeDate", function(e) {
-		$scope.dossiers[$scope.currentDossier].dossier.naissance = e.date.getTime();
-		$scope.dossiers[$scope.currentDossier].naissanceAsString = $filter('date') (e.date, "dd/MM/yyyy");
-		datepickerInput.datepicker('hide');
-	});
-	
 	$(function () {
 		  $('[data-toggle="tooltip"]').tooltip()
 		});
@@ -260,9 +250,9 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 					
 					var naissance = $scope.dossiers[$scope.currentDossier].dossier.naissance;
 					if(naissance != null) {
-						datepickerInput.datepicker('setDate', new Date(naissance));
-					} else {
-						datepickerInput.datepicker('setDate', new Date());
+						$scope.dossiers[$scope.currentDossier].day = $filter('date') (naissance, "dd");
+						$scope.dossiers[$scope.currentDossier].month = $filter('date') (naissance, "MM");
+						$scope.dossiers[$scope.currentDossier].year = $filter('date') (naissance, "yyyy");
 					}
 					
 					$('#myTab a[href="#nageur"]').tab('show');
@@ -404,6 +394,37 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 				          alert("Il n'y a pas le bulletin.");
 				       });
 				};
+				$scope.goToInput = function(inputId) {
+					if(inputId == 'month') {
+						//Check day
+						var day = $scope.dossiers[$scope.currentDossier].day;
+						if(day && day.length > 1 && day > 0 && day <= 31) {
+							var element = $('#' + inputId);
+					        if(element) {
+					        	element.focus();
+					        }
+					        $scope.buildNaissance();
+						}
+					} else if(inputId == 'year') {
+						//Check month
+						var month = $scope.dossiers[$scope.currentDossier].month;
+						if(month && month.length > 1 && month > 0 && month <= 12) {
+							var element = $('#' + inputId);
+					        if(element) {
+					        	element.focus();
+					        }
+					        $scope.buildNaissance();
+						}
+					}
+				}
+				$scope.buildNaissance = function() {
+					var day = $scope.dossiers[$scope.currentDossier].day;
+					var month = $scope.dossiers[$scope.currentDossier].month;
+					var year = $scope.dossiers[$scope.currentDossier].year;
+					if(day && month && year) {
+						$scope.dossiers[$scope.currentDossier].dossier.naissance = new Date(year, month - 1, day, 0, 0 , 0, 0);
+					}
+				}
 			}
 		});
 	};

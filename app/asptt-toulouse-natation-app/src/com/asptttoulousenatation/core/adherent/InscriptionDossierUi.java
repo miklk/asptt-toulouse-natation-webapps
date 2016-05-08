@@ -25,7 +25,10 @@ public class InscriptionDossierUi implements Serializable {
 	private LoadingSlotsUi creneaux;
 	private boolean creneauSelected;
 	private boolean supprimer;
-	private String naissanceAsString;
+	//Simple mapping avec IHM
+	private Integer day;
+	private Integer month;
+	private Integer year;
 	
 	
 	public InscriptionDossierUi() {
@@ -113,12 +116,28 @@ public class InscriptionDossierUi implements Serializable {
 		supprimer = pSupprimer;
 	}
 
-	public String getNaissanceAsString() {
-		return naissanceAsString;
+	public Integer getDay() {
+		return day;
 	}
 
-	public void setNaissanceAsString(String naissanceAsString) {
-		this.naissanceAsString = naissanceAsString;
+	public void setDay(Integer day) {
+		this.day = day;
+	}
+
+	public Integer getMonth() {
+		return month;
+	}
+
+	public void setMonth(Integer month) {
+		this.month = month;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
 	}
 	
 }
