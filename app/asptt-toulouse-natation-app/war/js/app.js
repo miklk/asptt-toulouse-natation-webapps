@@ -31,9 +31,9 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 			controller: 'PageCtrl',
 			resolve: { pageId: function() {return "section-sportive";}}
 		}).
-		when('/page/vacances', {
+		/**when('/page/vacances', {
 			templateUrl: 'views/vacances.html'
-		}).
+		}).**/
 		when('/page/login', {
 			templateUrl: 'views/login.html',
 			controller: 'AuthenticationCtrl'
