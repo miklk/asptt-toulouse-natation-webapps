@@ -1,5 +1,5 @@
 .board{
-    width: 75%;
+    width: 50%;
 	margin: 0px auto;
 	height: 500px;
 /*box-shadow: 10px 10px #ccc,-10px 20px #ddd;*/
@@ -28,7 +28,7 @@ p.narrow{
     height: 2px;
     background: #ddd;
     position: absolute;
-    width: 45%;
+    width: 75%;
     margin: 0 10%;
     left: 0;
     right: 0;
@@ -112,7 +112,7 @@ li.active span.round-tabs.five{
     background: #fafafa;
 }
 .nav-tabs > li {
-    width: 15%;
+    width: 25%;
 }
 /*li.active:before {
     content: " ";

@@ -39,6 +39,7 @@
         <class>com.asptttoulousenatation.core.server.dao.entity.boutique.ProductEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.boutique.OrderEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.boutique.OrderProductEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.inscription.stage.DossierStageEntity</class>
         
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         
