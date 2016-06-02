@@ -2,12 +2,13 @@
 <div class="row" ng-controller="InscriptionStageCtrl">
 	<div>
 		<h2>Stage de perfectionnement été 2016</h2>
-		<h3>Ouvert aux enfants de 8 à 14 ans.</h3>
+		<h3>Ouvert aux enfants de 8 à 14 ans, savoir nager un 50m 2 nages sans s’arrêter (25m dorsal et 25m ventral).</h3>
 		<h5>Journée multisports (9h à 17h)</h5>
 		<ul>
 			<li>Le matin: Natation à la piscine Léo Lagrange</li>
-			<li>L'après-midi: Activités dans Toulouse</li>
+			<li>L'après-midi: Activités dans Toulouse (Patinoire, Trampoline, Escalade, Bowling, LaserQuest,Tennis de Table, Badminton, Tennis ; activités de complément sports collectifs de plein air.)</li>
 		</ul>
+		<p>Journée-type : prise en charge journalière de 09h à 17h.</p>
 	</div>
 	
 	<h3>Inscrivez-vous ci-dessous</h3>
@@ -98,8 +99,8 @@
 		          				<label for=dateNaissance class="col-md-2 control-label">Date de naissance</label>
 		          				<div class="col-md-6">
 		          					<div class="datefield">
-	  									<input id="day" name="day" ng-model="dossier.day" type="tel" ng-keyup="goToInput('month')" maxlength="2" placeholder="01" required />/
-	  									<input id="month" name="month" ng-model="dossier.month" type="tel" ng-keyup="goToInput('year')" maxlength="2" placeholder="01" required />/
+	  									<input id="day" name="day" ng-model="dossier.day" type="tel" ng-keyup="goToInput('month')" maxlength="2" placeholder="30" required />/
+	  									<input id="month" name="month" ng-model="dossier.month" type="tel" ng-keyup="goToInput('year')" maxlength="2" placeholder="03" required />/
 	  									<input id="year" name="year" ng-model="dossier.year" type="tel" maxlength="4" placeholder="1998" required />
 									</div>
 		          				</div>
@@ -208,7 +209,7 @@
           <div class="tab-pane fade" id="cotisation">
           	<h3>Votre inscription au stage de perfectionnement est pré-enregistrée.</h3>
           	<p class="lead">
-          	Votre inscription ainsi que votre réservation de session sont effectives pour une période de 8 jours (soit jusqu'au {{validite | date:'dd/MM/yyyy HH:mm'}}).<br />
+          	Votre inscription ainsi que votre réservation de session sont effectives pour une période de 8 jours (soit jusqu'au {{validite | date:'dd/MM/yyyy'}}).<br />
           	Nous validerons définitivement votre dossier dès réception du paiement.<br />
           En l'absence de paiement de la cotisation au bout de 8 jours votre dossier d'inscription sera effacé afin de laisser la place à d'autres enfants.</p>
           	
@@ -226,7 +227,7 @@
           					<h4 class="modal-title">L'ASPTT Toulouse Natation vous remercie</h4>
           				</div>
           				<div class="modal-body">
-				          		<p>N'oubliez de nous retourner votre paiement par chèque(s) avant le ? à l'adresse suivante:<p class="text-center">ASPTT Grand Toulouse Natation<br />54 rue des Sept Troubadours<br />Bureau 215<br />31000 Toulouse.<br /></p>
+				          		<p>N'oubliez de nous retourner votre paiement par chèque(s) avant le {{validite | date:'dd/MM/yyyy'}} à l'adresse suivante:<p class="text-center">ASPTT Grand Toulouse Natation<br />54 rue des Sept Troubadours<br />Bureau 215<br />31000 Toulouse.<br /></p>
 				        </div>
 				    </div>
 				</div>
