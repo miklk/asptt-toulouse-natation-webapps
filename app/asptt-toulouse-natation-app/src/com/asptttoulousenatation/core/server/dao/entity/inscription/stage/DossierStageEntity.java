@@ -11,6 +11,7 @@ import javax.persistence.PreUpdate;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.asptttoulousenatation.core.server.dao.entity.IEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
 
 @Entity
 @XmlRootElement
@@ -42,6 +43,16 @@ public class DossierStageEntity implements IEntity {
 	private String emailsecondaire;
 	private Date created;
 	private Date updated;
+	private Boolean reminder;
+	private Date reminded;
+	private String comment;
+	private String statut;
+	private Integer montantreel;
+	
+	public DossierStageEntity() {
+		reminder = false;
+		statut = DossierStatutEnum.PREINSCRIT.name();
+	}
 	
 	@PreUpdate
 	public void onUpdate() {
@@ -174,6 +185,44 @@ public class DossierStageEntity implements IEntity {
 	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
-	
-	
+
+	public Boolean getReminder() {
+		return reminder;
+	}
+
+	public void setReminder(Boolean reminder) {
+		this.reminder = reminder;
+	}
+
+	public Date getReminded() {
+		return reminded;
+	}
+
+	public void setReminded(Date reminded) {
+		this.reminded = reminded;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getStatut() {
+		return statut;
+	}
+
+	public void setStatut(String statut) {
+		this.statut = statut;
+	}
+
+	public Integer getMontantreel() {
+		return montantreel;
+	}
+
+	public void setMontantreel(Integer montantreel) {
+		this.montantreel = montantreel;
+	}
 }

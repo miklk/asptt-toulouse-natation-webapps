@@ -17,7 +17,7 @@ var adminApp = angular.module('adminApp', ['ngCookies', 'ngRoute', 'angular-spin
                                            'loginServices',
                                            'AdminController', 'BoutiqueCtrl', 'OrderController', 'ActualiteController',
                                            'PageEditionController',
-                                           'GroupeEffectifController', 'RecordController']);
+                                           'GroupeEffectifController', 'RecordController', 'DossierStageController', 'dossierStageServices']);
 
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.
@@ -97,6 +97,10 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 		}).
 		when('/extraction', {
 			templateUrl: 'views/dossier/extraction/extraction.html',
+			access: 'ACCESS_DOSSIERS'
+		}).
+		when('/dossiers-stage', {
+			templateUrl: 'views/dossier-stage/dossiers-stage.html',
 			access: 'ACCESS_DOSSIERS'
 		}).
 		when('/remplissage', {
