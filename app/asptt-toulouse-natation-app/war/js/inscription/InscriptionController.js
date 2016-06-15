@@ -310,6 +310,7 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 				};
 				
 				$scope.validateNageur = function(dossier) {
+					$scope.buildNaissance();
 					$http.post("/resources/inscription/update", data, {})
 				    	.success(function(dataFromServer, status, headers, config) {
 				    		data = dataFromServer;
