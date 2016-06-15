@@ -53,10 +53,17 @@
          <div id="tab-content" class="tab-content">
            <div class="tab-pane fade in active" id="home">
 
-               <h3 class="head text-center">Inscription pour la saison sportive 2015-2016</h3>
+               <h3 class="head text-center">Inscription pour la saison sportive 2016-2017</h3>
                <h4>Informations importantes</h4>
-               <p>Il est nécessaire, avant toute chose, de consulter et de prendre connaissance des documents joints au préalable à l’inscription en ligne (tarifs, planning récapitulatif….).</p>
-  	
+               <!-- <p>Il est nécessaire, avant toute chose, de consulter et de prendre connaissance des documents joints au préalable à l’inscription en ligne (tarifs, planning récapitulatif….).</p>-->
+               <p>Ouverture des inscriptions pour la saison 2016-2017 très prochainement, veuillez noter les dates:</p>
+               	<ul>
+               	<li><strong>Anciens adhérents 2015 / 2016 : à partir du Lundi 18/06 (en journée) jusqu'au Dimanche 10/07 (minuit).</strong><br />
+               	Dates durant lesquelles vous aurez la priorité dans le choix des créneaux horaires sur les différents groupes de pratique.</li>
+				<li><strong>Nouveaux adhérents 2016 / 2017 : à partir du Lundi 11/07 (journée) jusqu'au Vendredi 16/09 (minuit).</strong><br />
+Dates à partir desquelles, les personnes n'étant pas adhérentes lors de la saison 2015 / 2016 pourront s'inscrire en vue de la prochaine rentrée ;<br />les anciens pourront également continuer à s'inscrire durant ce laps de temps.<br />Attention toutefois, dans les 2 cas de figure, le choix des créneaux ne sera possible qu'en fonction des places restantes, plus vous vous rapprochez de la date de reprise, moins de choix vous seront offerts.</li>
+</ul>
+  	<div class="hidden">
   	<h4>Informations générales</h4>
   	 <ul>
         <li><a href="doc/Note_dinformation_2015_2016.pdf" target="_blank">Note d'information pour la saison 2015-2016</a></li>
@@ -84,10 +91,8 @@
     </ul>
     </div>
     </div>
-    <div class="show">
-    	<h3>Les inscriptions pour la saison 2015-2016 sont terminées. Nous n'avons plus de places disponibles.<br />A l'année prochaine !</h3>
     </div>
-  	<div class="hidden">
+  	<div class="show">
   	 <div class="panel panel-default">
   		<div class="panel-heading">
   			<h4>Première inscription au club</h4>
@@ -270,10 +275,10 @@
 	          					</label>
 	          					<div ng-messages="formNageur.civilite.$error" ng-messages-include="views/inscription-errors.html"></div>
 	          				</div>
-	          				<div class="form-group row" ng-class="{'has-error':formNageur.datenaissance.$error.required}">
-		          				<label for=dateNaissance class="col-md-2 control-label">Date de naissance</label>
+	          				<div class="form-group row" ng-class="{'has-error':formNageur.day.$error.required}">
+		          				<label for="day" class="col-md-2 control-label">Date de naissance</label>
 		          				<div class="col-md-6">
-		          					<div class="datefield">
+		          					<div class="datefield" ng-class="{'has-error':formNageur.day.$error.required}">
 	  									<input id="day" name="day" ng-model="dossiers[currentDossier].day" type="tel" ng-keyup="goToInput('month')" maxlength="2" placeholder="01" required />/
 	  									<input id="month" name="month" ng-model="dossiers[currentDossier].month" type="tel" ng-keyup="goToInput('year')" maxlength="2" placeholder="01" required />/
 	  									<input id="year" name="year" ng-model="dossiers[currentDossier].year" type="tel" maxlength="4" placeholder="1998" ng-keyup="buildNaissance()" required />
