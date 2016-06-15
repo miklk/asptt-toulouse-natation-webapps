@@ -170,6 +170,58 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 					}
 					return result;
 				}
+				
+				$scope.isChildOf = function(creneau, parent) {
+					var result = false;
+					if(parent != null && parent.children != null) {
+						if(creneau.second) { 
+							if(parent.children.indexOf(creneau.id) != -1) {
+								result = true;
+							}
+						}
+					}
+					return result;
+				}
+				
+				$scope.isChildOfSelected = function(creneau) {
+					var display = false;
+					var slotsArray = $($scope.dossiers[$scope.currentDossier].creneaux.slots);
+					slotsArray.each(function() {
+						$(this.lundi).each(function() {
+							if(this.selected) {
+								display = display || $scope.isChildOf(creneau, this);
+							}
+						});
+						$(this.mardi).each(function() {
+							if(this.selected) {
+								display = display || $scope.isChildOf(creneau, this);
+							}
+						});
+						$(this.mercredi).each(function() {
+							if(this.selected) {
+								display = display || $scope.isChildOf(creneau, this);
+							}
+						});
+						$(this.jeudi).each(function() {
+							if(this.selected) {
+								display = display || $scope.isChildOf(creneau, this);
+							}
+						});
+						$(this.vendredi).each(function() {
+							if(this.selected) {
+								display = display || $scope.isChildOf(creneau, this);
+							}
+						});
+						$(this.samedi).each(function() {
+							if(this.selected) {
+								display = display || $scope.isChildOf(creneau, this);
+							}
+						});
+					});
+					return display;
+				}
+				
+				
 				$scope.resetSlot = function() {
 					$scope.hideSeconde = true;
 					$scope.unique = false;
@@ -195,6 +247,11 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 						});
 					});
 				};
+				
+				$scope.displayCreneau = function(creneau) {
+					return !creneau.second || (creneau.second && $scope.isChildOfSelected(creneau));
+					
+				}
 				
 				$scope.getPlacePrises = function(slot) {
 					var result = slot.placeDisponible - slot.placeRestante;
