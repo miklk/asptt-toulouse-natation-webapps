@@ -261,6 +261,14 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 					return result;
 				}
 				
+				$scope.showTailleF = function() {
+					return $scope.dossiers[$scope.currentDossier].dossier.civilite == 1;
+				}
+				
+				$scope.showTailleM = function() {
+					return $scope.dossiers[$scope.currentDossier].dossier.civilite == 0;
+				}
+				
 				$scope.dossiersValide = function(dossiers) {
 					var areValide = true;
 					$(dossiers).each(function () {
