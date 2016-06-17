@@ -29,6 +29,8 @@ public class DossierEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	private Long saison;
+	
 	
 	private String adresse;
 	
@@ -344,6 +346,14 @@ public class DossierEntity implements IEntity {
 
 	public void setMontantreel(Integer montantreel) {
 		this.montantreel = montantreel;
+	}
+
+	public Long getSaison() {
+		return saison;
+	}
+
+	public void setSaison(Long saison) {
+		this.saison = saison;
 	}
 
 	@PreUpdate
