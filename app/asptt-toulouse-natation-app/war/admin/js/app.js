@@ -17,7 +17,7 @@ var adminApp = angular.module('adminApp', ['ngCookies', 'ngRoute', 'angular-spin
                                            'loginServices',
                                            'AdminController', 'BoutiqueCtrl', 'OrderController', 'ActualiteController',
                                            'PageEditionController',
-                                           'GroupeEffectifController', 'RecordController', 'DossierStageController', 'dossierStageServices']);
+                                           'GroupeEffectifController', 'RecordController', 'DossierStageController', 'dossierStageServices', 'paramServices']);
 
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.

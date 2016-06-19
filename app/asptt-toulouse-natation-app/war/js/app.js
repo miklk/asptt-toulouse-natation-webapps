@@ -1,4 +1,4 @@
-var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','ngMessages', 'angular-spinkit', 'loadingAppServices', 'pageServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'authenticationServices', 'actualiteServices', 'DocumentController', 'DocumentationController', 'mediaServices', 'MediaCtrl', 'InscriptionController', 'CalendarController', 'BoutiqueCtrl', 'InscriptionStageCtrl']);
+var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','ngMessages', 'angular-spinkit', 'loadingAppServices', 'pageServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'authenticationServices', 'actualiteServices', 'DocumentController', 'DocumentationController', 'mediaServices', 'MediaCtrl', 'InscriptionController', 'CalendarController', 'BoutiqueCtrl', 'InscriptionStageCtrl', 'paramServices']);
 aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
 	$routeProvider.
 		when('/', {

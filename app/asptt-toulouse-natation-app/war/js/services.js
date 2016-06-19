@@ -72,3 +72,14 @@ actualiteServices.factory('ActualiteService', ['$resource',
             isArray:false
         }});
 }]);
+
+var paramServices = angular.module('paramServices', ['ngResource']);
+
+paramServices.factory('ParamService', ['$resource', 
+                                       function($resource) {
+	return $resource('/resources/params/groupes/:groupe',{},{
+        query:{
+            method:'GET',
+            isArray:true
+        }});
+}]);
