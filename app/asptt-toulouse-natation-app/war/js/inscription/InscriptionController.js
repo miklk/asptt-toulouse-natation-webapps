@@ -3,7 +3,19 @@
  */
 var inscriptionController = angular.module('InscriptionController', ['inscriptionServices']);
 
-inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter', 'InscriptionService', 'SlotService', 'GroupeService', '$routeParams', '$sce', function($http, $scope, $filter, InscriptionService, SlotService, GroupeService, $routeParams, $sce) {
+inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter', 'InscriptionService', 'SlotService', 'GroupeService', 'ParamService', '$routeParams', '$sce', function($http, $scope, $filter, InscriptionService, SlotService, GroupeService, ParamService, $routeParams, $sce) {
+	$scope.enableNouveau = false;
+	$scope.enableAncien = false;
+	ParamService.query({groupe: 'INSCRIPTION'}, function(data) {
+		angular.forEach(data, function(param) {
+			if(param.key == 'ENABLE_NOUVEAU') {
+				$scope.enableNouveau = param.value === 'true';
+			} else if(param.key == 'ENABLE_ANCIEN') {
+				$scope.enableAncien = param.value === 'true';
+			}
+		});
+	});
+	
 	$scope.formData = {
 			email: "",
 			mdp: "",

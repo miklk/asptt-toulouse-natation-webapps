@@ -1,9 +1,32 @@
 /**
  * 
  */
-var dossierController = angular.module('DossierController', ['ngRoute', 'dossierServices', 'groupeServices', 'slotServices']);
+var dossierController = angular.module('DossierController', ['ngRoute', 'dossierServices', 'groupeServices', 'slotServices', 'paramServices']);
 
-dossierController.controller('DossierController', ['$rootScope', '$http', '$scope', '$location', '$filter', '$timeout', 'DossierService', 'GroupeService', 'SlotService', function($rootScope, $http, $scope, $location, $filter, $timeout, DossierService, GroupeService, SlotService) {
+dossierController.controller('DossierController', ['$rootScope', '$http', '$scope', '$location', '$filter', '$timeout', 'DossierService', 'GroupeService', 'SlotService', 'ParamService', function($rootScope, $http, $scope, $location, $filter, $timeout, DossierService, GroupeService, SlotService, ParamService) {
+	$scope.enableNouveau = {
+			id: null,
+			key: 'ENABLE_NOUVEAU',
+			value: false,
+			groupe: 'INSCRIPTION'
+	};
+	$scope.enableAncien = {
+			id: null,
+			key: 'ENABLE_ANCIEN',
+			value: false,
+			groupe: 'INSCRIPTION'
+	}
+	
+	ParamService.groupes.query({groupe: 'INSCRIPTION'}, function (data) {
+		angular.forEach(data, function(param) {
+			if(param.key == 'ENABLE_NOUVEAU') {
+				$scope.enableNouveau = param;
+			} else if(param.key == 'ENABLE_ANCIEN') {
+				$scope.enableAncien = param;
+			}
+		});
+	});
+	
 	DossierService.statistiques.query({}, function(data) {
 		$scope.statistiques = data;
 	});
@@ -256,5 +279,12 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 				$rootScope.isLoading = false;
 			});
 		}
+	}
+	
+	$scope.toggleParam = function(param) {
+		param.value = !param.value;
+		ParamService.save.query('', param, function(data) {
+			
+		});
 	}
 }]);

@@ -2,6 +2,10 @@
 	<div class="row">
 		<h1 class="page-header">Suivi des dossiers d'inscriptions</h1>
 	</div>
+	<div class="row" style="margin-bottom: 2%">
+		<button type="button" class="btn btn-xs" ng-class="{'btn-success': enableNouveau.value === 'true', 'btn-danger': !(enableNouveau.value === 'true')}" ng-click="toggleParam(enableNouveau)"><span class="glyphicon" ng-class="{'glyphicon-ok': enableNouveau.value === 'true', 'glyphicon-remove': !(enableNouveau.value === 'true')}"></span> Inscriptions des nouveaux adhérents</button>
+		<button type="button" class="btn btn-xs" ng-class="{'btn-success': enableAncien.value === 'true', 'btn-danger': !(enableAncien.value === 'true')}" ng-click="toggleParam(enableAncien)"><span class="glyphicon" ng-class="{'glyphicon-ok': enableAncien.value === 'true', 'glyphicon-remove': !(enableAncien.value === 'true')}"></span> Inscriptions des anciens adhérents</button>
+	</div>
 	<div class="row">
 	   <form class="form-horizontal" ng-submit="search()">
 	       <div class="form-group">

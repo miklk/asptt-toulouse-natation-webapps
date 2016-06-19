@@ -93,7 +93,7 @@ Dates à partir desquelles, les personnes n'étant pas adhérentes lors de la sa
     </div>
     </div>
   	<div class="show">
-  	 <div class="panel panel-default">
+  	 <div class="panel panel-default" ng-show="enableNouveau">
   		<div class="panel-heading">
   			<h4>Première inscription au club</h4>
   		</div>
@@ -107,7 +107,7 @@ Dates à partir desquelles, les personnes n'étant pas adhérentes lors de la sa
   			</form>
   		</div>
   	</div>
-  	<div class="panel panel-default">
+  	<div class="panel panel-default" ng-show="enableAncien">
   		<div class="panel-heading">
   		<h4>Je m'identifie avec mon adresse e-mail et mon code d'accès</h4>
   		</div>
@@ -125,7 +125,7 @@ Dates à partir desquelles, les personnes n'étant pas adhérentes lors de la sa
 			</form>  		
   		</div>
   	</div>
-  	<div class="panel panel-default">
+  	<div class="panel panel-default"  ng-show="enableAncien || enableNouveau">
   		<div class="panel-heading">
   		<h4>J'ai oublié mon mot de passe</h4>
   		</div>
@@ -365,6 +365,11 @@ Dates à partir desquelles, les personnes n'étant pas adhérentes lors de la sa
   					" type="text" class="form-control" size="30" ng-model="dossiers[currentDossier].dossier.profession" required />
   				</div>
   			</div>
+  			<div class="checkbox">
+				<label>
+					<input type="checkbox" ng-model="dossiers[currentDossier].dossier.fonctionnaire" /> Fonction publique
+				</label>
+			</div>
   		</fieldset>
   		<div ng-messages="formNageur.csp.$error || formNageur.profession.$error" ng-messages-include="views/inscription-errors.html"></div>
   		<div style="margin-top:1%">
