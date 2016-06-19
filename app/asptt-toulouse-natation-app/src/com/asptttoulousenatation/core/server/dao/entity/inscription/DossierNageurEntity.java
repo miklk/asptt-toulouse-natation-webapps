@@ -67,6 +67,8 @@ public class DossierNageurEntity implements IEntity {
 	
 	private String csp;
 	
+	private Boolean fonctionnaire;
+	
 	public DossierNageurEntity() {
 		
 	}
@@ -237,6 +239,14 @@ public class DossierNageurEntity implements IEntity {
 
 	public void setCsp(String csp) {
 		this.csp = csp;
+	}
+
+	public Boolean getFonctionnaire() {
+		return fonctionnaire;
+	}
+
+	public void setFonctionnaire(Boolean fonctionnaire) {
+		this.fonctionnaire = fonctionnaire;
 	}
 
 	public void toUpperCase() {

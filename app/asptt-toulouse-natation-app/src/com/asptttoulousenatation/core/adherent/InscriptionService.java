@@ -513,6 +513,8 @@ public class InscriptionService {
 				+ "doc/bulletin.pdf"));
 		PdfStamper stamper = new PdfStamper(reader, out);
 		AcroFields fields = stamper.getAcroFields();
+		
+		initPdf(fields);
 
 		fields.setField("nom", adherent.getNom());
 		fields.setField("prenom", adherent.getPrenom());
@@ -561,12 +563,18 @@ public class InscriptionService {
 		if (BooleanUtils.isFalse(adherent.getNouveau())) {
 			fields.setField("renouvellement", "Yes");
 		}
+		
+		if(BooleanUtils.isTrue(adherent.getFonctionnaire())) {
+			fields.setField("fonctionnaire_oui", "Yes");
+		} else {
+			fields.setField("fonctionnaire_non", "Yes");
+		}
 
 		GroupEntity group = groupDao.get(adherent.getGroupe());
 		if (BooleanUtils.isTrue(group.getLicenceFfn())) {
 			fields.setField("licence_ffn_oui", "Yes");
 		} else {
-			fields.setField("licence_ffn_non", "Yes");
+			fields.setField("licence_loisir", "Yes");
 		}
 		
 		if(BooleanUtils.isFalse(group.getCompetition())) {
@@ -594,6 +602,19 @@ public class InscriptionService {
 
 		stamper.close();
 		reader.close();
+	}
+	
+	private void initPdf(AcroFields fields) throws IOException, DocumentException {
+		fields.setField("civilite_h", "No");
+		fields.setField("civilite_f", "No");
+		fields.setField("nouveau", "No");
+		fields.setField("renouvellement", "No");
+		fields.setField("fonctionnaire_oui", "No");
+		fields.setField("fonctionnaire_non", "No");
+		fields.setField("licence_ffn_oui", "No");
+		fields.setField("licence_loisir", "No");
+		fields.setField("licence_comp_oui", "No");
+		fields.setField("licence_comp_non", "No");
 	}
 	
 	@Path("/rappel")
