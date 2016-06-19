@@ -4,19 +4,6 @@
 var dossierController = angular.module('DossierController', ['ngRoute', 'dossierServices', 'groupeServices', 'slotServices', 'paramServices']);
 
 dossierController.controller('DossierController', ['$rootScope', '$http', '$scope', '$location', '$filter', '$timeout', 'DossierService', 'GroupeService', 'SlotService', 'ParamService', function($rootScope, $http, $scope, $location, $filter, $timeout, DossierService, GroupeService, SlotService, ParamService) {
-	$scope.enableNouveau = {
-			id: null,
-			key: 'ENABLE_NOUVEAU',
-			value: false,
-			groupe: 'INSCRIPTION'
-	};
-	$scope.enableAncien = {
-			id: null,
-			key: 'ENABLE_ANCIEN',
-			value: false,
-			groupe: 'INSCRIPTION'
-	}
-	
 	ParamService.groupes.query({groupe: 'INSCRIPTION'}, function (data) {
 		angular.forEach(data, function(param) {
 			if(param.key == 'ENABLE_NOUVEAU') {
@@ -282,7 +269,11 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	}
 	
 	$scope.toggleParam = function(param) {
-		param.value = !param.value;
+		if(param.value === 'true') {
+			param.value = 'false';
+		} else {
+			param.value = 'true';
+		}
 		ParamService.save.query('', param, function(data) {
 			
 		});
