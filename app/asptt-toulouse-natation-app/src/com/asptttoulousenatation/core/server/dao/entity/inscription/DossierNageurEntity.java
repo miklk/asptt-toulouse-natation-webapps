@@ -27,6 +27,8 @@ public class DossierNageurEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	private Long saison;
+	
 	
 	private String civilite;
 	
@@ -248,6 +250,15 @@ public class DossierNageurEntity implements IEntity {
 	public void setFonctionnaire(Boolean fonctionnaire) {
 		this.fonctionnaire = fonctionnaire;
 	}
+	
+
+	public Long getSaison() {
+		return saison;
+	}
+
+	public void setSaison(Long saison) {
+		this.saison = saison;
+	}
 
 	public void toUpperCase() {
 		civilite = StringUtils.upperCase(civilite);
@@ -267,5 +278,18 @@ public class DossierNageurEntity implements IEntity {
 		created = new Date();
 		updated = new Date();
 		toUpperCase();
+	}
+	
+	public void copieInit(DossierNageurEntity copied) {
+		copied.setCivilite(civilite);
+		copied.setCsp(csp);
+		copied.setGroupe(groupe);
+		copied.setMaillot(maillot);
+		copied.setNaissance(naissance);
+		copied.setNom(nom);
+		copied.setPrenom(prenom);
+		copied.setProfession(profession);
+		copied.setShortPantalon(shortPantalon);
+		copied.setTshirt(tshirt);
 	}
 }

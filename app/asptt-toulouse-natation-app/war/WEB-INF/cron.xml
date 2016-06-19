@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
-	<cron>
+	<!-- 	<cron>
 		<url>/resources/inscription/expire</url>
 		<description>Expiration des dossiers</description>
 		<schedule>every day 04:00</schedule>
@@ -28,6 +28,11 @@
 	<cron>
 		<url>/resources/dossiers/clean</url>
 		<description>Annulation des dossiers INITIALISE sans nom</description>
+		<schedule>every day 05:00</schedule>
+	</cron>-->
+	<cron>
+		<url>/resources/dossiers/init-saison</url>
+		<description>Initialisation de la saison 2016-2017</description>
 		<schedule>every day 05:00</schedule>
 	</cron>
 </cronentries>

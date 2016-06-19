@@ -38,10 +38,8 @@ import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
-import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurPhotoEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
-import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurPhotoEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionNouveauEntity;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
@@ -82,6 +80,8 @@ public class AuthenticateAdherentService {
 				Operator.EQUAL));
 		criteria.add(new CriterionDao<String>(DossierEntityFields.MOTDEPASSE,
 				motDePasse, Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+				1L, Operator.EQUAL));
 		List<DossierEntity> entities = dao.find(criteria);
 		if (CollectionUtils.isEmpty(entities)) {
 			dossiers.setInconnu(true);

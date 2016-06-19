@@ -403,4 +403,30 @@ public class DossierEntity implements IEntity {
 		copied.setTelephone(getTelephone());
 		copied.setStatut(DossierStatutEnum.ANNULE.name());
 	}
+	
+	public void copyInit(DossierEntity copied) {
+		copied.setAccidentNom1(accidentNom1);
+		copied.setAccidentNom2(accidentNom2);
+		copied.setAccidentPrenom1(accidentPrenom1);
+		copied.setAccidentPrenom2(accidentPrenom2);
+		copied.setAccidentTelephone1(accidentTelephone1);
+		copied.setAccidentTelephone2(accidentTelephone2);
+		copied.setAccordNomPrenom(accordNomPrenom);
+		copied.setAdresse(adresse);
+		copied.setCodepostal(codepostal);
+		copied.setEmail(email);
+		copied.setEmailsecondaire(emailsecondaire);
+		copied.setMotdepasse(motdepasse);
+		copied.setParent1Csp(parent1Csp);
+		copied.setParent1Nom(parent1Nom);
+		copied.setParent1Prenom(parent1Prenom);
+		copied.setParent1Profession(parent1Profession);
+		copied.setParent2Csp(parent2Csp);
+		copied.setParent2Nom(parent2Nom);
+		copied.setParent2Prenom(parent2Prenom);
+		copied.setParent2Profession(parent2Profession);
+		copied.setTelephone(telephone);
+		copied.setTelephoneSecondaire(telephoneSecondaire);
+		copied.setVille(ville);
+	}
 }

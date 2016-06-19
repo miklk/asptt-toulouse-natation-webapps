@@ -259,27 +259,27 @@ public class InscriptionService {
 						String dossierIdAsString = dossiers.getCertificats()
 						.get(fileName);
 						if (StringUtils.isNotBlank(dossierIdAsString)) {
-							Long dossierId = Long.valueOf(dossierIdAsString
-									.split("_")[1]);
+							String[] dossierIdSplit = dossierIdAsString.split("_");
+							if (dossierIdSplit.length > 1) {
+								Long dossierId = Long.valueOf(dossierIdSplit[1]);
 
-							List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-									1);
-							criteria.add(new CriterionDao<Long>(
-									DossierCertificatEntityFields.DOSSIER,
-									dossierId, Operator.EQUAL));
-							List<DossierCertificatEntity> entities = dossierCertificatDao
-									.find(criteria);
-							if (CollectionUtils.isNotEmpty(entities)) {
-								for (DossierCertificatEntity entity : entities) {
-									dossierCertificatDao.delete(entity);
+								List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+										1);
+								criteria.add(new CriterionDao<Long>(DossierCertificatEntityFields.DOSSIER, dossierId,
+										Operator.EQUAL));
+								List<DossierCertificatEntity> entities = dossierCertificatDao.find(criteria);
+								if (CollectionUtils.isNotEmpty(entities)) {
+									for (DossierCertificatEntity entity : entities) {
+										dossierCertificatDao.delete(entity);
+									}
 								}
+								DossierCertificatEntity certificatEntity = new DossierCertificatEntity();
+								certificatEntity.setDossier(dossierId);
+								certificatEntity.setCertificatmedical(certificat);
+								certificatEntity.setFileName(certificatPart.getContentDisposition().getFileName());
+								dossierCertificatDao.save(certificatEntity);
+								hasCertificat.add(dossierId);
 							}
-							DossierCertificatEntity certificatEntity = new DossierCertificatEntity();
-							certificatEntity.setDossier(dossierId);
-							certificatEntity.setCertificatmedical(certificat);
-							certificatEntity.setFileName(certificatPart.getContentDisposition().getFileName());
-							dossierCertificatDao.save(certificatEntity);
-							hasCertificat.add(dossierId);
 						}
 					} catch (IOException e) {
 						LOG.log(Level.SEVERE, "Récupération des certificats", e);
