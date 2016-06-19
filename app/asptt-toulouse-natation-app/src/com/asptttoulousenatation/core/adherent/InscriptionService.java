@@ -70,11 +70,13 @@ import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntit
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierFactureEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierFactureEnum;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurPhotoEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierCertificatDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierFactureDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
+import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurPhotoDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
@@ -101,6 +103,7 @@ public class InscriptionService {
 	private DossierDao dao = new DossierDao();
 	private DossierNageurDao dossierNageurDao = new DossierNageurDao();
 	private DossierCertificatDao dossierCertificatDao = new DossierCertificatDao();
+	private DossierNageurPhotoDao dossierNageurPhotoDao = new DossierNageurPhotoDao();
 	private SlotDao slotDao = new SlotDao();
 	private GroupDao groupDao = new GroupDao();
 	private DossierFactureDao factureDao = new DossierFactureDao();
@@ -387,17 +390,45 @@ public class InscriptionService {
 	
 	@Path("/update")
 	@POST
-	@Consumes("application/json")
-	public InscriptionDossiersUi update(InscriptionDossiersUi dossiers) {
-		DossierEntity principal = dao.save(dossiers.getDossier());
-		
-		for (InscriptionDossierUi dossier : dossiers.getNageurs()) {
-			if(!dossier.isSupprimer()) {
-				buildDossier(dossier);
-				dossierNageurDao.save(dossier.getDossier());
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public InscriptionDossiersUi update(@DefaultValue("true") @FormDataParam("enabled") boolean enabled,
+			@FormDataParam("file") FormDataBodyPart photo, @FormDataParam("action") String pAction, @FormDataParam("nageur") Long nageur) {
+		InscriptionDossiersUi result = null;
+		try {
+			String unscape = URLDecoder.decode(pAction, "UTF-8");
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+			InscriptionDossiersUi dossiers = mapper.readValue(unscape, InscriptionDossiersUi.class);
+			DossierEntity principal = dao.save(dossiers.getDossier());
+
+			for (InscriptionDossierUi dossier : dossiers.getNageurs()) {
+				if (!dossier.isSupprimer()) {
+					buildDossier(dossier);
+					dossierNageurDao.save(dossier.getDossier());
+				}
 			}
+			result = getDossiers(principal);
+			
+			
+			// Add photo
+			try {
+				Blob photoBlob = new Blob(IOUtils.toByteArray(photo.getValueAs(InputStream.class)));
+				DossierNageurPhotoEntity currentPhoto = dossierNageurPhotoDao.findByDossier(nageur);
+				if (currentPhoto != null) {
+					dossierNageurPhotoDao.delete(currentPhoto);
+				}
+				DossierNageurPhotoEntity photoEntity = new DossierNageurPhotoEntity();
+				photoEntity.setDossier(nageur);
+				photoEntity.setPhoto(photoBlob);
+				dossierNageurPhotoDao.save(photoEntity);
+			} catch (IOException e) {
+				LOG.log(Level.SEVERE, "Récupération de la photo", e);
+			}
+
+			
+		} catch (IOException e) {
+			LOG.log(Level.SEVERE, "Error parsing JSON dossiers", e);
 		}
-		InscriptionDossiersUi result = getDossiers(principal);
 		return result;
 	}
 

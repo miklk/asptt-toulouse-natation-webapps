@@ -376,8 +376,23 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 				
 				$scope.validateNageur = function(dossier) {
 					$scope.buildNaissance();
-					$http.post("/resources/inscription/update", data, {})
-				    	.success(function(dataFromServer, status, headers, config) {
+					var formData = new FormData();
+					//Récuperer les certificats
+					$("input[type=file]").each(function() {
+						file = this.files[0];
+						if(file != null) {
+							formData.append("file", file);
+						}
+					});
+					formData.append("action", angular.toJson(data));
+					formData.append("nageur", dossier.dossier.id);
+					var responsePromise = $http.post("/resources/inscription/update", formData, {
+			            transformRequest: angular.identity,
+			            headers: {'Content-Type': undefined}
+			        })
+				    
+					
+				    	responsePromise.success(function(dataFromServer, status, headers, config) {
 				    		data = dataFromServer;
 					    	$scope.dossiers = dataFromServer.nageurs;
 					    	$scope.dossiersCount = dataFromServer.nageurs.length;

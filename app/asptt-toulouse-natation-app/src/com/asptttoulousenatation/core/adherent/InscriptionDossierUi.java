@@ -29,6 +29,7 @@ public class InscriptionDossierUi implements Serializable {
 	private Integer day;
 	private Integer month;
 	private Integer year;
+	private boolean hasPhoto;
 	
 	
 	public InscriptionDossierUi() {
@@ -139,5 +140,12 @@ public class InscriptionDossierUi implements Serializable {
 	public void setYear(Integer year) {
 		this.year = year;
 	}
-	
+
+	public boolean isHasPhoto() {
+		return hasPhoto;
+	}
+
+	public void setHasPhoto(boolean hasPhoto) {
+		this.hasPhoto = hasPhoto;
+	}
 }

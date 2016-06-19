@@ -38,11 +38,14 @@ import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurPhotoEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurPhotoEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionNouveauEntity;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
+import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurPhotoDao;
 import com.asptttoulousenatation.core.server.dao.inscription.InscriptionNouveauDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
@@ -63,6 +66,7 @@ public class AuthenticateAdherentService {
 	private DossierDao dao = new DossierDao();
 	private DossierNageurDao dossierNageurDao = new DossierNageurDao();
 	private InscriptionNouveauDao nouveauDao = new InscriptionNouveauDao();
+	private DossierNageurPhotoDao photoDao = new DossierNageurPhotoDao();
 	private GroupDao groupDao = new GroupDao();
 	private GroupTransformer groupTransformer = new GroupTransformer();
 
@@ -114,6 +118,9 @@ public class AuthenticateAdherentService {
 				// Test sélection de créneau
 				nageur.setCreneauSelected(StringUtils.isNotBlank(adherent
 						.getCreneaux()));
+				
+				//Get photo
+				nageur.setHasPhoto(photoDao.findByDossier(nageur.getDossier().getId()) != null);
 			}
 		}
 		return dossiers;
@@ -296,6 +303,8 @@ public class AuthenticateAdherentService {
 			}
 			dossier.setCreneauSelected(StringUtils.isNotBlank(nageur
 					.getCreneaux()));
+			//Get photo
+			dossier.setHasPhoto(photoDao.findByDossier(nageur.getId()) != null);
 		}
 		return dossiers;
 	}
