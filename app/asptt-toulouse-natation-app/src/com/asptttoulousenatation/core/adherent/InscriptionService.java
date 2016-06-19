@@ -411,18 +411,21 @@ public class InscriptionService {
 			
 			
 			// Add photo
-			try {
-				Blob photoBlob = new Blob(IOUtils.toByteArray(photo.getValueAs(InputStream.class)));
-				DossierNageurPhotoEntity currentPhoto = dossierNageurPhotoDao.findByDossier(nageur);
-				if (currentPhoto != null) {
-					dossierNageurPhotoDao.delete(currentPhoto);
+			if (photo != null) {
+				try {
+
+					Blob photoBlob = new Blob(IOUtils.toByteArray(photo.getValueAs(InputStream.class)));
+					DossierNageurPhotoEntity currentPhoto = dossierNageurPhotoDao.findByDossier(nageur);
+					if (currentPhoto != null) {
+						dossierNageurPhotoDao.delete(currentPhoto);
+					}
+					DossierNageurPhotoEntity photoEntity = new DossierNageurPhotoEntity();
+					photoEntity.setDossier(nageur);
+					photoEntity.setPhoto(photoBlob);
+					dossierNageurPhotoDao.save(photoEntity);
+				} catch (IOException e) {
+					LOG.log(Level.SEVERE, "Récupération de la photo", e);
 				}
-				DossierNageurPhotoEntity photoEntity = new DossierNageurPhotoEntity();
-				photoEntity.setDossier(nageur);
-				photoEntity.setPhoto(photoBlob);
-				dossierNageurPhotoDao.save(photoEntity);
-			} catch (IOException e) {
-				LOG.log(Level.SEVERE, "Récupération de la photo", e);
 			}
 
 			
