@@ -1159,4 +1159,31 @@ public class DossierService {
 		LOG.log(Level.INFO, "init saison #" + count);
 		return count;
 	}
+	
+	@Path("/delete-init-saison")
+	@GET
+	public int deleteSaison() {
+		int count = 0;
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		criteria.add(
+				new CriterionDao<Long>(DossierEntityFields.SAISON, 1L, Operator.EQUAL));
+		List<DossierEntity> dossiers = dossierDao.find(criteria);
+		for (DossierEntity dossier : dossiers) {
+			try {
+				List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(1);
+				criteriaNageur.add(
+						new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER, dossier.getId(), Operator.EQUAL));
+				List<DossierNageurEntity> nageurs = dao.find(criteriaNageur);
+				for (DossierNageurEntity nageur : nageurs) {
+					dao.delete(nageur.getId());
+				}
+				dossierDao.delete(dossier.getId());
+				count++;
+			} catch (Exception e) {
+				LOG.log(Level.WARNING, "Impossible de copier dossier #" + dossier.getId());
+			}
+		}
+		LOG.log(Level.INFO, "init saison #" + count);
+		return count;
+	}
 }

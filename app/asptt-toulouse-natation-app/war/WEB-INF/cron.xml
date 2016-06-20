@@ -33,6 +33,11 @@
 	<cron>
 		<url>/resources/dossiers/init-saison</url>
 		<description>Initialisation de la saison 2016-2017</description>
-		<schedule>every day 05:00</schedule>
+		<schedule>every day 06:15</schedule>
+	</cron>
+	<cron>
+		<url>/resources/dossiers/delete-init-saison</url>
+		<description>Suppression de la saison 2016-2017</description>
+		<schedule>every day 06:10</schedule>
 	</cron>
 </cronentries>
