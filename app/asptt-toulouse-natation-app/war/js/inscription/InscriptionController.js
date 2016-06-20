@@ -126,8 +126,19 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 						$scope.slots = SlotService.get({groupe: $scope.dossiers[index].groupe.id, creneaux: $scope.dossiers[index].dossier.creneaux});
 						$scope.dossiers[index].creneaux = $scope.slots;
 					}
+					
+					$scope.showAdulte = $scope.dossiers[index].groupe != null && $scope.dossiers[index].groupe.title == 'Groupe Adultes';
 					$('#myTab a[href="#activite"]').tab('show');
 				};
+				
+				$scope.selectGroupeAdulte = function(groupeTitle) {
+					var responsePromise = $http.get("/resources/groupes/" + groupeTitle, null, {});
+				    responsePromise.success(function(dataFromServer, status, headers, config) {
+						$scope.dossiers[$scope.currentDossier].groupe = dataFromServer;
+						$scope.loadSlots();
+						$scope.showAdulte = false;
+					});
+				}
 				$scope.loadSlots = function() {
 					$scope.hideSeconde = true;
 					$scope.unique = false;

@@ -39,10 +39,10 @@
 		<url>/resources/dossiers/delete-init-saison</url>
 		<description>Suppression de la saison 2016-2017</description>
 		<schedule>every day 06:10</schedule>
-	</cron>-->
+	</cron>
 	<cron>
 		<url>/resources/dossiers/saison-enfant</url>
 		<description>Initialisation de la saison 2016-2017</description>
 		<schedule>every day 19:55</schedule>
-	</cron>
+	</cron>-->
 </cronentries>

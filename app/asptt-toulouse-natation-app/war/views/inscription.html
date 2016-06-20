@@ -167,7 +167,12 @@
 		    </select>
 		  </div>
 		  <p class="bg-info" style="padding: 5px" ng-show="dossiers[currentDossier].groupe.description">{{dossiers[currentDossier].groupe.description}}</p>
-		  <div class="form-group">
+		  <div class="form-group center-block" ng-show="showAdulte">
+		  	<button type="button" class="btn btn-default" ng-click="selectGroupeAdulte('Adultes Débutants')">Débutants</button>
+		  	<button type="button" class="btn btn-default" ng-click="selectGroupeAdulte('Adultes Intermédiaires (20 ans et +)')">Intermédiaires</button>
+		  	<button type="button" class="btn btn-default" ng-click="selectGroupeAdulte('Adultes Confirmés (20 ans et +)')">Confirmés</button>
+		  </div>
+		  <div class="form-group" ng-hide="showAdulte">
 		  	<table class="table">
 		  	 <thead>
 		  	 	<tr>
