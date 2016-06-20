@@ -135,6 +135,8 @@ public class AuthenticateAdherentService {
 				1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL, email,
 				Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, 1L,
+				Operator.EQUAL));
 		List<DossierEntity> adherents = dao.find(criteria);
 		if (CollectionUtils.isNotEmpty(adherents)) {
 			result.setFound(true);
@@ -180,6 +182,8 @@ public class AuthenticateAdherentService {
 				1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL,
 				pEmail, Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+				1L, Operator.EQUAL));
 		List<DossierEntity> entities = dao.find(criteria);
 		if(CollectionUtils.isNotEmpty(entities)) {
 			result.setExist(true);
@@ -187,11 +191,13 @@ public class AuthenticateAdherentService {
 			//Determine mot de passee
 			String code = RandomStringUtils.randomNumeric(4);
 			DossierEntity nouveau = new DossierEntity();
+			nouveau.setSaison(1L);
 			nouveau.setEmail(pEmail);
 			nouveau.setMotdepasse(code);
 			DossierEntity nouveauCreated = dao.save(nouveau);
 			
 			DossierNageurEntity enfant = new DossierNageurEntity();
+			enfant.setSaison(1L);
 			enfant.setDossier(nouveauCreated.getId());
 			enfant.setNouveau(true);
 			dossierNageurDao.save(enfant).getId();
@@ -250,6 +256,7 @@ public class AuthenticateAdherentService {
 			InscriptionDossiersUi pDossiers) {
 
 		DossierNageurEntity enfant = new DossierNageurEntity();
+		enfant.setSaison(1L);
 		enfant.setDossier(pDossiers.getDossier().getId());
 		enfant.setNouveau(true);
 		Long idNouveau = dossierNageurDao.save(enfant).getId();

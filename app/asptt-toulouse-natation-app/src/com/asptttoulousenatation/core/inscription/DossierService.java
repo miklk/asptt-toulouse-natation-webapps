@@ -162,6 +162,8 @@ public class DossierService {
 						1);
 				criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL,
 						texteLibre, Operator.EQUAL));
+				criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+						1L, Operator.EQUAL));
 				List<DossierEntity> entities = dossierDao.find(criteria);
 				if(CollectionUtils.isEmpty(entities)) {
 					criteria = new ArrayList<CriterionDao<? extends Object>>(
@@ -1160,9 +1162,45 @@ public class DossierService {
 		return count;
 	}
 	
-	@Path("/delete-init-saison")
+	@Path("/init-saison-2")
 	@GET
-	public int deleteSaison() {
+	public int nouvelleSaison2() {
+		int count = 0;
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		criteria.add(
+				new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.PAIEMENT_COMPLET.name(), Operator.EQUAL));
+		List<DossierEntity> dossiers = dossierDao.find(criteria);
+		for (DossierEntity dossier : dossiers) {
+			try {
+				DossierEntity dossier2 = new DossierEntity();
+				dossier.copyInit(dossier2);
+				dossier2.setStatut(DossierStatutEnum.INITIALISE.name());
+				dossier2.setSaison(1L);
+				DossierEntity cloned = dossierDao.save(dossier2);
+				// Clone des nageurs
+				List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(1);
+				criteriaNageur.add(
+						new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER, dossier.getId(), Operator.EQUAL));
+				List<DossierNageurEntity> nageurs = dao.find(criteriaNageur);
+				for (DossierNageurEntity nageur : nageurs) {
+					DossierNageurEntity nageur2 = new DossierNageurEntity();
+					nageur.copieInit(nageur2);
+					nageur2.setSaison(1L);
+					nageur2.setDossier(cloned.getId());
+					nageur2.setNouveau(Boolean.FALSE);
+					dao.save(nageur2);
+				}
+				count++;
+			} catch (Exception e) {
+				LOG.log(Level.WARNING, "Impossible de copier dossier #" + dossier.getId());
+			}
+		}
+		LOG.log(Level.INFO, "init saison #" + count);
+		return count;
+	}
+	@Path("/saison-enfant")
+	@GET
+	public int saisonEnfant() {
 		int count = 0;
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 		criteria.add(
@@ -1173,11 +1211,13 @@ public class DossierService {
 				List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(1);
 				criteriaNageur.add(
 						new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER, dossier.getId(), Operator.EQUAL));
+				criteriaNageur.add(
+						new CriterionDao<Long>(DossierNageurEntityFields.SAISON, 1L, Operator.NULL));
 				List<DossierNageurEntity> nageurs = dao.find(criteriaNageur);
 				for (DossierNageurEntity nageur : nageurs) {
-					dao.delete(nageur.getId());
+					nageur.setSaison(1L);
+					dao.save(nageur);
 				}
-				dossierDao.delete(dossier.getId());
 				count++;
 			} catch (Exception e) {
 				LOG.log(Level.WARNING, "Impossible de copier dossier #" + dossier.getId());
