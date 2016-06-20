@@ -437,7 +437,6 @@ public class InscriptionService {
 
 	private void buildDossier(InscriptionDossierUi pDossier) {
 		pDossier.getDossier().setCertificat(false);
-		
 		if (pDossier.getGroupe() != null) {
 			GroupEntity groupe = groupDao.get(pDossier.getGroupe().getId());
 			if(BooleanUtils.isTrue(groupe.getCompetition())) {
@@ -448,7 +447,7 @@ public class InscriptionService {
 		}
 
 		if (pDossier.getCreneaux() != null) {
-			Set<Long> creneaux = new HashSet<Long>();
+			Set<SlotUi> creneaux = new HashSet<SlotUi>();
 			for (LoadingSlotUi slot : pDossier.getCreneaux().getSlots()) {
 				buildCreneau(creneaux, slot.getLundi(), pDossier.getDossier()
 						.getCreneaux());
@@ -463,17 +462,22 @@ public class InscriptionService {
 				buildCreneau(creneaux, slot.getSamedi(), pDossier.getDossier()
 						.getCreneaux());
 			}
+			
+			//Check only one first
+			Set<Long> ids = cleanCreneaux(creneaux);
 			StrBuilder creneauxAsString = new StrBuilder();
-			creneauxAsString.appendWithSeparators(creneaux, ";");
+			creneauxAsString.appendWithSeparators(ids, ";");
 			pDossier.getDossier().setCreneaux(creneauxAsString.toString());
 		}
 	}
 
-	private void buildCreneau(Set<Long> pCreneaux, List<SlotUi> pSlots,
+	private boolean buildCreneau(Set<SlotUi> pCreneaux, List<SlotUi> pSlots,
 			String pOldCreneaux) {
+		boolean containsFirst = false;
 		for (SlotUi slot : pSlots) {
 			if (slot.isSelected()) {
-				pCreneaux.add(slot.getId());
+				containsFirst = !slot.isSecond();
+				pCreneaux.add(slot);
 				if (!StringUtils
 						.contains(pOldCreneaux, slot.getId().toString())) {
 					SlotEntity slotEntity = slotDao.get(slot.getId());
@@ -483,6 +487,19 @@ public class InscriptionService {
 				}
 			}
 		}
+		return containsFirst;
+	}
+	
+	private Set<Long> cleanCreneaux(Set<SlotUi> creneaux) {
+		Set<Long> ids = new HashSet<>();
+		boolean hasOneFirst = false;
+		for(SlotUi creneau: creneaux) {
+			if(!hasOneFirst || creneau.isSecond()) {
+				ids.add(creneau.getId());
+				hasOneFirst = !creneau.isSecond();
+			}
+		}
+		return ids;
 	}
 	
 	@Path("/print/{dossier}")
