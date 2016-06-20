@@ -59,7 +59,7 @@
                
   	<h4>Informations générales</h4>
   	 <ul>
-        <li><a href="doc/Note_dinformation_2016-2017.pdf" target="_blank">Note d'information pour la saison 2015-2016</a></li>
+        <li><a href="doc/Note_dinformation_2016-2017.pdf" target="_blank">Note d'information pour la saison 2016-2017</a></li>
         <li><a href="doc/Cheminement_inscriptions_2016_2017.pdf" target="_blank">Cheminement des inscriptions (choix du groupe)</a></li>
         <!-- <li><a href="doc/Affectations_groupe_competition.pdf" target="_blank">Critères d'affectations des groupes compétitions</a></li>-->
         <li><a href="doc/reglement_interieur.pdf" target="_blank">Règlement Intérieur</a></li>
@@ -84,7 +84,6 @@
     </ul>
     </div>
     </div>
-  	<div class="show">
   	 <div class="panel panel-default" ng-show="enableNouveau">
   		<div class="panel-heading">
   			<h4>Première inscription au club</h4>
@@ -98,6 +97,11 @@
 	  			<button type="submit" class="btn btn-default btn-block" value="submit" ng-click="nouveauCode()">Valider</button>
   			</form>
   		</div>
+  	</div>
+	<div class="panel panel-default" ng-hide="enableNouveau">
+		<div class="panel-heading">
+			<h4>Ouverture des inscriptions aux nouveau adhérents le 11 juillet 2016</h4>
+		</div>
   	</div>
   	<div class="panel panel-default" ng-show="enableAncien">
   		<div class="panel-heading">
@@ -134,7 +138,6 @@
   		</div>
   	</div>
   	</div>
-          </div>
           
     <div class="tab-pane fade" id="dossiers">
 	    <p>Vous aviez {{dossiersCount}} dossier(s) d'inscription lors de la saison dernière.</p>
