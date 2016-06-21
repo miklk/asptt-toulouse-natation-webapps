@@ -365,13 +365,13 @@
   					" type="text" class="form-control" size="30" ng-model="dossiers[currentDossier].dossier.profession" required />
   				</div>
   			</div>
-  			<div class="checkbox">
+  		</fieldset>
+  		<div ng-messages="formNageur.csp.$error || formNageur.profession.$error" ng-messages-include="views/inscription-errors.html"></div>
+  		<div class="checkbox">
 				<label>
 					<input type="checkbox" ng-model="dossiers[currentDossier].dossier.fonctionnaire" /> Fonction publique
 				</label>
 			</div>
-  		</fieldset>
-  		<div ng-messages="formNageur.csp.$error || formNageur.profession.$error" ng-messages-include="views/inscription-errors.html"></div>
   		<div style="margin-top:1%">
 	  			<button type="submit" class="btn btn-default btn-lg btn-block" ng-disabled="!formNageur.$valid"">Valider et passer à l'étape suivante</button>
 	  			</div>

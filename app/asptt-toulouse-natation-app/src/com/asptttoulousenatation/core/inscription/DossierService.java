@@ -5,8 +5,10 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
@@ -1198,32 +1200,33 @@ public class DossierService {
 		LOG.log(Level.INFO, "init saison #" + count);
 		return count;
 	}
-	@Path("/saison-enfant")
+	@Path("/doublons")
 	@GET
-	public int saisonEnfant() {
+	public int doublons() {
 		int count = 0;
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 		criteria.add(
 				new CriterionDao<Long>(DossierEntityFields.SAISON, 1L, Operator.EQUAL));
 		List<DossierEntity> dossiers = dossierDao.find(criteria);
+		Map<String, List<Long>> doublons = new HashMap<>();
 		for (DossierEntity dossier : dossiers) {
-			try {
-				List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(1);
-				criteriaNageur.add(
-						new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER, dossier.getId(), Operator.EQUAL));
-				criteriaNageur.add(
-						new CriterionDao<Long>(DossierNageurEntityFields.SAISON, 1L, Operator.NULL));
-				List<DossierNageurEntity> nageurs = dao.find(criteriaNageur);
-				for (DossierNageurEntity nageur : nageurs) {
-					nageur.setSaison(1L);
-					dao.save(nageur);
-				}
+			String email = dossier.getEmail();
+			final List<Long> ids;
+			if(doublons.containsKey(email)) {
+				ids = doublons.get(email);
+			} else {
+				ids = new ArrayList<>(2);
+			}
+			ids.add(dossier.getId());
+			doublons.put(email, ids);
+		}
+		for(Map.Entry<String, List<Long>> doublon: doublons.entrySet()) {
+			List<Long> ids = doublon.getValue();
+			if(ids.size() > 1) {
 				count++;
-			} catch (Exception e) {
-				LOG.log(Level.WARNING, "Impossible de copier dossier #" + dossier.getId());
 			}
 		}
-		LOG.log(Level.INFO, "init saison #" + count);
+		LOG.log(Level.WARNING, "doublons #" + count);
 		return count;
 	}
 }

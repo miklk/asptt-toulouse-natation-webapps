@@ -14,7 +14,7 @@
 		<url>/resources/inscription/rappel2</url>
 		<description>Rappel de paiement au bout de 8 jours</description>
 		<schedule>every day 04:45</schedule>
-	</cron>
+	</cron>-->
 	<cron>
 		<url>/resources/dossier-maintenance/creneaux</url>
 		<description>Calcul de l'occupation des créneaux</description>
@@ -25,7 +25,7 @@
 		<description>Calcul de l'occupation des groupes compétition</description>
 		<schedule>every 4 hours</schedule>
 	</cron>
-	<cron>
+	<!-- <cron>
 		<url>/resources/dossiers/clean</url>
 		<description>Annulation des dossiers INITIALISE sans nom</description>
 		<schedule>every day 05:00</schedule>
@@ -45,4 +45,9 @@
 		<description>Initialisation de la saison 2016-2017</description>
 		<schedule>every day 19:55</schedule>
 	</cron>-->
+	<cron>
+		<url>/resources/dossiers/doublons</url>
+		<description>Doublons</description>
+		<schedule>every day 06:10</schedule>
+	</cron>
 </cronentries>
