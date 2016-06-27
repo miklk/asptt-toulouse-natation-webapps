@@ -19,6 +19,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
@@ -91,6 +93,14 @@ public class SwimmerStatService {
 				DossierNageurEntityFields.GROUPE, groupe, Operator.EQUAL));
 		}
 		List<DossierNageurEntity> entities = new ArrayList<>(nageurDao.find(criteria, Operator.OR, new OrderDao(InscriptionEntityFields.NOM, OrderOperator.ASC)));
+		CollectionUtils.filter(entities, new Predicate() {
+			
+			@Override
+			public boolean evaluate(Object arg0) {
+				DossierNageurEntity entity = (DossierNageurEntity) arg0;
+				return entity.getSaison() != null && entity.getSaison() == 1L;
+			}
+		});
 		Collections.sort(entities, new Comparator<DossierNageurEntity>() {
 
 			@Override

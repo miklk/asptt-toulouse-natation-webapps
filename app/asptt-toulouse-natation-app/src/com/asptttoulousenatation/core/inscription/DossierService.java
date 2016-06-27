@@ -349,10 +349,12 @@ public class DossierService {
 			result = false;
 		} else {
 			DossierEntity entity = new DossierEntity();
+			entity.setSaison(1L);
 			entity.setEmail(parameters.getEmail());
 			entity.setMotdepasse(parameters.getMdp());
 			DossierEntity entityCreated = dossierDao.save(entity);
 			DossierNageurEntity nageur = new DossierNageurEntity();
+			nageur.setSaison(1L);
 			nageur.setNom(parameters.getNom());
 			nageur.setPrenom(parameters.getPrenom());
 			nageur.setDossier(entityCreated.getId());
@@ -538,7 +540,7 @@ public class DossierService {
 			List<DossierNageurEntity> nageurs = dao.find(criteria);
 
 			StringBuilder message = new StringBuilder(
-					"Madame, Monsieur,<p>Nous avons le plaisir de vous compter parmi nous pour cette nouvelle saison sportive 2015-2016.<br />");
+					"Madame, Monsieur,<p>Nous avons le plaisir de vous compter parmi nous pour cette nouvelle saison sportive 2016-2017.<br />");
 			
 			message.append("Nous vous confirmons la bonne réception de votre dossier qui finalise ainsi votre inscription. <br />");
 			List<String> certificatsManquants = new ArrayList<String>();

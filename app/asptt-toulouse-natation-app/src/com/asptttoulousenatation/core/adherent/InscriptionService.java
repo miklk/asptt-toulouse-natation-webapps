@@ -333,7 +333,7 @@ public class InscriptionService {
 			}
 
 			StringBuilder message = new StringBuilder(
-					"Madame, Monsieur,<p>Nous avons le plaisir de vous confirmer la pré-sélection de vos créneaux pour la nouvelle saison sportive 2015-2016.<br />"
+					"Madame, Monsieur,<p>Nous avons le plaisir de vous confirmer la pré-sélection de vos créneaux pour la nouvelle saison sportive 2016-2017.<br />"
 							+ "Nous attendons (sous 8 jours) votre dossier signé, ainsi que votre réglement afin de finaliser ainsi votre inscription. Le certificat médical peut nous être envoyé dans un second temps. <br />"
 							+ "Vous recevrez un e-mail de confirmation dès que votre inscription sera finalisée.<br />"
 							+ "Voici les créneaux que vous avez sélectionné: <br />");
