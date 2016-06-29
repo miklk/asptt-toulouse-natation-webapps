@@ -437,8 +437,10 @@ public class InscriptionService {
 
 	private void buildDossier(InscriptionDossierUi pDossier) {
 		pDossier.getDossier().setCertificat(false);
+		boolean checkSecond = false;
 		if (pDossier.getGroupe() != null) {
 			GroupEntity groupe = groupDao.get(pDossier.getGroupe().getId());
+			checkSecond = groupe.getSecondes();
 			if(BooleanUtils.isTrue(groupe.getCompetition())) {
 				groupe.setOccupe(groupe.getOccupe() + 1);
 				groupDao.save(groupe);
@@ -464,7 +466,7 @@ public class InscriptionService {
 			}
 			
 			//Check only one first
-			Set<Long> ids = cleanCreneaux(creneaux);
+			Set<Long> ids = cleanCreneaux(checkSecond, creneaux);
 			StrBuilder creneauxAsString = new StrBuilder();
 			creneauxAsString.appendWithSeparators(ids, ";");
 			pDossier.getDossier().setCreneaux(creneauxAsString.toString());
@@ -490,13 +492,17 @@ public class InscriptionService {
 		return containsFirst;
 	}
 	
-	private Set<Long> cleanCreneaux(Set<SlotUi> creneaux) {
+	private Set<Long> cleanCreneaux(boolean checkSecond, Set<SlotUi> creneaux) {
 		Set<Long> ids = new HashSet<>();
 		boolean hasOneFirst = false;
-		for(SlotUi creneau: creneaux) {
-			if(!hasOneFirst || creneau.isSecond()) {
+		for (SlotUi creneau : creneaux) {
+			if (checkSecond) {
+				if (!hasOneFirst || creneau.isSecond()) {
+					ids.add(creneau.getId());
+					hasOneFirst = !creneau.isSecond();
+				}
+			} else {
 				ids.add(creneau.getId());
-				hasOneFirst = !creneau.isSecond();
 			}
 		}
 		return ids;
