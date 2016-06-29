@@ -4,11 +4,10 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,8 +58,6 @@ public class AuthenticationService {
 	private static final Logger LOG = Logger.getLogger(AuthenticationService.class
 			.getName());
 	
-	public static Map<Integer, Long> tokens = new HashMap<Integer, Long>();
-
 	@Context
 	private UriInfo uriInfo;
 	@Context
@@ -128,9 +125,10 @@ public class AuthenticationService {
 				for(UserAuthorizationEntity authorization: authorizations) {
 					result.addAuthorization(authorization.getAccess());
 				}
-				Integer token = user.hashCode();
+				UUID tokenId = UUID.randomUUID();
+				String token = tokenId.toString();
 				result.setToken(token);
-				tokens.put(token, user.getId());
+				TokenManager.getInstance().tokens.put(token, user.getId());
 			} else {
 				result.setLogged(false);
 			}
@@ -212,10 +210,10 @@ public class AuthenticationService {
 	
 	@Path("/isLogged/{token}")
 	@GET
-	public IsLoggedResult isLogged(@PathParam("token") Integer token) {
+	public IsLoggedResult isLogged(@PathParam("token") String token) {
 		final IsLoggedResult result = new IsLoggedResult();
 		if(token != null) {
-			result.setLogged(tokens.containsKey(token));
+			result.setLogged(TokenManager.getInstance().contains(token));
 		} else {
 			result.setLogged(false);
 		}
@@ -224,7 +222,7 @@ public class AuthenticationService {
 	
 	@Path("/logout/{token}")
 	@GET
-	public void logout(@PathParam("token") Integer token) {
-		tokens.remove(token);
+	public void logout(@PathParam("token") String token) {
+		TokenManager.getInstance().remove(token);
 	}
 }

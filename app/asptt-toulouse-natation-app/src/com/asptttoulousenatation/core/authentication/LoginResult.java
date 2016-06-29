@@ -19,7 +19,7 @@ public class LoginResult implements Serializable {
 	private String prenom;
 	private String email;
 	private Set<String> authorizations;
-	private Integer token;
+	private String token;
 	
 	public LoginResult() {
 		authorizations = new HashSet<>();
@@ -78,11 +78,11 @@ public class LoginResult implements Serializable {
 		this.authorizations = authorizations;
 	}
 
-	public Integer getToken() {
+	public String getToken() {
 		return token;
 	}
 
-	public void setToken(Integer token) {
+	public void setToken(String token) {
 		this.token = token;
 	}
 	

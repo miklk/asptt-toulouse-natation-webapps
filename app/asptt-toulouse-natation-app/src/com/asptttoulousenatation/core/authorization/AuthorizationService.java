@@ -11,7 +11,7 @@ import javax.ws.rs.Produces;
 
 import org.apache.commons.collections.CollectionUtils;
 
-import com.asptttoulousenatation.core.authentication.AuthenticationService;
+import com.asptttoulousenatation.core.authentication.TokenManager;
 import com.asptttoulousenatation.core.server.dao.entity.user.UserAuthorizationEntity;
 import com.asptttoulousenatation.core.server.dao.user.UserAuthorizationDao;
 
@@ -23,10 +23,10 @@ public class AuthorizationService {
 
 	@Path("/hasAccess/{token}/{right}")
 	@GET
-	public HasAccessResult hasAccess(@PathParam("token") Integer token, @PathParam("right") String right) {
+	public HasAccessResult hasAccess(@PathParam("token") String token, @PathParam("right") String right) {
 		final boolean hasAccess;
-		if(AuthenticationService.tokens.containsKey(token)) {
-			List<UserAuthorizationEntity> rights = dao.findByUserAndAccess(AuthenticationService.tokens.get(token), right);
+		if(TokenManager.getInstance().contains(token)) {
+			List<UserAuthorizationEntity> rights = dao.findByUserAndAccess(TokenManager.getInstance().getUser(token), right);
 			hasAccess = CollectionUtils.isNotEmpty(rights);
 		} else {
 			hasAccess = false;
@@ -39,10 +39,10 @@ public class AuthorizationService {
 	
 	@Path("/access/{token}")
 	@GET
-	public List<String> findAccess(@PathParam("token") Integer token) {
+	public List<String> findAccess(@PathParam("token") String token) {
 		final List<String> access;
-		if(AuthenticationService.tokens.containsKey(token)) {
-			List<UserAuthorizationEntity> rights = dao.findByUser(AuthenticationService.tokens.get(token));
+		if(TokenManager.getInstance().contains(token)) {
+			List<UserAuthorizationEntity> rights = dao.findByUser(TokenManager.getInstance().getUser(token));
 			access = new ArrayList<>(rights.size());
 			for(UserAuthorizationEntity right: rights) {
 				access.add(right.getAccess());
