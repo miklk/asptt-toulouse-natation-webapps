@@ -556,7 +556,7 @@ public class DossierService {
 				certificatsBuilder.append(". Nous vous remercions de nous les faire parvenir avant le début des cours.<br />");
 				message.append(certificatsBuilder.toString());
 			}
-			message.append("Les cours reprendront à partir du 21 septembre selon les bassins et jours de pratique (voir ci-dessous):<br />");
+			message.append("Les cours reprendront à partir du 19 septembre selon les bassins et jours de pratique (voir ci-dessous):<br />");
 
 			message.append("<dl>");
 			for (DossierNageurEntity nageur : nageurs) {
@@ -726,10 +726,15 @@ public class DossierService {
 	@GET
 	public DossierStatistiques statistiques() {
 		DossierStatistiques result = new DossierStatistiques();
-		result.setPotentiel(dossierDao.countAll());
+		
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+				1L, Operator.EQUAL));
+		result.setPotentiel(dossierDao.count(criteria));
 		
 		//Total
-		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+		criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.PREINSCRIT.name(), Operator.NOT_EQUAL));
@@ -737,6 +742,8 @@ public class DossierService {
 				DossierStatutEnum.EXPIRE.name(), Operator.NOT_EQUAL));
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.ANNULE.name(), Operator.NOT_EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+				1L, Operator.EQUAL));
 		result.setTotal(dossierDao.count(criteria));
 		
 		//Complets
@@ -744,6 +751,8 @@ public class DossierService {
 				1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.INSCRIT.name(), Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+				1L, Operator.EQUAL));
 		result.setComplets(dossierDao.count(criteria));
 		
 		
@@ -758,6 +767,8 @@ public class DossierService {
 				DossierStatutEnum.INSCRIT.name(), Operator.NOT_EQUAL));
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.ANNULE.name(), Operator.NOT_EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+				1L, Operator.EQUAL));
 		result.setNonpayes(dossierDao.count(criteria));
 		
 		//payé
@@ -765,18 +776,24 @@ public class DossierService {
 				1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.PAIEMENT_COMPLET.name(), Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+				1L, Operator.EQUAL));
 		result.addPaye(dossierDao.count(criteria));
 		
 		criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.PAIEMENT_PARTIEL.name(), Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+				1L, Operator.EQUAL));
 		result.addPaye(dossierDao.count(criteria));
 		
 		criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.INSCRIT.name(), Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+				1L, Operator.EQUAL));
 		result.addPaye(dossierDao.count(criteria));
 		
 		result.addDossier(new StatistiqueBase("Payés", new Long(result.getPayes()).intValue()));
@@ -788,6 +805,8 @@ public class DossierService {
 				1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.INSCRIT.name(), Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+				1L, Operator.EQUAL));
 		long nageurTotal = 0l;
 		int nageurNouveau = 0;
 		int nageurRenouvellement = 0;
@@ -796,6 +815,8 @@ public class DossierService {
 					1);
 			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
 					dossier.getId(), Operator.EQUAL));
+			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON,
+					1L, Operator.EQUAL));
 			for(DossierNageurEntity nageur: dao.find(criteriaNageur)) {
 				nageurTotal++;
 				if(BooleanUtils.isTrue(nageur.getNouveau())) {
