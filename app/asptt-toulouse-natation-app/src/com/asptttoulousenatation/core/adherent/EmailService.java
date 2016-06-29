@@ -339,15 +339,18 @@ public class EmailService {
 	@Path("/initEmail")
 	@GET
 	public Map<String, String> initEmail() {
-		List<DossierNageurEntity> nageurs = dao.getAll();
-		for(DossierNageurEntity nageur: nageurs) {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, 1L, Operator.EQUAL));
+		List<DossierNageurEntity> nageurs = dao.find(criteria);
+		for (DossierNageurEntity nageur : nageurs) {
 			DossierEntity dossier = dossierDao.get(nageur.getDossier());
-			if(dossier != null) {
-				if(dossier.getStatut().equals(DossierStatutEnum.INSCRIT.name())) {
+			if (dossier != null) {
+				if (dossier.getStatut().equals(DossierStatutEnum.INSCRIT.name())) {
 					EMAILS.put(nageur.getNom(), dossier.getEmail());
 				}
 			} else {
-				LOG.log(Level.WARNING, "Pas de dossier pour le nageur #" + nageur.getId() + " ("+nageur.getNom()+")");
+				LOG.log(Level.WARNING,
+						"Pas de dossier pour le nageur #" + nageur.getId() + " (" + nageur.getNom() + ")");
 			}
 		}
 		return EMAILS;
