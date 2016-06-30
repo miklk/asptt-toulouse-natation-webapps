@@ -1,15 +1,14 @@
 package com.asptttoulousenatation.core.shared.document;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
-
 @XmlRootElement
-public class DocumentUi implements IsSerializable {
+public class DocumentUi implements Serializable {
 
 	private Long id;
 

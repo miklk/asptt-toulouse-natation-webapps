@@ -1,13 +1,16 @@
 package com.asptttoulousenatation.core.groupe;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+public class GroupUi implements Serializable {
 
-public class GroupUi implements IsSerializable {
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String title;
 	private boolean licenceFfn;

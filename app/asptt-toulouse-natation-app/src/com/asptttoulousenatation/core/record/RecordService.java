@@ -12,6 +12,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import org.joda.time.DateTime;
+
 import com.asptttoulousenatation.core.server.dao.entity.field.RecordEpreuveEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.record.RecordEntity;
 import com.asptttoulousenatation.core.server.dao.entity.record.RecordEpreuveEntity;
@@ -74,6 +76,9 @@ public class RecordService {
 	@Path("/init-epreuves")
 	@PUT
 	public void initEpreuve() {
+		for(RecordEpreuveEntity entity: epreuveDao.getAll()) {
+			epreuveDao.delete(entity);
+		}
 		String[][] distances = { { "50", "100", "200", "400", "800", "1500" }, { "50", "100", "200" },
 				{ "50", "100", "200" }, { "50", "100", "200" }, { "100", "200", "400" }, };
 		String[] nages = { "NL", "Dos", "Brasse", "Papillon", "4N" };
@@ -88,6 +93,24 @@ public class RecordService {
 					epreuve.setNage(nage);
 					epreuveDao.save(epreuve);
 				}
+			}
+		}
+	}
+	
+	@Path("/init-records")
+	@PUT
+	public void initRecord() {
+		for(RecordEntity entity: dao.getAll()) {
+			dao.delete(entity);
+		}
+		String[] ages = { "12", "13", "14", "15", "16", "17", "18" };
+		List<RecordEpreuveEntity> epreuves = epreuveDao.getAll();
+		for (RecordEpreuveEntity epreuve : epreuves) {
+			for (String age : ages) {
+				RecordEntity record = new RecordEntity();
+				record.setAge(age);
+				record.setEpreuve(epreuve.getId());
+				dao.save(record);
 			}
 		}
 	}

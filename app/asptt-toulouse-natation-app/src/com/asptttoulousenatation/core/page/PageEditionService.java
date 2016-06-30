@@ -1,7 +1,9 @@
 package com.asptttoulousenatation.core.page;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.ws.rs.GET;
@@ -68,7 +70,11 @@ public class PageEditionService {
 			//Content
 			ContentEntity content = contentDao.findByMenu(menu.getId());
 			if(content != null) {
-				ui.setContent(new String(content.getData().getBytes()));
+				try {
+					ui.setContent(new String(content.getData().getBytes(),"UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					LOG.log(Level.SEVERE, "Text encoding", e);
+				}
 			}
 			uis.add(ui);
 		}
@@ -100,7 +106,11 @@ public class PageEditionService {
 		MenuEntity menu = menuDao.save(entity);
 		content.setMenu(menu.getId());
 		content.setKind(ContentDataKindEnum.TEXT.name());
-		content.setData(new Blob(page.getContent().getBytes()));
+		try {
+			content.setData(new Blob(page.getContent().getBytes("UTF-8")));
+		} catch (UnsupportedEncodingException e) {
+			LOG.log(Level.SEVERE, "Text encoding", e);
+		}
 		contentDao.save(content);
 	}
 }

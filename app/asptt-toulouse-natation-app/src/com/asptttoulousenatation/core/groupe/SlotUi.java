@@ -1,14 +1,18 @@
 package com.asptttoulousenatation.core.groupe;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.asptttoulousenatation.core.lang.HasDay;
-import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class SlotUi implements HasDay, IsSerializable {
+public class SlotUi implements HasDay, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String dayOfWeek;
 	private int begin;

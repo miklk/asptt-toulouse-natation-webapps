@@ -6,21 +6,6 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 
 
-  <filter>
-		<filter-name>guiceFilter</filter-name>
-		<filter-class>com.google.inject.servlet.GuiceFilter</filter-class>
-	</filter>
-
-	<filter-mapping>
-		<filter-name>guiceFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	
-
-  <listener>
-  	<listener-class>com.asptttoulousenatation.core.server.config.CoreGuiceServletConfig</listener-class>
-  </listener>
-  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
@@ -51,36 +36,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
   </context-param>
 
 
-<servlet>
-    <servlet-name>ckUploaderServlet</servlet-name>
-    <!-- This is the default servlet, it puts files in session -->
-    <servlet-class>com.asptttoulousenatation.core.server.CkUploadServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>ckUploaderServlet</servlet-name>
-    <url-pattern>/ckuploader</url-pattern>
-  </servlet-mapping>
-
-  <servlet>
-    <servlet-name>uploadServlet</servlet-name>
-    <!-- This is the default servlet, it puts files in session -->
-    <servlet-class>com.asptttoulousenatation.core.server.UploadServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>uploadServlet</servlet-name>
-    <url-pattern>*.gupld</url-pattern>
-  </servlet-mapping>
-  
-  <servlet>
-    <servlet-name>downloadServlet</servlet-name>
-    <!-- This is the default servlet, it puts files in session -->
-    <servlet-class>com.asptttoulousenatation.core.server.DownloadServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>downloadServlet</servlet-name>
-    <url-pattern>/downloadDocument</url-pattern>
-  </servlet-mapping>
-  
 <!--OnPositive Tools-->
 <servlet>
 		<servlet-name>baseViewerServlet</servlet-name>

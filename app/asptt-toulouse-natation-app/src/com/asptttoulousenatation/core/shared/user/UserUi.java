@@ -1,11 +1,14 @@
 package com.asptttoulousenatation.core.shared.user;
 
+import java.io.Serializable;
 import java.util.Set;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+public class UserUi implements Serializable {
 
-public class UserUi implements IsSerializable {
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String emailAddress;
 	private boolean validated;

@@ -19,6 +19,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +30,6 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 
-import com.asptttoulousenatation.client.util.CollectionUtils;
 import com.asptttoulousenatation.core.enf.EnfDayGroupe;
 import com.asptttoulousenatation.core.enf.EnfGroupeCreneau;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;

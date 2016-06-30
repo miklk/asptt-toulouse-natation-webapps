@@ -1,7 +1,10 @@
 package com.asptttoulousenatation.core.page;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
@@ -25,7 +28,8 @@ import com.asptttoulousenatation.server.userspace.admin.entity.DocumentTransform
 import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentDataKindEnum;
 
 public class PageResource {
-
+	private static final Logger LOG = Logger.getLogger(PageResource.class
+			.getName());
 	private MenuDao menuDao = new MenuDao();
 	private ContentDao dao = new ContentDao();
 	private DocumentDao documentDao = new DocumentDao();
@@ -87,7 +91,11 @@ public class PageResource {
 						.valueOf(content.getKind());
 				switch (contentDataKind) {
 				case TEXT:
-					page.setContent(new String(content.getData().getBytes()));
+					try {
+						page.setContent(new String(content.getData().getBytes(), "UTF-8"));
+					} catch (UnsupportedEncodingException e) {
+						LOG.log(Level.SEVERE, "Text encoding", e);
+					}
 					break;
 				default:
 					page.setContent("");

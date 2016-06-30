@@ -1,8 +1,12 @@
 package com.asptttoulousenatation.core.swimmer;
 
-import com.google.gwt.user.client.rpc.IsSerializable;
+import java.io.Serializable;
 
-public class SwimmerStatDataUi implements IsSerializable {
+public class SwimmerStatDataUi implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	private DayTimeEnum dayTime;
 	private int distance;
