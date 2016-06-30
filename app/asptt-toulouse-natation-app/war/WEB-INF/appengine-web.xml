@@ -3,7 +3,6 @@
   <application>asptt-toulouse-natation</application>
   <version>2</version>
 
-  <!-- Configure serving/caching of GWT files -->
   <static-files>
     <include path="**" />
   </static-files>
