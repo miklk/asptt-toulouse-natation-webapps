@@ -24,6 +24,7 @@ public class DossierResultBean implements Serializable {
 	private String etat;
 	private Date updated;
 	private String comment;
+	private Integer montant;
 	
 	private DossierNageurEntity nageur;
 	
@@ -112,6 +113,12 @@ public class DossierResultBean implements Serializable {
 	}
 	public void setSelected(boolean selected) {
 		this.selected = selected;
+	}
+	public Integer getMontant() {
+		return montant;
+	}
+	public void setMontant(Integer montant) {
+		this.montant = montant;
 	}
 	
 }

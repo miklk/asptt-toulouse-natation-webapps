@@ -61,6 +61,7 @@ public class DossierResultTransformer extends AbstractEntityTransformer<DossierR
 		bean.setDossierId(dossier.getId());
 		bean.setComment(dossier.getComment());
 		bean.setEtat(dossier.getStatut());
+		bean.setMontant(pEntity.getTarif());
 		return bean;
 	}
 	
