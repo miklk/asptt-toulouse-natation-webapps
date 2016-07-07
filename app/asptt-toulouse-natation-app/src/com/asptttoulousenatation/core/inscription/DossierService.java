@@ -345,6 +345,8 @@ public class DossierService {
 				1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL,
 				parameters.getEmail(), Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+				1L, Operator.EQUAL));
 		List<DossierEntity> entities = dossierDao.find(criteria);
 		if (CollectionUtils.isNotEmpty(entities)) {
 			result = false;
