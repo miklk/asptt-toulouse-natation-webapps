@@ -82,6 +82,8 @@ public class DossierEntity implements IEntity {
 	private String comment;
 	private String statut;
 	private Integer montantreel;
+	private String modepaiement;
+	private String numeroPaiement;
 	
 	public DossierEntity() {
 		reminder = false;
@@ -354,6 +356,24 @@ public class DossierEntity implements IEntity {
 
 	public void setSaison(Long saison) {
 		this.saison = saison;
+	}
+	
+
+	public String getModepaiement() {
+		return modepaiement;
+	}
+
+	public void setModepaiement(String modepaiement) {
+		this.modepaiement = modepaiement;
+	}
+	
+
+	public String getNumeroPaiement() {
+		return numeroPaiement;
+	}
+
+	public void setNumeroPaiement(String numeroPaiement) {
+		this.numeroPaiement = numeroPaiement;
 	}
 
 	@PreUpdate

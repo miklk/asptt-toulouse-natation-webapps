@@ -12,6 +12,13 @@
 				</select>
             </div>
             <div class="form-group">
+				<select class="form-control" name="modePaiement" ng-model="dossierPaiementParameters.modePaiement" ng-options="modePaiement as modePaiement for modePaiement in modePaiements">
+				</select>
+            </div>
+            <div class="form-group" ng-show="dossierPaiementParameters.modePaiement != 'ESPECES'">
+				Numéro des chèques séparés par , : <input type="text" class="form-control" id="numeroPaiement" ng-model="dossierPaiementParameters.numeroPaiement" />
+            </div>
+            <div class="form-group">
                 <label for="montantReel" class="col-md-3 control-label">Montant réel payé</label>
                 <div class="col-md-9">
                     <input type="number" id="montantReel" class="form-control" ng-model="dossierPaiementParameters.montantReel" />

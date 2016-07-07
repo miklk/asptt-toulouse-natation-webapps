@@ -106,10 +106,13 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	
 	$scope.initPaiement = function(dossier) {
 		$scope.paiementStatus = ['PAIEMENT_PARTIEL', 'PAIEMENT_COMPLET'];
+		$scope.modePaiements = ['ESPECES', 'CHEQUES', 'CHEQUE_VACANCES','CHEQUE_SPORT','ANCV','AUTRES'];
 		$scope.dossier = dossier;
 		$scope.dossierPaiementParameters = {
 				dossierId: dossier.dossierId,
 				statutPaiement: 'PAIEMENT_COMPLET',
+				modePaiement: 'ESPECES',
+				numeroPaiement: '',
 				montantReel: dossier.montantreel,
 				commentaire: dossier.comment
 		};

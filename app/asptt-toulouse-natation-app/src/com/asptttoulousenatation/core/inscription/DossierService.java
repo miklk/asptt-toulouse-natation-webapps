@@ -65,6 +65,7 @@ import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierFactu
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurPhotoEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.ModePaiementEnum;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierCertificatDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierFactureDao;
@@ -452,6 +453,8 @@ public class DossierService {
 		} else {
 			dossier.setStatut(DossierStatutEnum.valueOf(parameters.getStatutPaiement()).name());
 		}
+		dossier.setModepaiement(ModePaiementEnum.valueOf(parameters.getModePaiement()).name());
+		dossier.setNumeroPaiement(parameters.getNumeroPaiement());
 		dossier.setMontantreel(parameters.getMontantReel());
 		if(StringUtils.isNotBlank(parameters.getCommentaire())) {
 			StringBuilder builder = new StringBuilder();
@@ -1037,6 +1040,8 @@ public class DossierService {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.INITIALISE.name(),
 				Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, 1L,
+				Operator.EQUAL));
 		criteria.add(new CriterionDao<Date>(DossierEntityFields.UPDATED, seuil.toDate(),
 				Operator.LESS));
 		List<DossierEntity> entities = dossierDao.find(criteria);
@@ -1235,8 +1240,10 @@ public class DossierService {
 		for (DossierEntity dossier : dossiers) {
 			String email = dossier.getEmail();
 			final List<Long> ids;
-			if(doublons.containsKey(email)) {
+			if(doublons.containsKey(email) && DossierStatutEnum.INITIALISE.name().equals(dossier.getStatut())) {
 				ids = doublons.get(email);
+				dossier.setStatut(DossierStatutEnum.ANNULE.name());
+				dossierDao.save(dossier);
 			} else {
 				ids = new ArrayList<>(2);
 			}
