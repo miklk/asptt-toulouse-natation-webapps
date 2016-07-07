@@ -619,9 +619,17 @@ public class InscriptionService {
 						+ StringUtils.defaultString(parent.getAccidentPrenom2()));
 		fields.setField("accident_telephone_2", parent.getAccidentTelephone2());
 		
-		fields.setField("tarif_statutaire", "");
-		fields.setField("tarif_fsasptt", "");
+		Integer tarifStatutaire = 16;
+		fields.setField("tarif_statutaire", tarifStatutaire.toString());
+		Integer tarifFsasptt = 15;
+		if(BooleanUtils.isTrue(group.getLicenceFfn())) {
+			tarifFsasptt = 2;
+		}
+		fields.setField("tarif_fsasptt", tarifFsasptt.toString());
+		Integer tarifFFn = 32;
 		fields.setField("tarif_ffn", "");
+		
+		Integer tarifSection = group.getTarif() - tarifStatutaire - tarifFsasptt - tarifFFn;
 		fields.setField("tarif_section", "");
 		
 		fields.setField("montant_du", group.getTarif().toString());
