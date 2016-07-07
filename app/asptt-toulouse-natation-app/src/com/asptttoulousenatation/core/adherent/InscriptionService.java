@@ -601,9 +601,9 @@ public class InscriptionService {
 		}
 		
 		if(BooleanUtils.isFalse(group.getCompetition())) {
-			fields.setField("licence_comp_oui", "Yes");
-		} else {
 			fields.setField("licence_comp_non", "Yes");
+		} else {
+			fields.setField("licence_comp_oui", "Yes");
 		}
 
 		fields.setField(
@@ -618,6 +618,11 @@ public class InscriptionService {
 						+ " "
 						+ StringUtils.defaultString(parent.getAccidentPrenom2()));
 		fields.setField("accident_telephone_2", parent.getAccidentTelephone2());
+		
+		fields.setField("tarif_statutaire", "");
+		fields.setField("tarif_fsasptt", "");
+		fields.setField("tarif_ffn", "");
+		fields.setField("tarif_section", "");
 		
 		fields.setField("montant_du", group.getTarif().toString());
 		fields.setField("remise", Integer.toString((group.getTarif() - adherent.getTarif())));
@@ -647,6 +652,8 @@ public class InscriptionService {
 
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.PREINSCRIT.name(),
+				Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, 1L,
 				Operator.EQUAL));
 		List<DossierEntity> entities = dao.find(criteria);
 		int count = 0;
@@ -736,6 +743,8 @@ public class InscriptionService {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.PREINSCRIT.name(),
 				Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, 1L,
+				Operator.EQUAL));
 		List<DossierEntity> entities = dao.find(criteria);
 		int count = 0;
 		List<String> dossiersRappeler = new ArrayList<>();
@@ -763,7 +772,7 @@ public class InscriptionService {
 					}
 
 					StringBuilder message = new StringBuilder(
-							"Madame, Monsieur,<p>Vous avez effectué une demande d'inscription au club il y a 5 jours. Nous n'avons pas encore reçu votre paiement.<br /> Nous tenons à vous rappeler qu'au bout de 8 jours, votre dossier sera supprimé et les créneaux sélectionnés libérés pour d'autres adhérents.<br />");
+							"Madame, Monsieur,<p>Vous avez effectué une demande d'inscription au club il y a 8 jours. Nous n'avons pas encore reçu votre paiement.<br /> Nous vous informons que votre dossier sera supprimé ce soir et que les créneaux sélectionnés libérés pour d'autres adhérents.<br />");
 
 					message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />"
 							+ "ASPTT Grand Toulouse Natation<br />"
@@ -825,6 +834,8 @@ public class InscriptionService {
 				1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.PREINSCRIT.name(), Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+				1L, Operator.EQUAL));
 		List<DossierEntity> entities = dao.find(criteria);
 		int count = 0;
 		for(DossierEntity dossier: entities) {
