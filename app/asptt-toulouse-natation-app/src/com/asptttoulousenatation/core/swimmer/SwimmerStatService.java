@@ -98,7 +98,7 @@ public class SwimmerStatService {
 			@Override
 			public boolean evaluate(Object arg0) {
 				DossierNageurEntity entity = (DossierNageurEntity) arg0;
-				return entity.getSaison() != null && entity.getSaison() == 1L;
+				return entity.getSaison() == null;
 			}
 		});
 		Collections.sort(entities, new Comparator<DossierNageurEntity>() {
