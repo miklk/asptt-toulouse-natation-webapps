@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -863,6 +864,95 @@ public class InscriptionService {
 			}
 		}
 		LOG.log(Level.WARNING, count + " dossiers expirés");
+		return count;
+	}
+	
+	@Path("/rappel-certifcats")
+	@GET
+	public int rappelCertificats() {
+		List<DossierEntity> entities = dao.findByStatus(DossierStatutEnum.PAIEMENT_COMPLET, DossierStatutEnum.PAIEMENT_PARTIEL, DossierStatutEnum.PREINSCRIT);
+		int count = 0;
+		List<String> dossiersRappeler = new ArrayList<>();
+		for (DossierEntity dossier : entities) {
+			List<DossierNageurEntity> nageurs = dossierNageurDao.findByDossier(dossier.getId());
+			boolean nocertificat = false;
+			Iterator<DossierNageurEntity> it = nageurs.iterator();
+			while(it.hasNext() && !nocertificat) {
+				nocertificat = BooleanUtils.isFalse(it.next().getCertificat());
+			}
+			if (nocertificat) {
+				count++;
+				dossiersRappeler.add(dossier.getEmail());
+				Properties props = new Properties();
+				Session session = Session.getDefaultInstance(props, null);
+				try {
+					Multipart mp = new MimeMultipart();
+					MimeBodyPart htmlPart = new MimeBodyPart();
+
+					MimeMessage msg = new MimeMessage(session);
+					msg.setFrom(
+							new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+					Address[] replyTo = {
+							new InternetAddress("contact@asptt-toulouse-natation.com", "ASPTT Toulouse Natation") };
+					msg.setReplyTo(replyTo);
+					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(dossier.getEmail()));
+					msg.addRecipient(Message.RecipientType.CC,
+							new InternetAddress("contact@asptt-toulouse-natation.com"));
+					if (StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
+						msg.addRecipient(Message.RecipientType.CC, new InternetAddress(dossier.getEmailsecondaire()));
+					}
+
+					StringBuilder message = new StringBuilder(
+							"Madame, Monsieur,<p>Vous avez effectué une demande d'inscription au club. Nous n'avons pas reçu le (les) certificat(s) médicaux. Sans ceux-ci avant le 12 septembre, nous seront obligé de libérer vos créneaux et d'annuler votre inscription.<br />");
+
+					message.append("<p>Dans l'attente de vos documents, sportivement,<br />" + "Le secrétariat,<br />"
+							+ "ASPTT Grand Toulouse Natation<br />"
+							+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
+					htmlPart.setContent(message.toString(), "text/html");
+					mp.addBodyPart(htmlPart);
+
+					msg.setSubject("ASPTT Toulouse Natation - Rappel certificats médicaux", "UTF-8");
+					msg.setContent(mp);
+					Transport.send(msg);
+					dossier.setReminded(new DateTime().toDate());
+					dossier.setReminder(true);
+					dao.save(dossier);
+				} catch (MessagingException | UnsupportedEncodingException e) {
+					LOG.log(Level.SEVERE, "Erreur pour l'e-mail: " + dossier.getEmail(), e);
+				}
+			}
+		}
+
+		// Rapport
+		Properties props = new Properties();
+		Session session = Session.getDefaultInstance(props, null);
+		try {
+			Multipart mp = new MimeMultipart();
+			MimeBodyPart htmlPart = new MimeBodyPart();
+
+			MimeMessage msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("contact@asptt-toulouse-natation.com"));
+			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("remi.lacaze@asptt-toulouse-natation.com"));
+
+			StrBuilder message = new StrBuilder("<p>").append(count).append(" dossiers vont expirer dans 2 jours.</p>");
+			message.append("<ul>");
+			for (String dossierRappeler : dossiersRappeler) {
+				message.append("<li>").append(dossierRappeler).append("</li>");
+			}
+			message.append("</ul>");
+
+			htmlPart.setContent(message.toString(), "text/html");
+			mp.addBodyPart(htmlPart);
+
+			msg.setSubject("Rapport  - dossiers arrivant à expiration", "UTF-8");
+			msg.setContent(mp);
+			Transport.send(msg);
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			LOG.log(Level.SEVERE, "Erreur pour l'e-mail de rapport", e);
+		}
+
+		LOG.log(Level.WARNING, count + " dossiers rappelés");
 		return count;
 	}
 }

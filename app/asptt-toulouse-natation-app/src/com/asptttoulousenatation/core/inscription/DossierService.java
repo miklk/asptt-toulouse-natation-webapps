@@ -738,15 +738,29 @@ public class DossierService {
 				1L, Operator.EQUAL));
 		result.setPotentiel(dossierDao.count(criteria));
 		
+		//Places disponibles
+		List<SlotEntity> creneaux = slotDao.getAll();
+		int places = 0;
+		for(SlotEntity creneau: creneaux) {
+			if(BooleanUtils.isFalse(creneau.getSecond()) && creneau.getPlaceDisponible() != null) {
+				places+=creneau.getPlaceDisponible();
+			}
+		}
+		result.setPlaces(places);
+		
 		//Total
 		criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
+				);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.PREINSCRIT.name(), Operator.NOT_EQUAL));
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.EXPIRE.name(), Operator.NOT_EQUAL));
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.ANNULE.name(), Operator.NOT_EQUAL));
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.ATTENTE.name(), Operator.NOT_EQUAL));
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.INITIALISE.name(), Operator.NOT_EQUAL));
 		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
 				1L, Operator.EQUAL));
 		result.setTotal(dossierDao.count(criteria));
@@ -772,6 +786,8 @@ public class DossierService {
 				DossierStatutEnum.INSCRIT.name(), Operator.NOT_EQUAL));
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.ANNULE.name(), Operator.NOT_EQUAL));
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
+				DossierStatutEnum.INITIALISE.name(), Operator.NOT_EQUAL));
 		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
 				1L, Operator.EQUAL));
 		result.setNonpayes(dossierDao.count(criteria));
@@ -932,6 +948,7 @@ public class DossierService {
 			nageurs = dao.getAll();
 		}
 		for (DossierNageurEntity nageur : nageurs) {
+			if(nageur.getSaison() != 1L) {
 			List<String> nageurValues = new ArrayList<>(fieldsToChoose.length);
 			for (String field : fieldsToChoose) {
 				switch (field) {
@@ -970,6 +987,7 @@ public class DossierService {
 				}
 			}
 			extractions.add(nageurValues);
+			}
 		}
 		StrBuilder extractionAsString = new StrBuilder();
 		//Build header
@@ -1259,6 +1277,38 @@ public class DossierService {
 			}
 		}
 		LOG.log(Level.WARNING, "doublons #" + count);
+		return count;
+	}
+	
+	@Path("/init-dossier/{id}")
+	@GET
+	public int copieDossier(@PathParam("id") Long id) {
+		int count = 0;
+		DossierEntity dossier = dossierDao.get(id);
+		try {
+			DossierEntity dossier2 = new DossierEntity();
+			dossier.copyInit(dossier2);
+			dossier2.setStatut(DossierStatutEnum.INITIALISE.name());
+			dossier2.setSaison(1L);
+			DossierEntity cloned = dossierDao.save(dossier2);
+			// Clone des nageurs
+			List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(1);
+			criteriaNageur
+					.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER, dossier.getId(), Operator.EQUAL));
+			List<DossierNageurEntity> nageurs = dao.find(criteriaNageur);
+			for (DossierNageurEntity nageur : nageurs) {
+				DossierNageurEntity nageur2 = new DossierNageurEntity();
+				nageur.copieInit(nageur2);
+				nageur2.setSaison(1L);
+				nageur2.setDossier(cloned.getId());
+				nageur2.setNouveau(Boolean.FALSE);
+				dao.save(nageur2);
+			}
+			count++;
+		} catch (Exception e) {
+			LOG.log(Level.WARNING, "Impossible de copier dossier #" + dossier.getId());
+		}
+		LOG.log(Level.INFO, "init saison #" + count);
 		return count;
 	}
 }

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
- 	<cron>
+  	<cron>
 		<url>/resources/inscription/expire</url>
 		<description>Expiration des dossiers</description>
-		<schedule>every day 04:00</schedule>
+		<schedule>every day 13:00</schedule>
 	</cron>
 	<cron>
 		<url>/resources/inscription/rappel</url>
 		<description>Rappel de paiement au bout de 5 jours</description>
-		<schedule>every day 04:30</schedule>
+		<schedule>every day 13:30</schedule>
 	</cron>
 	<cron>
 		<url>/resources/inscription/rappel2</url>
 		<description>Rappel de paiement au bout de 8 jours</description>
-		<schedule>every day 04:45</schedule>
+		<schedule>every day 13:45</schedule>
 	</cron>
 	<cron>
 		<url>/resources/dossier-maintenance/creneaux</url>
@@ -31,9 +31,14 @@
 		<schedule>every day 05:00</schedule>
 	</cron>
 	-->
-	<cron>
+	<!--<cron>
 		<url>/resources/dossiers/doublons</url>
 		<description>Doublons</description>
 		<schedule>every day 06:10</schedule>
+	</cron>-->
+	<cron>
+		<url>/resources/inscription/rappel-certifcats</url>
+		<description>Rappel certificat</description>
+		<schedule>29 of aug 04:00</schedule>
 	</cron>
 </cronentries>

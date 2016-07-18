@@ -9,7 +9,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import com.asptttoulousenatation.core.server.dao.DaoBase;
+import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
+import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
+import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.service.EMF;
 
 public class DossierNageurDao extends DaoBase<DossierNageurEntity> {
@@ -27,6 +30,14 @@ public class DossierNageurDao extends DaoBase<DossierNageurEntity> {
 			em.close();
 		}
 		return lAllList;
+	}
+	
+	public List<DossierNageurEntity> findByDossier(Long dossier) {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER, dossier, Operator.EQUAL));
+		List<DossierNageurEntity> entities = find(criteria);
+		List<DossierNageurEntity> result = new ArrayList<>(entities);
+		return result;
 	}
 
 	@Override
