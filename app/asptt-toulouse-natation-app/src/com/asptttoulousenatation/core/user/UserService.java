@@ -45,7 +45,7 @@ import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
 import com.asptttoulousenatation.core.server.entity.UserDataTransformer;
 import com.asptttoulousenatation.core.server.entity.UserTransformer;
 import com.asptttoulousenatation.core.shared.user.UserUi;
-import com.asptttoulousenatation.server.util.Utils;
+import com.asptttoulousenatation.core.util.Utils;
 
 @Path("/users")
 @Produces("application/json")

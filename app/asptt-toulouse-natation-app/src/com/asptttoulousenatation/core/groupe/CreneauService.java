@@ -32,7 +32,6 @@ import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.util.DayComparator;
 import com.asptttoulousenatation.core.util.DayStringComparator;
-import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
 
 @Path("/creneaux")
 @Produces("application/json")

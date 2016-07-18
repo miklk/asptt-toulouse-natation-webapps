@@ -1,4 +1,4 @@
-package com.asptttoulousenatation.server.util;
+package com.asptttoulousenatation.core.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

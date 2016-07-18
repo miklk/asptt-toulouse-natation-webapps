@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.asptttoulousenatation.web.creneau.CoupleValue;
+import com.asptttoulousenatation.core.lang.CoupleValue;
 
 public class AdherentFamilleStatResult {
 

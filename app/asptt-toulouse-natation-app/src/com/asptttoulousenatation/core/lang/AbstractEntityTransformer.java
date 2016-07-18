@@ -1,4 +1,4 @@
-package com.asptttoulousenatation.server.userspace.admin.entity;
+package com.asptttoulousenatation.core.lang;
 
 import java.util.ArrayList;
 import java.util.List;

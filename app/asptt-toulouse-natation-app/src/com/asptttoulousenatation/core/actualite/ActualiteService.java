@@ -17,6 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import com.asptttoulousenatation.core.adherent.ActuTransformer;
+import com.asptttoulousenatation.core.document.DocumentTransformer;
 import com.asptttoulousenatation.core.server.dao.ActuDao;
 import com.asptttoulousenatation.core.server.dao.document.DocumentDao;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
@@ -28,8 +30,6 @@ import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
-import com.asptttoulousenatation.server.userspace.admin.entity.ActuTransformer;
-import com.asptttoulousenatation.server.userspace.admin.entity.DocumentTransformer;
 import com.google.appengine.api.datastore.Text;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;

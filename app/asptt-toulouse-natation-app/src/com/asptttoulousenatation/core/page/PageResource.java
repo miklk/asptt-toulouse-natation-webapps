@@ -12,11 +12,13 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.collections.CollectionUtils;
 
+import com.asptttoulousenatation.core.document.DocumentTransformer;
 import com.asptttoulousenatation.core.server.dao.document.DocumentDao;
 import com.asptttoulousenatation.core.server.dao.entity.document.DocumentEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.ContentEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DocumentEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.MenuEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.structure.ContentDataKindEnum;
 import com.asptttoulousenatation.core.server.dao.entity.structure.ContentEntity;
 import com.asptttoulousenatation.core.server.dao.entity.structure.MenuEntity;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
@@ -24,8 +26,6 @@ import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.structure.ContentDao;
 import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
-import com.asptttoulousenatation.server.userspace.admin.entity.DocumentTransformer;
-import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentDataKindEnum;
 
 public class PageResource {
 	private static final Logger LOG = Logger.getLogger(PageResource.class

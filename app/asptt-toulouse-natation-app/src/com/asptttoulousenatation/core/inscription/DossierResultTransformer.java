@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
+import com.asptttoulousenatation.core.lang.AbstractEntityTransformer;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
@@ -16,7 +17,6 @@ import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
-import com.asptttoulousenatation.server.userspace.admin.entity.AbstractEntityTransformer;
 
 
 

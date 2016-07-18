@@ -21,6 +21,8 @@ import javax.ws.rs.core.UriInfo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 
+import com.asptttoulousenatation.core.adherent.ActuTransformer;
+import com.asptttoulousenatation.core.document.DocumentTransformer;
 import com.asptttoulousenatation.core.server.dao.ActuDao;
 import com.asptttoulousenatation.core.server.dao.document.DocumentDao;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
@@ -38,8 +40,6 @@ import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
-import com.asptttoulousenatation.server.userspace.admin.entity.ActuTransformer;
-import com.asptttoulousenatation.server.userspace.admin.entity.DocumentTransformer;
 import com.google.gdata.client.Query;
 import com.google.gdata.client.photos.PicasawebService;
 import com.google.gdata.data.Link;

@@ -1,24 +1,17 @@
 package com.asptttoulousenatation.core.adherent;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.asptttoulousenatation.core.groupe.GroupUi;
+import com.asptttoulousenatation.core.groupe.SlotTransformer;
 import com.asptttoulousenatation.core.groupe.SlotUi;
-import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
-import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
-import com.asptttoulousenatation.core.server.dao.entity.inscription.InscriptionEntity2;
-import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
-import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
 
 public class AdherentBeanTransformer implements Serializable {
 
@@ -39,31 +32,7 @@ public class AdherentBeanTransformer implements Serializable {
 		return INSTANCE;
 	}
 
-	private GroupDao groupDao = new GroupDao();
 	private SlotDao slotDao = new SlotDao();
-
-	public AdherentBean get(InscriptionEntity2 entity) {
-		AdherentBean bean = new AdherentBean(entity);
-
-		bean.setGroupe(getGroupe(entity.getNouveauGroupe()));
-		try {
-			bean.setCreneaux(getCreneaux(entity.getCreneaux()));
-		} catch(Exception e) {
-			LOG.severe("Erreur de créneaux sur l'adhérent " + entity.getNom());
-		}
-		return bean;
-	}
-
-	private GroupUi getGroupe(Long groupeId) {
-		final GroupUi groupe;
-		if(groupeId != null && groupeId != 0) {
-			GroupEntity entity = groupDao.get(groupeId);
-			groupe = GroupTransformer.getInstance().toUi(entity);
-		} else {
-			groupe = null;
-		}
-		return groupe;
-	}
 
 	public Set<SlotUi> getCreneaux(String creneaux) {
 		Set<SlotUi> results = new LinkedHashSet<SlotUi>();
@@ -106,14 +75,6 @@ public class AdherentBeanTransformer implements Serializable {
 					}
 				}
 			}
-		}
-		return results;
-	}
-	
-	public List<AdherentBean> get(List<InscriptionEntity2> entities) {
-		List<AdherentBean> results = new ArrayList<AdherentBean>(entities.size());
-		for(InscriptionEntity2 entity: entities) {
-			results.add(get(entity));
 		}
 		return results;
 	}

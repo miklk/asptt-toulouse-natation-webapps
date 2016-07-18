@@ -34,6 +34,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.asptttoulousenatation.core.groupe.GroupTransformer;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityFields;
@@ -47,7 +48,6 @@ import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurPhotoD
 import com.asptttoulousenatation.core.server.dao.inscription.InscriptionNouveauDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
-import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 
 @Path("/inscription")
 @Produces("application/json")

@@ -29,7 +29,6 @@ import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageu
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
-import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 
 @Path("/groupes")
 @Produces("application/json")

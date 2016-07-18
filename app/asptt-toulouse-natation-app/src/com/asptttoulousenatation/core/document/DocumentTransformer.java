@@ -1,5 +1,6 @@
-package com.asptttoulousenatation.server.userspace.admin.entity;
+package com.asptttoulousenatation.core.document;
 
+import com.asptttoulousenatation.core.lang.AbstractEntityTransformer;
 import com.asptttoulousenatation.core.server.dao.entity.document.DocumentEntity;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
 

@@ -32,6 +32,7 @@ import org.joda.time.format.DateTimeFormat;
 
 import com.asptttoulousenatation.core.enf.EnfDayGroupe;
 import com.asptttoulousenatation.core.enf.EnfGroupeCreneau;
+import com.asptttoulousenatation.core.groupe.SlotTransformer;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
@@ -48,7 +49,6 @@ import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.search.OrderDao;
 import com.asptttoulousenatation.core.server.dao.search.OrderDao.OrderOperator;
 import com.asptttoulousenatation.core.util.DayComparator;
-import com.asptttoulousenatation.server.userspace.admin.entity.SlotTransformer;
 
 @Path("/enf")
 @Produces("application/json")

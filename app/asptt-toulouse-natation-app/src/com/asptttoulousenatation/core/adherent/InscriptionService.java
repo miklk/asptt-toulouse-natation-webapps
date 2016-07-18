@@ -58,6 +58,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
 
+import com.asptttoulousenatation.core.groupe.GroupTransformer;
 import com.asptttoulousenatation.core.groupe.SlotUi;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
@@ -80,8 +81,7 @@ import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurPhotoDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
-import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
-import com.asptttoulousenatation.web.adherent.AdherentListResultBeanTransformer;
+import com.asptttoulousenatation.core.util.CreneauBuilder;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.datastore.Blob;
@@ -354,7 +354,7 @@ public class InscriptionService {
 				}catch(Exception e) {
 					LOG.severe("Erreur du groupe (adherent " + nageur.getId() + "): " + nageur.getGroupe() + " ");
 				}
-				for (String creneau : AdherentListResultBeanTransformer
+				for (String creneau : CreneauBuilder
 						.getInstance().getCreneaux(nageur.getCreneaux())) {
 					message.append("<dd>").append(creneau).append("</dd>");
 				}

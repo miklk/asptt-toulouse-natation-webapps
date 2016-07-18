@@ -13,12 +13,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import com.asptttoulousenatation.core.server.dao.entity.structure.AreaEntity;
+import com.asptttoulousenatation.core.server.dao.entity.structure.ContentDataKindEnum;
 import com.asptttoulousenatation.core.server.dao.entity.structure.ContentEntity;
 import com.asptttoulousenatation.core.server.dao.entity.structure.MenuEntity;
 import com.asptttoulousenatation.core.server.dao.structure.AreaDao;
 import com.asptttoulousenatation.core.server.dao.structure.ContentDao;
 import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
-import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentDataKindEnum;
 import com.google.appengine.api.datastore.Blob;
 
 @Path("/page-edition")

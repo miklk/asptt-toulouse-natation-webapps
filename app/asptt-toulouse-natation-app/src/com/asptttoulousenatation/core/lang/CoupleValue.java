@@ -1,4 +1,4 @@
-package com.asptttoulousenatation.web.creneau;
+package com.asptttoulousenatation.core.lang;
 
 public class CoupleValue<F extends Object, S extends Object> {
 

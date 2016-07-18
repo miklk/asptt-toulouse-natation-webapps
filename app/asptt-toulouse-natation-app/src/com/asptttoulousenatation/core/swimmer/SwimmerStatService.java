@@ -28,8 +28,8 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import com.asptttoulousenatation.core.lang.CoupleValue;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
-import com.asptttoulousenatation.core.server.dao.entity.field.InscriptionEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SwimmerStatEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.core.server.dao.entity.swimmer.SwimmerStatEntity;
@@ -39,8 +39,6 @@ import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.search.OrderDao;
 import com.asptttoulousenatation.core.server.dao.search.OrderDao.OrderOperator;
 import com.asptttoulousenatation.core.server.dao.swimmer.SwimmerStatDao;
-import com.asptttoulousenatation.server.userspace.admin.entity.SwimmerStatDayTransformer;
-import com.asptttoulousenatation.web.creneau.CoupleValue;
 
 @Path("/swimmerStats")
 @Produces("application/json")
@@ -92,7 +90,7 @@ public class SwimmerStatService {
 		criteria.add(new CriterionDao<Long>(
 				DossierNageurEntityFields.GROUPE, groupe, Operator.EQUAL));
 		}
-		List<DossierNageurEntity> entities = new ArrayList<>(nageurDao.find(criteria, Operator.OR, new OrderDao(InscriptionEntityFields.NOM, OrderOperator.ASC)));
+		List<DossierNageurEntity> entities = new ArrayList<>(nageurDao.find(criteria, Operator.OR, new OrderDao(DossierNageurEntityFields.NOM, OrderOperator.ASC)));
 		CollectionUtils.filter(entities, new Predicate() {
 			
 			@Override

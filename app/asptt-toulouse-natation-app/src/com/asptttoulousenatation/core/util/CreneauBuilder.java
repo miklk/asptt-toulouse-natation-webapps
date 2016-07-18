@@ -1,20 +1,31 @@
-package com.asptttoulousenatation.core.adherent;
+package com.asptttoulousenatation.core.util;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 
-public class AdherentSummaryBeanTransformer {
+public class CreneauBuilder implements Serializable {
 
-	private static AdherentSummaryBeanTransformer INSTANCE;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9206273383357950266L;
+	
+	private static final Logger LOG = Logger.getLogger(CreneauBuilder.class
+			.getName());
 
-	public static AdherentSummaryBeanTransformer getInstance() {
+	private static CreneauBuilder INSTANCE;
+
+	public static CreneauBuilder getInstance() {
 		if (INSTANCE == null) {
-			INSTANCE = new AdherentSummaryBeanTransformer();
+			INSTANCE = new CreneauBuilder();
 		}
 		return INSTANCE;
 	}
@@ -36,19 +47,16 @@ public class AdherentSummaryBeanTransformer {
 					if (StringUtils.isNumeric(creneauId)) {
 						SlotEntity slotEntity = slotDao.get(Long
 								.valueOf(creneauId));
+						
+						String beginDtAsString = new DateTime(slotEntity.getBeginDt().getTime()).plusHours(1).toString("HH:mm");
+						String endDtAsString = new DateTime(slotEntity.getEndDt().getTime()).plusHours(1).toString("HH:mm");
+						
 						String creneauStr = slotEntity.getDayOfWeek()
 								+ " "
-								+ (slotEntity.getBegin() / 60)
-								+ ":"
-								+ StringUtils
-										.rightPad(Integer.toString((slotEntity
-												.getBegin() % 60)), 2, "0")
+								+ beginDtAsString
 								+ " - "
-								+ (slotEntity.getEnd() / 60)
-								+ ":"
-								+ StringUtils.rightPad(Integer
-										.toString((slotEntity.getEnd() % 60)),
-										2, "0") + " - "
+								+ endDtAsString
+								+ " - "
 								+ slotEntity.getSwimmingPool();
 						results.add(creneauStr);
 					}

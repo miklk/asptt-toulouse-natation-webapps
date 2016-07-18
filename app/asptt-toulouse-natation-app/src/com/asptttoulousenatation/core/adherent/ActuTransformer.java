@@ -1,10 +1,11 @@
-package com.asptttoulousenatation.server.userspace.admin.entity;
+package com.asptttoulousenatation.core.adherent;
 
 import java.util.Date;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.asptttoulousenatation.core.lang.AbstractEntityTransformer;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
 

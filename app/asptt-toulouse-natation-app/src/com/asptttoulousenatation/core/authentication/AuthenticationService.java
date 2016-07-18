@@ -47,7 +47,7 @@ import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.user.UserAuthorizationDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
-import com.asptttoulousenatation.server.util.Utils;
+import com.asptttoulousenatation.core.util.Utils;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 

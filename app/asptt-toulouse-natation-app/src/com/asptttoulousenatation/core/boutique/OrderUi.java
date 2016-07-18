@@ -6,9 +6,9 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.asptttoulousenatation.core.lang.CoupleValue;
 import com.asptttoulousenatation.core.server.dao.entity.boutique.OrderEntity;
 import com.asptttoulousenatation.core.server.dao.entity.boutique.ProductEntity;
-import com.asptttoulousenatation.web.creneau.CoupleValue;
 
 @XmlRootElement
 public class OrderUi implements Serializable {

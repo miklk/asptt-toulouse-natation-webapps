@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.asptttoulousenatation.web.creneau.CoupleValue;
+import com.asptttoulousenatation.core.lang.CoupleValue;
 
 public class SwimmerStatMonthListResult implements Serializable {
 	/**

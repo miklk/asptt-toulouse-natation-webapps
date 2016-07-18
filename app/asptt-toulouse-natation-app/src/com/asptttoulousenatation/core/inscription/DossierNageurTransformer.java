@@ -1,7 +1,7 @@
 package com.asptttoulousenatation.core.inscription;
 
+import com.asptttoulousenatation.core.lang.AbstractEntityTransformer;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
-import com.asptttoulousenatation.server.userspace.admin.entity.AbstractEntityTransformer;
 
 public class DossierNageurTransformer extends AbstractEntityTransformer<DossierUi, DossierNageurEntity> {
 

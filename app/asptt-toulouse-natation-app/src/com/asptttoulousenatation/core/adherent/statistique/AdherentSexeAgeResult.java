@@ -11,9 +11,9 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.asptttoulousenatation.core.lang.CoupleValue;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
-import com.asptttoulousenatation.web.creneau.CoupleValue;
 
 @XmlRootElement
 public class AdherentSexeAgeResult {

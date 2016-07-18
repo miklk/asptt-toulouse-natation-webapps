@@ -37,6 +37,7 @@ import com.asptttoulousenatation.core.server.dao.entity.document.DocumentLibelle
 import com.asptttoulousenatation.core.server.dao.entity.document.LibelleEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.DocumentLibelleJEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.LibelleEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.structure.ContentDataKindEnum;
 import com.asptttoulousenatation.core.server.dao.entity.structure.ContentEntity;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
@@ -44,8 +45,6 @@ import com.asptttoulousenatation.core.server.dao.search.OrderDao;
 import com.asptttoulousenatation.core.server.dao.search.OrderDao.OrderOperator;
 import com.asptttoulousenatation.core.server.dao.structure.ContentDao;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
-import com.asptttoulousenatation.server.userspace.admin.entity.DocumentTransformer;
-import com.asptttoulousenatation.shared.userspace.admin.structure.content.ContentDataKindEnum;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.datastore.Blob;

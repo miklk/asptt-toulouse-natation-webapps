@@ -2,9 +2,9 @@ package com.asptttoulousenatation.core.adherent;
 
 import java.util.List;
 
+import com.asptttoulousenatation.core.groupe.GroupTransformer;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
-import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
 
 public class InscriptionDossierTransfomer {
 	

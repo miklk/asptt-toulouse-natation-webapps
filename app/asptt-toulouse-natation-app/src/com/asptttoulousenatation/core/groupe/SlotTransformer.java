@@ -1,4 +1,4 @@
-package com.asptttoulousenatation.server.userspace.admin.entity;
+package com.asptttoulousenatation.core.groupe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
-import com.asptttoulousenatation.core.groupe.GroupUi;
-import com.asptttoulousenatation.core.groupe.SlotUi;
+import com.asptttoulousenatation.core.lang.AbstractEntityTransformer;
 import com.asptttoulousenatation.core.server.dao.club.group.CreneauHierarchyDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.CreneauHierarchyEntity;
@@ -17,7 +16,7 @@ import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.CreneauHierarchyEntityFields;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
-import com.asptttoulousenatation.server.util.DateUtils;
+import com.asptttoulousenatation.core.util.DateUtils;
 
 public class SlotTransformer extends
 		AbstractEntityTransformer<SlotUi, SlotEntity> {

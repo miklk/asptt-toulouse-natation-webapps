@@ -48,6 +48,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.joda.time.DateTime;
 
 import com.asptttoulousenatation.core.adherent.AdherentBeanTransformer;
+import com.asptttoulousenatation.core.groupe.GroupTransformer;
 import com.asptttoulousenatation.core.groupe.SlotUi;
 import com.asptttoulousenatation.core.lang.StatistiqueBase;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
@@ -73,8 +74,7 @@ import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurPhotoDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
-import com.asptttoulousenatation.server.userspace.admin.entity.GroupTransformer;
-import com.asptttoulousenatation.web.adherent.AdherentListResultBeanTransformer;
+import com.asptttoulousenatation.core.util.CreneauBuilder;
 import com.google.appengine.api.datastore.Blob;
 
 @Path("/dossiers")
@@ -572,7 +572,7 @@ public class DossierService {
 				} catch(Exception e) {
 					LOG.severe("Erreur du groupe (adherent " + nageur.getId() + "): " + nageur.getGroupe() + " ");
 				}
-				for (String creneau : AdherentListResultBeanTransformer
+				for (String creneau : CreneauBuilder
 						.getInstance().getCreneaux(nageur.getCreneaux())) {
 					message.append("<dd>").append(creneau).append("</dd>");
 				}
