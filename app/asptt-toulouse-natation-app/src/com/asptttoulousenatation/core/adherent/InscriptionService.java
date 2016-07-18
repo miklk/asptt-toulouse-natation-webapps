@@ -627,11 +627,21 @@ public class InscriptionService {
 			tarifFsasptt = 2;
 		}
 		fields.setField("tarif_fsasptt", tarifFsasptt.toString());
-		Integer tarifFFn = 32;
-		fields.setField("tarif_ffn", "");
+		final Double tarifFFn;
+		if (BooleanUtils.isTrue(group.getLicenceFfn())) {
+			year = Years.yearsBetween(adherentAge, LocalDate.now()).getYears();
+			if (year < 10) {
+				tarifFFn = 20.25;
+			} else {
+				tarifFFn = 33.45;
+			}
+		} else {
+			tarifFFn = 0.0;
+		}
+		fields.setField("tarif_ffn", tarifFFn.toString());
 		
-		Integer tarifSection = group.getTarif() - tarifStatutaire - tarifFsasptt - tarifFFn;
-		fields.setField("tarif_section", "");
+		Double tarifSection = group.getTarif() - tarifStatutaire - tarifFsasptt - tarifFFn;
+		fields.setField("tarif_section", tarifSection.toString());
 		
 		fields.setField("montant_du", group.getTarif().toString());
 		fields.setField("remise", Integer.toString((group.getTarif() - adherent.getTarif())));
