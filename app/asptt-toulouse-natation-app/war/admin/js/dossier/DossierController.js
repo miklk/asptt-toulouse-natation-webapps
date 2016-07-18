@@ -111,8 +111,11 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 		$scope.dossierPaiementParameters = {
 				dossierId: dossier.dossierId,
 				statutPaiement: 'PAIEMENT_COMPLET',
-				modePaiement: 'ESPECES',
-				numeroPaiement: '',
+				paiement:  [{
+					first: 'CHEQUES',
+					second : '',
+				}],
+				
 				montantReel: dossier.montantreel,
 				commentaire: dossier.comment
 		};

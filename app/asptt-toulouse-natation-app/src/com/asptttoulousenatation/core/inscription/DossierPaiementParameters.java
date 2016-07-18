@@ -1,6 +1,9 @@
 package com.asptttoulousenatation.core.inscription;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.asptttoulousenatation.core.lang.CoupleValue;
 
 public class DossierPaiementParameters implements Serializable {
 
@@ -12,8 +15,7 @@ public class DossierPaiementParameters implements Serializable {
 	private String statutPaiement;
 	private String commentaire;
 	private int montantReel;
-	private String modePaiement;
-	private String numeroPaiement;
+	private List<CoupleValue<String, String>> paiement;
 	public Long getDossierId() {
 		return dossierId;
 	}
@@ -38,18 +40,10 @@ public class DossierPaiementParameters implements Serializable {
 	public void setMontantReel(int montantReel) {
 		this.montantReel = montantReel;
 	}
-	public String getModePaiement() {
-		return modePaiement;
+	public List<CoupleValue<String, String>> getPaiement() {
+		return paiement;
 	}
-	public void setModePaiement(String modePaiement) {
-		this.modePaiement = modePaiement;
+	public void setPaiement(List<CoupleValue<String, String>> paiement) {
+		this.paiement = paiement;
 	}
-	public String getNumeroPaiement() {
-		return numeroPaiement;
-	}
-	public void setNumeroPaiement(String numeroPaiement) {
-		this.numeroPaiement = numeroPaiement;
-	}
-
-	
 }

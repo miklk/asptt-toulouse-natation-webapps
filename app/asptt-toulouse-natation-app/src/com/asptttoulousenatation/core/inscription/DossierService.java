@@ -50,6 +50,7 @@ import org.joda.time.DateTime;
 import com.asptttoulousenatation.core.adherent.AdherentBeanTransformer;
 import com.asptttoulousenatation.core.groupe.GroupTransformer;
 import com.asptttoulousenatation.core.groupe.SlotUi;
+import com.asptttoulousenatation.core.lang.CoupleValue;
 import com.asptttoulousenatation.core.lang.StatistiqueBase;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
@@ -66,7 +67,6 @@ import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierFactu
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurPhotoEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
-import com.asptttoulousenatation.core.server.dao.entity.inscription.ModePaiementEnum;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierCertificatDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierFactureDao;
@@ -75,6 +75,7 @@ import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurPhotoD
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.util.CreneauBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.datastore.Blob;
 
 @Path("/dossiers")
@@ -448,27 +449,40 @@ public class DossierService {
 	@POST
 	public void paiement(DossierPaiementParameters parameters) {
 		DossierEntity dossier = dossierDao.get(parameters.getDossierId());
-	
-		if(DossierStatutEnum.PAIEMENT_COMPLET.equals(DossierStatutEnum.valueOf(parameters.getStatutPaiement()))
+
+		if (DossierStatutEnum.PAIEMENT_COMPLET.equals(DossierStatutEnum.valueOf(parameters.getStatutPaiement()))
 				&& hasAllCertificats(dossier)) {
 			dossier.setStatut(DossierStatutEnum.INSCRIT.name());
 		} else {
 			dossier.setStatut(DossierStatutEnum.valueOf(parameters.getStatutPaiement()).name());
 		}
-		dossier.setModepaiement(ModePaiementEnum.valueOf(parameters.getModePaiement()).name());
-		dossier.setNumeroPaiement(parameters.getNumeroPaiement());
-		dossier.setMontantreel(parameters.getMontantReel());
-		if(StringUtils.isNotBlank(parameters.getCommentaire())) {
-			StringBuilder builder = new StringBuilder();
-			if(StringUtils.isNotBlank(dossier.getComment())) {
-				builder.append(dossier.getComment()).append("\n");
+		ObjectMapper mapper = new ObjectMapper();
+		String paiement = dossier.getPaiement();
+		try {
+			final List<CoupleValue<String, String>> paiementObject;
+			if(StringUtils.isNotBlank(dossier.getPaiement())) {
+				paiementObject = mapper.readValue(dossier.getPaiement(), List.class);
+			} else {
+				paiementObject = new ArrayList<>();
 			}
-			builder.append(parameters.getCommentaire());
-			dossier.setComment(builder.toString());
+			paiementObject.addAll(parameters.getPaiement());
+			paiement = mapper.writeValueAsString(paiementObject);
+			dossier.setPaiement(paiement);
+			dossier.setMontantreel(parameters.getMontantReel());
+			if (StringUtils.isNotBlank(parameters.getCommentaire())) {
+				StringBuilder builder = new StringBuilder();
+				if (StringUtils.isNotBlank(dossier.getComment())) {
+					builder.append(dossier.getComment()).append("\n");
+				}
+				builder.append(parameters.getCommentaire());
+				dossier.setComment(builder.toString());
+			}
+			dossierDao.save(dossier);
+
+			sendConfirmation(dossier);
+		} catch (IOException e) {
+			LOG.log(Level.SEVERE, "Erreur enregistrement du paiement", e);
 		}
-		dossierDao.save(dossier);
-		
-		sendConfirmation(dossier);
 	}
 	
 	@Path("creneaux")

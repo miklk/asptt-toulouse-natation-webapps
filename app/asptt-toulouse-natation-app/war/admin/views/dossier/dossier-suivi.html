@@ -44,7 +44,10 @@
 	</div>
 	
 	<div class="form-group">
-		<label class="col-md-12 control-label">Mode de paiement : {{dossier.principal.modepaiement}}&bnsp;{{dossier.principal.numeropaiement}}</label>
+		<div ng-repeat="paiement in getPaiement()">
+		<label class="col-md-12 control-label">
+		Mode de paiement : {{paiement.first}}&nbsp;{{paiement.second}}</label>
+		</div>
 	</div>
 	
 	<div class="form-group">

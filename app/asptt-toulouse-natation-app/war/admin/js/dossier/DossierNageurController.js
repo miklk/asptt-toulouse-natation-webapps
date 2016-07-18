@@ -6,6 +6,7 @@ var dossierNageurController = angular.module('DossierNageurController', ['ngRout
 dossierNageurController.controller('DossierNageurController', ['$http', '$scope', '$location', '$filter', '$routeParams', 'DossierService', 'GroupeService', 'SlotService', function($http, $scope, $location, $filter, $routeParams, DossierService, GroupeService, SlotService) {
 	$scope.cspList = ['Scolaire', 'Agriculteurs exploitants', 'Artisans, commerçants et chefs d\'entreprise', 'Cadres et professions intellectuelles supérieures','Professions Intermédiaires', 'Employés', 'Ouvriers', 'Retraités', 'Sans activité professionnelle'];
 	
+	$scope.paiementLoaded = null;
 	DossierService.findOne.query({'dossier': $routeParams.dossierId}, function(data) {
 		$scope.dossier = data;
 		
@@ -164,6 +165,18 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 		       });
 		}
 	};
+	
+	$scope.getPaiement = function() {
+		var paiement = new Object();
+		if($scope.dossier && $scope.paiementLoaded == null) {
+			paiement = angular.fromJson($scope.dossier.principal.paiement);
+			console.log(paiement);
+			if(paiement.length > 0) {
+				$scope.paiementLoaded = paiement;	
+			}
+		}
+		return $scope.paiementLoaded;
+	}
 	
 	
 }]);

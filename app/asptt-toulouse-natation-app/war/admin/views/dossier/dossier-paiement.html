@@ -1,6 +1,6 @@
 <div class="modal fade" id="dossier-paiement-popup">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content" style="padding:5%">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
         <h4 class="modal-title">Réception du paiement</h4>
@@ -8,15 +8,19 @@
       <div class="modal-body">
         <form class="form-horizontal">
             <div class="form-group">
+            	<label for="statutPaiement">Statut du paiement</label>
 				<select class="form-control" name="statutPaiement" ng-model="dossierPaiementParameters.statutPaiement" ng-options="statut as statut for statut in paiementStatus">
 				</select>
             </div>
             <div class="form-group">
-				<select class="form-control" name="modePaiement" ng-model="dossierPaiementParameters.modePaiement" ng-options="modePaiement as modePaiement for modePaiement in modePaiements">
+            <label for="">Mode de paiement</label>
+            	<div ng-repeat="paiement in dossierPaiementParameters.paiement">
+				<select class="form-control" name="modePaiement" ng-model="paiement.first" ng-options="modePaiement as modePaiement for modePaiement in modePaiements">
 				</select>
-            </div>
-            <div class="form-group" ng-show="dossierPaiementParameters.modePaiement != 'ESPECES'">
-				Numéro des chèques séparés par , : <input type="text" class="form-control" id="numeroPaiement" ng-model="dossierPaiementParameters.numeroPaiement" />
+				<div ng-show="paiement.first != 'ESPECES'">
+				Numéro des chèques séparés par , : <input type="text" class="form-control" id="numeroPaiement" ng-model="paiement.second" />
+				</div>
+				</div>
             </div>
             <div class="form-group">
                 <label for="montantReel" class="col-md-3 control-label">Montant réel payé</label>

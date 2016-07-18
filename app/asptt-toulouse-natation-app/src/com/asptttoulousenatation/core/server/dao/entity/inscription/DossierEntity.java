@@ -84,6 +84,7 @@ public class DossierEntity implements IEntity {
 	private Integer montantreel;
 	private String modepaiement;
 	private String numeroPaiement;
+	private String paiement;
 	
 	public DossierEntity() {
 		reminder = false;
@@ -376,6 +377,14 @@ public class DossierEntity implements IEntity {
 		this.numeroPaiement = numeroPaiement;
 	}
 
+	public String getPaiement() {
+		return paiement;
+	}
+
+	public void setPaiement(String paiement) {
+		this.paiement = paiement;
+	}
+
 	@PreUpdate
 	public void onUpdate() {
 		toUpperCase();
@@ -414,6 +423,7 @@ public class DossierEntity implements IEntity {
 	public void copyAnnuler(DossierEntity copied) {
 		copied.setComment(getComment());
 		copied.setEmail(getEmail());
+		copied.setPaiement(paiement);
 		copied.setMontantreel(getMontantreel());
 		copied.setMotdepasse(getMotdepasse());
 		copied.setParent1Nom(getParent1Nom());
