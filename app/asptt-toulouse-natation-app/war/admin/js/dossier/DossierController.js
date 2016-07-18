@@ -126,6 +126,7 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
     		   alert("Paiement enregistré.");
     		   $('#dossier-paiement-popup').modal('hide');
     		   $rootScope.isLoading = false;
+    		   $scope.search();
 	    	   
 	       })
 	        .error(function(data, status, headers, config) {
@@ -158,6 +159,7 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
     		   alert("Créneaux modifiés avec succès.");
     		   $('#dossier-creneaux-popup').modal('hide');
     		   $rootScope.isLoading = false;
+    		   $scope.search();
 	       })
 	        .error(function(data, status, headers, config) {
 	          alert("Erreur");
@@ -167,6 +169,7 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	$scope.certificatRecu = function(dossier) {
 		DossierService.certificat.query({nageur: dossier.nageur.id}, function(data) {
 			alert("Mise à jour avec succès");
+			$scope.search();
 		});
 	}
 	
@@ -188,6 +191,7 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
     		   $scope.editCommentaire = false;
     		   $('#dossier-comment-popup').modal('hide');
     		   $rootScope.isLoading = false;
+    		   $scope.search();
 	       })
 	        .error(function(data, status, headers, config) {
 	          alert("Erreur");
@@ -197,6 +201,7 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	$scope.relancer = function(dossier) {
 		DossierService.relancer.query({dossier: dossier.dossierId}, function(data) {
 			alert("E-mail de relance envoyé avec succès");
+			$scope.search();
 		});
 	}
 	
@@ -204,12 +209,14 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 		var selectedDossiers = getSelectedDossiers();
 		DossierService.relancer.query({dossier: -1}, selectedDossiers, function(data) {
 			alert("E-mail de relance envoyé avec succès");
+			$scope.search();
 		});
 	}
 	
 	$scope.attente = function(dossier) {
 		DossierService.attente.query({dossier: dossier.dossierId}, function(data) {
 			alert("Dossier mis en attente (Si c'est une famille tous les dossiers sont en attentes)");
+			$scope.search();
 		});
 	}
 	
