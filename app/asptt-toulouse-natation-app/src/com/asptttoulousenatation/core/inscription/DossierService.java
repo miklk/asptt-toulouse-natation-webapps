@@ -75,6 +75,7 @@ import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurPhotoD
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.util.CreneauBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.datastore.Blob;
 
@@ -1325,4 +1326,35 @@ public class DossierService {
 		LOG.log(Level.INFO, "init saison #" + count);
 		return count;
 	}
+	
+	/*
+	@Path("/init-paiement")
+	@GET
+	public int setPaiement() {
+		int count = 0;
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(2);
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.INITIALISE.name(),
+				Operator.NOT_EQUAL));
+		criteria.add(new CriterionDao<String>(DossierEntityFields.PAIEMENT, null, Operator.NULL));
+		List<DossierEntity> dossiers = dossierDao.find(criteria);
+		for (DossierEntity dossier : dossiers) {
+			try {
+				if (StringUtils.isNotBlank(dossier.getModepaiement())) {
+					List<CoupleValue<String, String>> paiement = new ArrayList<>(1);
+					paiement.add(
+							new CoupleValue<String, String>(dossier.getModepaiement(), dossier.getNumeroPaiement()));
+					ObjectMapper mapper = new ObjectMapper();
+					dossier.setPaiement(mapper.writeValueAsString(paiement));
+					dossier.setModepaiement(null);
+					dossier.setNumeroPaiement(null);
+					dossierDao.save(dossier);
+					count++;
+				}
+			} catch (JsonProcessingException e) {
+				LOG.log(Level.WARNING, "Impossible de copier dossier #" + dossier.getId());
+			}
+
+		}
+		return count;
+	}*/
 }

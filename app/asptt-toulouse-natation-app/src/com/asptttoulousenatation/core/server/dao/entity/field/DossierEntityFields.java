@@ -9,6 +9,7 @@ public enum DossierEntityFields implements IEntityFields {
 	STATUT(String.class),
 	EMAILSECONDAIRE(String.class),
 	SAISON(Long.class),
+	PAIEMENT(String.class),
 	;
 	
 	private Class<? extends Object> clazz;

@@ -82,8 +82,6 @@ public class DossierEntity implements IEntity {
 	private String comment;
 	private String statut;
 	private Integer montantreel;
-	private String modepaiement;
-	private String numeroPaiement;
 	private String paiement;
 	
 	public DossierEntity() {
@@ -359,24 +357,6 @@ public class DossierEntity implements IEntity {
 		this.saison = saison;
 	}
 	
-
-	public String getModepaiement() {
-		return modepaiement;
-	}
-
-	public void setModepaiement(String modepaiement) {
-		this.modepaiement = modepaiement;
-	}
-	
-
-	public String getNumeroPaiement() {
-		return numeroPaiement;
-	}
-
-	public void setNumeroPaiement(String numeroPaiement) {
-		this.numeroPaiement = numeroPaiement;
-	}
-
 	public String getPaiement() {
 		return paiement;
 	}
