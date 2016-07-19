@@ -13,13 +13,13 @@
 				</select>
             </div>
             <div class="form-group">
-            <label for="">Mode de paiement</label>
-            	<div ng-repeat="paiement in dossierPaiementParameters.paiement">
-				<select class="form-control" name="modePaiement" ng-model="paiement.first" ng-options="modePaiement as modePaiement for modePaiement in modePaiements">
-				</select>
-				<div ng-show="paiement.first != 'ESPECES'">
-				Numéro des chèques séparés par , : <input type="text" class="form-control" id="numeroPaiement" ng-model="paiement.second" />
-				</div>
+            	<label for="">Mode de paiement</label>&nbsp;<button type="button" class="btn btn-success btn-xs" title="Ajouter un mode de paiement" ng-click="addModePaiement()"><span class="glyphicon glyphicon-plus"></span></button>
+            	<div style="margin-top: 1%" ng-repeat="paiement in dossierPaiementParameters.paiement">
+					<label>Mode de paiement numéro {{$index + 1}}</label><select class="form-control" name="modePaiement" ng-model="paiement.first" ng-options="modePaiement as modePaiement for modePaiement in modePaiements">
+					</select>
+					<div ng-show="paiement.first != 'ESPECES'">
+					Numéro des chèques séparés par , : <input type="text" class="form-control" id="numeroPaiement" ng-model="paiement.second" />
+					</div>
 				</div>
             </div>
             <div class="form-group">

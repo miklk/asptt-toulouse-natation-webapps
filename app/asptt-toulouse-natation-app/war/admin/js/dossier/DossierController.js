@@ -137,6 +137,13 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	       });
 	}
 	
+	$scope.addModePaiement = function() {
+		$scope.dossierPaiementParameters.paiement.push({
+					first: 'CHEQUES',
+					second : '',
+				});
+	}
+	
 	$scope.displayComment = function(dossier) {
 		$scope.currentCommentaire = dossier.comment;
 		 $('#dossier-comment-popup').modal();
