@@ -22,6 +22,7 @@ import com.asptttoulousenatation.core.adherent.AdherentBeanTransformer;
 import com.asptttoulousenatation.core.groupe.SlotUi;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
+import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
@@ -49,7 +50,12 @@ public class AdherentStatService {
 		AdherentSexeAgeResult result = new AdherentSexeAgeResult();
 		int currentMajeur = DateTime.now().year().get() - 18;
 
-		List<DossierNageurEntity> adherents = nageurDao.getAll();
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Long>(
+				DossierNageurEntityFields.SAISON, 1L,
+				Operator.EQUAL));
+		List<DossierNageurEntity> adherents = nageurDao.find(criteria);
 		result.setNbAdherents(adherents.size());
 		SexeAgeStatBean homme = new SexeAgeStatBean();
 		homme.setSexe("Homme");
@@ -182,9 +188,14 @@ public class AdherentStatService {
 	public AdherentFamilleStatResult getFamilles() {
 		AdherentFamilleStatResult result = new AdherentFamilleStatResult();
 
-		List<DossierEntity> dossiers = dao.getAll();
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<Long>(
+				DossierEntityFields.SAISON, 1L,
+				Operator.EQUAL));
+		List<DossierEntity> dossiers = dao.find(criteria);
 		for (DossierEntity dossier : dossiers) {
-			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+			criteria = new ArrayList<CriterionDao<? extends Object>>(
 					1);
 			criteria.add(new CriterionDao<Long>(
 					DossierNageurEntityFields.DOSSIER, dossier.getId(),
