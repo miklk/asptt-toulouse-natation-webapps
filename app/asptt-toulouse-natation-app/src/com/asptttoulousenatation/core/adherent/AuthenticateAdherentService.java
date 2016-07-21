@@ -177,57 +177,59 @@ public class AuthenticateAdherentService {
 	@GET
 	public NouveauPasswordResult motDePasse(@QueryParam("email") String pEmail) {
 		NouveauPasswordResult result = new NouveauPasswordResult();
-		//Test existence de l'adresse e-mail
-		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL,
-				pEmail, Operator.EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-				1L, Operator.EQUAL));
-		List<DossierEntity> entities = dao.find(criteria);
-		if(CollectionUtils.isNotEmpty(entities)) {
-			result.setExist(true);
-		} else {
-			//Determine mot de passee
-			String code = RandomStringUtils.randomNumeric(4);
-			DossierEntity nouveau = new DossierEntity();
-			nouveau.setSaison(1L);
-			nouveau.setEmail(pEmail);
-			nouveau.setMotdepasse(code);
-			DossierEntity nouveauCreated = dao.save(nouveau);
-			
-			DossierNageurEntity enfant = new DossierNageurEntity();
-			enfant.setSaison(1L);
-			enfant.setDossier(nouveauCreated.getId());
-			enfant.setNouveau(true);
-			dossierNageurDao.save(enfant).getId();
-			
-			try {
-				Properties props = new Properties();
-				Session session = Session.getDefaultInstance(props, null);
-
-				Multipart mp = new MimeMultipart();
-				MimeBodyPart htmlPart = new MimeBodyPart();
-				String msgBody = "Madame, Monsieur,<br />"
-						+ "Vous pouvez maintenant accéder au formulaire d'inscription en utilisant le code suivant: "
-						+ "<b>" + nouveau.getMotdepasse() + "</b>"
-						+ ".<br />"
-						+ "<a href=\"http://www.asptt-toulouse-natation.com/#/page/Inscription\">Inscription en ligne - ASPTT Toulouse Natation</a>"
-						+ "<p>Sportivement,<br />ASPTT Toulouse Natation</p>";
-
-				htmlPart.setContent(msgBody, "text/html");
-				mp.addBodyPart(htmlPart);
-				MimeMessage msg = new MimeMessage(session);
-				msg.setFrom(new InternetAddress(
-						"webmaster@asptt-toulouse-natation.com",
-						"ASPTT Toulouse Natation"));
-				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-						nouveau.getEmail()));
-				msg.setSubject("Votre compte web a été créé.", "UTF-8");
-				msg.setContent(mp);
-				Transport.send(msg);
-			} catch (MessagingException | UnsupportedEncodingException e) {
-				LOG.log(Level.SEVERE, "Impossible d'envoyer le mot de passe par e-mail", e);
+		if(StringUtils.isNotBlank(pEmail)) {
+			//Test existence de l'adresse e-mail
+			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL,
+					pEmail, Operator.EQUAL));
+			criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+					1L, Operator.EQUAL));
+			List<DossierEntity> entities = dao.find(criteria);
+			if(CollectionUtils.isNotEmpty(entities)) {
+				result.setExist(true);
+			} else {
+				//Determine mot de passee
+				String code = RandomStringUtils.randomNumeric(4);
+				DossierEntity nouveau = new DossierEntity();
+				nouveau.setSaison(1L);
+				nouveau.setEmail(pEmail);
+				nouveau.setMotdepasse(code);
+				DossierEntity nouveauCreated = dao.save(nouveau);
+				
+				DossierNageurEntity enfant = new DossierNageurEntity();
+				enfant.setSaison(1L);
+				enfant.setDossier(nouveauCreated.getId());
+				enfant.setNouveau(true);
+				dossierNageurDao.save(enfant).getId();
+				
+				try {
+					Properties props = new Properties();
+					Session session = Session.getDefaultInstance(props, null);
+	
+					Multipart mp = new MimeMultipart();
+					MimeBodyPart htmlPart = new MimeBodyPart();
+					String msgBody = "Madame, Monsieur,<br />"
+							+ "Vous pouvez maintenant accéder au formulaire d'inscription en utilisant le code suivant: "
+							+ "<b>" + nouveau.getMotdepasse() + "</b>"
+							+ ".<br />"
+							+ "<a href=\"http://www.asptt-toulouse-natation.com/#/page/Inscription\">Inscription en ligne - ASPTT Toulouse Natation</a>"
+							+ "<p>Sportivement,<br />ASPTT Toulouse Natation</p>";
+	
+					htmlPart.setContent(msgBody, "text/html");
+					mp.addBodyPart(htmlPart);
+					MimeMessage msg = new MimeMessage(session);
+					msg.setFrom(new InternetAddress(
+							"webmaster@asptt-toulouse-natation.com",
+							"ASPTT Toulouse Natation"));
+					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+							nouveau.getEmail()));
+					msg.setSubject("Votre compte web a été créé.", "UTF-8");
+					msg.setContent(mp);
+					Transport.send(msg);
+				} catch (MessagingException | UnsupportedEncodingException e) {
+					LOG.log(Level.SEVERE, "Impossible d'envoyer le mot de passe par e-mail", e);
+				}
 			}
 		}
 		return result;
