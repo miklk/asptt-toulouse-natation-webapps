@@ -36,6 +36,15 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 		});
 	},
 	
+	$scope.search2 = function() {
+		$rootScope.isLoading = true;
+		DossierService.list2.query({query: $scope.query}, function(data) {
+			$scope.dossiers = data;
+			$scope.dossierCount = data.length;
+			$rootScope.isLoading = false;
+		});
+	},
+	
 	$scope.changerGroupe = function(index, dossier) {
 		$scope.dossier = dossier;
 		$scope.currentIndex = index;
@@ -297,5 +306,16 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 		ParamService.save.query('', param, function(data) {
 			
 		});
+	}
+	
+	$scope.getGroupe = function(id) {
+		if($scope.mutex == null) {
+		GroupeService.findOneById.query({'id': id}, function(groupe) {
+			console.log(groupe);
+			$scope.mutex = groupe;
+		});
+		}
+		return $scope.mutex;
+		
 	}
 }]);

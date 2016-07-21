@@ -12,6 +12,9 @@ groupeServices.factory('GroupeService', ['$resource',
 		findOne: $resource('/resources/groupes/:groupe',{},{
 			query:{method:'GET', isArray: false, params: {}}
 		}),
+		findOneById: $resource('/resources/groupes/id/:id',{},{
+			query:{method:'GET', isArray: false, params: {}}
+		}),
 		remove: $resource('/resources/groupes/:groupe',{},{
 			query:{method:'DELETE', isArray: false, params: {}}
 		})

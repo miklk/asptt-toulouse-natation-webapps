@@ -175,7 +175,7 @@ public class DossierService {
 							1);
 					criteria.add(new CriterionDao<String>(DossierEntityFields.EMAILSECONDAIRE,
 							texteLibre, Operator.EQUAL));
-					criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON,
+					criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
 							1L, Operator.EQUAL));
 					
 					entities = dossierDao.find(criteria);
@@ -259,6 +259,66 @@ public class DossierService {
 		});
 		result.addAll(DossierResultTransformer.getInstance().toUi(nageurs));
 		return result;
+	}
+	
+	@Path("/find2")
+	@GET
+	@Consumes("application/json")
+	public List<CoupleValue<DossierEntity, List<DossierNageurEntity>>> find(@QueryParam("query") String texteLibre) {
+		List<CoupleValue<DossierEntity, List<DossierNageurEntity>>> results = new ArrayList<>();
+		
+		if(StringUtils.isNotBlank(texteLibre)) {
+			if(texteLibre.contains("@")) {
+				List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+						1);
+				criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL,
+						texteLibre, Operator.EQUAL));
+				criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+						1L, Operator.EQUAL));
+				List<DossierEntity> entities = dossierDao.find(criteria);
+				if(CollectionUtils.isEmpty(entities)) {
+					criteria = new ArrayList<CriterionDao<? extends Object>>(
+							1);
+					criteria.add(new CriterionDao<String>(DossierEntityFields.EMAILSECONDAIRE,
+							texteLibre, Operator.EQUAL));
+					criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON,
+							1L, Operator.EQUAL));
+					
+					entities = dossierDao.find(criteria);
+				}
+				for(DossierEntity dossier: entities) {
+					List<DossierNageurEntity> nageursDossier = dao.findByDossier(dossier.getId());
+					CoupleValue<DossierEntity, List<DossierNageurEntity>> result = new CoupleValue<>();
+					result.setFirst(dossier);
+					results.add(result);
+					if(CollectionUtils.isNotEmpty(nageursDossier)) {
+						result.setSecond(nageursDossier);
+					}
+				}
+			} else {
+				List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<>(
+						2);
+				criteriaNageur.add(new CriterionDao<String>(DossierNageurEntityFields.NOM,
+						texteLibre.toUpperCase(), Operator.EQUAL));
+				criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON,
+						1L, Operator.EQUAL));
+				List<DossierNageurEntity> nageurs = dao.find(criteriaNageur);
+				Map<Long, CoupleValue<DossierEntity, List<DossierNageurEntity>>> dossierVsNageurMap = new HashMap<>();
+				for(DossierNageurEntity nageur: nageurs) {
+					DossierEntity dossier = dossierDao.get(nageur.getDossier());
+					CoupleValue<DossierEntity, List<DossierNageurEntity>> result;
+					if(dossierVsNageurMap.containsKey(dossier.getId())) {
+						result = dossierVsNageurMap.get(dossier.getId());
+					} else {
+						result = new CoupleValue<DossierEntity, List<DossierNageurEntity>>(dossier, new ArrayList<DossierNageurEntity>());
+						dossierVsNageurMap.put(dossier.getId(), result);
+					}
+					result.getSecond().add(nageur);
+				}
+				results.addAll(dossierVsNageurMap.values());
+			}
+		}
+		return results;
 	}
 	
 	@Path("{dossier}")
@@ -1357,4 +1417,20 @@ public class DossierService {
 		}
 		return count;
 	}*/
+	
+	@Path("/cle-empty")
+	@GET
+	public int cleanEmpty() {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		criteria.add(new CriterionDao<Date>(DossierEntityFields.EMAIL, null,
+				Operator.NULL));
+		List<DossierEntity> entities = dossierDao.find(criteria);
+		int count = 0;
+		for (DossierEntity dossier : entities) {
+			dossierDao.delete(dossier);
+			count++;
+		}
+		LOG.log(Level.WARNING, count + " dossiers clean");
+		return count;
+	}
 }

@@ -90,6 +90,10 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 			templateUrl: 'views/dossier/dossiers.html',
 			access: 'ACCESS_DOSSIERS'
 		}).
+		when('/dossiers-avance', {
+			templateUrl: 'views/dossier/dossiers-avance.html',
+			access: 'ACCESS_DOSSIERS'
+		}).
 		when('/dossier/:dossierId', {
 			templateUrl: 'views/dossier/dossier.html',
 			controller: 'DossierNageurController',

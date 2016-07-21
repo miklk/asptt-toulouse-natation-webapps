@@ -105,6 +105,13 @@ public class GroupeService {
 		return result;
 	}
 	
+	@Path("/id/{id}")
+	@GET
+	public GroupUi getGroupe(@PathParam("id") Long id) {
+		final GroupUi result = transformer.toUi(dao.get(id));
+		return result;
+	}
+	
 	@Path("/create")
 	@POST
 	public GroupeCreateResult create(GroupUi action) {
