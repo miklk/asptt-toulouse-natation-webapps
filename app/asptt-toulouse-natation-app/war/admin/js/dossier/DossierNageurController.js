@@ -119,10 +119,15 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 	$scope.initPaiement = function(dossier) {
 		$scope.paiementStatus = ['PAIEMENT_PARTIEL', 'PAIEMENT_COMPLET'];
 		$scope.dossierPaiementParameters = {
-				dossierId: dossier.principal.id,
+				dossierId: dossier.dossierId,
 				statutPaiement: 'PAIEMENT_COMPLET',
-				montantReel: dossier.principal.montantreel,
-				commentaire: dossier.principal.commentaire
+				paiement:  [{
+					first: 'CHEQUES',
+					second : '',
+				}],
+				
+				montantReel: dossier.montantreel,
+				commentaire: dossier.comment
 		};
 		$('#dossier-paiement-popup').modal();
 	}
@@ -169,14 +174,22 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 	$scope.getPaiement = function() {
 		var paiement = new Object();
 		if($scope.dossier && $scope.paiementLoaded == null) {
-			paiement = angular.fromJson($scope.dossier.principal.paiement);
-			console.log(paiement);
-			if(paiement.length > 0) {
-				$scope.paiementLoaded = paiement;	
+			if($scope.dossier.principal.paiement) {
+				paiement = angular.fromJson($scope.dossier.principal.paiement);
+				console.log(paiement);
+				if(paiement.length > 0) {
+					$scope.paiementLoaded = paiement;	
+				}
 			}
 		}
 		return $scope.paiementLoaded;
 	}
 	
+	$scope.addModePaiement = function() {
+		$scope.dossierPaiementParameters.paiement.push({
+					first: 'CHEQUES',
+					second : '',
+				});
+	}
 	
 }]);
