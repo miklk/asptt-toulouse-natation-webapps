@@ -41,4 +41,9 @@
 		<description>Rappel certificat</description>
 		<schedule>29 of aug 04:00</schedule>
 	</cron>
+	<cron>
+		<url>/resources/dossiers/clean-empty</url>
+		<description>Suppression sans e-mail</description>
+		<schedule>every day 05:00</schedule>
+	</cron>
 </cronentries>
