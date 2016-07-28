@@ -17,57 +17,57 @@
 	<div class="row" ng-show="dossiers">
 		<p><span class="badge">{{dossierCount}} résultats</span></p>
 		
-		<div class="panel panel-default" ng-repeat="dossier in dossiers" ng-class="{'panel-warning': dossier.first.etat =='PREINSCRIT'}">
+		<div class="panel panel-default" ng-repeat="dossier in dossiers track by $index" ng-class="{'panel-warning': dossier.first.etat =='PREINSCRIT'}">
 			<div class="panel-heading"><a href="#/dossier/{{dossier.first.id}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a> {{dossier.first.email}} {{dossier.first.motdepasse}} <span style="margin-left:30%">{{dossier.first.statut}}</span> {{dossier.first.montant}} <div class="pull-right">{{dossier.first.updated | date: 'dd MMM yyyy HH:mm:ss'}}</div></div>
 			<div class="panel-body">{{dossier.first.commentaire}}</div>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Actions</th>
-						<th>Nom</th>
-						<th>Prénom</th>
-						<th>Date de naissance</th>
-						<th>Groupe</th>
-						<th>Créneaux</th>
-						<th>Tarif</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="nageur in dossier.second | orderBy:'nom'">
-						<td>
-							<div class="btn-group">
-							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-								<span class="glyphicon glyphicon-edit"></span>
-							</button>
-							<ul class="dropdown-menu">
-								<li ng-hide="dossier.first.etat == 'INSCRIT'"><a href="" ng-click="relancer(dossier)">Relancer</a></li>
-								<li ng-hide="dossier.first.etat == 'ATTENTE'"><a href="" ng-click="attente(dossier)">Mettre en attente</a></li>
-								<li><a href="" ng-click="remove(index, dossier)">Supprimer</a></li>
-								<li><a href="" ng-click="removeNageur(index, dossier)">Supprimer dossier du nageur</a></li>
-								<li><a href="" ng-click="annulerNageur(dossier)">Annuler le dossier du nageur</a></li>
-								<li class="divider"></li>
-								<li><a href="" ng-click="initPaiement(dossier)" ng-hide="dossier.first.etat == 'PAIEMENT_COMPLET' || dossier.first.etat == 'INSCRIT'">Paiement reçu</a></li>
-								<li><a href="" ng-click="certificatRecu(dossier)" ng-hide="nageur.certificat">Certificat reçu</a></li>
-								<li><a href="" ng-click="initCommentaire(dossier)">Ajouter un commentaire</a></li>
-								<li class="divider"></li>
-								<li><a href="" ng-click="changerGroupe(index, dossier)">Changer de groupe</a></li>
-								<li><a href="" ng-click="initCreneaux(dossier)">Changer de créneau</a></li>
-								<li class="divider"></li>
-								<li><a href="/resources/inscription/print/{{dossier.nageur.id}}" download>Bulletin d'adhésion</a></li>
-								<li><a href="">Attestation de paiement (en cours...)</a></li>
-							</ul>
-							</div>
-						</td>
-						<td>{{nageur.nom}}</td>
-						<td>{{nageur.prenom}}</td>
-						<td>{{nageur.naissance  | date: 'dd/MM/yyyy'}}</td>
-						<td>{{getGroupe(nageur.groupe).title}}</td>
-						<td>
-							<span ng-repeat="creneau in dossier.creneaux">{{creneau}}<br /></span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Actions</th>
+							<th>Nom</th>
+							<th>Prénom</th>
+							<th>Date de naissance</th>
+							<th>Groupe</th>
+							<th>Créneaux</th>
+							<th>Tarif</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="nageur in dossier.second track by $index">
+							<td>
+								<div class="btn-group">
+									<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+										<span class="glyphicon glyphicon-edit"></span>
+									</button>
+									<ul class="dropdown-menu">
+										<li ng-hide="dossier.first.etat == 'INSCRIT'"><a href="" ng-click="relancer(dossier)">Relancer</a></li>
+										<li ng-hide="dossier.first.etat == 'ATTENTE'"><a href="" ng-click="attente(dossier)">Mettre en attente</a></li>
+										<li><a href="" ng-click="remove(index, dossier)">Supprimer</a></li>
+										<li><a href="" ng-click="removeNageur(index, dossier)">Supprimer dossier du nageur</a></li>
+										<li><a href="" ng-click="annulerNageur(dossier)">Annuler le dossier du nageur</a></li>
+										<li class="divider"></li>
+										<li><a href="" ng-click="initPaiement(dossier)" ng-hide="dossier.first.etat == 'PAIEMENT_COMPLET' || dossier.first.etat == 'INSCRIT'">Paiement reçu</a></li>
+										<li><a href="" ng-click="certificatRecu(dossier)" ng-hide="nageur.certificat">Certificat reçu</a></li>
+										<li><a href="" ng-click="initCommentaire(dossier)">Ajouter un commentaire</a></li>
+										<li class="divider"></li>
+										<li><a href="" ng-click="changerGroupe(index, dossier)">Changer de groupe</a></li>
+										<li><a href="" ng-click="initCreneaux(dossier)">Changer de créneau</a></li>
+										<li class="divider"></li>
+										<li><a href="/resources/inscription/print/{{dossier.nageur.id}}" download>Bulletin d'adhésion</a></li>
+										<li><a href="">Attestation de paiement (en cours...)</a></li>
+								</ul>
+								</div>
+							</td>
+							<td>{{nageur.nom}}</td>
+							<td>{{nageur.prenom}}</td>
+							<td>{{nageur.naissance  | date: 'dd/MM/yyyy'}}</td>
+							<td>{{getGroupe(nageur.groupe).title}}</td>
+							<td>
+								{{getCreneaux(creneau)}}
+							</td>
+						</tr>
+					</tbody>
+				</table>
 		</div>
 	</div>
 

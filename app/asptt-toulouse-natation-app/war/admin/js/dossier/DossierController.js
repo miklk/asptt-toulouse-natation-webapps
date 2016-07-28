@@ -309,13 +309,29 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	}
 	
 	$scope.getGroupe = function(id) {
-		if($scope.mutex == null) {
-		GroupeService.findOneById.query({'id': id}, function(groupe) {
-			console.log(groupe);
-			$scope.mutex = groupe;
+		return $scope.groupes.find(function(element) {
+			return element.id == id;
 		});
-		}
-		return $scope.mutex;
 		
 	}
+	
+	$scope.getCreneaux = function(list) {
+		if(list != null) {
+			var creneaux = list.split(";");
+			if($scope.mutexC == null && $scope.mutex != null) {
+				$scope.mutexC = "";
+				angular.forEach(groupe.slots, function(creneau) {
+					if(creneaux.indexOf(creneau.id) != -1) {
+						$scope.mutexC = $scope.creneauLabel(creneau) + "<br />";		
+					}
+				});
+				console.log($scope.mutexC);
+			}
+			return $scope.mutexC;
+		} else {
+			return "";
+		}
+		
+	}
+	
 }]);

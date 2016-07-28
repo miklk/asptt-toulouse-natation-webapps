@@ -1433,4 +1433,24 @@ public class DossierService {
 		LOG.log(Level.WARNING, count + " dossiers clean");
 		return count;
 	}
+	
+	@Path("/fix-inscrit")
+	@GET
+	public int fixInscrit() {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.PAIEMENT_COMPLET.name(),
+				Operator.EQUAL));
+		List<DossierEntity> entities = dossierDao.find(criteria);
+		int count = 0;
+		for (DossierEntity dossier : entities) {
+			if(hasAllCertificats(dossier)) {
+				count++;
+				dossier.setStatut(DossierStatutEnum.INSCRIT.name());
+				dossierDao.save(dossier);
+				sendConfirmation(dossier);
+			}
+		}
+		LOG.log(Level.WARNING, count + " dossiers inscrits");
+		return count;
+	}
 }
