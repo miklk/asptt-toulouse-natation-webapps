@@ -502,7 +502,17 @@ public class DossierService {
 			for (DossierCertificatEntity certificat : certificats) {
 				certificatDao.delete(certificat);
 			}
+			
+			//Update dossier statuts
+			DossierEntity dossier = dossierDao.get(nageur.getDossier());
 			dao.delete(nageur);
+			
+			if(DossierStatutEnum.PAIEMENT_COMPLET.equals(DossierStatutEnum.valueOf(dossier.getStatut()))
+					&& hasAllCertificats(dossier)) {
+				dossier.setStatut(DossierStatutEnum.INSCRIT.name());
+				dossierDao.save(dossier);
+				sendConfirmation(dossier);
+			}
 		}
 	}
 	

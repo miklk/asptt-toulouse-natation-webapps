@@ -23,6 +23,11 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 		$scope.groupes.push(sansGroupe);
 	});
 	
+	SlotService.allPerGroup.query({}, function(data) {
+		$scope.creneaux = data;
+		console.log($scope.creneaux);
+	});
+	
 	$scope.dossierStatus = ['INITIALISE','PREINSCRIT', 'PAIEMENT_PARTIEL', 'PAIEMENT_COMPLET', 'INSCRIT', 'ANNULE', 'EXPIRE', 'ATTENTE'];
 	$scope.certificat = false;
 	$scope.showEmail = false;
@@ -315,23 +320,28 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 		
 	}
 	
-	$scope.getCreneaux = function(list) {
+	$scope.getCreneaux = function(group, list) {
+		var result = "";
 		if(list != null) {
 			var creneaux = list.split(";");
-			if($scope.mutexC == null && $scope.mutex != null) {
-				$scope.mutexC = "";
-				angular.forEach(groupe.slots, function(creneau) {
-					if(creneaux.indexOf(creneau.id) != -1) {
-						$scope.mutexC = $scope.creneauLabel(creneau) + "<br />";		
-					}
-				});
-				console.log($scope.mutexC);
-			}
-			return $scope.mutexC;
+			angular.forEach($scope.creneaux[group], function(creneau) {
+				if(creneaux.indexOf(creneau.id + "") != -1) {
+					result = $scope.creneauLabel(creneau) + "\n";		
+				}
+			});
 		} else {
-			return "";
+			result = "Pas de créneaux";
 		}
-		
+		return result;
+	}
+	
+	$scope.getMontantDossier = function(nageurs) {
+		var montant = 0;
+		angular.forEach(nageurs, function(nageur) {
+			montant = montant + nageur.tarif;
+			console.log(montant);
+		});
+		return montant;
 	}
 	
 }]);

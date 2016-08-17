@@ -18,7 +18,7 @@
 		<p><span class="badge">{{dossierCount}} résultats</span></p>
 		
 		<div class="panel panel-default" ng-repeat="dossier in dossiers track by $index" ng-class="{'panel-warning': dossier.first.etat =='PREINSCRIT'}">
-			<div class="panel-heading"><a href="#/dossier/{{dossier.first.id}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a> {{dossier.first.email}} {{dossier.first.motdepasse}} <span style="margin-left:30%">{{dossier.first.statut}}</span> {{dossier.first.montant}} <div class="pull-right">{{dossier.first.updated | date: 'dd MMM yyyy HH:mm:ss'}}</div></div>
+			<div class="panel-heading"><a href="#/dossier/{{dossier.first.id}}" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span></a> {{dossier.first.email}} {{dossier.first.motdepasse}} <span style="margin-left:30%">{{dossier.first.statut}}</span> {{getMontantDossier(dossier.second)}} euros <div class="pull-right">{{dossier.first.updated | date: 'dd MMM yyyy HH:mm:ss'}}</div></div>
 			<div class="panel-body">{{dossier.first.commentaire}}</div>
 				<table class="table">
 					<thead>
@@ -62,9 +62,8 @@
 							<td>{{nageur.prenom}}</td>
 							<td>{{nageur.naissance  | date: 'dd/MM/yyyy'}}</td>
 							<td>{{getGroupe(nageur.groupe).title}}</td>
-							<td>
-								{{getCreneaux(creneau)}}
-							</td>
+							<td>{{getCreneaux(nageur.groupe, nageur.creneaux)}}</td>
+							<td>{{nageur.tarif}} euros</td>
 						</tr>
 					</tbody>
 				</table>

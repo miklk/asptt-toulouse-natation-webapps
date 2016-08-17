@@ -3,7 +3,9 @@ package com.asptttoulousenatation.core.groupe;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
@@ -182,6 +184,26 @@ public class CreneauService {
 
 		CreneauxBean result = new CreneauxBean();
 		result.setCreneaux(lUis);
+		return result;
+	}
+	
+	@GET
+	@Path("/all-per-group")
+	public Map<Long, List<SlotUi>> getAllPerGroup() {
+		List<SlotEntity> entities = dao.getAll();
+		Map<Long, List<SlotUi>>  result = new HashMap<>();
+		for(SlotEntity entity : entities) {
+			if(entity.getGroup() != null) {
+				final List<SlotUi> uis;
+				if(result.containsKey(entity.getGroup())) {
+					uis = result.get(entity.getGroup());
+				} else {
+					uis = new ArrayList<>();
+					result.put(entity.getGroup(), uis);
+				}
+				uis.add(transformer.toUi(entity));
+			}
+		}
 		return result;
 	}
 	
