@@ -9,6 +9,9 @@ import javax.persistence.Query;
 
 import com.asptttoulousenatation.core.server.dao.DaoBase;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
+import com.asptttoulousenatation.core.server.dao.entity.field.SlotEntityFields;
+import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
+import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.service.EMF;
 
 public class SlotDao extends DaoBase<SlotEntity> {
@@ -16,6 +19,14 @@ public class SlotDao extends DaoBase<SlotEntity> {
 	@Override
 	public Class<SlotEntity> getEntityClass() {
 		return SlotEntity.class;
+	}
+	
+	public List<SlotEntity> findByGroup(Long group) {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		criteria.add(new CriterionDao<Long>(SlotEntityFields.GROUP, group, Operator.EQUAL));
+		List<SlotEntity> entities = find(criteria);
+		List<SlotEntity> result = new ArrayList<>(entities);
+		return result;
 	}
 	
 	public List<String> getPiscines() {

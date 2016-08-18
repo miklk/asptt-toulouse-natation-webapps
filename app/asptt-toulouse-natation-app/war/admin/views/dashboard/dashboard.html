@@ -67,11 +67,10 @@ rect:hover {  fill:blue; }
 			<div class="panel panel-primary">
 				<div class="panel-heading"><a href="#/dossiers" class="btn btn-primary">Dossiers d'inscription</a></div>
 				<div class="panel-body">
-					<p><label>Complets (inscrits):</label> {{statistiques.complets}}</p>
-					<p><label>Non payés (préinscrit, expiré):</label> {{statistiques.nonpayes}}</p>
-					<p><label>Potentiel inscription:</label> {{statistiques.potentiel}}</p>
-					<p><label>Potentiel créneaux:</label> {{statistiques.places}}</p>
-					<p><label>Total (inscrits, paiement):</label> {{statistiques.total}}</p>
+					<p><label>Inscrits :</label> {{statistiques.counts['INSCRIT']}} (dont {{statistiques.counts['PAIEMENT_COMPLET']}} payé sans certificat)</p>
+					<p><label>Non payés (préinscrit) :</label> {{statistiques.counts['PREINSCRIT']}} (dont {{statistiques.counts['EXPIRE']}} expirés)</p>
+					<p><label>Potentiel inscription :</label> {{statistiques.potentiel}}</p>
+					<p><label>Potentiel créneaux (enf) :</label> {{statistiques.places}}</p>
 					<div id="dossiers-graph"></div>
 				</div>
 			</div>

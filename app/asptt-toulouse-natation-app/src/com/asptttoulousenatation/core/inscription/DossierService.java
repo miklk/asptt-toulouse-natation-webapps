@@ -75,7 +75,6 @@ import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurPhotoD
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.util.CreneauBuilder;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.datastore.Blob;
 
@@ -821,90 +820,39 @@ public class DossierService {
 				1);
 		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
 				1L, Operator.EQUAL));
-		result.setPotentiel(dossierDao.count(criteria));
+		Map<DossierStatutEnum, Integer> counts = new HashMap<>();
+		counts.put(DossierStatutEnum.ANNULE, 0);
+		counts.put(DossierStatutEnum.ATTENTE, 0);
+		counts.put(DossierStatutEnum.EXPIRE, 0);
+		counts.put(DossierStatutEnum.INITIALISE, 0);
+		counts.put(DossierStatutEnum.INSCRIT, 0);
+		counts.put(DossierStatutEnum.PAIEMENT_COMPLET, 0);
+		counts.put(DossierStatutEnum.PAIEMENT_PARTIEL, 0);
+		counts.put(DossierStatutEnum.PREINSCRIT, 0);
 		
-		//Places disponibles
-		List<SlotEntity> creneaux = slotDao.getAll();
+		List<DossierEntity> entities = dossierDao.find(criteria);
+		result.setPotentiel(entities.size());
+		for(DossierEntity entity: entities) {
+			if(entity.getStatut() != null) {
+				DossierStatutEnum statut = DossierStatutEnum.valueOf(entity.getStatut());
+				
+					counts.put(statut, counts.get(statut) + 1);
+			}
+		}
+		result.setCounts(counts);
+		
+		// Places disponibles
+		List<GroupEntity> groupEnf = groupeDao.findEnf();
 		int places = 0;
-		for(SlotEntity creneau: creneaux) {
-			if(BooleanUtils.isFalse(creneau.getSecond()) && creneau.getPlaceDisponible() != null) {
-				places+=creneau.getPlaceDisponible();
+		for (GroupEntity group : groupEnf) {
+			List<SlotEntity> creneaux = slotDao.findByGroup(group.getId());
+			for (SlotEntity creneau : creneaux) {
+				if (BooleanUtils.isFalse(creneau.getSecond()) && creneau.getPlaceDisponible() != null) {
+					places += creneau.getPlaceDisponible();
+				}
 			}
 		}
 		result.setPlaces(places);
-		
-		//Total
-		criteria = new ArrayList<CriterionDao<? extends Object>>(
-				);
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.PREINSCRIT.name(), Operator.NOT_EQUAL));
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.EXPIRE.name(), Operator.NOT_EQUAL));
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.ANNULE.name(), Operator.NOT_EQUAL));
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.ATTENTE.name(), Operator.NOT_EQUAL));
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.INITIALISE.name(), Operator.NOT_EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-				1L, Operator.EQUAL));
-		result.setTotal(dossierDao.count(criteria));
-		
-		//Complets
-		criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.INSCRIT.name(), Operator.EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-				1L, Operator.EQUAL));
-		result.setComplets(dossierDao.count(criteria));
-		
-		
-		//Non payé
-		criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.PAIEMENT_COMPLET.name(), Operator.NOT_EQUAL));
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.PAIEMENT_PARTIEL.name(), Operator.NOT_EQUAL));
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.INSCRIT.name(), Operator.NOT_EQUAL));
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.ANNULE.name(), Operator.NOT_EQUAL));
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.INITIALISE.name(), Operator.NOT_EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-				1L, Operator.EQUAL));
-		result.setNonpayes(dossierDao.count(criteria));
-		
-		//payé
-		criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.PAIEMENT_COMPLET.name(), Operator.EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-				1L, Operator.EQUAL));
-		result.addPaye(dossierDao.count(criteria));
-		
-		criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.PAIEMENT_PARTIEL.name(), Operator.EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-				1L, Operator.EQUAL));
-		result.addPaye(dossierDao.count(criteria));
-		
-		criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.INSCRIT.name(), Operator.EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-				1L, Operator.EQUAL));
-		result.addPaye(dossierDao.count(criteria));
-		
-		result.addDossier(new StatistiqueBase("Payés", new Long(result.getPayes()).intValue()));
-		result.addDossier(new StatistiqueBase("Complets", new Long(result.getComplets()).intValue()));
-		result.addDossier(new StatistiqueBase("Non payés", new Long(result.getNonpayes()).intValue()));
 		
 		//Nageur (nouveau, ancien)
 		criteria = new ArrayList<CriterionDao<? extends Object>>(
