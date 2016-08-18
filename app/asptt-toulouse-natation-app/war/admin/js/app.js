@@ -9,7 +9,7 @@ var adminApp = angular.module('adminApp', ['ngCookies', 'ngRoute', 'angular-spin
                                            'AdherentEmailCtrl', 'AdherentsStatCtrl',
                                            'DocumentController', 'LibelleController',
                                            'SuiviNageurController', 'GroupeController',
-                                           'DossierController', 'DossierNageurController',
+                                           'DossierController', 'DossierController2', 'DossierNageurController',
                                            'CreneauStatController', 'creneauStatServices',
                                            'ExtractionController','DashboardController',
                                            'EnfController', 'enfServices',
@@ -17,7 +17,8 @@ var adminApp = angular.module('adminApp', ['ngCookies', 'ngRoute', 'angular-spin
                                            'loginServices',
                                            'AdminController', 'BoutiqueCtrl', 'OrderController', 'ActualiteController',
                                            'PageEditionController',
-                                           'GroupeEffectifController', 'RecordController', 'DossierStageController', 'dossierStageServices', 'paramServices']);
+                                           'GroupeEffectifController', 'RecordController', 'DossierStageController', 'dossierStageServices', 'paramServices',
+                                           'HomeController']);
 
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.
@@ -87,6 +88,10 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 			access: 'ACCESS_GROUPES'
 		}).
 		when('/dossiers', {
+			templateUrl: 'views/dossier/dossiers.html',
+			access: 'ACCESS_DOSSIERS'
+		}).
+		when('/dossiers/:query', {
 			templateUrl: 'views/dossier/dossiers.html',
 			access: 'ACCESS_DOSSIERS'
 		}).

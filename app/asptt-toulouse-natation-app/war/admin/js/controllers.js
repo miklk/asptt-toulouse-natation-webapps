@@ -1,5 +1,5 @@
 var adminController = angular.module('AdminController', ['ngRoute']);
-adminController.controller('AdminController', ['$rootScope', '$scope', '$cookieStore', '$http', function($rootScope, $scope, $cookieStore, $http) {
+adminController.controller('AdminController', ['$rootScope', '$scope', '$cookieStore', '$http', '$location', function($rootScope, $scope, $cookieStore, $http, $location) {
 	var token = $cookieStore.get("asptt-token");
     $rootScope.aspttToken = token;
     console.log(token);
@@ -12,5 +12,9 @@ adminController.controller('AdminController', ['$rootScope', '$scope', '$cookieS
     
 	var access = $cookieStore.get("asptt-token-access");
 	$rootScope.access = access;
+	
+	$scope.search = function() {
+		$location = "/dossiers/" + $scope.query;
+	}
 	
 }]);

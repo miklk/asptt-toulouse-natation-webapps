@@ -1,9 +1,9 @@
 /**
  * 
  */
-var dossierController = angular.module('DossierController', ['ngRoute', 'dossierServices', 'groupeServices', 'slotServices', 'paramServices']);
+var dossierController2 = angular.module('DossierController2', ['ngRoute', 'dossierServices', 'groupeServices', 'slotServices', 'paramServices']);
 
-dossierController.controller('DossierController', ['$rootScope', '$http', '$scope', '$q', '$location', '$filter', '$timeout', 'DossierService', 'GroupeService', 'SlotService', 'ParamService', function($rootScope, $http, $scope, $q, $location, $filter, $timeout, DossierService, GroupeService, SlotService, ParamService) {
+dossierController2.controller('DossierController2', ['$rootScope', '$http', '$scope', '$q', '$routeParams', '$location', '$filter', '$timeout', 'DossierService', 'GroupeService', 'SlotService', 'ParamService', function($rootScope, $http, $scope, $q, $routeParams, $location, $filter, $timeout, DossierService, GroupeService, SlotService, ParamService) {
 	$rootScope.isLoading = true;
 	let promises = {
 		param : ParamService.groupes.query({groupe: 'INSCRIPTION'}, function (data) {
@@ -31,9 +31,7 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 			console.log($scope.creneaux);
 		}).$promise
 	};
-	$q.all(promises).then(function(data) {
-		$rootScope.isLoading = false;
-	});
+	
 	
 	$scope.dossierStatus = ['INITIALISE','PREINSCRIT', 'PAIEMENT_PARTIEL', 'PAIEMENT_COMPLET', 'INSCRIT', 'ANNULE', 'EXPIRE', 'ATTENTE'];
 	$scope.certificat = false;
@@ -41,21 +39,21 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	
 	$scope.search = function() {
 		$rootScope.isLoading = true;
-		DossierService.list.query({query: $scope.query, groupe: $scope.groupe, sansGroupe: $scope.sansGroupe, dossierStatut: $scope.dossierStatut, creneau: $scope.creneau, filter_facture: $scope.facture, filter_facture2: $scope.facture2, certificat: $scope.certificat, certificat2: $scope.certificat2, certificatNon: $scope.certificatNon}, function(data) {
-			$scope.dossiers = data;
-			$scope.dossierCount = data.length;
-			$rootScope.isLoading = false;
-		});
-	},
-	
-	$scope.search2 = function() {
-		$rootScope.isLoading = true;
 		DossierService.list2.query({query: $scope.query}, function(data) {
 			$scope.dossiers = data;
 			$scope.dossierCount = data.length;
 			$rootScope.isLoading = false;
 		});
 	},
+	
+	$q.all(promises).then(function(data) {
+		$rootScope.isLoading = false;
+		$scope.query = $routeParams.query;
+		if($scope.query) {
+			$scope.search();
+		}
+	});
+	
 	
 	$scope.changerGroupe = function(index, dossier) {
 		$scope.dossier = dossier;
@@ -173,7 +171,7 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	$scope.initCreneaux = function(dossier) {
 		$scope.dossier = dossier;
 		$scope.dossierCreneauxParameters = {
-				nageurId: dossier.nageur.id,
+				nageurId: dossier.id,
 				creneaux: null
 		};
 		SlotService.list.query({groupe: dossier.nageur.groupe}, function(data) {
