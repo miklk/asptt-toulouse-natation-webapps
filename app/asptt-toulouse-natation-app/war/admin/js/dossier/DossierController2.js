@@ -35,7 +35,6 @@ dossierController2.controller('DossierController2', ['$rootScope', '$http', '$sc
 	
 	$scope.dossierStatus = ['INITIALISE','PREINSCRIT', 'PAIEMENT_PARTIEL', 'PAIEMENT_COMPLET', 'INSCRIT', 'ANNULE', 'EXPIRE', 'ATTENTE'];
 	$scope.certificat = false;
-	$scope.showEmail = false;
 	
 	$scope.search = function() {
 		$rootScope.isLoading = true;
