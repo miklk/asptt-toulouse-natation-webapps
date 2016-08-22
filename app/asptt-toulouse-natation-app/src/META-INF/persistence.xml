@@ -26,6 +26,7 @@
         <class>com.asptttoulousenatation.core.server.dao.entity.inscription.DossierCertificatEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.inscription.DossierFactureEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurPhotoEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.reference.DataUpdateEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.swimmer.SwimmerEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.swimmer.SwimmerStatEntity</class>

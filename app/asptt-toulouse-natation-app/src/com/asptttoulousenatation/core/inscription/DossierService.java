@@ -830,15 +830,6 @@ public class DossierService {
 		counts.put(DossierStatutEnum.PAIEMENT_PARTIEL, 0);
 		counts.put(DossierStatutEnum.PREINSCRIT, 0);
 		
-		List<DossierEntity> entities = dossierDao.find(criteria);
-		result.setPotentiel(entities.size());
-		for(DossierEntity entity: entities) {
-			if(entity.getStatut() != null) {
-				DossierStatutEnum statut = DossierStatutEnum.valueOf(entity.getStatut());
-				
-					counts.put(statut, counts.get(statut) + 1);
-			}
-		}
 		result.setCounts(counts);
 		
 		// Places disponibles
@@ -857,30 +848,39 @@ public class DossierService {
 		//Nageur (nouveau, ancien)
 		criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
-				DossierStatutEnum.INSCRIT.name(), Operator.EQUAL));
 		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
 				1L, Operator.EQUAL));
 		long nageurTotal = 0l;
 		int nageurNouveau = 0;
 		int nageurRenouvellement = 0;
-		for(DossierEntity dossier: dossierDao.find(criteria)) {
-			List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
-					1);
-			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
-					dossier.getId(), Operator.EQUAL));
-			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON,
-					1L, Operator.EQUAL));
-			for(DossierNageurEntity nageur: dao.find(criteriaNageur)) {
-				nageurTotal++;
-				if(BooleanUtils.isTrue(nageur.getNouveau())) {
-					nageurNouveau++;
+		List<DossierEntity> entities = dossierDao.find(criteria);
+		result.setPotentiel(entities.size());
+		for (DossierEntity dossier : entities) {
+			if (dossier.getStatut() != null) {
+				DossierStatutEnum statut = DossierStatutEnum.valueOf(dossier.getStatut());
+				if (!DossierStatutEnum.INSCRIT.name().equals(dossier.getStatut())) {
+					counts.put(statut, counts.get(statut) + 1);
 				}
-				if(BooleanUtils.isFalse(nageur.getNouveau())) {
-					nageurRenouvellement++;
+				if (DossierStatutEnum.INSCRIT.name().equals(dossier.getStatut())) {
+
+					List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
+							1);
+					criteriaNageur.add(
+							new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER, dossier.getId(), Operator.EQUAL));
+					criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, 1L, Operator.EQUAL));
+					List<DossierNageurEntity> nageurs = dao.find(criteriaNageur);
+					counts.put(statut, counts.get(statut) + nageurs.size());
+					for (DossierNageurEntity nageur : nageurs) {
+						nageurTotal++;
+						if (BooleanUtils.isTrue(nageur.getNouveau())) {
+							nageurNouveau++;
+						}
+						if (BooleanUtils.isFalse(nageur.getNouveau())) {
+							nageurRenouvellement++;
+						}
+					}
 				}
 			}
-			
 		}
 		
 		result.setNageurs(nageurTotal);
