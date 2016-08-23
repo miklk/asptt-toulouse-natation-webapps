@@ -16,10 +16,6 @@ dossierController2.controller('DossierController2', ['$rootScope', '$http', '$sc
 			});
 		}).$promise,
 	
-		stat: DossierService.statistiques.query({}, function(data) {
-			$scope.statistiques = data;
-		}).$promises,
-		
 		groupes : GroupeService.all.query({}, function(data) {
 			$scope.groupes = data.groups;
 			var sansGroupe = {title:'Sans groupe', id:'-1'};

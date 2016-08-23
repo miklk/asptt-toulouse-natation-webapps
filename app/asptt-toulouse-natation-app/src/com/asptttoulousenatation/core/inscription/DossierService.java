@@ -66,15 +66,18 @@ import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierFactu
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierFactureEnum;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurPhotoEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierCertificatDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierFactureDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurPhotoDao;
+import com.asptttoulousenatation.core.server.dao.inscription.DossierStatDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.util.CreneauBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.datastore.Blob;
 
@@ -92,6 +95,7 @@ public class DossierService {
 	private SlotDao slotDao = new SlotDao();
 	private DossierFactureDao factureDao = new DossierFactureDao();
 	private DossierNageurPhotoDao nageurPhotoDao = new DossierNageurPhotoDao();
+	private DossierStatDao dossierStatDao = new DossierStatDao();
 	
 	
 	@Path("/find")
@@ -815,77 +819,97 @@ public class DossierService {
 	@GET
 	public DossierStatistiques statistiques() {
 		DossierStatistiques result = new DossierStatistiques();
-		
-		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-				1L, Operator.EQUAL));
-		Map<DossierStatutEnum, Integer> counts = new HashMap<>();
-		counts.put(DossierStatutEnum.ANNULE, 0);
-		counts.put(DossierStatutEnum.ATTENTE, 0);
-		counts.put(DossierStatutEnum.EXPIRE, 0);
-		counts.put(DossierStatutEnum.INITIALISE, 0);
-		counts.put(DossierStatutEnum.INSCRIT, 0);
-		counts.put(DossierStatutEnum.PAIEMENT_COMPLET, 0);
-		counts.put(DossierStatutEnum.PAIEMENT_PARTIEL, 0);
-		counts.put(DossierStatutEnum.PREINSCRIT, 0);
-		
-		result.setCounts(counts);
-		
-		// Places disponibles
-		List<GroupEntity> groupEnf = groupeDao.findEnf();
-		int places = 0;
-		for (GroupEntity group : groupEnf) {
-			List<SlotEntity> creneaux = slotDao.findByGroup(group.getId());
-			for (SlotEntity creneau : creneaux) {
-				if (BooleanUtils.isFalse(creneau.getSecond()) && creneau.getPlaceDisponible() != null) {
-					places += creneau.getPlaceDisponible();
+		List<DossierStatEntity> statList = dossierStatDao.getAll();
+		DossierStatEntity stat = null;
+		if(CollectionUtils.isNotEmpty(statList)) {
+			stat = statList.get(0);
+		}
+		if (stat == null || new DateTime(stat.getComputed().getTime()).isBefore(DateTime.now().minusHours(2))) {
+			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+			criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, 1L, Operator.EQUAL));
+			Map<DossierStatutEnum, Integer> counts = new HashMap<>();
+			counts.put(DossierStatutEnum.ANNULE, 0);
+			counts.put(DossierStatutEnum.ATTENTE, 0);
+			counts.put(DossierStatutEnum.EXPIRE, 0);
+			counts.put(DossierStatutEnum.INITIALISE, 0);
+			counts.put(DossierStatutEnum.INSCRIT, 0);
+			counts.put(DossierStatutEnum.PAIEMENT_COMPLET, 0);
+			counts.put(DossierStatutEnum.PAIEMENT_PARTIEL, 0);
+			counts.put(DossierStatutEnum.PREINSCRIT, 0);
+
+			result.setCounts(counts);
+
+			// Places disponibles
+			List<GroupEntity> groupEnf = groupeDao.findEnf();
+			int places = 0;
+			for (GroupEntity group : groupEnf) {
+				List<SlotEntity> creneaux = slotDao.findByGroup(group.getId());
+				for (SlotEntity creneau : creneaux) {
+					if (BooleanUtils.isFalse(creneau.getSecond()) && creneau.getPlaceDisponible() != null) {
+						places += creneau.getPlaceDisponible();
+					}
 				}
 			}
-		}
-		result.setPlaces(places);
-		
-		//Nageur (nouveau, ancien)
-		criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-				1L, Operator.EQUAL));
-		long nageurTotal = 0l;
-		int nageurNouveau = 0;
-		int nageurRenouvellement = 0;
-		List<DossierEntity> entities = dossierDao.find(criteria);
-		result.setPotentiel(entities.size());
-		for (DossierEntity dossier : entities) {
-			if (dossier.getStatut() != null) {
-				DossierStatutEnum statut = DossierStatutEnum.valueOf(dossier.getStatut());
-				if (!DossierStatutEnum.INSCRIT.name().equals(dossier.getStatut())) {
-					counts.put(statut, counts.get(statut) + 1);
-				}
-				if (DossierStatutEnum.INSCRIT.name().equals(dossier.getStatut())) {
+			result.setPlaces(places);
 
-					List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
-							1);
-					criteriaNageur.add(
-							new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER, dossier.getId(), Operator.EQUAL));
-					criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, 1L, Operator.EQUAL));
-					List<DossierNageurEntity> nageurs = dao.find(criteriaNageur);
-					counts.put(statut, counts.get(statut) + nageurs.size());
-					for (DossierNageurEntity nageur : nageurs) {
-						nageurTotal++;
-						if (BooleanUtils.isTrue(nageur.getNouveau())) {
-							nageurNouveau++;
-						}
-						if (BooleanUtils.isFalse(nageur.getNouveau())) {
-							nageurRenouvellement++;
+			// Nageur (nouveau, ancien)
+			criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+			criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, 1L, Operator.EQUAL));
+			long nageurTotal = 0l;
+			int nageurNouveau = 0;
+			int nageurRenouvellement = 0;
+			List<DossierEntity> entities = dossierDao.find(criteria);
+			result.setPotentiel(entities.size());
+			for (DossierEntity dossier : entities) {
+				if (dossier.getStatut() != null) {
+					DossierStatutEnum statut = DossierStatutEnum.valueOf(dossier.getStatut());
+					if (!DossierStatutEnum.INSCRIT.name().equals(dossier.getStatut())) {
+						counts.put(statut, counts.get(statut) + 1);
+					}
+					if (DossierStatutEnum.INSCRIT.name().equals(dossier.getStatut())
+							|| DossierStatutEnum.PAIEMENT_COMPLET.name().equals(dossier.getStatut())) {
+						List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
+								1);
+						criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER, dossier.getId(),
+								Operator.EQUAL));
+						criteriaNageur
+								.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, 1L, Operator.EQUAL));
+						List<DossierNageurEntity> nageurs = dao.find(criteriaNageur);
+						counts.put(statut, counts.get(statut) + nageurs.size());
+						for (DossierNageurEntity nageur : nageurs) {
+							nageurTotal++;
+							if (BooleanUtils.isTrue(nageur.getNouveau())) {
+								nageurNouveau++;
+							}
+							if (BooleanUtils.isFalse(nageur.getNouveau())) {
+								nageurRenouvellement++;
+							}
 						}
 					}
 				}
 			}
+
+			result.setNageurs(nageurTotal);
+			result.addNageur(new StatistiqueBase("Nouveau", nageurNouveau));
+			result.addNageur(new StatistiqueBase("Renouvellement", nageurRenouvellement));
+
+			try {
+				ObjectMapper mapper = new ObjectMapper();
+				String value = mapper.writeValueAsString(result);
+				stat = new DossierStatEntity();
+				stat.setStat(value);
+				dossierStatDao.save(stat);
+			} catch (JsonProcessingException e) {
+				LOG.log(Level.SEVERE, "Cannot save stat", e);
+			}
+		} else {
+			try {
+				ObjectMapper mapper = new ObjectMapper();
+				result = mapper.readValue(stat.getStat(), DossierStatistiques.class);
+			} catch (IOException e) {
+				LOG.log(Level.SEVERE, "Cannot save stat", e);
+			}
 		}
-		
-		result.setNageurs(nageurTotal);
-		result.addNageur(new StatistiqueBase("Nouveau", nageurNouveau));
-		result.addNageur(new StatistiqueBase("Renouvellement", nageurRenouvellement));
 		return result;
 	}
 	

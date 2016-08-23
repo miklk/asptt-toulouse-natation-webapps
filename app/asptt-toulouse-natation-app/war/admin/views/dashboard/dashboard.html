@@ -65,13 +65,11 @@ rect:hover {  fill:blue; }
 	<div class="row">
 		<div class="col-md-5">
 			<div class="panel panel-primary">
-				<div class="panel-heading"><a href="#/dossiers" class="btn btn-primary">Dossiers d'inscription</a></div>
+				<div class="panel-heading"><a href="#/dossiers" class="btn btn-primary">Dossiers d'inscription (mise à jour toutes les 2 heures)</a></div>
 				<div class="panel-body">
-					<p><label>Inscrits :</label> {{statistiques.counts['INSCRIT']}} (dont {{statistiques.counts['PAIEMENT_COMPLET']}} payé sans certificat)</p>
-					<p><label>Non payés (préinscrit) :</label> {{statistiques.counts['PREINSCRIT']}} (dont {{statistiques.counts['EXPIRE']}} expirés)</p>
-					<p><label>Potentiel inscription :</label> {{statistiques.potentiel}}</p>
+					<p><label>Inscrits :</label> {{statistiques.counts['INSCRIT']}} nageurs (dont {{statistiques.counts['PAIEMENT_COMPLET']}} payés sans certificat, soit {{statistiques.counts['INSCRIT'] + statistiques.counts['PAIEMENT_COMPLET']}})</p>
+					<p><label>Dossiers non payés (préinscrit) :</label> {{statistiques.counts['PREINSCRIT']}} (dont {{statistiques.counts['EXPIRE']}} expirés)</p>
 					<p><label>Potentiel créneaux (enf) :</label> {{statistiques.places}}</p>
-					<div id="dossiers-graph"></div>
 				</div>
 			</div>
 		</div>
