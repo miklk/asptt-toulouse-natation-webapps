@@ -669,7 +669,7 @@ public class InscriptionService {
 	public int rappel() {
 		Date seuilInscription = DateTime.now().minusDays(5).toDate();
 
-		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(2);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.PREINSCRIT.name(),
 				Operator.EQUAL));
 		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, 1L,
