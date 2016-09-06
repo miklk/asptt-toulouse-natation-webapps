@@ -326,7 +326,8 @@ public class EmailService {
 	}
 	
 	private void fillDestinataires(Collection<String> destinataires, DossierEntity dossier) {
-		if(DossierStatutEnum.INITIALISE.name().equals(dossier.getStatut())) {
+		String statut = dossier.getStatut();
+		if(!DossierStatutEnum.ANNULE.name().equals(statut)) {
 			if (StringUtils.isNotBlank(dossier.getEmail())) {
 				destinataires.add(dossier.getEmail());
 			}
