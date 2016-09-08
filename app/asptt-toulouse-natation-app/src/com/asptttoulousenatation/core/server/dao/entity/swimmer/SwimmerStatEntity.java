@@ -40,6 +40,9 @@ public class SwimmerStatEntity implements IEntity {
 	@Persistent
 	private Boolean presence;
 	
+	@Persistent
+	private String type;
+	
 	public SwimmerStatEntity() {
 		
 	}
@@ -98,5 +101,13 @@ public class SwimmerStatEntity implements IEntity {
 
 	public void setPresence(Boolean pPresence) {
 		presence = pPresence;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }

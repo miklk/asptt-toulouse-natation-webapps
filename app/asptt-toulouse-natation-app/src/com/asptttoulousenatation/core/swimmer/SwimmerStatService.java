@@ -70,6 +70,9 @@ public class SwimmerStatService {
 			statCriteria.add(new CriterionDao<Long>(
 					SwimmerStatEntityFields.SWIMMER, nageur.getId(),
 					Operator.EQUAL));
+			statCriteria.add(new CriterionDao<String>(
+					SwimmerStatEntityFields.TYPE, null,
+					Operator.NULL));
 			List<SwimmerStatEntity> statEntities = dao.find(statCriteria);
 			SwimmerStatUi dayStat = new SwimmerStatUi();
 			dayStat.setAdherent(nageur.getId());
@@ -203,6 +206,9 @@ public class SwimmerStatService {
 				statCriteria.add(new CriterionDao<Long>(
 						SwimmerStatEntityFields.SWIMMER, nageur.getId(),
 						Operator.EQUAL));
+				statCriteria.add(new CriterionDao<String>(
+						SwimmerStatEntityFields.TYPE, null,
+						Operator.NULL));
 				List<SwimmerStatEntity> statEntities = dao.find(statCriteria);
 				SwimmerStatWeekUi dayStat = new SwimmerStatWeekUi();
 				dayStat.setNom(nageur.getNom());
@@ -337,6 +343,9 @@ public class SwimmerStatService {
 				statCriteria.add(new CriterionDao<Long>(
 						SwimmerStatEntityFields.SWIMMER, nageur.getId(),
 						Operator.EQUAL));
+				statCriteria.add(new CriterionDao<String>(
+						SwimmerStatEntityFields.TYPE, null,
+						Operator.NULL));
 				List<SwimmerStatEntity> statEntities = dao.find(statCriteria);
 				SwimmerStatMonthUi dayStat = new SwimmerStatMonthUi();
 				dayStat.setNom(nageur.getNom());
@@ -412,6 +421,9 @@ public class SwimmerStatService {
 				statCriteria.add(new CriterionDao<Long>(
 						SwimmerStatEntityFields.SWIMMER, nageur.getId(),
 						Operator.EQUAL));
+				statCriteria.add(new CriterionDao<String>(
+						SwimmerStatEntityFields.TYPE, null,
+						Operator.NULL));
 				List<SwimmerStatEntity> statEntities = dao.find(statCriteria);
 				SwimmerStatYearUi dayStat = new SwimmerStatYearUi();
 				dayStat.setNom(nageur.getNom());
@@ -594,6 +606,9 @@ public class SwimmerStatService {
 					.add(new CriterionDao<Long>(SwimmerStatEntityFields.DAY, beginDayToMindnight, Operator.GREATER_EQ));
 			statCriteria.add(new CriterionDao<Long>(SwimmerStatEntityFields.DAY, endDayToMindnight, Operator.LESS_EQ));
 			statCriteria.add(new CriterionDao<Long>(SwimmerStatEntityFields.SWIMMER, nageur.getId(), Operator.EQUAL));
+			statCriteria.add(new CriterionDao<String>(
+					SwimmerStatEntityFields.TYPE, null,
+					Operator.NULL));
 			List<SwimmerStatEntity> statEntities = dao.find(statCriteria);
 			SwimmerStatPeriodeUi dayStat = new SwimmerStatPeriodeUi();
 			dayStat.setNom(nageur.getNom());

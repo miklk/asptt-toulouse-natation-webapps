@@ -4,7 +4,8 @@ package com.asptttoulousenatation.core.server.dao.entity.field;
 public enum SwimmerStatEntityFields implements IEntityFields {
 	SWIMMER(Long.class),
 	DAY(Long.class),
-	DAYTIME(String.class);
+	DAYTIME(String.class),
+	TYPE(String.class);
 	
 	private Class<? extends Object> clazz;
 
