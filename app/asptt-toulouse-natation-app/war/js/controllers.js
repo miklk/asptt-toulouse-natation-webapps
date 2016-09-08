@@ -86,7 +86,7 @@ aspttNatTlsApp.controller('CompetitionActualiteCtrl', ['$scope', 'ActualiteServi
 	        }, 'slow');	
 		};
 	});
-	$scope.actualites = ActualiteService.get({competition: 'true'});
+	$scope.actualites = ActualiteService.get({});
 	$scope.actualiteContent = function(value) {
 		return $sce.trustAsHtml(value);
 	};

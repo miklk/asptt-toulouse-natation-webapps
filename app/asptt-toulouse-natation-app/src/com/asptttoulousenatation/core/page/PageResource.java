@@ -28,8 +28,7 @@ import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
 
 public class PageResource {
-	private static final Logger LOG = Logger.getLogger(PageResource.class
-			.getName());
+	private static final Logger LOG = Logger.getLogger(PageResource.class.getName());
 	private MenuDao menuDao = new MenuDao();
 	private ContentDao dao = new ContentDao();
 	private DocumentDao documentDao = new DocumentDao();
@@ -44,10 +43,9 @@ public class PageResource {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public PageUi getPage() {
 		final PageUi page;
-		List<CriterionDao<? extends Object>> lMenuCriteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
-		CriterionDao<String> lMenuCriterion = new CriterionDao<String>(
-				MenuEntityFields.IDENTIFIER, menuTitle, Operator.EQUAL);
+		List<CriterionDao<? extends Object>> lMenuCriteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		CriterionDao<String> lMenuCriterion = new CriterionDao<String>(MenuEntityFields.IDENTIFIER, menuTitle,
+				Operator.EQUAL);
 		lMenuCriteria.add(lMenuCriterion);
 		List<MenuEntity> menus = menuDao.find(lMenuCriteria);
 		if (!menus.isEmpty()) {
@@ -56,10 +54,8 @@ public class PageResource {
 			getPageData(menuId, page);
 
 			// Get sous-menu
-			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-					1);
-			criteria.add(new CriterionDao<Long>(MenuEntityFields.PARENT,
-					menuId, Operator.EQUAL));
+			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+			criteria.add(new CriterionDao<Long>(MenuEntityFields.PARENT, menuId, Operator.EQUAL));
 			List<MenuEntity> sousMenus = menuDao.find(criteria);
 			List<PageUi> sousPages = new ArrayList<PageUi>();
 			for (MenuEntity sousMenu : sousMenus) {
@@ -77,41 +73,28 @@ public class PageResource {
 	}
 
 	private void getPageData(Long menuId, PageUi page) {
-		List<CriterionDao<? extends Object>> lContentCriteria = new ArrayList<CriterionDao<? extends Object>>(
-				2);
-		lContentCriteria.add(new CriterionDao<Long>(ContentEntityFields.MENU,
-				menuId, Operator.EQUAL));
-		lContentCriteria.add(new CriterionDao<String>(ContentEntityFields.KIND,
-				ContentDataKindEnum.TEXT.name(), Operator.EQUAL));
+		List<CriterionDao<? extends Object>> lContentCriteria = new ArrayList<CriterionDao<? extends Object>>(2);
+		lContentCriteria.add(new CriterionDao<Long>(ContentEntityFields.MENU, menuId, Operator.EQUAL));
+		lContentCriteria.add(
+				new CriterionDao<String>(ContentEntityFields.KIND, ContentDataKindEnum.TEXT.name(), Operator.EQUAL));
 
 		List<ContentEntity> contents = dao.find(lContentCriteria);
 		if (!contents.isEmpty()) {
 			for (ContentEntity content : contents) {
-				ContentDataKindEnum contentDataKind = ContentDataKindEnum
-						.valueOf(content.getKind());
-				switch (contentDataKind) {
-				case TEXT:
-					try {
-						page.setContent(new String(content.getData().getBytes(), "UTF-8"));
-					} catch (UnsupportedEncodingException e) {
-						LOG.log(Level.SEVERE, "Text encoding", e);
-					}
-					break;
-				default:
-					page.setContent("");
+				try {
+					page.setContent(new String(content.getData().getBytes(), "UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					LOG.log(Level.SEVERE, "Text encoding", e);
 				}
+				// Get documents
+				List<CriterionDao<? extends Object>> lDocumentCriteria = new ArrayList<CriterionDao<? extends Object>>(
+						1);
+				lDocumentCriteria.add(new CriterionDao<Long>(DocumentEntityFields.MENU, menuId, Operator.EQUAL));
+				List<DocumentEntity> lDocumentEntities = documentDao.find(lDocumentCriteria);
+				DocumentTransformer documentTransformer = new DocumentTransformer();
+				List<DocumentUi> lDocumentUis = documentTransformer.toUi(lDocumentEntities);
+				page.setDocuments(lDocumentUis);
 			}
-			// Get documents
-			List<CriterionDao<? extends Object>> lDocumentCriteria = new ArrayList<CriterionDao<? extends Object>>(
-					1);
-			lDocumentCriteria.add(new CriterionDao<Long>(
-					DocumentEntityFields.MENU, menuId, Operator.EQUAL));
-			List<DocumentEntity> lDocumentEntities = documentDao
-					.find(lDocumentCriteria);
-			DocumentTransformer documentTransformer = new DocumentTransformer();
-			List<DocumentUi> lDocumentUis = documentTransformer
-					.toUi(lDocumentEntities);
-			page.setDocuments(lDocumentUis);
 		}
 	}
 }
