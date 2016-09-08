@@ -218,6 +218,9 @@ public class EmailService {
 			criteria.add(new CriterionDao<String>(
 					DossierEntityFields.STATUT, DossierStatutEnum.INSCRIT.name(),
 					Operator.EQUAL));
+			criteria.add(new CriterionDao<Long>(
+					DossierEntityFields.SAISON, 1L,
+					Operator.EQUAL));
 			List<DossierEntity> dossiers = dossierDao.find(criteria);
 			for (DossierEntity dossier : dossiers) {
 				fillDestinataires(destinataires, dossier);
@@ -326,8 +329,9 @@ public class EmailService {
 	}
 	
 	private void fillDestinataires(Collection<String> destinataires, DossierEntity dossier) {
+		Long saison = 1L;
 		String statut = dossier.getStatut();
-		if(!DossierStatutEnum.ANNULE.name().equals(statut)) {
+		if(saison.equals(dossier.getSaison()) && DossierStatutEnum.INSCRIT.name().equals(statut)) {
 			if (StringUtils.isNotBlank(dossier.getEmail())) {
 				destinataires.add(dossier.getEmail());
 			}
