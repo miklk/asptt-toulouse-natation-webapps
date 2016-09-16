@@ -225,4 +225,10 @@ public class AuthenticationService {
 	public void logout(@PathParam("token") String token) {
 		TokenManager.getInstance().remove(token);
 	}
+	
+	@Path("/logout-all")
+	@GET
+	public void logoutAll() {
+		TokenManager.getInstance().clear();
+	}
 }
