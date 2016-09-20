@@ -32,4 +32,8 @@ public class TokenManager {
 	public synchronized Long getUser(String token) {
 		return tokens.get(token);
 	}
+	
+	public synchronized void clear() {
+		tokens.clear();
+	}
 }

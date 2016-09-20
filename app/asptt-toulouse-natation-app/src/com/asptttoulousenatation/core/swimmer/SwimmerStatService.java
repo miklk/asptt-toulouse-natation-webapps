@@ -47,6 +47,8 @@ public class SwimmerStatService {
 	private DossierNageurDao nageurDao = new DossierNageurDao();
 	private SwimmerStatDao dao = new SwimmerStatDao();
 	private SwimmerStatDayTransformer dayTransformer = new SwimmerStatDayTransformer();
+	
+	private static Long CURRENT_SAISON = 1L;
 
 	@Path("/days")
 	@GET
@@ -99,7 +101,7 @@ public class SwimmerStatService {
 			@Override
 			public boolean evaluate(Object arg0) {
 				DossierNageurEntity entity = (DossierNageurEntity) arg0;
-				return entity.getSaison() == null;
+				return entity.getSaison() == CURRENT_SAISON;
 			}
 		});
 		Collections.sort(entities, new Comparator<DossierNageurEntity>() {
