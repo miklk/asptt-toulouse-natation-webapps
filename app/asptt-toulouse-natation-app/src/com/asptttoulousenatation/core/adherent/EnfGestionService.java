@@ -60,6 +60,7 @@ public class EnfGestionService {
 	private GroupDao groupDao = new GroupDao();
 	private DossierNageurDao nageurDao = new DossierNageurDao();
 	private DossierDao dossierDao = new DossierDao();
+	private static final Long SAISON = 1L;
 
 	@Path("/creneaux")
 	@GET
@@ -125,8 +126,9 @@ public class EnfGestionService {
 								+ new DateTime(creneauEntity.getEndDt().getTime()).plusHours(1).toString("HH:mm"));
 
 				// Adherent
-				List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+				List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(2);
 				criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE, groupe.getId(), Operator.EQUAL));
+				criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, SAISON, Operator.EQUAL));
 				int row = 13;
 				List<DossierNageurEntity> entities = nageurDao.find(criteria,
 						new OrderDao(DossierNageurEntityFields.NOM, OrderOperator.ASC));
@@ -214,9 +216,10 @@ public class EnfGestionService {
 					if(group != null) {
 						if (BooleanUtils.isTrue(group.getEnf())) {
 							// Adherent
-							criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+							criteria = new ArrayList<CriterionDao<? extends Object>>(2);
 							criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE, group.getId(),
 									Operator.EQUAL));
+							criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, SAISON, Operator.EQUAL));
 	
 							List<DossierNageurEntity> adherents = nageurDao.find(criteria,
 									new OrderDao(DossierNageurEntityFields.NOM, OrderOperator.ASC));
