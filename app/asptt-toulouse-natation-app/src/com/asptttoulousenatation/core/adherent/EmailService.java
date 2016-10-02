@@ -331,11 +331,13 @@ public class EmailService {
 	private void fillDestinataires(Collection<String> destinataires, DossierEntity dossier) {
 		Long saison = 1L;
 		String statut = dossier.getStatut();
-		if(saison.equals(dossier.getSaison()) && DossierStatutEnum.INSCRIT.name().equals(statut)) {
+		if (saison.equals(dossier.getSaison()) && (DossierStatutEnum.INSCRIT.name().equals(statut)
+				|| DossierStatutEnum.PAIEMENT_COMPLET.name().equals(statut)
+				|| DossierStatutEnum.ATTENTE.name().equals(statut))) {
 			if (StringUtils.isNotBlank(dossier.getEmail())) {
 				destinataires.add(dossier.getEmail());
 			}
-			if(StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
+			if (StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
 				destinataires.add(dossier.getEmailsecondaire());
 			}
 		}
