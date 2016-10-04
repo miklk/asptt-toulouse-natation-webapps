@@ -29,9 +29,9 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
 		$scope.piscines = data;
 	});
 	
-	AdherentsService.initEmail.query({}, function(data) {
+	/**AdherentsService.initEmail.query({}, function(data) {
 		$scope.emails = data;
-	});
+	});**/
 	
 	$scope.loadCreneau = function() {
 		SlotService.list.query({groupe: $scope.groupesSelected}, function(data) {
