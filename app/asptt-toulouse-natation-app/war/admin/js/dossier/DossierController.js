@@ -3,7 +3,7 @@
  */
 var dossierController = angular.module('DossierController', ['ngRoute', 'dossierServices', 'groupeServices', 'slotServices', 'paramServices']);
 
-dossierController.controller('DossierController', ['$rootScope', '$http', '$scope', '$q', '$location', '$filter', '$timeout', 'DossierService', 'GroupeService', 'SlotService', 'ParamService', function($rootScope, $http, $scope, $q, $location, $filter, $timeout, DossierService, GroupeService, SlotService, ParamService) {
+dossierController.controller('DossierController', ['$rootScope', '$http', '$scope', '$q', '$location', '$filter', '$timeout', '$cookieStore', 'DossierService', 'GroupeService', 'SlotService', 'ParamService', function($rootScope, $http, $scope, $q, $location, $filter, $timeout, $cookieStore, DossierService, GroupeService, SlotService, ParamService) {
 	$rootScope.isLoading = true;
 	let promises = {
 		param : ParamService.groupes.query({groupe: 'INSCRIPTION'}, function (data) {
@@ -35,9 +35,33 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	$scope.certificat = false;
 	$scope.showEmail = false;
 	
+	var query = $cookieStore.get("asptt-dossier-query");
+	if(query != null) {
+		$rootScope.isLoading = true;
+		$scope.query = query[0];
+		$scope.groupe = query[1];
+		$scope.sansGroupe = query[2];
+		$scope.dossierStatut = query[3];
+		$scope.creneau = query[4];
+		$scope.facture = query[5];
+		$scope.facture2 = query[6];
+		$scope.certificat = query[7];
+		$scope.certificat2 = query[8];
+		$scope.certificatNon = query[9];
+		DossierService.list.query({query: query[0], groupe: query[1], sansGroupe: query[2], dossierStatut: query[3], creneau: query[4], filter_facture: query[5], filter_facture2: query[6], certificat: query[7], certificat2: query[8], certificatNon: query[9]}, function(data) {
+			$scope.dossiers = data;
+			$scope.dossierCount = data.length;
+			$rootScope.isLoading = false;
+		});
+	} else {
+		$scope.search();
+	}
+	
 	$scope.search = function() {
 		$rootScope.isLoading = true;
-		DossierService.list.query({query: $scope.query, groupe: $scope.groupe, sansGroupe: $scope.sansGroupe, dossierStatut: $scope.dossierStatut, creneau: $scope.creneau, filter_facture: $scope.facture, filter_facture2: $scope.facture2, certificat: $scope.certificat, certificat2: $scope.certificat2, certificatNon: $scope.certificatNon}, function(data) {
+		var query = [$scope.query, $scope.groupe, $scope.sansGroupe, $scope.dossierStatut, $scope.creneau, $scope.facture, $scope.facture2, $scope.certificat, $scope.certificat2, $scope.certificatNon];
+		$cookieStore.put("asptt-dossier-query", query);
+		DossierService.list.query({query: query[0], groupe: query[1], sansGroupe: query[2], dossierStatut: query[3], creneau: query[4], filter_facture: query[5], filter_facture2: query[6], certificat: query[7], certificat2: query[8], certificatNon: query[9]}, function(data) {
 			$scope.dossiers = data;
 			$scope.dossierCount = data.length;
 			$rootScope.isLoading = false;

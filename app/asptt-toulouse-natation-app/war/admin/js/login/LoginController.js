@@ -77,6 +77,7 @@ loginController.controller('LoginController', ['$rootScope', '$scope', '$http', 
 		$cookieStore.remove("asptt-token");
 		$cookieStore.remove("asptt-token-info");
 		$cookieStore.remove("asptt-token-access");
+		$cookieStore.remove("asptt-dossier-query");
 		LoginService.logout.query({token: token}, function(data) {
 			window.location.href = "index.html";
 		});
