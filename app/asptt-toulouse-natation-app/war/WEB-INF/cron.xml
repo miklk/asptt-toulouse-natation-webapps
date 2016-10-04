@@ -51,4 +51,9 @@
 		<description>Rattrapage des statuts inscrit</description>
 		<schedule>every day 04:15</schedule>
 	</cron>
+	<cron>
+		<url>/resources/authentication/expire</url>
+		<description>Login expiration</description>
+		<schedule>every 30 minutes</schedule>
+	</cron>
 </cronentries>

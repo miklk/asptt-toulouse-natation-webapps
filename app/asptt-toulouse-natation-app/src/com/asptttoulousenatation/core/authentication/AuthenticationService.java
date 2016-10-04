@@ -231,4 +231,10 @@ public class AuthenticationService {
 	public void logoutAll() {
 		TokenManager.getInstance().clear();
 	}
+	
+	@Path("/expire")
+	@GET
+	public void expire() {
+		TokenManager.getInstance().expire(30);
+	}
 }
