@@ -291,6 +291,9 @@ public class EnfGestionService {
 							criteriaCreneau.add(new CriterionDao<Long>(SlotEntityFields.GROUP, groupEntity.getId(),
 									Operator.EQUAL));
 							List<SlotEntity> creneauxEntities = slotDao.find(criteriaCreneau);
+							
+
+							
 							sheetRow.createCell(0).setCellValue(StringUtils.defaultString(adherent.getNom()));
 							sheetRow.getCell(0).getCellStyle().setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
 							sheetRow.getCell(0).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
@@ -317,12 +320,13 @@ public class EnfGestionService {
 							sheetRow.getCell(3).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
 							sheetRow.getCell(3).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
 							sheetRow.getCell(3).getCellStyle().setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
-							sheetRow.createCell(4)
-									.setCellValue(StringUtils.defaultString(creneauxEntities.get(0).getEducateur()));
-							sheetRow.getCell(4).getCellStyle().setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
-							sheetRow.getCell(4).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
-							sheetRow.getCell(4).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
-							sheetRow.getCell(4).getCellStyle().setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
+							
+								sheetRow.createCell(4)
+										.setCellValue(StringUtils.defaultString(creneauxEntities.get(0).getEducateur()));
+								sheetRow.getCell(4).getCellStyle().setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+								sheetRow.getCell(4).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
+								sheetRow.getCell(4).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
+								sheetRow.getCell(4).getCellStyle().setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
 							
 							boolean hasCertificat = BooleanUtils.toBoolean(adherent.getCertificat());
 							sheetRow.createCell(5)
@@ -331,6 +335,13 @@ public class EnfGestionService {
 							sheetRow.getCell(5).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
 							sheetRow.getCell(5).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
 							sheetRow.getCell(5).getCellStyle().setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
+							
+								sheetRow.createCell(6)
+										.setCellValue(new DateTime(creneauxEntities.get(0).getBeginDt().getTime()).toString("HH:mm") + "-" + new DateTime(creneauxEntities.get(0).getEndDt().getTime()).toString("HH:mm"));
+								sheetRow.getCell(6).getCellStyle().setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
+								sheetRow.getCell(6).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
+								sheetRow.getCell(6).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
+								sheetRow.getCell(6).getCellStyle().setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
 						} catch (Exception e) {
 							LOG.log(Level.SEVERE, "Adherent " + adherent.getId(), e);
 						}
