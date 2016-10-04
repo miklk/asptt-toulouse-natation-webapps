@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -337,7 +338,7 @@ public class EnfGestionService {
 							sheetRow.getCell(5).getCellStyle().setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
 							
 								sheetRow.createCell(6)
-										.setCellValue(new DateTime(creneauxEntities.get(0).getBeginDt().getTime()).toString("HH:mm") + "-" + new DateTime(creneauxEntities.get(0).getEndDt().getTime()).toString("HH:mm"));
+										.setCellValue(new DateTime(creneauxEntities.get(0).getBeginDt().getTime()).plusHours(1).toString("HH:mm", Locale.FRANCE) + "-" + new DateTime(creneauxEntities.get(0).getEndDt().getTime()).plusHours(1).toString("HH:mm", Locale.FRANCE));
 								sheetRow.getCell(6).getCellStyle().setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
 								sheetRow.getCell(6).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
 								sheetRow.getCell(6).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
