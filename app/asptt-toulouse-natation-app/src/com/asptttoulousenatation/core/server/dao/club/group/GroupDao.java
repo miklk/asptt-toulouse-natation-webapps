@@ -18,6 +18,14 @@ public class GroupDao extends DaoBase<GroupEntity> {
 		List<GroupEntity> result = new ArrayList<>(entities);
 		return result;
 	}
+	
+	public List<GroupEntity> findByTitle(String title) {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		criteria.add(new CriterionDao<String>(GroupEntityFields.TITLE, title, Operator.EQUAL));
+		List<GroupEntity> entities = find(criteria);
+		List<GroupEntity> result = new ArrayList<>(entities);
+		return result;
+	}
 
 	@Override
 	public Class<GroupEntity> getEntityClass() {

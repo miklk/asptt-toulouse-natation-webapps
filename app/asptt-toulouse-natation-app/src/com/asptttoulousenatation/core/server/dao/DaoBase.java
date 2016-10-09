@@ -101,7 +101,7 @@ public abstract class DaoBase<E extends IEntity> {
 	 *            Identity of the entity to retrieve.
 	 * @return Entity
 	 */
-	private E get(Class<E> pClass, Object pId) {
+	protected E get(Class<E> pClass, Object pId) {
 		E lResult = null;
 		if (pId != null) {
 			EntityManager em = EMF.get().createEntityManager();

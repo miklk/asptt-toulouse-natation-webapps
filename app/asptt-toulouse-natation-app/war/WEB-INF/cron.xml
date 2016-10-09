@@ -56,4 +56,10 @@
 		<description>Login expiration</description>
 		<schedule>every 30 minutes</schedule>
 	</cron>
+	
+	<cron>
+		<url>/resources/presences/init/ELITE</url>
+		<description>Liste des présents - initialisation tous les dimanches</description>
+		<schedule>every sunday 18:00</schedule>
+	</cron>
 </cronentries>

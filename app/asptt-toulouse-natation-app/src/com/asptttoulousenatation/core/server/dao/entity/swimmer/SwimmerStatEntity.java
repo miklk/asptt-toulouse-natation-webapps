@@ -17,6 +17,7 @@ public class SwimmerStatEntity implements IEntity {
 	private static final long serialVersionUID = 1L;
 	
 	public static final String DAY_FORMAT = "dd/MM/yyyy";
+	public static final String TEMP_TYPE = "TEMP";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
