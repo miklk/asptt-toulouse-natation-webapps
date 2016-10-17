@@ -21,6 +21,7 @@ import javax.ws.rs.QueryParam;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
+import org.apache.commons.lang3.BooleanUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
@@ -33,6 +34,7 @@ import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntit
 import com.asptttoulousenatation.core.server.dao.entity.field.SwimmerStatEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
 import com.asptttoulousenatation.core.server.dao.entity.swimmer.SwimmerStatEntity;
+import com.asptttoulousenatation.core.server.dao.entity.swimmer.SwimmerStatTypeEnum;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
@@ -624,6 +626,82 @@ public class SwimmerStatService {
 			}
 			result.add(dayStat);
 		}
+		return result;
+	}
+	
+	@Path("/weeks-prevu")
+	@GET
+	public SwimmerStatWeekPrevuResult getWeeksPrevu(@QueryParam("groupes") Set<Long> groupes,
+			@QueryParam("week") String week) {
+		SwimmerStatWeekPrevuResult result = new SwimmerStatWeekPrevuResult();
+
+		 DateTimeFormatter formatter = DateTimeFormat.forPattern("YYYY-'W'ww");
+			LocalDate weekAsDate = formatter.parseLocalDate(week);
+			Long dayBeginToMindnight = weekAsDate.withDayOfWeek(DateTimeConstants.MONDAY).toDateTimeAtStartOfDay().getMillis();
+
+			// Get end of week to midnight
+			Long dayEndToMindnight = weekAsDate.withDayOfWeek(DateTimeConstants.SUNDAY).toDateTimeAtStartOfDay().getMillis();
+
+			// Recuperer les nageur du groupe
+			List<DossierNageurEntity> entities = getNageurs(groupes);
+
+			for (DossierNageurEntity nageur : entities) {
+				// Recuperer la stat du jour du nageur
+				List<CriterionDao<? extends Object>> statCriteria = new ArrayList<CriterionDao<? extends Object>>(
+						2);
+				statCriteria.add(new CriterionDao<Long>(
+						SwimmerStatEntityFields.DAY, dayBeginToMindnight,
+						Operator.GREATER_EQ));
+				statCriteria.add(new CriterionDao<Long>(
+						SwimmerStatEntityFields.DAY, dayEndToMindnight,
+						Operator.LESS_EQ));
+				statCriteria.add(new CriterionDao<Long>(
+						SwimmerStatEntityFields.SWIMMER, nageur.getId(),
+						Operator.EQUAL));
+				statCriteria.add(new CriterionDao<String>(
+						SwimmerStatEntityFields.TYPE, SwimmerStatTypeEnum.PREVU.name(),
+						Operator.EQUAL));
+				List<SwimmerStatEntity> statEntities = dao.find(statCriteria);
+				for (SwimmerStatEntity swimmerStat : statEntities) {
+					int time = 0;
+					switch (DayTimeEnum.valueOf(swimmerStat.getDaytime())) {
+					case MATIN:
+						time = 0;
+						break;
+					case MIDI:
+						time = 1;
+						break;
+					case SOIR:
+						time = 2;
+						break;
+					case MUSCU: time = 3;
+					break;
+					default://
+					}
+					LocalDate localDate = new LocalDate(swimmerStat.getDay());
+					int day = 0;
+					switch (localDate.getDayOfWeek()) {
+					case DateTimeConstants.MONDAY: day = 0;
+						break;
+					case DateTimeConstants.TUESDAY: day = 1;
+						break;
+					case DateTimeConstants.WEDNESDAY: day = 2;
+						break;
+					case DateTimeConstants.THURSDAY: day = 3;
+						break;
+					case DateTimeConstants.FRIDAY: day = 4;
+						break;
+					case DateTimeConstants.SATURDAY: day = 5;
+						break;
+					case DateTimeConstants.SUNDAY: day = 6;
+						break;
+					default://
+					}
+					if(BooleanUtils.isTrue(swimmerStat.getPresence())) {
+						result.addNageur(day, time, nageur.getNom(), nageur.getPrenom());
+					}
+				}
+			}
 		return result;
 	}
 }

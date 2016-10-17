@@ -96,6 +96,18 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 		});
 	};
 	
+	$scope.loadWeeksPrevu = function() {
+		var groupes = [];
+		groupes.push($scope.groupesSelected.id);
+		SuiviNageurService.weeksPrevu.query({groupes: groupes,  week: $filter('date')($scope.day,'yyyy-Www')}, function(data) {
+			$scope.presences = data.presences;
+			console.log($scope.presences);
+			console.log($scope.presences[0]);
+			$scope.beginDt = data.begin;
+			$scope.endDt = data.end;
+		});
+	};
+	
 	$scope.loadMonths = function() {
 		var groupes = [];
 		groupes.push($scope.groupesSelected.id);

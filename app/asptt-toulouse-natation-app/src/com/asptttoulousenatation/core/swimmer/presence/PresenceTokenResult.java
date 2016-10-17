@@ -2,9 +2,12 @@ package com.asptttoulousenatation.core.swimmer.presence;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class PresenceTokenResult implements Serializable {
 
@@ -12,8 +15,9 @@ public class PresenceTokenResult implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private DateTime begin;
-	private DateTime end;
+	private Boolean access;
+	private Date begin;
+	private Date end;
 	private Long swimmer;
 	private String nom;
 	private String prenom;
@@ -33,20 +37,30 @@ public class PresenceTokenResult implements Serializable {
 	public void addJour(int jour, int moment, Boolean presence) {
 		presences.get(jour)[moment] = presence;
 	}
+	
+	@JsonIgnore
+	public DateTime getBeginAsJoda() {
+		return new DateTime(begin.getTime());
+	}
+	
+	@JsonIgnore
+	public DateTime getEndAsJoda() {
+		return new DateTime(end.getTime());
+	}
 
-	public DateTime getBegin() {
+	public Date getBegin() {
 		return begin;
 	}
 
-	public void setBegin(DateTime begin) {
+	public void setBegin(Date begin) {
 		this.begin = begin;
 	}
 
-	public DateTime getEnd() {
+	public Date getEnd() {
 		return end;
 	}
 
-	public void setEnd(DateTime end) {
+	public void setEnd(Date end) {
 		this.end = end;
 	}
 
@@ -81,4 +95,13 @@ public class PresenceTokenResult implements Serializable {
 	public void setPresences(List<Boolean[]> presences) {
 		this.presences = presences;
 	}
+
+	public Boolean getAccess() {
+		return access;
+	}
+
+	public void setAccess(Boolean access) {
+		this.access = access;
+	}
+	
 }

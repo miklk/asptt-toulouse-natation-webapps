@@ -71,6 +71,10 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 			templateUrl: 'views/suivi/suivi-nageur-week.html',
 			access: 'ACCESS_SUIVI_NAGEURS'
 		}).
+		when('/suivi-nageur-week-prevu', {
+			templateUrl: 'views/suivi/suivi-nageur-week-prevu.html',
+			access: 'ACCESS_SUIVI_NAGEURS'
+		}).
 		when('/suivi-nageur-month', {
 			templateUrl: 'views/suivi/suivi-nageur-month.html',
 			access: 'ACCESS_SUIVI_NAGEURS'

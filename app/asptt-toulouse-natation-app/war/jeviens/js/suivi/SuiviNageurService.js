@@ -29,3 +29,14 @@ suiviNageurServices.factory('SuiviNageurService', ['$resource',
 		}),
 	};
 }]);
+
+var groupeServices = angular.module('groupeServices', ['ngResource']);
+
+groupeServices.factory('GroupeService', ['$resource', 
+                                       function($resource) {
+	return $resource('/resources/groupes',{nouveau: '@nouveau'},{
+        query:{
+            method:'GET',
+            isArray:false
+        }});
+}]);
