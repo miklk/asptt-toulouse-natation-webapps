@@ -68,7 +68,7 @@ public class EmailService {
 	private static final Logger LOG = Logger.getLogger(EmailService.class
 			.getName());
 
-	private static final int EMAIL_PAQUET = 10;
+	private static final int EMAIL_PAQUET = 15;
 	
 	private DossierDao dossierDao = new DossierDao();
 	private DossierNageurDao dao = new DossierNageurDao();
