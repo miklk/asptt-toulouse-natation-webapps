@@ -1,4 +1,4 @@
-<form name="actualiteForm" novalidate>
+<form name="actualiteForm" enctype="multipart/form-data" novalidate>
     <div class="form-group">
         <label>Titre</label>
         <input type="text" class="form-control" ng-model="currentActualite.title" placeholder="Titre" required />
@@ -10,6 +10,10 @@
     <div class="form-group">
     	<label>Message</label>
     	<div text-angular="text-angular" ng-model="currentActualite.content"></div>
+    </div>
+    <div class="form-group">
+        <label>Pièce jointe</label>
+        <input type="file" id="fileUploadInput" name="files" multiple />
     </div>
     <div class="form-group">
     	<div class="checkbox">

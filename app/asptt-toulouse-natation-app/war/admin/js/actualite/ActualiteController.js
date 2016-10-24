@@ -46,11 +46,30 @@ actualiteController.controller('ActualiteController', ['$rootScope', '$scope', '
 	}
 	
 	$scope.publish = function() {
-		ActualiteService.publish.query({}, $scope.currentActualite, function(data) {
-			alert("Publié avec succès.");
+		var formData = new FormData();
+		var file = null;
+		if(files == null) {
+			var elt = document.getElementById('fileUploadInput');
+			file = elt.files[0]
+		} else {
+			file = files[0];
+		}
+		if(file != null) {
+			formData.append("file", $scope.fichier);
+		}
+		formData.append("data", $scope.currentActualite);
+		$http.post("/resources/actualites", formData, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        }).
+        success(function (data, status, headers, config) {
+        	alert("Publié avec succès.");
 			init();
 			load();
-		});
+        }).
+        error(function (data, status, headers, config) {
+			window.alert("Erreur lors dde la publication de l'actualité.");
+        });
 	}
 	
 	$scope.remove = function(actualite) {

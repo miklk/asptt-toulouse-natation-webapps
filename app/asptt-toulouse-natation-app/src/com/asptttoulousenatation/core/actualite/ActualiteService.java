@@ -1,23 +1,35 @@
 package com.asptttoulousenatation.core.actualite;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import com.asptttoulousenatation.core.adherent.ActuTransformer;
+import com.asptttoulousenatation.core.adherent.EmailService;
 import com.asptttoulousenatation.core.document.DocumentTransformer;
 import com.asptttoulousenatation.core.server.dao.ActuDao;
 import com.asptttoulousenatation.core.server.dao.document.DocumentDao;
@@ -30,6 +42,8 @@ import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.datastore.Text;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
@@ -40,6 +54,8 @@ import com.restfb.types.FacebookType;
 @Produces("application/json")
 public class ActualiteService {
 
+	private static final Logger LOG = Logger.getLogger(ActualiteService.class
+			.getName());
 	private static final int ACTU_PAR_PAGE = 10;
 	private ActuDao dao = new ActuDao();
 	private DocumentDao documentDao = new DocumentDao();
@@ -83,40 +99,53 @@ public class ActualiteService {
 	}
 	
 	@POST
-	@Consumes("application/json")
-	public void publish(ActualitePublishParameters parameters) {
-		ActuEntity entity = null;
-		if(parameters.getId() != null && parameters.getId() > 0) {
-			entity  = dao.get(parameters.getId());
-		} else {
-			entity = new ActuEntity();
-			entity.setCreatedBy(parameters.getUser());
-		}
-		entity.setUpdatedBy(parameters.getUser());
-		
-		entity.setTitle(parameters.getTitle());
-		entity.setCreationDate(parameters.getBegin().toDate());
-		entity.setExpiration(parameters.getEnd().toDate());
-		if(StringUtils.isBlank(parameters.getImage())) {
-			entity.setImageUrl("img/actu_defaut.jpg");
-		} else {
-			entity.setImageUrl(parameters.getImage());
-		}
-		entity.setContent(new Text(parameters.getContent()));
-		if(parameters.isDraft()) {
-			entity.setStatut(ActuStatutEnum.DRAFT.name());
-		} else {
-			entity.setStatut(ActuStatutEnum.PUBLIE.name());
-		}
-		dao.save(entity);
-		
-		if (parameters.isFacebook()) {
-			Document document = Jsoup.parse(parameters.getContent());
-			String facebookText = document.text();
-			FacebookClient facebookClient = new DefaultFacebookClient(
-					"CAAKgVklrgZCoBAOngDFrI5X24JXMRFjyKMzCXRoZAz26KT7XHaenWxU5MLtkZCbu9vk09UNYkwZB6YivEUftisnO7i7FYDcgPo7VnW0fELT9gRNwucy3wtkG9ms0Cq4KaCxqIJ70Sj1QSJ9pdg17YVcRtaSoV52YbhzPlVNAfVGnDcuKyW5c");
-			FacebookType publishMessageResponse = facebookClient.publish("710079642422594/feed", FacebookType.class,
-					Parameter.with("message", facebookText));
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public void publish(
+			@DefaultValue("true") @FormDataParam("enabled") boolean enabled,
+			@FormDataParam("data") String pData,
+			@FormDataParam("file") InputStream pFileInput,
+			@FormDataParam("file") FormDataContentDisposition pFileDisposition,
+			@FormDataParam("file") FormDataBodyPart pBodyPart) {
+		try {
+			String unscape = URLDecoder.decode(pData, "UTF-8");
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+			ActualitePublishParameters parameters = mapper.readValue(unscape, ActualitePublishParameters.class);
+			ActuEntity entity = null;
+			if (parameters.getId() != null && parameters.getId() > 0) {
+				entity = dao.get(parameters.getId());
+			} else {
+				entity = new ActuEntity();
+				entity.setCreatedBy(parameters.getUser());
+			}
+			entity.setUpdatedBy(parameters.getUser());
+
+			entity.setTitle(parameters.getTitle());
+			entity.setCreationDate(parameters.getBegin().toDate());
+			entity.setExpiration(parameters.getEnd().toDate());
+			if (StringUtils.isBlank(parameters.getImage())) {
+				entity.setImageUrl("img/actu_defaut.jpg");
+			} else {
+				entity.setImageUrl(parameters.getImage());
+			}
+			entity.setContent(new Text(parameters.getContent()));
+			if (parameters.isDraft()) {
+				entity.setStatut(ActuStatutEnum.DRAFT.name());
+			} else {
+				entity.setStatut(ActuStatutEnum.PUBLIE.name());
+			}
+			dao.save(entity);
+
+			if (parameters.isFacebook()) {
+				Document document = Jsoup.parse(parameters.getContent());
+				String facebookText = document.text();
+				FacebookClient facebookClient = new DefaultFacebookClient(
+						"CAAKgVklrgZCoBAOngDFrI5X24JXMRFjyKMzCXRoZAz26KT7XHaenWxU5MLtkZCbu9vk09UNYkwZB6YivEUftisnO7i7FYDcgPo7VnW0fELT9gRNwucy3wtkG9ms0Cq4KaCxqIJ70Sj1QSJ9pdg17YVcRtaSoV52YbhzPlVNAfVGnDcuKyW5c");
+				FacebookType publishMessageResponse = facebookClient.publish("710079642422594/feed", FacebookType.class,
+						Parameter.with("message", facebookText));
+			}
+		} catch (IOException e) {
+			LOG.log(Level.SEVERE, "Cannot publish actualité", e);
 		}
 	}
 	
