@@ -2,9 +2,9 @@ package com.asptttoulousenatation.core.actualite;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +20,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
@@ -29,7 +30,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import com.asptttoulousenatation.core.adherent.ActuTransformer;
-import com.asptttoulousenatation.core.adherent.EmailService;
 import com.asptttoulousenatation.core.document.DocumentTransformer;
 import com.asptttoulousenatation.core.server.dao.ActuDao;
 import com.asptttoulousenatation.core.server.dao.document.DocumentDao;
@@ -38,12 +38,16 @@ import com.asptttoulousenatation.core.server.dao.entity.ActuStatutEnum;
 import com.asptttoulousenatation.core.server.dao.entity.document.DocumentEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.ActuEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DocumentEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.structure.ContentDataKindEnum;
+import com.asptttoulousenatation.core.server.dao.entity.structure.ContentEntity;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
+import com.asptttoulousenatation.core.server.dao.structure.ContentDao;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.Text;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
@@ -59,6 +63,7 @@ public class ActualiteService {
 	private static final int ACTU_PAR_PAGE = 10;
 	private ActuDao dao = new ActuDao();
 	private DocumentDao documentDao = new DocumentDao();
+	private ContentDao contentDao = new ContentDao();
 
 	@GET
 	@Path("list/{pageNumber}")
@@ -134,7 +139,34 @@ public class ActualiteService {
 			} else {
 				entity.setStatut(ActuStatutEnum.PUBLIE.name());
 			}
-			dao.save(entity);
+			
+			ActuEntity actuCreated = dao.save(entity);
+			
+			if (pFileInput != null) {
+				String fileName = pFileDisposition.getFileName();
+
+				ContentEntity content = contentDao.findByMenu(actuCreated.getId());
+				if(content == null) {
+				content = new ContentEntity(fileName, new Blob(
+						IOUtils.toByteArray(pFileInput)),
+						ContentDataKindEnum.DOCUMENT.name(), actuCreated.getId());
+				ContentEntity lSavedEntity = contentDao.save(content);
+
+				DocumentEntity lDocumentEntity = new DocumentEntity(parameters.getTitle(),
+						StringUtils.EMPTY, pBodyPart.getMediaType().toString(),
+						fileName, new Date(), lSavedEntity.getId(), actuCreated.getId());
+				documentDao.save(lDocumentEntity);
+				} else {
+					content.setData(new Blob(
+						IOUtils.toByteArray(pFileInput)));
+					contentDao.save(content);
+					DocumentEntity document = documentDao.findByMenu(actuCreated.getId());
+					document.setFileName(fileName);
+					document.setMimeType(pBodyPart.getMediaType().toString());
+					document.setTitle(parameters.getTitle());
+					documentDao.save(document);
+				}
+			}
 
 			if (parameters.isFacebook()) {
 				Document document = Jsoup.parse(parameters.getContent());

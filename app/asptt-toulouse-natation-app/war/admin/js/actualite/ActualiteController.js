@@ -2,7 +2,7 @@
  * 
  */
 var actualiteController = angular.module('ActualiteController', ['ngRoute', 'actualiteServices']);
-actualiteController.controller('ActualiteController', ['$rootScope', '$scope', '$location', '$anchorScroll', 'ActualiteService', function($rootScope, $scope, $location, $anchorScroll, ActualiteService) {
+actualiteController.controller('ActualiteController', ['$rootScope', '$scope', '$http', '$location', '$anchorScroll', 'ActualiteService', function($rootScope, $scope, $http, $location, $anchorScroll, ActualiteService) {
 	$rootScope.isLoading = true;
 	$scope.showFull = true;
 	
@@ -57,7 +57,7 @@ actualiteController.controller('ActualiteController', ['$rootScope', '$scope', '
 		if(file != null) {
 			formData.append("file", $scope.fichier);
 		}
-		formData.append("data", $scope.currentActualite);
+		formData.append("data", angular.toJson($scope.currentActualite));
 		$http.post("/resources/actualites", formData, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}

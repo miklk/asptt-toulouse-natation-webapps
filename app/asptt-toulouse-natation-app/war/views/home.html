@@ -29,11 +29,11 @@
 				</div>
 				<div class="panel-body" ng-bind-html="actualiteHtml"></div>
 				
-				<div ng-show="actuHasDocument">
-					<h4>Documents associés <span class="badge">{{actuNbDocuments}}</span></h4>
+				<div ng-show="actuHasDocument" style="margin: 2%">
+					<h5>Document associé <span class="badge">{{actuNbDocuments}}</span></h5>
 						<div class="list-group">
-							<a href="downloadDocument?documentId={{document.id}}&fileId={{document.data}}"  class="list-group-item" ng-repeat="document in actuDocuments">
-								<h4 class="list-group-item-heading">{{document.title}}</h4>
+							<a href="http://docs.google.com/viewer?embedded=true&url=http%3A%2F%2Fwww.asptt-toulouse-natation.com%2FdownloadDocument%3FdocumentId%3D{{document.id}}" target="_blank" class="list-group-item" ng-repeat="document in actuDocuments">
+								<h7 class="list-group-item-heading">{{document.title}}</h7>
 								<p class="list-group-item-text">{{document.summary}}</p>
 							</a>
 					</div>
