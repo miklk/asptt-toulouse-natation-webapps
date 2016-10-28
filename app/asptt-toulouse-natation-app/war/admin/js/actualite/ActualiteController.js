@@ -1,6 +1,7 @@
 /**
  * 
  */
+var files = null;
 var actualiteController = angular.module('ActualiteController', ['ngRoute', 'actualiteServices']);
 actualiteController.controller('ActualiteController', ['$rootScope', '$scope', '$http', '$location', '$anchorScroll', 'ActualiteService', function($rootScope, $scope, $http, $location, $anchorScroll, ActualiteService) {
 	$rootScope.isLoading = true;
@@ -55,7 +56,7 @@ actualiteController.controller('ActualiteController', ['$rootScope', '$scope', '
 			file = files[0];
 		}
 		if(file != null) {
-			formData.append("file", $scope.fichier);
+			formData.append("file", file);
 		}
 		formData.append("data", angular.toJson($scope.currentActualite));
 		$http.post("/resources/actualites", formData, {

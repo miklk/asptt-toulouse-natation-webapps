@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
 
 @XmlRootElement
@@ -86,7 +88,7 @@ public class ActuUi implements Serializable {
 
 	public void setDocumentSet(List<DocumentUi> pDocumentSet) {
 		documentSet = pDocumentSet;
-		hasDocument = documentSet != null || !documentSet.isEmpty();
+		hasDocument = CollectionUtils.isNotEmpty(documentSet);
 	}
 
 	public String getImageUrl() {

@@ -21,7 +21,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -36,7 +35,6 @@ import com.asptttoulousenatation.core.server.dao.document.DocumentDao;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
 import com.asptttoulousenatation.core.server.dao.entity.ActuStatutEnum;
 import com.asptttoulousenatation.core.server.dao.entity.document.DocumentEntity;
-import com.asptttoulousenatation.core.server.dao.entity.field.ActuEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DocumentEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.structure.ContentDataKindEnum;
 import com.asptttoulousenatation.core.server.dao.entity.structure.ContentEntity;
@@ -75,11 +73,6 @@ public class ActualiteService {
 		
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
-		if (StringUtils.isNotBlank(pCompetition)) {
-			criteria.add(new CriterionDao<Boolean>(
-					ActuEntityFields.COMPETITION, BooleanUtils
-							.toBoolean(pCompetition), Operator.EQUAL));
-		}
 		List<ActuEntity> lEntities = dao.find(criteria, 0, maxNumber);
 		ActuTransformer actuTransformer = new ActuTransformer();
 		DocumentTransformer documentTransformer = new DocumentTransformer();

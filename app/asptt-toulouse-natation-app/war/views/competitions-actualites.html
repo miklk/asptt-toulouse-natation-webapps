@@ -45,7 +45,7 @@
         </div>
 	
 		<div class="col-md-10">
-		    <h3>Interclub 2016-2017 à Muret: poule régionale le samedi 5 novembre, la poule départementale le dimanche 6 novembre, à vos agenda et surtout à vos maillots !</h3>
+		    <h3>Interclub 2016-2017 à Muret : poule régionale le samedi 5 novembre, la poule départementale le dimanche 6 novembre, à vos agenda et surtout à vos maillots !</h3>
 			<div ng-bind-html="pageHtml"></div>
 			<div class="panel panel-default" ng-repeat="actualite in actualites.actualites">
 				<div class="panel-body">
@@ -56,6 +56,15 @@
 						<p>{{actualite.creationDate | date:"dd/MM/yyyy 'à' HH:mm"}}</p>
 						<h4>{{actualite.title}}</h4>
 						<p ng-bind-html="actualiteContent(actualite.content)"></p>
+						<div ng-show="actualite.hasDocument">
+							<h5>Document associé <span class="badge">{{actualite.documentSet.length}}</span></h5>
+							<div class="list-group">
+								<a href="http://docs.google.com/viewer?embedded=true&url=http%3A%2F%2Fwww.asptt-toulouse-natation.com%2FdownloadDocument%3FdocumentId%3D{{document.id}}" target="_blank" class="list-group-item" ng-repeat="document in actualite.documentSet">
+									<h7 class="list-group-item-heading">{{document.title}}</h7>
+									<p class="list-group-item-text">{{document.summary}}</p>
+								</a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
