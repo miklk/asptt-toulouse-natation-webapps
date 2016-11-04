@@ -141,4 +141,9 @@
         <property name="saison" direction="asc"/>
         <property name="nom" direction="asc"/>
     </datastore-index>
+    
+    <datastore-index kind="SwimmerStatEntity" ancestor="false" source="manual">
+        <property name="type" direction="asc"/>
+        <property name="day" direction="asc"/>
+    </datastore-index>
 </datastore-indexes>

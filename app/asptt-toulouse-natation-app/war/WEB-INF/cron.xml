@@ -62,4 +62,9 @@
 		<description>Liste des présents - initialisation tous les dimanches</description>
 		<schedule>every sunday 18:00</schedule>
 	</cron>
+	<cron>
+		<url>/resources/presences/report/ELITE/mkkmikl@gmail.com</url>
+		<description>Rapport des présents</description>
+		<schedule>every day 21:58</schedule>
+	</cron>
 </cronentries>
