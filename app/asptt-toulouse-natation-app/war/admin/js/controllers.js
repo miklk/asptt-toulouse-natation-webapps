@@ -3,7 +3,7 @@ adminController.controller('AdminController', ['$rootScope', '$scope', '$cookieS
 	var token = $cookieStore.get("asptt-token");
     $rootScope.aspttToken = token;
     console.log(token);
-    $rootScope.displayMenu = false;
+    $rootScope.displayMenu = true;
     var tokenInfo = $cookieStore.get("asptt-token-info");
     $rootScope.aspttTokenInfo = tokenInfo;
     $scope.toogleMenu = function() {

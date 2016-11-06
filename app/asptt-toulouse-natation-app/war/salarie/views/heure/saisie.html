@@ -1,0 +1,101 @@
+<div style="margin-left: 2%" ng-controller="SalarieController">
+	<div class="row">
+		<h1 class="page-header">Présences prévues <small>par semaine</small></h1>
+	</div>
+	
+	<div class="row">
+		<form class="form-inline">
+			<div class="form-group">
+				<input type="week" ng-model="day" class="form-control" />
+			</div>
+			<button type="submit" class="btn btn-primary" ng-click="loadWeeksPrevu()">Afficher</button>
+		</form>
+	</div>
+	<strong ng-show="loading">Recherche en cours...</strong>
+	
+<div ng-show="presences">
+	<div class="row" ng-show="beginDt">
+		<h5>{{beginDt | date: 'shortDate'}} - {{endDt | date: 'shortDate'}}</h5>
+	</div>
+	
+	<div class="row">
+		<h3>Lundi</h3>
+		<dl style="margin-left:2%">
+			<dt>Matin</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[0][0]">{{nageur}}, </span></dd>
+			<dt>Midi</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[0][1]">{{nageur}}, </span></dd>
+			<dt>Soir</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[0][2]">{{nageur}}, </span></dd>
+			<dt>Musculation</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[0][3]">{{nageur}}, </span></dd>
+		</dl>
+		<h3>Mardi</h3>
+		<dl style="margin-left:2%">
+			<dt>Matin</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[1][0]">{{nageur}}, </span></dd>
+			<dt>Midi</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[1][1]">{{nageur}}, </span></dd>
+			<dt>Soir</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[1][2]">{{nageur}}, </span></dd>
+			<dt>Musculation</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[1][3]">{{nageur}}, </span></dd>
+		</dl>
+		<h3>Mercredi</h3>
+		<dl style="margin-left:2%">
+			<dt>Matin</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[2][0]">{{nageur}}, </span></dd>
+			<dt>Midi</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[2][1]">{{nageur}}, </span></dd>
+			<dt>Soir</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[2][2]">{{nageur}}, </span></dd>
+			<dt>Musculation</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[2][3]">{{nageur}}, </span></dd>
+		</dl>
+		<h3>Jeudi</h3>
+		<dl style="margin-left:2%">
+			<dt>Matin</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[3][0]">{{nageur}}, </span></dd>
+			<dt>Midi</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[3][1]">{{nageur}}, </span></dd>
+			<dt>Soir</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[3][2]">{{nageur}}, </span></dd>
+			<dt>Musculation</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[3][3]">{{nageur}}, </span></dd>
+		</dl>
+		<h3>Vendredi</h3>
+		<dl style="margin-left:2%">
+			<dt>Matin</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[4][0]">{{nageur}}, </span></dd>
+			<dt>Midi</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[4][1]">{{nageur}}, </span></dd>
+			<dt>Soir</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[4][2]">{{nageur}}, </span></dd>
+			<dt>Musculation</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[4][3]">{{nageur}}, </span></dd>
+		</dl>
+		<h3>Samedi</h3>
+		<dl style="margin-left:2%">
+			<dt>Matin</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[5][0]">{{nageur}}, </span></dd>
+			<dt>Midi</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[5][1]">{{nageur}}, </span></dd>
+			<dt>Soir</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[5][2]">{{nageur}}, </span></dd>
+			<dt>Musculation</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[5][3]">{{nageur}}, </span></dd>
+		</dl>
+		<h3>Dimanche</h3>
+		<dl style="margin-left:2%">
+			<dt>Matin</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[6][0]">{{nageur}}, </span></dd>
+			<dt>Midi</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[6][1]">{{nageur}}, </span></dd>
+			<dt>Soir</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[6][2]">{{nageur}}, </span></dd>
+			<dt>Musculation</dt>
+			<dd style="margin-left: 2%"><span ng-repeat="nageur in presences[6][3]">{{nageur}}, </span></dd>
+		</dl>
+	</div>
+</div>
+</div>

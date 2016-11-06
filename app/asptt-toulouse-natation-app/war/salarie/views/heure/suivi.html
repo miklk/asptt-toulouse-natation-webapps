@@ -1,0 +1,46 @@
+<div class="container" ng-controller="SalarieController">
+
+<h2>{{presence.nom}} {{presence.prenom}} - Semaine du {{presence.begin | date : 'dd'}} au {{presence.end | date : 'dd MMMM yyyy'}}</h2>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Lundi</th>
+				<th>Mardi</th>
+				<th>Mercredi</th>
+				<th>Jeudi</th>
+				<th>Vendredi</th>
+				<th>Samedi</th>
+				<th>Dimanche</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Matin</td>
+				<td ng-repeat = "presenceDay in presence.presences">
+					<input type="checkbox" ng-model="presenceDay[0]" />
+				</td>
+			</tr>
+			<tr>
+				<td>Midi</td>
+				<td ng-repeat = "presenceDay in presence.presences">
+					<input type="checkbox" ng-model="presenceDay[1]" />
+				</td>
+			</tr>
+			<tr>
+				<td>Soir</td>
+				<td ng-repeat = "presenceDay in presence.presences">
+					<input type="checkbox" ng-model="presenceDay[2]" />
+				</td>
+			</tr>
+			<tr>
+				<td>Musculation</td>
+				<td ng-repeat = "presenceDay in presence.presences">
+					<input type="checkbox" ng-model="presenceDay[3]" />
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<button type="button" class="btn btn-block btn-success" ng-click="validate()">Valider</button>
+</div>
