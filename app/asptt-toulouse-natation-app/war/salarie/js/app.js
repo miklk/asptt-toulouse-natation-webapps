@@ -1,7 +1,7 @@
 /**
  *
  */
-var adminApp = angular.module('salarieApp', ['ngCookies', 'ngRoute', 'SalarieService', 'SalarieController', 'SaisieHeureController', 'suiviNageurServices']);
+var adminApp = angular.module('salarieApp', ['ngCookies', 'ngRoute', 'SalarieService', 'SalarieController', 'SaisieHeureController', 'saisieHeureServices']);
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.
 		when('/', {
@@ -45,3 +45,8 @@ adminApp.directive('ngLoadingIndicator', function($rootScope) {
 	}
 });
 
+adminApp.filter("toDate", function() {
+    return function(x) {
+        return new Date(x);
+    };
+});

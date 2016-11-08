@@ -18,8 +18,8 @@
 		<h5>{{beginDt | date: 'shortDate'}} - {{endDt | date: 'shortDate'}}</h5>
 	</div>
 	
-	<div class="row">
-		<h3>Lundi</h3>
+	<div class="row" ng-repeat ="day in days">
+		<h3>{{day.day | date : 'EEEE'}}</h3>
 		<table class="table">
 			<thead>
 				<tr>
@@ -30,7 +30,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<tr ng-repeat="heure in day.heures">
 					<td><input type="text" class="form-control" name="activite" /></td>
 					<td><input type="time" class="form-control" name="arrive" /></td>
 					<td><input type="time" class="form-control" name="depart" /></td>
@@ -38,7 +38,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<button type="button" class="btn btn-success btn-block">Ajouter une autre libre pour lundi</button>
+		<button type="button" class="btn btn-success btn-block">Ajouter une autre libre pour {{day.day | date : 'EEEE'}}</button>
 		<button type="button" class="btn btn-success btn-block">Valider</button>
 	</div>
 </div>

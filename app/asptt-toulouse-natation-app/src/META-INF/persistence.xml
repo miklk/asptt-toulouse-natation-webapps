@@ -42,6 +42,8 @@
         <class>com.asptttoulousenatation.core.server.dao.entity.inscription.stage.DossierStageEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.reference.ParamEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.swimmer.PresenceToken</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.salarie.SalarieActiviteEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.salarie.SalarieHeureEntity</class>
         
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         
