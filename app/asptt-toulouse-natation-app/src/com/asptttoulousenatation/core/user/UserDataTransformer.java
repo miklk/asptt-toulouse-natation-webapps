@@ -1,4 +1,4 @@
-package com.asptttoulousenatation.core.server.entity;
+package com.asptttoulousenatation.core.user;
 
 import com.asptttoulousenatation.core.lang.AbstractEntityTransformer;
 import com.asptttoulousenatation.core.server.dao.entity.user.UserDataEntity;

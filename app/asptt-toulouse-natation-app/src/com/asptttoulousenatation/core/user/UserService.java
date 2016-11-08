@@ -42,8 +42,6 @@ import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.user.UserAuthorizationDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDao;
 import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
-import com.asptttoulousenatation.core.server.entity.UserDataTransformer;
-import com.asptttoulousenatation.core.server.entity.UserTransformer;
 import com.asptttoulousenatation.core.shared.user.UserUi;
 import com.asptttoulousenatation.core.util.Utils;
 

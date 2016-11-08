@@ -1,11 +1,14 @@
 /**
  *
  */
-var adminApp = angular.module('salarieApp', ['ngCookies', 'ngRoute', 'SalarieService', 'SalarieController', 'SuiviNageurController', 'suiviNageurServices']);
+var adminApp = angular.module('salarieApp', ['ngCookies', 'ngRoute', 'SalarieService', 'SalarieController', 'SaisieHeureController', 'suiviNageurServices']);
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.
 		when('/', {
 			templateUrl : 'views/home.html'
+		}).
+		when('/saisie', {
+			templateUrl : 'views/heure/saisie.html'
 		}).
 		when('/error', {
 			templateUrl: 'views/error.html'

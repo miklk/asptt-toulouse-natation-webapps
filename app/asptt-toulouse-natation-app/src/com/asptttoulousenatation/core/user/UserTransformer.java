@@ -1,4 +1,4 @@
-package com.asptttoulousenatation.core.server.entity;
+package com.asptttoulousenatation.core.user;
 
 import java.util.HashSet;
 
