@@ -12,9 +12,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.annotation-api-1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.inject-2.3.0-b05.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-api-2.2.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jdo-api-3.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jsr107cache-1.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jta-1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.osgi.core-4.2.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/osgi-resource-locator-1.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/validation-api-1.1.0.Final.jar"/>
@@ -62,7 +60,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-security-core-3.2.7.RELEASE.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-security-web-3.2.7.RELEASE.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/spring-boot-legacy-1.0.1.RELEASE.jar" sourcepath="/Users/mikl/.m2/repository/org/springframework/boot/spring-boot-legacy/1.0.1.RELEASE/spring-boot-legacy-1.0.1.RELEASE-sources.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/geronimo-jpa_2.0_spec-1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-2.0.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/auth.jar"/>
@@ -87,8 +84,8 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jersey-container-servlet.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jersey-guava-2.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jersey-server.jar"/>
-	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="lib" path="/Applications/Eclipse.app/Contents/Eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.7.0/gwt-2.7.0/validation-api-1.0.0.GA-sources.jar"/>
 	<classpathentry kind="lib" path="/Applications/Eclipse.app/Contents/Eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.7.0/gwt-2.7.0/validation-api-1.0.0.GA.jar" sourcepath="/Applications/Eclipse.app/Contents/Eclipse/plugins/com.google.gwt.eclipse.sdkbundle_2.7.0/gwt-2.7.0/validation-api-1.0.0.GA-sources.jar"/>
+	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
