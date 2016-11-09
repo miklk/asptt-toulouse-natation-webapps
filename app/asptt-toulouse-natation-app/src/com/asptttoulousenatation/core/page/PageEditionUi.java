@@ -2,8 +2,6 @@ package com.asptttoulousenatation.core.page;
 
 import java.io.Serializable;
 
-import javax.jdo.annotations.Persistent;
-
 public class PageEditionUi implements Serializable {
 
 	/**

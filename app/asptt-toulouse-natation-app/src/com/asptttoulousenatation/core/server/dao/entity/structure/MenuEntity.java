@@ -3,7 +3,6 @@ package com.asptttoulousenatation.core.server.dao.entity.structure;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.jdo.annotations.Persistent;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,37 +22,26 @@ public class MenuEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Persistent
 	private String title;
 	
-	@Persistent
 	private Long area;
 	
-	@Persistent
 	private String menuKey;
 	
-	@Persistent
 	private boolean shortcut;
 	
-	@Persistent
 	private boolean display;
 	
-	@Persistent
 	private int order;
 	
-	@Persistent
 	private Set<Long> subMenu;
 	
-	@Persistent
 	private Long parent;
 	
-	@Persistent
 	private Boolean divider;
 	
-	@Persistent
 	private Boolean alone;
 	
-	@Persistent
 	private String identifier;
 	
 	public MenuEntity() {

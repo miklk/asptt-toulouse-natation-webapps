@@ -2,7 +2,6 @@ package com.asptttoulousenatation.core.document.libelle;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 
 import com.asptttoulousenatation.core.shared.document.libelle.LibelleUi;
 

@@ -1,6 +1,6 @@
 package com.asptttoulousenatation.core.server.dao.entity.inscription;
 
-import javax.jdo.annotations.Persistent;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,7 +22,7 @@ public class InscriptionNouveauEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Persistent
+	
 	private String email;
 	
 	

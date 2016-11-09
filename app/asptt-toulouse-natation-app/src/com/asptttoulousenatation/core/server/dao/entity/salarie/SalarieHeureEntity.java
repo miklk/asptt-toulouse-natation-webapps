@@ -19,12 +19,13 @@ public class SalarieHeureEntity implements IEntity {
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private static final long serialVersionUID = 1L;
 	private Long id;
 	private Long user;
-	private Long activite;
+	private String activite;
 	private Date begin;
 	private Date end;
 	private String commentaire;
@@ -51,11 +52,11 @@ public class SalarieHeureEntity implements IEntity {
 		this.id = id;
 	}
 
-	public Long getActivite() {
+	public String getActivite() {
 		return activite;
 	}
 
-	public void setActivite(Long activite) {
+	public void setActivite(String activite) {
 		this.activite = activite;
 	}
 

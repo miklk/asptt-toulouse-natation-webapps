@@ -2,7 +2,7 @@ package com.asptttoulousenatation.core.server.dao.entity.club.group;
 
 import java.util.Date;
 
-import javax.jdo.annotations.Persistent;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,13 +24,13 @@ public class SlotEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Persistent
+	
 	private String dayOfWeek;
 	
-	@Persistent
+	
 	private int begin;
 	
-	@Persistent
+	
 	private int end;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -39,25 +39,25 @@ public class SlotEntity implements IEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date endDt;
 	
-	@Persistent
+	
 	private Long group;
 	
-	@Persistent
+	
 	private String swimmingPool;
 	
-	@Persistent
+	
 	private String educateur;
 	
-	@Persistent
+	
 	private Integer placeDisponible;
 	
-	@Persistent
+	
 	private Integer placeRestante;
 	
-	@Persistent
+	
 	private Boolean second;
 	
-	@Persistent
+	
 	private Boolean hasSecond;
 	
 	public SlotEntity() {

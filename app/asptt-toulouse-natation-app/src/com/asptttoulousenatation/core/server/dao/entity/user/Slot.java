@@ -1,6 +1,6 @@
 package com.asptttoulousenatation.core.server.dao.entity.user;
 
-import javax.jdo.annotations.Persistent;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,16 +19,16 @@ public class Slot implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Persistent
+	
 	private int dayofweek;
 	
-	@Persistent
+	
 	private String timeslot;
 	
-	@Persistent
+	
 	private String group;
 	
-	@Persistent
+	
 	private String swimmingpool;
 	
 	public Slot() {

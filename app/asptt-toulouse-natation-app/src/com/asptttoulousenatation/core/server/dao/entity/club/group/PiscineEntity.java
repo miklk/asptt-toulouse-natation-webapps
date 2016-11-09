@@ -1,6 +1,6 @@
 package com.asptttoulousenatation.core.server.dao.entity.club.group;
 
-import javax.jdo.annotations.Persistent;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,7 +20,7 @@ public class PiscineEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Persistent
+	
 	private String intitule;
 
 	public Long getId() {

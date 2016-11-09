@@ -1,6 +1,5 @@
 package com.asptttoulousenatation.core.server.dao.entity.structure;
 
-import javax.jdo.annotations.Persistent;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,16 +20,12 @@ public class ContentEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Persistent
 	private String summary;
 	
-	@Persistent
 	private Blob data;
 	
-	@Persistent
 	private String kind;
 	
-	@Persistent
 	private Long menu;
 	
 	public ContentEntity() {

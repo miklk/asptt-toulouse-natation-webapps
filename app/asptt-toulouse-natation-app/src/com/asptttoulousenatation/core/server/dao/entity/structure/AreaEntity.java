@@ -1,6 +1,6 @@
 package com.asptttoulousenatation.core.server.dao.entity.structure;
 
-import javax.jdo.annotations.Persistent;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,16 +23,16 @@ public class AreaEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Persistent
+	
 	private String title;
 	
-	@Persistent
+	
 	private String profile;
 	
-	@Persistent
+	
 	private boolean shortcut;
 	
-	@Persistent
+	
 	private short order;
 	
 	public Long getId() {

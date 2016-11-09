@@ -3,7 +3,7 @@ package com.asptttoulousenatation.core.server.dao.entity.competition;
 import java.util.Date;
 import java.util.Set;
 
-import javax.jdo.annotations.Persistent;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,22 +23,22 @@ public class CompetitionEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Persistent
+	
 	private String title;
 	
-	@Persistent
+	
 	private String place;
 	
-	@Persistent
+	
 	private Date begin;
 	
-	@Persistent
+	
 	private Date end;
 	
-	@Persistent
+	
 	private String saison;
 	
-	@Persistent
+	
 	private Set<Long> days;
 	
 	public CompetitionEntity() {

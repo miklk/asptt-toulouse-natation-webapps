@@ -1,13 +1,10 @@
 package com.asptttoulousenatation.core.document.libelle;
 
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.cglib.core.CollectionUtils;
-import org.springframework.cglib.core.Predicate;
 
 import com.asptttoulousenatation.core.server.dao.entity.document.LibelleEntity;
 import com.asptttoulousenatation.core.shared.document.libelle.LibelleUi;

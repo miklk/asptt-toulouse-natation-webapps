@@ -1,6 +1,5 @@
 package com.asptttoulousenatation.core.server.dao.entity.club.group;
 
-import javax.jdo.annotations.Persistent;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,56 +19,53 @@ public class GroupEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Persistent
 	private String title;
-	
-	@Persistent
 	private Boolean licenceFfn;
 	
-	@Persistent
+	
 	private Boolean inscription;
-	@Persistent
+	
 	private Integer tarif;
-	@Persistent
+	
 	private Integer tarif2;
-	@Persistent
+	
 	private Integer tarif3;
-	@Persistent
+	
 	private Integer tarif4;
-	@Persistent
+	
 	private Integer tarifWeight;
 	
-	@Persistent
+	
 	private Integer tarifUnique;
-	@Persistent
+	
 	private Integer tarifUnique2;
-	@Persistent
+	
 	private Integer tarifUnique3;
-	@Persistent
+	
 	private Integer tarifUnique4;
 	
-	@Persistent
+	
 	private Boolean seanceunique;
 	
-	@Persistent
+	
 	private Boolean nouveau;
 	
-	@Persistent
+	
 	private String description;
 	
-	@Persistent
+	
 	private Boolean enf;
 	
-	@Persistent
+	
 	private Boolean competition;
 	
-	@Persistent
+	
 	private Boolean secondes;
 	
-	@Persistent
+	
 	private Integer capacite;
 	
-	@Persistent
+	
 	private Integer occupe;
 	
 	public GroupEntity() {

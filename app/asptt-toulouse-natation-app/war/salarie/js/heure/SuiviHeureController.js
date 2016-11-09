@@ -24,4 +24,6 @@ suiviNageurController.controller('SuiviNageurController', ['$scope', '$location'
 	};
 	
 	$scope.loadWeeksPrevu();
+	
+	
 }]);

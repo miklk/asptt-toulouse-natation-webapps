@@ -2,7 +2,7 @@ package com.asptttoulousenatation.core.server.dao.entity.user;
 
 import java.util.Date;
 
-import javax.jdo.annotations.Persistent;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,52 +22,52 @@ public class UserDataEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Persistent
+	
 	private String firstName;
 	
-	@Persistent
+	
 	private String lastName;
 	
-	@Persistent
+	
 	private Date birthday;
 	
-	@Persistent
+	
 	private String birthdayPlace;
 	
-	@Persistent
+	
 	private String nationality;
 	
-	@Persistent
+	
 	private String phonenumber;
 	
-	@Persistent
+	
 	private String addressRoad;
 	
-	@Persistent
+	
 	private String addressAdditional;
 	
-	@Persistent
+	
 	private String addressCode;
 	
-	@Persistent
+	
 	private String addressCity;
 	
-	@Persistent
+	
 	private String gender;
 	
-	@Persistent
+	
 	private String measurementSwimsuit;
 	
-	@Persistent
+	
 	private String measurementTshirt;
 	
-	@Persistent
+	
 	private String measurementShort;
 
-	@Persistent
+	
 	private String contactLastName;
 	
-	@Persistent
+	
 	private String contactFirstName;
 	
 	public UserDataEntity() {

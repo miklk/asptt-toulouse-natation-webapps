@@ -1,6 +1,6 @@
 package com.asptttoulousenatation.core.server.dao.entity.swimmer;
 
-import javax.jdo.annotations.Persistent;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,25 +22,25 @@ public class SwimmerStatEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Persistent
+	
 	private Long day;
 	
-	@Persistent
+	
 	private Long swimmer;
 	
-	@Persistent
+	
 	private String daytime;
 	
-	@Persistent
+	
 	private int distance;
 	
-	@Persistent
+	
 	private String comment;
 	
-	@Persistent
+	
 	private Boolean presence;
 	
-	@Persistent
+	
 	private String type;
 	
 	public SwimmerStatEntity() {

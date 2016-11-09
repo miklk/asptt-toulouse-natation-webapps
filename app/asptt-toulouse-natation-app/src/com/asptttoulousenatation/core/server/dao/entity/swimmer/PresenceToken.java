@@ -2,7 +2,7 @@ package com.asptttoulousenatation.core.server.dao.entity.swimmer;
 
 import java.util.Date;
 
-import javax.jdo.annotations.Persistent;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -19,13 +19,13 @@ public class PresenceToken implements IEntity {
 	@Id
 	private String id;
 	
-	@Persistent
+	
 	private Date begin;
 	
-	@Persistent
+	
 	private Long swimmer;
 	
-	@Persistent
+	
 	private Long groupe;
 	
 	public String getId() {

@@ -12,4 +12,8 @@ saisieHeureController.controller('SaisieHeureController', ['$scope', '$location'
 	SaisieHeureService.week.query(function(data) {
 		$scope.days = data;
 	});
+	
+	$scope.valider = function() {
+		console.log($scope.days);
+	}
 }]);

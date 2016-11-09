@@ -31,15 +31,15 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="heure in day.heures">
-					<td><input type="text" class="form-control" name="activite" /></td>
-					<td><input type="time" class="form-control" name="arrive" /></td>
-					<td><input type="time" class="form-control" name="depart" /></td>
-					<td><input type="text" class="form-control" name="commentaire" /></td>
+					<td><input type="text" class="form-control" name="activite" ng-model="heure.activite" /></td>
+					<td><input type="time" class="form-control" name="arrive" ng-model="heure.begin" /></td>
+					<td><input type="time" class="form-control" name="depart" ng-model="heure.end" /></td>
+					<td><input type="text" class="form-control" name="commentaire" ng-model="heure.commentaire" /></td>
 				</tr>
 			</tbody>
 		</table>
-		<button type="button" class="btn btn-success btn-block">Ajouter une autre libre pour {{day.day | date : 'EEEE'}}</button>
-		<button type="button" class="btn btn-success btn-block">Valider</button>
+		<button type="button" class="btn btn-warning">Ajouter une autre libre pour {{day.day | date : 'EEEE'}}</button>
+		<button type="button" class="btn btn-success" ng-click="valider()">Valider (valide toutes les saisies)</button>
 	</div>
 </div>
 </div>
