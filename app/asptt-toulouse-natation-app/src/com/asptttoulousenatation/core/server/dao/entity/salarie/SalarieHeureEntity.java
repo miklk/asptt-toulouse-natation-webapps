@@ -11,6 +11,8 @@ import javax.persistence.PreUpdate;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.asptttoulousenatation.core.server.dao.entity.IEntity;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 
 @Entity
 @XmlRootElement
@@ -26,12 +28,16 @@ public class SalarieHeureEntity implements IEntity {
 	private Long id;
 	private Long user;
 	private String activite;
+	@JsonSerialize(using=DateSerializer.class)
 	private Date begin;
+	@JsonSerialize(using=DateSerializer.class)
 	private Date end;
 	private String commentaire;
 	private String updatedBy;
+	@JsonSerialize(using=DateSerializer.class)
 	private Date created;
 	private String createdBy;
+	@JsonSerialize(using=DateSerializer.class)
 	private Date updated;
 	
 	@PreUpdate
@@ -42,6 +48,7 @@ public class SalarieHeureEntity implements IEntity {
 	@PrePersist
 	public void onCreate() {
 		created = new Date();
+		updated = new Date();
 	}
 
 	public Long getId() {

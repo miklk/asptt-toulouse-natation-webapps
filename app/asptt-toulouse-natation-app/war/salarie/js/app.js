@@ -1,7 +1,7 @@
 /**
  *
  */
-var adminApp = angular.module('salarieApp', ['ngCookies', 'ngRoute', 'SalarieService', 'SalarieController', 'SaisieHeureController', 'saisieHeureServices']);
+var adminApp = angular.module('salarieApp', ['ngCookies', 'ngRoute', 'angular-spinkit', 'SalarieService', 'SalarieController', 'SaisieHeureController', 'saisieHeureServices']);
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.
 		when('/', {

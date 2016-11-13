@@ -1,11 +1,11 @@
 <div class="container" ng-controller="HomeController">
 
-<h2>Bienvenue</h2>
+<h2>Bienvenue {{aspttTokenInfo.prenom}}</h2>
 
-	<div class="row">
+	<div class="row" style="margin-top: 3%">
 		<div class="col-md-5">
 			<div class="panel panel-primary">
-				<div class="panel-heading">Dossiers d'inscription</div>
+				<div class="panel-heading">Rechercher un dossier d'inscription</div>
 				<div class="panel-body">
 					<form class="form" ng-submit="search()">
 						<div class="row">
@@ -19,6 +19,15 @@
 						   </div>
 						</div>
 					</form>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-5">
+			<div class="panel panel-primary">
+				<div class="panel-heading">Salarié - Activité</div>
+				<div class="panel-body">
+					<a href="/salarie/admin.html">salarie.asptt-toulouse-natation.com</a>
 				</div>
 			</div>
 		</div>
