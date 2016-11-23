@@ -21,7 +21,9 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import com.asptttoulousenatation.core.authentication.TokenManager;
+import com.asptttoulousenatation.core.server.dao.entity.salarie.SalarieActiviteEntity;
 import com.asptttoulousenatation.core.server.dao.entity.salarie.SalarieHeureEntity;
+import com.asptttoulousenatation.core.server.dao.salarie.SalarieActiviteDao;
 import com.asptttoulousenatation.core.server.dao.salarie.SalarieHeureDao;
 
 @Path("/salarie/heure")
@@ -29,6 +31,7 @@ import com.asptttoulousenatation.core.server.dao.salarie.SalarieHeureDao;
 public class SalarieHeureService {
 
 	private SalarieHeureDao dao = new SalarieHeureDao();
+	private SalarieActiviteDao activiteDao = new SalarieActiviteDao();
 
 	@Path("{week}/{token}")
 	@GET
@@ -80,13 +83,19 @@ public class SalarieHeureService {
 		for (SalarieHeureDay day : days) {
 			DateTime currentDay = new DateTime(day.getDay().getTime());
 			for (SalarieHeureEntity heure : day.getHeures()) {
-				if (StringUtils.isNotBlank(heure.getActivite())) {
+				String activiteTitle = StringUtils.upperCase(StringUtils.trimToEmpty(heure.getActivite()));
+				if (StringUtils.isNotBlank(activiteTitle)) {
+					heure.setActivite(activiteTitle);
 					heure.setBegin(currentDay.withTime(LocalTime.fromMillisOfDay(heure.getBegin().getTime())).toDate());
 					heure.setEnd(currentDay.withTime(LocalTime.fromMillisOfDay(heure.getEnd().getTime())).toDate());
 					heure.setCreatedBy(user + "");
 					heure.setUpdatedBy(user + "");
 					heure.setUser(user);
 					dao.save(heure);
+					
+					SalarieActiviteEntity activite = new SalarieActiviteEntity();
+					activite.setIntitule(activiteTitle);
+					activiteDao.save(activite);
 				}
 			}
 		}
