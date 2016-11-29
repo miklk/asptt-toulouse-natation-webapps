@@ -1,7 +1,7 @@
 /**
  *
  */
-var adminApp = angular.module('salarieApp', ['ngCookies', 'ngRoute', 'angular-spinkit', 'SalarieService', 'SalarieController', 'SaisieHeureController', 'saisieHeureServices']);
+var adminApp = angular.module('salarieApp', ['ngCookies', 'ngRoute', 'angular-spinkit', 'SalarieService', 'SalarieController', 'SaisieHeureController', 'saisieHeureServices', 'authorizationService']);
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.
 		when('/', {
@@ -14,7 +14,8 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 			templateUrl: 'views/error.html'
 		}).
 		when('/suivi', {
-			templateUrl : 'views/suivi-heure.html'
+			templateUrl : 'views/heure/suivi.html',
+			access: 'ACCESS_SALARIE_ACTIVITE_SUIVI'
 		}).
 		otherwise({
 			redirectTo: '/error'
@@ -43,6 +44,20 @@ adminApp.directive('ngLoadingIndicator', function($rootScope) {
 		      });
 		    }
 	}
+});
+
+adminApp.directive("showWhenConnected", function (AuthorizationService) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var showIfConnected = function() {
+            	AuthorizationService.hasAccess($(element), attrs.showWhenConnected);
+            };
+
+            showIfConnected();
+            scope.$on("connectionStateChanged", showIfConnected);
+        }
+    };
 });
 
 adminApp.filter("toDate", function() {

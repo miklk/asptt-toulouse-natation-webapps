@@ -8,6 +8,7 @@ salarieController.controller('SalarieController', ['$rootScope', '$scope', '$coo
     $scope.toogleMenu = function() {
     	$rootScope.displayMenu = ! $rootScope.displayMenu;
     }
-    
+    var access = $cookieStore.get("asptt-token-access");
+	$rootScope.access = access;
     
 }]);
