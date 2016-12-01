@@ -11,6 +11,9 @@ boutiqueServices.factory('BoutiqueService', ['$resource',
 		}),
 		orders: $resource('/resources/boutique/orders',{},{
 			query:{method:'GET', isArray: true, params: {}}
+		}),
+		deleteProduct: $resource('/resources/boutique/product/delete/:product',{},{
+			query:{method:'DELETE', isArray: false, params: {}}
 		})
 	};
 }]);

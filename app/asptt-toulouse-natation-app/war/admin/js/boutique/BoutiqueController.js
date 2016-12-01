@@ -49,4 +49,16 @@ boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'Boutique
 			});
 		});
 	}
+	
+	$scope.deleteProduct = function(product) {
+		BoutiqueService.deleteProduct.query({'product' : product.id}, function(data) {
+			alert("Supprimé avec succès.");
+			$scope.products = BoutiqueService.products.query(function (data) {
+				$scope.products = data;
+				$scope.showFull = true;
+				$scope.currentProduct = null;
+				$rootScope.isLoading = false;
+			});
+		});
+	}
 }]);

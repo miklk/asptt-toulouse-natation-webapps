@@ -20,10 +20,12 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.apache.commons.lang3.StringUtils;
@@ -163,6 +165,12 @@ public class BoutiqueService {
 	@POST
 	public void updateProduct(ProductEntity product) {
 		productDao.save(product);
+	}
+	
+	@Path("/product/delete/{product}")
+	@DELETE
+	public void removeProduct(@PathParam("product") Long product) {
+		productDao.delete(product);
 	}
 	
 	@Path("/product/load")
