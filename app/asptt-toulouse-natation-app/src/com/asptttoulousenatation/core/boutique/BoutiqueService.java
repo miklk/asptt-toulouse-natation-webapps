@@ -217,4 +217,26 @@ public class BoutiqueService {
 		});
 		return uis;
 	}
+	
+	@Path("/import")
+	@POST
+	public void importCsv(String data) {
+		Scanner scanner = new Scanner(data);
+		while(scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			String[] split = line.split(";");
+			ProductEntity product = new ProductEntity();
+			product.setPrice(5);
+			product.setPrice2(4);
+			product.setPrice3(4);
+			product.setStock(100);
+			product.setTitle(StringUtils.capitalize(StringUtils.lowerCase(split[1])) +  " - " + StringUtils.capitalize(StringUtils.lowerCase(split[2])) + " " + StringUtils.lowerCase(split[3]));
+			product.setDescription("Encadré par " + StringUtils.capitalize(StringUtils.lowerCase(split[4]).replace("1.jpg", "")));
+			if(split.length > 5) {
+				product.setImage(split[6]);
+			}
+			productDao.save(product);
+		}
+		scanner.close();
+	}
 }
