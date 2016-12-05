@@ -19,8 +19,10 @@ public class OrderUi implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private OrderEntity order;
 	private List<CoupleValue<ProductEntity, Integer>> produits = new ArrayList<>();
+	private List<ProductEntity> selectedProduct = new ArrayList<>();
 	
 	public void addProduit(ProductEntity produit, Integer quantite) {
+		selectedProduct.add(produit);
 		produits.add(new CoupleValue<ProductEntity, Integer>(produit, quantite));
 	}
 	
@@ -36,4 +38,13 @@ public class OrderUi implements Serializable {
 	public void setProduits(List<CoupleValue<ProductEntity, Integer>> produits) {
 		this.produits = produits;
 	}
+
+	public List<ProductEntity> getSelectedProduct() {
+		return selectedProduct;
+	}
+
+	public void setSelectedProduct(List<ProductEntity> selectedProduct) {
+		this.selectedProduct = selectedProduct;
+	}
+	
 }

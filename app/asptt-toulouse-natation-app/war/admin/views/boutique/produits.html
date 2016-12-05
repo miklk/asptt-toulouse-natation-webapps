@@ -21,12 +21,13 @@
 			</tfoot>
 			<tbody>
 				<tr ng-repeat="product in products">
-					<td><button type="button" class="btn btn-danger btn-xs" ng-click="deleteProduct(product)">
-						<span class="glyphicon glyphicon-remove"></span>
-					</button>&nbsp;
-					<button type="button" class="btn btn-info btn-xs" ng-click="edit(product)">
-						<span class="glyphicon glyphicon-edit"></span>
-					</button>
+					<td>
+						<button type="button" class="btn btn-danger btn-xs" ng-click="deleteProduct(product)">
+							<span class="glyphicon glyphicon-remove"></span>
+						</button>&nbsp;
+						<button type="button" class="btn btn-info btn-xs" ng-click="edit(product)">
+							<span class="glyphicon glyphicon-edit"></span>
+						</button>
 					</td>
 					<td>{{product.title}}</td>
 					<td>{{product.description}}</td>

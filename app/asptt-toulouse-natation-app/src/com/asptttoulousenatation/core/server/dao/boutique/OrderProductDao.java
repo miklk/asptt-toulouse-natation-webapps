@@ -25,6 +25,31 @@ public class OrderProductDao extends DaoBase<OrderProductEntity> {
 		}
 		return lResult;
 	}
+	
+	public void deleteProducts(Long order) {
+		final EntityManager em = EMF.get().createEntityManager();
+		Query query = em.createQuery("DELETE FROM " + getEntityClass().getSimpleName() + " as "
+				+ getAlias() + " WHERE " + getAlias() + ".order =:order");
+		query.setParameter("order", order);
+		try {
+			query.executeUpdate();
+		} finally {
+			em.close();
+		}
+	}
+	
+	public void deleteProducts(Long order, Long product) {
+		final EntityManager em = EMF.get().createEntityManager();
+		Query query = em.createQuery("DELETE FROM " + getEntityClass().getSimpleName() + " as "
+				+ getAlias() + " WHERE " + getAlias() + ".order =:order AND " + getAlias() + ".product =:product");
+		query.setParameter("order", order);
+		query.setParameter("product", product);
+		try {
+			query.executeUpdate();
+		} finally {
+			em.close();
+		}
+	}
 
 	@Override
 	public Class<OrderProductEntity> getEntityClass() {

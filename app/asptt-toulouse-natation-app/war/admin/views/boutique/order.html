@@ -1,0 +1,21 @@
+<form>
+    <div class="form-group">
+        <label>E-mail {{currentOrder.email}}</label>
+        <input type="text" class="form-control" ng-model="currentOrder.order.email" placeholder="E-mail" />
+    </div>
+    <div class="form-group">
+    	<label for="nom" class="col-md-2 control-label">Nom</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" size="50" ng-model="currentOrder.order.nom" />
+		</div>
+		<label for="prenom" class="col-md-2 control-label">Prénom</label>
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="prenom" name="prenom" placeholder="Prenom" size="50" ng-model="currentOrder.order.prenom" />
+		</div>
+    </div>
+    <div class="form-group">
+        <label>Articles</label>
+        <p ng-repeat="product in currentOrder.produits">{{product.second}} - {{product.first.title}}&nbsp;<button type="button" class="btn btn-danger btn-xs" ng-click="deleteOrderProduct(currentOrder.order, product.first)"><span class="glyphicon glyphicon-remove"></span></button></p>
+    </div>
+    <button type="button" class="btn btn-primary btn-block" ng-click="createOrUpdate()">Enregistrer</button>
+</form>

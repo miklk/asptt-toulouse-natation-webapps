@@ -1,8 +1,20 @@
 <div class="row">
 <h1>Photos des groupes édition 2016-2017</h1>
 
-<div class="col-md-6">
-Cette saison la commande des photos des groupes se feront via notre site internet. <br />La distribution  des commandes s'effectuera à partir du 3 janvier 2017 (date de reprise des cours) 
+<div class="col-md-12">
+	Cette saison la commande des photos des groupes se feront via notre site internet. La distribution des commandes s'effectuera à partir du 3 janvier 2017 (date de reprise des cours)<br />
+	<h5>Tarif</h5>
+	<ul>
+		<li>5 euros la première photo</li>
+		<li>4 euros les suivantes</li>
+	</ul>
+	<h5>Pour commander</h5>
+	<ol>
+		<li>Je sélectionne la (les) photo(s) ainsi que la quantité</li>
+		<li>Je clique sur 'Suivant', mon panier s'affiche. Je vérifie.</li>
+		<li>Je clique sur 'Suivant' et j'entre mon adresse e-mail d'inscription et mon mot de passe. Sinon mon nom et prénom.</li>
+		<li>Je reçois une confirmation par e-mail</li>
+	</ol>
 </div>
 </div>
 
@@ -11,7 +23,7 @@ Cette saison la commande des photos des groupes se feront via notre site interne
     <div class="panel-heading" role="tab">
       <h4 class="panel-title">
         <a role="button" data-toggle="collapse" data-parent="#selection" href="#selection" aria-expanded="true" target="_self">
-          <h4>Sélectionner la(s) photo(s) en précisant la quantité souhaitée</h4>
+          Sélectionnez la(s) photo(s) en précisant la quantité souhaitée
         </a>
       </h4>
     </div>
@@ -29,6 +41,7 @@ Cette saison la commande des photos des groupes se feront via notre site interne
            <input type="number" name="quantite" ng-model="calendrier.quantite" class="form-control" />
            <span class="input-group-btn"><button type="button" class="btn btn-default btn-sm" ng-click="productQuantite(calendrier, true)"><span class="glyphicon glyphicon-plus"></span></button></span>
        </div>
+       <button type="button" class="btn btn-success btn-xs" ng-click="goToPanier()">Aller au panier</button>
    </div>
 </div>
 
@@ -51,7 +64,7 @@ Cette saison la commande des photos des groupes se feront via notre site interne
     </div>
     <div id="panier" class="panel-collapse collapse" role="tabpanel">
       <div class="panel-body">
-        <h4>{{panier.count}} calendrier(s) pour un montant total de {{panier.total}} euros</h4>
+        <h4>{{panier.count}} photo(s) pour un montant total de {{panier.total}} euros</h4>
         <div class="row" style="margin-top: 2%">
 		    <button type="button" class="btn btn-success btn-block" ng-click="goToIdentite()">Suivant</button>
 		</div>
@@ -120,7 +133,7 @@ Cette saison la commande des photos des groupes se feront via notre site interne
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body text-center">
-        Votre panier est vide (aucun calendrier sélectionné)
+        Votre panier est vide (aucune photo sélectionnée)
       </div>
     </div>
   </div>

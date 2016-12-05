@@ -3,28 +3,42 @@
         <h1 class="page-header">Commandes</h1>
     </div>
     <div class="row" ng-show="orders">
-        <p><span class="badge">{{orders.length}} commande(s)</span></p>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>E-mail</th>
-                    <th>Nom</th>
-                    <th>Prénom</th>
-                    <th>Articles</th>
-                    <th>Montant</th>
-                    <th>Statut</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="order in orders">
-                    <td>{{order.order.email}}</td>
-                    <td>{{order.order.nom}}</td>
-                    <td>{{order.order.prenom}}</td>
-                    <td><p ng-repeat="product in order.produits">{{product.second}} - {{product.first.title}}</p></td>
-                    <td>{{displayMontant(order)}} euros</td>
-                    <td>{{order.order.status}}<br /><small>{{order.order.updated | date: 'dd/MM/yyyy HH:mm'}}</small></td>
-                </tr>
-            </tbody>
-        </table>
+    	<div class="col-md-8">
+	        <p><span class="badge">{{orders.length}} commande(s)</span></p>
+	        <table class="table table-hover">
+	            <thead>
+	                <tr>
+	                	<th></th>
+	                    <th>E-mail</th>
+	                    <th>Nom</th>
+	                    <th>Prénom</th>
+	                    <th>Articles</th>
+	                    <th>Montant</th>
+	                    <th>Statut</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <tr ng-repeat="order in orders">
+	                	<td>
+							<button type="button" class="btn btn-danger btn-xs" ng-click="deleteOrder(order.order)">
+								<span class="glyphicon glyphicon-remove"></span>
+							</button>&nbsp;
+							<button type="button" class="btn btn-info btn-xs" ng-click="editOrder(order)">
+								<span class="glyphicon glyphicon-edit"></span>
+							</button>
+						</td>
+	                    <td>{{order.order.email}}</td>
+	                    <td>{{order.order.nom}}</td>
+	                    <td>{{order.order.prenom}}</td>
+	                    <td><p ng-repeat="product in order.produits">{{product.second}} - {{product.first.title}}</p></td>
+	                    <td>{{displayMontant(order)}} euros</td>
+	                    <td>{{order.order.status}}<br /><small>{{order.order.updated | date: 'dd/MM/yyyy HH:mm'}}</small></td>
+	                </tr>
+	            </tbody>
+	        </table>
+        </div>
+        <div class="col-md-4" ng-show="displayOrder">
+        	<div ng-include="'views/boutique/order.html'"></div>
+        </div>
     </div>
 </div>

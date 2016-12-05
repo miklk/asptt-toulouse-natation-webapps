@@ -222,19 +222,22 @@ public class AuthenticationService {
 	
 	@Path("/logout/{token}")
 	@GET
-	public void logout(@PathParam("token") String token) {
+	public int logout(@PathParam("token") String token) {
 		TokenManager.getInstance().remove(token);
+		return 0;
 	}
 	
 	@Path("/logout-all")
 	@GET
-	public void logoutAll() {
+	public int logoutAll() {
 		TokenManager.getInstance().clear();
+		return 0;
 	}
 	
 	@Path("/expire")
 	@GET
-	public void expire() {
+	public int expire() {
 		TokenManager.getInstance().expire(30);
+		return 0;
 	}
 }

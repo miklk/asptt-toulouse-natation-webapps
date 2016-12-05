@@ -48,9 +48,9 @@ boutiqueController.controller('BoutiqueCtrl', ['$rootScope', '$scope', 'Boutique
 				
 				for(i = 1; i <= orderProduct.quantite; i++) {
 					$scope.panier.count = $scope.panier.count + 1;
-					if($scope.panier.count <= 2) {
+					if($scope.panier.count < 2) {
 						tarif = tarif + calendrier.product.price;
-					} else if($scope.panier.count > 2 && $scope.panier.count <= 4) {
+					} else if($scope.panier.count >= 2 && $scope.panier.count <= 4) {
 						tarif = tarif + calendrier.product.price2;
 					} else {
 						tarif = tarif + calendrier.product.price3;

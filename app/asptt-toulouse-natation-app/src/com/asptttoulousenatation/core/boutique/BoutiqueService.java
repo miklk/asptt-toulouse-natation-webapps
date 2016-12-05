@@ -63,6 +63,9 @@ public class BoutiqueService {
 		OrderEntity order = new OrderEntity();
 		if (parameters.getDossier() != null) {
 			order.setDossier(parameters.getDossier());
+			DossierEntity dossier = dossierDao.get(parameters.getDossier());
+			order.setEmail(dossier.getEmail());
+			order.setNom(dossier.getParent1Nom());
 		} else {
 			order.setNom(parameters.getNom());
 			order.setPrenom(parameters.getPrenom());
@@ -71,13 +74,13 @@ public class BoutiqueService {
 		OrderEntity orderSaved = orderDao.save(order);
 
 		StringBuilder comment = new StringBuilder();
-		if(StringUtils.isNotBlank(orderSaved.getComment())) {
+		if (StringUtils.isNotBlank(orderSaved.getComment())) {
 			comment.append(orderSaved.getComment());
 		}
 		for (ProductUi productUi : parameters.getPanier()) {
 			ProductEntity product = productDao.get(productUi.getId());
 			int quantite = productUi.getQuantite();
-			if(quantite > product.getStock()) {
+			if (quantite > product.getStock()) {
 				quantite = product.getStock();
 				comment.append("attention pré-commande pour ").append(product.getTitle()).append("\n");
 			}
@@ -122,7 +125,7 @@ public class BoutiqueService {
 			// Products
 			List<OrderProductEntity> orderProducts = orderProductDao.findByOrder(order.getId());
 			StringBuilder message = new StringBuilder(
-					"Madame, Monsieur,<p>Nous avons le plaisir de vous confirmer la pré-commande de vos calendriers.<br />"
+					"Madame, Monsieur,<p>Nous avons le plaisir de vous confirmer la pré-commande de vos photos.<br />"
 							+ "Nous vous tiendrons informé dès que votre commande sera validée. <br />"
 							+ "<p>Commande n°" + order.getId() + "<br /><table>");
 			int countProduct = 0;
@@ -135,15 +138,15 @@ public class BoutiqueService {
 				int productPrice = 0;
 				for (int i = 1; i <= orderProduct.getQuantity(); i++) {
 					countProduct++;
-					if (countProduct <= 2) {
-						productPrice+=product.getPrice();
-					} else if (countProduct > 2 && countProduct <= 4) {
-						productPrice+=product.getPrice2();
+					if (countProduct < 2) {
+						productPrice += product.getPrice();
+					} else if (countProduct >= 2 && countProduct <= 4) {
+						productPrice += product.getPrice2();
 					} else {
-						productPrice+=product.getPrice3();
+						productPrice += product.getPrice3();
 					}
 				}
-				total+=productPrice;
+				total += productPrice;
 				message.append(productPrice).append("</td></tr>");
 			}
 			message.append("<td></td><td>").append(countProduct).append("</td><td>").append(total).append("</td>");
@@ -160,24 +163,52 @@ public class BoutiqueService {
 			LOG.log(Level.SEVERE, "Erreur pour l'e-mail: " + email, e);
 		}
 	}
-	
+
 	@Path("/product/update")
 	@POST
 	public void updateProduct(ProductEntity product) {
 		productDao.save(product);
 	}
-	
+
 	@Path("/product/delete/{product}")
 	@DELETE
 	public void removeProduct(@PathParam("product") Long product) {
 		productDao.delete(product);
 	}
-	
+
+	@Path("/order/update")
+	@POST
+	public void updateOrder(OrderEntity order) {
+		orderDao.save(order);
+		orderProductDao.deleteProducts(order.getId());
+		List<ProductEntity> products = null;
+		for (ProductEntity product : products) {
+			OrderProductEntity orderProduct = new OrderProductEntity();
+			orderProduct.setOrder(order.getId());
+			orderProduct.setProduct(product.getId());
+			orderProduct.setQuantity(1);
+			orderProductDao.save(orderProduct);
+		}
+	}
+
+	@Path("/order/delete/{order}")
+	@DELETE
+	public void removeOrder(@PathParam("order") Long order) {
+		orderProductDao.deleteProducts(order);
+		orderDao.delete(order);
+	}
+
+	@Path("/order/delete/{order}/{product}")
+	@DELETE
+	public void removeOrderProduct(@PathParam("order") Long order, @PathParam("product") Long product) {
+		orderProductDao.deleteProducts(order, product);
+	}
+
 	@Path("/product/load")
 	@POST
 	public void loadProducts(String products) {
 		Scanner scanner = new Scanner(products);
-		while(scanner.hasNextLine()) {
+		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
 			String[] lineSplitted = line.split(";");
 			ProductEntity product = new ProductEntity();
@@ -193,17 +224,22 @@ public class BoutiqueService {
 		}
 		scanner.close();
 	}
-	
+
 	@Path("orders")
 	@GET
 	public List<OrderUi> orders() {
 		List<OrderEntity> entities = orderDao.getAll();
 		List<OrderUi> uis = new ArrayList<>(entities.size());
-		for(OrderEntity entity: entities) {
+		for (OrderEntity entity : entities) {
+			DossierEntity dossier = dossierDao.get(entity.getDossier());
+			if (dossier != null) {
+				entity.setEmail(dossier.getEmail());
+				entity.setNom(dossier.getParent1Nom());
+			}
 			OrderUi ui = new OrderUi();
 			ui.setOrder(entity);
 			List<OrderProductEntity> orderProducts = orderProductDao.findByOrder(entity.getId());
-			for(OrderProductEntity orderProduct: orderProducts) {
+			for (OrderProductEntity orderProduct : orderProducts) {
 				ui.addProduit(productDao.get(orderProduct.getProduct()), orderProduct.getQuantity());
 			}
 			uis.add(ui);
@@ -217,12 +253,12 @@ public class BoutiqueService {
 		});
 		return uis;
 	}
-	
+
 	@Path("/import")
 	@POST
 	public void importCsv(String data) {
 		Scanner scanner = new Scanner(data);
-		while(scanner.hasNextLine()) {
+		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
 			String[] split = line.split(";");
 			ProductEntity product = new ProductEntity();
@@ -230,9 +266,11 @@ public class BoutiqueService {
 			product.setPrice2(4);
 			product.setPrice3(4);
 			product.setStock(100);
-			product.setTitle(StringUtils.capitalize(StringUtils.lowerCase(split[1])) +  " - " + StringUtils.capitalize(StringUtils.lowerCase(split[2])) + " " + StringUtils.lowerCase(split[3]));
-			product.setDescription("Encadré par " + StringUtils.capitalize(StringUtils.lowerCase(split[4]).replace("1.jpg", "")));
-			if(split.length > 5) {
+			product.setTitle(StringUtils.capitalize(StringUtils.lowerCase(split[1])) + " - "
+					+ StringUtils.capitalize(StringUtils.lowerCase(split[2])) + " " + StringUtils.lowerCase(split[3]));
+			product.setDescription(
+					"Encadré par " + StringUtils.capitalize(StringUtils.lowerCase(split[4]).replace("1.jpg", "")));
+			if (split.length > 5) {
 				product.setImage(split[6]);
 			}
 			productDao.save(product);

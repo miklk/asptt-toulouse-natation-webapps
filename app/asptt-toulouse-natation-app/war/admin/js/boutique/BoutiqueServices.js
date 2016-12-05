@@ -14,6 +14,15 @@ boutiqueServices.factory('BoutiqueService', ['$resource',
 		}),
 		deleteProduct: $resource('/resources/boutique/product/delete/:product',{},{
 			query:{method:'DELETE', isArray: false, params: {}}
-		})
+		}),
+		saveOrder: $resource('/resources/boutique/order/update',{},{
+			query:{method:'POST', isArray: false, params: {}}
+		}),
+		deleteOrder: $resource('/resources/boutique/order/delete/:order',{},{
+			query:{method:'DELETE', isArray: false, params: {}}
+		}),
+		deleteOrderProduct: $resource('/resources/boutique/order/delete/:order/:product',{},{
+			query:{method:'DELETE', isArray: false, params: {}}
+		}),
 	};
 }]);
