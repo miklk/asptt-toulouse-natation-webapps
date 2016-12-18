@@ -56,15 +56,19 @@ public class DossierExtractionService {
 		Map<Long, List<String>> extractionDossiers = new HashMap<>();
 
 		List<DossierNageurEntity> nageurs;
+		List<CriterionDao<? extends Object>> criteria;
 		if (CollectionUtils.isNotEmpty(groupes)) {
-			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+			criteria = new ArrayList<CriterionDao<? extends Object>>(
 					groupes.size());
 			for (Long groupe : groupes) {
 				criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE, groupe, Operator.EQUAL));
 			}
 			nageurs = dao.find(criteria, Operator.OR, null);
 		} else {
-			nageurs = dao.getAll();
+			criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+			criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON,
+					1L, Operator.EQUAL));
+			nageurs = dao.find(criteria);
 		}
 		
 		for (DossierNageurEntity nageur : nageurs) {
@@ -185,15 +189,19 @@ public class DossierExtractionService {
 
 	private boolean canAddNageur(Set<String> conditions, DossierNageurEntity nageur) {
 		boolean canAdd = true;
-		for(String condition: conditions) {
-			switch(condition) {
-			case "FACTURE": {
-				DossierEntity dossier = dossierDao.get(nageur.getDossier());
-				canAdd = canAdd && BooleanUtils.toBoolean(dossier.getFacture());
+		if (nageur.getSaison() != null && nageur.getSaison().equals(1L)) {
+			for (String condition : conditions) {
+				switch (condition) {
+				case "FACTURE": {
+					DossierEntity dossier = dossierDao.get(nageur.getDossier());
+					canAdd = canAdd && BooleanUtils.toBoolean(dossier.getFacture());
+				}
+					break;
+				default: // Do nothing
+				}
 			}
-			break;
-			default: //Do nothing
-			}
+		} else {
+			canAdd = false;
 		}
 		return canAdd;
 	}
