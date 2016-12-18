@@ -1,29 +1,25 @@
 /**
  * 
  */
-var suiviNageurController = angular.module('SuiviNageurController', ['ngRoute', 'suiviNageurServices']);
+var suiviHeureController = angular.module('SuiviHeureController', ['ngRoute', 'saisieHeureServices']);
 
-suiviNageurController.controller('SuiviNageurController', ['$scope', '$location', '$filter', 'SuiviNageurService', function($scope, $location, $filter, SuiviNageurService) {
-	$scope.groupesSelected;
-	$scope.day = new Date();
-	$scope.endDay = new Date();
-	$scope.loading = false;
-	
-	$scope.loadWeeksPrevu = function() {
-		$scope.loading = true;
-		var groupes = [];
-		groupes.push(1060001);
-		SuiviNageurService.weeksPrevu.query({groupes: groupes,  week: $filter('date')($scope.day,'yyyy-Www')}, function(data) {
-			$scope.presences = data.presences;
-			console.log($scope.presences);
-			console.log($scope.presences[0]);
-			$scope.beginDt = data.begin;
-			$scope.endDt = data.end;
-			$scope.loading = false;
+suiviHeureController.controller('SuiviHeureController', ['$rootScope', '$scope', '$location', '$filter', 'SaisieHeureService', function($rootScope, $scope, $location, $filter, SaisieHeureService) {
+	$rootScope.isLoading = false;
+	$scope.loadMonth = function() {
+		$rootScope.isLoading = true;
+		$scope.endMonth = moment($scope.beginMonth.getTime()).endOf('month').toDate();
+		SaisieHeureService.month.query({month : $filter('date')($scope.beginMonth,'yyyy-MM')}, function(data) {
+			$rootScope.isLoading = false;
+			$scope.days = data;
 		});
-	};
+	}
 	
-	$scope.loadWeeksPrevu();
+	var init = function() {
+		$scope.groupesSelected;
+		$scope.beginMonth = moment().startOf('month').toDate();
+		$scope.endMonth = moment().endOf('month').toDate();
+		$scope.loadMonth();
+	}
 	
-	
+	init();
 }]);

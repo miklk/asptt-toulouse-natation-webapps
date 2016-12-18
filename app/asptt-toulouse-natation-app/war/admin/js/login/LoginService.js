@@ -17,5 +17,8 @@ loginServices.factory('LoginService', ['$resource',
 		isLogged: $resource('/resources/authentication/isLogged/:token',{},{
 			query:{method:'GET', isArray: false}
 		}),
+		logout: $resource('/resources/authentication/logout/:token',{},{
+			query:{method:'GET', isArray: false}
+		}),
 	};
 }]);

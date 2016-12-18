@@ -30,6 +30,23 @@ public class SalarieHeureDao extends DaoBase<SalarieHeureEntity> {
 
 		return entities;
 	}
+	
+	public List<SalarieHeureEntity> findByBeginEnd(Date begin, Date end) {
+		EntityManager em = EMF.get().createEntityManager();
+		List<SalarieHeureEntity> entities = new ArrayList<SalarieHeureEntity>();
+		StringBuilder queryAsString = new StringBuilder("SELECT heure FROM SalarieHeureEntity heure WHERE ");
+		queryAsString.append("heure.begin BETWEEN :begin AND :end");
+		try {
+			TypedQuery<SalarieHeureEntity> query = em.createQuery(queryAsString.toString(), SalarieHeureEntity.class);
+			query.setParameter("begin", begin);
+			query.setParameter("end", end);
+			entities = query.getResultList();
+		} finally {
+			em.close();
+		}
+
+		return entities;
+	}
 
 	@Override
 	public Class<SalarieHeureEntity> getEntityClass() {

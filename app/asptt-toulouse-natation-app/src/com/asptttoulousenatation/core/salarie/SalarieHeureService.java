@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -19,8 +21,10 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
 import com.asptttoulousenatation.core.authentication.TokenManager;
+import com.asptttoulousenatation.core.boutique.BoutiqueService;
 import com.asptttoulousenatation.core.server.dao.entity.salarie.SalarieActiviteEntity;
 import com.asptttoulousenatation.core.server.dao.entity.salarie.SalarieHeureEntity;
 import com.asptttoulousenatation.core.server.dao.salarie.SalarieActiviteDao;
@@ -30,6 +34,7 @@ import com.asptttoulousenatation.core.server.dao.salarie.SalarieHeureDao;
 @Produces("application/json")
 public class SalarieHeureService {
 
+	private static final Logger LOG = Logger.getLogger(SalarieHeureService.class.getName());
 	private SalarieHeureDao dao = new SalarieHeureDao();
 	private SalarieActiviteDao activiteDao = new SalarieActiviteDao();
 
@@ -80,24 +85,75 @@ public class SalarieHeureService {
 	@Consumes("application/json")
 	public void valider(@PathParam("token") String token, List<SalarieHeureDay> days) {
 		Long user = TokenManager.getInstance().getUser(token);
-		for (SalarieHeureDay day : days) {
-			DateTime currentDay = new DateTime(day.getDay().getTime());
-			for (SalarieHeureEntity heure : day.getHeures()) {
-				String activiteTitle = StringUtils.upperCase(StringUtils.trimToEmpty(heure.getActivite()));
-				if (StringUtils.isNotBlank(activiteTitle)) {
-					heure.setActivite(activiteTitle);
-					heure.setBegin(currentDay.withTime(LocalTime.fromMillisOfDay(heure.getBegin().getTime())).toDate());
-					heure.setEnd(currentDay.withTime(LocalTime.fromMillisOfDay(heure.getEnd().getTime())).toDate());
-					heure.setCreatedBy(user + "");
-					heure.setUpdatedBy(user + "");
-					heure.setUser(user);
-					dao.save(heure);
-					
-					SalarieActiviteEntity activite = new SalarieActiviteEntity();
-					activite.setIntitule(activiteTitle);
-					activiteDao.save(activite);
+		if(user != null) {
+			for (SalarieHeureDay day : days) {
+				DateTime currentDay = new DateTime(day.getDay().getTime());
+				for (SalarieHeureEntity heure : day.getHeures()) {
+					String activiteTitle = StringUtils.upperCase(StringUtils.trimToEmpty(heure.getActivite()));
+					if (StringUtils.isNotBlank(activiteTitle)) {
+						heure.setActivite(activiteTitle);
+						heure.setBegin(currentDay.withTime(LocalTime.fromMillisOfDay(heure.getBegin().getTime())).toDate());
+						heure.setEnd(currentDay.withTime(LocalTime.fromMillisOfDay(heure.getEnd().getTime())).toDate());
+						heure.setCreatedBy(user + "");
+						heure.setUpdatedBy(user + "");
+						heure.setUser(user);
+						dao.save(heure);
+						
+						SalarieActiviteEntity activite = new SalarieActiviteEntity();
+						activite.setIntitule(activiteTitle);
+						activiteDao.save(activite);
+					}
 				}
 			}
+		} else {
+			LOG.info("Not user with token : " + token);
 		}
+	}
+	
+	@Path("{month}")
+	@GET
+	public Map<Integer, Map<Integer, List<SalarieHeureEntity>>> loadMonth(@PathParam("month") String month) {
+		LocalDate monthAsDate = ISODateTimeFormat.yearMonth().parseLocalDate(month);
+		DateTime dayBeginToMindnight = monthAsDate.dayOfMonth().withMinimumValue().toDateTimeAtStartOfDay();
+		DateTime dayEndToMindnight = dayBeginToMindnight.plusMonths(1);
+
+		List<SalarieHeureEntity> heures = dao.findByBeginEnd(dayBeginToMindnight.toDate(),
+				dayEndToMindnight.toDate());
+		
+		Map<Long, List<SalarieHeureEntity>> days = new HashMap<>();
+		//Init month
+		int maxDayInMonth = dayBeginToMindnight.dayOfMonth().getMaximumValue();
+		for(int i = 0; i < maxDayInMonth ; i++) {
+			days.put(Long.valueOf(dayBeginToMindnight.plusDays(i).getMillis()), new ArrayList<SalarieHeureEntity>());
+		}
+		for (SalarieHeureEntity heure : heures) {
+			LocalDate day = new LocalDate(heure.getBegin().getTime());
+			Long dayAsLong = day.toDateTimeAtStartOfDay().getMillis();
+			if (days.containsKey(dayAsLong)) {
+				List<SalarieHeureEntity> heuresDay = days.get(dayAsLong);
+				heuresDay.add(heure);
+				days.put(dayAsLong, heuresDay);
+			}
+		}
+		
+		Map<Integer, Map<Integer, List<SalarieHeureEntity>>> weeks = new HashMap<>();
+		for(Entry<Long, List<SalarieHeureEntity>> entry : days.entrySet()) {
+			DateTime keyAsDateTime = new DateTime(entry.getKey());
+			Integer week = keyAsDateTime.getWeekOfWeekyear();
+			Integer day = keyAsDateTime.getDayOfMonth();
+			if(weeks.containsKey(week)) {
+				Map<Integer, List<SalarieHeureEntity>> dayOfMonth = weeks.get(week);
+				if(dayOfMonth.containsKey(day)) {
+					dayOfMonth.get(day).addAll(entry.getValue());
+				} else {
+					dayOfMonth.put(day, entry.getValue());
+				}
+			} else {
+				Map<Integer, List<SalarieHeureEntity>> dayOfMonth = new HashMap<>();
+				dayOfMonth.put(day, entry.getValue());
+				weeks.put(week, dayOfMonth);
+			}
+		}
+		return weeks;
 	}
 }
