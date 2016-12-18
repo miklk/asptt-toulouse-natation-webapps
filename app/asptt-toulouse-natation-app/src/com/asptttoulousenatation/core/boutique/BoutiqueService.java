@@ -201,7 +201,15 @@ public class BoutiqueService {
 	@Path("/order/delete/{order}/{product}")
 	@DELETE
 	public void removeOrderProduct(@PathParam("order") Long order, @PathParam("product") Long product) {
-		orderProductDao.deleteProducts(order, product);
+		List<OrderProductEntity> orderProducts = orderProductDao.findByOrderProduct(order, product);
+		for(OrderProductEntity orderProduct : orderProducts) {
+			if(orderProduct.getQuantity() == 1) {
+				orderProductDao.delete(orderProduct);
+			} else {
+				orderProduct.setQuantity(orderProduct.getQuantity() -1);
+				orderProductDao.save(orderProduct);
+			}
+		}
 	}
 
 	@Path("/product/load")

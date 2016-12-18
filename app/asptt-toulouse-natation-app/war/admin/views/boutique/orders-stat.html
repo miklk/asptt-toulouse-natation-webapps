@@ -1,0 +1,13 @@
+<div class="container-fluid" ng-controller="OrderStatController">
+    <div class="row">
+        <h1 class="page-header">Statistique des commandes</h1>
+    </div>
+    <div class="row">
+	        <h4>{{nbOrder}} commande(s) soit {{nbOrderPrice}} euros</h4>
+	        <h4>Panier moyen : {{panier}} soit {{panierPrice}} euros</h4>
+	        <h4>Par produits : </h4>
+	        <ul>
+	        	<li ng-repeat="parProduit in parProduits">{{products[parProduit[0]].title}} : {{parProduit[1]}}</li>
+	        </ul>
+    </div>
+</div>
