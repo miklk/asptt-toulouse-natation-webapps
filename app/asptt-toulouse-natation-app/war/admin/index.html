@@ -11,7 +11,7 @@
 
     <!-- Bootstrap core CSS -->
     <link href="index.css" rel="stylesheet">
-    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Bootstrap core CSS -->
@@ -45,62 +45,34 @@
 			</div>
 		</div>
 
-      <div class="modal fade" id="login-modal">
-        <div class="modal-dialog modal-sm">
-          <div class="modal-content">
-            <div class="modal-body">
-          			<div class="panel">
-            				<div class="panel-body">
-            					<a href="/oauth_connect?from=google_login&service=google" class="btn btn-block btn-large" style="border: 1px solid #ccc">
-        							Connexion avec Google
-          						</a>
-
-              				<div style="position: relative; height: 34px; text-align: center; background: none">
-              					<span class="h6" style="display: inline-block; padding: 8px; background-color: white; margin: auto">ou</span>
-              					<hr style="margin: -13px auto 10px auto; width: 90%" />
-              				</div>
-          				    <form role="form" name="loginForm" ng-submit="authenticate()" novalidate>
-                        <div class="form-group" ng-show="loginForm.$submitted && !authenticated && authenticationResponse">
-                            <span class="text-danger">Adresse e-mail ou mot de passe inconnu.</span>
-                        </div>
-            						<div class="form-group">
-            							<input type="email" class="form-control" id="email" name="email" placeholder="Adresse e-mail" ng-model="credentials.email" required />
-            					    </div>
-            						<div class="form-group">
-            							<input type="password" class="form-control" name="password" id="password" placeholder="Mot de passe" ng-model="credentials.password" required />
-            						</div>
-            						<div class="clearfix">
-            							<a href="" class="pull-right">Mot de passe oublié ?</a>
-            						</div>
-            						<div class="form-group">
-            							<button class="btn btn-primary btn-block" type="submit">Connexion</button>
-            						</div>
-          					</form>
-                  </div>
-      		      </div>
-              </div>
-            </div>
-          </div>
-    	<!--
-					<div class="row ">
-						<div class="col-md-4 col-md-offset-4">
-							<p class="text-right">
-								<button type="button" class="btn btn-primary" ng-click="forget()">J'ai oublié mon mot de passe</button>
-								<div class="text-center" ng-class="{'bg-danger': !forgetOk}" ng-show="loginForm.$submitted">
-									<span ng-show="!forgetOk"><strong>L'utilisateur {{email}} n'a pas connu.</strong></span>
-								</div>
-								<div class="text-center" ng-class="{'bg-success': forgetOk}" ng-show="loginForm.$submitted">
-									<span ng-show="forgetOk"><strong>Un nouveau mot de passe est envoyé à l'adresse e-mail {{email}}.</strong></span>
-								</div>
-							</p>
+      <div class="row" style="margin-top: 5%">
+      		<div class="col-md-4 col-md-offset-4">
+      			<div class="panel panel-default">
+				  <div class="panel-heading"><h3 class="panel-title">Connexion</h3></div>
+				  <div class="panel-body">
+					    <form role="form" name="loginForm" ng-submit="authenticate()" novalidate>
+			             <div class="form-group" ng-show="loginForm.$submitted && !authenticated && authenticationResponse">
+			                 <span class="text-danger">Adresse e-mail ou mot de passe inconnu.</span>
+			             </div>
+						<div class="form-group">
+							<input type="email" class="form-control" id="email" name="email" placeholder="Adresse e-mail" ng-model="credentials.email" required />
+					    </div>
+						<div class="form-group">
+							<input type="password" class="form-control" name="password" id="password" placeholder="Mot de passe" ng-model="credentials.password" required />
 						</div>
+						<div class="clearfix">
+							<a href="" class="pull-right">Mot de passe oublié ?</a>
+						</div>
+						<div class="form-group">
+							<button class="btn btn-default btn-block" type="submit">Connexion</button>
+						</div>
+						</form>
 					</div>
+	            </div>
+			</div>
+		</div>
+    	
 </div>
-</div>
-</div>
-</div>-->
-</div>
-  		</div>
 
 		<!-- FOOTER -->
       <footer>
@@ -108,15 +80,15 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../bootstrap/assets/js/jquery.js"></script>
-    <script src="../bootstrap/js/bootstrap.min.js"></script>
-    <script src="../bootstrap/assets/js/holder.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-resource.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-cookies.min.js"></script>
-    <script src="https://code.angularjs.org/1.3.15/i18n/angular-locale_fr-fr.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-cookies.min.js"></script>
+    <script src="https://code.angularjs.org/1.5.0/i18n/angular-locale_fr-fr.js"></script>
 
     <script type="text/javascript" src="js/login/LoginController.js"></script>
     <script type="text/javascript" src="js/login/LoginService.js"></script>
