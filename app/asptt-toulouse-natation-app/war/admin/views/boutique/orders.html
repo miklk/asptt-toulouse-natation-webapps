@@ -26,6 +26,15 @@
 							</button>&nbsp;
 							<button type="button" class="btn btn-info btn-xs" ng-click="editOrder(order)">
 								<span class="glyphicon glyphicon-edit"></span>
+							</button>&nbsp;
+							<button type="button" class="btn btn-success btn-xs" ng-show="showValidateButton(order)" ng-click="validateOrder(order)">
+								<span class="glyphicon glyphicon-ok"></span>
+							</button>
+							<button type="button" class="btn btn-success btn-xs" ng-show="showPaidButton(order)" ng-click="paid(order)">
+								<span class="glyphicon glyphicon-euro"></span>
+							</button>
+							<button type="button" class="btn btn-warning btn-xs" ng-show="showClosedButton(order)" ng-click="closed(order)">
+								<span class="glyphicon glyphicon-send"></span>
 							</button>
 						</td>
 	                    <td>{{order.order.email}}</td>

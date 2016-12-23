@@ -76,4 +76,26 @@ orderController.controller('OrderController', ['$rootScope', '$scope', 'Boutique
 			});
 		});
 	}
+	
+	$scope.validateOrder = function(order) {
+		BoutiqueService.validateOrder.query({'order' : order.order.id}, function(data) {
+			alert("Commande validée (envoie d'un e-mail de validation.");
+			BoutiqueService.orders.query(function (data) {
+				$scope.orders = data;
+				$scope.currentOrder = null;
+				$scope.displayOrder = false;
+				$rootScope.isLoading = false;
+			});
+		});
+	}
+	
+	$scope.showValidateButton = function(order) {
+		return order.order.status == 'CREATED';
+	}
+	$scope.showPaidButton = function(order) {
+		return order.order.status == 'VALIDATED';
+	}
+	$scope.showClosedButton = function(order) {
+		return order.order.status == 'PAID';
+	}
 }]);

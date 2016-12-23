@@ -35,6 +35,7 @@ import com.asptttoulousenatation.core.server.dao.boutique.OrderProductDao;
 import com.asptttoulousenatation.core.server.dao.boutique.ProductDao;
 import com.asptttoulousenatation.core.server.dao.entity.boutique.OrderEntity;
 import com.asptttoulousenatation.core.server.dao.entity.boutique.OrderProductEntity;
+import com.asptttoulousenatation.core.server.dao.entity.boutique.OrderStatusEnum;
 import com.asptttoulousenatation.core.server.dao.entity.boutique.ProductEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
@@ -284,5 +285,78 @@ public class BoutiqueService {
 			productDao.save(product);
 		}
 		scanner.close();
+	}
+	
+	@Path("/order/validate/{order}")
+	@POST
+	public void validateOrder(@PathParam("order") Long orderId) {
+		OrderEntity order = orderDao.get(orderId);
+		order.setStatus(OrderStatusEnum.VALIDATED.name());
+		orderDao.save(order);
+		String email = order.getEmail();
+		String emailSecondaire = null;
+		if (order.getDossier() != null) {
+			DossierEntity dossier = dossierDao.get(order.getDossier());
+			email = dossier.getEmail();
+			emailSecondaire = dossier.getEmailsecondaire();
+		}
+
+		Properties props = new Properties();
+		Session session = Session.getDefaultInstance(props, null);
+		try {
+			Multipart mp = new MimeMultipart();
+			MimeBodyPart htmlPart = new MimeBodyPart();
+
+			MimeMessage msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+			Address[] replyTo = {
+					new InternetAddress("contact@asptt-toulouse-natation.com", "ASPTT Toulouse Natation") };
+			msg.setReplyTo(replyTo);
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("contact@asptt-toulouse-natation.com"));
+			if (StringUtils.isNotBlank(emailSecondaire)) {
+				msg.addRecipient(Message.RecipientType.CC, new InternetAddress(emailSecondaire));
+			}
+
+			// Products
+			List<OrderProductEntity> orderProducts = orderProductDao.findByOrder(order.getId());
+			StringBuilder message = new StringBuilder(
+					"Madame, Monsieur,<p>Nous avons le plaisir de vous informer que vos photos sont en cours d'impression.<br />"
+							+ "Les photos seront disponibles à partir du 3 janvier 2017. Le paiement s'effectuera de préférence par chèque. <br />"
+							+ "<p>Commande n°" + order.getId() + "<br /><table>");
+			int countProduct = 0;
+			int total = 0;
+			for (OrderProductEntity orderProduct : orderProducts) {
+
+				ProductEntity product = productDao.get(orderProduct.getProduct());
+				message.append("<tr><td>").append(product.getTitle()).append("</td><td>")
+						.append(orderProduct.getQuantity()).append("</td></td>");
+				int productPrice = 0;
+				for (int i = 1; i <= orderProduct.getQuantity(); i++) {
+					countProduct++;
+					if (countProduct < 2) {
+						productPrice += product.getPrice();
+					} else if (countProduct >= 2 && countProduct <= 4) {
+						productPrice += product.getPrice2();
+					} else {
+						productPrice += product.getPrice3();
+					}
+				}
+				total += productPrice;
+				message.append(productPrice).append("</td></tr>");
+			}
+			message.append("<td></td><td>").append(countProduct).append("</td><td>").append(total).append("</td>");
+			message.append("</table>");
+			message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />" + "ASPTT Grand Toulouse Natation<br />"
+					+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
+			htmlPart.setContent(message.toString(), "text/html");
+			mp.addBodyPart(htmlPart);
+
+			msg.setSubject("ASPTT Toulouse Natation - Commande en cours de préparation", "UTF-8");
+			msg.setContent(mp);
+			Transport.send(msg);
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			LOG.log(Level.SEVERE, "Erreur pour l'e-mail: " + email, e);
+		}
 	}
 }
