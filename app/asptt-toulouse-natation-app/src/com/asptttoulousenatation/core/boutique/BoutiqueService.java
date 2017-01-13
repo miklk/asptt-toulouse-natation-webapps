@@ -1,5 +1,6 @@
 package com.asptttoulousenatation.core.boutique;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,8 +28,11 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.StrBuilder;
 
 import com.asptttoulousenatation.core.server.dao.boutique.OrderDao;
 import com.asptttoulousenatation.core.server.dao.boutique.OrderProductDao;
@@ -357,6 +361,46 @@ public class BoutiqueService {
 			Transport.send(msg);
 		} catch (MessagingException | UnsupportedEncodingException e) {
 			LOG.log(Level.SEVERE, "Erreur pour l'e-mail: " + email, e);
+		}
+	}
+	
+	@Path("excel")
+	@GET
+	@Produces("text/csv; charset=UTF-8")
+	public Response extraction() {
+		List<ProductEntity> produits = productDao.getAll();
+		StrBuilder extractionAsString = new StrBuilder();
+		for(ProductEntity produit : produits) {
+			List<OrderProductEntity> orders = orderProductDao.findByProduct(produit.getId());
+			int quantite = 0;
+			for(OrderProductEntity order : orders) {
+				quantite+=order.getQuantity();
+			}
+			if(quantite > 0) {
+				extractionAsString.append(produit.getImage().split("/")[2]).append(",");
+				extractionAsString.append(quantite).append(",");
+				extractionAsString.appendNewLine();
+			}
+		}
+		ByteArrayOutputStream out = null;
+		try {
+			out = new ByteArrayOutputStream();
+			out.write(extractionAsString.toString().getBytes("UTF-8"));
+
+			String contentDisposition = "attachment;filename=extraction.csv;";
+			return Response.ok(out.toByteArray(), "text/csv").header("content-disposition", contentDisposition).build();
+		} catch (IOException e) {
+			LOG.log(Level.SEVERE, "Erreur when writing response (" + extractionAsString + ")", e);
+			return Response.serverError().build();
+		} finally {
+			if(out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					LOG.log(Level.SEVERE, "Erreur when writing response (" + extractionAsString + ")", e);
+					return Response.serverError().build();
+				}
+			}
 		}
 	}
 }

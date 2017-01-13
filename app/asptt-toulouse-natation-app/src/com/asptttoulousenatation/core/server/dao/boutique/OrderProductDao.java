@@ -53,6 +53,20 @@ public class OrderProductDao extends DaoBase<OrderProductEntity> {
 		}
 	}
 	
+	public List<OrderProductEntity> findByProduct(Long product) {
+		final EntityManager em = EMF.get().createEntityManager();
+		Query query = em.createQuery("SELECT " + getAlias() + " FROM " + getEntityClass().getSimpleName() + " as "
+				+ getAlias() + " WHERE " + getAlias() + ".product =:product");
+		query.setParameter("product", product);
+		final List<OrderProductEntity> lResult;
+		try {
+			lResult = new ArrayList<OrderProductEntity>(query.getResultList());
+		} finally {
+			em.close();
+		}
+		return lResult;
+	}
+	
 	public void deleteProducts(Long order, Long product) {
 		final EntityManager em = EMF.get().createEntityManager();
 		Query query = em.createQuery("DELETE FROM " + getEntityClass().getSimpleName() + " as "
