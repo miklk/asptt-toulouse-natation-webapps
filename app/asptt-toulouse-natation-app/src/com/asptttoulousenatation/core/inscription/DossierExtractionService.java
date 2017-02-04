@@ -205,4 +205,33 @@ public class DossierExtractionService {
 		}
 		return canAdd;
 	}
+
+	@Path("/adherons/{dossierNageurId}")
+	@GET
+	@Produces("text/csv; charset=UTF-8")
+	public Response adherons(@PathParam("dossierNageurId") Long dossierNageurId) {
+		List<String> nageurFields = new ArrayList<>();
+		StrBuilder extractionAsString = new StrBuilder();
+		extractionAsString.appendWithSeparators(nageurFields, ",");
+		ByteArrayOutputStream out = null;
+		try {
+			out = new ByteArrayOutputStream();
+			out.write(extractionAsString.toString().getBytes("UTF-8"));
+
+			String contentDisposition = "attachment;filename=adherons.csv;";
+			return Response.ok(out.toByteArray(), "text/csv").header("content-disposition", contentDisposition).build();
+		} catch (IOException e) {
+			LOG.log(Level.SEVERE, "Erreur when writing response (" + extractionAsString + ")", e);
+			return Response.serverError().build();
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					LOG.log(Level.SEVERE, "Erreur when writing response (" + extractionAsString + ")", e);
+					return Response.serverError().build();
+				}
+			}
+		}
+	}
 }

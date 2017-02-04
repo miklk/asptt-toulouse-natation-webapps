@@ -192,4 +192,7 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 				});
 	}
 	
+	$scope.adherons = function(nageur) {
+		$location.path("/resources/dossiers/extraction/adherons/{{nageur.id}}");
+	}
 }]);
