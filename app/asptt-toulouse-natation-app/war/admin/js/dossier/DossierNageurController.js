@@ -3,7 +3,7 @@
  */
 var dossierNageurController = angular.module('DossierNageurController', ['ngRoute', 'dossierServices', 'groupeServices', 'slotServices']);
 
-dossierNageurController.controller('DossierNageurController', ['$http', '$scope', '$location', '$filter', '$routeParams', 'DossierService', 'GroupeService', 'SlotService', function($http, $scope, $location, $filter, $routeParams, DossierService, GroupeService, SlotService) {
+dossierNageurController.controller('DossierNageurController', ['$http', '$scope', '$window', '$location', '$filter', '$routeParams', 'DossierService', 'GroupeService', 'SlotService', function($http, $scope, $window, $location, $filter, $routeParams, DossierService, GroupeService, SlotService) {
 	$scope.cspList = ['Scolaire', 'Agriculteurs exploitants', 'Artisans, commerçants et chefs d\'entreprise', 'Cadres et professions intellectuelles supérieures','Professions Intermédiaires', 'Employés', 'Ouvriers', 'Retraités', 'Sans activité professionnelle'];
 	
 	$scope.paiementLoaded = null;
@@ -193,6 +193,7 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 	}
 	
 	$scope.adherons = function(nageur) {
-		$location.path("/resources/dossiers/extraction/adherons/{{nageur.id}}");
+		//$location.path("/resources/dossiers/extraction/adherons/" + nageur.id);
+		$window.location.href = 'http://localhost:8080/resources/dossiers/extraction/adherons/' + nageur.id;
 	}
 }]);

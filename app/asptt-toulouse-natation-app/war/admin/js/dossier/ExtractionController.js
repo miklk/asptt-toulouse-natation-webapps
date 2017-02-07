@@ -42,7 +42,7 @@ extractionController.controller('ExtractionController', ['$rootScope', '$http', 
 				groupeAsString+="&";
 			}
 		});
-		var url = "/resources/dossiers/extraction/" + fieldsAsString + "/" + conditionsAsString + "?dossierOnly=" + $scope.dossierOnly;
+		var url = "/resources/dossiers/extraction/fields/" + fieldsAsString + "/" + conditionsAsString + "?dossierOnly=" + $scope.dossierOnly;
 		if(groupeAsString) {
 			url+="&" + groupeAsString;
 		}

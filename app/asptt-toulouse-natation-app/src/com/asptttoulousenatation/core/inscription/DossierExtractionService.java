@@ -45,7 +45,7 @@ public class DossierExtractionService {
 	private DossierDao dossierDao = new DossierDao();
 	private GroupDao groupeDao = new GroupDao();
 
-	@Path("{fields}{conditions:(/[^/]+?)?}")
+	@Path("/flieds/{fields}{conditions:(/[^/]+?)?}")
 	@GET
 	@Produces("text/csv; charset=UTF-8")
 	public Response extraction(@PathParam("fields") String fields, @QueryParam("groupes") Set<Long> groupes,
