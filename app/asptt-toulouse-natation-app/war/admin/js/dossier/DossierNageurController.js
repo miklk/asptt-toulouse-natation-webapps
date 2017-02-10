@@ -193,7 +193,14 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 	}
 	
 	$scope.adherons = function(nageur) {
-		//$location.path("/resources/dossiers/extraction/adherons/" + nageur.id);
-		$window.location.href = 'http://localhost:8080/resources/dossiers/extraction/adherons/' + nageur.id;
+			var selectedDossiers = new Array();
+			selectedDossiers.push(nageur.dossier);
+			DossierService.adherons.query({}, selectedDossiers, function(data) {
+				var hiddenElement = document.createElement('a');
+			    hiddenElement.href = 'data:attachment/csv,' + encodeURIComponent(data.csv);
+			    hiddenElement.target = '_blank';
+			    hiddenElement.download = 'adherons.csv';
+			    hiddenElement.click();
+			});
 	}
 }]);

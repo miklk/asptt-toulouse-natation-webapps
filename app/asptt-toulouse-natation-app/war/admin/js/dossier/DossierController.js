@@ -374,6 +374,11 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 	$scope.adheronsSelected = function() {
 		var selectedDossiers = getSelectedDossiers();
 		DossierService.adherons.query({}, selectedDossiers, function(data) {
+			var hiddenElement = document.createElement('a');
+		    hiddenElement.href = 'data:attachment/csv,' + encodeURIComponent(data.csv);
+		    hiddenElement.target = '_blank';
+		    hiddenElement.download = 'adherons.csv';
+		    hiddenElement.click();
 		});
 	}
 	

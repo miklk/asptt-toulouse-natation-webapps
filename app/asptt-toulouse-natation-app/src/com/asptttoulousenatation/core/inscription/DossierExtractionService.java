@@ -211,44 +211,47 @@ public class DossierExtractionService {
 	@Path("/adherons")
 	@POST
 	@Produces("text/csv; charset=UTF-8")
-	public Response adherons(List<Long> dossierNageurIds) {
+	public String adherons(List<Long> dossierIds) {
 		StrBuilder extractionAsString = new StrBuilder();
-		for (Long dossierNageurId : dossierNageurIds) {
+		for (Long dossierId : dossierIds) {
 			List<String> nageurFields = new ArrayList<>();
-			DossierNageurEntity nageur = dao.get(dossierNageurId);
-			DossierEntity dossier = dossierDao.get(nageur.getDossier());
-			nageurFields.add(nageur.getNom());
-			nageurFields.add(nageur.getPrenom());
-			nageurFields.add(new DateTime(nageur.getNaissance().getTime()).toString("dd/MM/yyyy"));
-			nageurFields.add(nageur.getCivilite() == "0" ? "M" : "F");
-			nageurFields.add(dossier.getEmail());
-			nageurFields.add(nageur.getProfession());
-			nageurFields.add("1");// Benevole
-			nageurFields.add(dossier.getAdresse());
-			nageurFields.add("");// Adresse suite
-			nageurFields.add(dossier.getCodepostal());
-			nageurFields.add(dossier.getVille());
-			nageurFields.add(dossier.getTelephone());
-			nageurFields.add(dossier.getTelephoneSecondaire());
-			nageurFields.add("");// La poste
-			nageurFields.add("");// Identifiant la poste
-			nageurFields.add(BooleanUtils.isTrue(nageur.getFonctionnaire()) ? "0" : "1");
-			nageurFields.add("0");// Image
-			nageurFields.add("0");// Email FSASPTT
-			nageurFields.add("1"); // Info partenaires
-			nageurFields.add("1"); // Compétition
-			nageurFields.add("1");// Licence dÈlÈgataire;
-			nageurFields.add("1");// Dirigeant de l'activitÈ;
-			nageurFields.add("1");// Juge arbitre pour cette activitÈ;
-			nageurFields.add(nageur.getTarif().toString());// Montant section;
-			nageurFields.add("23");// Montant licence dÈlÈgataire;
-			nageurFields.add("0");// Montant autre;
-			nageurFields.add("0");// Id catÈgorie
-			extractionAsString.appendWithSeparators(nageurFields, ";").appendNewLine();
+			DossierEntity dossier = dossierDao.get(dossierId);
+			List<DossierNageurEntity> nageurs = dao.findByDossier(dossierId);
+			for (DossierNageurEntity nageur : nageurs) {
+				nageurFields.add(nageur.getNom());
+				nageurFields.add(nageur.getPrenom());
+				nageurFields.add(new DateTime(nageur.getNaissance().getTime()).toString("dd/MM/yyyy"));
+				nageurFields.add(nageur.getCivilite() == "0" ? "M" : "F");
+				nageurFields.add(dossier.getEmail());
+				nageurFields.add(nageur.getProfession());
+				nageurFields.add("1");// Benevole
+				nageurFields.add(dossier.getAdresse());
+				nageurFields.add("");// Adresse suite
+				nageurFields.add(dossier.getCodepostal());
+				nageurFields.add(dossier.getVille());
+				nageurFields.add(dossier.getTelephone());
+				nageurFields.add(dossier.getTelephoneSecondaire());
+				nageurFields.add("");// La poste
+				nageurFields.add("");// Identifiant la poste
+				nageurFields.add(BooleanUtils.isTrue(nageur.getFonctionnaire()) ? "0" : "1");
+				nageurFields.add("0");// Image
+				nageurFields.add("0");// Email FSASPTT
+				nageurFields.add("1"); // Info partenaires
+				nageurFields.add("1"); // Compétition
+				nageurFields.add("1");// Licence dÈlÈgataire;
+				nageurFields.add("1");// Dirigeant de l'activitÈ;
+				nageurFields.add("1");// Juge arbitre pour cette activitÈ;
+				nageurFields.add(nageur.getTarif().toString());// Montant
+																// section;
+				nageurFields.add("23");// Montant licence dÈlÈgataire;
+				nageurFields.add("0");// Montant autre;
+				nageurFields.add("0");// Id catÈgorie
+				extractionAsString.appendWithSeparators(nageurFields, ";").appendNewLine();
+			}
 		}
-		
-		
-		ByteArrayOutputStream out = null;
+
+		return extractionAsString.toString();
+		/**ByteArrayOutputStream out = null;
 		try {
 			out = new ByteArrayOutputStream();
 			out.write(extractionAsString.toString().getBytes("UTF-8"));
@@ -267,6 +270,6 @@ public class DossierExtractionService {
 					return Response.serverError().build();
 				}
 			}
-		}
+		}**/
 	}
 }

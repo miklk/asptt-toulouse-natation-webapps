@@ -43,7 +43,9 @@ dossierServices.factory('DossierService', ['$resource',
 			query:{method:'GET', isArray: true, params: {}}
 		}),
 		adherons : $resource('/resources/dossiers/extraction/adherons',{},{
-			query:{method:'POST', isArray: false, params: {}}
+			query:{method:'POST', isArray: false, params: {}, transformResponse: function (data, headersGetter) {
+			    return { csv: data }
+		    }}
 		}),
 	};
 }]);
