@@ -42,5 +42,8 @@ dossierServices.factory('DossierService', ['$resource',
 		byGroupeDay: $resource('/resources/dossiers/findByGroupeDay/:groupe/:day',{},{
 			query:{method:'GET', isArray: true, params: {}}
 		}),
+		adherons : $resource('/resources/dossiers/extraction/adherons',{},{
+			query:{method:'POST', isArray: false, params: {}}
+		}),
 	};
 }]);

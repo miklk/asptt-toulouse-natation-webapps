@@ -371,4 +371,10 @@ dossierController.controller('DossierController', ['$rootScope', '$http', '$scop
 		return montant;
 	}
 	
+	$scope.adheronsSelected = function() {
+		var selectedDossiers = getSelectedDossiers();
+		DossierService.adherons.query({}, selectedDossiers, function(data) {
+		});
+	}
+	
 }]);
