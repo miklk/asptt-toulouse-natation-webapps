@@ -18,7 +18,7 @@ var adminApp = angular.module('adminApp', ['ngCookies', 'ngRoute', 'angular-spin
                                            'AdminController', 'BoutiqueCtrl', 'OrderController', 'OrderStatController', 'ActualiteController',
                                            'PageEditionController',
                                            'GroupeEffectifController', 'RecordController', 'DossierStageController', 'dossierStageServices', 'paramServices',
-                                           'HomeController']);
+                                           'HomeController', 'CompetitionController', 'competitionServices']);
 
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.
@@ -150,6 +150,10 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 		when('/records', {
 			templateUrl: 'views/record/records.html',
 			access: 'ACCESS_SUIVI_NAGEURS'
+		}).
+		when('/competition-creation', {
+			templateUrl: 'views/competition/competition-creation.html',
+			access: 'ACCESS_COMPETITION'
 		}).
 		when('/page/login', {
 			templateUrl: 'views/login.html'

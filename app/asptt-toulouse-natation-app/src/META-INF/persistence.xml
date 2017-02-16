@@ -44,6 +44,9 @@
         <class>com.asptttoulousenatation.core.server.dao.entity.swimmer.PresenceToken</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.salarie.SalarieActiviteEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.salarie.SalarieHeureEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionEpreuveEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.competition.EpreuveResultatEntity</class>
+        
         
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         

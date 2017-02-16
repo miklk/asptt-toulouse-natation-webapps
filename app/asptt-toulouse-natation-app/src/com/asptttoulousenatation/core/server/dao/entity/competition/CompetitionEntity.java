@@ -41,22 +41,8 @@ public class CompetitionEntity implements IEntity {
 	
 	private Set<Long> days;
 	
-	public CompetitionEntity() {
-		
-	}
-
-	public CompetitionEntity(Long pId, String pTitle, String pPlace,
-			Date pBegin, Date pEnd, String pSaison, Set<Long> pDays) {
-		super();
-		id = pId;
-		title = pTitle;
-		place = pPlace;
-		begin = pBegin;
-		end = pEnd;
-		saison = pSaison;
-		days = pDays;
-	}
-
+	private CompetitionKindEnum kind;
+	
 	public Long getId() {
 		return id;
 	}
@@ -111,6 +97,14 @@ public class CompetitionEntity implements IEntity {
 
 	public void setDays(Set<Long> pDays) {
 		days = pDays;
+	}
+
+	public CompetitionKindEnum getKind() {
+		return kind;
+	}
+
+	public void setKind(CompetitionKindEnum kind) {
+		this.kind = kind;
 	}
 
 }
