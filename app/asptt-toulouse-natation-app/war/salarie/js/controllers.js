@@ -1,9 +1,16 @@
 var salarieController = angular.module('SalarieController', ['ngRoute']);
 salarieController.controller('SalarieController', ['$rootScope', '$scope', '$cookieStore', '$http', '$location', 'SalarieService', 'LoginService', function($rootScope, $scope, $cookieStore, $http, $location, SalarieService, LoginService) {
+	var token = $cookieStore.get("asptt-token");
+    $rootScope.aspttToken = token;
     $rootScope.displayMenu = true;
     var tokenInfo = $cookieStore.get("asptt-token-info");
-    var token = $cookieStore.get("asptt-token");
+    $rootScope.aspttTokenInfo = tokenInfo;
+    $scope.toogleMenu = function() {
+    	$rootScope.displayMenu = ! $rootScope.displayMenu;
+    }
     
+	var access = $cookieStore.get("asptt-token-access");
+	$rootScope.access = access;
     $scope.logout = function() {
 		var token = $cookieStore.get("asptt-token");
 		$cookieStore.remove("asptt-token");

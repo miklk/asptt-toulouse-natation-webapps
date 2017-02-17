@@ -24,11 +24,14 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 import com.asptttoulousenatation.core.authentication.TokenManager;
-import com.asptttoulousenatation.core.boutique.BoutiqueService;
 import com.asptttoulousenatation.core.server.dao.entity.salarie.SalarieActiviteEntity;
 import com.asptttoulousenatation.core.server.dao.entity.salarie.SalarieHeureEntity;
+import com.asptttoulousenatation.core.server.dao.entity.user.UserDataEntity;
+import com.asptttoulousenatation.core.server.dao.entity.user.UserEntity;
 import com.asptttoulousenatation.core.server.dao.salarie.SalarieActiviteDao;
 import com.asptttoulousenatation.core.server.dao.salarie.SalarieHeureDao;
+import com.asptttoulousenatation.core.server.dao.user.UserDao;
+import com.asptttoulousenatation.core.server.dao.user.UserDataDao;
 
 @Path("/salarie/heure")
 @Produces("application/json")
@@ -37,6 +40,25 @@ public class SalarieHeureService {
 	private static final Logger LOG = Logger.getLogger(SalarieHeureService.class.getName());
 	private SalarieHeureDao dao = new SalarieHeureDao();
 	private SalarieActiviteDao activiteDao = new SalarieActiviteDao();
+	private UserDao userDao = new UserDao();
+	private UserDataDao userDataDao = new UserDataDao();
+	
+	@Path("/users")
+	@GET
+	public List<SalarieInfo> loadUsers() {
+		List<Long> userIds = dao.findUsers();
+		List<SalarieInfo> users = new ArrayList<>(userIds.size());
+		for(Long userId : userIds) {
+			UserEntity user = userDao.get(userId);
+			UserDataEntity userData = userDataDao.get(user.getUserData());
+			SalarieInfo salarieInfo = new SalarieInfo();
+			salarieInfo.setId(user.getId());
+			salarieInfo.setFirstName(userData.getFirstName());
+			salarieInfo.setLastName(userData.getLastName());
+			users.add(salarieInfo);
+		}
+		return users;
+	}
 
 	@Path("{week}/{token}")
 	@GET
@@ -110,15 +132,15 @@ public class SalarieHeureService {
 		}
 	}
 	
-	@Path("{month}")
+	@Path("month/{month}/{user}")
 	@GET
-	public Map<Integer, Map<Integer, List<SalarieHeureEntity>>> loadMonth(@PathParam("month") String month) {
+	public Map<Integer, Map<Integer, List<SalarieHeureEntity>>> loadMonth(@PathParam("month") String month, @PathParam("user") Long user) {
 		LocalDate monthAsDate = ISODateTimeFormat.yearMonth().parseLocalDate(month);
 		DateTime dayBeginToMindnight = monthAsDate.dayOfMonth().withMinimumValue().toDateTimeAtStartOfDay();
 		DateTime dayEndToMindnight = dayBeginToMindnight.plusMonths(1);
 
 		List<SalarieHeureEntity> heures = dao.findByBeginEnd(dayBeginToMindnight.toDate(),
-				dayEndToMindnight.toDate());
+				dayEndToMindnight.toDate(), user);
 		
 		Map<Long, List<SalarieHeureEntity>> days = new HashMap<>();
 		//Init month

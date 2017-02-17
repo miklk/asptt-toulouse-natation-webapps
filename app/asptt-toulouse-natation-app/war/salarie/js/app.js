@@ -26,6 +26,24 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
      ]);
 }]);
 
+adminApp.run(function($rootScope, $location, LoginService) {
+    $rootScope.$on("$routeChangeStart", function (event, next, current) {
+    	$rootScope.displayMenu = false;
+    	var token = $rootScope.aspttToken;
+    	if(token) {
+    		LoginService.isLogged.query({token: token}, function(data) {
+    			if(!data.logged) {
+    					window.location.href = "index.html";
+    			} else {
+    				$rootScope.authenticated = true;
+    			}
+    		});
+    	} else {
+    		window.location.href = "index.html";
+      }
+    });
+});
+
 adminApp.directive('ngLoadingIndicator', function($rootScope) {
 	return {
 		restrict : 'E',
