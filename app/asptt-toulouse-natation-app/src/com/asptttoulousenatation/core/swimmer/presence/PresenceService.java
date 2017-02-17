@@ -62,7 +62,7 @@ public class PresenceService {
 
 	@Path("/init/{groupe}")
 	@GET
-	public void init(@PathParam("groupe") String groupe) {
+	public int init(@PathParam("groupe") String groupe) {
 		List<GroupEntity> groupes = groupDao.findByTitle(groupe);
 		GroupEntity groupeEntity = groupes.get(0);
 
@@ -115,6 +115,7 @@ public class PresenceService {
 				swimmerStatDao.save(stat);
 			}
 		}
+		return 0;
 	}
 
 	@Path("{token}")

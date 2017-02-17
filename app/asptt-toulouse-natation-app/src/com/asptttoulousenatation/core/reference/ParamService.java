@@ -24,7 +24,6 @@ public class ParamService {
 		return new ArrayList<>(paramDao.findByGroupe(groupe));
 	}
 	
-	@Path("")
 	@POST
 	@Consumes("application/json")
 	public void groupes(ParamEntity param) {
