@@ -20,6 +20,7 @@ public class RecordEpreuveEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String bassin;
+	private String sexe;
 	private String nage;
 	private String distance;
 	public Long getId() {
@@ -45,6 +46,12 @@ public class RecordEpreuveEntity implements IEntity {
 	}
 	public void setDistance(String distance) {
 		this.distance = distance;
+	}
+	public String getSexe() {
+		return sexe;
+	}
+	public void setSexe(String sexe) {
+		this.sexe = sexe;
 	}
 	
 }
