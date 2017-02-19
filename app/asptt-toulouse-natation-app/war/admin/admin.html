@@ -18,7 +18,7 @@
 	<link href="../js/textangular/textAngular.css" rel="stylesheet">
 
 	<link rel="stylesheet" href="../js/angular-spinkit-master/build/angular-spinkit.min.css">
-	
+
 	<style>
 	[ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak {
 	    display: none;
@@ -31,14 +31,14 @@
 	<div class="container-fluid" ng-show="authenticated" ng-controller="AdminController" ng-cloak>
 	<div class="row hidden-print">
 		<div class="col-md-6">
-			
+
 			<button type="button" class="navbar-toggle" style="display: block; float: left" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" ng-click="toogleMenu()">
 		    	<i class="fa fa-bars"></i> Menu
 			</button>
 			<div style="margin-top: 8px; margin-bottom: 8px; padding: 9px 10px; font-size: 1.1em">
 				<a href="#/dashboard">ASPTT Toulouse Natation</a>
 			</div>
-			
+
 		</div>
 		<ul class="nav navbar-nav navbar-right" style="float:right; padding: 0px 10px">
 			<li class="dropdown">
@@ -118,6 +118,7 @@
                     <li data-show-when-connected="ACCESS_COMPETITION"><span class="menu" style="color: rgba(0,0,0,0.54); border-top:1px solid #000000">Compétitions</span>
                         <ul class="nav nav-sidebar">
                             <li><a href="#/competition-creation">Créer</a></li>
+                            <li><a href="#/competition-engagement">Engagement</a></li>
                         </ul>
                     </li>
 				</ul>
@@ -195,6 +196,7 @@
     <script type="text/javascript" src="js/dossier-stage/DossierStageService.js"></script>
     <script type="text/javascript" src="js/param/ParamService.js"></script>
     <script type="text/javascript" src="js/competition/CompetitionController.js"></script>
+    <script type="text/javascript" src="js/competition/EngagementController.js"></script>
     <script type="text/javascript" src="js/competition/CompetitionService.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
 
@@ -207,7 +209,7 @@
 
     <script type="text/javascript" src="js/login/LoginController.js"></script>
 	<script type="text/javascript" src="js/login/LoginService.js"></script>
-	
+
 
 
 

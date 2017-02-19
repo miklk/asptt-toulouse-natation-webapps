@@ -18,7 +18,7 @@ var adminApp = angular.module('adminApp', ['ngCookies', 'ngRoute', 'angular-spin
                                            'AdminController', 'BoutiqueCtrl', 'OrderController', 'OrderStatController', 'ActualiteController',
                                            'PageEditionController',
                                            'GroupeEffectifController', 'RecordController', 'DossierStageController', 'dossierStageServices', 'paramServices',
-                                           'HomeController', 'CompetitionController', 'competitionServices']);
+                                           'HomeController', 'CompetitionController', 'competitionServices', 'EngagementController']);
 
 adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', function ($routeProvider, $httpProvider, $sceDelegateProvider) {
 	$routeProvider.
@@ -155,6 +155,10 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
 			templateUrl: 'views/competition/competition-creation.html',
 			access: 'ACCESS_COMPETITION'
 		}).
+    when('/competition-engagement', {
+			templateUrl: 'views/competition/competition-engagement.html',
+			access: 'ACCESS_COMPETITION'
+		}).
 		when('/page/login', {
 			templateUrl: 'views/login.html'
 		}).
@@ -171,7 +175,7 @@ adminApp.config(['$routeProvider', '$httpProvider', '$sceDelegateProvider', func
        'self',
        'http://docs.google.com/viewer?url=*'
      ]);
-	
+
 	//$httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 	//$httpProvider.defaults.withCredentials = true;
     //$httpProvider.interceptors.push('XSRFInterceptor');

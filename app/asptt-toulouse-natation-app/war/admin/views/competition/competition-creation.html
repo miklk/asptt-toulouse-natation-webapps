@@ -1,74 +1,68 @@
-<div class="container" ng-controller="RecordController">
-	<div class="row hidden-print">
-		<h1 class="page-header">Records du club</h1>
+<div class="container" ng-controller="CompetitionController">
+	<div class="row">
+		<h1 class="page-header">Compétition</h1>
 	</div>
 	<div class="row">
 		<div class="form-inline">
 			<div class="form-group">
-				<label for="bassin">Bassin</label>
-				<select id="bassin" class="form-control" ng-model="bassin" ng-options="bassin for bassin in bassins"></select>
+				<label for="intitule">Intitule</label>
+				<input id="intitule" class="form-control" ng-model="competition.title" type="text" size="30"/>
 			</div>
 			<div class="form-group">
-				<label for="nage">Nage</label>
-				<select id="bassin" class="form-control" ng-model="bassin" ng-options="bassin for bassin in bassins"></select>
+				<label for="type">Type</label>
+				<select id="type" class="form-control" ng-model="competition.kind" ng-options="competitionKind for competitionKind in competitionKind"></select>
+			</div>
+			<div class="form-group">
+				<label for="periodeBegin">Période</label>
+				<input id="periodeBegin" class="form-control" ng-model="competition.begin" type="date" />
+				<input id="periodeEnd" class="form-control" ng-model="competition.end" type="date" />
 			</div>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row" style="margin-top: 1%">
+			<h3>Epreuves</h3>
+			<button type="button" class="btn btn-success btn-xs" ng-click="addEpreuve()"><span class="glyphicon glyphicon-plus"></span> Ajouter une épreuve</button>
 		<div class="col-lg-10">
 			<table class="table table-hover">
 				<thead>
 					<tr>
-						<th>Epreuves</th>
-						<th ng-repeat="categorie in categories">{{categorie}}</th>
+						<th>Ordre</th>
+						<th>Sexe</th>
+						<th>Nage</th>
+						<th>Distance</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="record in records">
-						<td>{{record.epreuve.distance}}m {{record.epreuve.nage}}<br /><button type="button" class="btn btn-xs" ng-click="addRecord(record.epreuve)"><span class="glyphicon glyphicon-plus"></span></button></td>
-						<td ng-repeat="recordCat in record.records" ng-click="addRecordCat(recordCat)">
-							{{recordCat.nom}} {{recordCat.prenom}}<br />
-							{{recordCat.annee}}<br />
-							{{recordCat.temps}}<br />
-							{{recordCat.jour | date: 'dd/MM/yyyy'}}<br />
-							{{recordCat.lieu}}
+					<tr ng-repeat="epreuve in epreuves">
+						<td>{{$index}}</td>
+						<td>
+							<select ng-model="epreuve.sexe">
+								<option value="M">Garçon</option>
+								<option value="F">Fille</option>
+								<option value="MIXTE">Mixte</option>
+							</select>
+						</td>
+						<td>
+							<select ng-model="epreuve.nage">
+								<option value="pap">Pap</option>
+								<option value="dos">Dos</option>
+								<option value="brasse">Brasse</option>
+								<option value="nl">Nage libre</option>
+							</select>
+						</td>
+						<td>
+							<select ng-model="epreuve.distance">
+								<option value="25">25</option>
+								<option value="50">50</option>
+								<option value="100">100</option>
+								<option value="200">200</option>
+								<option value="400">400</option>
+							</select>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-		</div>
-		<div class="col-lg-2" ng-show="showAddRecord">
-			<form>
-				<div class="form-group">
-					<label for="age">Catégorie</label>
-					<select id="age" class="form-control" ng-model="recordCreation.age" ng-options="categorie for categorie in categories" />
-				</div>
-				<div class="form-group">
-					<label for="nom">Nom</label>
-					<input type="text" id="nom" class="form-control" ng-model="recordCreation.nom" />
-				</div>
-				<div class="form-group">
-					<label for="prenom">Prénom</label>
-					<input type="text" id="prenom" class="form-control" ng-model="recordCreation.prenom" />
-				</div>
-				<div class="form-group">
-					<label for="annee">Année</label>
-					<input type="number" id="annee" class="form-control" ng-model="recordCreation.annee" />
-				</div>
-				<div class="form-group">
-					<label for="temps">Temps</label>
-					<input type="text" id="temps" class="form-control" ng-model="recordCreation.temps" />
-				</div>
-				<div class="form-group">
-					<label for="jour">Jour</label>
-					<input type="date" id="jour" class="form-control" ng-model="recordCreation.jour" />
-				</div>
-				<div class="form-group">
-					<label for="lieu">Lieu</label>
-					<input type="text" id="lieu" class="form-control" ng-model="recordCreation.lieu" />
-				</div>
-				<button type="submit" class="btn btn-success">Mettre à jour le record</button>
-			</form>
+			<button type="button" class="btn btn-success btn-block" ng-click="create()">Créer la compétition</button>
 		</div>
 	</div>
 </div>

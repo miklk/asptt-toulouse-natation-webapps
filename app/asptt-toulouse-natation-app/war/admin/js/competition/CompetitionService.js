@@ -1,10 +1,16 @@
 var recordServices = angular.module('competitionServices', ['ngResource']);
 
-recordServices.factory('CompetitionService', ['$resource', 
+recordServices.factory('CompetitionService', ['$resource',
                                        function($resource) {
 	return {
-		records: $resource('/resources/competitions/',{},{
+		create: $resource('/resources/competitions/create',{},{
 			query:{method:'PUT', isArray: false, params: {}}
 		}),
+    competitions : $resource('/resources/competitions', {}, {
+      query : {method: 'GET', isArray: true}
+    }),
+    epreuves : $resource('/resources/competitions/:competition', {}, {
+      query : {method: 'GET', isArray: true}
+    }),
 	};
 }]);

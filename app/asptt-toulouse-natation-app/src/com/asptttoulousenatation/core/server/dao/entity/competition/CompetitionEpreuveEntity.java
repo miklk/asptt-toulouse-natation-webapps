@@ -20,8 +20,10 @@ public class CompetitionEpreuveEntity implements IEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String bassin;
+	private String sexe;
 	private String nage;
 	private String distance;
+	private Long competition;
 	public Long getId() {
 		return id;
 	}
@@ -46,5 +48,16 @@ public class CompetitionEpreuveEntity implements IEntity {
 	public void setDistance(String distance) {
 		this.distance = distance;
 	}
-	
+	public String getSexe() {
+		return sexe;
+	}
+	public void setSexe(String sexe) {
+		this.sexe = sexe;
+	}
+	public Long getCompetition() {
+		return competition;
+	}
+	public void setCompetition(Long competition) {
+		this.competition = competition;
+	}
 }
