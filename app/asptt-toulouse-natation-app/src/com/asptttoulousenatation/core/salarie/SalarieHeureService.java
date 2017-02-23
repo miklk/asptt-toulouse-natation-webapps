@@ -42,25 +42,29 @@ public class SalarieHeureService {
 	private SalarieActiviteDao activiteDao = new SalarieActiviteDao();
 	private UserDao userDao = new UserDao();
 	private UserDataDao userDataDao = new UserDataDao();
-	
+
 	@Path("/users")
 	@GET
 	public List<SalarieInfo> loadUsers() {
 		List<Long> userIds = dao.findUsers();
 		List<SalarieInfo> users = new ArrayList<>(userIds.size());
-		for(Long userId : userIds) {
+		for (Long userId : userIds) {
 			UserEntity user = userDao.get(userId);
-			UserDataEntity userData = userDataDao.get(user.getUserData());
-			SalarieInfo salarieInfo = new SalarieInfo();
-			salarieInfo.setId(user.getId());
-			salarieInfo.setFirstName(userData.getFirstName());
-			salarieInfo.setLastName(userData.getLastName());
-			users.add(salarieInfo);
+			if (user != null) {
+				UserDataEntity userData = userDataDao.get(user.getUserData());
+				SalarieInfo salarieInfo = new SalarieInfo();
+				salarieInfo.setId(user.getId());
+				salarieInfo.setFirstName(userData.getFirstName());
+				salarieInfo.setLastName(userData.getLastName());
+				users.add(salarieInfo);
+			} else {
+				LOG.warning("User is null : " + userId);
+			}
 		}
 		return users;
 	}
 
-	@Path("{week}/{token}")
+	@Path("/week/{week}/{token}")
 	@GET
 	public List<SalarieHeureDay> loadWeek(@PathParam("week") String week, @PathParam("token") String token) {
 		Long user = TokenManager.getInstance().getUser(token);
@@ -102,25 +106,26 @@ public class SalarieHeureService {
 		return new ArrayList<>(days.values());
 	}
 
-	@Path("{token}")
+	@Path("/valider/{token}")
 	@POST
 	@Consumes("application/json")
 	public void valider(@PathParam("token") String token, List<SalarieHeureDay> days) {
 		Long user = TokenManager.getInstance().getUser(token);
-		if(user != null) {
+		if (user != null) {
 			for (SalarieHeureDay day : days) {
 				DateTime currentDay = new DateTime(day.getDay().getTime());
 				for (SalarieHeureEntity heure : day.getHeures()) {
 					String activiteTitle = StringUtils.upperCase(StringUtils.trimToEmpty(heure.getActivite()));
 					if (StringUtils.isNotBlank(activiteTitle)) {
 						heure.setActivite(activiteTitle);
-						heure.setBegin(currentDay.withTime(LocalTime.fromMillisOfDay(heure.getBegin().getTime())).toDate());
+						heure.setBegin(
+								currentDay.withTime(LocalTime.fromMillisOfDay(heure.getBegin().getTime())).toDate());
 						heure.setEnd(currentDay.withTime(LocalTime.fromMillisOfDay(heure.getEnd().getTime())).toDate());
 						heure.setCreatedBy(user + "");
 						heure.setUpdatedBy(user + "");
 						heure.setUser(user);
 						dao.save(heure);
-						
+
 						SalarieActiviteEntity activite = new SalarieActiviteEntity();
 						activite.setIntitule(activiteTitle);
 						activiteDao.save(activite);
@@ -131,21 +136,22 @@ public class SalarieHeureService {
 			LOG.info("Not user with token : " + token);
 		}
 	}
-	
+
 	@Path("month/{month}/{user}")
 	@GET
-	public Map<Integer, Map<Integer, List<SalarieHeureEntity>>> loadMonth(@PathParam("month") String month, @PathParam("user") Long user) {
+	public Map<Integer, Map<Integer, List<SalarieHeureEntity>>> loadMonth(@PathParam("month") String month,
+			@PathParam("user") Long user) {
 		LocalDate monthAsDate = ISODateTimeFormat.yearMonth().parseLocalDate(month);
 		DateTime dayBeginToMindnight = monthAsDate.dayOfMonth().withMinimumValue().toDateTimeAtStartOfDay();
 		DateTime dayEndToMindnight = dayBeginToMindnight.plusMonths(1);
 
-		List<SalarieHeureEntity> heures = dao.findByBeginEnd(dayBeginToMindnight.toDate(),
-				dayEndToMindnight.toDate(), user);
-		
+		List<SalarieHeureEntity> heures = dao.findByBeginEnd(dayBeginToMindnight.toDate(), dayEndToMindnight.toDate(),
+				user);
+
 		Map<Long, List<SalarieHeureEntity>> days = new HashMap<>();
-		//Init month
+		// Init month
 		int maxDayInMonth = dayBeginToMindnight.dayOfMonth().getMaximumValue();
-		for(int i = 0; i < maxDayInMonth ; i++) {
+		for (int i = 0; i < maxDayInMonth; i++) {
 			days.put(Long.valueOf(dayBeginToMindnight.plusDays(i).getMillis()), new ArrayList<SalarieHeureEntity>());
 		}
 		for (SalarieHeureEntity heure : heures) {
@@ -157,15 +163,15 @@ public class SalarieHeureService {
 				days.put(dayAsLong, heuresDay);
 			}
 		}
-		
+
 		Map<Integer, Map<Integer, List<SalarieHeureEntity>>> weeks = new HashMap<>();
-		for(Entry<Long, List<SalarieHeureEntity>> entry : days.entrySet()) {
+		for (Entry<Long, List<SalarieHeureEntity>> entry : days.entrySet()) {
 			DateTime keyAsDateTime = new DateTime(entry.getKey());
 			Integer week = keyAsDateTime.getWeekOfWeekyear();
 			Integer day = keyAsDateTime.getDayOfMonth();
-			if(weeks.containsKey(week)) {
+			if (weeks.containsKey(week)) {
 				Map<Integer, List<SalarieHeureEntity>> dayOfMonth = weeks.get(week);
-				if(dayOfMonth.containsKey(day)) {
+				if (dayOfMonth.containsKey(day)) {
 					dayOfMonth.get(day).addAll(entry.getValue());
 				} else {
 					dayOfMonth.put(day, entry.getValue());
