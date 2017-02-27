@@ -10,7 +10,7 @@
 			</div>
 			<div class="form-group">
 				<label for="nage">Nage</label>
-				<select id="bassin" class="form-control" ng-model="bassin" ng-options="bassin for bassin in bassins"></select>
+				<select id="nage" class="form-control" ng-model="nage" ng-options="nage for nage in nages"></select>
 			</div>
 		</div>
 	</div>
@@ -67,7 +67,7 @@
 					<label for="lieu">Lieu</label>
 					<input type="text" id="lieu" class="form-control" ng-model="recordCreation.lieu" />
 				</div>
-				<button type="submit" class="btn btn-success">Mettre à jour le record</button>
+				<button type="submit" class="btn btn-success" ng-click="createRecord()">Mettre à jour le record</button>
 			</form>
 		</div>
 	</div>
