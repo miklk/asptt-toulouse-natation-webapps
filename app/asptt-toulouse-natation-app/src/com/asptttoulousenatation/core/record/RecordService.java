@@ -70,7 +70,7 @@ public class RecordService {
 	@Path("/record")
 	@POST
 	public void createRecord(RecordEntity entity) {
-		
+		dao.save(entity);
 	}
 	
 	@Path("/init-epreuves")

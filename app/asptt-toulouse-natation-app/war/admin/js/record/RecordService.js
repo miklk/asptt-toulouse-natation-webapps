@@ -6,5 +6,8 @@ recordServices.factory('RecordService', ['$resource',
 		records: $resource('/resources/records/:bassin',{},{
 			query:{method:'GET', isArray: true, params: {}}
 		}),
+		create: $resource('/resources/records/record',{},{
+			query:{method:'POST', isArray: true, params: {}}
+		}),
 	};
 }]);

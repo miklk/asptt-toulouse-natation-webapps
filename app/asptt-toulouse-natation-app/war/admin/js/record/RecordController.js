@@ -51,5 +51,8 @@ recordController.controller('RecordController', ['$rootScope', '$scope', '$locat
 	
 	$scope.createRecord = function() {
 		console.log($scope.recordCreation);
+		RecordService.create.query($scope.recordCreation, function(data) {
+			console.log(data);
+		});
 	}
 }]);
