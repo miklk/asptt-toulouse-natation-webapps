@@ -6,16 +6,22 @@
 		<div class="form-inline">
 			<div class="form-group">
 				<label for="bassin">Bassin</label>
-				<select id="bassin" class="form-control" ng-model="bassin" ng-options="bassin for bassin in bassins"></select>
+				<select id="bassin" class="form-control" ng-model="bassin" ng-options="bassin for bassin in bassins" ng-change="loadRecords()"></select>
 			</div>
 			<div class="form-group">
-				<label for="nage">Nage</label>
-				<select id="nage" class="form-control" ng-model="nage" ng-options="nage for nage in nages"></select>
+				<label for="sexe">Catégorie</label>
+				<select id="sexe" class="form-control" ng-model="sexe" ng-change="loadRecords()">
+					<option value="0">Garçons</option>
+					<option value="1">Filles</option>
+				</select>
 			</div>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-lg-10">
+			<div style="padding: 1%">
+				<button type="button" class="btn btn-info btn-block" ng-click="addRecord(record.epreuve)">Ajouter un nouveau record</button>
+			</div>
 			<table class="table table-hover">
 				<thead>
 					<tr>
@@ -25,8 +31,8 @@
 				</thead>
 				<tbody>
 					<tr ng-repeat="record in records">
-						<td>{{record.epreuve.distance}}m {{record.epreuve.nage}}<br /><button type="button" class="btn btn-xs" ng-click="addRecord(record.epreuve)"><span class="glyphicon glyphicon-plus"></span></button></td>
-						<td ng-repeat="recordCat in record.records" ng-click="addRecordCat(recordCat)">
+						<td>{{record.epreuve.distance}}m {{record.epreuve.nage}}<br /></td>
+						<td ng-repeat="recordCat in record.records track by $index" ng-click="addRecordCat(recordCat)">
 							{{recordCat.nom}} {{recordCat.prenom}}<br />
 							{{recordCat.annee}}<br />
 							{{recordCat.temps}}<br />
@@ -41,7 +47,11 @@
 			<form>
 				<div class="form-group">
 					<label for="age">Catégorie</label>
-					<select id="age" class="form-control" ng-model="recordCreation.age" ng-options="categorie for categorie in categories" />
+					<select id="age" class="form-control" ng-model="recordCreation.age" ng-options="categorie for categorie in categories" ng-change="findRecord()" />
+				</div>
+				<div class="form-group">
+					<label for="epreuve">Epreuve</label>
+					<select id="epreuve" class="form-control" ng-model="epreuve" ng-options="(epreuve.distance + ' ' + epreuve.nage) for epreuve in epreuves track by epreuve.id" ng-change="findRecord()" />
 				</div>
 				<div class="form-group">
 					<label for="nom">Nom</label>
@@ -67,7 +77,7 @@
 					<label for="lieu">Lieu</label>
 					<input type="text" id="lieu" class="form-control" ng-model="recordCreation.lieu" />
 				</div>
-				<button type="submit" class="btn btn-success" ng-click="createRecord()">Mettre à jour le record</button>
+				<button type="submit" class="btn btn-success" ng-click="createRecord(epreuve)">Mettre à jour le record</button>
 			</form>
 		</div>
 	</div>

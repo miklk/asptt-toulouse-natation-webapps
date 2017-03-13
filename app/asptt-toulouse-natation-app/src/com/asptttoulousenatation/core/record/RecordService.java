@@ -1,7 +1,11 @@
 package com.asptttoulousenatation.core.record;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
@@ -12,7 +16,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.joda.time.DateTime;
+import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import com.asptttoulousenatation.core.server.dao.entity.field.RecordEpreuveEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.record.RecordEntity;
@@ -29,26 +33,62 @@ public class RecordService {
 	private static final Logger LOG = Logger.getLogger(RecordService.class
 			.getName());
 	
+	private static final Map<String, Integer> DISTANCE_ORDER;
+	private static final Map<String, Integer> NAGE_ORDER;
+	
+	static {
+		DISTANCE_ORDER = new HashMap<>();
+		DISTANCE_ORDER.put("50", 0);
+		DISTANCE_ORDER.put("100", 1);
+		DISTANCE_ORDER.put("200", 2);
+		DISTANCE_ORDER.put("250", 3);
+		DISTANCE_ORDER.put("400", 4);
+		DISTANCE_ORDER.put("800", 5);
+		DISTANCE_ORDER.put("1500", 6);
+		
+		NAGE_ORDER = new HashMap<>();
+		NAGE_ORDER.put("NL", 0);
+		NAGE_ORDER.put("Brasse", 1);
+		NAGE_ORDER.put("Dos", 2);
+		NAGE_ORDER.put("Papillon", 3);
+		NAGE_ORDER.put("4N", 4);
+		
+	}
+	
+	
 	private RecordDao dao = new RecordDao();
 	private RecordEpreuveDao epreuveDao = new RecordEpreuveDao();
 	
-	@Path("/{bassin}")
+	@Path("/{bassin}/{sexe}")
 	@GET
 	@Consumes("application/json")
-	public List<RecordUi> find(@PathParam("bassin") String bassin) {
+	public List<RecordUi> find(@PathParam("bassin") String bassin, @PathParam("sexe") String sexe) {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		criteria.add(new CriterionDao<String>(RecordEpreuveEntityFields.BASSIN,
 				bassin, Operator.EQUAL));
+		criteria.add(new CriterionDao<String>(RecordEpreuveEntityFields.SEXE,
+				sexe, Operator.EQUAL));
 		List<RecordEpreuveEntity> epreuves = epreuveDao.find(criteria);
 		List<RecordUi> records = new ArrayList<>();
 		for(RecordEpreuveEntity epreuve: epreuves) {
 			RecordUi ui = new RecordUi();
 			ui.setEpreuve(epreuve);
 			List<RecordEntity> entities = dao.findByEpreuve(epreuve.getId());
-			ui.setRecords(new ArrayList<>(entities));
+			for(RecordEntity entity: entities) {
+				ui.addRecord(entity);
+			}
 			records.add(ui);
 		}
+		Collections.sort(records, new Comparator<RecordUi>() {
+
+			@Override
+			public int compare(RecordUi o1, RecordUi o2) {
+				CompareToBuilder comparator = new CompareToBuilder();
+				comparator.append(NAGE_ORDER.get(o1.getEpreuve().getNage()), NAGE_ORDER.get(o2.getEpreuve().getNage())).append(DISTANCE_ORDER.get(o1.getEpreuve().getDistance()), DISTANCE_ORDER.get(o2.getEpreuve().getDistance()));
+				return comparator.toComparison();
+			}
+		});
 		return records;
 	}
 	
@@ -91,6 +131,15 @@ public class RecordService {
 					epreuve.setBassin(bassin);
 					epreuve.setDistance(distance);
 					epreuve.setNage(nage);
+					epreuve.setSexe("0");
+					epreuveDao.save(epreuve);
+				}
+				for (String distance : distances[i]) {
+					RecordEpreuveEntity epreuve = new RecordEpreuveEntity();
+					epreuve.setBassin(bassin);
+					epreuve.setDistance(distance);
+					epreuve.setNage(nage);
+					epreuve.setSexe("1");
 					epreuveDao.save(epreuve);
 				}
 			}
@@ -113,5 +162,28 @@ public class RecordService {
 				dao.save(record);
 			}
 		}
+	}
+	
+	@Path("/epreuves/{bassin}")
+	@GET
+	public List<RecordEpreuveEntity> epreuves(@PathParam("bassin") String bassin) {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
+				1);
+		criteria.add(new CriterionDao<String>(RecordEpreuveEntityFields.BASSIN,
+				bassin, Operator.EQUAL));
+		List<RecordEpreuveEntity> epreuves = epreuveDao.find(criteria);
+		return epreuves;
+	}
+	
+	@Path("/by-epreuve/{epreuve}/{categorie}")
+	@GET
+	@Consumes("application/json")
+	public RecordUi findByEpreuve(@PathParam("epreuve") Long epreuveId, @PathParam("categorie") String categorie) {
+		RecordEpreuveEntity epreuve = epreuveDao.get(epreuveId);
+		RecordUi ui = new RecordUi();
+		ui.setEpreuve(epreuve);
+		List<RecordEntity> entities = dao.findByEpreuveAndAge(epreuve.getId(), categorie);
+		ui.setRecords(new ArrayList<>(entities));
+		return ui;
 	}
 }

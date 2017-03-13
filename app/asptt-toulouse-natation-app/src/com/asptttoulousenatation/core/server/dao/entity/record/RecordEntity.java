@@ -30,7 +30,7 @@ public class RecordEntity implements IEntity {
 	private Date jour;
 	private String nom;
 	private String prenom;
-	private String annee;
+	private Integer annee;
 	private String ancienTemps;
 	private Date updated;
 	private Boolean valid;
@@ -93,10 +93,10 @@ public class RecordEntity implements IEntity {
 	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
-	public String getAnnee() {
+	public Integer getAnnee() {
 		return annee;
 	}
-	public void setAnnee(String annee) {
+	public void setAnnee(Integer annee) {
 		this.annee = annee;
 	}
 	public String getAncienTemps() {

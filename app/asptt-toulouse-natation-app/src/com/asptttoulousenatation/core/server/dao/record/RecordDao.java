@@ -25,6 +25,21 @@ public class RecordDao extends DaoBase<RecordEntity> {
 		}
 		return list;
 	}
+	
+	public List<RecordEntity> findByEpreuveAndAge(Long epreuve, String age) {
+		EntityManager em = EMF.get().createEntityManager();
+		List<RecordEntity> list = new ArrayList<>();
+		try {
+			TypedQuery<RecordEntity> query = em.createQuery("SELECT " + getAlias() + " FROM "
+					+ getEntityClass().getSimpleName() + " " + getAlias() + " WHERE " + getAlias() + ".epreuve=:epreuve AND " + getAlias() + ".age=:age", RecordEntity.class);
+			query.setParameter("epreuve", epreuve);
+			query.setParameter("age", age);
+			list = query.getResultList();
+		} finally {
+			em.close();
+		}
+		return list;
+	}
 
 	@Override
 	public Class<RecordEntity> getEntityClass() {

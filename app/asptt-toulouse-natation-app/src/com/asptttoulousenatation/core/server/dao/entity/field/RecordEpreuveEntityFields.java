@@ -2,6 +2,7 @@ package com.asptttoulousenatation.core.server.dao.entity.field;
 
 public enum RecordEpreuveEntityFields implements IEntityFields {
 	BASSIN(String.class),
+	SEXE(String.class),
 	;
 	
 	private Class<? extends Object> clazz;
