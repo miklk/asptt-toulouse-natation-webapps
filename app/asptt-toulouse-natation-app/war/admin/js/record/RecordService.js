@@ -9,7 +9,7 @@ recordServices.factory('RecordService', ['$resource',
 		create: $resource('/resources/records/record',{},{
 			query:{method:'POST', isArray: true, params: {}}
 		}),
-		epreuves: $resource('/resources/records/epreuves/:bassin',{},{
+		epreuves: $resource('/resources/records/epreuves/:bassin/:sexe',{},{
 			query:{method:'GET', isArray: true, params: {}}
 		}),
 		byEpreuve: $resource('/resources/records/by-epreuve/:epreuve/:categorie',{},{

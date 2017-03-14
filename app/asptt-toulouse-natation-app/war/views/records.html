@@ -1,0 +1,56 @@
+<div class="container" ng-controller="RecordController">
+	<div class="row hidden-print">
+		<h1 class="page-header">Records du club</h1>
+	</div>
+	<div class="row">
+	    <toggle ng-model="bassinToggle" ng-change="load()" on="25m" off="50m" offstyle="btn-primary"></toggle>
+	</div>
+	<div class="row" style="margin-top: 2%">
+		<div class="col-lg-10">
+			<table class="table table-bordered">
+				<thead>
+					<tr class="info">
+						<th colspan="10">Dames {{bassin}}m</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="record in recordsF">
+						<td>{{record.epreuve.distance}}m {{record.epreuve.nage}}<br /></td>
+						<td>
+							<div class="row" ng-show="recordCat.nom" ng-repeat="recordCat in record.records track by $index">
+								<div class="col-md-6">{{recordCat.nom}} {{recordCat.prenom}} ({{recordCat.annee}})</div>
+								<div class="col-md-2">{{recordCat.temps}}</div>
+								<div class="col-md-2">{{recordCat.jour | date: 'dd/MM/yyyy'}}</div>
+								<div class="col-md-2">{{recordCat.lieu}}</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row" style="margin-top: 2%">
+		<div class="col-lg-10">
+			<table class="table table-bordered">
+				<thead>
+					<tr class="info">
+						<th colspan="10">Messieurs {{bassin}}m</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="record in recordsM">
+						<td>{{record.epreuve.distance}}m {{record.epreuve.nage}}<br /></td>
+						<td>
+							<div class="row" ng-show="recordCat.nom" ng-repeat="recordCat in record.records track by $index">
+								<div class="col-md-6">{{recordCat.nom}} {{recordCat.prenom}} ({{recordCat.annee}})</div>
+								<div class="col-md-2">{{recordCat.temps}}</div>
+								<div class="col-md-2">{{recordCat.jour | date: 'dd/MM/yyyy'}}</div>
+								<div class="col-md-2">{{recordCat.lieu}}</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

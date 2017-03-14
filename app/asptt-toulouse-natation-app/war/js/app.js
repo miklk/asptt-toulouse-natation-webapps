@@ -1,4 +1,4 @@
-var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','ngMessages', 'angular-spinkit', 'loadingAppServices', 'pageServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'authenticationServices', 'actualiteServices', 'DocumentController', 'DocumentationController', 'mediaServices', 'MediaCtrl', 'InscriptionController', 'CalendarController', 'BoutiqueCtrl', 'InscriptionStageCtrl', 'paramServices']);
+var aspttNatTlsApp = angular.module('aspttNatTlsApp', ['ngRoute','ngMessages', 'angular-spinkit', 'ui.toggle', 'loadingAppServices', 'pageServices', 'inscriptionServices', 'slotServices', 'groupeServices', 'authenticationServices', 'actualiteServices', 'DocumentController', 'DocumentationController', 'mediaServices', 'MediaCtrl', 'InscriptionController', 'CalendarController', 'BoutiqueCtrl', 'InscriptionStageCtrl', 'paramServices', 'RecordController', 'recordServices']);
 aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($routeProvider, $sceDelegateProvider) {
 	$routeProvider.
 		when('/', {
@@ -66,6 +66,10 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 		when('/page/inscription-stage', {
 			templateUrl: 'views/inscription-stage.html',
 			controller: 'InscriptionStageCtrl'
+		}).
+		when('/page/records', {
+			templateUrl : 'views/records.html',
+			controller : 'RecordController'
 		}).
 		when('/page/:pageId', {
 			templateUrl: 'views/page.html',

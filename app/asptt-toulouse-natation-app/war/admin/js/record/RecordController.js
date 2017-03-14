@@ -5,7 +5,6 @@ var recordController = angular.module('RecordController', ['ngRoute', 'recordSer
 recordController.controller('RecordController', ['$rootScope', '$scope', '$location', '$anchorScroll', '$filter', 'RecordService', function($rootScope, $scope, $location, $anchorScroll, $filter, RecordService) {
 	$rootScope.isLoading = false;
 	$scope.bassins = ["25", "50"];
-	$scope.nages = [ "NL", "Dos", "Brasse", "Papillon", "4N" ];
 	$scope.categories = ["Toutes Catégories (Junior/Sérior)", "17 ans (Cadet)", "16 ans (Cadet)", "15 ans (Minime)", "14 ans (Minime)", "13 ans (Benjamin)", "12 ans (Benjamin)"];
 	$scope.bassin = "25";
 	$scope.sexe = "1";
@@ -19,14 +18,18 @@ recordController.controller('RecordController', ['$rootScope', '$scope', '$locat
 	}
 	
 	var loadEpreuves = function() {
-		RecordService.epreuves.query({'bassin': $scope.bassin}, function(data) {
+		RecordService.epreuves.query({'bassin': $scope.bassin, 'sexe' : $scope.sexe}, function(data) {
 			$scope.epreuves = data;
 		});
 	}
 	
-	var init = function() {
+	$scope.load = function() {
 		$scope.loadRecords();
 		loadEpreuves();
+	}
+	
+	var init = function() {
+		$scope.load();
 		$scope.showAddRecord = false;
 	}
 	
@@ -88,6 +91,7 @@ recordController.controller('RecordController', ['$rootScope', '$scope', '$locat
 			RecordService.byEpreuve.query({'epreuve' : $scope.epreuve.id, 'categorie' : $scope.recordCreation.age}, function(data) {
 				if(data.records.length > 0) {
 					$scope.recordCreation = data.records[0];
+					$scope.recordCreation.jour = new Date($scope.recordCreation.jour);
 				}
 			});
 		}

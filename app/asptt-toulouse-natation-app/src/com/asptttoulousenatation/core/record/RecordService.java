@@ -164,13 +164,15 @@ public class RecordService {
 		}
 	}
 	
-	@Path("/epreuves/{bassin}")
+	@Path("/epreuves/{bassin}/{sexe}")
 	@GET
-	public List<RecordEpreuveEntity> epreuves(@PathParam("bassin") String bassin) {
+	public List<RecordEpreuveEntity> epreuves(@PathParam("bassin") String bassin, @PathParam("sexe") String sexe) {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
+				2);
 		criteria.add(new CriterionDao<String>(RecordEpreuveEntityFields.BASSIN,
 				bassin, Operator.EQUAL));
+		criteria.add(new CriterionDao<String>(RecordEpreuveEntityFields.SEXE,
+				sexe, Operator.EQUAL));
 		List<RecordEpreuveEntity> epreuves = epreuveDao.find(criteria);
 		return epreuves;
 	}

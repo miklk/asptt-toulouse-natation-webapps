@@ -6,11 +6,11 @@
 		<div class="form-inline">
 			<div class="form-group">
 				<label for="bassin">Bassin</label>
-				<select id="bassin" class="form-control" ng-model="bassin" ng-options="bassin for bassin in bassins" ng-change="loadRecords()"></select>
+				<select id="bassin" class="form-control" ng-model="bassin" ng-options="bassin for bassin in bassins" ng-change="load()"></select>
 			</div>
 			<div class="form-group">
 				<label for="sexe">Catégorie</label>
-				<select id="sexe" class="form-control" ng-model="sexe" ng-change="loadRecords()">
+				<select id="sexe" class="form-control" ng-model="sexe" ng-change="load()">
 					<option value="0">Garçons</option>
 					<option value="1">Filles</option>
 				</select>
