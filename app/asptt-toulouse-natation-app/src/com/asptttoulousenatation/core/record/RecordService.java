@@ -3,6 +3,7 @@ package com.asptttoulousenatation.core.record;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -187,5 +188,12 @@ public class RecordService {
 		List<RecordEntity> entities = dao.findByEpreuveAndAge(epreuve.getId(), categorie);
 		ui.setRecords(new ArrayList<>(entities));
 		return ui;
+	}
+	
+	@Path("/last-updated")
+	@GET
+	@Consumes("application/json")
+	public Date findLastUpdated() {
+		return dao.findMaxUpdated();
 	}
 }

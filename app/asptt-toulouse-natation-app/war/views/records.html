@@ -1,6 +1,6 @@
 <div class="container" ng-controller="RecordController">
 	<div class="row hidden-print">
-		<h1 class="page-header">Records du club</h1>
+		<h1 class="page-header">Records du club <small>dernière mise à jour {{lastUpdate | date : 'dd/MM/yyyy HH:mm:ss'}}</small></h1>
 	</div>
 	<div class="row">
 	    <toggle ng-model="bassinToggle" ng-change="load()" on="25m" off="50m" offstyle="btn-primary"></toggle>

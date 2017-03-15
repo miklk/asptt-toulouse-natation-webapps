@@ -1,6 +1,7 @@
 package com.asptttoulousenatation.core.server.dao.record;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -39,6 +40,19 @@ public class RecordDao extends DaoBase<RecordEntity> {
 			em.close();
 		}
 		return list;
+	}
+	
+	public Date findMaxUpdated() {
+		EntityManager em = EMF.get().createEntityManager();
+		Date max = null;
+		try {
+			TypedQuery<Date> query = em.createQuery("SELECT MAX(" + getAlias() + ".updated) FROM "
+					+ getEntityClass().getSimpleName() + " " + getAlias(), Date.class);
+			max = query.getSingleResult();
+		} finally {
+			em.close();
+		}
+		return max;
 	}
 
 	@Override

@@ -8,6 +8,10 @@ recordController.controller('RecordController', ['$rootScope', '$scope', 'Record
 	$scope.bassin = "25";
 	$scope.bassinToggle = true;
 	
+	RecordService.lastUpdated.query({}, function(data) {
+		$scope.lastUpdate = new Date(parseInt(data.lastUpdated.trim(), 10));
+	});
+	
 	$scope.loadRecordsF = function() {
 		RecordService.records.query({'bassin': $scope.bassin, 'sexe': 1}, function (data) {
 			$scope.recordsF = data;
