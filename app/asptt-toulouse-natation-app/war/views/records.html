@@ -17,7 +17,7 @@
 					<tr ng-repeat="record in recordsF">
 						<td>{{record.epreuve.distance}}m {{record.epreuve.nage}}<br /></td>
 						<td>
-							<div class="row" ng-show="recordCat.nom" ng-repeat="recordCat in record.records track by $index">
+							<div class="row" style="border-bottom: 1px solid grey" ng-show="recordCat.nom" ng-repeat="recordCat in record.records track by $index">
 								<div class="col-md-6">{{recordCat.nom}} {{recordCat.prenom}} ({{recordCat.annee}})</div>
 								<div class="col-md-2">{{recordCat.temps}}</div>
 								<div class="col-md-2">{{recordCat.jour | date: 'dd/MM/yyyy'}}</div>
