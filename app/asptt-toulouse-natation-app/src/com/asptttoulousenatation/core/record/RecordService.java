@@ -49,8 +49,8 @@ public class RecordService {
 		
 		NAGE_ORDER = new HashMap<>();
 		NAGE_ORDER.put("NL", 0);
-		NAGE_ORDER.put("Brasse", 1);
-		NAGE_ORDER.put("Dos", 2);
+		NAGE_ORDER.put("Dos", 1);
+		NAGE_ORDER.put("Brasse", 2);
 		NAGE_ORDER.put("Papillon", 3);
 		NAGE_ORDER.put("4N", 4);
 		
@@ -174,7 +174,16 @@ public class RecordService {
 				bassin, Operator.EQUAL));
 		criteria.add(new CriterionDao<String>(RecordEpreuveEntityFields.SEXE,
 				sexe, Operator.EQUAL));
-		List<RecordEpreuveEntity> epreuves = epreuveDao.find(criteria);
+		List<RecordEpreuveEntity> epreuves = new ArrayList<>(epreuveDao.find(criteria));
+		Collections.sort(epreuves, new Comparator<RecordEpreuveEntity>() {
+
+			@Override
+			public int compare(RecordEpreuveEntity o1, RecordEpreuveEntity o2) {
+				CompareToBuilder comparator = new CompareToBuilder();
+				comparator.append(NAGE_ORDER.get(o1.getNage()), NAGE_ORDER.get(o2.getNage())).append(DISTANCE_ORDER.get(o1.getDistance()), DISTANCE_ORDER.get(o2.getDistance()));
+				return comparator.toComparison();
+			}
+		});
 		return epreuves;
 	}
 	

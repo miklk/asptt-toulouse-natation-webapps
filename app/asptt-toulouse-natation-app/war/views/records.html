@@ -5,6 +5,9 @@
 	<div class="row">
 	    <toggle ng-model="bassinToggle" ng-change="load()" on="25m" off="50m" offstyle="btn-primary"></toggle>
 	</div>
+	<div class="row" style="margin-top: 1%">
+	    <button type="button" class="btn btn-primary" style="padding-left: 1%" ng-class="{'btn-success' : (filterRecord == categorie)}" ng-repeat="categorie in categories" ng-click="setFilter(categorie)">{{categorie}}</button>
+	</div>
 	<div class="row" style="margin-top: 2%">
 		<div class="col-lg-10">
 			<table class="table table-bordered">
@@ -14,11 +17,12 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="record in recordsF">
+					<tr ng-repeat="record in recordsF | filter : filterRecord">
 						<td>{{record.epreuve.distance}}m {{record.epreuve.nage}}<br /></td>
 						<td>
 							<div class="row" style="border-bottom: 1px solid grey" ng-show="recordCat.nom" ng-repeat="recordCat in record.records track by $index">
-								<div class="col-md-6">{{recordCat.nom}} {{recordCat.prenom}} ({{recordCat.annee}})</div>
+								<div class="col-md-2">{{recordCat.age}}</div>
+								<div class="col-md-4">{{recordCat.nom}} {{recordCat.prenom}} ({{recordCat.annee}})</div>
 								<div class="col-md-2">{{recordCat.temps}}</div>
 								<div class="col-md-2">{{recordCat.jour | date: 'dd/MM/yyyy'}}</div>
 								<div class="col-md-2">{{recordCat.lieu}}</div>

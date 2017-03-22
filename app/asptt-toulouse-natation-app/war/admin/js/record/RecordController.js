@@ -92,6 +92,8 @@ recordController.controller('RecordController', ['$rootScope', '$scope', '$locat
 				if(data.records.length > 0) {
 					$scope.recordCreation = data.records[0];
 					$scope.recordCreation.jour = new Date($scope.recordCreation.jour);
+				} else {
+					$scope.recordCreation.id = null;
 				}
 			});
 		}
