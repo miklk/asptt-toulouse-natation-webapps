@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
@@ -18,6 +19,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
 import com.asptttoulousenatation.core.server.dao.entity.field.RecordEpreuveEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.record.RecordEntity;
@@ -34,6 +37,7 @@ public class RecordService {
 	private static final Logger LOG = Logger.getLogger(RecordService.class
 			.getName());
 	
+	private static final String[] CATEGORIES = new String[]{"Toutes Catégories (Junior/Sérior)", "17 ans (Cadet)", "16 ans (Cadet)", "15 ans (Minime)", "14 ans (Minime)", "13 ans (Benjamin)", "12 ans (Benjamin)"};
 	private static final Map<String, Integer> DISTANCE_ORDER;
 	private static final Map<String, Integer> NAGE_ORDER;
 	
@@ -204,5 +208,44 @@ public class RecordService {
 	@Consumes("application/json")
 	public Date findLastUpdated() {
 		return dao.findMaxUpdated();
+	}
+	
+	@Path("/create/{epreuve}")
+	@PUT
+	public void insert(@PathParam("epreuve") String epreuves, String texte) {
+		String[] epreuveList = epreuves.split(";");
+		try (Scanner scanner = new Scanner(texte)) {
+			int indexEpreuve = 0;
+			while (scanner.hasNextLine()) {
+				Long epreuve = Long.parseLong(epreuveList[indexEpreuve]);
+				String line1 = scanner.nextLine();
+				String line2 = scanner.nextLine();
+				String line3 = scanner.nextLine();
+				String line4 = scanner.nextLine();
+				String line5 = scanner.nextLine();
+				String[] lineSplitted1 = line1.split(";");
+				String[] lineSplitted2 = line2.split(";");
+				String[] lineSplitted3 = line3.split(";");
+				String[] lineSplitted4 = line4.split(";");
+				String[] lineSplitted5 = line5.split(";");
+				for (int i = 1; i < 8; i++) {
+					RecordEntity record = new RecordEntity();
+					record.setAge(CATEGORIES[i-1]);
+					record.setAnnee(Integer.parseInt(lineSplitted2[i]));
+					record.setJour(DateTime.parse(lineSplitted4[i], DateTimeFormat.forPattern("MM/dd/yy")).toDate());
+					record.setLieu(lineSplitted5[i]);
+					String[] nomPrenom = lineSplitted1[i].split(" ");
+					record.setNom(nomPrenom[0]);
+					if(nomPrenom.length > 1) {
+						record.setPrenom(nomPrenom[1]);
+					}
+					record.setTemps(lineSplitted3[i]);
+					RecordEpreuveEntity epreuveEntity = epreuveDao.get(epreuve);
+					record.setEpreuve(epreuveEntity.getId());
+					dao.save(record);
+				}
+				indexEpreuve++;
+			}
+		}
 	}
 }

@@ -8,6 +8,10 @@ recordController.controller('RecordController', ['$rootScope', '$scope', 'Record
 	$scope.bassin = "25";
 	$scope.bassinToggle = true;
 	$scope.filterRecord = '';
+	$scope.maxlength = 10;
+	$scope.displayF = true;
+	$scope.displayM = true;
+	
 	
 	RecordService.lastUpdated.query({}, function(data) {
 		$scope.lastUpdate = new Date(parseInt(data.lastUpdated.trim(), 10));
@@ -46,6 +50,14 @@ recordController.controller('RecordController', ['$rootScope', '$scope', 'Record
 		} else {
 			$scope.filterRecord = categorie
 		}
+	}
+	
+	$scope.isTooLong = function(texte) {
+		var tooLong = false;
+		if(texte != null) {
+			tooLong = texte.length > $scope.maxlength;
+		}
+		return tooLong;
 	}
 	
 }]);

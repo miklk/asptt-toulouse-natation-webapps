@@ -2,15 +2,31 @@
 	<div class="row hidden-print">
 		<h1 class="page-header">Records du club <small>dernière mise à jour {{lastUpdate | date : 'dd/MM/yyyy HH:mm:ss'}}</small></h1>
 	</div>
+	
 	<div class="row">
-	    <toggle ng-model="bassinToggle" ng-change="load()" on="25m" off="50m" offstyle="btn-primary"></toggle>
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading" data-toggle="collapse" data-target="#filterPanel" style="cursor: pointer">
+					Filtrer les records
+				</div>
+				<div class="panel-body collapse" id="filterPanel" style="background-color: #E9F8F9">
+					<div class="row">
+						<div class="col-md-3">
+					    	<toggle ng-model="bassinToggle" ng-change="load()" on="25m" off="50m" offstyle="btn-primary"></toggle>
+					    	<button type="button" class="btn btn-primary" ng-class="{'btn-success' : displayF}" ng-click="displayF = !displayF">Dames</button>
+					    	<button type="button" class="btn btn-primary" ng-class="{'btn-success' : displayM}" ng-click="displayM = !displayM">Messieurs</button>
+					    </div>
+					</div>
+					<div class="row" style="margin-top: 1%">
+					    <button type="button" class="btn btn-primary" ng-class="{'btn-success' : (filterRecord == categorie)}" ng-repeat="categorie in categories" ng-click="setFilter(categorie)" style="margin-left:2px">{{categorie}}</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div class="row" style="margin-top: 1%">
-	    <button type="button" class="btn btn-primary" style="padding-left: 1%" ng-class="{'btn-success' : (filterRecord == categorie)}" ng-repeat="categorie in categories" ng-click="setFilter(categorie)">{{categorie}}</button>
-	</div>
-	<div class="row" style="margin-top: 2%">
+	<div class="row" style="margin-top: 2%" ng-show="displayF">
 		<div class="col-lg-10">
-			<table class="table table-bordered">
+			<table class="table table-hover">
 				<thead>
 					<tr class="info">
 						<th colspan="10">Dames {{bassin}}m</th>
@@ -20,12 +36,12 @@
 					<tr ng-repeat="record in recordsF | filter : filterRecord">
 						<td>{{record.epreuve.distance}}m {{record.epreuve.nage}}<br /></td>
 						<td>
-							<div class="row" style="border-bottom: 1px solid grey" ng-show="recordCat.nom" ng-repeat="recordCat in record.records track by $index">
+							<div class="row" ng-show="recordCat.nom" ng-repeat="recordCat in record.records track by $index">
 								<div class="col-md-2">{{recordCat.age}}</div>
 								<div class="col-md-4">{{recordCat.nom}} {{recordCat.prenom}} ({{recordCat.annee}})</div>
 								<div class="col-md-2">{{recordCat.temps}}</div>
 								<div class="col-md-2">{{recordCat.jour | date: 'dd/MM/yyyy'}}</div>
-								<div class="col-md-2">{{recordCat.lieu}}</div>
+								<div class="col-md-2"><span title="{{recordCat.lieu}}">{{recordCat.lieu | limitTo:10}}</span></div>
 							</div>
 						</td>
 					</tr>
@@ -33,9 +49,9 @@
 			</table>
 		</div>
 	</div>
-	<div class="row" style="margin-top: 2%">
+	<div class="row" style="margin-top: 2%" ng-show="displayM">
 		<div class="col-lg-10">
-			<table class="table table-bordered">
+			<table class="table table-hover">
 				<thead>
 					<tr class="info">
 						<th colspan="10">Messieurs {{bassin}}m</th>
@@ -49,7 +65,7 @@
 								<div class="col-md-6">{{recordCat.nom}} {{recordCat.prenom}} ({{recordCat.annee}})</div>
 								<div class="col-md-2">{{recordCat.temps}}</div>
 								<div class="col-md-2">{{recordCat.jour | date: 'dd/MM/yyyy'}}</div>
-								<div class="col-md-2">{{recordCat.lieu}}</div>
+								<div class="col-md-2"><span title="{{recordCat.lieu}}">{{recordCat.lieu | limitTo:maxlength}}<span ng-show="isTooLong(recordCat.lieu)">...</span></span></div>
 							</div>
 						</td>
 					</tr>
