@@ -66,8 +66,7 @@ public class ActualiteService {
 	@GET
 	@Path("list/{pageNumber}")
 	public ActualitesResult getActualites(
-			@PathParam("pageNumber") Integer pPageNumber,
-			@QueryParam("competition") String pCompetition) {
+			@PathParam("pageNumber") Integer pPageNumber) {
 		// Calcul de l'index
 		int maxNumber = ACTU_PAR_PAGE * pPageNumber;
 		

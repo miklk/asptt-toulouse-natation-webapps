@@ -18,6 +18,7 @@ recordController.controller('RecordController', ['$rootScope', '$scope', 'Record
 	});
 	
 	$scope.loadRecordsF = function() {
+		$rootScope.isLoading = true;
 		RecordService.records.query({'bassin': $scope.bassin, 'sexe': 1}, function (data) {
 			$scope.recordsF = data;
 			$rootScope.isLoading = false;
@@ -25,6 +26,7 @@ recordController.controller('RecordController', ['$rootScope', '$scope', 'Record
 	}
 	
 	$scope.loadRecordsM = function() {
+		$rootScope.isLoading = true;
 		RecordService.records.query({'bassin': $scope.bassin, 'sexe': 0}, function (data) {
 			$scope.recordsM = data;
 			$rootScope.isLoading = false;
@@ -58,6 +60,16 @@ recordController.controller('RecordController', ['$rootScope', '$scope', 'Record
 			tooLong = texte.length > $scope.maxlength;
 		}
 		return tooLong;
+	}
+	
+	$scope.toggleSexe = function(all) {
+		if(!all) {
+			$scope.displayF = !$scope.displayF;
+			$scope.displayM = !$scope.displayM;
+		} else {
+			$scope.displayF = true;
+			$scope.displayM = true;
+		}
 	}
 	
 }]);

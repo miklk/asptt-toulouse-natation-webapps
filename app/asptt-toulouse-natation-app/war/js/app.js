@@ -14,10 +14,6 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 			templateUrl: 'views/actualites.html',
 			controller: 'ActualiteCtrl'
 		}).
-		when('/page/competitions-actualites', {
-			templateUrl: 'views/competitions-actualites.html',
-			controller: 'CompetitionActualiteCtrl'
-		}).
 		when('/page/coin-du-nageur', {
 			templateUrl: 'views/coin-du-nageur.html',
 			controller: 'DocumentController'
@@ -67,7 +63,7 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 			templateUrl: 'views/inscription-stage.html',
 			controller: 'InscriptionStageCtrl'
 		}).
-		when('/page/records', {
+		when('/page/record', {
 			templateUrl : 'views/records.html',
 			controller : 'RecordController'
 		}).
