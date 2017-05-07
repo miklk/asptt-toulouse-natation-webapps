@@ -21,7 +21,7 @@ public class RecordUi implements Serializable {
 
 	static {
 		AGE_INDEX = new HashMap<>();
-		AGE_INDEX.put("Toutes Catégories (Junior/Sérior)", 0);
+		AGE_INDEX.put("Toutes Catégories", 0);
 		AGE_INDEX.put("17 ans (Cadet)", 1);
 		AGE_INDEX.put("16 ans (Cadet)", 2);
 		AGE_INDEX.put("15 ans (Minime)", 3);

@@ -37,7 +37,7 @@ public class RecordService {
 	private static final Logger LOG = Logger.getLogger(RecordService.class
 			.getName());
 	
-	private static final String[] CATEGORIES = new String[]{"Toutes Catégories (Junior/Sérior)", "17 ans (Cadet)", "16 ans (Cadet)", "15 ans (Minime)", "14 ans (Minime)", "13 ans (Benjamin)", "12 ans (Benjamin)"};
+	private static final String[] CATEGORIES = new String[]{"Toutes Catégories", "17 ans (Cadet)", "16 ans (Cadet)", "15 ans (Minime)", "14 ans (Minime)", "13 ans (Benjamin)", "12 ans (Benjamin)"};
 	private static final Map<String, Integer> DISTANCE_ORDER;
 	private static final Map<String, Integer> NAGE_ORDER;
 	
@@ -147,24 +147,6 @@ public class RecordService {
 					epreuve.setSexe("1");
 					epreuveDao.save(epreuve);
 				}
-			}
-		}
-	}
-	
-	@Path("/init-records")
-	@PUT
-	public void initRecord() {
-		for(RecordEntity entity: dao.getAll()) {
-			dao.delete(entity);
-		}
-		String[] ages = { "12", "13", "14", "15", "16", "17", "18" };
-		List<RecordEpreuveEntity> epreuves = epreuveDao.getAll();
-		for (RecordEpreuveEntity epreuve : epreuves) {
-			for (String age : ages) {
-				RecordEntity record = new RecordEntity();
-				record.setAge(age);
-				record.setEpreuve(epreuve.getId());
-				dao.save(record);
 			}
 		}
 	}

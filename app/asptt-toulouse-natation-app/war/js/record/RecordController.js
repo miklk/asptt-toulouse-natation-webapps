@@ -4,7 +4,7 @@
 var recordController = angular.module('RecordController', ['ngRoute', 'recordServices', 'ui.toggle']);
 recordController.controller('RecordController', ['$rootScope', '$scope', 'RecordService', function($rootScope, $scope, RecordService) {
 	$rootScope.isLoading = false;
-	$scope.categories = ["Toutes Catégories (Junior/Sérior)", "17 ans (Cadet)", "16 ans (Cadet)", "15 ans (Minime)", "14 ans (Minime)", "13 ans (Benjamin)", "12 ans (Benjamin)"];
+	$scope.categories = ["Toutes Catégories", "17 ans (Cadet)", "16 ans (Cadet)", "15 ans (Minime)", "14 ans (Minime)", "13 ans (Benjamin)", "12 ans (Benjamin)"];
 	$scope.bassin = "25";
 	$scope.bassinToggle = true;
 	$scope.filterRecord = '';
