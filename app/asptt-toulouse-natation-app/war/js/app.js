@@ -29,6 +29,9 @@ aspttNatTlsApp.config(['$routeProvider', '$sceDelegateProvider', function ($rout
 		}).
 		when('/page/vacances', {
 			templateUrl: 'views/vacances.html'
+		})
+		.when('/page/palmares', {
+			templateUrl: 'views/palmares.html'
 		}).
 		when('/page/login', {
 			templateUrl: 'views/login.html',
