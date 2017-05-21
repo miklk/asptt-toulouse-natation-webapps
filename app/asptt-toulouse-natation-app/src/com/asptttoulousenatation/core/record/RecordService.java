@@ -230,4 +230,16 @@ public class RecordService {
 			}
 		}
 	}
+	
+	@Path("/update-cat")
+	@POST
+	public void updateCat() {
+		List<RecordEntity> records = dao.getAll();
+		for(RecordEntity record : records) {
+			if(record.getAge().contains("Toutes")) {
+				record.setAge("Toutes Catégories");
+				dao.save(record);
+			}
+		}
+	}
 }
