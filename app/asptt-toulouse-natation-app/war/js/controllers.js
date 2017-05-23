@@ -164,3 +164,9 @@ aspttNatTlsApp.controller('CalendrierCtrl', ['$scope', '$location', '$sce', func
 	    	});
 	});
 }]);
+
+aspttNatTlsApp.controller('PalmaresCtrl', ['$scope', '$http', function($scope, $http) {
+	$http.get('js/datasource/palmares/palmares.json').success(function(data) {
+		$scope.palmares = data;
+	});
+}]);
