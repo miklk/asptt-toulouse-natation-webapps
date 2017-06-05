@@ -28,14 +28,18 @@ import com.asptttoulousenatation.core.server.dao.document.DocumentDao;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
 import com.asptttoulousenatation.core.server.dao.entity.document.DocumentEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.AreaEntityFields;
+import com.asptttoulousenatation.core.server.dao.entity.field.ContentEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DocumentEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.MenuEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.structure.AreaEntity;
+import com.asptttoulousenatation.core.server.dao.entity.structure.ContentDataKindEnum;
+import com.asptttoulousenatation.core.server.dao.entity.structure.ContentEntity;
 import com.asptttoulousenatation.core.server.dao.entity.structure.MenuEntity;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.search.OrderDao;
 import com.asptttoulousenatation.core.server.dao.structure.AreaDao;
+import com.asptttoulousenatation.core.server.dao.structure.ContentDao;
 import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
@@ -66,6 +70,7 @@ public class LoadingService {
 	private AreaDao areaDao = new AreaDao();
 	private ActuDao actuDao = new ActuDao();
 	private DocumentDao documentDao = new DocumentDao();
+	private ContentDao contentDao = new ContentDao();
 
 	@GET
 	public LoadingResult getLoading() {
@@ -160,6 +165,14 @@ public class LoadingService {
 				List<DocumentUi> lDocumentUis = documentTransformer
 						.toUi(lDocumentEntities);
 				lUi.setDocumentSet(lDocumentUis);
+				// Image
+				List<CriterionDao<? extends Object>> imageCriteria = new ArrayList<CriterionDao<? extends Object>>(2);
+				imageCriteria.add(new CriterionDao<Long>(ContentEntityFields.MENU, entity.getId(), Operator.EQUAL));
+				imageCriteria.add(new CriterionDao<String>(ContentEntityFields.KIND, ContentDataKindEnum.IMAGE.name(), Operator.EQUAL));
+				List<ContentEntity> contentEntities = contentDao.find(imageCriteria);
+				if (CollectionUtils.isNotEmpty(contentEntities)) {
+					lUi.setImage(contentEntities.get(0).getData().getBytes());
+				}
 				result.addActualite(lUi);
 			}
 		}

@@ -32,6 +32,8 @@ public class ActuUi implements Serializable {
 	private List<DocumentUi> documentSet;
 	
 	private boolean hasDocument;
+	
+	private byte[] image;
 
 	public ActuUi() {
 		documentSet = new ArrayList<DocumentUi>(0);
@@ -153,6 +155,14 @@ public class ActuUi implements Serializable {
 
 	public void setUpdatedBy(String updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
 	}
 	
 }

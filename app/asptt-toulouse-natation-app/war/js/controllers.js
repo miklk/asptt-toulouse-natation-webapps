@@ -35,6 +35,9 @@ aspttNatTlsApp.controller('LoadingAppCtrl', ['$scope', 'LoadingApp', '$sce', fun
 	    	$scope.actuHasDocument = false;
 			$scope.actuNbDocuments = 0;
 	    };
+	    $scope.hasImage = function(actualite) {
+	    	return actualite.image != null && actualite.image.length > 0;
+	    }
 	});
 	$scope.scrollToTop = function() {
 		$('html, body').animate({  

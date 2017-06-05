@@ -17,7 +17,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.io.IOUtils;
@@ -35,6 +34,7 @@ import com.asptttoulousenatation.core.server.dao.document.DocumentDao;
 import com.asptttoulousenatation.core.server.dao.entity.ActuEntity;
 import com.asptttoulousenatation.core.server.dao.entity.ActuStatutEnum;
 import com.asptttoulousenatation.core.server.dao.entity.document.DocumentEntity;
+import com.asptttoulousenatation.core.server.dao.entity.field.ContentEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DocumentEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.structure.ContentDataKindEnum;
 import com.asptttoulousenatation.core.server.dao.entity.structure.ContentEntity;
@@ -43,6 +43,7 @@ import com.asptttoulousenatation.core.server.dao.search.Operator;
 import com.asptttoulousenatation.core.server.dao.structure.ContentDao;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
+import com.asptttoulousenatation.core.util.Utils;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.datastore.Blob;
@@ -59,6 +60,7 @@ public class ActualiteService {
 	private static final Logger LOG = Logger.getLogger(ActualiteService.class
 			.getName());
 	private static final int ACTU_PAR_PAGE = 10;
+	
 	private ActuDao dao = new ActuDao();
 	private DocumentDao documentDao = new DocumentDao();
 	private ContentDao contentDao = new ContentDao();
@@ -88,6 +90,12 @@ public class ActualiteService {
 			List<DocumentUi> lDocumentUis = documentTransformer
 					.toUi(lDocumentEntities);
 			lUi.setDocumentSet(lDocumentUis);
+			
+			// Image
+			List<CriterionDao<? extends Object>> imageCriteria = new ArrayList<CriterionDao<? extends Object>>(1);
+			imageCriteria.add(new CriterionDao<Long>(ContentEntityFields.MENU, entity.getId(), Operator.EQUAL));
+			List<ContentEntity> contentEntities = contentDao.find(imageCriteria);
+			lUi.setImage(contentEntities.get(0).getData().getBytes());
 			actualites.add(lUi);
 		}
 		ActualitesResult result = new ActualitesResult();
@@ -138,25 +146,27 @@ public class ActualiteService {
 				String fileName = pFileDisposition.getFileName();
 
 				ContentEntity content = contentDao.findByMenu(actuCreated.getId());
-				if(content == null) {
-				content = new ContentEntity(fileName, new Blob(
-						IOUtils.toByteArray(pFileInput)),
-						ContentDataKindEnum.DOCUMENT.name(), actuCreated.getId());
-				ContentEntity lSavedEntity = contentDao.save(content);
-
-				DocumentEntity lDocumentEntity = new DocumentEntity(parameters.getTitle(),
-						StringUtils.EMPTY, pBodyPart.getMediaType().toString(),
-						fileName, new Date(), lSavedEntity.getId(), actuCreated.getId());
-				documentDao.save(lDocumentEntity);
+				if (content == null) {
+					content = new ContentEntity(fileName, new Blob(IOUtils.toByteArray(pFileInput)),
+							ContentDataKindEnum.IMAGE.name(), actuCreated.getId());
+					ContentEntity lSavedEntity = contentDao.save(content);
+					if (!Utils.isImageMediaType(pBodyPart.getMediaType())) {
+						content.setKind(ContentDataKindEnum.DOCUMENT.name());
+						DocumentEntity lDocumentEntity = new DocumentEntity(parameters.getTitle(), StringUtils.EMPTY,
+								pBodyPart.getMediaType().toString(), fileName, new Date(), lSavedEntity.getId(),
+								actuCreated.getId());
+						documentDao.save(lDocumentEntity);
+					}
 				} else {
-					content.setData(new Blob(
-						IOUtils.toByteArray(pFileInput)));
+					content.setData(new Blob(IOUtils.toByteArray(pFileInput)));
 					contentDao.save(content);
-					DocumentEntity document = documentDao.findByMenu(actuCreated.getId());
-					document.setFileName(fileName);
-					document.setMimeType(pBodyPart.getMediaType().toString());
-					document.setTitle(parameters.getTitle());
-					documentDao.save(document);
+					if (!Utils.isImageMediaType(pBodyPart.getMediaType())) {
+						DocumentEntity document = documentDao.findByMenu(actuCreated.getId());
+						document.setFileName(fileName);
+						document.setMimeType(pBodyPart.getMediaType().toString());
+						document.setTitle(parameters.getTitle());
+						documentDao.save(document);
+					}
 				}
 			}
 

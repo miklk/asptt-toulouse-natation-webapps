@@ -5,7 +5,8 @@
         <div id="carous_container" class="callbacks_container" >
 			<ul class="rslides" id="carous">
 				<li ng-repeat="actualite in loadingApp.actualites">
-					<img ng-src="{{actualite.imageUrl}}" alt="{{actualite.title}}" style="max-height: 500px; width: auto"/>
+					<img src="data:image/png;base64,{{actualite.image}}" alt="{{actualite.title}}" style="max-height: 500px; width: auto" ng-if="hasImage(actualite)" />
+					<img ng-src="{{actualite.imageUrl}}" alt="{{actualite.title}}" style="max-height: 500px; width: auto" ng-if="!hasImage(actualite)"/>
 					<p class="caption" ng-click="showActualite(actualite)">
 		              <span style="font-size: 2.0em;padding: 0px 10px; cursor: pointer;">{{actualite.title}}</span>
 		              <br />
