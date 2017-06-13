@@ -53,8 +53,9 @@
          <div id="tab-content" class="tab-content">
            <div class="tab-pane fade in active" id="home">
 
-               <h3 class="head text-center">Inscription pour la saison sportive 2016-2017</h3>
-               <h4>Reprise des cours</h4>
+               <h3 class="head text-center">Inscription pour la saison sportive 2017-2018</h3>
+               <h4>Informations bientôt disponibles</h4>
+               <!-- <h4>Reprise des cours</h4>
                <p>Les cours reprendrons la semaine du 19 septembre sur tous les bassins.</p>
                <h4>Informations importantes</h4>
                <p>Il est nécessaire, avant toute chose, de consulter et de prendre connaissance des documents joints au préalable à l’inscription en ligne (tarifs, planning récapitulatif….).</p>
@@ -63,7 +64,7 @@
   	 <ul>
         <li><a href="doc/Note_dinformation_2016-2017.pdf" target="_blank">Note d'information pour la saison 2016-2017</a></li>
         <li><a href="doc/Cheminement_inscriptions_2016_2017.pdf" target="_blank">Cheminement des inscriptions (choix du groupe)</a></li>
-        <!-- <li><a href="doc/Affectations_groupe_competition.pdf" target="_blank">Critères d'affectations des groupes compétitions</a></li>-->
+        <li><a href="doc/Affectations_groupe_competition.pdf" target="_blank">Critères d'affectations des groupes compétitions</a></li>
         <li><a href="doc/reglement_interieur.pdf" target="_blank">Règlement Intérieur</a></li>
     </ul>
     <div class="row center-block">
@@ -84,7 +85,7 @@
         <li><a href="doc/Tarifs_Aquagym_2016_2017.pdf" target="_blank">Tarifs - Aquagym</a></li>
         <li><a href="doc/Tarifs_Competition_2016_2017.pdf" target="_blank">Tarifs - Compétition</a></li>
     </ul>
-    </div>
+    </div>-->
     </div>
   	 <div class="panel panel-default" ng-show="enableNouveau">
   		<div class="panel-heading">
@@ -100,10 +101,15 @@
   			</form>
   		</div>
   	</div>
+  	<div class="panel panel-default" ng-hide="enableAncien">
+        <div class="panel-heading">
+            <h4>Ouverture des inscriptions aux actuels adhérents le 20 juin 2017</h4>
+        </div>
+    </div>
 	<div class="panel panel-default" ng-hide="enableNouveau">
 		<div class="panel-heading">
-			<h4>Ouverture des inscriptions aux nouveaux adhérents le 11 juillet 2016</h4>
-			<p>Pour les nouveaux adhérents, il vous sera possible d'obtenir un mot de passe uniquement à partir du 11 juillet via cette page. Merci de votre patience.</p>
+			<h4>Ouverture des inscriptions aux nouveaux adhérents le 17 juillet 2017</h4>
+			<p>Pour les nouveaux adhérents, il vous sera possible d'obtenir un mot de passe uniquement à partir du 17 juillet via cette page. Merci de votre patience.</p>
 		</div>
   	</div>
   	<div class="panel panel-default" ng-show="enableAncien">
