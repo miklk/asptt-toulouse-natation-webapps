@@ -4,7 +4,7 @@
 var dossierController2 = angular.module('DossierController2', ['ngRoute', 'dossierServices', 'groupeServices', 'slotServices', 'paramServices']);
 
 dossierController2.controller('DossierController2', ['$rootScope', '$http', '$scope', '$q', '$routeParams', '$location', '$filter', '$timeout', 'DossierService', 'GroupeService', 'SlotService', 'ParamService', function($rootScope, $http, $scope, $q, $routeParams, $location, $filter, $timeout, DossierService, GroupeService, SlotService, ParamService) {
-	$rootScope.isLoading = true;
+	$rootScope.isLoading = false;
 	let promises = {
 		param : ParamService.groupes.query({groupe: 'INSCRIPTION'}, function (data) {
 			angular.forEach(data, function(param) {
