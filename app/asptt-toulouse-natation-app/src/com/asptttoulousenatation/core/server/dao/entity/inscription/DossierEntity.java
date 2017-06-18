@@ -83,6 +83,7 @@ public class DossierEntity implements IEntity {
 	private String statut;
 	private Integer montantreel;
 	private String paiement;
+	private String contribution;
 	
 	public DossierEntity() {
 		reminder = false;
@@ -363,6 +364,14 @@ public class DossierEntity implements IEntity {
 
 	public void setPaiement(String paiement) {
 		this.paiement = paiement;
+	}
+
+	public String getContribution() {
+		return contribution;
+	}
+
+	public void setContribution(String contribution) {
+		this.contribution = contribution;
 	}
 
 	@PreUpdate
