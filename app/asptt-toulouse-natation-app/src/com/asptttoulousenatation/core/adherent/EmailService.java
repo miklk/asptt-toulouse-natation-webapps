@@ -46,9 +46,12 @@ import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.PiscineDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
+import com.asptttoulousenatation.core.server.dao.email.EmailSendDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.PiscineEntity;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.SlotEntity;
+import com.asptttoulousenatation.core.server.dao.entity.email.EmailSendEntity;
+import com.asptttoulousenatation.core.server.dao.entity.email.EmailSendStatusEnum;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.GroupEntityFields;
@@ -60,6 +63,7 @@ import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
+import com.google.appengine.api.datastore.Text;
 
 @Path("/email")
 @Produces("application/json")
@@ -75,6 +79,7 @@ public class EmailService {
 	private SlotDao slotDao = new SlotDao();
 	private GroupDao groupDao = new GroupDao();
 	private PiscineDao piscineDao = new PiscineDao();
+	private EmailSendDao emailSendDao = new EmailSendDao();
 	
 	private static Map<String, String> EMAILS = new HashMap<>();
 
@@ -116,6 +121,13 @@ public class EmailService {
 			} else {
 				destinataires = getDestinataires(destinataireParam, groupes, creneaux, piscine);
 			}
+			EmailSendEntity emailSendEntity = new EmailSendEntity();
+			emailSendEntity.setStatus(EmailSendStatusEnum.CREATED.name());
+			emailSendEntity.setMessage(new Text(corps));
+			emailSendEntity.setSubject(subject);
+			emailSendEntity.setRecipients(to + ";" + groupesAsString + ";" + creneau + ";" + piscine);
+			emailSendEntity.setFrom(from);
+			EmailSendEntity emailSendEntityCreated = emailSendDao.save(emailSendEntity);
 			
 			for (int i = 0; i < destinataires.size(); i += EMAIL_PAQUET) {
 				try {
@@ -176,6 +188,9 @@ public class EmailService {
 				} catch (Exception e) {
 					LOG.log(Level.SEVERE, e.getMessage(), e);
 				}
+				
+				emailSendEntityCreated.setStatus(EmailSendStatusEnum.SENT.name());
+				emailSendDao.save(emailSendEntityCreated);
 			}
 			Multipart mp = new MimeMultipart();
 			MimeBodyPart htmlPart = new MimeBodyPart();
@@ -196,6 +211,7 @@ public class EmailService {
 			msg.setContent(mp);
 			Transport.send(msg);
 
+			
 		} catch (AddressException e) {
 			LOG.log(Level.SEVERE, e.getMessage(), e);
 
