@@ -29,6 +29,7 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 	                        {label : 'Aide à la recherche de sponsors, fonds privés', value: false},
 	                        {label : 'Organiser des compétitions régionales', value: false},
 	                        {label : 'Organiser des compétitions', value: false},
+	                        {label : 'Accueillir les adhérents les deux premiers cours (1h)', value: false},
 	                        {label : 'Intégrer le comité directeur', value: false},
 	                        ];
 	
