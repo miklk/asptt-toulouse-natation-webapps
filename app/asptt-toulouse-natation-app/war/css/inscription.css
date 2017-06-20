@@ -29,7 +29,7 @@ p.narrow{
     background: #ddd;
     position: absolute;
     width: 75%;
-    margin: 0 10%;
+    margin: 0 20%;
     left: 0;
     right: 0;
     top: 50%;
@@ -112,7 +112,7 @@ li.active span.round-tabs.five{
     background: #fafafa;
 }
 .nav-tabs > li {
-    width: 15%;
+    width: 12%;
 }
 /*li.active:before {
     content: " ";

@@ -148,7 +148,7 @@ background: linear-gradient(to right, #1e5799 0%,#7db9e8 100%);
 		position: absolute;
 		left: -3px;
 		top:-26px;
-		max-height: 200px;
+		max-height: 80px;
 		display: block;
 	}
 	.logo-text {
