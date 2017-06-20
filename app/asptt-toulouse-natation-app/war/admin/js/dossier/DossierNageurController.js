@@ -203,4 +203,8 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 			    hiddenElement.click();
 			});
 	}
+	
+	$scope.getContribution = function() {
+		return $scope.dossier.principal.contribution.split(';');
+	}
 }]);

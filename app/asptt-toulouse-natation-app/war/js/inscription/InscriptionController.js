@@ -25,12 +25,12 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 	$scope.cspList = ['Scolaire', 'Agriculteurs exploitants', 'Artisans, commerçants et chefs d\'entreprise', 'Cadres et professions intellectuelles supérieures','Professions Intermédiaires', 'Employés', 'Ouvriers', 'Retraités', 'Sans activité professionnelle'];
 	
 	$scope.contributions = [
-	                        {label : 'Aider à l''organisation, chronométrer, animer lors des compétitions internes et de la fête du club (3 dates dans l''année)', value: false},
+	                        {label : 'Aider à l\'organisation, chronométrer, animer lors des compétitions internes et de la fête du club (3 dates dans l\'année)', value: false},
 	                        {label : 'Aide à la recherche de sponsors, fonds privés', value: false},
 	                        {label : 'Organiser des compétitions régionales', value: false},
 	                        {label : 'Organiser des compétitions', value: false},
 	                        {label : 'Accueillir les adhérents les deux premiers cours (1h)', value: false},
-	                        {label : 'Intégrer le comité directeur', value: false},
+	                        {label : 'Intégrer le comité directeur', value: false}
 	                        ];
 	
 	$(function () {
@@ -471,12 +471,23 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 						var dateInscription = new Date();
 				        dateInscription.setDate(dateInscription.getDate() + 15);
 				        $scope.validite = dateInscription;
-				        $('#myTab a[href="#cotisation"]').tab('show');
+				        $('#myTab a[href="#contribution"]').tab('show');
 				       });
 				        responsePromise.error(function(data, status, headers, config) {
 				          alert("Erreur");
 				       });
 				};
+				$scope.validateContribution = function() {
+					angular.forEach($scope.contributions, function(contribution) {
+						if(contribution.value) {
+							if($scope.principal.contribution) {
+								$scope.principal.contribution = $scope.principal.contribution + ";";
+							}
+							$scope.principal.contribution = $scope.principal.contribution + contribution.label;
+						}
+					});
+					$('#myTab a[href="#cotisation"]').tab('show');
+				}
 				$scope.validateInscription = function(dossier) {
 					var formData = new FormData();
 					var adherentCertificat = new Object();

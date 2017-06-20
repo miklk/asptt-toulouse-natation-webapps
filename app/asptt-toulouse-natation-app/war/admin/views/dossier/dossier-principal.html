@@ -103,5 +103,10 @@
 			<input type="text" class="form-control" id="accidentTelephone2" placeholder="Téléphone" ng-model="dossier.principal.accidentTelephone2" />
 		</div>
 	</div>
+	
+	<h3>Contribution</h3>
+		<ul>
+			<li ng-repeat="contribution in getContribution()">{{contribution}}</li>
+		</ul>
 	<button type="button" class="btn btn-primary btn-block" ng-click="update()">Valider les modifications</button>
 </form>
