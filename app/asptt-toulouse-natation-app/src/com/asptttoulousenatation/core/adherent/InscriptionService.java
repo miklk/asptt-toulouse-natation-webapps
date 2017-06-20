@@ -383,7 +383,7 @@ public class InscriptionService {
 			
 			message.append("<p>Sportivement,<br />"
 					+ "Le secrétariat,<br />"
-					+ "ASPTT Grand Toulouse Natation<br />"
+					+ "ASPTT Toulouse Natation<br />"
 					+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
 			htmlPart.setContent(message.toString(), "text/html");
 			mp.addBodyPart(htmlPart);
@@ -551,9 +551,7 @@ public class InscriptionService {
 		fields.setField("nom", adherent.getNom());
 		fields.setField("prenom", adherent.getPrenom());
 		DateTime naissanceAsDate = new DateTime(adherent.getNaissance().getTime(), DateTimeZone.UTC).plusHours(3);
-		fields.setField("naissance_day", "" + naissanceAsDate.getDayOfMonth());
-		fields.setField("naissance_month", "" + naissanceAsDate.getMonthOfYear());
-		fields.setField("naissance_year", "" + naissanceAsDate.getYear());
+		fields.setField("naissance", "" + naissanceAsDate.toString("dd/MM/yyyy"));
 
 		
 		fields.setField("adresse", parent.getAdresse());
@@ -597,22 +595,16 @@ public class InscriptionService {
 		}
 		
 		if(BooleanUtils.isTrue(adherent.getFonctionnaire())) {
-			fields.setField("fonctionnaire_oui", "Yes");
-		} else {
-			fields.setField("fonctionnaire_non", "Yes");
+			fields.setField("fonctionnaire", "Yes");
 		}
 
 		GroupEntity group = groupDao.get(adherent.getGroupe());
 		if (BooleanUtils.isTrue(group.getLicenceFfn())) {
-			fields.setField("licence_ffn_oui", "Yes");
-		} else {
-			fields.setField("licence_loisir", "Yes");
+			fields.setField("licence_ffn", "Yes");
 		}
 		
-		if(BooleanUtils.isFalse(group.getCompetition())) {
-			fields.setField("licence_comp_non", "Yes");
-		} else {
-			fields.setField("licence_comp_oui", "Yes");
+		if(BooleanUtils.isTrue(group.getCompetition())) {
+			fields.setField("licence_comp", "Yes");
 		}
 
 		fields.setField(
@@ -628,8 +620,8 @@ public class InscriptionService {
 						+ StringUtils.defaultString(parent.getAccidentPrenom2()));
 		fields.setField("accident_telephone_2", parent.getAccidentTelephone2());
 		
-		Integer tarifStatutaire = 16;
-		fields.setField("tarif_statutaire", tarifStatutaire.toString());
+		Integer tarifStatutaire = 17;
+		fields.setField("tarif_statutaire", "Yes");
 		Integer tarifFsasptt = 15;
 		if(BooleanUtils.isTrue(group.getLicenceFfn())) {
 			tarifFsasptt = 2;
@@ -712,7 +704,7 @@ public class InscriptionService {
 							"Madame, Monsieur,<p>Vous avez effectué une demande d'inscription au club il y a 5 jours. Nous n'avons pas encore reçu votre paiement.<br /> Nous tenons à vous rappeler qu'au bout de 8 jours, votre dossier sera supprimé et les créneaux sélectionnés libérés pour d'autres adhérents.<br />");
 
 					message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />"
-							+ "ASPTT Grand Toulouse Natation<br />"
+							+ "ASPTT Toulouse Natation<br />"
 							+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
 					htmlPart.setContent(message.toString(), "text/html");
 					mp.addBodyPart(htmlPart);
@@ -802,7 +794,7 @@ public class InscriptionService {
 							"Madame, Monsieur,<p>Vous avez effectué une demande d'inscription au club il y a 8 jours. Nous n'avons pas encore reçu votre paiement.<br /> Nous vous informons que votre dossier sera supprimé ce soir et que les créneaux sélectionnés libérés pour d'autres adhérents.<br />");
 
 					message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />"
-							+ "ASPTT Grand Toulouse Natation<br />"
+							+ "ASPTT Toulouse Natation<br />"
 							+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
 					htmlPart.setContent(message.toString(), "text/html");
 					mp.addBodyPart(htmlPart);
@@ -924,7 +916,7 @@ public class InscriptionService {
 							"Madame, Monsieur,<p>Vous avez effectué une demande d'inscription au club. Nous n'avons pas reçu le (les) certificat(s) médicaux. Sans ceux-ci avant le 12 septembre, nous seront obligé de libérer vos créneaux et d'annuler votre inscription.<br />");
 
 					message.append("<p>Dans l'attente de vos documents, sportivement,<br />" + "Le secrétariat,<br />"
-							+ "ASPTT Grand Toulouse Natation<br />"
+							+ "ASPTT Toulouse Natation<br />"
 							+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
 					htmlPart.setContent(message.toString(), "text/html");
 					mp.addBodyPart(htmlPart);
@@ -964,6 +956,84 @@ public class InscriptionService {
 			mp.addBodyPart(htmlPart);
 
 			msg.setSubject("Rapport  - dossiers arrivant à expiration", "UTF-8");
+			msg.setContent(mp);
+			Transport.send(msg);
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			LOG.log(Level.SEVERE, "Erreur pour l'e-mail de rapport", e);
+		}
+
+		LOG.log(Level.WARNING, count + " dossiers rappelés");
+		return count;
+	}
+	
+	@Path("/lancer-inscription")
+	@GET
+	public int lancerInscription() {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(2);
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.INITIALISE.name(),
+				Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, DossierService.NEW_SAISON,
+				Operator.EQUAL));
+		List<DossierEntity> entities = dao.find(criteria);
+		int count = 0;
+		for (DossierEntity dossier : entities) {
+				count++;
+				Properties props = new Properties();
+				Session session = Session.getDefaultInstance(props, null);
+				try {
+					Multipart mp = new MimeMultipart();
+					MimeBodyPart htmlPart = new MimeBodyPart();
+
+					MimeMessage msg = new MimeMessage(session);
+					msg.setFrom(
+							new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+					Address[] replyTo = {
+							new InternetAddress("contact@asptt-toulouse-natation.com", "ASPTT Toulouse Natation") };
+					msg.setReplyTo(replyTo);
+					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(dossier.getEmail()));
+					msg.addRecipient(Message.RecipientType.CC,
+							new InternetAddress("contact@asptt-toulouse-natation.com"));
+					if (StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
+						msg.addRecipient(Message.RecipientType.CC, new InternetAddress(dossier.getEmailsecondaire()));
+					}
+
+					StringBuilder message = new StringBuilder(
+							"Madame, Monsieur,<p>Les inscriptions pour la saison 2017-2018 sont ouvertes. Pour vous réinscrire veuillez utiliser vos identifiants de connexion rappelés ci-dessous et vous connecter à l'adresse : <a href=\"http://inscription.asptt-toulouse-natation.com/\">http://inscription.asptt-toulouse-natation.com</a>.</p>");
+					message.append("Identifiant / mot de passe : " + dossier.getEmail() + " / " + dossier.getMotdepasse());
+					message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />"
+							+ "ASPTT Toulouse Natation<br />"
+							+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
+					htmlPart.setContent(message.toString(), "text/html");
+					mp.addBodyPart(htmlPart);
+
+					msg.setSubject("ASPTT Toulouse Natation - Inscriptions", "UTF-8");
+					msg.setContent(mp);
+					Transport.send(msg);
+					dossier.setReminded(new DateTime().toDate());
+					dossier.setReminder(true);
+					dao.save(dossier);
+				} catch (MessagingException | UnsupportedEncodingException e) {
+					LOG.log(Level.SEVERE, "Erreur pour l'e-mail: " + dossier.getEmail(), e);
+				}
+		}
+
+		// Rapport
+		Properties props = new Properties();
+		Session session = Session.getDefaultInstance(props, null);
+		try {
+			Multipart mp = new MimeMultipart();
+			MimeBodyPart htmlPart = new MimeBodyPart();
+
+			MimeMessage msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("contact@asptt-toulouse-natation.com"));
+			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("michael.kargbo@gmail.com"));
+
+			StrBuilder message = new StrBuilder("<p>").append(count).append(" dossiers.</p>");
+			htmlPart.setContent(message.toString(), "text/html");
+			mp.addBodyPart(htmlPart);
+
+			msg.setSubject("Rapport  - réinscriptions", "UTF-8");
 			msg.setContent(mp);
 			Transport.send(msg);
 		} catch (MessagingException | UnsupportedEncodingException e) {

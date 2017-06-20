@@ -69,7 +69,7 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 	$scope.authenticate = function() {
 		InscriptionService.authenticate.query({email: $scope.formData.email, mdp: $scope.formData.mdp}, function (data) {
 			if(data.inconnu) {
-				alert("L'adresse e-mail et le mot de passe ne sont pas reconnus. Si vous avez oublié votre mot de passe, vous pouvez le recevoir via 'J'ai oublié mon mot de passe'. Ou sinon contactez webmaster@asptt-toulouse-natation.com");
+				alert("L'adresse e-mail et le mot de passe ne sont pas reconnus. Si vous avez oublié votre mot de passe, vous pouvez le recevoir via 'J'ai oublié mon mot de passe'.");
 			} else {
 				$scope.links = null;
 				$scope.dossiersCount = data.nageurs.length;
