@@ -43,6 +43,7 @@ import org.apache.commons.lang3.text.StrBuilder;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 
+import com.asptttoulousenatation.core.inscription.DossierService;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.PiscineDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
@@ -235,7 +236,7 @@ public class EmailService {
 					DossierEntityFields.STATUT, DossierStatutEnum.INSCRIT.name(),
 					Operator.EQUAL));
 			criteria.add(new CriterionDao<Long>(
-					DossierEntityFields.SAISON, 1L,
+					DossierEntityFields.SAISON, DossierService.NEW_SAISON,
 					Operator.EQUAL));
 			List<DossierEntity> dossiers = dossierDao.find(criteria);
 			for (DossierEntity dossier : dossiers) {
@@ -345,9 +346,8 @@ public class EmailService {
 	}
 	
 	private void fillDestinataires(Collection<String> destinataires, DossierEntity dossier) {
-		Long saison = 1L;
 		String statut = dossier.getStatut();
-		if (saison.equals(dossier.getSaison()) && (DossierStatutEnum.INSCRIT.name().equals(statut)
+		if (DossierService.NEW_SAISON.equals(dossier.getSaison()) && (DossierStatutEnum.INSCRIT.name().equals(statut)
 				|| DossierStatutEnum.PAIEMENT_COMPLET.name().equals(statut)
 				|| DossierStatutEnum.ATTENTE.name().equals(statut))) {
 			if (StringUtils.isNotBlank(dossier.getEmail())) {
@@ -363,7 +363,7 @@ public class EmailService {
 	@GET
 	public Map<String, String> initEmail() {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
-		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, 1L, Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, DossierService.NEW_SAISON, Operator.EQUAL));
 		List<DossierNageurEntity> nageurs = dao.find(criteria);
 		for (DossierNageurEntity nageur : nageurs) {
 			DossierEntity dossier = dossierDao.get(nageur.getDossier());

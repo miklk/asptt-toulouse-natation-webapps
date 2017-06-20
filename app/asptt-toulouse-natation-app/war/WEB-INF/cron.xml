@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
-   <cron>
+    <cron>
+        <url>/resources/dossiers/init-saison</url>
+        <description>Initialisation des adhérents pour la nouvelle saison (INSCRITS)</description>
+        <schedule>20 of jun 23:00</schedule>
+    </cron>
+   <!-- <cron>
 		<url>/resources/inscription/expire</url>
 		<description>Expiration des dossiers</description>
 		<schedule>every day 13:00</schedule>
@@ -10,11 +15,11 @@
 		<description>Rappel de paiement au bout de 5 jours</description>
 		<schedule>every day 13:30</schedule>
 	</cron>
-	<!-- <cron>
+	<cron>
 		<url>/resources/inscription/rappel2</url>
 		<description>Rappel de paiement au bout de 8 jours</description>
 		<schedule>every day 13:45</schedule>
-	</cron>-->
+	</cron>
 	<cron>
 		<url>/resources/dossier-maintenance/creneaux</url>
 		<description>Calcul de l'occupation des créneaux</description>
@@ -24,7 +29,7 @@
 		<url>/resources/dossier-maintenance/groupes</url>
 		<description>Calcul de l'occupation des groupes compétition</description>
 		<schedule>every 4 hours</schedule>
-	</cron>
+	</cron>-->
 	<!-- <cron>
 		<url>/resources/dossiers/clean</url>
 		<description>Annulation des dossiers INITIALISE sans nom</description>
@@ -35,7 +40,7 @@
 		<url>/resources/dossiers/doublons</url>
 		<description>Doublons</description>
 		<schedule>every day 06:10</schedule>
-	</cron>-->
+	</cron>
 	<cron>
 		<url>/resources/inscription/rappel-certifcats</url>
 		<description>Rappel certificat</description>
@@ -66,5 +71,5 @@
 		<url>/resources/presences/report/ELITE/mkkmikl@gmail.com</url>
 		<description>Rapport des présents</description>
 		<schedule>every day 21:58</schedule>
-	</cron>
+	</cron>-->
 </cronentries>

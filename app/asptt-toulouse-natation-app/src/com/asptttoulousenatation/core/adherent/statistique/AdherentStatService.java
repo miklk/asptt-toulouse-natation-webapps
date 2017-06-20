@@ -20,6 +20,7 @@ import org.joda.time.DateTime;
 
 import com.asptttoulousenatation.core.adherent.AdherentBeanTransformer;
 import com.asptttoulousenatation.core.groupe.SlotUi;
+import com.asptttoulousenatation.core.inscription.DossierService;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityFields;
@@ -53,7 +54,7 @@ public class AdherentStatService {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		criteria.add(new CriterionDao<Long>(
-				DossierNageurEntityFields.SAISON, 1L,
+				DossierNageurEntityFields.SAISON, DossierService.NEW_SAISON,
 				Operator.EQUAL));
 		List<DossierNageurEntity> adherents = nageurDao.find(criteria);
 		result.setNbAdherents(adherents.size());
@@ -191,7 +192,7 @@ public class AdherentStatService {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				1);
 		criteria.add(new CriterionDao<Long>(
-				DossierEntityFields.SAISON, 1L,
+				DossierEntityFields.SAISON, DossierService.NEW_SAISON,
 				Operator.EQUAL));
 		List<DossierEntity> dossiers = dao.find(criteria);
 		for (DossierEntity dossier : dossiers) {

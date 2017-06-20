@@ -69,7 +69,7 @@ public class DossierExtractionService {
 		} else {
 			criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 			criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON,
-					1L, Operator.EQUAL));
+					DossierService.NEW_SAISON, Operator.EQUAL));
 			nageurs = dao.find(criteria);
 		}
 		
@@ -191,7 +191,7 @@ public class DossierExtractionService {
 
 	private boolean canAddNageur(Set<String> conditions, DossierNageurEntity nageur) {
 		boolean canAdd = true;
-		if (nageur.getSaison() != null && nageur.getSaison().equals(1L)) {
+		if (nageur.getSaison() != null && nageur.getSaison().equals(DossierService.NEW_SAISON)) {
 			for (String condition : conditions) {
 				switch (condition) {
 				case "FACTURE": {

@@ -34,6 +34,7 @@ import org.joda.time.format.DateTimeFormat;
 import com.asptttoulousenatation.core.enf.EnfDayGroupe;
 import com.asptttoulousenatation.core.enf.EnfGroupeCreneau;
 import com.asptttoulousenatation.core.groupe.SlotTransformer;
+import com.asptttoulousenatation.core.inscription.DossierService;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
@@ -61,7 +62,6 @@ public class EnfGestionService {
 	private GroupDao groupDao = new GroupDao();
 	private DossierNageurDao nageurDao = new DossierNageurDao();
 	private DossierDao dossierDao = new DossierDao();
-	private static final Long SAISON = 1L;
 
 	@Path("/creneaux")
 	@GET
@@ -129,7 +129,7 @@ public class EnfGestionService {
 				// Adherent
 				List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(2);
 				criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE, groupe.getId(), Operator.EQUAL));
-				criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, SAISON, Operator.EQUAL));
+				criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, DossierService.NEW_SAISON, Operator.EQUAL));
 				int row = 13;
 				List<DossierNageurEntity> entities = nageurDao.find(criteria,
 						new OrderDao(DossierNageurEntityFields.NOM, OrderOperator.ASC));
@@ -220,7 +220,7 @@ public class EnfGestionService {
 							criteria = new ArrayList<CriterionDao<? extends Object>>(2);
 							criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE, group.getId(),
 									Operator.EQUAL));
-							criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, SAISON, Operator.EQUAL));
+							criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, DossierService.NEW_SAISON, Operator.EQUAL));
 	
 							List<DossierNageurEntity> adherents = nageurDao.find(criteria,
 									new OrderDao(DossierNageurEntityFields.NOM, OrderOperator.ASC));

@@ -35,6 +35,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.asptttoulousenatation.core.groupe.GroupTransformer;
+import com.asptttoulousenatation.core.inscription.DossierService;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityFields;
@@ -81,7 +82,7 @@ public class AuthenticateAdherentService {
 		criteria.add(new CriterionDao<String>(DossierEntityFields.MOTDEPASSE,
 				motDePasse, Operator.EQUAL));
 		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-				1L, Operator.EQUAL));
+				DossierService.NEW_SAISON, Operator.EQUAL));
 		List<DossierEntity> entities = dao.find(criteria);
 		if (CollectionUtils.isEmpty(entities)) {
 			dossiers.setInconnu(true);
@@ -135,7 +136,7 @@ public class AuthenticateAdherentService {
 				1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL, email,
 				Operator.EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, 1L,
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, DossierService.NEW_SAISON,
 				Operator.EQUAL));
 		List<DossierEntity> adherents = dao.find(criteria);
 		if (CollectionUtils.isNotEmpty(adherents)) {
@@ -192,13 +193,13 @@ public class AuthenticateAdherentService {
 				//Determine mot de passee
 				String code = RandomStringUtils.randomNumeric(4);
 				DossierEntity nouveau = new DossierEntity();
-				nouveau.setSaison(1L);
+				nouveau.setSaison(DossierService.NEW_SAISON);
 				nouveau.setEmail(pEmail);
 				nouveau.setMotdepasse(code);
 				DossierEntity nouveauCreated = dao.save(nouveau);
 				
 				DossierNageurEntity enfant = new DossierNageurEntity();
-				enfant.setSaison(1L);
+				enfant.setSaison(DossierService.NEW_SAISON);
 				enfant.setDossier(nouveauCreated.getId());
 				enfant.setNouveau(true);
 				dossierNageurDao.save(enfant).getId();
@@ -258,7 +259,7 @@ public class AuthenticateAdherentService {
 			InscriptionDossiersUi pDossiers) {
 
 		DossierNageurEntity enfant = new DossierNageurEntity();
-		enfant.setSaison(1L);
+		enfant.setSaison(DossierService.NEW_SAISON);
 		enfant.setDossier(pDossiers.getDossier().getId());
 		enfant.setNouveau(true);
 		Long idNouveau = dossierNageurDao.save(enfant).getId();

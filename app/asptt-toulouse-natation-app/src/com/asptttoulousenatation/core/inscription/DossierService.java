@@ -97,6 +97,9 @@ public class DossierService {
 	private DossierNageurPhotoDao nageurPhotoDao = new DossierNageurPhotoDao();
 	private DossierStatDao dossierStatDao = new DossierStatDao();
 	
+	public static final Long OLD_SAISON = 1L;
+	public static final Long NEW_SAISON = 2L;
+	
 	
 	@Path("/find")
 	@GET
@@ -108,7 +111,7 @@ public class DossierService {
 		boolean hasSelectGroupe = false;
 		List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>();
 		criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON,
-				1L, Operator.EQUAL));
+				NEW_SAISON, Operator.EQUAL));
 		if(groupe != null && groupe > 0) {
 			hasSelectGroupe = true;
 			criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE,
@@ -139,7 +142,7 @@ public class DossierService {
 			criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 					dossierStatut, Operator.EQUAL));
 			criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-					1L, Operator.EQUAL));
+					NEW_SAISON, Operator.EQUAL));
 			
 			List<DossierEntity> entities = dossierDao.find(criteria);
 			for(DossierEntity dossier: entities) {
@@ -171,7 +174,7 @@ public class DossierService {
 				criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL,
 						texteLibre, Operator.EQUAL));
 				criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-						1L, Operator.EQUAL));
+						NEW_SAISON, Operator.EQUAL));
 				List<DossierEntity> entities = dossierDao.find(criteria);
 				if(CollectionUtils.isEmpty(entities)) {
 					criteria = new ArrayList<CriterionDao<? extends Object>>(
@@ -179,7 +182,7 @@ public class DossierService {
 					criteria.add(new CriterionDao<String>(DossierEntityFields.EMAILSECONDAIRE,
 							texteLibre, Operator.EQUAL));
 					criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-							1L, Operator.EQUAL));
+							NEW_SAISON, Operator.EQUAL));
 					
 					entities = dossierDao.find(criteria);
 				}
@@ -189,7 +192,7 @@ public class DossierService {
 					criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER,
 							dossier.getId(), Operator.EQUAL));
 					criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON,
-							1L, Operator.EQUAL));
+							NEW_SAISON, Operator.EQUAL));
 					List<DossierNageurEntity> nageursDossier = dao.find(criteriaNageur);
 					if(CollectionUtils.isNotEmpty(nageursDossier)) {
 						nageurs.addAll(nageursDossier);
@@ -203,7 +206,7 @@ public class DossierService {
 				criteriaNageur.add(new CriterionDao<String>(DossierNageurEntityFields.NOM,
 						texteLibre.toUpperCase(), Operator.EQUAL));
 				criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON,
-						1L, Operator.EQUAL));
+						NEW_SAISON, Operator.EQUAL));
 				nageurs.addAll(dao.find(criteriaNageur));
 			}
 		} else if (!hasSelectGroupe) {
@@ -235,7 +238,7 @@ public class DossierService {
 			} else {
 				criteriaNageur = new ArrayList<CriterionDao<? extends Object>>();
 				criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON,
-						1L, Operator.EQUAL));
+						NEW_SAISON, Operator.EQUAL));
 				nageurs = new ArrayList<>(dao.find(criteriaNageur));
 			}
 		}
@@ -277,7 +280,7 @@ public class DossierService {
 				criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL,
 						texteLibre, Operator.EQUAL));
 				criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-						1L, Operator.EQUAL));
+						NEW_SAISON, Operator.EQUAL));
 				List<DossierEntity> entities = dossierDao.find(criteria);
 				if(CollectionUtils.isEmpty(entities)) {
 					criteria = new ArrayList<CriterionDao<? extends Object>>(
@@ -285,7 +288,7 @@ public class DossierService {
 					criteria.add(new CriterionDao<String>(DossierEntityFields.EMAILSECONDAIRE,
 							texteLibre, Operator.EQUAL));
 					criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON,
-							1L, Operator.EQUAL));
+							NEW_SAISON, Operator.EQUAL));
 					
 					entities = dossierDao.find(criteria);
 				}
@@ -304,7 +307,7 @@ public class DossierService {
 				criteriaNageur.add(new CriterionDao<String>(DossierNageurEntityFields.NOM,
 						texteLibre.toUpperCase(), Operator.EQUAL));
 				criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON,
-						1L, Operator.EQUAL));
+						NEW_SAISON, Operator.EQUAL));
 				List<DossierNageurEntity> nageurs = dao.find(criteriaNageur);
 				Map<Long, CoupleValue<DossierEntity, List<DossierNageurEntity>>> dossierVsNageurMap = new HashMap<>();
 				for(DossierNageurEntity nageur: nageurs) {
@@ -411,18 +414,18 @@ public class DossierService {
 		criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL,
 				parameters.getEmail(), Operator.EQUAL));
 		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-				1L, Operator.EQUAL));
+				NEW_SAISON, Operator.EQUAL));
 		List<DossierEntity> entities = dossierDao.find(criteria);
 		if (CollectionUtils.isNotEmpty(entities)) {
 			result = false;
 		} else {
 			DossierEntity entity = new DossierEntity();
-			entity.setSaison(1L);
+			entity.setSaison(NEW_SAISON);
 			entity.setEmail(parameters.getEmail());
 			entity.setMotdepasse(parameters.getMdp());
 			DossierEntity entityCreated = dossierDao.save(entity);
 			DossierNageurEntity nageur = new DossierNageurEntity();
-			nageur.setSaison(1L);
+			nageur.setSaison(NEW_SAISON);
 			nageur.setNom(parameters.getNom());
 			nageur.setPrenom(parameters.getPrenom());
 			nageur.setDossier(entityCreated.getId());
@@ -633,7 +636,7 @@ public class DossierService {
 			List<DossierNageurEntity> nageurs = dao.find(criteria);
 
 			StringBuilder message = new StringBuilder(
-					"Madame, Monsieur,<p>Nous avons le plaisir de vous compter parmi nous pour cette nouvelle saison sportive 2016-2017.<br />");
+					"Madame, Monsieur,<p>Nous avons le plaisir de vous compter parmi nous pour cette nouvelle saison sportive 2017-2018.<br />");
 			
 			message.append("Nous vous confirmons la bonne réception de votre dossier qui finalise ainsi votre inscription. <br />");
 			List<String> certificatsManquants = new ArrayList<String>();
@@ -826,7 +829,7 @@ public class DossierService {
 		}
 		if (stat == null || new DateTime(stat.getComputed().getTime()).isBefore(DateTime.now().minusHours(2))) {
 			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
-			criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, 1L, Operator.EQUAL));
+			criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, NEW_SAISON, Operator.EQUAL));
 			Map<DossierStatutEnum, Integer> counts = new HashMap<>();
 			counts.put(DossierStatutEnum.ANNULE, 0);
 			counts.put(DossierStatutEnum.ATTENTE, 0);
@@ -854,7 +857,7 @@ public class DossierService {
 
 			// Nageur (nouveau, ancien)
 			criteria = new ArrayList<CriterionDao<? extends Object>>(1);
-			criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, 1L, Operator.EQUAL));
+			criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, NEW_SAISON, Operator.EQUAL));
 			long nageurTotal = 0l;
 			int nageurNouveau = 0;
 			int nageurRenouvellement = 0;
@@ -873,7 +876,7 @@ public class DossierService {
 						criteriaNageur.add(new CriterionDao<Long>(DossierNageurEntityFields.DOSSIER, dossier.getId(),
 								Operator.EQUAL));
 						criteriaNageur
-								.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, 1L, Operator.EQUAL));
+								.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, NEW_SAISON, Operator.EQUAL));
 						List<DossierNageurEntity> nageurs = dao.find(criteriaNageur);
 						counts.put(statut, counts.get(statut) + nageurs.size());
 						for (DossierNageurEntity nageur : nageurs) {
@@ -1005,7 +1008,7 @@ public class DossierService {
 			nageurs = dao.getAll();
 		}
 		for (DossierNageurEntity nageur : nageurs) {
-			if(nageur.getSaison() != 1L) {
+			if(nageur.getSaison() != NEW_SAISON) {
 			List<String> nageurValues = new ArrayList<>(fieldsToChoose.length);
 			for (String field : fieldsToChoose) {
 				switch (field) {
@@ -1117,7 +1120,7 @@ public class DossierService {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.INITIALISE.name(),
 				Operator.EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, 1L,
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, NEW_SAISON,
 				Operator.EQUAL));
 		criteria.add(new CriterionDao<Date>(DossierEntityFields.UPDATED, seuil.toDate(),
 				Operator.LESS));
@@ -1236,16 +1239,18 @@ public class DossierService {
 	@GET
 	public int nouvelleSaison() {
 		int count = 0;
-		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(2);
 		criteria.add(
 				new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.INSCRIT.name(), Operator.EQUAL));
+		criteria.add(
+				new CriterionDao<Long>(DossierEntityFields.SAISON, OLD_SAISON, Operator.EQUAL));
 		List<DossierEntity> dossiers = dossierDao.find(criteria);
 		for (DossierEntity dossier : dossiers) {
 			try {
 				DossierEntity dossier2 = new DossierEntity();
 				dossier.copyInit(dossier2);
 				dossier2.setStatut(DossierStatutEnum.INITIALISE.name());
-				dossier2.setSaison(1L);
+				dossier2.setSaison(NEW_SAISON);
 				DossierEntity cloned = dossierDao.save(dossier2);
 				// Clone des nageurs
 				List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(1);
@@ -1255,7 +1260,7 @@ public class DossierService {
 				for (DossierNageurEntity nageur : nageurs) {
 					DossierNageurEntity nageur2 = new DossierNageurEntity();
 					nageur.copieInit(nageur2);
-					nageur2.setSaison(1L);
+					nageur2.setSaison(NEW_SAISON);
 					nageur2.setDossier(cloned.getId());
 					nageur2.setNouveau(Boolean.FALSE);
 					dao.save(nageur2);
@@ -1273,16 +1278,18 @@ public class DossierService {
 	@GET
 	public int nouvelleSaison2() {
 		int count = 0;
-		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(2);
 		criteria.add(
 				new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.PAIEMENT_COMPLET.name(), Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+				NEW_SAISON, Operator.EQUAL));
 		List<DossierEntity> dossiers = dossierDao.find(criteria);
 		for (DossierEntity dossier : dossiers) {
 			try {
 				DossierEntity dossier2 = new DossierEntity();
 				dossier.copyInit(dossier2);
 				dossier2.setStatut(DossierStatutEnum.INITIALISE.name());
-				dossier2.setSaison(1L);
+				dossier2.setSaison(NEW_SAISON);
 				DossierEntity cloned = dossierDao.save(dossier2);
 				// Clone des nageurs
 				List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(1);
@@ -1292,7 +1299,7 @@ public class DossierService {
 				for (DossierNageurEntity nageur : nageurs) {
 					DossierNageurEntity nageur2 = new DossierNageurEntity();
 					nageur.copieInit(nageur2);
-					nageur2.setSaison(1L);
+					nageur2.setSaison(NEW_SAISON);
 					nageur2.setDossier(cloned.getId());
 					nageur2.setNouveau(Boolean.FALSE);
 					dao.save(nageur2);
@@ -1311,7 +1318,7 @@ public class DossierService {
 		int count = 0;
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 		criteria.add(
-				new CriterionDao<Long>(DossierEntityFields.SAISON, 1L, Operator.EQUAL));
+				new CriterionDao<Long>(DossierEntityFields.SAISON, NEW_SAISON, Operator.EQUAL));
 		List<DossierEntity> dossiers = dossierDao.find(criteria);
 		Map<String, List<Long>> doublons = new HashMap<>();
 		for (DossierEntity dossier : dossiers) {
@@ -1346,7 +1353,7 @@ public class DossierService {
 			DossierEntity dossier2 = new DossierEntity();
 			dossier.copyInit(dossier2);
 			dossier2.setStatut(DossierStatutEnum.INITIALISE.name());
-			dossier2.setSaison(1L);
+			dossier2.setSaison(NEW_SAISON);
 			DossierEntity cloned = dossierDao.save(dossier2);
 			// Clone des nageurs
 			List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(1);
@@ -1356,7 +1363,7 @@ public class DossierService {
 			for (DossierNageurEntity nageur : nageurs) {
 				DossierNageurEntity nageur2 = new DossierNageurEntity();
 				nageur.copieInit(nageur2);
-				nageur2.setSaison(1L);
+				nageur2.setSaison(NEW_SAISON);
 				nageur2.setDossier(cloned.getId());
 				nageur2.setNouveau(Boolean.FALSE);
 				dao.save(nageur2);

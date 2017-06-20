@@ -291,5 +291,6 @@ public class DossierNageurEntity implements IEntity {
 		copied.setProfession(profession);
 		copied.setShortPantalon(shortPantalon);
 		copied.setTshirt(tshirt);
+		copied.setGroupe(groupe);
 	}
 }

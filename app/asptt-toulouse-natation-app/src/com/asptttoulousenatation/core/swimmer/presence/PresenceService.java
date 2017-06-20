@@ -34,6 +34,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
 
+import com.asptttoulousenatation.core.inscription.DossierService;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
@@ -71,7 +72,7 @@ public class PresenceService {
 
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE, groupeEntity.getId(), Operator.EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, 1L, Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, DossierService.NEW_SAISON, Operator.EQUAL));
 		List<DossierNageurEntity> entities = new ArrayList<>(nageurDao.find(criteria));
 		DateTime begin = DateTime.now();
 		for (DossierNageurEntity nageur : entities) {
@@ -241,7 +242,7 @@ public class PresenceService {
 
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.GROUPE, groupeEntity.getId(), Operator.EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, 1L, Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, DossierService.NEW_SAISON, Operator.EQUAL));
 		List<DossierNageurEntity> entities = new ArrayList<>(nageurDao.find(criteria));
 		Map<Long, DossierNageurEntity> nageurs = new HashMap<>();
 		for (DossierNageurEntity nageur : entities) {

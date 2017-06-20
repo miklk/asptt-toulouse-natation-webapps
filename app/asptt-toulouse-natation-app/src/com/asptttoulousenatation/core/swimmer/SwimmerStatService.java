@@ -29,6 +29,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import com.asptttoulousenatation.core.inscription.DossierService;
 import com.asptttoulousenatation.core.lang.CoupleValue;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.SwimmerStatEntityFields;
@@ -50,8 +51,6 @@ public class SwimmerStatService {
 	private SwimmerStatDao dao = new SwimmerStatDao();
 	private SwimmerStatDayTransformer dayTransformer = new SwimmerStatDayTransformer();
 	
-	private static Long CURRENT_SAISON = 1L;
-
 	@Path("/days")
 	@GET
 	public SwimmerStatListResult getDays(@QueryParam("groupes") Set<Long> groupes,
@@ -103,7 +102,7 @@ public class SwimmerStatService {
 			@Override
 			public boolean evaluate(Object arg0) {
 				DossierNageurEntity entity = (DossierNageurEntity) arg0;
-				return entity.getSaison() == CURRENT_SAISON;
+				return entity.getSaison() == DossierService.NEW_SAISON;
 			}
 		});
 		Collections.sort(entities, new Comparator<DossierNageurEntity>() {

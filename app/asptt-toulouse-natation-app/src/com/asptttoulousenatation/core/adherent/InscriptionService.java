@@ -60,6 +60,7 @@ import org.joda.time.Years;
 
 import com.asptttoulousenatation.core.groupe.GroupTransformer;
 import com.asptttoulousenatation.core.groupe.SlotUi;
+import com.asptttoulousenatation.core.inscription.DossierService;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
@@ -341,7 +342,7 @@ public class InscriptionService {
 //							+ "Voici les créneaux que vous avez sélectionné: <br />");
 			
 			StringBuilder message = new StringBuilder(
-					"Madame, Monsieur,<p>Nous avons le plaisir de vous confirmer la pré-sélection de vos créneaux pour la nouvelle saison sportive 2016-2017.<br />"
+					"Madame, Monsieur,<p>Nous avons le plaisir de vous confirmer la pré-sélection de vos créneaux pour la nouvelle saison sportive 2017-2018.<br />"
 							+ "Nous attendons votre dossier complet : fiche signée, réglement et certificat médical. Il ne sera pas possible d'accès au bassin sans dossier complet.<br />"
 							+ "Vous recevrez un e-mail de confirmation dès que votre inscription sera finalisée.<br />"
 							+ "Voici les créneaux que vous avez sélectionné: <br />");
@@ -679,7 +680,7 @@ public class InscriptionService {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(2);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.PREINSCRIT.name(),
 				Operator.EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, 1L,
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, DossierService.NEW_SAISON,
 				Operator.EQUAL));
 		List<DossierEntity> entities = dao.find(criteria);
 		int count = 0;
@@ -769,7 +770,7 @@ public class InscriptionService {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.PREINSCRIT.name(),
 				Operator.EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, 1L,
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, DossierService.NEW_SAISON,
 				Operator.EQUAL));
 		List<DossierEntity> entities = dao.find(criteria);
 		int count = 0;
@@ -861,7 +862,7 @@ public class InscriptionService {
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.PREINSCRIT.name(), Operator.EQUAL));
 		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-				1L, Operator.EQUAL));
+				DossierService.NEW_SAISON, Operator.EQUAL));
 		List<DossierEntity> entities = dao.find(criteria);
 		int count = 0;
 		for(DossierEntity dossier: entities) {
