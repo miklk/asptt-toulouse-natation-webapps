@@ -141,6 +141,9 @@ public class DossierExtractionService {
 							default: paiement = "invalide";
 						}
 						nageurValues.add(paiement);
+						break;
+					case "CONTRIBUTION" : nageurValues.add(dossier.getContribution());
+					break;
 					default:// Do nothing
 					}
 				}

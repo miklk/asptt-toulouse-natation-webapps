@@ -10,7 +10,7 @@ extractionController.controller('ExtractionController', ['$rootScope', '$http', 
 		$scope.groupes.push(sansGroupe);
 	});
 	
-	$scope.possibleFields = ['NOM','PRENOM', 'EMAIL', 'GROUPE', 'SHORT', 'TSHIRT', 'MAILLOT', 'PROFESSION', 'MONTANT', 'COMMENTAIRE', 'PAIEMENT'];
+	$scope.possibleFields = ['NOM','PRENOM', 'EMAIL', 'GROUPE', 'SHORT', 'TSHIRT', 'MAILLOT', 'PROFESSION', 'MONTANT', 'COMMENTAIRE', 'PAIEMENT', 'CONTRIBUTION'];
 	$scope.possibleConditions = ['FACTURE'];
 	
 	$scope.selectedFields = null;
