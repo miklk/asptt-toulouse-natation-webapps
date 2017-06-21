@@ -27,7 +27,6 @@ inscriptionController.controller('InscriptionCtrl', ['$http', '$scope', '$filter
 	$scope.contributions = [
 	                        {label : 'Aider à l\'organisation, chronométrer, animer lors des compétitions internes et de la fête du club (3 dates dans l\'année)', value: false},
 	                        {label : 'Aide à la recherche de sponsors, fonds privés', value: false},
-	                        {label : 'Organiser des compétitions régionales', value: false},
 	                        {label : 'Organiser des compétitions', value: false},
 	                        {label : 'Accueillir les adhérents les deux premiers cours (1h)', value: false},
 	                        {label : 'Intégrer le comité directeur', value: false}

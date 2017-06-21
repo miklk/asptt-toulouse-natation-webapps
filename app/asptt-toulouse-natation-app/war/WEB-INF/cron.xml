@@ -5,6 +5,11 @@
         <description>Initialisation des adhérents pour la nouvelle saison (INSCRITS)</description>
         <schedule>20 of jun 23:00</schedule>
     </cron>
+    <cron>
+        <url>/resources/dossiers/init-saison-2</url>
+        <description>Initialisation des adhérents pour la nouvelle saison (PAIEMENT_COMPLET)</description>
+        <schedule>21 of jun 16:45</schedule>
+    </cron>
    <!-- <cron>
 		<url>/resources/inscription/expire</url>
 		<description>Expiration des dossiers</description>

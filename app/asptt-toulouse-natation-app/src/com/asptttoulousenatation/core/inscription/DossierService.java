@@ -652,7 +652,7 @@ public class DossierService {
 				certificatsBuilder.append(". Nous vous remercions de nous les faire parvenir avant le début des cours.<br />");
 				message.append(certificatsBuilder.toString());
 			}
-			message.append("Les cours reprendront à partir du 19 septembre selon les bassins et jours de pratique (voir ci-dessous):<br />");
+			message.append("Les cours reprendront à partir du 18 septembre selon les bassins et jours de pratique (voir ci-dessous):<br />");
 
 			message.append("<dl>");
 			for (DossierNageurEntity nageur : nageurs) {
@@ -1286,7 +1286,7 @@ public class DossierService {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(2);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.PAIEMENT_COMPLET.name(),
 				Operator.EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, NEW_SAISON, Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, OLD_SAISON, Operator.EQUAL));
 		List<DossierEntity> dossiers = dossierDao.find(criteria);
 		Set<String> created = new HashSet<>();
 		for (DossierEntity dossier : dossiers) {
