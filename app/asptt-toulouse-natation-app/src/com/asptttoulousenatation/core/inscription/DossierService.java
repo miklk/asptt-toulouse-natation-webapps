@@ -1327,27 +1327,12 @@ public class DossierService {
 		int count = 0;
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 		criteria.add(
-				new CriterionDao<Long>(DossierEntityFields.SAISON, NEW_SAISON, Operator.EQUAL));
+				new CriterionDao<Long>(DossierEntityFields.SAISON, OLD_SAISON, Operator.EQUAL));
+		criteria.add(
+				new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.INITIALISE.name(), Operator.EQUAL));
 		List<DossierEntity> dossiers = dossierDao.find(criteria);
-		Map<String, List<Long>> doublons = new HashMap<>();
 		for (DossierEntity dossier : dossiers) {
-			String email = dossier.getEmail();
-			final List<Long> ids;
-			if(doublons.containsKey(email) && DossierStatutEnum.INITIALISE.name().equals(dossier.getStatut())) {
-				ids = doublons.get(email);
-				dossier.setStatut(DossierStatutEnum.ANNULE.name());
-				dossierDao.save(dossier);
-			} else {
-				ids = new ArrayList<>(2);
-			}
-			ids.add(dossier.getId());
-			doublons.put(email, ids);
-		}
-		for(Map.Entry<String, List<Long>> doublon: doublons.entrySet()) {
-			List<Long> ids = doublon.getValue();
-			if(ids.size() > 1) {
-				count++;
-			}
+				delete(dossier.getId());
 		}
 		LOG.log(Level.WARNING, "doublons #" + count);
 		return count;
