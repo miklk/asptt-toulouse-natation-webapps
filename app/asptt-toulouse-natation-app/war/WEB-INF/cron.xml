@@ -15,6 +15,11 @@
 		<description>Doublons</description>
 		<schedule>22 of jun 03:00</schedule>
 	</cron>
+	<cron>
+		<url>/resources/dossier-maintenance/creneaux</url>
+		<description>Calcul de l'occupation des créneaux</description>
+		<schedule>every 4 hours</schedule>
+	</cron>
    <!-- <cron>
 		<url>/resources/inscription/expire</url>
 		<description>Expiration des dossiers</description>
@@ -30,11 +35,7 @@
 		<description>Rappel de paiement au bout de 8 jours</description>
 		<schedule>every day 13:45</schedule>
 	</cron>
-	<cron>
-		<url>/resources/dossier-maintenance/creneaux</url>
-		<description>Calcul de l'occupation des créneaux</description>
-		<schedule>every 4 hours</schedule>
-	</cron>
+	
 	<cron>
 		<url>/resources/dossier-maintenance/groupes</url>
 		<description>Calcul de l'occupation des groupes compétition</description>

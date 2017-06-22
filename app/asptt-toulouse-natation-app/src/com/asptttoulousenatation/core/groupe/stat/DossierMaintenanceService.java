@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.asptttoulousenatation.core.inscription.DossierService;
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.SlotDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
@@ -49,6 +50,9 @@ public class DossierMaintenanceService {
 			criteria = new ArrayList<CriterionDao<? extends Object>>(1);
 			criteria.add(new CriterionDao<Long>(
 					DossierNageurEntityFields.GROUPE, group.getId(),
+					Operator.EQUAL));
+			criteria.add(new CriterionDao<Long>(
+					DossierNageurEntityFields.SAISON, DossierService.NEW_SAISON,
 					Operator.EQUAL));
 			DossierNageurDao dossierNageurDao = new DossierNageurDao();
 			List<DossierNageurEntity> adherents = dossierNageurDao.find(criteria);
