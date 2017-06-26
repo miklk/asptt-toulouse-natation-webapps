@@ -236,7 +236,7 @@ public class EmailService {
 					DossierEntityFields.STATUT, DossierStatutEnum.INSCRIT.name(),
 					Operator.EQUAL));
 			criteria.add(new CriterionDao<Long>(
-					DossierEntityFields.SAISON, DossierService.NEW_SAISON,
+					DossierEntityFields.SAISON, DossierService.OLD_SAISON,
 					Operator.EQUAL));
 			List<DossierEntity> dossiers = dossierDao.find(criteria);
 			for (DossierEntity dossier : dossiers) {
@@ -347,7 +347,7 @@ public class EmailService {
 	
 	private void fillDestinataires(Collection<String> destinataires, DossierEntity dossier) {
 		String statut = dossier.getStatut();
-		if (DossierService.NEW_SAISON.equals(dossier.getSaison()) && (DossierStatutEnum.INSCRIT.name().equals(statut)
+		if (DossierService.OLD_SAISON.equals(dossier.getSaison()) && (DossierStatutEnum.INSCRIT.name().equals(statut)
 				|| DossierStatutEnum.PAIEMENT_COMPLET.name().equals(statut)
 				|| DossierStatutEnum.ATTENTE.name().equals(statut))) {
 			if (StringUtils.isNotBlank(dossier.getEmail())) {
@@ -363,7 +363,7 @@ public class EmailService {
 	@GET
 	public Map<String, String> initEmail() {
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
-		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, DossierService.NEW_SAISON, Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, DossierService.OLD_SAISON, Operator.EQUAL));
 		List<DossierNageurEntity> nageurs = dao.find(criteria);
 		for (DossierNageurEntity nageur : nageurs) {
 			DossierEntity dossier = dossierDao.get(nageur.getDossier());
