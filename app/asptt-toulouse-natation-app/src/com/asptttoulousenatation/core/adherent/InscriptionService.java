@@ -551,7 +551,9 @@ public class InscriptionService {
 		fields.setField("nom", adherent.getNom());
 		fields.setField("prenom", adherent.getPrenom());
 		DateTime naissanceAsDate = new DateTime(adherent.getNaissance().getTime(), DateTimeZone.UTC).plusHours(3);
-		fields.setField("naissance", "" + naissanceAsDate.toString("dd/MM/yyyy"));
+		fields.setField("naissance_day", "" + naissanceAsDate.getDayOfMonth());
+		fields.setField("naissance_month", "" + naissanceAsDate.getMonthOfYear());
+		fields.setField("naissance_year", "" + naissanceAsDate.getYear());
 
 		
 		fields.setField("adresse", parent.getAdresse());
@@ -595,16 +597,22 @@ public class InscriptionService {
 		}
 		
 		if(BooleanUtils.isTrue(adherent.getFonctionnaire())) {
-			fields.setField("fonctionnaire", "Yes");
+			fields.setField("fonctionnaire_oui", "Yes");
+		} else {
+			fields.setField("fonctionnaire_non", "Yes");
 		}
 
 		GroupEntity group = groupDao.get(adherent.getGroupe());
 		if (BooleanUtils.isTrue(group.getLicenceFfn())) {
-			fields.setField("licence_ffn", "Yes");
+			fields.setField("licence_ffn_oui", "Yes");
+		} else {
+			fields.setField("licence_loisir", "Yes");
 		}
 		
-		if(BooleanUtils.isTrue(group.getCompetition())) {
-			fields.setField("licence_comp", "Yes");
+		if(BooleanUtils.isFalse(group.getCompetition())) {
+			fields.setField("licence_comp_non", "Yes");
+		} else {
+			fields.setField("licence_comp_oui", "Yes");
 		}
 
 		fields.setField(
@@ -621,7 +629,7 @@ public class InscriptionService {
 		fields.setField("accident_telephone_2", parent.getAccidentTelephone2());
 		
 		Integer tarifStatutaire = 17;
-		fields.setField("tarif_statutaire", "Yes");
+		fields.setField("tarif_statutaire", tarifStatutaire.toString());
 		Integer tarifFsasptt = 15;
 		if(BooleanUtils.isTrue(group.getLicenceFfn())) {
 			tarifFsasptt = 2;
