@@ -9,18 +9,18 @@
         <url>/resources/dossiers/init-saison-2</url>
         <description>Initialisation des adhérents pour la nouvelle saison (PAIEMENT_COMPLET)</description>
         <schedule>21 of jun 16:45</schedule>
-    </cron>-->
+    </cron>
     <cron>
 		<url>/resources/dossiers/doublons</url>
 		<description>Doublons</description>
 		<schedule>22 of jun 03:00</schedule>
-	</cron>
+	</cron>-->
 	<cron>
 		<url>/resources/dossier-maintenance/creneaux</url>
 		<description>Calcul de l'occupation des créneaux</description>
 		<schedule>every 4 hours</schedule>
 	</cron>
-   <!-- <cron>
+    <cron>
 		<url>/resources/inscription/expire</url>
 		<description>Expiration des dossiers</description>
 		<schedule>every day 13:00</schedule>
@@ -40,18 +40,14 @@
 		<url>/resources/dossier-maintenance/groupes</url>
 		<description>Calcul de l'occupation des groupes compétition</description>
 		<schedule>every 4 hours</schedule>
-	</cron>-->
-	<!-- <cron>
+	</cron>
+	<cron>
 		<url>/resources/dossiers/clean</url>
 		<description>Annulation des dossiers INITIALISE sans nom</description>
 		<schedule>every day 05:00</schedule>
 	</cron>
 	
-	<cron>
-		<url>/resources/inscription/rappel-certifcats</url>
-		<description>Rappel certificat</description>
-		<schedule>29 of aug 04:00</schedule>
-	</cron>
+	
 	<cron>
 		<url>/resources/dossiers/clean-empty</url>
 		<description>Suppression sans e-mail</description>
@@ -67,7 +63,12 @@
 		<description>Login expiration</description>
 		<schedule>every 30 minutes</schedule>
 	</cron>
-	
+	<!--
+	<cron>
+		<url>/resources/inscription/rappel-certifcats</url>
+		<description>Rappel certificat</description>
+		<schedule>29 of aug 04:00</schedule>
+	</cron>
 	<cron>
 		<url>/resources/presences/init/ELITE</url>
 		<description>Liste des présents - initialisation tous les dimanches</description>
