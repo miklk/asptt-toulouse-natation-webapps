@@ -282,15 +282,29 @@ public class DossierService {
 				criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
 						NEW_SAISON, Operator.EQUAL));
 				List<DossierEntity> entities = dossierDao.find(criteria);
-				if(CollectionUtils.isEmpty(entities)) {
-					criteria = new ArrayList<CriterionDao<? extends Object>>(
-							1);
-					criteria.add(new CriterionDao<String>(DossierEntityFields.EMAILSECONDAIRE,
-							texteLibre, Operator.EQUAL));
-					criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON,
-							NEW_SAISON, Operator.EQUAL));
-					
+				if (CollectionUtils.isEmpty(entities)) {
+					criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+					criteria.add(
+							new CriterionDao<String>(DossierEntityFields.EMAILSECONDAIRE, texteLibre, Operator.EQUAL));
+					criteria.add(new CriterionDao<Long>(DossierNageurEntityFields.SAISON, NEW_SAISON, Operator.EQUAL));
+
 					entities = dossierDao.find(criteria);
+				}
+				if (CollectionUtils.isEmpty(entities)) {
+					criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+					criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL, texteLibre.toUpperCase(),
+							Operator.EQUAL));
+					criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, NEW_SAISON, Operator.EQUAL));
+					entities = dossierDao.find(criteria);
+					if (CollectionUtils.isEmpty(entities)) {
+						criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+						criteria.add(new CriterionDao<String>(DossierEntityFields.EMAILSECONDAIRE,
+								texteLibre.toUpperCase(), Operator.EQUAL));
+						criteria.add(
+								new CriterionDao<Long>(DossierNageurEntityFields.SAISON, NEW_SAISON, Operator.EQUAL));
+
+						entities = dossierDao.find(criteria);
+					}
 				}
 				for(DossierEntity dossier: entities) {
 					List<DossierNageurEntity> nageursDossier = dao.findByDossier(dossier.getId());

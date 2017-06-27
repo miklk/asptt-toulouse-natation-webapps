@@ -85,6 +85,18 @@ public class AuthenticateAdherentService {
 				DossierService.NEW_SAISON, Operator.EQUAL));
 		List<DossierEntity> entities = dao.find(criteria);
 		if (CollectionUtils.isEmpty(entities)) {
+			//Try with uppercase
+			criteria = new ArrayList<CriterionDao<? extends Object>>(
+					2);
+			criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL, email.toUpperCase(),
+					Operator.EQUAL));
+			criteria.add(new CriterionDao<String>(DossierEntityFields.MOTDEPASSE,
+					motDePasse, Operator.EQUAL));
+			criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
+					DossierService.NEW_SAISON, Operator.EQUAL));
+			entities = dao.find(criteria);
+		}
+		if (CollectionUtils.isEmpty(entities)) {
 			dossiers.setInconnu(true);
 		} else {
 			dossiers.setInconnu(false);
@@ -139,6 +151,17 @@ public class AuthenticateAdherentService {
 		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, DossierService.NEW_SAISON,
 				Operator.EQUAL));
 		List<DossierEntity> adherents = dao.find(criteria);
+		if(CollectionUtils.isEmpty(adherents)) {
+			//Try uppercase
+			criteria = new ArrayList<CriterionDao<? extends Object>>(
+					1);
+			criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL, email.toUpperCase(),
+					Operator.EQUAL));
+			criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, DossierService.NEW_SAISON,
+					Operator.EQUAL));
+			adherents = dao.find(criteria);
+		}
+		
 		if (CollectionUtils.isNotEmpty(adherents)) {
 			result.setFound(true);
 			try {
