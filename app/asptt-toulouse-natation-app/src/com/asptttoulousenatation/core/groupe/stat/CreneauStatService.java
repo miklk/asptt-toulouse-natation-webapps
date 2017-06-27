@@ -10,6 +10,7 @@ import javax.ws.rs.QueryParam;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.club.group.PiscineDao;
@@ -98,8 +99,8 @@ public class CreneauStatService {
 						for (SlotEntity entity : entities) {
 							CreneauStat creneauStat = new CreneauStat();
 							creneauStat.setSecond(BooleanUtils.toBoolean(entity.getSecond()));
-							creneauStat.setStatTitle(new DateTime(entity.getBeginDt().getTime()).toString("HH:mm")
-									+ " - " + new DateTime(entity.getEndDt().getTime()).toString("HH:mm"));
+							creneauStat.setStatTitle(new DateTime(entity.getBeginDt().getTime(), DateTimeZone.forID("Europe/Paris")).toString("HH:mm")
+									+ " - " + new DateTime(entity.getEndDt().getTime(), DateTimeZone.forID("Europe/Paris")).toString("HH:mm"));
 							creneauStat.addCapacite(entity.getPlaceDisponible());
 							creneauStat.addDisponibles(entity.getPlaceRestante());
 							groupeStat.addCreneau(creneauStat);
