@@ -46,6 +46,7 @@
         <class>com.asptttoulousenatation.core.server.dao.entity.salarie.SalarieHeureEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.competition.CompetitionEpreuveEntity</class>
         <class>com.asptttoulousenatation.core.server.dao.entity.competition.EpreuveResultatEntity</class>
+        <class>com.asptttoulousenatation.core.server.dao.entity.email.EmailSendEntity</class>
         
         
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
