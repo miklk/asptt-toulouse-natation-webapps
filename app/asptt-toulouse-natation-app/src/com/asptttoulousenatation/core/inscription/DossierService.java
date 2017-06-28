@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -48,6 +50,7 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.joda.time.DateTime;
 
 import com.asptttoulousenatation.core.adherent.AdherentBeanTransformer;
+import com.asptttoulousenatation.core.adherent.InscriptionDossierUi;
 import com.asptttoulousenatation.core.groupe.GroupTransformer;
 import com.asptttoulousenatation.core.groupe.SlotUi;
 import com.asptttoulousenatation.core.lang.CoupleValue;
@@ -617,6 +620,47 @@ public class DossierService {
 			}
 		}
 		dao.save(nageur);
+		
+		DossierEntity dossier = dossierDao.get(nageur.getDossier());
+		List<DossierNageurEntity> nageurs = dao.findByDossier(dossier.getId());
+		Collections.sort(nageurs, new Comparator<DossierNageurEntity>() {
+
+			@Override
+			public int compare(DossierNageurEntity pO1,
+					DossierNageurEntity pO2) {
+				GroupEntity groupe1 = groupeDao.get(pO1.getGroupe());
+				GroupEntity groupe2 = groupeDao.get(pO2.getGroupe());
+				return groupe1.getTarifWeight() >= groupe2
+						.getTarifWeight() ? 1 : -1;
+			}
+		});
+		int dossierCount = 0;
+		for (DossierNageurEntity nageurEntity : nageurs) {
+			dossierCount++;
+			// Recherche du tarif
+			//Determine le nombre de séances
+			boolean unique = nageurEntity.getCreneaux().split(";").length == 1;
+			GroupEntity group = groupeDao.get(nageurEntity.getGroupe());
+			int tarif = 0; 
+			switch (dossierCount) {
+			case 1:
+				tarif = GroupEntity.getTarif((unique ? group.getTarifUnique(): group.getTarif()));
+				break;
+			case 2:
+				tarif = GroupEntity.getTarif((unique ? group.getTarifUnique2(): group.getTarif2()));
+				break;
+			case 3:
+				tarif = GroupEntity.getTarif((unique ? group.getTarifUnique3(): group.getTarif3()));
+				break;
+			case 4:
+				tarif = GroupEntity.getTarif((unique ? group.getTarifUnique4(): group.getTarif4()));
+				break;
+			default:
+				tarif = GroupEntity.getTarif((unique ? group.getTarifUnique4(): group.getTarif4()));
+			}
+			nageurEntity.setTarif(tarif);
+			dao.save(nageurEntity);
+		}
 	}
 	
 	private void sendConfirmation(DossierEntity dossier) {
