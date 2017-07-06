@@ -19,6 +19,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
@@ -95,7 +96,9 @@ public class ActualiteService {
 			List<CriterionDao<? extends Object>> imageCriteria = new ArrayList<CriterionDao<? extends Object>>(1);
 			imageCriteria.add(new CriterionDao<Long>(ContentEntityFields.MENU, entity.getId(), Operator.EQUAL));
 			List<ContentEntity> contentEntities = contentDao.find(imageCriteria);
-			lUi.setImage(contentEntities.get(0).getData().getBytes());
+			if(CollectionUtils.isNotEmpty(contentEntities)) {
+				lUi.setImage(contentEntities.get(0).getData().getBytes());
+			}
 			actualites.add(lUi);
 		}
 		ActualitesResult result = new ActualitesResult();
