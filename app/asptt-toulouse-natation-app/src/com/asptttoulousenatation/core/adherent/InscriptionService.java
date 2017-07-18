@@ -639,9 +639,9 @@ public class InscriptionService {
 		if (BooleanUtils.isTrue(group.getLicenceFfn())) {
 			year = Years.yearsBetween(adherentAge, LocalDate.now()).getYears();
 			if (year < 10) {
-				tarifFFn = 20.25;
+				tarifFFn = 20.45;
 			} else {
-				tarifFFn = 33.45;
+				tarifFFn = 33.85;
 			}
 		} else {
 			tarifFFn = 0.0;
