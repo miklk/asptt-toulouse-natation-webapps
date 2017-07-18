@@ -858,7 +858,7 @@ public class InscriptionService {
 		Date seuilInscription = DateTime.now().minusDays(10).toDate();
 		
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
-				1);
+				2);
 		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT,
 				DossierStatutEnum.PREINSCRIT.name(), Operator.EQUAL));
 		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
