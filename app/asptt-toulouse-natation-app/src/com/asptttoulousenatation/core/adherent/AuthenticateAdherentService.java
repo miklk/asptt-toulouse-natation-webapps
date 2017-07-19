@@ -208,7 +208,7 @@ public class AuthenticateAdherentService {
 			criteria.add(new CriterionDao<String>(DossierEntityFields.EMAIL,
 					pEmail, Operator.EQUAL));
 			criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON,
-					1L, Operator.EQUAL));
+					DossierService.NEW_SAISON, Operator.EQUAL));
 			List<DossierEntity> entities = dao.find(criteria);
 			if(CollectionUtils.isNotEmpty(entities)) {
 				result.setExist(true);
