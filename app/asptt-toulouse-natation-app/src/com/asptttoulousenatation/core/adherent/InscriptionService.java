@@ -686,7 +686,7 @@ public class InscriptionService {
 		int count = 0;
 		List<String> dossiersRappeler = new ArrayList<>();
 		for (DossierEntity dossier : entities) {
-			if (dossier.getUpdated().before(seuilInscription)) {
+			if (dossier.getUpdated().before(seuilInscription) && !BooleanUtils.toBoolean(dossier.getReminder())) {
 				count++;
 				dossiersRappeler.add(dossier.getEmail());
 				Properties props = new Properties();
@@ -776,7 +776,7 @@ public class InscriptionService {
 		int count = 0;
 		List<String> dossiersRappeler = new ArrayList<>();
 		for (DossierEntity dossier : entities) {
-			if (dossier.getUpdated().before(seuilInscription)) {
+			if (BooleanUtils.toBoolean(dossier.getReminder()) && dossier.getReminded().before(seuilInscription)) {
 				count++;
 				dossiersRappeler.add(dossier.getEmail());
 				Properties props = new Properties();
@@ -866,7 +866,7 @@ public class InscriptionService {
 		List<DossierEntity> entities = dao.find(criteria);
 		int count = 0;
 		for(DossierEntity dossier: entities) {
-			if(dossier.getUpdated().before(seuilInscription)) {
+			if(dossier.getCreated().before(seuilInscription) && BooleanUtils.toBoolean(dossier.getReminder())) {
 				dossier.setStatut(DossierStatutEnum.EXPIRE.name());
 				count++;
 				List<CriterionDao<? extends Object>> criteriaNageur = new ArrayList<CriterionDao<? extends Object>>(
