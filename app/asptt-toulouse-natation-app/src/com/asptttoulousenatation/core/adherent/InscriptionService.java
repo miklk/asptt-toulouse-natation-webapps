@@ -630,7 +630,7 @@ public class InscriptionService {
 		
 		Integer tarifStatutaire = 17;
 		fields.setField("tarif_statutaire", tarifStatutaire.toString());
-		Integer tarifFsasptt = 15;
+		Integer tarifFsasptt = 17;
 		if(BooleanUtils.isTrue(group.getLicenceFfn())) {
 			tarifFsasptt = 2;
 		}
