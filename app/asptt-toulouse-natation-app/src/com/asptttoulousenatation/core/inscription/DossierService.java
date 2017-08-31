@@ -1,8 +1,11 @@
 package com.asptttoulousenatation.core.inscription;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -48,9 +51,11 @@ import org.apache.commons.lang3.text.StrBuilder;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDate;
+import org.joda.time.Years;
 
 import com.asptttoulousenatation.core.adherent.AdherentBeanTransformer;
-import com.asptttoulousenatation.core.adherent.InscriptionDossierUi;
 import com.asptttoulousenatation.core.groupe.GroupTransformer;
 import com.asptttoulousenatation.core.groupe.SlotUi;
 import com.asptttoulousenatation.core.lang.CoupleValue;
@@ -83,6 +88,10 @@ import com.asptttoulousenatation.core.util.CreneauBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.appengine.api.datastore.Blob;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.AcroFields;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 
 @Path("/dossiers")
 @Produces("application/json")
@@ -1493,5 +1502,100 @@ public class DossierService {
 		}
 		LOG.log(Level.WARNING, count + " dossiers inscrits");
 		return count;
+	}
+	
+	@Path("/attestation/{dossier}")
+	@GET
+	@Produces({"application/pdf"})
+	public Response attestation(@PathParam("dossier") Long dossierNageurId) {
+		DossierNageurEntity adherent = dao.get(dossierNageurId);
+		DossierEntity parent = dossierDao.get(adherent.getDossier());
+		try {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			getDossierAsPdf(adherent, parent, out);
+			String contentDisposition = "attachment;filename=attestation_paiement.pdf;";
+			return Response.ok(out.toByteArray(), "application/pdf")
+					.header("content-disposition", contentDisposition).build();
+		} catch (DocumentException | IOException e) {
+			LOG.log(Level.SEVERE, "Erreur lors de l'impression PDF", e);
+		}
+		return Response.serverError().build();
+	}
+	
+	private void getDossierAsPdf(DossierNageurEntity adherent,
+			DossierEntity parent, OutputStream out) throws DocumentException,
+			IOException {
+		URL resource = getClass().getResource("/");
+		String path = resource.getPath();
+		path = path.replace("WEB-INF/classes/", "");
+		PdfReader reader = new PdfReader(new FileInputStream(path
+				+ "doc/attestation_paiement.pdf"));
+		PdfStamper stamper = new PdfStamper(reader, out);
+		AcroFields fields = stamper.getAcroFields();
+		
+		fields.setField("nomprenom", adherent.getNom() + " " + adherent.getPrenom());
+		DateTime naissanceAsDate = new DateTime(adherent.getNaissance().getTime(), DateTimeZone.UTC).plusHours(3);
+		fields.setField("naissance", "" + naissanceAsDate.toString("dd/MM/yyyy"));
+
+		
+		// Determine si l'adherent est mineur ou majeur
+		LocalDate adherentAge = new LocalDate(adherent.getNaissance());
+		int year = Years.yearsBetween(adherentAge, LocalDate.now()).getYears();
+		if (year < 18) {
+			fields.setField("mineur_parent", parent.getParent1Nom() + " "
+					+ parent.getParent1Prenom());
+			fields.setField("mineur_nom",
+					adherent.getNom() + " " + adherent.getPrenom());
+			fields.setField("profession", parent.getParent1Profession() + " / " + StringUtils.defaultString(parent.getParent2Profession()));
+		} else {
+			fields.setField("profession", adherent.getProfession());
+		}
+
+		GroupEntity group = groupeDao.get(adherent.getGroupe());
+		if (BooleanUtils.isTrue(group.getLicenceFfn())) {
+			fields.setField("licence_ffn_oui", "Yes");
+		} else {
+			fields.setField("licence_loisir", "Yes");
+		}
+		
+		if(BooleanUtils.isFalse(group.getCompetition())) {
+			fields.setField("licence_comp_non", "Yes");
+		} else {
+			fields.setField("licence_comp_oui", "Yes");
+		}
+
+		Integer tarifStatutaire = 17;
+		fields.setField("licence_statutaire", tarifStatutaire.toString());
+		Integer tarifFsasptt = 17;
+		if(BooleanUtils.isTrue(group.getLicenceFfn())) {
+			tarifFsasptt = 2;
+		}
+		fields.setField("licence_fsasptt", tarifFsasptt.toString());
+		final Double tarifFFn;
+		if (BooleanUtils.isTrue(group.getLicenceFfn())) {
+			year = Years.yearsBetween(adherentAge, LocalDate.now()).getYears();
+			if (year < 10) {
+				tarifFFn = 20.45;
+			} else {
+				tarifFFn = 33.85;
+			}
+		} else {
+			tarifFFn = 0.0;
+		}
+		fields.setField("licence_federale", tarifFFn.toString());
+		
+		Double tarifSection = group.getTarif() - tarifStatutaire - tarifFsasptt - tarifFFn;
+		fields.setField("section", tarifSection.toString());
+		
+		fields.setField("montant_du", group.getTarif().toString());
+		fields.setField("remise", Integer.toString((group.getTarif() - adherent.getTarif())));
+		fields.setField("montant_regler", adherent.getTarif().toString());
+		fields.setField("paye", adherent.getTarif().toString());
+		DateTime payeLe = new DateTime(parent.getUpdated().getTime(), DateTimeZone.UTC);
+		fields.setField("paye_le", payeLe.toString("dd/MM/yyyy"));
+		fields.setField("date_jour", new DateTime().toString("dd/MM/yyyy"));
+
+		stamper.close();
+		reader.close();
 	}
 }
