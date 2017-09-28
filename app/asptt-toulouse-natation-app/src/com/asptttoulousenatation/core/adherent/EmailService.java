@@ -126,7 +126,7 @@ public class EmailService {
 			emailSendEntity.setStatus(EmailSendStatusEnum.CREATED.name());
 			emailSendEntity.setMessage(new Text(corps));
 			emailSendEntity.setSubject(subject);
-			emailSendEntity.setRecipients(to + ";" + groupesAsString + ";" + creneau + ";" + piscine);
+			emailSendEntity.setRecipients(new Text(to + ";" + groupesAsString + ";" + creneau + ";" + piscine));
 			emailSendEntity.setFrom(from);
 			EmailSendEntity emailSendEntityCreated = emailSendDao.save(emailSendEntity);
 			
@@ -176,7 +176,6 @@ public class EmailService {
 						for (int j = first; j < end; j++) {
 							String destinataire = destinataires.get(j);
 							if (StringUtils.isNotBlank(destinataire)) {
-								LOG.warning("Send to " + destinataire);
 								msg.addRecipient(Message.RecipientType.BCC,
 										new InternetAddress(destinataire));
 								recipents.add(destinataire);
@@ -347,7 +346,7 @@ public class EmailService {
 	
 	private void fillDestinataires(Collection<String> destinataires, DossierEntity dossier) {
 		String statut = dossier.getStatut();
-		if (DossierService.OLD_SAISON.equals(dossier.getSaison()) && (DossierStatutEnum.INSCRIT.name().equals(statut)
+		if (DossierService.NEW_SAISON.equals(dossier.getSaison()) && (DossierStatutEnum.INSCRIT.name().equals(statut)
 				|| DossierStatutEnum.PAIEMENT_COMPLET.name().equals(statut)
 				|| DossierStatutEnum.ATTENTE.name().equals(statut))) {
 			if (StringUtils.isNotBlank(dossier.getEmail())) {
