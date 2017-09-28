@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -322,8 +323,9 @@ public class EnfGestionService {
 							sheetRow.getCell(3).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
 							sheetRow.getCell(3).getCellStyle().setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
 							
+							SlotEntity creneau = getCreneau(creneauxEntities, adherent);
 								sheetRow.createCell(4)
-										.setCellValue(StringUtils.defaultString(creneauxEntities.get(0).getEducateur()));
+										.setCellValue(StringUtils.defaultString(creneau.getEducateur()));
 								sheetRow.getCell(4).getCellStyle().setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
 								sheetRow.getCell(4).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
 								sheetRow.getCell(4).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
@@ -338,7 +340,7 @@ public class EnfGestionService {
 							sheetRow.getCell(5).getCellStyle().setBorderRight(HSSFCellStyle.BORDER_MEDIUM);
 							
 								sheetRow.createCell(6)
-										.setCellValue(new DateTime(creneauxEntities.get(0).getBeginDt().getTime()).plusHours(1).toString("HH:mm", Locale.FRANCE) + "-" + new DateTime(creneauxEntities.get(0).getEndDt().getTime()).plusHours(1).toString("HH:mm", Locale.FRANCE));
+										.setCellValue(new DateTime(creneau.getBeginDt().getTime()).plusHours(1).toString("HH:mm", Locale.FRANCE) + "-" + new DateTime(creneau.getEndDt().getTime()).plusHours(1).toString("HH:mm", Locale.FRANCE));
 								sheetRow.getCell(6).getCellStyle().setBorderBottom(HSSFCellStyle.BORDER_MEDIUM);
 								sheetRow.getCell(6).getCellStyle().setBorderTop(HSSFCellStyle.BORDER_MEDIUM);
 								sheetRow.getCell(6).getCellStyle().setBorderLeft(HSSFCellStyle.BORDER_MEDIUM);
@@ -365,5 +367,16 @@ public class EnfGestionService {
 
 		}
 		return Response.serverError().build();
+	}
+	
+	private SlotEntity getCreneau(List<SlotEntity> creneaux, DossierNageurEntity nageur) {
+		boolean found = false;
+		Iterator<SlotEntity> it = creneaux.iterator();
+		SlotEntity creneau = null;
+		while (it.hasNext() && !found) {
+			creneau = it.next();
+			found = StringUtils.isNotBlank(nageur.getCreneaux()) && nageur.getCreneaux().contains(Long.toString(creneau.getId()));
+		}
+		return creneau;
 	}
 }
