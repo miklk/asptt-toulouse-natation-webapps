@@ -30,7 +30,7 @@ public class EmailSendEntity implements IEntity {
 	private String sentBy;
 	private Date created;
 	private String createdBy;
-	private String recipients;
+	private Text recipients;
 	private String subject;
 	private Text message;
 	private String status;
@@ -56,11 +56,11 @@ public class EmailSendEntity implements IEntity {
 		this.from = from;
 	}
 
-	public String getRecipients() {
+	public Text getRecipients() {
 		return recipients;
 	}
 
-	public void setRecipients(String recipients) {
+	public void setRecipients(Text recipients) {
 		this.recipients = recipients;
 	}
 
