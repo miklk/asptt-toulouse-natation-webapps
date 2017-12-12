@@ -189,12 +189,12 @@ public class AuthenticationService {
 				MimeBodyPart htmlPart = new MimeBodyPart();
 				String msgBody = "Votre nouveau mot de passe est : " + "<b>" + code + "</b>" + ".<br />"
 						+ "<a href=\"http://www.asptt-toulouse-natation.com/admin\">Espace privé</a>"
-						+ "<p>Sportivement,<br />ASPTT Toulouse Natation</p>";
+						+ "<p>Sportivement,<br />Toulouse Natation by ASPTT</p>";
 
 				htmlPart.setContent(msgBody, "text/html");
 				mp.addBodyPart(htmlPart);
 				MimeMessage msg = new MimeMessage(session);
-				msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+				msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(userEntity.getEmailaddress()));
 				msg.setSubject("Réinitialisation du mot de passe", "UTF-8");
 				msg.setContent(mp);

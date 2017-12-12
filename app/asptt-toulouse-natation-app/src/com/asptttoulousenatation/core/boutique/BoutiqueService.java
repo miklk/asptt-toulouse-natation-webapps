@@ -117,9 +117,9 @@ public class BoutiqueService {
 			MimeBodyPart htmlPart = new MimeBodyPart();
 
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
 			Address[] replyTo = {
-					new InternetAddress("contact@asptt-toulouse-natation.com", "ASPTT Toulouse Natation") };
+					new InternetAddress("contact@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT") };
 			msg.setReplyTo(replyTo);
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("contact@asptt-toulouse-natation.com"));
@@ -161,7 +161,7 @@ public class BoutiqueService {
 			htmlPart.setContent(message.toString(), "text/html");
 			mp.addBodyPart(htmlPart);
 
-			msg.setSubject("ASPTT Toulouse Natation - Confirmation commande", "UTF-8");
+			msg.setSubject("Toulouse Natation by ASPTT - Confirmation commande", "UTF-8");
 			msg.setContent(mp);
 			Transport.send(msg);
 		} catch (MessagingException | UnsupportedEncodingException e) {
@@ -312,9 +312,9 @@ public class BoutiqueService {
 			MimeBodyPart htmlPart = new MimeBodyPart();
 
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
 			Address[] replyTo = {
-					new InternetAddress("contact@asptt-toulouse-natation.com", "ASPTT Toulouse Natation") };
+					new InternetAddress("contact@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT") };
 			msg.setReplyTo(replyTo);
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("contact@asptt-toulouse-natation.com"));
@@ -356,7 +356,7 @@ public class BoutiqueService {
 			htmlPart.setContent(message.toString(), "text/html");
 			mp.addBodyPart(htmlPart);
 
-			msg.setSubject("ASPTT Toulouse Natation - Commande en cours de préparation", "UTF-8");
+			msg.setSubject("Toulouse Natation by ASPTT - Commande en cours de préparation", "UTF-8");
 			msg.setContent(mp);
 			Transport.send(msg);
 		} catch (MessagingException | UnsupportedEncodingException e) {

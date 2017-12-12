@@ -291,7 +291,7 @@ public class PresenceService {
 				MimeBodyPart htmlPart = new MimeBodyPart();
 
 				MimeMessage msg = new MimeMessage(session);
-				msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+				msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 				StringBuilder message = new StringBuilder(
 						"Salut,<p>Voici les nageurs qui ont indiqué leur présence aujourd'hui.<br />");
@@ -323,7 +323,7 @@ public class PresenceService {
 				htmlPart.setContent(message.toString(), "text/html");
 				mp.addBodyPart(htmlPart);
 
-				msg.setSubject("ASPTT Toulouse Natation - Présence du jour", "UTF-8");
+				msg.setSubject("Toulouse Natation by ASPTT - Présence du jour", "UTF-8");
 				msg.setContent(mp);
 				Transport.send(msg);
 			} catch (MessagingException | UnsupportedEncodingException e) {

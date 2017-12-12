@@ -139,10 +139,10 @@ public class EmailService {
 					MimeMessage msg = new MimeMessage(session);
 					msg.setFrom(new InternetAddress(
 							"webmaster@asptt-toulouse-natation.com",
-							"ASPTT Toulouse Natation"));
+							"Toulouse Natation by ASPTT"));
 					Address[] replyTo = { new InternetAddress(
 							from,
-							"ASPTT Toulouse Natation") };
+							"Toulouse Natation by ASPTT") };
 					msg.setReplyTo(replyTo);
 					msg.addRecipient(Message.RecipientType.TO,
 							new InternetAddress(
@@ -202,7 +202,7 @@ public class EmailService {
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(
 					"webmaster@asptt-toulouse-natation.com",
-					"ASPTT Toulouse Natation"));
+					"Toulouse Natation by ASPTT"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					"contact@asptt-toulouse-natation.com"));
 			msg.addRecipient(Message.RecipientType.CC, new InternetAddress(

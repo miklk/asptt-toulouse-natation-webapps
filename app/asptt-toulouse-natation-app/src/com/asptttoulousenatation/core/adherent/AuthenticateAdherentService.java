@@ -173,7 +173,7 @@ public class AuthenticateAdherentService {
 				MimeMessage msg = new MimeMessage(session);
 				msg.setFrom(new InternetAddress(
 						"webmaster@asptt-toulouse-natation.com",
-						"ASPTT Toulouse Natation"));
+						"Toulouse Natation by ASPTT"));
 				StringBuilder message = new StringBuilder(
 						"Votre mot de passe: "
 								+ adherents.get(0).getMotdepasse());
@@ -184,7 +184,7 @@ public class AuthenticateAdherentService {
 						adherents.get(0).getEmail()));
 
 				msg.setSubject(
-						"ASPTT Toulouse Natation - Inscription - Mot de passe",
+						"Toulouse Natation by ASPTT - Inscription - Mot de passe",
 						"UTF-8");
 				msg.setContent(mp);
 				Transport.send(msg);
@@ -237,15 +237,15 @@ public class AuthenticateAdherentService {
 							+ "Vous pouvez maintenant accéder au formulaire d'inscription en utilisant le code suivant: "
 							+ "<b>" + nouveau.getMotdepasse() + "</b>"
 							+ ".<br />"
-							+ "<a href=\"http://www.asptt-toulouse-natation.com/#/page/Inscription\">Inscription en ligne - ASPTT Toulouse Natation</a>"
-							+ "<p>Sportivement,<br />ASPTT Toulouse Natation</p>";
+							+ "<a href=\"http://www.asptt-toulouse-natation.com/#/page/Inscription\">Inscription en ligne - Toulouse Natation by ASPTT</a>"
+							+ "<p>Sportivement,<br />Toulouse Natation by ASPTT</p>";
 	
 					htmlPart.setContent(msgBody, "text/html");
 					mp.addBodyPart(htmlPart);
 					MimeMessage msg = new MimeMessage(session);
 					msg.setFrom(new InternetAddress(
 							"webmaster@asptt-toulouse-natation.com",
-							"ASPTT Toulouse Natation"));
+							"Toulouse Natation by ASPTT"));
 					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 							nouveau.getEmail()));
 					msg.setSubject("Votre compte web a été créé.", "UTF-8");

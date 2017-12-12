@@ -682,10 +682,10 @@ public class DossierService {
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(
 					"webmaster@asptt-toulouse-natation.com",
-					"ASPTT Toulouse Natation"));
+					"Toulouse Natation by ASPTT"));
 			Address[] replyTo = {new InternetAddress(
 					"contact@asptt-toulouse-natation.com",
-					"ASPTT Toulouse Natation")};
+					"Toulouse Natation by ASPTT")};
 			msg.setReplyTo(replyTo);
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					dossier.getEmail()));
@@ -744,7 +744,7 @@ public class DossierService {
 			htmlPart.setContent(message.toString(), "text/html");
 			mp.addBodyPart(htmlPart);
 
-			msg.setSubject("ASPTT Toulouse Natation - Confirmation",
+			msg.setSubject("Toulouse Natation by ASPTT - Confirmation",
 					"UTF-8");
 			msg.setContent(mp);
 			Transport.send(msg);
@@ -815,10 +815,10 @@ public class DossierService {
 				MimeMessage msg = new MimeMessage(session);
 				msg.setFrom(new InternetAddress(
 						"webmaster@asptt-toulouse-natation.com",
-						"ASPTT Toulouse Natation"));
+						"Toulouse Natation by ASPTT"));
 				Address[] replyTo = {new InternetAddress(
 						"contact@asptt-toulouse-natation.com",
-						"ASPTT Toulouse Natation")};
+						"Toulouse Natation by ASPTT")};
 				msg.setReplyTo(replyTo);
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 						dossier.getEmail()));
@@ -863,7 +863,7 @@ public class DossierService {
 				htmlPart.setContent(message.toString(), "text/html");
 				mp.addBodyPart(htmlPart);
 	
-				msg.setSubject("ASPTT Toulouse Natation - Relance",
+				msg.setSubject("Toulouse Natation by ASPTT - Relance",
 						"UTF-8");
 				msg.setContent(mp);
 				Transport.send(msg);

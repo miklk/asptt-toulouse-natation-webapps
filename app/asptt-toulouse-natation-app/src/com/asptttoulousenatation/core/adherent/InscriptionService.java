@@ -320,10 +320,10 @@ public class InscriptionService {
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(
 					"webmaster@asptt-toulouse-natation.com",
-					"ASPTT Toulouse Natation"));
+					"Toulouse Natation by ASPTT"));
 			Address[] replyTo = {new InternetAddress(
 					"contact@asptt-toulouse-natation.com",
-					"ASPTT Toulouse Natation")};
+					"Toulouse Natation by ASPTT")};
 			msg.setReplyTo(replyTo);
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					dossier.getEmail()));
@@ -383,12 +383,12 @@ public class InscriptionService {
 			
 			message.append("<p>Sportivement,<br />"
 					+ "Le secrétariat,<br />"
-					+ "ASPTT Toulouse Natation<br />"
+					+ "Toulouse Natation by ASPTT<br />"
 					+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
 			htmlPart.setContent(message.toString(), "text/html");
 			mp.addBodyPart(htmlPart);
 
-			msg.setSubject("ASPTT Toulouse Natation - Confirmation",
+			msg.setSubject("Toulouse Natation by ASPTT - Confirmation",
 					"UTF-8");
 			msg.setContent(mp);
 			Transport.send(msg);
@@ -697,9 +697,9 @@ public class InscriptionService {
 
 					MimeMessage msg = new MimeMessage(session);
 					msg.setFrom(
-							new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+							new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
 					Address[] replyTo = {
-							new InternetAddress("contact@asptt-toulouse-natation.com", "ASPTT Toulouse Natation") };
+							new InternetAddress("contact@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT") };
 					msg.setReplyTo(replyTo);
 					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(dossier.getEmail()));
 					msg.addRecipient(Message.RecipientType.CC,
@@ -712,12 +712,12 @@ public class InscriptionService {
 							"Madame, Monsieur,<p>Vous avez effectué une demande d'inscription au club il y a 5 jours. Nous n'avons pas encore reçu votre paiement.<br /> Nous tenons à vous rappeler qu'au bout de 8 jours, votre dossier sera supprimé et les créneaux sélectionnés libérés pour d'autres adhérents.<br />");
 
 					message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />"
-							+ "ASPTT Toulouse Natation<br />"
+							+ "Toulouse Natation by ASPTT<br />"
 							+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
 					htmlPart.setContent(message.toString(), "text/html");
 					mp.addBodyPart(htmlPart);
 
-					msg.setSubject("ASPTT Toulouse Natation - Rappel", "UTF-8");
+					msg.setSubject("Toulouse Natation by ASPTT - Rappel", "UTF-8");
 					msg.setContent(mp);
 					Transport.send(msg);
 					dossier.setReminded(new DateTime().toDate());
@@ -737,7 +737,7 @@ public class InscriptionService {
 			MimeBodyPart htmlPart = new MimeBodyPart();
 
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("contact@asptt-toulouse-natation.com"));
 			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("remi.lacaze@asptt-toulouse-natation.com"));
 
@@ -787,9 +787,9 @@ public class InscriptionService {
 
 					MimeMessage msg = new MimeMessage(session);
 					msg.setFrom(
-							new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+							new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
 					Address[] replyTo = {
-							new InternetAddress("contact@asptt-toulouse-natation.com", "ASPTT Toulouse Natation") };
+							new InternetAddress("contact@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT") };
 					msg.setReplyTo(replyTo);
 					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(dossier.getEmail()));
 					msg.addRecipient(Message.RecipientType.CC,
@@ -802,12 +802,12 @@ public class InscriptionService {
 							"Madame, Monsieur,<p>Vous avez effectué une demande d'inscription au club il y a 8 jours. Nous n'avons pas encore reçu votre paiement.<br /> Nous vous informons que votre dossier sera supprimé ce soir et que les créneaux sélectionnés libérés pour d'autres adhérents.<br />");
 
 					message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />"
-							+ "ASPTT Toulouse Natation<br />"
+							+ "Toulouse Natation by ASPTT<br />"
 							+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
 					htmlPart.setContent(message.toString(), "text/html");
 					mp.addBodyPart(htmlPart);
 
-					msg.setSubject("ASPTT Toulouse Natation - Rappel", "UTF-8");
+					msg.setSubject("Toulouse Natation by ASPTT - Rappel", "UTF-8");
 					msg.setContent(mp);
 					Transport.send(msg);
 					dossier.setReminded(new DateTime().toDate());
@@ -827,7 +827,7 @@ public class InscriptionService {
 			MimeBodyPart htmlPart = new MimeBodyPart();
 
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("contact@asptt-toulouse-natation.com"));
 			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("remi.lacaze@asptt-toulouse-natation.com"));
 
@@ -909,9 +909,9 @@ public class InscriptionService {
 
 					MimeMessage msg = new MimeMessage(session);
 					msg.setFrom(
-							new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+							new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
 					Address[] replyTo = {
-							new InternetAddress("contact@asptt-toulouse-natation.com", "ASPTT Toulouse Natation") };
+							new InternetAddress("contact@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT") };
 					msg.setReplyTo(replyTo);
 					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(dossier.getEmail()));
 					msg.addRecipient(Message.RecipientType.CC,
@@ -924,12 +924,12 @@ public class InscriptionService {
 							"Madame, Monsieur,<p>Vous avez effectué une demande d'inscription au club. Nous n'avons pas reçu le (les) certificat(s) médicaux. Sans ceux-ci avant le 12 septembre, nous seront obligé de libérer vos créneaux et d'annuler votre inscription.<br />");
 
 					message.append("<p>Dans l'attente de vos documents, sportivement,<br />" + "Le secrétariat,<br />"
-							+ "ASPTT Toulouse Natation<br />"
+							+ "Toulouse Natation by ASPTT<br />"
 							+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
 					htmlPart.setContent(message.toString(), "text/html");
 					mp.addBodyPart(htmlPart);
 
-					msg.setSubject("ASPTT Toulouse Natation - Rappel certificats médicaux", "UTF-8");
+					msg.setSubject("Toulouse Natation by ASPTT - Rappel certificats médicaux", "UTF-8");
 					msg.setContent(mp);
 					Transport.send(msg);
 					dossier.setReminded(new DateTime().toDate());
@@ -949,7 +949,7 @@ public class InscriptionService {
 			MimeBodyPart htmlPart = new MimeBodyPart();
 
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("contact@asptt-toulouse-natation.com"));
 			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("remi.lacaze@asptt-toulouse-natation.com"));
 
@@ -994,9 +994,9 @@ public class InscriptionService {
 
 					MimeMessage msg = new MimeMessage(session);
 					msg.setFrom(
-							new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+							new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
 					Address[] replyTo = {
-							new InternetAddress("contact@asptt-toulouse-natation.com", "ASPTT Toulouse Natation") };
+							new InternetAddress("contact@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT") };
 					msg.setReplyTo(replyTo);
 					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(dossier.getEmail()));
 					msg.addRecipient(Message.RecipientType.CC,
@@ -1009,12 +1009,12 @@ public class InscriptionService {
 							"Madame, Monsieur,<p>Les inscriptions pour la saison 2017-2018 sont ouvertes. Pour vous réinscrire veuillez utiliser vos identifiants de connexion rappelés ci-dessous et vous connecter à l'adresse : <a href=\"http://inscription.asptt-toulouse-natation.com/\">http://inscription.asptt-toulouse-natation.com</a>.</p>");
 					message.append("Identifiant / mot de passe : " + dossier.getEmail() + " / " + dossier.getMotdepasse());
 					message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />"
-							+ "ASPTT Toulouse Natation<br />"
+							+ "Toulouse Natation by ASPTT<br />"
 							+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
 					htmlPart.setContent(message.toString(), "text/html");
 					mp.addBodyPart(htmlPart);
 
-					msg.setSubject("ASPTT Toulouse Natation - Inscriptions", "UTF-8");
+					msg.setSubject("Toulouse Natation by ASPTT - Inscriptions", "UTF-8");
 					msg.setContent(mp);
 					Transport.send(msg);
 					dossier.setReminded(new DateTime().toDate());
@@ -1033,7 +1033,7 @@ public class InscriptionService {
 			MimeBodyPart htmlPart = new MimeBodyPart();
 
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "ASPTT Toulouse Natation"));
+			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("contact@asptt-toulouse-natation.com"));
 			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("michael.kargbo@gmail.com"));
 
