@@ -3,6 +3,7 @@ package com.asptttoulousenatation.core.inscription;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +29,7 @@ import org.joda.time.DateTime;
 
 import com.asptttoulousenatation.core.server.dao.club.group.GroupDao;
 import com.asptttoulousenatation.core.server.dao.entity.club.group.GroupEntity;
+import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.field.DossierNageurEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierNageurEntity;
@@ -36,6 +38,7 @@ import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 @Path("/dossiers/extraction")
 @Produces("application/json")
@@ -217,40 +220,8 @@ public class DossierExtractionService {
 	public String adherons(List<Long> dossierIds) {
 		StrBuilder extractionAsString = new StrBuilder();
 		for (Long dossierId : dossierIds) {
-			List<String> nageurFields = new ArrayList<>();
 			DossierEntity dossier = dossierDao.get(dossierId);
-			List<DossierNageurEntity> nageurs = dao.findByDossier(dossierId);
-			for (DossierNageurEntity nageur : nageurs) {
-				nageurFields.add(nageur.getNom());
-				nageurFields.add(nageur.getPrenom());
-				nageurFields.add(new DateTime(nageur.getNaissance().getTime()).toString("dd/MM/yyyy"));
-				nageurFields.add(nageur.getCivilite() == "0" ? "M" : "F");
-				nageurFields.add(dossier.getEmail());
-				nageurFields.add(nageur.getProfession());
-				nageurFields.add("1");// Benevole
-				nageurFields.add(dossier.getAdresse());
-				nageurFields.add("");// Adresse suite
-				nageurFields.add(dossier.getCodepostal());
-				nageurFields.add(dossier.getVille());
-				nageurFields.add(dossier.getTelephone());
-				nageurFields.add(dossier.getTelephoneSecondaire());
-				nageurFields.add("");// La poste
-				nageurFields.add("");// Identifiant la poste
-				nageurFields.add(BooleanUtils.isTrue(nageur.getFonctionnaire()) ? "0" : "1");
-				nageurFields.add("0");// Image
-				nageurFields.add("0");// Email FSASPTT
-				nageurFields.add("1"); // Info partenaires
-				nageurFields.add("1"); // Compétition
-				nageurFields.add("1");// Licence dÈlÈgataire;
-				nageurFields.add("1");// Dirigeant de l'activitÈ;
-				nageurFields.add("1");// Juge arbitre pour cette activitÈ;
-				nageurFields.add(nageur.getTarif().toString());// Montant
-																// section;
-				nageurFields.add("23");// Montant licence dÈlÈgataire;
-				nageurFields.add("0");// Montant autre;
-				nageurFields.add("0");// Id catÈgorie
-				extractionAsString.appendWithSeparators(nageurFields, ";").appendNewLine();
-			}
+			dossierToCSV(extractionAsString, dossier);
 		}
 
 		return extractionAsString.toString();
@@ -274,5 +245,82 @@ public class DossierExtractionService {
 				}
 			}
 		}**/
+	}
+
+	private void dossierToCSV(StrBuilder extractionAsString,
+			DossierEntity dossier) {
+		List<DossierNageurEntity> nageurs = dao.findByDossier(dossier.getId());
+		for (DossierNageurEntity nageur : nageurs) {
+			List<String> nageurFields = new ArrayList<>();
+			nageurFields.add("" + dossier.getId());
+			nageurFields.add("" + nageur.getId());
+			nageurFields.add(nageur.getNom());
+			nageurFields.add(nageur.getPrenom());
+			if(nageur.getNaissance() != null) {
+				nageurFields.add(new DateTime(nageur.getNaissance().getTime()).toString("dd/MM/yyyy"));
+			} else {
+				nageurFields.add("ERREUR - PAS DE DATE DE NAISSANCE");
+			}
+			nageurFields.add(nageur.getCivilite() == "0" ? "M" : "F");
+			nageurFields.add(dossier.getEmail());
+			nageurFields.add(nageur.getProfession());
+			nageurFields.add("1");// Benevole
+			nageurFields.add(dossier.getAdresse());
+			nageurFields.add("");// Adresse suite
+			nageurFields.add(dossier.getCodepostal());
+			nageurFields.add(dossier.getVille());
+			nageurFields.add(dossier.getTelephone());
+			nageurFields.add(dossier.getTelephoneSecondaire());
+			nageurFields.add("");// La poste
+			nageurFields.add("");// Identifiant la poste
+			nageurFields.add(BooleanUtils.isTrue(nageur.getFonctionnaire()) ? "0" : "1");
+			nageurFields.add("0");// Image
+			nageurFields.add("0");// Email FSASPTT
+			nageurFields.add("1"); // Info partenaires
+			nageurFields.add("1"); // Compétition
+			nageurFields.add("1");// Licence dÈlÈgataire;
+			nageurFields.add("1");// Dirigeant de l'activitÈ;
+			nageurFields.add("1");// Juge arbitre pour cette activitÈ;
+			if(nageur.getTarif() != null) {
+				nageurFields.add(nageur.getTarif().toString());// Montant// section;
+			} else {
+				nageurFields.add("ERREUR - PAS DE TARIF");
+			}
+			nageurFields.add("23");// Montant licence dÈlÈgataire;
+			nageurFields.add("0");// Montant autre;
+			nageurFields.add("0");// Id catÈgorie
+			extractionAsString.appendWithSeparators(nageurFields, ";").appendNewLine();
+		}
+	}
+	
+	@Path("/adherons-list/{range}")
+	@GET
+	@Produces("text/csv; charset=UTF-8")
+	public String adheronsList(@PathParam("range") String range) {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, DossierService.NEW_SAISON, Operator.EQUAL));
+		criteria.add(
+				new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.INSCRIT.name(), Operator.EQUAL));
+		List<DossierEntity> dossiers = new ArrayList<>(dossierDao.find(criteria));
+		java.util.Collections.sort(dossiers, new Comparator<DossierEntity>() {
+
+			@Override
+			public int compare(DossierEntity o1, DossierEntity o2) {
+				return o1.getEmail().compareTo(o2.getEmail());
+			}
+		});
+		String[] rangeSplit = range.split("-");
+		int begin = Integer.parseInt(rangeSplit[0]);
+		int end = Integer.parseInt(rangeSplit[1]);
+		end = Math.min(end, dossiers.size());
+		int i = begin;
+		StrBuilder extractionAsString = new StrBuilder();
+			
+		while (i < end) {
+			DossierEntity dossier = dossiers.get(i);
+			dossierToCSV(extractionAsString, dossier);
+			i++;
+		}
+		return extractionAsString.toString();
 	}
 }
