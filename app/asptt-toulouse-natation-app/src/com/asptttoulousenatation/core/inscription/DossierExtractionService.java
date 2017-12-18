@@ -38,7 +38,6 @@ import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierNageurDao;
 import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
 import com.asptttoulousenatation.core.server.dao.search.Operator;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 @Path("/dossiers/extraction")
 @Produces("application/json")
@@ -252,8 +251,6 @@ public class DossierExtractionService {
 		List<DossierNageurEntity> nageurs = dao.findByDossier(dossier.getId());
 		for (DossierNageurEntity nageur : nageurs) {
 			List<String> nageurFields = new ArrayList<>();
-			nageurFields.add("" + dossier.getId());
-			nageurFields.add("" + nageur.getId());
 			nageurFields.add(nageur.getNom());
 			nageurFields.add(nageur.getPrenom());
 			if(nageur.getNaissance() != null) {
