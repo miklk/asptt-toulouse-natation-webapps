@@ -24,7 +24,7 @@ boutiqueServices.factory('BoutiqueService', ['$resource',
 		deleteOrderProduct: $resource('/resources/boutique/order/delete/:order/:product',{},{
 			query:{method:'DELETE', isArray: false, params: {}}
 		}),
-		validateOrder: $resource('/resources/boutique/order/validate/:order',{},{
+		validateOrder: $resource('/resources/boutique/order/validate',{},{
 			query:{method:'POST', isArray: false, params: {}}
 		}),
 	};

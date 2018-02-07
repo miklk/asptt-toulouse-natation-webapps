@@ -5,9 +5,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -82,19 +84,23 @@ public class BoutiqueService {
 		if (StringUtils.isNotBlank(orderSaved.getComment())) {
 			comment.append(orderSaved.getComment());
 		}
+		Set<Long> added = new HashSet<>();
 		for (ProductUi productUi : parameters.getPanier()) {
-			ProductEntity product = productDao.get(productUi.getId());
-			int quantite = productUi.getQuantite();
-			if (quantite > product.getStock()) {
-				quantite = product.getStock();
-				comment.append("attention pré-commande pour ").append(product.getTitle()).append("\n");
+			if (!added.contains(productUi.getId())) {
+				ProductEntity product = productDao.get(productUi.getId());
+				int quantite = productUi.getQuantite();
+				if (quantite > product.getStock()) {
+					quantite = product.getStock();
+					comment.append("attention pré-commande pour ").append(product.getTitle()).append("\n");
+				}
+				product.setStock(product.getStock() - quantite);
+				OrderProductEntity orderProduct = new OrderProductEntity();
+				orderProduct.setOrder(orderSaved.getId());
+				orderProduct.setProduct(product.getId());
+				orderProduct.setQuantity(productUi.getQuantite());
+				orderProductDao.save(orderProduct);
+				added.add(product.getId());
 			}
-			product.setStock(product.getStock() - quantite);
-			OrderProductEntity orderProduct = new OrderProductEntity();
-			orderProduct.setOrder(orderSaved.getId());
-			orderProduct.setProduct(product.getId());
-			orderProduct.setQuantity(productUi.getQuantite());
-			orderProductDao.save(orderProduct);
 		}
 		orderSaved.setComment(comment.toString());
 		orderDao.save(orderSaved);
@@ -119,10 +125,10 @@ public class BoutiqueService {
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
 			Address[] replyTo = {
-					new InternetAddress("contact@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT") };
+					new InternetAddress("natation.toulouse@asptt.com", "Toulouse Natation by ASPTT") };
 			msg.setReplyTo(replyTo);
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("contact@asptt-toulouse-natation.com"));
+			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("natation.toulouse@asptt.com"));
 			if (StringUtils.isNotBlank(emailSecondaire)) {
 				msg.addRecipient(Message.RecipientType.CC, new InternetAddress(emailSecondaire));
 			}
@@ -135,8 +141,8 @@ public class BoutiqueService {
 							+ "<p>Commande n°" + order.getId() + "<br /><table>");
 			int countProduct = 0;
 			int total = 0;
+			message.append("<tr><td>Article</td><td>Quantité</td><td>Prix</td>");
 			for (OrderProductEntity orderProduct : orderProducts) {
-
 				ProductEntity product = productDao.get(orderProduct.getProduct());
 				message.append("<tr><td>").append(product.getTitle()).append("</td><td>")
 						.append(orderProduct.getQuantity()).append("</td></td>");
@@ -154,9 +160,9 @@ public class BoutiqueService {
 				total += productPrice;
 				message.append(productPrice).append("</td></tr>");
 			}
-			message.append("<td></td><td>").append(countProduct).append("</td><td>").append(total).append("</td>");
+			message.append("<td>Total</td><td>").append(countProduct).append("</td><td>").append(total).append("</td>");
 			message.append("</table>");
-			message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />" + "ASPTT Grand Toulouse Natation<br />"
+			message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />" + "Toulouse Natation by ASPTT<br />"
 					+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
 			htmlPart.setContent(message.toString(), "text/html");
 			mp.addBodyPart(htmlPart);
@@ -291,9 +297,9 @@ public class BoutiqueService {
 		scanner.close();
 	}
 	
-	@Path("/order/validate/{order}")
+	@Path("/order/validate")
 	@POST
-	public void validateOrder(@PathParam("order") Long orderId) {
+	public void validateOrder(Long orderId) {
 		OrderEntity order = orderDao.get(orderId);
 		order.setStatus(OrderStatusEnum.VALIDATED.name());
 		orderDao.save(order);
@@ -314,10 +320,10 @@ public class BoutiqueService {
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
 			Address[] replyTo = {
-					new InternetAddress("contact@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT") };
+					new InternetAddress("natation.toulouse@asptt", "Toulouse Natation by ASPTT") };
 			msg.setReplyTo(replyTo);
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("contact@asptt-toulouse-natation.com"));
+			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("natation.toulouse@asptt.com"));
 			if (StringUtils.isNotBlank(emailSecondaire)) {
 				msg.addRecipient(Message.RecipientType.CC, new InternetAddress(emailSecondaire));
 			}
@@ -326,10 +332,11 @@ public class BoutiqueService {
 			List<OrderProductEntity> orderProducts = orderProductDao.findByOrder(order.getId());
 			StringBuilder message = new StringBuilder(
 					"Madame, Monsieur,<p>Nous avons le plaisir de vous informer que vos photos sont en cours d'impression.<br />"
-							+ "Les photos seront disponibles à partir du 3 janvier 2017. Le paiement s'effectuera de préférence par chèque. <br />"
+							+ "Les photos seront disponibles à partir du 5 mars 2018. Le paiement s'effectuera de préférence par chèque. <br />"
 							+ "<p>Commande n°" + order.getId() + "<br /><table>");
 			int countProduct = 0;
 			int total = 0;
+			message.append("<tr><td>Article</td><td>Quantité</td><td>Prix</td>");
 			for (OrderProductEntity orderProduct : orderProducts) {
 
 				ProductEntity product = productDao.get(orderProduct.getProduct());
@@ -349,9 +356,9 @@ public class BoutiqueService {
 				total += productPrice;
 				message.append(productPrice).append("</td></tr>");
 			}
-			message.append("<td></td><td>").append(countProduct).append("</td><td>").append(total).append("</td>");
+			message.append("<td>Total</td><td>").append(countProduct).append("</td><td>").append(total).append("</td>");
 			message.append("</table>");
-			message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />" + "ASPTT Grand Toulouse Natation<br />"
+			message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />" + "Toulouse Natation by ASPTT<br />"
 					+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
 			htmlPart.setContent(message.toString(), "text/html");
 			mp.addBodyPart(htmlPart);
