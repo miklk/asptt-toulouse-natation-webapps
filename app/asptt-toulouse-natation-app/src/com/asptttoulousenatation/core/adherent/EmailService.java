@@ -110,12 +110,14 @@ public class EmailService {
 				groupes.add(Long.valueOf(groupeAsString));
 			}
 			
-			final List<String> destinataires;
+			final List<DossierEntity> destinataires;
 			if (to.contains("@")) {
-				Set<String> destinatairesTmp = new HashSet<>();
+				Set<DossierEntity> destinatairesTmp = new HashSet<>();
 				for(String toEmail: to.split(";")) {
 					if(StringUtils.isNotBlank(toEmail)) {
-						destinatairesTmp.add(toEmail);
+						DossierEntity entity = new DossierEntity();
+						entity.setEmail(toEmail);
+						destinatairesTmp.add(entity);
 					}
 				}
 				destinataires = new ArrayList<>(destinatairesTmp);
@@ -174,12 +176,18 @@ public class EmailService {
 							destinataires.size());
 					try {
 						for (int j = first; j < end; j++) {
-							String destinataire = destinataires.get(j);
-							if (StringUtils.isNotBlank(destinataire)) {
+							DossierEntity destinataire = destinataires.get(j);
+							if (StringUtils.isNotBlank(destinataire.getEmail())) {
 								msg.addRecipient(Message.RecipientType.BCC,
-										new InternetAddress(destinataire));
-								recipents.add(destinataire);
+										new InternetAddress(destinataire.getEmail()));
+								recipents.add(destinataire.getEmail());
 							}
+							if (StringUtils.isNotBlank(destinataire.getEmailsecondaire())) {
+								msg.addRecipient(Message.RecipientType.BCC,
+										new InternetAddress(destinataire.getEmailsecondaire()));
+								recipents.add(destinataire.getEmailsecondaire());
+							}
+							
 						}
 						Transport.send(msg);
 					} catch (Exception e) {
@@ -224,9 +232,9 @@ public class EmailService {
 		return recipents;
 	}
 	
-	private List<String> getDestinataires(String destinataire, Set<Long> groupes,
+	private List<DossierEntity> getDestinataires(String destinataire, Set<Long> groupes,
 			Set<Long> creneaux, Long piscine) {
-		List<String> destinataires = new ArrayList<>();
+		List<DossierEntity> destinataires = new ArrayList<>();
 		switch (destinataire) {
 		case "all": {
 			List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
@@ -303,9 +311,9 @@ public class EmailService {
 		return destinataires;
 	}
 
-	private Set<String> getDestinatairesByGroupe(Set<Long> groupes,
+	private Set<DossierEntity> getDestinatairesByGroupe(Set<Long> groupes,
 			final Set<Long> creneaux) {
-		Set<String> destinataires = new HashSet<>();
+		Set<DossierEntity> destinataires = new HashSet<>();
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(
 				groupes.size());
 		for (Long groupe : groupes) {
@@ -344,17 +352,12 @@ public class EmailService {
 		return destinataires;
 	}
 	
-	private void fillDestinataires(Collection<String> destinataires, DossierEntity dossier) {
+	private void fillDestinataires(Collection<DossierEntity> destinataires, DossierEntity dossier) {
 		String statut = dossier.getStatut();
 		if (DossierService.NEW_SAISON.equals(dossier.getSaison()) && (DossierStatutEnum.INSCRIT.name().equals(statut)
 				|| DossierStatutEnum.PAIEMENT_COMPLET.name().equals(statut)
 				|| DossierStatutEnum.ATTENTE.name().equals(statut))) {
-			if (StringUtils.isNotBlank(dossier.getEmail())) {
-				destinataires.add(dossier.getEmail());
-			}
-			if (StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
-				destinataires.add(dossier.getEmailsecondaire());
-			}
+			destinataires.add(dossier);
 		}
 	}
 	

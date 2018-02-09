@@ -35,7 +35,9 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.StrBuilder;
+import org.joda.time.DateTime;
 
+import com.asptttoulousenatation.core.inscription.DossierService;
 import com.asptttoulousenatation.core.server.dao.boutique.OrderDao;
 import com.asptttoulousenatation.core.server.dao.boutique.OrderProductDao;
 import com.asptttoulousenatation.core.server.dao.boutique.ProductDao;
@@ -43,8 +45,12 @@ import com.asptttoulousenatation.core.server.dao.entity.boutique.OrderEntity;
 import com.asptttoulousenatation.core.server.dao.entity.boutique.OrderProductEntity;
 import com.asptttoulousenatation.core.server.dao.entity.boutique.OrderStatusEnum;
 import com.asptttoulousenatation.core.server.dao.entity.boutique.ProductEntity;
+import com.asptttoulousenatation.core.server.dao.entity.field.DossierEntityFields;
 import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierEntity;
+import com.asptttoulousenatation.core.server.dao.entity.inscription.DossierStatutEnum;
 import com.asptttoulousenatation.core.server.dao.inscription.DossierDao;
+import com.asptttoulousenatation.core.server.dao.search.CriterionDao;
+import com.asptttoulousenatation.core.server.dao.search.Operator;
 
 @Path("/boutique")
 @Produces("application/json")
@@ -128,7 +134,6 @@ public class BoutiqueService {
 					new InternetAddress("natation.toulouse@asptt.com", "Toulouse Natation by ASPTT") };
 			msg.setReplyTo(replyTo);
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("natation.toulouse@asptt.com"));
 			if (StringUtils.isNotBlank(emailSecondaire)) {
 				msg.addRecipient(Message.RecipientType.CC, new InternetAddress(emailSecondaire));
 			}
@@ -409,5 +414,77 @@ public class BoutiqueService {
 				}
 			}
 		}
+	}
+	
+	@Path("/lancer-boutique")
+	@GET
+	public int lancerBoutique() {
+		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(2);
+		criteria.add(
+				new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.INSCRIT.name(), Operator.EQUAL));
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, DossierService.NEW_SAISON, Operator.EQUAL));
+		List<DossierEntity> entities = dossierDao.find(criteria);
+		int count = 0;
+		for (DossierEntity dossier : entities) {
+			count++;
+			Properties props = new Properties();
+			Session session = Session.getDefaultInstance(props, null);
+			try {
+				Multipart mp = new MimeMultipart();
+				MimeBodyPart htmlPart = new MimeBodyPart();
+
+				MimeMessage msg = new MimeMessage(session);
+				msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+				Address[] replyTo = {
+						new InternetAddress("natation.toulouse@asptt.com", "Toulouse Natation by ASPTT") };
+				msg.setReplyTo(replyTo);
+				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(dossier.getEmail()));
+				if (StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
+					msg.addRecipient(Message.RecipientType.CC, new InternetAddress(dossier.getEmailsecondaire()));
+				}
+
+				StringBuilder message = new StringBuilder(
+						"Madame, Monsieur,<p>Les photos de groupe de la saison 2017-2018 sont prêtes à être commandés.<br/>Les commandes s'effectuent en ligne et le paiement par chèque. A réception du chèque vous recevrez la confirmation de la commande.<br />Les premières commandes seront disponibles à partir du 5 mars 2018.<br />Pour rappel, vos identifiants de connexion :</p>");
+				message.append(
+						"<p>Identifiant / mot de passe : " + dossier.getEmail() + " / " + dossier.getMotdepasse())
+						.append("<br /><a href=\"http://boutique.asptt-toulouse-natation.com/\">http://boutique.asptt-toulouse-natation.com</a></p>");
+				message.append("<p>Sportivement,<br />" + "Le secrétariat,<br />" + "Toulouse Natation by ASPTT<br />"
+						+ "<a href=\"www.asptt-toulouse-natation.com\">www.asptt-toulouse-natation.com</a></p>");
+				htmlPart.setContent(message.toString(), "text/html");
+				mp.addBodyPart(htmlPart);
+
+				msg.setSubject("Toulouse Natation by ASPTT - Photos de groupe", "UTF-8");
+				msg.setContent(mp);
+				Transport.send(msg);
+			} catch (MessagingException | UnsupportedEncodingException e) {
+				LOG.log(Level.SEVERE, "Erreur pour l'e-mail: " + dossier.getEmail(), e);
+			}
+		}
+
+		// Rapport
+		Properties props = new Properties();
+		Session session = Session.getDefaultInstance(props, null);
+		try {
+			Multipart mp = new MimeMultipart();
+			MimeBodyPart htmlPart = new MimeBodyPart();
+
+			MimeMessage msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("natation.toulouse@asptt.com"));
+			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("michael.kargbo@gmail.com"));
+
+			StrBuilder message = new StrBuilder("<p>").append(count).append(" dossiers.</p>");
+			htmlPart.setContent(message.toString(), "text/html");
+			mp.addBodyPart(htmlPart);
+
+			msg.setSubject("Rapport  - lancement boutique", "UTF-8");
+			msg.setContent(mp);
+			Transport.send(msg);
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			LOG.log(Level.SEVERE, "Erreur pour l'e-mail de rapport", e);
+		}
+
+		LOG.log(Level.WARNING, count + " dossiers boutique");
+		return count;
 	}
 }
