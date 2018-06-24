@@ -1,0 +1,61 @@
+<div style="margin-left: 2%" ng-controller="SuiviNageurController">
+	<div class="row">
+		<h1 class="page-header">Suivi du nageur <small>par mois</small></h1>
+	</div>
+	
+	<div class="row">
+		<form class="form-inline">
+			<div class="form-group">
+				 <select class="form-control" ng-model="groupesSelected"
+				    	ng-options="groupe.title for groupe in groupes.groups track by groupe.id" ng-change="loadMonths()">
+			    	<option value="">Choisir un groupe</option>
+		  	    </select>
+			</div>
+			<div class="form-group">
+				<input type="month" ng-model="day" class="form-control" />
+			</div>
+			<button type="submit" class="btn btn-primary" ng-click="loadMonths()">Afficher</button>
+		</form>
+	</div>
+<div ng-show="nageurs">
+	<div class="row" ng-show="beginDt">
+		<h5>{{beginDt | date: 'MMMM yyyy'}}</h5>
+	</div>
+	<div class="row" ng-hide="enf">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Nageur(se)</th>
+					<th ng-repeat="week in weeks"><span ng-if="week.first > 0">{{week.first | date: 'shortDate'}} - {{week.second | date: 'shortDate'}}</span></th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="nageur in nageurs">
+					<td>{{nageur.nom}} {{nageur.prenom}}</td>
+					<td ng-repeat="distanceWeek in nageur.distances track by $index"><span ng-if="weeks[$index].first > 0">{{distanceWeek | number}} ({{nageur.presences[$index]}} séances)</span></td>
+					<td>{{nageur.totalDistance | number}} <span class="badge">{{nageur.totalPresence}} séances, ({{nageur.totalMuscu}} muscu)</span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row" ng-show="enf">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th>Nageur(se)</th>
+					<th ng-repeat="week in weeks"><span ng-if="week.first > 0">{{week.first | date: 'shortDate'}} - {{week.second | date: 'shortDate'}}</span></th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="nageur in nageurs | orderBy:['+nageur.nom', '+nageur.prenom']">
+					<td>{{nageur.nom}} {{nageur.prenom}}</td>
+					<td ng-repeat="presence in nageur.presences track by $index"><span ng-if="weeks[$index].first > 0">{{presence}}</span></td>
+					<td>{{nageur.totalPresence}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</div>

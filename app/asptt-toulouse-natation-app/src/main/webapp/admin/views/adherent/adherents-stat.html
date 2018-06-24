@@ -1,0 +1,96 @@
+<style>
+path {  stroke: #fff; }
+path:hover {  opacity:0.9; }
+rect:hover {  fill:blue; }
+.axis {  font: 10px sans-serif; }
+.legend tr{    border-bottom:1px solid grey; }
+.legend tr:first-child{    border-top:1px solid grey; }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {  display: none; }
+.legend{
+    margin-bottom:76px;
+    display:inline-block;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+.legend td{
+    padding:4px 5px;
+    vertical-align:bottom;
+}
+.legendFreq, .legendPerc{
+    align:right;
+    width:50px;
+}
+
+.arc path {
+  stroke: #fff;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis-famille-groupe {
+  font: 10px sans-serif;
+}
+
+.axis-famille-groupe path,
+.axis-famille-groupe line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis-famille-groupe path {
+  display: none;
+}
+
+</style>
+<div class="container-fluid" ng-controller="AdherentsStatCtrl" ng-hide="isLoading">
+	<div class="row">
+		<h1 class="page-header">Statistiques adhérents</h1>
+	</div>
+
+<h3><span class="badge">{{nbAdherents}}</span> adhérents</h3>
+<h4>Par statuts (<span ng-click="showStatusDetails = !showStatusDetails">cliquez ici pour plus de détails</span>)</h4>
+<div ng-show="showStatusDetails">
+	<p ng-repeat="(statut, count) in perStatus">{{statut}}: {{count}}</p>
+</div>
+<h4>Inscriptions</h4>
+<h5>Dossiers complets: {{nbComplet}} ({{pourcentageComplet}}%)</h5>
+<h5>Dossiers nouvelles adhésions: {{nbNouveau}}  ({{pourcentageNouveau}}%)</h5>
+<h5>Dossiers renouvellement: {{nbRenouvellement}}  ({{pourcentageRenouvellement}}%)</h5>
+<h5>Dossiers annulés: {{nbAnnuler}} ({{pourcentageAnnuler}}%)</h5>
+<h4>Répartition par sexe et âge (mineur/majeur)</h4>
+<h6>Moyenne age: {{averageAge}} ans - Tranche 4-10: {{tranche1}} adhérents - Tranche 11-18: {{tranche2}} adhérents</h6>
+<div id="sexe-age">
+</div>
+
+<h4>Répartition par âge (année de naissance)</h4>
+<div id="ages">
+</div>
+
+<h3><span class="badge">{{nbFamilles}}</span> familles</h3>
+<h4>Répartition par piscines</h4>
+<div id="familles"></div>
+
+<h4>Répartition par groupes</h4>
+<div id="familles-groupes"></div>
+
+<h4>Répartition par localisation (Toulouse et autres)</h4>
+<div id="localisations-toulouse"></div>
+
+<h4>Répartition par professions</h4>
+<div id="professions"></div>
+</div>

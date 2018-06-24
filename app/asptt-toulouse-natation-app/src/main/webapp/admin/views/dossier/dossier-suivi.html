@@ -1,0 +1,65 @@
+<form class="form-horizontal">
+<h3>Statut du dossier</h3><div class="text-center" ng-class="{'bg-danger': dossier.principal.statut == 'EXPIRE' || dossier.principal.statut == 'ANNULE', 'bg-warning': dossier.principal.statut == 'INITIALISE' || dossier.principal.statut == 'PREINSCRIT', 'bg-info': dossier.principal.statut == 'PAIEMENT_PARTIEL', 'bg-success': dossier.principal.statut == 'INSCRIT'}"><h4>{{dossier.principal.statut}}</h4></div>
+
+	<div class="form-group">
+	<div class="col-md-2"><strong>Date d'inscription</strong></div>
+	<div class="col-md-2">{{dossier.principal.created | date: 'dd/MM/yyyy HH:mm'}}</div>
+	<div class="col-md-2"><strong>Dernière mise à jour</strong></div>
+	<div class="col-md-2">{{dossier.principal.updated | date: 'dd/MM/yyyy HH:mm'}}</div>
+	
+	<div ng-show="dossier.principal.reminded">
+		<div class="col-md-2"><strong>Dernière rappel de paiement (et/ou certificat)</strong></div>
+		<div class="col-md-2">{{dossier.principal.reminded | date: 'dd/MM/yyyy HH:mm'}}</div>
+	</div>
+	</div>
+
+	<h3>Informations de connexion</h3>
+	
+	<div class="form-group">
+		<label for="email" class="col-md-2 control-label">E-mail</label>
+		<div class="col-md-10">
+			<input id="email" type="email" class="form-control" ng-model="dossier.principal.email" />
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label for="motdepasse" class="col-md-2 control-label">Mot de passe</label>
+		<div class="col-md-10">
+			<input id="motdepasse" type="text" class="form-control" ng-model="dossier.principal.motdepasse" maxlength="4" size="5" />
+		</div>
+	</div>
+
+
+<h3>Commentaire</h3>
+<div class="row">
+	<div class="col-md-9">
+		<div text-angular="text-angular" ng-model="dossier.principal.comment"></div>
+	</div>
+</div>
+	<h3>Tarif</h3>
+
+	<div class="form-group">
+		<label class="col-md-2 control-label">Montant calculé</label>
+		<div class="col-md-10"><input type="number" class="form-control" value="{{montantCalcule()}}" disabled /></div>
+	</div>
+	
+	<div class="form-group">
+		<label for="montantreel" class="col-md-2 control-label">Montant réel payé</label>
+		<div class="col-md-10">
+			<input id="montantreel" type="number" class="form-control" ng-model="dossier.principal.montantreel" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-md-2 control-label">Mode de paiement :</label>
+		<div class="col-md-10">
+			<ol> 
+				<li ng-repeat="paiement in getPaiement()">{{paiement.first}}&nbsp;{{paiement.second}}</li>
+			</ol>
+		</div>
+	</div>
+	
+	<h3>Facture <span ng-show="!dossier.facture">non demandée</span><span ng-show="dossier.facture.statut == 'DEMANDE'">demandée</span><span ng-show="dossier.facture.statut == 'ENVOYE'">demandée et envoyée</span>
+	&nbsp;<button type="button" class="btn btn-primary btn-xs" title="Confirmer l'envoi de la facture"><span class="glyphicon glyphicon-send" ng-click="factureSend(dossier)"></span></button></h3>
+	
+	<button type="button" class="btn btn-primary btn-block" ng-click="update()">Valider les modifications</button>
+</form>

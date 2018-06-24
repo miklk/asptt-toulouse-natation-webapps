@@ -1,0 +1,28 @@
+<div ng-controller="EnfController">
+<h3>Fiches de présences</h3>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Lundi</th>
+			<th>Mardi</th>
+			<th>Mercredi</th>
+			<th>Jeudi</th>
+			<th>Vendredi</th>
+			<th>Samedi</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td ng-repeat="day in days">
+				<div ng-repeat="groupe in day.groupes">
+					<h5>{{groupe.groupe}}</h5>
+					<ul>
+						<li ng-repeat="creneau in groupe.creneaux"><a href="/resources/enf/presences/{{creneau.id}}" download>{{creneauLabel(creneau)}}</a></li>
+					</ul>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+</div>

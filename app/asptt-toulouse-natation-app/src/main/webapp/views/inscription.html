@@ -1,0 +1,655 @@
+<link rel="stylesheet" href="css/inscription.css" />
+<div class="row" ng-controller="InscriptionCtrl">
+    <div class="board">
+         <div class="board-inner">
+         	<ul class="nav nav-tabs" id="myTab">
+         		<div class="liner"></div>
+	          <li class="active">
+		          <a href="#home" data-toggle="tab" title="Accueil" target="_self">
+		           <span class="round-tabs one">
+		                   <i class="glyphicon glyphicon-home"></i>
+		           </span> 
+		       	   </a>
+		       	</li>
+		       	<li>
+		       	<a href="#dossiers" data-toggle="tab" title="Dossiers à inscrire" target="_self">
+		          <span class="round-tabs two">
+		              <i class="glyphicon glyphicon-list-alt"></i>
+		          </span> 
+				</a>
+		      </li>
+		       <li>
+		       	<a href="#activite" data-toggle="tab" title="Activité" target="_self">
+		          <span class="round-tabs two">
+		              <i class="glyphicon glyphicon-shopping-cart"></i>
+		          </span> 
+				</a>
+		      </li>
+	      	  <li>
+		      	  <a href="#nageur" data-toggle="tab" title="Informations du nageur(euse)" target="_self">
+			          <span class="round-tabs three">
+			               <i class="glyphicon glyphicon-user"></i>
+			          </span>
+		          </a>
+	          </li>
+	
+	          <li id="info-contact">
+	          	<a href="#info" data-toggle="tab" title="Informations de contact" target="_self">
+	              <span class="round-tabs four">
+	                   <i class="glyphicon glyphicon-user"></i>
+	              </span> 
+	          	</a>
+	          </li>
+	
+			  <li>
+	          	<a href="#contribution" data-toggle="tab" title="Contribution" target="_self">
+	              <span class="round-tabs five">
+	                   <i class="glyphicon glyphicon-glass"></i>
+	              </span> </a>
+	          </li>
+	          <li>
+	          	<a href="#cotisation" data-toggle="tab" title="Cotisation" target="_self">
+	              <span class="round-tabs five">
+	                   <i class="glyphicon glyphicon-usd"></i>
+	              </span> </a>
+	          </li>
+          </ul>
+         </div>
+
+         <div id="tab-content" class="tab-content">
+           <div class="tab-pane fade in active" id="home">
+
+               <h3 class="head text-center">Inscription pour la saison sportive 2017-2018</h3>
+               <h4>Reprise des cours</h4>
+               <p>Les cours reprendrons la semaine du 18 septembre sur tous les bassins.</p>
+               <h4>Informations importantes</h4>
+               <p>Il est nécessaire, avant toute chose, de consulter et de prendre connaissance des documents joints au préalable à l’inscription en ligne (tarifs, planning récapitulatif….).</p>
+               
+  	<h4>Informations générales</h4>
+  	 <ul>
+        <li><a href="doc/Note_dinformation.pdf" target="_blank">Note d'information pour la saison 2017-2018</a></li>
+        <li><a href="doc/Cheminement_inscriptions_2017.pdf" target="_blank">Cheminement des inscriptions (choix du groupe)</a></li>
+        <li><a href="doc/Affectations_groupe_competition.pdf" target="_blank">Critères d'affectations des groupes compétitions</a></li>
+        <li><a href="doc/reglement_interieur.pdf" target="_blank">Règlement Intérieur</a></li>
+    </ul>
+    <div class="row center-block">
+    <div class="col-md-6">
+  	<h4>Planning pédagogique</h4>
+  	<ul>
+  		<li><a href="doc/Planning_pedagogique_2017_2018.pdf" target="_blank">Planning pédagogique - Ecole de natation, Perfectionnement, Loisirs et Aquagym</a></li>
+  		<li><a href="doc/Planning_sportif_2017_2018.pdf" target="_blank">Planning sportif - groupes compétitions</a></li>
+  	</ul>
+  	</div>
+  	<div class="col-md-6">
+  	<h4>Tarifs</h4>
+  	<ul>
+        <li><a href="doc/Tarifs_Ecole_de_Natation_1_seance.pdf" target="_blank">Tarif - Têtards (4ans), Marsouins (9, 10, 11ans), Cachalots (12, 13, 14ans), Perf. ados (15-19ans) - 1 séance</a></li>
+        <li><a href="doc/Tarifs_Ecole_de_Natation_2_seances.pdf" target="_blank">Tarif - Tritons (5ans), Dauphins (6ans), Avenirs (6ans, 7ans, 8ans) - 2 séances <strong>(recommandé)</strong></a></li>
+        <li><a href="doc/Tarifs_Loisirs_Ad_Debutant_et_Aquaphobie_1_seance.pdf" target="_blank">Tarif - Loisirs adultes 1 séance</a></li>
+        <li><a href="doc/Tarifs_Loisirs_Loisirs_Adultes_2_seances.pdf" target="_blank">Tarif - Loisir adultes 2 séances</a></li>
+        <li><a href="doc/Tarifs_Loisirs_Marsouins_Loisirs_Adultes_1_seance.pdf" target="_blank">Tarif Marsouins,Cachalots, Adultes 1 séance</a></li>
+        <li><a href="doc/Tarifs_Marsouins_Cachalots_2_seances.pdf" target="_blank">Tarif Marsouins Cachalots 2 séances</a></li>
+        <li><a href="doc/Tarifs_Aquagym.pdf" target="_blank">Tarifs - Aquagym</a></li>
+        <li><a href="doc/Tarifs_Competition.pdf" target="_blank">Tarifs - Compétition</a></li>
+    </ul>
+    </div>
+    </div>
+  	 <div class="panel panel-default" ng-show="enableNouveau">
+  		<div class="panel-heading">
+  			<h4>Etape 1 - Première inscription au club</h4>
+  		</div>
+  		<div class="panel-body">
+  			<form role="form">
+	  			<div class="form-group">
+		  			<label for="nouveau_email">Pour obtenir un code d'accès, veuillez saisir votre adresse e-mail</label>
+		  			<input type="email" class="form-control" id="nouveau_email" ng-model="formData.nouveau" />
+		  		</div>
+	  			<button type="submit" class="btn btn-default btn-block" value="submit" ng-click="nouveauCode()">Valider</button>
+  			</form>
+  		</div>
+  	</div>
+  	<div class="panel panel-default" ng-hide="enableAncien">
+        <div class="panel-heading">
+            <h4>Ouverture des inscriptions aux actuels adhérents le 21 juin 2017 à partir 11h00.</h4>
+        </div>
+    </div>
+	<div class="panel panel-default" ng-hide="enableNouveau">
+		<div class="panel-heading">
+			<h4>Ouverture des inscriptions aux nouveaux adhérents le 17 juillet 2017</h4>
+			<p>Pour les nouveaux adhérents, il vous sera possible d'obtenir un mot de passe uniquement à partir du 17 juillet via cette page. Merci de votre patience.</p>
+		</div>
+  	</div>
+  	<div class="panel panel-default" ng-show="enableAncien">
+  		<div class="panel-heading">
+  		<h4>Etape 2 - Je m'identifie avec mon adresse e-mail et mon code d'accès</h4>
+  		</div>
+  		<div class="panel-body">
+			<form role="form">
+				<div class="form-group">
+					<label for="find_email">Adresse e-mail</label>
+					<input type="email" class="form-control" id="find_email" placeholder="Entrer e-mail" ng-model="formData.email" size="50" />
+					<label for="find_email_motdepasse">Mot de passe&nbsp;&nbsp;<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Code d'accès à 4 chiffres reçu par e-mail, en cas d'oubli vous pouvez le redemander en utilisant le formulaire ci-dessous"></span></label>
+					<input type="password" class="form-control" id="find_email_motdepasse" placeholder="Mot de passe" ng-model="formData.mdp" />
+				</div>
+				<div>
+					<button type="submit" class="btn btn-default btn-block" value="submit" ng-click="authenticate()">S'inscrire</button>
+				</div>
+			</form>  		
+  		</div>
+  	</div>
+  	<div class="panel panel-default"  ng-show="enableAncien || enableNouveau">
+  		<div class="panel-heading">
+  		<h4>J'ai oublié mon mot de passe</h4>
+  		</div>
+  		<div class="panel-body">
+			<form role="form">
+				<div class="form-group">
+					<label for="find_email">Adresse e-mail</label>
+					<input type="email" class="form-control" id="find_email" placeholder="Entrer e-mail" ng-model="formData.email" size="50" />
+				</div>
+				<button type="submit" class="btn btn-default btn-block" value="submit" ng-click="oublie()">J'ai oublié mon mot de passe</button>
+				
+				<p style="margin-top: 20px">En cas de problème, n'hésitez pas à contacter le webmaster à l'adresse suivante: <a href="mailto:webmaster@asptt-toulouse-natation.com" >webmaster@asptt-toulouse-natation.com</a></p>
+			</form>  		
+  		</div>
+  	</div>
+  	</div>
+          
+    <div class="tab-pane fade" id="dossiers">
+	    <p>Vous aviez {{dossiersCount}} dossier(s) d'inscription lors de la saison dernière.</p>
+	    <ol>
+	    	<li ng-repeat="dossier in dossiers" ng-hide="dossier.supprimer">
+	    		<span>{{dossier.dossier.prenom}}&nbsp;{{dossier.dossier.nom}} <button type="button" class="btn btn-primary btn-xs btn-success" ng-click="loadDossier($index)" ng-hide="dossier.dossier.nouveau">Ré-inscrire</button>
+		    		<button type="button" class="btn btn-xs btn-success" ng-click="loadDossier($index)" ng-show="dossier.dossier.nouveau">Modifier</button>
+	  				<button type="button" class="btn btn-xs btn-danger" ng-click="deleteDossier($index)">Supprimer le dossier</button>
+  				</span>
+  				<span ng-class="{'glyphicon glyphicon-ok': dossier.creneauSelected}"></span>
+  				<span class="glyphicon glyphicon-exclamation-sign" ng-show="!dossier.creneauSelected">Vous devez sélectionner un créneau</span>
+  			</li>
+	    </ol>
+	    <button type="button" class="btn btn-default btn-info btn-block" ng-click="ajouterEnfant()">Ajouter un membre de la famille</button>
+	    <div style="text-align: center">OU</div>
+	    <button type="submit" class="btn btn-default btn-block" ng-click="validateDossiers()" ng-disabled="dossiersValide(dossiers)">Valider les dossiers</button>
+    </div>
+    <div class="tab-pane fade" id="activite">
+        <form role="form">
+        
+		  <div class="form-group">
+	    <label class="sr-only" for="activite_pratique">Activité</label>
+	    	<p ng-hide="dossiers[currentDossier].dossier.nouveau">Votre groupe actuel: {{dossiers[currentDossier].groupe.title}}</p>
+		    <select class="form-control" id="activite_pratique" placeholder="Activité" ng-show="dossiers[currentDossier].dossier.nouveau" ng-change="loadSlots()" ng-model="dossiers[currentDossier].groupe"
+		    	ng-options="groupe.title for groupe in groupes.groups track by groupe.id">
+		    	<option value="">Choisir un groupe</option>
+		    </select>
+		  </div>
+		  <p class="bg-info" style="padding: 5px" ng-show="dossiers[currentDossier].groupe.description">{{dossiers[currentDossier].groupe.description}}</p>
+		  <div class="form-group center-block" ng-show="showAdulte">
+		  	<button type="button" class="btn btn-default" ng-click="selectGroupeAdulte('Adultes Débutants')">Débutants</button>
+		  	<button type="button" class="btn btn-default" ng-click="selectGroupeAdulte('Adultes Intermédiaires (20 ans et +)')">Intermédiaires</button>
+		  	<button type="button" class="btn btn-default" ng-click="selectGroupeAdulte('Adultes Confirmés (20 ans et +)')">Confirmés</button>
+		  </div>
+		  <div class="form-group" ng-hide="showAdulte">
+		  	<table class="table">
+		  	 <thead>
+		  	 	<tr>
+		  	 		<th>Piscines</th>
+		  	 		<th>Lundi</th>
+		  	 		<th>Mardi</th>
+		  	 		<th>Mercredi</th>
+		  	 		<th>Jeudi</th>
+		  	 		<th>Vendredi</th>
+		  	 		<th>Samedi</th>
+		  	 	</tr>
+		  	 </thead>
+		  	 <tbody style="font-size: 0.8em">
+		  	 	<tr ng-repeat="slot in dossiers[currentDossier].creneaux.slots">
+		  	 		<td>{{slot.piscine}}</td>
+		  	 		<td>
+		  	 			<div class="checkbox" ng-repeat="lundi in slot.lundi | orderBy:'beginDt'">
+						  <label ng-show="displayCreneau(lundi)">
+						    <input type="checkbox" name="creneaux" ng-model="lundi.selected" ng-disabled="disableCreneau(lundi)" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, lundi)">
+						    {{lundi.beginDt | date: 'HH:mm'}}-{{lundi.endDt | date: 'HH:mm'}} ({{getPlacePrises(lundi)}}/{{lundi.placeDisponible}}) <span ng-show="lundi.second">Seconde séance.</span><span ng-show="lundi.complet">&nbsp;Complet</span><br >
+						  </label>
+						</div>
+					</td>
+		  	 		<td>
+		  	 			<div class="checkbox" ng-repeat="mardi in slot.mardi | orderBy:'beginDt'">
+						  <label ng-show="displayCreneau(mardi)">
+						    <input type="checkbox" name="creneaux" ng-model="mardi.selected" ng-disabled="disableCreneau(mardi)" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, mardi)">
+						    {{mardi.beginDt | date: 'HH:mm'}}-{{mardi.endDt | date: 'HH:mm'}} ({{getPlacePrises(mardi)}}/{{mardi.placeDisponible}}) <span ng-show="mardi.second">Seconde séance.</span><span ng-show="mardi.complet">&nbsp;Complet</span><br >
+						  </label>
+						</div>
+					</td>
+		  	 		<td>
+		  	 			<div class="checkbox" ng-repeat="mercredi in slot.mercredi | orderBy:'beginDt'">
+						  <label ng-show="displayCreneau(mercredi)">
+						    <input type="checkbox" name="creneaux" ng-model="mercredi.selected" ng-disabled="disableCreneau(mercredi)" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, mercredi)">
+						    {{mercredi.beginDt | date: 'HH:mm'}}-{{mercredi.endDt | date: 'HH:mm'}} ({{getPlacePrises(mercredi)}}/{{mercredi.placeDisponible}}) <span ng-show="mercredi.second">Seconde séance.</span><span ng-show="mercredi.complet">&nbsp;Complet</span><br >
+						  </label>
+						</div>
+		  	 		</td>
+		  	 		<td>
+		  	 			<div class="checkbox" ng-repeat="jeudi in slot.jeudi | orderBy:'beginDt'">
+						  <label ng-show="displayCreneau(jeudi)">
+						    <input type="checkbox" name="creneaux" ng-model="jeudi.selected" ng-disabled="disableCreneau(jeudi)"  ng-change="toggleCreneau(dossiers[currentDossier].creneaux, jeudi)">
+						    {{jeudi.beginDt | date: 'HH:mm'}}-{{jeudi.endDt | date: 'HH:mm'}} ({{getPlacePrises(jeudi)}}/{{jeudi.placeDisponible}}) <span ng-show="jeudi.second">Seconde séance.</span><span ng-show="jeudi.complet">&nbsp;Complet</span><br >
+						  </label>
+						</div>
+		  	 		</td>	
+		  	 		<td>
+		  	 			<div class="checkbox" ng-repeat="vendredi in slot.vendredi | orderBy:'beginDt'">
+						  <label ng-show="displayCreneau(vendredi)">
+						    <input type="checkbox" name="creneaux" ng-model="vendredi.selected" ng-disabled="disableCreneau(vendredi)" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, vendredi)">
+						    {{vendredi.beginDt | date: 'HH:mm'}}-{{vendredi.endDt | date: 'HH:mm'}} ({{getPlacePrises(vendredi)}}/{{vendredi.placeDisponible}}) <span ng-show="vendredi.second">Seconde séance.</span><span ng-show="vendredi.complet">&nbsp;Complet</span><br >
+						  </label>
+						</div>
+		  	 		</td>
+		  	 		<td>
+		  	 			<div class="checkbox" ng-repeat="samedi in slot.samedi | orderBy:'beginDt'">
+						  <label ng-show="displayCreneau(samedi)">
+						    <input type="checkbox" name="creneaux" ng-model="samedi.selected" ng-disabled="disableCreneau(samedi)" ng-change="toggleCreneau(dossiers[currentDossier].creneaux, samedi)">
+						    {{samedi.beginDt | date: 'HH:mm'}}-{{samedi.endDt | date: 'HH:mm'}} ({{getPlacePrises(samedi)}}/{{samedi.placeDisponible}}) <span ng-show="samedi.second">Seconde séance.</span><span ng-show="samedi.complet">&nbsp;Complet</span><br >
+						  </label>
+						</div>
+		  	 		</td>
+		  	 	</tr>
+		  	 </tbody>
+		  	</table>
+		  	<button type="button" class="btn btn-link" ng-click="resetSlot()">Recommencer la sélection</button>
+		  </div>
+		  <button type="submit" class="btn btn-default btn-lg btn-block" ng-click="validateActivite(currentDossier)">Valider et passer à l'étape suivante</button>
+		</form>
+        
+    </div>
+          <div class="tab-pane fade" id="nageur">
+       		<form role="form" name="formNageur" class="form-horizontal" ng-submit="validateNageur(dossiers[currentDossier])">
+       			<h4>Photo</h4>
+       				<div class="col-md-4">
+				        <img src="/resources/dossiers/downloadPhoto/{{dossiers[currentDossier].dossier.id}}" class="img-thumbnail" style="max-height: 200px" ng-show="dossiers[currentDossier].hasPhoto" />
+				        <img src="../../img/nageur-nopic.png" class="img-thumbnail" style="max-height: 200px" ng-hide="dossiers[currentDossier].hasPhoto" />
+				        <input type="file" id="photo" name="photo" accept="image/*"/>
+				    </div>
+       			
+          			<fieldset>
+          				<legend>Information du nageur(euse)</legend>
+          					<div class="form-group" ng-class="{'has-error':formNageur.nom.$error.required}">
+		          				<label for="nom" class="col-md-2 control-label">Nom</label>
+		          				<div class="col-md-10">
+		          					<input type="text" class="form-control" id="nom" name="nom" placeholder="nom" size="100" ng-model="dossiers[currentDossier].dossier.nom" required />
+		          					<div ng-messages="formNageur.nom.$error" ng-messages-include="views/inscription-errors.html"></div>
+		          				</div>
+		          			</div>
+		          			<div class="form-group" ng-class="{'has-error':formNageur.prenom.$error.required}">
+		          				<label for="prenom" class="col-md-2 control-label">Prénom</label>
+		          				<div class="col-md-10">
+		          					<input type="text" class="form-control" id="prenom" name="prenom" placeholder="prenom" size="100" ng-model="dossiers[currentDossier].dossier.prenom" required />
+		          					<div ng-messages="formNageur.prenom.$error" ng-messages-include="views/inscription-errors.html"></div>
+		          				</div>
+	          				</div>
+	          				<div class="form-group" ng-class="{'has-error':formNageur.civilite.$error.required}">
+		          				<label for="sexe" class="col-md-2 control-label">Sexe</label>
+		          				<label class="radio-inline">
+	          						<input type="radio" name="civilite" id="monsieur" value="0" ng-model="dossiers[currentDossier].dossier.civilite" required />
+	          						M
+	          					</label>
+	          					<label class="radio-inline">
+	          						<input type="radio" name="civilite" id="madame" value="1" ng-model="dossiers[currentDossier].dossier.civilite" required />
+	          						F
+	          					</label>
+	          					<div ng-messages="formNageur.civilite.$error" ng-messages-include="views/inscription-errors.html"></div>
+	          				</div>
+	          				<div class="form-group row" ng-class="{'has-error':formNageur.day.$error.required}">
+		          				<label for="day" class="col-md-2 control-label">Date de naissance</label>
+		          				<div class="col-md-6">
+		          					<div class="datefield" ng-class="{'has-error':formNageur.day.$error.required}">
+	  									<input id="day" name="day" ng-model="dossiers[currentDossier].day" type="tel" ng-keyup="goToInput('month')" maxlength="2" placeholder="01" required />/
+	  									<input id="month" name="month" ng-model="dossiers[currentDossier].month" type="tel" ng-keyup="goToInput('year')" maxlength="2" placeholder="01" required />/
+	  									<input id="year" name="year" ng-model="dossiers[currentDossier].year" type="tel" maxlength="4" placeholder="1998" ng-keyup="buildNaissance()" required />
+									</div>
+		          				</div>
+		          				<div ng-messages="formNageur.datenaissance.$error" ng-messages-include="views/inscription-errors.html"></div>
+	          				</div>
+          			</fieldset>
+          			
+          			<fieldset ng-if="dossiers[currentDossier].groupe.competition">
+	  				<legend>Equipement - mensuration (Taille Arena)</legend>
+	  					<div class="form-group" ng-class="{'has-error':formNageur.maillot.$error.required}">
+	  						<label for="maillot" class="col-md-2 control-label">Maillot de bain</label>
+	  						<div class="col-md-10">
+	  							<select id="maillot" class="form-control" name="maillot" ng-model="dossiers[currentDossier].dossier.maillot" required>
+	  								<option value="">Choisir une taille</option>
+	  								<option value="6">6 ans</option>
+	  								<option value="8">8 ans</option>
+	  								<option value="10">10 ans</option>
+	  								<option value="12">12 ans</option>
+	  								<option value="1'">14 ans</option>
+	  								<option value="34" ng-show="showTailleF()">34 (Femmes)</option>
+	  								<option value="36" ng-show="showTailleF()">36 (Femmes)</option>
+	  								<option value="38" ng-show="showTailleF()">38 (Femmes)</option>
+	  								<option value="40" ng-show="showTailleF()">40 (Femmes)</option>
+	  								<option value="42" ng-show="showTailleF()">42 (Femmes)</option>
+	  								<option value="44" ng-show="showTailleF()">44 (Femmes)</option>
+	  								<option value="65" ng-show="showTailleM()">65 (Hommes)</option>
+	  								<option value="70" ng-show="showTailleM()">70 (Hommes)</option>
+	  								<option value="75" ng-show="showTailleM()">75 (Hommes)</option>
+	  								<option value="80" ng-show="showTailleM()">80 (Hommes)</option>
+	  								<option value="85" ng-show="showTailleM()">85 (Hommes)</option>
+	  								<option value="90" ng-show="showTailleM()">90 (Hommes)</option>
+	  								<option value="95" ng-show="showTailleM()">95 (Hommes)</option>
+	  							</select>
+  							</div>
+	  					</div>
+	  					<div class="form-group" ng-class="{'has-error':formNageur.tshirt.$error.required}">
+	  						<label for="tshirt" class="col-md-2 control-label">T-Shirt</label>
+	  						<div class="col-md-10">
+	  							<select id="tshirt" class="form-control" name="tshirt" ng-model="dossiers[currentDossier].dossier.tshirt" required>
+	  								<option value="">Choisir une taille</option>
+			  						<option>XS</option>
+			  						<option>S</option>
+			  						<option>M</option>
+			  						<option>L</option>
+			  						<option>XL</option>
+			  					</select>
+	  						</div>
+	  					</div>
+	  					<div class="form-group" ng-class="{'has-error':formNageur.shortPantalon.$error.required}">
+	  						<label for="shortPantalon" class="col-md-2 control-label">Short</label>
+	  						<div class="col-md-10">
+	  							<select id="shortPantalon" name="shortPantalon" class="form-control" ng-model="dossiers[currentDossier].dossier.shortPantalon" required>
+	  								<option value="">Choisir une taille</option>
+		  							<option>XS</option>
+			  						<option>S</option>
+			  						<option>M</option>
+			  						<option>L</option>
+			  						<option>XL</option>
+		  						</select>
+	  						</div>
+	  					</div>
+	  			</fieldset>
+	  			
+  		<fieldset>
+  			<legend>Activité</legend>
+  			<div class="form-inline" ng-class="{'has-error':formNageur.csp.$error.required || formNageur.profession.$error.required}">
+  				<div class="col-md-6 form-group">
+  					<select class="form-control" name="csp" ng-model="dossiers[currentDossier].dossier.csp" ng-options="cspValue as cspValue for cspValue in cspList" required>
+  						<option value="">Sélectionnez votre activité</option>
+  					</select>
+  				</div>
+  				<div class="col-md-6 form-group">
+  					<label for="input-profession">Précisez</label>
+  					<input id="input-profession" name="profession
+  					" type="text" class="form-control" size="30" ng-model="dossiers[currentDossier].dossier.profession" required />
+  				</div>
+  			</div>
+  		</fieldset>
+  		<div ng-messages="formNageur.csp.$error || formNageur.profession.$error" ng-messages-include="views/inscription-errors.html"></div>
+  		<div class="checkbox">
+				<label>
+					<input type="checkbox" ng-model="dossiers[currentDossier].dossier.fonctionnaire" /> Fonction publique
+				</label>
+			</div>
+  		<div style="margin-top:1%">
+	  			<button type="submit" class="btn btn-default btn-lg btn-block" ng-disabled="!formNageur.$valid"">Valider et passer à l'étape suivante</button>
+	  			</div>
+          	</form>
+          </div>
+          <div class="tab-pane fade" id="info">
+          	<form role="form" name="formDossier" class="form-horizontal" ng-submit="validateInfo()" novalidate>
+	          	<fieldset ng-show="hasMineur()">
+		          	<legend>Parents</legend>
+		          		<div class="form-group" ng-class="{'has-error':formDossier.parent1Nom.$error.required || formDossier.parent1Prenom.$error.required}">
+	  						<label for="parent1Nom" class="col-md-2 control-label">Nom</label>
+	  						<div class="col-md-4">
+	  							<input type="text" class="form-control" id="parent1Nom" name="parent1Nom" placeholder="Nom" size="50" ng-model="principal.parent1Nom" required />
+	  						</div>
+	  						<label for="parent1Prenom" class="col-md-2 control-label">Prenom</label>
+	  						<div class="col-md-4">
+	  							<input type="text" class="form-control" id="parent1Prenom" name="parent1Prenom" placeholder="Prenom" size="50" ng-model="principal.parent1Prenom" required />
+	  						</div>
+	  					</div>
+	  					<div ng-messages="formDossier.parent1Nom.$error || formDossier.parent1Prenom.$error" ng-messages-include="views/inscription-errors.html"></div>
+	  					
+		          		<div class="form-group">
+	  						<label for="parent2Nom" class="col-md-2 control-label">Nom</label>
+	  						<div class="col-md-4">
+	  							<input type="text" class="form-control" id="parent2Nom" name="parent2Nom" placeholder="Nom" size="50" ng-model="principal.parent2Nom" />
+	  						</div>
+		  					<label for="parent2Prenom" class="col-md-2 control-label">Prenom</label>
+		  					<div class="col-md-4">
+	  							<input type="text" class="form-control" id="parent2Prenom" name="parent2Prenom" placeholder="Prenom" size="50" ng-model="principal.parent2Prenom" />
+	  						</div>
+	  					</div>
+	          	</fieldset>
+          	<fieldset>
+  			<legend>Adresse postale</legend>
+  				<div class="form-group" ng-class="{'has-error':formDossier.adresse.$error.required}">
+  					<label for="adresse" class="col-md-2 control-label">Adresse complète</label>
+  					<div class="col-md-10">
+  						<input type="text" class="form-control" id="adresse" name="adresse" placeholder="Adresse postale" size="100" ng-model="principal.adresse" required />
+  					</div>
+  					<div ng-messages="formDossier.adresse.$error" ng-messages-include="views/inscription-errors.html"></div>
+  				</div>
+  				<div class="form-group" ng-class="{'has-error':formDossier.codePostal.$error.required}">
+  					<label for="codePostal" class="col-md-2 control-label">Code postal</label>
+  					<div class="col-md-10">
+  						<input type="text" class="form-control" id="codePostal" name="codePostal" placeholder="Code postal" size="10" ng-model="principal.codepostal" required />
+  					</div>
+  					<div ng-messages="formDossier.codePostal.$error" ng-messages-include="views/inscription-errors.html"></div>
+  				</div>
+  				<div class="form-group" ng-class="{'has-error':formDossier.ville.$error.required}">
+  					<label for="ville" class="col-md-2 control-label">Ville</label>
+  					<div class="col-md-10">
+  						<input type="text" class="form-control" id="ville" name="ville" placeholder="Ville" size="50" ng-model="principal.ville" required />
+  					</div>
+  					<div ng-messages="formDossier.ville.$error" ng-messages-include="views/inscription-errors.html"></div>
+  				</div>
+  			</fieldset>
+  		
+	  		<fieldset>
+	  			<legend>Contact</legend>
+	  			<div class="form-group" ng-class="{'has-error':formDossier.telephone.$error.required}">
+	  				<label for="telephone" class="col-md-2 control-label">Numéro de téléphone principal</label>
+	  				<div class="col-md-4">
+	  					<input type="tel" class="form-control" id="telephone" name="telephone" placeholder="Téléphone" size="15" ng-model="principal.telephone" required />
+	  				</div>
+	  				
+					<label for="telephoneSecondaire" class="col-md-2 control-label">Numéro de téléphone secondaire</label>
+					<div class="col-md-4">
+						<input type="tel" class="form-control" id="telephoneSecondaire" placeholder="Téléphone secondaire" size="15" ng-model="principal.telephoneSecondaire" />
+					</div>
+				</div>
+				<div ng-messages="formDossier.telephone.$error" ng-messages-include="views/inscription-errors.html"></div>
+				<div class="form-group" ng-class="{'has-error':formDossier.email.$error.required}">
+					<label for="email" class="col-md-2 control-label">Adresse e-mail (usuelle pour toutes les communications)</label>
+					<div class="col-md-10">
+						<input type="email" class="form-control" id="email" name="email" placeholder="E-mail" size="50" ng-model="principal.email" required />
+					</div>
+					<div ng-messages="formDossier.email.$error" ng-messages-include="views/inscription-errors.html"></div>
+				</div>
+				<div class="form-group">
+					<label for="email2" class="col-md-2 control-label">Adresse e-mail secondaire</label>
+					<div class="col-md-10">
+						<input type="email" class="form-control" id="email2" placeholder="E-mail secondaire" size="50" ng-model="principal.emailsecondaire" />
+					</div>
+				</div>
+	  		</fieldset>
+  		
+  			<fieldset ng-show="hasMineur()">
+	  			<legend>Profession des parents</legend>
+  				<div class="form-group" ng-class="{'has-error':formDossier.cspParent1.$error.required || formDossier.professionParent1.$error.required}">
+  					<label class="col-md-2 control-label" for="select-profession-parent1">Profession</label>
+  					<div class="col-md-4">
+	  					<select id="select-profession-parent1" class="form-control" name="cspParent1" ng-model="principal.parent1Csp" ng-options="csp for csp in cspList" required>
+	  						<option value="">Sélectionnez votre activité</option>
+	  					</select>
+  					</div>
+  					<label class="col-md-2 control-label" for="input-profession-parent1">Précisez</label>
+  					<div class="col-md-4">
+  						<input id="input-profession-parent1" name="professionParent1" type="text" class="form-control" size="30" ng-model="principal.parent1Profession" required />
+  					</div>
+  					<div ng-messages="formDossier.cspParent1.$error || formDossier.professionParent1.$error" ng-messages-include="views/inscription-errors.html"></div>
+  				</div>
+  				<div class="form-group">
+  					<label class="col-md-2 control-label" for="select-profession-parent2">Profession</label>
+  					<div class="col-md-4">
+	  					<select id="select-profession-parent2" class="form-control" ng-model="principal.parent2Csp" ng-options="csp for csp in cspList">
+	  						<option value="">Sélectionnez votre activité</option>
+	  					</select>
+  					</div>
+  					<label class="col-md-2 control-label" for="input-profession-parent2">Précisez</label>
+  					<div class="col-md-4">
+  						<input id="input-profession-parent2" type="text" class="form-control" size="30" ng-model="principal.parent2Profession" />
+  					</div>
+  				</div>
+	  		</fieldset>
+  		
+  		<fieldset ng-show="isUniqueMajeur()">
+  			<legend>Accord de licence</legend>
+  			<div class="form-group" ng-class="{'has-error':formDossier.accordNomPrenom.$error.required}">
+  			
+  				<label for="accordNomPrenom">Je, soussigné</label><input type="text" class="form-control" id="accordNomPrenom" name="accordNomPrenom" placeholder="Nom et prénom" size="50" ng-model="principal.accordNomPrenom" /><div ng-messages="formDossier.accordNomPrenom.$error" ng-messages-include="views/inscription-errors.html"></div>
+  				 reconnais avoir pris connaissance de la notice d’assurance FS ASPTT:
+	  			<ul>
+	  				<li>de la notice d'assurance m'informant du résumé des garanties incluses dans le contrat d'assurance et adhérer au contrat national proposé par la FSASPTT (notice aussi disponible sur le site <a href="http://asptt.com/la-federation/licence-federation-sportive-asptt/" target="_blank">www.asptt.com, rubrique "Licence"</a>)</li>
+	  				<li>des statuts et règlement intérieur (disponible au Secrétariat de l'Association)</li>
+	  			</ul>
+  			</div>
+  		</fieldset>
+  		
+  		<fieldset ng-show="fillAccident()">
+  			<legend>Personne à contacter en cas d'accident</legend>
+  			<div class="form-group">
+  				<label for="accidentNom1" class="col-md-1 control-label">Nom</label>
+  				<div class="col-md-3">
+  					<input type="text" class="form-control" id="accidentNom1" placeholder="Nom" size="50" ng-model="principal.accidentNom1" />
+  				</div>
+  				<label for="accidentPrenom1" class="col-md-1 control-label">Prénom</label>
+  				<div class="col-md-3">
+  					<input type="text" class="form-control" id="accidentPrenom1" placeholder="Prénom" size="50" ng-model="principal.accidentPrenom1" />
+  				</div>
+  				<label for="accidentTelephone1" class="col-md-1 control-label">Téléphone</label>
+  				<div class="col-md-3">
+  					<input type="text" class="form-control" id="accidentTelephone1" placeholder="Téléphone" ng-model="principal.accidentTelephone1" />
+  				</div>
+  			</div>
+  			<div class="form-group">
+  				<label for="accidentNom2" class="col-md-1 control-label">Nom</label>
+  				<div class="col-md-3">
+  					<input type="text" class="form-control" id="accidentNom2" placeholder="Nom" size="50" ng-model="principal.accidentNom2" />
+  				</div>
+  				<label for="accidentPrenom2" class="col-md-1 control-label">Prénom</label>
+  				<div class="col-md-3">
+  					<input type="text" class="form-control" id="accidentPrenom2" placeholder="Prénom" size="50" ng-model="principal.accidentPrenom2" />
+  				</div>
+  				<label for="accidentTelephone2" class="col-md-1 control-label">Téléphone</label>
+  				<div class="col-md-3">
+  					<input type="text" class="form-control" id="accidentTelephone2" placeholder="Téléphone" ng-model="principal.accidentTelephone2" />
+  				</div>
+  			</div>
+  		</fieldset>
+  		<button type="submit" class="btn btn-default btn-lg btn-block" ng-disabled="isNotDossierValid()">Valider et passer à l'étape suivante</button>
+	  		</form>
+          </div>
+          <div class="tab-pane fade" id="contribution">
+          	<form role="form" name="formDossier" class="form-horizontal" ng-submit="validateContribution()" novalidate>
+          	<h3>La section natation c'est avant tout la votre. Il nous appartient à tous de la faire grandir</h3>
+          	<p>Nous avons besoin de votre soutient. A chacun sa manière vous pouvez contribuer à faire grandir le club.</p>
+          	<p>Indiquez nous vos souhaits de participation. Il n'y a rien d'obligatoire et l'engagement restera le votre</p>
+          	<div class="checkbox" ng-repeat="contribution in contributions">
+          		<label>
+          			<input type="checkbox" ng-model="contribution.value" />{{contribution.label}}
+          		</label>
+          	</div>
+          	<button type="submit" class="btn btn-default btn-lg btn-block" ng-disabled="isNotDossierValid()">Valider et passer à l'étape suivante</button>
+          	</form>
+        </div>
+          <div class="tab-pane fade" id="cotisation">
+          	<h3>Votre inscription est pré-enregistrée.</h3>
+          	<p class="lead">
+          	Votre inscription ainsi que vos réservations de créneaux de cours sont effectives pour une période de 8 jours (soit jusqu'au {{validite | date:'dd/MM/yyyy HH:mm'}}).<br />
+          	Nous validerons définitivement votre dossier dès réception du paiement (nous tolérons un délai suppplémentaire de 15 jours pour la réception des certificats médicaux).<br />
+          En l'absence de paiement de la cotisation au bout de 8 jours votre dossier d'inscription sera effacé afin de laisser la place à d'autres adhérents.</p>
+          	
+          	<form role="form" enctype="multipart/form-data" ng-submit="validateInscription()">
+          	<h3>Montant de votre cotisation: {{price}} euros</h3>
+          	         	<ul>
+          	         		<li ng-repeat="dossier in dossiers">{{dossier.dossier.nom}} {{dossier.dossier.prenom}} ({{dossier.groupe.title}}): {{dossier.dossier.tarif}} euros</li>
+          	         	</ul>
+          	         	<div class="checkbox">
+	          		<label>
+	          			<input type="checkbox" id="facture" ng-model="principal.facture" ng-true-value="'true'" ng-false-value="'false'" /> Je souhaite avoir une facture suite à mon paiement
+	          		</label>
+          		</div>
+          		<h5>Moyens de paiement</h5>
+          		<ul>
+          			<li>chèque à l'ordre ASPTT Toulouse (encaissement novembre)</li>
+          			<li>3 chèques à l'ordre ASPTT Toulouse  (encaissement novembre puis décembre et janvier)</li>
+          			<li>chèque-vacances</li>
+          			<li><strong>Attention suite à la nouvelle directive du Conseil Régional nous ne pouvons plus accepter la carte jeune qui est maintenant réservée aux clubs UNSS.</strong></li>
+          		</ul>
+          	<h3>Certificats médicaux</h3>
+          	<p>Vous pouvez nous transmettre le(s) certificat(s) médicaux par voie électronique.</p>
+          	<ul>
+          		<li ng-repeat="dossier in dossiers">{{dossier.dossier.nom}} {{dossier.dossier.prenom}} <input type="file" id="file_{{dossier.dossier.id}}" name="file_{{dossier.dossier.id}}" accept="image/*,.pdf"/></li>
+          	</ul>
+          	<!-- <div id="paypal-button"></div>-->
+          	<button type="submit" class="btn btn-default btn-lg btn-block">Je finalise ma pré-inscription</button>
+          	</form>
+          	
+          	<div class="modal fade" id="validation-popup" tabindex="-1" role="dialog" aria-hidden="true">
+          		<div class="modal-dialog">
+          			<div class="modal-content">
+          				<div class="modal-header">
+          					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          					<h4 class="modal-title">L'ASPTT Toulouse Natation vous remercie</h4>
+          				</div>
+          				<div class="modal-body">
+				          		<h4>Vos dossiers d'inscriptions à télécharger</h4>
+				          		<ol style="margin-top: 5%">
+				          			<li ng-repeat="dossier in dossiers">
+				          				<a href="resources/inscription/print/{{dossier.dossier.id}}" download>{{dossier.dossier.nom}} {{dossier.dossier.prenom}} (cliquer pour télécharger le bulletin d'adhésion)</a>
+				          			</li>
+				          		</ol>
+				          		<h4>Finaliser l'inscription</h4>
+				          		<p>N'oubliez de nous retourner votre dossier d'inscription <span style="color : #FF0000">signé</span> accompagné du ou des certificats médicaux (si non fournis par voie électronique) ainsi que le paiement par chèque(s) sous 15 jours<!-- >sous 8 jours--> à l'adresse suivante:<p class="text-center">ASPTT Grand Toulouse Natation<br />54 rue des Sept Troubadours<br />Bureau 215<br />31000 Toulouse.<br /><strong>Attention le secrétariat est fermé du 01 au 16 août.</strong></p>
+				        </div>
+				    </div>
+				</div>
+          	</div>
+		  </div>
+<div class="clearfix"></div>
+</div>
+
+</div>
+</div>
+<script>
+
+var CREATE_PAYMENT_URL  = 'https://my-store.com/paypal/create-payment';
+var EXECUTE_PAYMENT_URL = 'https://my-store.com/paypal/execute-payment';
+        paypal.Button.render({
+
+            env: 'sandbox', // Or 'sandbox', 'production'
+
+            commit: true, // Show a 'Pay Now' button
+
+            payment: function() {
+                // Set up the payment here
+            	return paypal.request.post(CREATE_PAYMENT_URL).then(function(data) {
+                    return data.id;
+                });
+            },
+
+            onAuthorize: function(data, actions) {
+                // Execute the payment here
+            	return paypal.request.post(EXECUTE_PAYMENT_URL, {
+                    paymentID: data.paymentID,
+                    payerID:   data.payerID
+                }).then(function() {
+
+                    // The payment is complete!
+                    // You can now show a confirmation message to the customer
+                });
+           }
+
+        }, '#paypal-button');
+    </script>

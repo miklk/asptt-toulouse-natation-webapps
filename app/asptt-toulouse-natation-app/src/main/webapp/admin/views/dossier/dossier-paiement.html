@@ -1,0 +1,44 @@
+<div class="modal fade" id="dossier-paiement-popup">
+  <div class="modal-dialog">
+    <div class="modal-content" style="padding:5%">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+        <h4 class="modal-title">Réception du paiement</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+            <div class="form-group">
+            	<label for="statutPaiement">Statut du paiement</label>
+				<select class="form-control" name="statutPaiement" ng-model="dossierPaiementParameters.statutPaiement" ng-options="statut as statut for statut in paiementStatus">
+				</select>
+            </div>
+            <div class="form-group">
+            	<label for="">Mode de paiement</label>&nbsp;<button type="button" class="btn btn-success btn-xs" title="Ajouter un mode de paiement" ng-click="addModePaiement()"><span class="glyphicon glyphicon-plus"></span></button>
+            	<div style="margin-top: 1%" ng-repeat="paiement in dossierPaiementParameters.paiement">
+					<label>Mode de paiement numéro {{$index + 1}}</label><select class="form-control" name="modePaiement" ng-model="paiement.first" ng-options="modePaiement as modePaiement for modePaiement in modePaiements">
+					</select>
+					<div ng-show="paiement.first != 'ESPECES'">
+					Numéro des chèques séparés par , : <input type="text" class="form-control" id="numeroPaiement" ng-model="paiement.second" />
+					</div>
+				</div>
+            </div>
+            <div class="form-group">
+                <label for="montantReel" class="col-md-3 control-label">Montant réel payé</label>
+                <div class="col-md-9">
+                    <input type="number" id="montantReel" class="form-control" ng-model="dossierPaiementParameters.montantReel" />
+                </div>
+            </div>
+             <div class="form-group">
+                <label for="commentaire" class="col-md-3 control-label">Commentaire</label>
+                <div class="col-md-9">
+                    <textarea id="commentaire" class="form-control" ng-model="dossierPaiementParameters.commentaire" cols="10" rows="10"></textarea>
+                </div>
+            </div>
+        </form>
+      </div>
+      <div class="modal-bottom">
+        <button type="button" class="btn btn-primary btn-block" ng-click="paiement()">Valider</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,138 @@
+<div class="modal fade" id="groupe-popup">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+        <h4 class="modal-title">{{groupePopupTitle}}</h4>
+      </div>
+      <div class="modal-body">
+		<form name="groupeForm" class="form-horizontal">
+			<div class="form-group">
+				<label for="intitule" class="col-md-2 control-label">Intitule</label>
+				<div class="col-md-10">
+					<input type="text" class="form-control" id="intitule" ng-model="groupe.title" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="description" class="col-md-2 control-label">Description</label>
+				<div class="col-md-10">
+					<textarea class="form-control" id="description" ng-model="groupe.description" rows="3"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" ng-model="groupe.licenceFfn"> Licence FFN
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" ng-model="groupe.inscription"> Valable à l'inscription
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" ng-model="groupe.seanceunique"> Séance unique
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="groupe.secondes"> Multiple secondes séances
+                        </label>
+                    </div>
+                </div>
+            </div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" ng-model="groupe.nouveau"> Disponible pour les nouveaux adhérents
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" ng-model="groupe.enf"> Groupe ENF
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<div class="checkbox">
+						<label>
+							<input type="checkbox" ng-model="groupe.competition"> Groupe compétition
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" ng-show="groupe.competition">
+				<label for="capacite" class="control-label col-md-2">Capacité</label>
+				<div class="col-md-4">
+					<input type="number" class="form-control" id="capacite" ng-model="groupe.capacite" />
+				</div>
+				<label for="occupe" class="control-label col-md-2">Occupé</label>
+				<div class="col-md-4">
+					<input type="number" class="form-control" id="occupe" ng-model="groupe.occupe" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="tarifWeight" class="col-md-2 control-label">Priorité pour les tarifs</label>
+				<div class="col-md-10">
+					<input type="number" class="form-control" id="tarifWeight" ng-model="groupe.tarifWeight" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="tarif" class="col-md-2 control-label">Tarifs</label>
+				<div class="col-md-2">
+					<input type="number" class="form-control" id="tarif" ng-model="groupe.tarif" />
+					</div>
+					<div class="col-md-2">
+					<input type="number" class="form-control" id="tarif2" ng-model="groupe.tarif2" />
+					</div>
+					<div class="col-md-2">
+					<input type="number" class="form-control" id="tarif3" ng-model="groupe.tarif3" />
+					</div>
+					<div class="col-md-2">
+					<input type="number" class="form-control" id="tarif4" ng-model="groupe.tarif4" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="tarifUnique" class="col-md-2 control-label">Tarifs (1 séance)</label>
+				<div class="col-md-2">
+					<input type="number" class="form-control" id="tarifUnique" ng-model="groupe.tarifUnique" />
+					</div>
+					<div class="col-md-2">
+					<input type="number" class="form-control" id="tarifUnique2" ng-model="groupe.tarifUnique2" />
+					</div>
+					<div class="col-md-2">
+					<input type="number" class="form-control" id="tarifUnique3" ng-model="groupe.tarifUnique3" />
+					</div>
+					<div class="col-md-2">
+					<input type="number" class="form-control" id="tarifUnique4" ng-model="groupe.tarifUnique4" />
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-primary btn-block" ng-click="create()">Valider</button>
+	</div>
+   </div>
+  </div>
+</div>

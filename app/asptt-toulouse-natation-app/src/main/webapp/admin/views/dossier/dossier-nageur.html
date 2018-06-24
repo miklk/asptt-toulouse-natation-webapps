@@ -1,0 +1,98 @@
+<h3>{{nageur.nageur.nom}} {{nageur.nageur.prenom}}&nbsp;<button type="button" class="btn btn-danger btn-xs" title="Supprimer le nageur"><span class="glyphicon glyphicon-remove" ng-click=""></span></button>&nbsp;<button type="button" class="btn btn-info btn-xs" title="Certificat reçu"><span class="glyphicon glyphicon-ok" ng-click=""></span></button>
+&nbsp;<a class="btn btn-primary btn-xs" href="/resources/inscription/print/{{nageur.nageur.id}}" download><span class="glyphicon glyphicon-save-file" ng-click=""></span> Bulletin d'adhésion</a></button>
+&nbsp;<button type="button" class="btn btn-warning btn-xs" ng-click="adherons(nageur.nageur)"><span class="glyphicon glyphicon-export"></span> Adhérons</button></h3>
+<form role="form" class="form-horizontal" enctype="multipart/form-data">
+    <div class="row">
+	    <div class="col-md-4">
+	        <img src="/resources/dossiers/downloadPhoto/{{nageur.nageur.id}}" class="img-thumbnail" style="max-height: 200px" ng-show="nageur.hasPhoto" />
+	        <img src="../../img/nageur-nopic.png" class="img-thumbnail" style="max-height: 200px" ng-hide="nageur.hasPhoto" />
+	        <input type="file" id="idphoto" name="idphoto_{{nageur.nageur.id}}" class="btn btn-default btn-xs" accept="image/*" onchange="angular.element(this).scope().uploadIdPhoto(this)">
+	    </div>
+	    <div class="col-md-6">
+			<div class="form-group">
+				<label class="radio-inline">
+					<input type="radio" name="civilite" id="monsieur" value="0" ng-model="nageur.nageur.civilite" />
+					M
+				</label>
+				<label class="radio-inline">
+					<input type="radio" name="civilite" id="madame" value="1" ng-model="nageur.nageur.civilite" />
+					F
+				</label>
+			</div>
+			<div class="form-group">
+				<div class="form">
+					<label for="nom" class="control-label">Nom</label>
+					<input id="nom" type="text" class="form-control" ng-model="nageur.nageur.nom" size="50" />
+					<label for="prenom" class="control-label">Prénom</label>
+					<input id="prenom" type="text" class="form-control" ng-model="nageur.nageur.prenom" size="50" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label for=dateNaissance class="control-label">Date de naissance</label>
+					<input id="datenaissance-field" name="datenaissance" type="date" ng-model="nageur.nageur.naissance" class="form-control" />
+			</div>
+		</div>
+	</div>
+	<div class="row">
+	   <div class="col-md-8">
+	<h3>Equipement</h3>
+	
+	<div class="form-group">
+		<div class="form-inline">
+			<label for="maillot" class="control-label">Maillot de bain</label>
+			<input type="text" class="form-control" id="maillot" placeholder="Maillot de bain" size="5" ng-model="nageur.nageur.maillot" />
+			<label for="tshirt" class="control-label">T-Shirt</label>
+			<select id="tshirt" class="form-control" ng-model="nageur.nageur.tshirt">
+				<option>XS</option>
+				<option>S</option>
+				<option>M</option>
+				<option>L</option>
+				<option>XL</option>
+			</select>
+			<label for="shortPantalon" class="control-label">Short</label>
+			<select id="shortPantalon" class="form-control" ng-model="nageur.nageur.shortPantalon">
+				<option>XS</option>
+				<option>S</option>
+				<option>M</option>
+				<option>L</option>
+				<option>XL</option>
+			</select>
+		</div>
+	</div>
+	
+	<h3>Profession</h3>
+	<div class="form-group">
+		<div class="col-md-1"></div>
+		<div class="form-inline">
+			<select class="form-control" name="csp" ng-model="nageur.nageur.csp" ng-options="cspValue as cspValue for cspValue in cspList">
+			</select>
+			<label for="input-profession" class="control-label">Précisez</label>
+			<input id="input-profession" name="profession" type="text" class="form-control" size="30" ng-model="nageur.nageur.profession" />
+		</div>
+	</div>
+	
+	<h3>Certificat médical</h3>
+	<p ng-show="!nageur.hasCertificat">Il n'y a pas de certificat en base de donnée.</p>
+	<p ng-show="nageur.hasCertificat"><a href="/resources/dossiers/downloadCertificat/{{nageur.nageur.id}}" >Télécharger le certificat</a> <button type="button" class="btn btn-danger btn-xs" ng-click="removeCertificat(nageur)" title="Supprimer le certificat"><span class="glyphicon glyphicon-trash"></span></button></p>
+	<h6><span class="glyphicon glyphicon-file"></span>Sauvegarder un certificat (remplace l'ancien)</h6>
+	<input type="file" id="certificat" name="certificat_{{nageur.nageur.id}}" class="btn btn-default" accept="image/*,.pdf" onchange="angular.element(this).scope().uploadCertificat(this)">
+	<p class="bg-success" ng-show="uploadCertificatSuccess"><strong>Ajout du certificat avec succès.</strong></p>
+	
+	<h3>Groupe: {{nageur.groupe.title}}&nbsp;<button type="button" class="btn btn-info"><span class="glyphicon glyphicon-pencil" ng-click="changerGroupe(nageur)"></span></button></h3>
+	<h3>Créneaux&nbsp;<button type="button" class="btn btn-info"><span class="glyphicon glyphicon-pencil" ng-click="changerCreneaux(nageur)"></span></button></h3>
+		<div class="form-group">
+			<div class="col-md-5">
+				<ul>
+					<li ng-repeat="creneau in nageur.creneaux">
+						{{creneauLabel(creneau)}}
+					</li>
+				</ul>
+			</div>
+		</div>
+	
+	<button type="button" class="btn btn-primary btn-block" ng-click="update()">Valider les modifications</button>
+	</div>
+	</div>
+</form>
+<div ng-include="'views/dossier/dossier-groupe.html'"></div>
+<div ng-include="'views/dossier/dossier-creneaux.html'"></div>

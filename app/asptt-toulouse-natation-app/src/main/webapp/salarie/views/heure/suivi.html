@@ -1,0 +1,47 @@
+<div class="container" ng-controller="SuiviHeureController">
+	<div class="row">
+		<h1 class="page-header">Suivi de l'activité</h1>
+	</div>
+	<div class="row">
+			<form class="form-inline">
+				<div class="form-group">Salarié
+					<select ng-model="user" ng-options="user.lastName for user in users" ng-change ="loadMonth()">
+							<option value="">Tous</option>
+					</select>
+				</div>
+				<div class="form-group">Sélectionner un mois
+					<input type="month" ng-model="beginMonth" class="form-control" ng-change="loadMonth()" />
+				</div>
+				<div class="form-group" ng-show="beginMonth">
+					<h5>{{beginMonth | date: 'shortDate'}} - {{endMonth | date: 'shortDate'}}</h5>
+				</div>
+			</form>
+	</div>
+	<strong ng-show="loading">Recherche en cours...</strong>
+	<div>
+		<div class="row" style="margin-top: 1%">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Semaine</th>
+						<th>Lundi</th>
+						<th>Mardi</th>
+						<th>Mercredi</th>
+						<th>Jeudi</th>
+						<th>Vendredi</th>
+						<th>Samedi</th>
+						<th>Dimanche</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat ="(key, value) in days">
+						<td>{{key}}</td>
+						<td ng-repeat = "daysOfWeek in value">
+							<span ng-repeat="day in daysOfWeek">{{day.activite}}<span ng-show="canDisplaySalarie()"> - par {{displaySalarie(day.user)}}<br /></span></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

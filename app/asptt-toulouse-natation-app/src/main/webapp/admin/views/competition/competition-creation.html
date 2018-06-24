@@ -1,0 +1,68 @@
+<div class="container" ng-controller="CompetitionController">
+	<div class="row">
+		<h1 class="page-header">Compétition</h1>
+	</div>
+	<div class="row">
+		<div class="form-inline">
+			<div class="form-group">
+				<label for="intitule">Intitule</label>
+				<input id="intitule" class="form-control" ng-model="competition.title" type="text" size="30"/>
+			</div>
+			<div class="form-group">
+				<label for="type">Type</label>
+				<select id="type" class="form-control" ng-model="competition.kind" ng-options="competitionKind for competitionKind in competitionKind"></select>
+			</div>
+			<div class="form-group">
+				<label for="periodeBegin">Période</label>
+				<input id="periodeBegin" class="form-control" ng-model="competition.begin" type="date" />
+				<input id="periodeEnd" class="form-control" ng-model="competition.end" type="date" />
+			</div>
+		</div>
+	</div>
+	<div class="row" style="margin-top: 1%">
+			<h3>Epreuves</h3>
+			<button type="button" class="btn btn-success btn-xs" ng-click="addEpreuve()"><span class="glyphicon glyphicon-plus"></span> Ajouter une épreuve</button>
+		<div class="col-lg-10">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Ordre</th>
+						<th>Sexe</th>
+						<th>Nage</th>
+						<th>Distance</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="epreuve in epreuves">
+						<td>{{$index}}</td>
+						<td>
+							<select ng-model="epreuve.sexe">
+								<option value="M">Garçon</option>
+								<option value="F">Fille</option>
+								<option value="MIXTE">Mixte</option>
+							</select>
+						</td>
+						<td>
+							<select ng-model="epreuve.nage">
+								<option value="pap">Pap</option>
+								<option value="dos">Dos</option>
+								<option value="brasse">Brasse</option>
+								<option value="nl">Nage libre</option>
+							</select>
+						</td>
+						<td>
+							<select ng-model="epreuve.distance">
+								<option value="25">25</option>
+								<option value="50">50</option>
+								<option value="100">100</option>
+								<option value="200">200</option>
+								<option value="400">400</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<button type="button" class="btn btn-success btn-block" ng-click="create()">Créer la compétition</button>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,34 @@
+{"coachs" : [
+    {"titre": "Loïc Pilorget", "description":"Directeur sportif", "photo" : "img/elite_2017/pilorget.jpg"},
+    {"titre": "Steve Bei", "description":"Groupe Universitaire", "photo" : "img/elite_2017/bei.jpg"},
+    {"titre": "Sébastien Borderas", "description":"Section Sportive", "photo" : "img/elite_2017/borderas.jpg"},
+    {"titre": "Cyril Cavagna", "description":"Section Sportive", "photo" : "img/elite_2017/cavagna.jpg"}
+  ],
+  "nageurs" : [
+    [
+      {"titre": "Alexandre Auban", "description":"", "photo" : "img/elite_2017/aubanA.jpg"},
+      {"titre": "Sara Auban", "description":"", "photo" : "img/elite_2017/aubanS.jpg"},
+      {"titre": "Lola Bortuzzo", "description":"", "photo" : "img/elite_2017/bortuzzo.jpg"},
+      {"titre": "Léna Bousquin", "description":"", "photo" : "img/elite_2017/bousquin.jpg"}
+    ],[
+      {"titre": "Emile Cahuzac", "description":"", "photo" : "img/elite_2017/cahuzac.jpg"},
+      {"titre": "Alain Debeucklaere", "description":"", "photo" : "img/elite_2017/debeuckleare.jpg"},
+      {"titre": "Julia Deloues", "description":"", "photo" : "img/elite_2017/deloues.jpg"},
+      {"titre": "Pierrick Fournier", "description":"", "photo" : "img/elite_2017/fournier.jpg"}
+    ],[
+      {"titre": "Margaux Guillaume", "description":"", "photo" : "img/elite_2017/guillaume.jpg"},
+      {"titre": "Michaël Kargbo", "description":"", "photo" : "img/elite_2017/kargbo.jpg"},
+      {"titre": "Thomas Labarias", "description":"", "photo" : "img/elite_2017/labarias.jpg"},
+      {"titre": "Driss Lahrichi", "description":"", "photo" : "img/elite_2017/lahrichi.jpg"}
+    ],[
+      {"titre": "Charly Pellissard", "description":"", "photo" : "img/elite_2017/pelissard.jpg"},
+      {"titre": "Thomas Pelous", "description":"", "photo" : "img/elite_2017/pelous.jpg"},
+      {"titre": "Mathieu Perrillon", "description":"", "photo" : "img/elite_2017/perrillon.jpg"},
+      {"titre": "Mathilde Romeu", "description":"", "photo" : "img/elite_2017/romeu.jpg"}
+    ],[
+      {"titre": "Romane Roure Cambe", "description":"", "photo" : "img/elite_2017/rourecambe.jpg"},
+      {"titre": "Julia Scrivin", "description":"", "photo" : "img/elite_2017/scrivin.jpg"},
+      {"titre": "Kelia Serramoglia", "description":"", "photo" : "img/elite_2017/seramoglia.jpg"}
+    ]
+  ]
+}

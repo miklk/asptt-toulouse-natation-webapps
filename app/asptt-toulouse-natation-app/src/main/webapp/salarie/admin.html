@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr" ng-app="salarieApp">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+     <link rel="shortcut icon" href="../img/favicon.png">
+
+    <title>ASPTT Toulouse Natation - Salariés</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="index.css" rel="stylesheet">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../js/angular-spinkit-master/build/angular-spinkit.min.css">
+
+	<style>
+	[ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak {
+	    display: none;
+	}
+	</style>
+  </head>
+  <body style="background-color: #e9f8fc;">
+    <div class="container-fluid" ng-controller="SalarieController" ng-cloak>
+		<div class="row hidden-print">
+			<div class="col-md-6">
+				
+				<button type="button" class="navbar-toggle" style="display: block; float: left" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" ng-click="toogleMenu()">
+			    	<i class="fa fa-bars"></i> Menu
+				</button>
+				<div style="margin-top: 8px; margin-bottom: 8px; padding: 9px 10px; font-size: 1.1em">
+					<a href="#/dashboard"><span>ASPTT Toulouse Natation - Salarié</span></a>
+				</div>
+				
+			</div>
+			<ul class="nav navbar-nav navbar-right" style="float:right; padding: 0px 10px">
+				<li class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown">
+						<img src="../../img/nageur-nopic.png" style="max-height: 32px" /><br />
+						{{aspttTokenInfo.prenom}} {{aspttTokenInfo.nom | limitTo: 1}}
+					</a>
+					<ul class="dropdown-menu">
+						<li><a ng-href="/resources/authentication/logout/{{aspttToken}}" class="btn btn-xs"><span class="glyphicon glyphicon-off"></span></a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="container-fluid">
+			<div class="sidebar hidden-print" ng-class="{'col-md-3' : displayMenu}" id="menu"  ng-show="displayMenu">
+				<ul class="nav nav-sidebar">
+					<li><a href="#/saisie" ng-click="toogleMenu()">Saisie de l'activité</a></li>
+					<li><a href="#/suivi" ng-click="toogleMenu()" data-show-when-connected="ACCESS_SALARIE_ACTIVITE_SUIVI">Suivi l'activité</a></li>
+					<!-- <li><a href="#/">Poser des congés</a></li>
+					<li><a href="#/">Documents divers</a></li>-->
+				</ul>
+			</div>
+  			<div class="main" ng-class="{'col-md-9' : displayMenu, 'col-md-12': displayMenu}" style="margin-top: 1%">
+  				<ng-loading-indicator></ng-loading-indicator>
+				<div ng-view></div>
+		    </div>
+		</div>
+	</div>
+
+		<!-- FOOTER -->
+      <footer>
+      </footer>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-resource.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-cookies.min.js"></script>
+    <script src="https://code.angularjs.org/1.5.0/i18n/angular-locale_fr-fr.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.2/moment-with-locales.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.2/locale/fr.js"></script>
+    <script src="../js/angular-spinkit-master/build/angular-spinkit.min.js"></script>
+
+	<script type="text/javascript" src="../admin/js/login/LoginService.js"></script>
+    <script type="text/javascript" src="js/controllers.js"></script>
+    <script type="text/javascript" src="js/services.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/heure/SaisieHeureController.js"></script>
+    <script type="text/javascript" src="js/heure/SaisieHeureService.js"></script>
+    <script type="text/javascript" src="js/heure/SuiviHeureController.js"></script>
+
+  </body>
+</html>

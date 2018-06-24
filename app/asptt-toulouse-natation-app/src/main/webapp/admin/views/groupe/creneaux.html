@@ -1,0 +1,53 @@
+<h3 id="panel-creneaux">Créneaux du groupe {{groupe.title}}</h3>
+<div style="margin-bottom: 1%">
+	<button type="button" class="btn btn-default btn-block" ng-click="prepareCreneau()">Ajouter un créneau</button>
+	<button type="button" class="btn btn-default" ng-click="clearCreneaux()"><span class="glyphicon glyphicon-trash" title="Supprimer"></span></button>
+</div>
+<table class="table">
+	 <thead>
+	 	<tr>
+	 		<th>Piscines</th>
+	 		<th>Lundi</th>
+	 		<th>Mardi</th>
+	 		<th>Mercredi</th>
+	 		<th>Jeudi</th>
+	 		<th>Vendredi</th>
+	 		<th>Samedi</th>
+	 	</tr>
+	 </thead>
+	 <tbody style="font-size: 0.8em">
+	 	<tr ng-repeat="creneau in creneaux">
+	 		<td>{{creneau.piscine}}</td>
+	 		<td>
+	 			<div ng-repeat="lundi in creneau.lundi | orderBy:'beginDt'">
+	 				<span ng-click="selectCreneau($index, lundi, 'lundi')">{{lundi.beginDt | date: 'HH:mm'}}-{{lundi.endDt | date: 'HH:mm'}} <span ng-show="lundi.second">(2)</span></span>
+	 			</div>
+			</td>
+	 		<td>
+	 			<div ng-repeat="mardi in creneau.mardi | orderBy:'beginDt'">
+	 				<span ng-click="selectCreneau($index, mardi, 'mardi')">{{mardi.beginDt | date: 'HH:mm'}}-{{mardi.endDt | date: 'HH:mm'}} <span ng-show="mardi.second">(2)</span></span>
+	 			</div>
+			</td>
+	 		<td>
+	 			<div ng-repeat="mercredi in creneau.mercredi | orderBy:'beginDt'">
+			    	<span ng-click="selectCreneau($index, mercredi, 'mercredi')">{{mercredi.beginDt | date: 'HH:mm'}}-{{mercredi.endDt | date: 'HH:mm'}} <span ng-show="mercredi.second">(2)</span></span>
+			    </div>
+	 		</td>
+	 		<td>
+	 			<div ng-repeat="jeudi in creneau.jeudi | orderBy:'beginDt'">
+			    	<span ng-click="selectCreneau($index, jeudi, 'jeudi')">{{jeudi.beginDt | date: 'HH:mm'}}-{{jeudi.endDt | date: 'HH:mm'}} <span ng-show="jeudi.second">(2)</span></span>
+			    </div>
+	 		</td>	
+	 		<td>
+	 			<div ng-repeat="vendredi in creneau.vendredi | orderBy:'beginDt'">
+			    	<span ng-click="selectCreneau($index, vendredi, 'vendredi')">{{vendredi.beginDt | date: 'HH:mm'}}-{{vendredi.endDt | date: 'HH:mm'}} <span ng-show="vendredi.second">(2)</span></span>
+			    </div>
+	 		</td>
+	 		<td>
+	 			<div ng-repeat="samedi in creneau.samedi | orderBy:'beginDt'">
+			    	<span ng-click="selectCreneau($index, samedi, 'samedi')">{{samedi.beginDt | date: 'HH:mm'}}-{{samedi.endDt | date: 'HH:mm'}} <span ng-show="samedi.second">(2)</span></span>
+			    </div>
+	 		</td>
+	 	</tr>
+	</tbody>
+</table>

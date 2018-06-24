@@ -1,0 +1,29 @@
+<div class="container" ng-controller="GroupeController">
+	<div class="row">
+		<h1 class="page-header">Groupes</h1>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+			<div style="margin-bottom: 1%">
+				<button type="button" class="btn btn-default btn-block" ng-click="prepareCreate()">Ajouter un groupe</button>
+			</div>
+			<div class="list-group">
+				<div  ng-repeat="groupe in groupes">
+				<a href="" class="list-group-item">
+					<h5 class="list-group-item-heading">{{groupe.title}} <span class="glyphicon glyphicon-pencil" ng-click="selectGroupe($index, groupe)"></span></h5>
+					<p class="list-group-item-text">{{groupe.description}}</p>
+					<button type="button" class="btn btn-default" ng-click="remove($index, groupe)"><span class="glyphicon glyphicon-trash" title="Supprimer"></span></button>
+					<button type="button" class="btn btn-default"  ng-click="loadCreneaux(groupe)"><span class="glyphicon glyphicon-calendar" title="Afficher les créneaux"></span></button>
+				</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-7" ng-show="creneaux">
+			<div ng-include="'views/groupe/creneaux.html'"></div>
+		</div>
+	</div>
+	
+	<div ng-include="'views/groupe/groupe.html'"></div>
+	<div ng-include="'views/groupe/creneau.html'"></div>
+	
+</div>

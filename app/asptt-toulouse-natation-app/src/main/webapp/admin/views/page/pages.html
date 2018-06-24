@@ -1,0 +1,36 @@
+<div class="container-fluid" ng-controller="PageEditionController">
+	<div class="row">
+		<h1 class="page-header">Edition des pages</h1>
+	</div>
+	<div class="row">
+		<h2>Les espaces (menus principaux)</h2>
+		
+		<div class="col-md-4">
+			<select ng-model="currentArea" class="form-control" ng-options="area.title for area in areas | orderBy:'order' track by area.id" ng-change="findPages()"></select>
+			<div style="margin-top: 1%">
+				<button type="button" class="btn btn-info btn-block" ng-click="addArea()">Ajouter un nouvel espace</button>
+			</div>
+		</div>
+		<div class="col-md-8" ng-show="showAddArea" style="border-left: 2px solid grey; padding-left: 1%">
+			<div ng-include="'views/page/page-area-edit.html'"></div>
+		</div>
+	</div>
+	
+	<div class="row" ng-show="showPages">
+		<h2>Les pages de l'espace '{{currentArea.title}}'</h2>
+		
+		<div class="col-md-4">
+			<ul class="list-group">
+				<li class="list-group-item" ng-repeat="page in pages | orderBy:'order'">{{page.title}} <button class="btn btn-xs btn-info text-right" ng-click="editPage(page)"><span class="glyphicon glyphicon-edit"></span></button></li>
+			</ul>
+			<button type="button" class="btn btn-info btn-block" ng-click="addPage()">Ajouter une nouvelle page</button>
+		<button type="button" class="btn btn-info btn-block" ng-click="addDivider()">Ajouter un séparateur</button>
+		</div>
+		<div class="col-md-8" ng-show="showAddPage" style="border-left: 2px solid grey; padding-left: 1%">
+			<div ng-include="'views/page/page-menu-edit.html'"></div>
+		</div>
+		<div class="col-md-8" ng-show="showAddDivider" style="border-left: 2px solid grey; padding-left: 1%">
+			<div ng-include="'views/page/page-menu-divider-edit.html'"></div>
+		</div>
+	</div>
+</div>
