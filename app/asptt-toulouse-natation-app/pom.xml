@@ -63,6 +63,13 @@
     <artifactId>poi-ooxml</artifactId>
     <version>3.9</version>
 </dependency>
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-webmvc</artifactId>
+    <version>4.2.0.RELEASE</version>
+</dependency>
+
 
 
     <!-- Test Dependencies -->
@@ -76,23 +83,10 @@
 
   <build>
     <!-- for hot reload of the web application-->
+	<sourceDirectory>src/main/java</sourceDirectory>
     <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
     <plugins>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>versions-maven-plugin</artifactId>
-        <version>2.3</version>
-        <executions>
-          <execution>
-            <phase>compile</phase>
-            <goals>
-              <goal>display-dependency-updates</goal>
-              <goal>display-plugin-updates</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
+      
       <plugin>
         <groupId>com.google.cloud.tools</groupId>
         <artifactId>appengine-maven-plugin</artifactId>
@@ -101,9 +95,11 @@
 	  <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
                 <configuration>
                     <includes>
-                        <include>webapp/WEB-INF/lib/*.jar</include>
+						<include>**/*.java</include>
+                        <include>../webapp/WEB-INF/lib/*.jar</include>
                     </includes>
                 </configuration>
             </plugin>
