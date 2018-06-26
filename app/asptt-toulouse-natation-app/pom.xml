@@ -76,6 +76,13 @@
     <artifactId>javax.inject</artifactId>
     <version>1</version>
   </dependency>
+  <!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
+<dependency>
+    <groupId>javax.annotation</groupId>
+    <artifactId>javax.annotation-api</artifactId>
+    <version>1.2</version>
+</dependency>
+  
   <dependency>
     <groupId>javax.servlet</groupId>
     <artifactId>javax.servlet-api</artifactId>
@@ -90,7 +97,6 @@
     <groupId>com.google.appengine.orm</groupId>
     <artifactId>datanucleus-appengine</artifactId>
     <version>2.1.2</version>
-    <scope>provided</scope>
   </dependency>
   
   <!-- https://mvnrepository.com/artifact/org.datanucleus/datanucleus-core -->
@@ -108,12 +114,13 @@
     <version>3.1.3</version>
 </dependency>
 
-<!-- https://mvnrepository.com/artifact/org.datanucleus/datanucleus-rdbms -->
+<!-- https://mvnrepository.com/artifact/org.datanucleus/datanucleus-api-jdo -->
 <dependency>
     <groupId>org.datanucleus</groupId>
-    <artifactId>datanucleus-rdbms</artifactId>
+    <artifactId>datanucleus-api-jdo</artifactId>
     <version>3.1.3</version>
 </dependency>
+
 
 <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
 <dependency>
@@ -178,6 +185,13 @@
     <artifactId>jta</artifactId>
     <version>1.1</version>
 </dependency>
+<!-- https://mvnrepository.com/artifact/javax.jdo/jdo-api -->
+<dependency>
+    <groupId>javax.jdo</groupId>
+    <artifactId>jdo-api</artifactId>
+    <version>3.0.1</version>
+</dependency>
+
 
 <dependency>
     <groupId>com.google.code.findbugs</groupId>
@@ -252,7 +266,8 @@
 <dependency>
     <groupId>org.apache.geronimo.specs</groupId>
     <artifactId>geronimo-jpa_2.0_spec</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
+    <scope>runtime</scope>
 </dependency>
 
 <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
