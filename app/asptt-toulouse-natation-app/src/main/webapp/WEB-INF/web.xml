@@ -30,7 +30,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>com.asptttoulousenatation.core</param-value>
+            <param-value>com.asptt.core</param-value>
         </init-param>
         <init-param>
 <param-name>jersey.config.server.provider.classnames</param-name>
@@ -45,7 +45,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <servlet>
     <servlet-name>downloadServlet</servlet-name>
     <!-- This is the default servlet, it puts files in session -->
-    <servlet-class>com.asptttoulousenatation.core.server.DownloadServlet</servlet-class>
+    <servlet-class>com.asptt.core.server.DownloadServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>downloadServlet</servlet-name>

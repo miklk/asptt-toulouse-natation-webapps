@@ -10,6 +10,6 @@
 	http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 	
 	<context:annotation-config/>
-	<beans:bean class="com.asptttoulousenatation.core.spring.WebSecurityConfig"/>
+	<beans:bean class="com.asptt.core.spring.WebSecurityConfig"/>
 
 </beans:beans>
