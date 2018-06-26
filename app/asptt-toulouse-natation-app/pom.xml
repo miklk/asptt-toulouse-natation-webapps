@@ -93,12 +93,19 @@
     <scope>provided</scope>
   </dependency>
   
+  <!-- https://mvnrepository.com/artifact/org.datanucleus/datanucleus-core -->
+<dependency>
+    <groupId>org.datanucleus</groupId>
+    <artifactId>datanucleus-core</artifactId>
+    <version>3.1.3</version>
+</dependency>
+  
+  
   <!-- https://mvnrepository.com/artifact/org.datanucleus/datanucleus-api-jpa -->
 <dependency>
     <groupId>org.datanucleus</groupId>
     <artifactId>datanucleus-api-jpa</artifactId>
     <version>3.1.3</version>
-    <scope>provided</scope>
 </dependency>
 
 <!-- https://mvnrepository.com/artifact/org.datanucleus/datanucleus-rdbms -->
