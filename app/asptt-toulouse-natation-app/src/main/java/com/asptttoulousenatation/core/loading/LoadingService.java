@@ -1,14 +1,8 @@
 package com.asptttoulousenatation.core.loading;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.ws.rs.GET;
@@ -44,15 +38,6 @@ import com.asptttoulousenatation.core.server.dao.structure.MenuDao;
 import com.asptttoulousenatation.core.shared.actu.ActuUi;
 import com.asptttoulousenatation.core.shared.document.DocumentUi;
 import com.asptttoulousenatation.core.shared.user.ProfileEnum;
-import com.google.gdata.client.Query;
-import com.google.gdata.client.photos.PicasawebService;
-import com.google.gdata.data.Link;
-import com.google.gdata.data.photos.AlbumEntry;
-import com.google.gdata.data.photos.AlbumFeed;
-import com.google.gdata.data.photos.PhotoEntry;
-import com.google.gdata.data.photos.UserFeed;
-import com.google.gdata.util.AuthenticationException;
-import com.google.gdata.util.ServiceException;
 
 @Path("/loading")
 @Produces("application/json")
@@ -182,72 +167,72 @@ public class LoadingService {
 		return result;
 	}
 
-	@Path("/albums")
-	@GET
-	public LoadingAlbumsUi getAlbums() {
-		LoadingAlbumsUi result = new LoadingAlbumsUi();
-		try {
-			PicasawebService myService = new PicasawebService("asptt_test");
-			URL feedUrl = new URL(
-					"https://picasaweb.google.com/data/feed/api/user/113747450706652808889?kind=album");
+//	@Path("/albums")
+//	@GET
+//	public LoadingAlbumsUi getAlbums() {
+//		LoadingAlbumsUi result = new LoadingAlbumsUi();
+//		try {
+//			PicasawebService myService = new PicasawebService("asptt_test");
+//			URL feedUrl = new URL(
+//					"https://picasaweb.google.com/data/feed/api/user/113747450706652808889?kind=album");
+//
+//			Query myQuery = new Query(feedUrl);
+//
+//			UserFeed searchResultsFeed = myService.query(myQuery,
+//					UserFeed.class);
+//			int maxAlbum = 5;
+//			ListIterator<AlbumEntry> lEntryIt = searchResultsFeed
+//					.getAlbumEntries().listIterator();
+//			Set<String> excludedAlbum = new HashSet<String>();
+//			excludedAlbum.add("Profile Photos");
+//			excludedAlbum.add("Scrapbook Photos");
+//			while (lEntryIt.hasNext() && maxAlbum > 0) {
+//				AlbumEntry adaptedEntry = lEntryIt.next();
+//				AlbumEntry lAlbum = (AlbumEntry) adaptedEntry;
+//				if (!excludedAlbum.contains(lAlbum.getTitle().getPlainText())) {
+//					String feedHref = getLinkByRel(lAlbum.getLinks(),
+//							Link.Rel.FEED);
+//					AlbumFeed lAlbumEntries = myService.query(new Query(
+//							new URL(feedHref)), AlbumFeed.class);
+//					LoadingAlbumUi lAlbumUi = new LoadingAlbumUi(
+//							lAlbum.getGphotoId(), lAlbum.getTitle()
+//									.getPlainText(), lAlbumEntries
+//									.getPhotoEntries().get(0)
+//									.getMediaContents().get(0).getUrl());
+//					for (PhotoEntry photo : lAlbumEntries.getPhotoEntries()) {
+//						lAlbumUi.addPhotos(photo.getMediaContents().get(0)
+//								.getUrl());
+//					}
+//					result.addAlbum(lAlbumUi);
+//					maxAlbum--;
+//				}
+//			}
+//		} catch (AuthenticationException e) {
+//			e.printStackTrace();
+//		} catch (MalformedURLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (ServiceException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return result;
+//	}
 
-			Query myQuery = new Query(feedUrl);
-
-			UserFeed searchResultsFeed = myService.query(myQuery,
-					UserFeed.class);
-			int maxAlbum = 5;
-			ListIterator<AlbumEntry> lEntryIt = searchResultsFeed
-					.getAlbumEntries().listIterator();
-			Set<String> excludedAlbum = new HashSet<String>();
-			excludedAlbum.add("Profile Photos");
-			excludedAlbum.add("Scrapbook Photos");
-			while (lEntryIt.hasNext() && maxAlbum > 0) {
-				AlbumEntry adaptedEntry = lEntryIt.next();
-				AlbumEntry lAlbum = (AlbumEntry) adaptedEntry;
-				if (!excludedAlbum.contains(lAlbum.getTitle().getPlainText())) {
-					String feedHref = getLinkByRel(lAlbum.getLinks(),
-							Link.Rel.FEED);
-					AlbumFeed lAlbumEntries = myService.query(new Query(
-							new URL(feedHref)), AlbumFeed.class);
-					LoadingAlbumUi lAlbumUi = new LoadingAlbumUi(
-							lAlbum.getGphotoId(), lAlbum.getTitle()
-									.getPlainText(), lAlbumEntries
-									.getPhotoEntries().get(0)
-									.getMediaContents().get(0).getUrl());
-					for (PhotoEntry photo : lAlbumEntries.getPhotoEntries()) {
-						lAlbumUi.addPhotos(photo.getMediaContents().get(0)
-								.getUrl());
-					}
-					result.addAlbum(lAlbumUi);
-					maxAlbum--;
-				}
-			}
-		} catch (AuthenticationException e) {
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return result;
-	}
-
-	/**
-	 * Helper function to get a link by a rel value.
-	 */
-	public String getLinkByRel(List<Link> links, String relValue) {
-		for (Link link : links) {
-			if (relValue.equals(link.getRel())) {
-				return link.getHref();
-			}
-		}
-		throw new IllegalArgumentException("Missing " + relValue + " link.");
-	}
+//	/**
+//	 * Helper function to get a link by a rel value.
+//	 */
+//	public String getLinkByRel(List<Link> links, String relValue) {
+//		for (Link link : links) {
+//			if (relValue.equals(link.getRel())) {
+//				return link.getHref();
+//			}
+//		}
+//		throw new IllegalArgumentException("Missing " + relValue + " link.");
+//	}
 
 	@Path("/actualites")
 	@GET
