@@ -104,7 +104,15 @@
     <groupId>org.datanucleus</groupId>
     <artifactId>datanucleus-core</artifactId>
     <version>3.1.3</version>
+    <scope>runtime</scope>
 </dependency>
+<!-- https://mvnrepository.com/artifact/org.datanucleus/datanucleus-enhancer -->
+<dependency>
+    <groupId>org.datanucleus</groupId>
+    <artifactId>datanucleus-enhancer</artifactId>
+    <version>3.1.1</version>
+</dependency>
+
   
   
   <!-- https://mvnrepository.com/artifact/org.datanucleus/datanucleus-api-jpa -->
@@ -315,17 +323,17 @@
       <plugin>
                 <groupId>org.datanucleus</groupId>
                 <artifactId>maven-datanucleus-plugin</artifactId>
-                <version>3.1.3</version>
+                <version>3.1.1</version>
 
                 <configuration>
                     <api>JPA</api>
-                    <mappingIncludes>**/com/asptt/core/server/dao/entity/*.class</mappingIncludes>
+                    <persistenceUnitName>transactions-optional</persistenceUnitName>
                     <verbose>true</verbose>
                 </configuration>
 
                 <executions>
                     <execution>
-                        <phase>compile</phase>
+                        <phase>process-classes</phase>
                         <goals>
                             <goal>enhance</goal>
                         </goals>
