@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+        http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" version="1.0">
+
+    <persistence-unit name="transactions-optional">
+        <provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
+        
+        <class>com.asptt.core.server.dao.entity.ActuEntity</class>
+        <class>com.asptt.core.server.dao.entity.structure.AreaEntity</class>
+        <class>com.asptt.core.server.dao.entity.structure.ContentEntity</class>
+        <class>com.asptt.core.server.dao.entity.structure.MenuEntity</class>
+        <class>com.asptt.core.server.dao.entity.club.group.PiscineEntity</class>
+        <class>com.asptt.core.server.dao.entity.club.group.GroupEntity</class>
+        <class>com.asptt.core.server.dao.entity.club.group.SlotEntity</class>
+        <class>com.asptt.core.server.dao.entity.club.group.CreneauHierarchyEntity</class>
+        <class>com.asptt.core.server.dao.entity.competition.CompetitionDayEntity</class>
+        <class>com.asptt.core.server.dao.entity.competition.CompetitionEntity</class>
+        <class>com.asptt.core.server.dao.entity.document.DocumentEntity</class>
+        <class>com.asptt.core.server.dao.entity.document.DocumentLibelleJEntity</class>
+        <class>com.asptt.core.server.dao.entity.document.LibelleEntity</class>
+        <class>com.asptt.core.server.dao.entity.inscription.InscriptionNouveauEntity</class>
+        <class>com.asptt.core.server.dao.entity.inscription.DossierEntity</class>
+        <class>com.asptt.core.server.dao.entity.inscription.DossierNageurEntity</class>
+        <class>com.asptt.core.server.dao.entity.inscription.DossierCertificatEntity</class>
+        <class>com.asptt.core.server.dao.entity.inscription.DossierFactureEntity</class>
+        <class>com.asptt.core.server.dao.entity.inscription.DossierNageurPhotoEntity</class>
+        <class>com.asptt.core.server.dao.entity.inscription.DossierStatEntity</class>
+        <class>com.asptt.core.server.dao.entity.reference.DataUpdateEntity</class>
+        <class>com.asptt.core.server.dao.entity.swimmer.SwimmerEntity</class>
+        <class>com.asptt.core.server.dao.entity.swimmer.SwimmerStatEntity</class>
+        <class>com.asptt.core.server.dao.entity.user.Slot</class>
+        <class>com.asptt.core.server.dao.entity.user.UserEntity</class>
+        <class>com.asptt.core.server.dao.entity.user.UserAuthorizationEntity</class>
+        <class>com.asptt.core.server.dao.entity.user.UserDataEntity</class>
+        <class>com.asptt.core.server.dao.entity.record.RecordEpreuveEntity</class>
+        <class>com.asptt.core.server.dao.entity.record.RecordEntity</class>
+        <class>com.asptt.core.server.dao.entity.boutique.ProductEntity</class>
+        <class>com.asptt.core.server.dao.entity.boutique.OrderEntity</class>
+        <class>com.asptt.core.server.dao.entity.boutique.OrderProductEntity</class>
+        <class>com.asptt.core.server.dao.entity.inscription.stage.DossierStageEntity</class>
+        <class>com.asptt.core.server.dao.entity.reference.ParamEntity</class>
+        <class>com.asptt.core.server.dao.entity.swimmer.PresenceToken</class>
+        <class>com.asptt.core.server.dao.entity.salarie.SalarieActiviteEntity</class>
+        <class>com.asptt.core.server.dao.entity.salarie.SalarieHeureEntity</class>
+        <class>com.asptt.core.server.dao.entity.competition.CompetitionEpreuveEntity</class>
+        <class>com.asptt.core.server.dao.entity.competition.EpreuveResultatEntity</class>
+        <class>com.asptt.core.server.dao.entity.email.EmailSendEntity</class>
+        
+        
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        
+        <properties>
+            <property name="datanucleus.NontransactionalRead" value="true"/>
+            <property name="datanucleus.NontransactionalWrite" value="true"/>
+            <property name="datanucleus.ConnectionURL" value="appengine"/>
+            <property name="datanucleus.singletonEMFForName" value="true"/>
+            <property name="datanucleus.Optimistic" value="true" />
+            <property name="javax.persistence.validation.mode" value="none" />
+        </properties>
+
+    </persistence-unit>
+
+</persistence>
