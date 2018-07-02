@@ -197,7 +197,7 @@ public class UserService {
 				htmlPart.setContent(msgBody, "text/html");
 				mp.addBodyPart(htmlPart);
 				MimeMessage msg = new MimeMessage(session);
-				msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+				msg.setFrom(new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(userEntity.getEmailaddress()));
 				msg.setSubject("Votre compte web privé a été créé.", "UTF-8");
 				msg.setContent(mp);

@@ -140,7 +140,7 @@ public class EmailService {
 					mp.addBodyPart(htmlPart);
 					MimeMessage msg = new MimeMessage(session);
 					msg.setFrom(new InternetAddress(
-							"webmaster@asptt-toulouse-natation.com",
+							"ecole.natation.toulouse@gmail.com",
 							"Toulouse Natation by ASPTT"));
 					Address[] replyTo = { new InternetAddress(
 							from,
@@ -209,7 +209,7 @@ public class EmailService {
 			mp.addBodyPart(htmlPart);
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(
-					"webmaster@asptt-toulouse-natation.com",
+					"ecole.natation.toulouse@gmail.com",
 					"Toulouse Natation by ASPTT"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					"contact@asptt-toulouse-natation.com"));

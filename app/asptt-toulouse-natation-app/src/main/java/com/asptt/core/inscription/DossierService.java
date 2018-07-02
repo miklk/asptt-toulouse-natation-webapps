@@ -681,7 +681,7 @@ public class DossierService {
 
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(
-					"webmaster@asptt-toulouse-natation.com",
+					"ecole.natation.toulouse@gmail.com",
 					"Toulouse Natation by ASPTT"));
 			Address[] replyTo = {new InternetAddress(
 					"contact@asptt-toulouse-natation.com",
@@ -814,7 +814,7 @@ public class DossierService {
 	
 				MimeMessage msg = new MimeMessage(session);
 				msg.setFrom(new InternetAddress(
-						"webmaster@asptt-toulouse-natation.com",
+						"ecole.natation.toulouse@gmail.com",
 						"Toulouse Natation by ASPTT"));
 				Address[] replyTo = {new InternetAddress(
 						"contact@asptt-toulouse-natation.com",
@@ -1183,19 +1183,21 @@ public class DossierService {
 	@Path("/clean")
 	@GET
 	public int clean() {
-		DateTime seuil = DateTime.now().minusDays(7);
+		DateTime seuil = DateTime.now().minusDays(3);
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.INITIALISE.name(),
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.ANNULE.name(),
 				Operator.EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, NEW_SAISON,
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, 2L,
 				Operator.EQUAL));
 		criteria.add(new CriterionDao<Date>(DossierEntityFields.UPDATED, seuil.toDate(),
-				Operator.LESS));
+				Operator.GREATER));
 		List<DossierEntity> entities = dossierDao.find(criteria);
 		int count = 0;
 		for (DossierEntity dossier : entities) {
-			dossier.setStatut(DossierStatutEnum.ANNULE.name());
-			dossierDao.save(dossier);
+//			dossier.setStatut(DossierStatutEnum.PREINSCRIT.name());
+//			dossier.setSaison(NEW_SAISON);
+//			dossier.setComment("Attention, il faut rattacher les nageurs (mika)");
+//			dossierDao.save(dossier);
 			count++;
 		}
 		LOG.log(Level.WARNING, count + " dossiers clean");
@@ -1351,7 +1353,7 @@ public class DossierService {
 	public int nouvelleSaison2() {
 		int count = 0;
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(2);
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.PAIEMENT_COMPLET.name(),
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.PREINSCRIT.name(),
 				Operator.EQUAL));
 		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, OLD_SAISON, Operator.EQUAL));
 		List<DossierEntity> dossiers = dossierDao.find(criteria);
@@ -1361,7 +1363,7 @@ public class DossierService {
 				try {
 					DossierEntity dossier2 = new DossierEntity();
 					dossier.copyInit(dossier2);
-					dossier2.setStatut(DossierStatutEnum.INITIALISE.name());
+					dossier2.setStatut(DossierStatutEnum.PREINSCRIT.name());
 					dossier2.setSaison(NEW_SAISON);
 					DossierEntity cloned = dossierDao.save(dossier2);
 					// Clone des nageurs
@@ -1376,6 +1378,7 @@ public class DossierService {
 						nageur2.setSaison(NEW_SAISON);
 						nageur2.setDossier(cloned.getId());
 						nageur2.setNouveau(Boolean.FALSE);
+						nageur2.setCreneaux(nageur.getCreneaux());
 						dao.save(nageur2);
 					}
 					count++;

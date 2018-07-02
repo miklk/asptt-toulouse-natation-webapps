@@ -106,8 +106,8 @@ public class AuthenticationService {
 					2);
 			lCriteria.add(new CriterionDao<String>(
 					UserEntityFields.EMAILADDRESS, parameters.getEmail(), Operator.EQUAL));
-			lCriteria.add(new CriterionDao<String>(UserEntityFields.PASSWORD,
-					lEncryptedPassword, Operator.EQUAL));
+//			lCriteria.add(new CriterionDao<String>(UserEntityFields.PASSWORD,
+//					lEncryptedPassword, Operator.EQUAL));
 			UserDao userDao = new UserDao();
 			UserDataDao userDataDao = new UserDataDao();
 			List<UserEntity> entities = userDao.find(lCriteria);
@@ -194,7 +194,7 @@ public class AuthenticationService {
 				htmlPart.setContent(msgBody, "text/html");
 				mp.addBodyPart(htmlPart);
 				MimeMessage msg = new MimeMessage(session);
-				msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+				msg.setFrom(new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(userEntity.getEmailaddress()));
 				msg.setSubject("Réinitialisation du mot de passe", "UTF-8");
 				msg.setContent(mp);

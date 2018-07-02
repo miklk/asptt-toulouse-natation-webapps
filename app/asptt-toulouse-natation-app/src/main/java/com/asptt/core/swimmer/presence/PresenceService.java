@@ -291,7 +291,7 @@ public class PresenceService {
 				MimeBodyPart htmlPart = new MimeBodyPart();
 
 				MimeMessage msg = new MimeMessage(session);
-				msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+				msg.setFrom(new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 				StringBuilder message = new StringBuilder(
 						"Salut,<p>Voici les nageurs qui ont indiqué leur présence aujourd'hui.<br />");

@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
-    <cron>
+    <!-- <cron>
         <url>/resources/dossiers/init-saison</url>
         <description>Initialisation des adhérents pour la nouvelle saison (INSCRITS)</description>
-        <schedule>26 of jun 12:00</schedule>
+        <schedule>27 of jun 05:00</schedule>
     </cron>
     <cron>
         <url>/resources/dossiers/init-saison-2</url>
         <description>Initialisation des adhérents pour la nouvelle saison (PAIEMENT_COMPLET)</description>
-        <schedule>26 of jun 12:15</schedule>
+        <schedule>27 of jun 05:15</schedule>
     </cron>
     <cron>
         <url>/resources/inscription/lancer-inscription</url>
-        <description>Initialisation des adhérents pour la nouvelle saison (PAIEMENT_COMPLET)</description>
-        <schedule>27 of jun 06:00</schedule>
-    </cron>
+        <description>Lancement des inscriptions</description>
+        <schedule>27 of jun 13:00</schedule>
+    </cron>-->
     
     <!-- <cron>
 		<url>/resources/dossiers/doublons</url>
 		<description>Doublons</description>
 		<schedule>22 of jun 03:00</schedule>
 	</cron>-->
-	<!-- <cron>
+	<cron>
 		<url>/resources/dossier-maintenance/creneaux</url>
 		<description>Calcul de l'occupation des créneaux</description>
 		<schedule>every 4 hours</schedule>
@@ -40,7 +40,7 @@
 		<url>/resources/inscription/rappel2</url>
 		<description>Rappel de paiement au bout de 8 jours</description>
 		<schedule>every day 13:45</schedule>
-	</cron>-->
+	</cron>
 	
 	<cron>
 		<url>/resources/dossier-maintenance/groupes</url>

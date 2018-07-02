@@ -319,7 +319,7 @@ public class InscriptionService {
 
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(
-					"webmaster@asptt-toulouse-natation.com",
+					"ecole.natation.toulouse@gmail.com",
 					"Toulouse Natation by ASPTT"));
 			Address[] replyTo = {new InternetAddress(
 					"contact@asptt-toulouse-natation.com",
@@ -597,22 +597,22 @@ public class InscriptionService {
 		}
 		
 		if(BooleanUtils.isTrue(adherent.getFonctionnaire())) {
-			fields.setField("fonctionnaire_oui", "Yes");
+			fields.setField("fonctionnaire", "Yes");
 		} else {
-			fields.setField("fonctionnaire_non", "Yes");
+			fields.setField("fonctionnaire", "No");
 		}
 
 		GroupEntity group = groupDao.get(adherent.getGroupe());
 		if (BooleanUtils.isTrue(group.getLicenceFfn())) {
-			fields.setField("licence_ffn_oui", "Yes");
+			fields.setField("licence_ffn", "Yes");
 		} else {
-			fields.setField("licence_loisir", "Yes");
+			fields.setField("licence_ffn", "No");
 		}
 		
 		if(BooleanUtils.isFalse(group.getCompetition())) {
-			fields.setField("licence_comp_non", "Yes");
+			fields.setField("licence_comp", "No");
 		} else {
-			fields.setField("licence_comp_oui", "Yes");
+			fields.setField("licence_comp", "Yes");
 		}
 
 		fields.setField(
@@ -628,7 +628,7 @@ public class InscriptionService {
 						+ StringUtils.defaultString(parent.getAccidentPrenom2()));
 		fields.setField("accident_telephone_2", parent.getAccidentTelephone2());
 		
-		Integer tarifStatutaire = 17;
+		Integer tarifStatutaire = 19;
 		fields.setField("tarif_statutaire", tarifStatutaire.toString());
 		Integer tarifFsasptt = 17;
 		if(BooleanUtils.isTrue(group.getLicenceFfn())) {
@@ -639,9 +639,9 @@ public class InscriptionService {
 		if (BooleanUtils.isTrue(group.getLicenceFfn())) {
 			year = Years.yearsBetween(adherentAge, LocalDate.now()).getYears();
 			if (year < 10) {
-				tarifFFn = 20.45;
+				tarifFFn = 30.0;
 			} else {
-				tarifFFn = 33.85;
+				tarifFFn = 50.0;
 			}
 		} else {
 			tarifFFn = 0.0;
@@ -664,12 +664,9 @@ public class InscriptionService {
 		fields.setField("civilite_f", "No");
 		fields.setField("nouveau", "No");
 		fields.setField("renouvellement", "No");
-		fields.setField("fonctionnaire_oui", "No");
-		fields.setField("fonctionnaire_non", "No");
-		fields.setField("licence_ffn_oui", "No");
-		fields.setField("licence_loisir", "No");
-		fields.setField("licence_comp_oui", "No");
-		fields.setField("licence_comp_non", "No");
+		fields.setField("fonctionnaire", "No");
+		fields.setField("licence_ffn", "No");
+		fields.setField("licence_comp", "No");
 	}
 	
 	@Path("/rappel")
@@ -697,7 +694,7 @@ public class InscriptionService {
 
 					MimeMessage msg = new MimeMessage(session);
 					msg.setFrom(
-							new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+							new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
 					Address[] replyTo = {
 							new InternetAddress("contact@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT") };
 					msg.setReplyTo(replyTo);
@@ -737,7 +734,7 @@ public class InscriptionService {
 			MimeBodyPart htmlPart = new MimeBodyPart();
 
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+			msg.setFrom(new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("contact@asptt-toulouse-natation.com"));
 			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("remi.lacaze@asptt-toulouse-natation.com"));
 
@@ -787,7 +784,7 @@ public class InscriptionService {
 
 					MimeMessage msg = new MimeMessage(session);
 					msg.setFrom(
-							new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+							new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
 					Address[] replyTo = {
 							new InternetAddress("contact@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT") };
 					msg.setReplyTo(replyTo);
@@ -827,7 +824,7 @@ public class InscriptionService {
 			MimeBodyPart htmlPart = new MimeBodyPart();
 
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+			msg.setFrom(new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("contact@asptt-toulouse-natation.com"));
 			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("remi.lacaze@asptt-toulouse-natation.com"));
 
@@ -909,7 +906,7 @@ public class InscriptionService {
 
 					MimeMessage msg = new MimeMessage(session);
 					msg.setFrom(
-							new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+							new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
 					Address[] replyTo = {
 							new InternetAddress("contact@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT") };
 					msg.setReplyTo(replyTo);
@@ -949,7 +946,7 @@ public class InscriptionService {
 			MimeBodyPart htmlPart = new MimeBodyPart();
 
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+			msg.setFrom(new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("contact@asptt-toulouse-natation.com"));
 			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("remi.lacaze@asptt-toulouse-natation.com"));
 
@@ -994,7 +991,7 @@ public class InscriptionService {
 
 					MimeMessage msg = new MimeMessage(session);
 					msg.setFrom(
-							new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+							new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
 					Address[] replyTo = {
 							new InternetAddress("natation.toulouse@asptt.com", "Toulouse Natation by ASPTT") };
 					msg.setReplyTo(replyTo);
@@ -1033,7 +1030,7 @@ public class InscriptionService {
 			MimeBodyPart htmlPart = new MimeBodyPart();
 
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+			msg.setFrom(new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("natation.toulouse@asptt.com"));
 
 			StrBuilder message = new StrBuilder("<p>").append(count).append(" dossiers.</p>");

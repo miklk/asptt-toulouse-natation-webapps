@@ -172,7 +172,7 @@ public class AuthenticateAdherentService {
 
 				MimeMessage msg = new MimeMessage(session);
 				msg.setFrom(new InternetAddress(
-						"webmaster@asptt-toulouse-natation.com",
+						"ecole.natation.toulouse@gmail.com",
 						"Toulouse Natation by ASPTT"));
 				StringBuilder message = new StringBuilder(
 						"Votre mot de passe: "
@@ -244,7 +244,7 @@ public class AuthenticateAdherentService {
 					mp.addBodyPart(htmlPart);
 					MimeMessage msg = new MimeMessage(session);
 					msg.setFrom(new InternetAddress(
-							"webmaster@asptt-toulouse-natation.com",
+							"ecole.natation.toulouse@gmail.com",
 							"Toulouse Natation by ASPTT"));
 					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 							nouveau.getEmail()));

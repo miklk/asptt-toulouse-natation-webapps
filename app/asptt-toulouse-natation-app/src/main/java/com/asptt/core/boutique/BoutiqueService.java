@@ -129,7 +129,7 @@ public class BoutiqueService {
 			MimeBodyPart htmlPart = new MimeBodyPart();
 
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+			msg.setFrom(new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
 			Address[] replyTo = {
 					new InternetAddress("natation.toulouse@asptt.com", "Toulouse Natation by ASPTT") };
 			msg.setReplyTo(replyTo);
@@ -323,7 +323,7 @@ public class BoutiqueService {
 			MimeBodyPart htmlPart = new MimeBodyPart();
 
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+			msg.setFrom(new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
 			Address[] replyTo = {
 					new InternetAddress("natation.toulouse@asptt", "Toulouse Natation by ASPTT") };
 			msg.setReplyTo(replyTo);
@@ -434,7 +434,7 @@ public class BoutiqueService {
 				MimeBodyPart htmlPart = new MimeBodyPart();
 
 				MimeMessage msg = new MimeMessage(session);
-				msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+				msg.setFrom(new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
 				Address[] replyTo = {
 						new InternetAddress("natation.toulouse@asptt.com", "Toulouse Natation by ASPTT") };
 				msg.setReplyTo(replyTo);
@@ -469,7 +469,7 @@ public class BoutiqueService {
 			MimeBodyPart htmlPart = new MimeBodyPart();
 
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("webmaster@asptt-toulouse-natation.com", "Toulouse Natation by ASPTT"));
+			msg.setFrom(new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("natation.toulouse@asptt.com"));
 			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("michael.kargbo@gmail.com"));
 
