@@ -20,7 +20,7 @@ adherentController.controller('AdherentEmailCtrl', ['$http', '$scope', '$locatio
 	
 	$scope.showCreneau = false;
 	
-	$scope.senderList = ['contact@asptt-toulouse-natation.com','loic.pilorget@asptt-toulouse-natation.com', 'cyril.cavagna@asptt-toulouse-natation.com', 'sebastien.borderas@asptt-toulouse-natation.com', 'remi.lacaze@asptt-toulouse-natation.com', 'elysabeth.patte@asptt-toulouse-natation.com'];
+	$scope.senderList = ['natation.toulouse@asptt.com','directeur.natation.toulouse@asptt.com', 'ecole.natation.toulouse@asptt.com'];
 
 	GroupeService.all.query({}, function(data) {
 		$scope.groupes = data.groups;

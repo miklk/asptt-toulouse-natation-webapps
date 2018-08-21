@@ -71,6 +71,12 @@ public class DossierNageurEntity implements IEntity {
 	
 	private Boolean fonctionnaire;
 	
+	private Boolean benevole;
+	
+	private Boolean dirigeant;
+	
+	private Boolean officiel;
+	
 	public DossierNageurEntity() {
 		
 	}
@@ -258,6 +264,30 @@ public class DossierNageurEntity implements IEntity {
 
 	public void setSaison(Long saison) {
 		this.saison = saison;
+	}
+
+	public Boolean getBenevole() {
+		return benevole;
+	}
+
+	public void setBenevole(Boolean benevole) {
+		this.benevole = benevole;
+	}
+
+	public Boolean getDirigeant() {
+		return dirigeant;
+	}
+
+	public void setDirigeant(Boolean dirigeant) {
+		this.dirigeant = dirigeant;
+	}
+
+	public Boolean getOfficiel() {
+		return officiel;
+	}
+
+	public void setOfficiel(Boolean officiel) {
+		this.officiel = officiel;
 	}
 
 	public void toUpperCase() {

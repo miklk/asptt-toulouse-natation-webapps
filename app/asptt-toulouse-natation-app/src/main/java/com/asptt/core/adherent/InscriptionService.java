@@ -165,6 +165,9 @@ public class InscriptionService {
 			default:
 				tarif = GroupEntity.getTarif((unique ? group.getTarifUnique4(): group.getTarif4()));
 			}
+			
+			//tarif = tarif - leoLagrangeReduction(group, dossier.getCreneaux(), unique, tarif);
+			
 			dossier.getDossier().setTarif(tarif);
 			dossierNageurDao.save(dossier.getDossier());
 			pDossiers.addPrice(tarif);
@@ -342,7 +345,7 @@ public class InscriptionService {
 //							+ "Voici les créneaux que vous avez sélectionné: <br />");
 			
 			StringBuilder message = new StringBuilder(
-					"Madame, Monsieur,<p>Nous avons le plaisir de vous confirmer la pré-sélection de vos créneaux pour la nouvelle saison sportive 2017-2018.<br />"
+					"Madame, Monsieur,<p>Nous avons le plaisir de vous confirmer la pré-sélection de vos créneaux pour la nouvelle saison sportive 2018-2019.<br />"
 							+ "Nous attendons votre dossier complet : fiche signée, réglement et certificat médical. Il ne sera pas possible d'accès au bassin sans dossier complet.<br />"
 							+ "Vous recevrez un e-mail de confirmation dès que votre inscription sera finalisée.<br />"
 							+ "Voici les créneaux que vous avez sélectionné: <br />");
@@ -614,6 +617,10 @@ public class InscriptionService {
 		} else {
 			fields.setField("licence_comp", "Yes");
 		}
+		
+		if(group.getTitle().contains("Aquagym")) {
+			fields.setField("licence_aquagym", "Yes");
+		}
 
 		fields.setField(
 				"accident_nom_1",
@@ -628,9 +635,9 @@ public class InscriptionService {
 						+ StringUtils.defaultString(parent.getAccidentPrenom2()));
 		fields.setField("accident_telephone_2", parent.getAccidentTelephone2());
 		
-		Integer tarifStatutaire = 19;
+		Integer tarifStatutaire = 18;
 		fields.setField("tarif_statutaire", tarifStatutaire.toString());
-		Integer tarifFsasptt = 17;
+		Integer tarifFsasptt = 18;
 		if(BooleanUtils.isTrue(group.getLicenceFfn())) {
 			tarifFsasptt = 2;
 		}
@@ -667,6 +674,7 @@ public class InscriptionService {
 		fields.setField("fonctionnaire", "No");
 		fields.setField("licence_ffn", "No");
 		fields.setField("licence_comp", "No");
+		fields.setField("licence_aquagym", "No");
 	}
 	
 	@Path("/rappel")
@@ -700,7 +708,7 @@ public class InscriptionService {
 					msg.setReplyTo(replyTo);
 					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(dossier.getEmail()));
 					msg.addRecipient(Message.RecipientType.CC,
-							new InternetAddress("contact@asptt-toulouse-natation.com"));
+							new InternetAddress("natation.toulouse@asptt.com"));
 					if (StringUtils.isNotBlank(dossier.getEmailsecondaire())) {
 						msg.addRecipient(Message.RecipientType.CC, new InternetAddress(dossier.getEmailsecondaire()));
 					}
@@ -735,8 +743,7 @@ public class InscriptionService {
 
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress("ecole.natation.toulouse@gmail.com", "Toulouse Natation by ASPTT"));
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("contact@asptt-toulouse-natation.com"));
-			msg.addRecipient(Message.RecipientType.CC, new InternetAddress("remi.lacaze@asptt-toulouse-natation.com"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress("natation.toulouse@asptt.com"));
 
 			StrBuilder message = new StrBuilder("<p>").append(count).append(" dossiers vont expirer dans 5 jours.</p>");
 			message.append("<ul>");
@@ -1046,5 +1053,20 @@ public class InscriptionService {
 
 		LOG.log(Level.WARNING, count + " dossiers rappelés");
 		return count;
+	}
+	
+	private int leoLagrangeReduction(GroupEntity groupe, LoadingSlotsUi creneaux, boolean oneSlot, int tarif) {
+		final int reduction;
+		if(oneSlot) {
+			LoadingSlotUi creneau = creneaux.getSlots().get(0);
+			if(creneau.getPiscine().contains("Lagrange")) {
+				reduction = ((tarif - 90) / 31) * 5;
+			} else {
+				reduction = 0;
+			}
+		} else {
+			reduction = 0;
+		}
+		return reduction;
 	}
 }

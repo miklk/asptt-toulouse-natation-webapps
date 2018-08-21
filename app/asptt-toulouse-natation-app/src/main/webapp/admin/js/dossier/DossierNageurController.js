@@ -205,6 +205,10 @@ dossierNageurController.controller('DossierNageurController', ['$http', '$scope'
 	}
 	
 	$scope.getContribution = function() {
-		return $scope.dossier.principal.contribution.split(';');
+		if($scope.dossier.principal != null && $scope.dossier.principal.contribution != null) {
+			return $scope.dossier.principal.contribution.split(';');
+		} else {
+			return "";
+		}
 	}
 }]);

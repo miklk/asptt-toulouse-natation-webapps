@@ -444,7 +444,7 @@ public class BoutiqueService {
 				}
 
 				StringBuilder message = new StringBuilder(
-						"Madame, Monsieur,<p>Les photos de groupe de la saison 2017-2018 sont prêtes à être commandés.<br/>Les commandes s'effectuent en ligne et le paiement par chèque. A réception du chèque vous recevrez la confirmation de la commande.<br />Les premières commandes seront disponibles à partir du 5 mars 2018.<br />Pour rappel, vos identifiants de connexion :</p>");
+						"Madame, Monsieur,<p>Les photos de groupe de la saison 2018-2019 sont prêtes à être commandés.<br/>Les commandes s'effectuent en ligne et le paiement par chèque. A réception du chèque vous recevrez la confirmation de la commande.<br />Les premières commandes seront disponibles à partir du 5 mars 2018.<br />Pour rappel, vos identifiants de connexion :</p>");
 				message.append(
 						"<p>Identifiant / mot de passe : " + dossier.getEmail() + " / " + dossier.getMotdepasse())
 						.append("<br /><a href=\"http://boutique.asptt-toulouse-natation.com/\">http://boutique.asptt-toulouse-natation.com</a></p>");

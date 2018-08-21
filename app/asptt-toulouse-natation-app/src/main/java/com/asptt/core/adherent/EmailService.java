@@ -243,7 +243,7 @@ public class EmailService {
 					DossierEntityFields.STATUT, DossierStatutEnum.INSCRIT.name(),
 					Operator.EQUAL));
 			criteria.add(new CriterionDao<Long>(
-					DossierEntityFields.SAISON, DossierService.OLD_SAISON,
+					DossierEntityFields.SAISON, DossierService.NEW_SAISON,
 					Operator.EQUAL));
 			List<DossierEntity> dossiers = dossierDao.find(criteria);
 			for (DossierEntity dossier : dossiers) {
@@ -354,9 +354,12 @@ public class EmailService {
 	
 	private void fillDestinataires(Collection<DossierEntity> destinataires, DossierEntity dossier) {
 		String statut = dossier.getStatut();
-		if (DossierService.NEW_SAISON.equals(dossier.getSaison()) && (DossierStatutEnum.INSCRIT.name().equals(statut)
-				|| DossierStatutEnum.PAIEMENT_COMPLET.name().equals(statut)
-				|| DossierStatutEnum.ATTENTE.name().equals(statut))) {
+//		if (DossierService.NEW_SAISON.equals(dossier.getSaison()) && (DossierStatutEnum.INSCRIT.name().equals(statut)
+//				|| DossierStatutEnum.PAIEMENT_COMPLET.name().equals(statut)
+//				|| DossierStatutEnum.ATTENTE.name().equals(statut))) {
+			if (DossierService.NEW_SAISON.equals(dossier.getSaison()) && (!DossierStatutEnum.INITIALISE.name().equals(statut)
+					&& !DossierStatutEnum.ANNULE.name().equals(statut)
+					&& !DossierStatutEnum.EXPIRE.name().equals(statut))) {
 			destinataires.add(dossier);
 		}
 	}

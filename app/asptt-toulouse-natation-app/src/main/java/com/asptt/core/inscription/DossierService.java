@@ -703,7 +703,7 @@ public class DossierService {
 			List<DossierNageurEntity> nageurs = dao.find(criteria);
 
 			StringBuilder message = new StringBuilder(
-					"Madame, Monsieur,<p>Nous avons le plaisir de vous compter parmi nous pour cette nouvelle saison sportive 2017-2018.<br />");
+					"Madame, Monsieur,<p>Nous avons le plaisir de vous compter parmi nous pour cette nouvelle saison sportive 2018-2019.<br />");
 			
 			message.append("Nous vous confirmons la bonne réception de votre dossier qui finalise ainsi votre inscription. <br />");
 			List<String> certificatsManquants = new ArrayList<String>();

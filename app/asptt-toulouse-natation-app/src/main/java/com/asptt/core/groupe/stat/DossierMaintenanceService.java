@@ -104,6 +104,7 @@ public class DossierMaintenanceService {
 			groupe.setOccupe(total.intValue());
 			groupeDao.save(groupe);
 		}
+		creneaux();
 		return groupes.size();
 	}
 }
