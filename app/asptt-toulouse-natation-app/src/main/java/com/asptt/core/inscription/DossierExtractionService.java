@@ -133,8 +133,13 @@ public class DossierExtractionService {
 						case EXPIRE:
 						case INITIALISE:
 						case PREINSCRIT:
-						case PAIEMENT_PARTIEL:
+						case PAIEMENT_PARTIEL: {
 							paiement = "non payé";
+							paiement+="|" + nageur.getTarif();
+							if(dossier.getReminded() != null) {
+								paiement+="|" + dossier.getReminded().getDate() + "/" + dossier.getReminded().getMonth();
+							}
+						}
 						break;
 						case PAIEMENT_COMPLET:
 						case INSCRIT:

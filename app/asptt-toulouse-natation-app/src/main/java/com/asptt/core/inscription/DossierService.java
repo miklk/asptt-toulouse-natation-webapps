@@ -719,7 +719,7 @@ public class DossierService {
 				certificatsBuilder.append(". Nous vous remercions de nous les faire parvenir avant le début des cours.<br />");
 				message.append(certificatsBuilder.toString());
 			}
-			message.append("Les cours reprendront à partir du 18 septembre selon les bassins et jours de pratique (voir ci-dessous):<br />");
+			message.append("Les cours reprendront à partir du 17 septembre selon les bassins et jours de pratique (voir ci-dessous):<br />");
 
 			message.append("<dl>");
 			for (DossierNageurEntity nageur : nageurs) {
@@ -1183,21 +1183,20 @@ public class DossierService {
 	@Path("/clean")
 	@GET
 	public int clean() {
-		DateTime seuil = DateTime.now().minusDays(3);
+		DateTime seuil = DateTime.now().minusDays(10);
 		List<CriterionDao<? extends Object>> criteria = new ArrayList<CriterionDao<? extends Object>>(1);
-		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.ANNULE.name(),
+		criteria.add(new CriterionDao<String>(DossierEntityFields.STATUT, DossierStatutEnum.INITIALISE.name(),
 				Operator.EQUAL));
-		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, 2L,
+		criteria.add(new CriterionDao<Long>(DossierEntityFields.SAISON, NEW_SAISON,
 				Operator.EQUAL));
 		criteria.add(new CriterionDao<Date>(DossierEntityFields.UPDATED, seuil.toDate(),
-				Operator.GREATER));
+				Operator.LESS_EQ));
 		List<DossierEntity> entities = dossierDao.find(criteria);
 		int count = 0;
 		for (DossierEntity dossier : entities) {
-//			dossier.setStatut(DossierStatutEnum.PREINSCRIT.name());
-//			dossier.setSaison(NEW_SAISON);
-//			dossier.setComment("Attention, il faut rattacher les nageurs (mika)");
-//			dossierDao.save(dossier);
+			dossier.setStatut(DossierStatutEnum.ANNULE.name());
+			dossier.setComment("Annulé nettoyage automatique");
+			dossierDao.save(dossier);
 			count++;
 		}
 		LOG.log(Level.WARNING, count + " dossiers clean");

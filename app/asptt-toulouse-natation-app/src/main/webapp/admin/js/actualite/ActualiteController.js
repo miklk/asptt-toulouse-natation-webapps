@@ -16,7 +16,7 @@ actualiteController.controller('ActualiteController', ['$rootScope', '$scope', '
 				facebook: false,
 				draft: false,
 				beginAsString: new Date(),
-				endAsString: new Date(2018, 7, 31, 23, 59, 59, 0),
+				endAsString: new Date(2019, 7, 31, 23, 59, 59, 0),
 				user: $rootScope.aspttTokenInfo.prenom + ' ' + $rootScope.aspttTokenInfo.nom.substring(0, 1) + '.',
 		};
 	}
